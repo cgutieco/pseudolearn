@@ -1,0 +1,7 @@
+Algorithm TypeRelationships
+  Define e As Integer
+  Define r As Real
+  e <- 5
+  r <- e
+  Write r
+EndAlgorithm

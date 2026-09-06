@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E4",
+  "title": "Despacho de tres formas distintas",
+  "statement": "Define una clase Figura con un método Area que devuelva 0.0. Define Cuadrado, Circulo y TrianguloIsoceles, tres clases que hereden de Figura y sobrescriban Area: Cuadrado con lado al cuadrado, Circulo con radio al cuadrado por 3.14, y TrianguloIsoceles con base al cuadrado dividido 2. Lee un tipo (1 Cuadrado, 2 Circulo, cualquier otro TrianguloIsoceles) y una medida, crea la figura correspondiente y escribe su área.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1", "4"], "expectedOutputs": ["16.0"], "expected": "numerico"},
+    {"inputs": ["2", "1"], "expectedOutputs": ["3.14"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "4"], "expectedOutputs": ["8.0"], "expected": "numerico"},
+    {"inputs": ["1", "5"], "expectedOutputs": ["25.0"], "expected": "numerico"},
+    {"inputs": ["2", "2"], "expectedOutputs": ["12.56"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Figura\n    Publico Metodo Area() Como Real\n        Retornar 0.0;\n    FinMetodo\nFinClase\n\nClase Cuadrado Hereda De Figura\n    Privado Definir lado Como Entero;\n\n    Metodo Constructor(unLado Como Entero)\n        Este.lado <- unLado;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.lado * Este.lado;\n    FinMetodo\nFinClase\n\nClase Circulo Hereda De Figura\n    Privado Definir radio Como Entero;\n\n    Metodo Constructor(unRadio Como Entero)\n        Este.radio <- unRadio;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.radio * Este.radio * 3.14;\n    FinMetodo\nFinClase\n\nClase TrianguloIsoceles Hereda De Figura\n    Privado Definir base Como Entero;\n\n    Metodo Constructor(unaBase Como Entero)\n        Este.base <- unaBase;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.base * Este.base / 2;\n    FinMetodo\nFinClase\n\nProceso CalcularAreaPolimorfica\n    Definir tipo Como Entero;\n    Definir medida Como Entero;\n    Definir figura Como Figura;\n    Leer tipo;\n    Leer medida;\n    Si tipo = 1 Entonces\n        figura <- Nuevo Cuadrado(medida);\n    SiNo\n        Si tipo = 2 Entonces\n            figura <- Nuevo Circulo(medida);\n        SiNo\n            figura <- Nuevo TrianguloIsoceles(medida);\n        FinSi\n    FinSi\n    Escribir figura.Area();\nFinProceso\n"
+}

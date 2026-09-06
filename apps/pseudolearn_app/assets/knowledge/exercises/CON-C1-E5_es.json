@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E5",
+  "title": "Clase Pila simple de un elemento",
+  "statement": "Define una clase PilaUno con constructor sin parámetros, un método Apilar que reciba un entero y lo guarde, y un método Desapilar que devuelva el valor guardado. Lee un número, crea el objeto, apílalo y escribe el resultado de desapilarlo.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-3"], "expectedOutputs": ["-3"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase PilaUno\n    Privado Definir valor Como Entero;\n\n    Metodo Constructor()\n        Este.valor <- 0;\n    FinMetodo\n\n    Publico Metodo Apilar(unValor Como Entero)\n        Este.valor <- unValor;\n    FinMetodo\n\n    Publico Metodo Desapilar() Como Entero\n        Retornar Este.valor;\n    FinMetodo\nFinClase\n\nProceso EjecutarPila\n    Definir n Como Entero;\n    Definir pila Como PilaUno;\n    Leer n;\n    pila <- Nuevo PilaUno();\n    pila.Apilar(n);\n    Escribir pila.Desapilar();\nFinProceso\n"
+}

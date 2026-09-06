@@ -1,0 +1,68 @@
+{
+  "id": "CON-B1-E3",
+  "title": "Intercambio de dos valores",
+  "statement": "Lee dos números enteros y escríbelos en orden inverso al que los leíste: primero el segundo, después el primero. Cada valor en su propia línea.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "7",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4",
+        "7"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "2"
+      ],
+      "expectedOutputs": [
+        "2",
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "-3",
+        "9"
+      ],
+      "expectedOutputs": [
+        "9",
+        "-3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "100"
+      ],
+      "expectedOutputs": [
+        "100",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "55",
+        "55"
+      ],
+      "expectedOutputs": [
+        "55",
+        "55"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso Intercambio\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Definir auxiliar Como Entero;\n    Leer a;\n    Leer b;\n    auxiliar <- a;\n    a <- b;\n    b <- auxiliar;\n    Escribir a;\n    Escribir b;\nFinProceso\n"
+}

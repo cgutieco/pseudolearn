@@ -1,0 +1,76 @@
+{
+  "id": "CON-B6-E3",
+  "title": "Procedimiento que intercambia dos variables",
+  "statement": "Escribe un procedimiento Intercambiar que reciba dos enteros por referencia y les intercambie el valor. Lee dos números, llama al procedimiento y escribe los dos valores resultantes, uno por línea.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "9"
+      ],
+      "expectedOutputs": [
+        "9",
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "2"
+      ],
+      "expectedOutputs": [
+        "2",
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "5"
+      ],
+      "expectedOutputs": [
+        "5",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-3",
+        "3"
+      ],
+      "expectedOutputs": [
+        "3",
+        "-3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7",
+        "7"
+      ],
+      "expectedOutputs": [
+        "7",
+        "7"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "declara-subprograma",
+      "name": "Intercambiar",
+      "arity": 2,
+      "requirement": "El enunciado pide un procedimiento llamado Intercambiar con dos parámetros."
+    }
+  ],
+  "referenceSolution": "SubProceso Intercambiar(a Como Entero Por Referencia, b Como Entero Por Referencia)\n    Definir auxiliar Como Entero;\n    auxiliar <- a;\n    a <- b;\n    b <- auxiliar;\nFinSubProceso\n\nProceso EjecutarIntercambio\n    Definir n1 Como Entero;\n    Definir n2 Como Entero;\n    Leer n1;\n    Leer n2;\n    Intercambiar(n1, n2);\n    Escribir n1;\n    Escribir n2;\nFinProceso\n"
+}

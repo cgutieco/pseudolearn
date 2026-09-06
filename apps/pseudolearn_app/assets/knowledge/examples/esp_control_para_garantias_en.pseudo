@@ -1,0 +1,7 @@
+Algorithm ForGuarantees
+  Define i As Integer
+  For i <- 5 To 1 Step -2 Do
+    Write i
+  EndFor
+  Write i
+EndAlgorithm

@@ -1,0 +1,12 @@
+Clase Valor
+  Publico Definir n Como Entero
+FinClase
+SubProceso Imprimir(v Como Valor)
+  Escribir v.n
+FinSubProceso
+Algoritmo ClasesComoTipos
+  Definir v Como Valor
+  v <- Nuevo Valor()
+  v.n <- 42
+  Imprimir(v)
+FinAlgoritmo

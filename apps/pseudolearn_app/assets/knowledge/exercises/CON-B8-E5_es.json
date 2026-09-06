@@ -1,0 +1,18 @@
+{
+  "id": "CON-B8-E5",
+  "title": "Contar días de fin de semana",
+  "statement": "Lee una cantidad de días y luego esa cantidad de números del 1 al 7 (1 es lunes, 7 es domingo), y escribe cuántos caen en fin de semana (6 o 7).",
+  "level": 2,
+  "kind": "predecir",
+  "module": "CON-B8",
+  "visibleCases": [
+    {"inputs": ["5", "1", "6", "3", "7", "2"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["3", "1", "2", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "1", "2", "3", "4", "5", "6", "7"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["2", "6", "6"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "4"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso ContarFinesDeSemana\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir dia Como Entero;\n    Definir cuenta Como Entero;\n    Leer cantidad;\n    cuenta <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer dia;\n        Si dia = 6 O dia = 7 Entonces\n            cuenta <- cuenta + 1;\n        FinSi\n    FinPara\n    Escribir cuenta;\nFinProceso\n"
+}

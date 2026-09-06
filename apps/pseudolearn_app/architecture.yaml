@@ -1,0 +1,225 @@
+# Reglas de arquitectura de pseudolearn_app que los verificadores ejecutan.
+# El README.md de este paquete explica el por qué de cada valor. Este archivo es la única
+# definición que el test de arquitectura y el script de límites leen: si un número o una regla
+# cambia, cambia aquí y en el README, nunca solo en uno de los dos.
+
+package: pseudolearn_app
+source_root: lib
+entrypoints:
+  - lib/main.dart
+
+# Capas. Una capa importa de sí misma y de las que lista en may_import, de nada más.
+# `id` es la distancia al centro, no una clave: engine y data comparten el 2 porque son
+# hermanas —dos adaptadores del mismo anillo—. La clave de una capa es su nombre.
+# El nombre de la capa es también su ruta bajo source_root, salvo model y ports, que
+# comparten el directorio domain/ para que quede visible que son el mismo centro partido
+# por naturaleza: datos por un lado, interfaces hacia fuera por el otro.
+layers:
+  - id: 0
+    name: model
+    path: domain/model
+    may_import: [ ]
+    forbidden_imports:
+      - 'package:flutter/'
+      - 'package:pseudolearn_core/'
+      - 'package:bloc/'
+      - 'dart:io'
+      - 'dart:ui'
+
+  - id: 1
+    name: ports
+    path: domain/ports
+    may_import: [ model ]
+    forbidden_imports:
+      - 'package:flutter/'
+      - 'package:pseudolearn_core/'
+      - 'package:bloc/'
+      - 'dart:io'
+      - 'dart:ui'
+
+  - id: 2
+    name: engine
+    path: engine
+    may_import: [ model, ports ]
+    forbidden_imports:
+      - 'package:flutter/'
+      - 'dart:io'
+      - 'dart:ui'
+
+  - id: 2
+    name: data
+    path: data
+    may_import: [ model, ports ]
+    forbidden_imports:
+      - 'package:pseudolearn_core/'
+      - 'package:flutter/material.dart'
+      - 'package:flutter/widgets.dart'
+      - 'package:flutter/cupertino.dart'
+      - 'package:bloc/'
+
+  - id: 3
+    name: application
+    path: application
+    may_import: [ model, ports ]
+    forbidden_imports:
+      - 'package:flutter/'
+      - 'package:pseudolearn_core/'
+      - 'package:go_router/'
+      - 'package:sqflite/'
+      - 'dart:io'
+      - 'dart:ui'
+
+  - id: 4
+    name: presentation
+    path: presentation
+    may_import: [ model, application ]
+    forbidden_imports:
+      - 'package:pseudolearn_core/'
+      - 'package:flutter/cupertino.dart'
+      - 'package:sqflite/'
+      - 'dart:io'
+
+  - id: 5
+    name: composition
+    path: composition
+    may_import: [ model, ports, engine, data, application, presentation ]
+    forbidden_imports: [ ]
+
+# Ningún archivo de lib/ puede importar esto, sea cual sea su capa.
+forbidden_imports:
+  - 'dart:mirrors'
+  - 'package:flutter_hooks/'
+  - 'package:get_it/'
+  - 'package:provider/'
+  - 'package:hooks_riverpod/'
+  - 'package:flutter_riverpod/'
+
+# Dentro de lib/ los imports son relativos. Un import por 'package:' propio oculta la capa de
+# origen y hace indetectable la violación.
+forbid_self_package_imports: true
+
+# Identificadores prohibidos por capa. El verificador los busca sobre el árbol sintáctico
+# —nombres de tipo, de constructor y de método invocado—, no con expresiones regulares sobre
+# el texto, para no marcar apariciones dentro de comentarios o de cadenas.
+forbidden_identifiers:
+  presentation:
+    - Platform
+    - defaultTargetPlatform
+    - TargetPlatform
+    - Timer
+    - RegExp
+    - HttpClient
+  application:
+    - RegExp
+    - BuildContext
+  engine:
+    - RegExp
+
+# El único archivo autorizado a preguntar por el sistema operativo. La pregunta es legítima
+# —hay que saber si el texto entra por un teclado en pantalla o por uno físico— pero tiene un
+# solo dueño: un adaptador de `data/platform/` detrás de un puerto. Cualquier otra aparición de
+# `Platform.isX`, `defaultTargetPlatform` o `TargetPlatform.` en `lib/` es una ramificación de
+# plataforma encubierta.
+platform_query_allowed_paths:
+  - data/platform/platform_text_entry_modality.dart
+
+# Construcciones de widget adaptativo al sistema operativo. Prohibidas en toda la app: son la
+# vía por la que un mismo código produce dos aspectos distintos según el sistema.
+forbidden_adaptive_constructors:
+  - Switch.adaptive
+  - Slider.adaptive
+  - CircularProgressIndicator.adaptive
+  - Icon.adaptive
+  - showAdaptiveDialog
+  - showAdaptiveActionSheet
+  - AlertDialog.adaptive
+
+# MediaQuery, el tamaño real de la ventana y la orientación solo se consultan en el lienzo de
+# diseño. Todo lo que cuelga de él ve el tamaño del lienzo, no el del dispositivo.
+window_query_allowed_paths:
+  - presentation/shell/
+
+# Reglas de widget.
+widget_rules:
+  allowed_public_members: [ build, createState ]
+  forbid_widget_returning_methods: true
+
+# Reglas de presentación. La derivación de datos —filtrar, ordenar, agregar— pertenece al
+# estado de vista, no al árbol de widgets. `map` y `toList` quedan fuera de la lista porque
+# convertir una lista del estado en una lista de widgets es renderizar, no derivar.
+presentation_rules:
+  forbidden_collection_methods:
+    - where
+    - firstWhere
+    - lastWhere
+    - singleWhere
+    - indexWhere
+    - reduce
+    - fold
+    - sort
+    - sorted
+    - any
+    - every
+    - expand
+    - takeWhile
+    - skipWhile
+  forbid_await: true
+
+# Reglas de la capa de composición. Elegir un adaptador es elegir un punto de entrada, nunca
+# ramificar en tiempo de ejecución.
+composition_rules:
+  forbid_conditionals: true
+
+# Reglas de estado de la capa de aplicación.
+application_rules:
+  state_fields_must_be_final: true
+  state_path_suffix: _state.dart
+
+# Reglas de código.
+code_rules:
+  forbid_comments: true
+  comment_exempt:
+    - lib/presentation/l10n/generated/
+
+limits:
+  file_lines: 250
+  function_lines: 40
+  build_method_lines: 30
+  positional_parameters: 3
+  nesting_depth: 3
+  public_methods_per_class: 5
+
+# La profundidad de anidación cuenta solo estructuras de control: if, for, while, do, switch,
+# try. La anidación de literales de widget no cuenta, porque un árbol de widgets es un dato,
+# no flujo de control.
+nesting_counts_control_flow_only: true
+
+# Rutas exentas de los límites de tamaño y de las reglas de contenido. Los tests pueden ser
+# largos; el código generado no se edita a mano.
+limits_exempt:
+  - test/
+  - tool/
+  - lib/presentation/l10n/generated/
+
+# Dueños declarados de un literal de color y de un literal de duración. La regla existe para que
+# ningún color ni ningún tiempo aparezca suelto en el código; un valor con nombre y con un archivo
+# dueño no está suelto. La lista está aquí y no dentro del verificador porque una excepción que
+# solo consta en el código del test es una excepción que nadie encuentra.
+#
+# La capa de aplicación no puede importar los tokens de tema, así que una política de tiempo suya
+# no tiene forma de vivir entre ellos: vive en el modelo, que ambas capas sí comparten.
+color_literal_owner_paths:
+  - presentation/theme/tokens/color_primitives.dart
+
+duration_literal_owner_paths:
+  - presentation/theme/tokens/
+  - domain/model/editor/autosave_policy.dart
+
+# Rutas exentas del test de literales de texto destinado a una persona. No es una lista de
+# perdones: es la lista de los archivos cuya responsabilidad *es* el vocabulario mostrado a una
+# persona. Todo lo demás que escriba una cadena con ortografía española está mezclando capas.
+user_facing_strings_exempt:
+  - lib/presentation/l10n/
+  - lib/engine/diagram/diagram_vocabulary.dart
+  - lib/engine/mapping/diagnostic_projection.dart
+  - lib/engine/knowledge/

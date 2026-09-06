@@ -1,0 +1,21 @@
+{
+  "id": "CON-E9",
+  "title": "Promedio de un vector con una clase Estadistica",
+  "statement": "Define una clase Estadistica con constructor que reciba una suma y una cantidad, y un método Promedio que devuelva la suma dividida entre la cantidad. Lee 5 números, súmalos, crea la Estadistica con esa suma y esa cantidad, y escribe el promedio.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["3.0"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["30.0"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["1.0"], "expected": "numerico"},
+    {"inputs": ["2", "4", "6", "8", "10"], "expectedOutputs": ["6.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide leer los números en un arreglo."}
+  ],
+  "referenceSolution": "Clase Estadistica\n    Privado Definir suma Como Entero;\n    Privado Definir cantidad Como Entero;\n\n    Metodo Constructor(unaSuma Como Entero, unaCantidad Como Entero)\n        Este.suma <- unaSuma;\n        Este.cantidad <- unaCantidad;\n    FinMetodo\n\n    Publico Metodo Promedio() Como Real\n        Retornar Este.suma / Este.cantidad;\n    FinMetodo\nFinClase\n\nProceso CalcularPromedio\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir suma Como Entero;\n    Definir estadistica Como Estadistica;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];\n    FinPara\n    suma <- 0;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        suma <- suma + numeros[i];\n    FinPara\n    estadistica <- Nuevo Estadistica(suma, 5);\n    Escribir estadistica.Promedio();\nFinProceso\n"
+}

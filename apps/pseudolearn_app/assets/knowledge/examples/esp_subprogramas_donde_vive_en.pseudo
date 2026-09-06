@@ -1,0 +1,6 @@
+Subroutine Message()
+  Write "Algorithm sibling"
+EndSubroutine
+Algorithm WhereLives
+  Message()
+EndAlgorithm

@@ -1,0 +1,32 @@
+class Person
+    private define name as string;
+    private define age as integer;
+
+    method constructor(aName as string, anAge as integer)
+        this.name <- aName;
+        this.age <- anAge;
+    endMethod
+
+    public method Name() as string
+        return this.name;
+    endMethod
+
+    public method Age() as integer
+        return this.age;
+    endMethod
+
+    public method HaveBirthday()
+        this.age <- this.age + 1;
+    endMethod
+endClass
+
+algorithm TryPerson
+    define name as string;
+    define age as integer;
+    define person as Person;
+    read name;
+    read age;
+    person <- new Person(name, age);
+    person.HaveBirthday();
+    write person.Age();
+endAlgorithm

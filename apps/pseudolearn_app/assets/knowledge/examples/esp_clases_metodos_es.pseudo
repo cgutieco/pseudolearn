@@ -1,0 +1,10 @@
+Clase Calculadora
+  Metodo Sumar(a Como Entero, b Como Entero) Como Entero
+    Retornar a + b
+  FinMetodo
+FinClase
+Algoritmo MetodosClase
+  Definir c Como Calculadora
+  c <- Nuevo Calculadora()
+  Escribir c.Sumar(3, 4)
+FinAlgoritmo

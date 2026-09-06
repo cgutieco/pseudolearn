@@ -1,0 +1,21 @@
+{
+  "id": "CON-B7-E2",
+  "title": "Suma recursiva de 1 a n",
+  "statement": "Escribe una función recursiva SumaHasta que reciba un entero no negativo n y devuelva la suma de todos los enteros de 1 a n. Lee un número y escribe el resultado de llamarla.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10"], "expectedOutputs": ["55"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["6"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "SumaHasta", "arity": 1, "requirement": "El enunciado pide una función recursiva llamada SumaHasta con un parámetro."}
+  ],
+  "referenceSolution": "SubProceso SumaHasta(n Como Entero) Como Entero\n    Si n <= 0 Entonces\n        Retornar 0;\n    SiNo\n        Retornar n + SumaHasta(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularSuma\n    Definir n Como Entero;\n    Leer n;\n    Escribir SumaHasta(n);\nFinProceso\n"
+}

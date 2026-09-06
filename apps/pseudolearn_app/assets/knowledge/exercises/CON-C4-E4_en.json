@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E4",
+  "title": "Dispatch across three different shapes",
+  "statement": "Define a Shape class with an Area method that returns 0.0. Define Square, Circle and IsoscelesTriangle, three classes that extend Shape and override Area: Square with side squared, Circle with radius squared times 3.14, and IsoscelesTriangle with base squared divided by 2. Read a kind (1 Square, 2 Circle, any other value IsoscelesTriangle) and a measure, create the matching shape and write its area.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1", "4"], "expectedOutputs": ["16.0"], "expected": "numerico"},
+    {"inputs": ["2", "1"], "expectedOutputs": ["3.14"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "4"], "expectedOutputs": ["8.0"], "expected": "numerico"},
+    {"inputs": ["1", "5"], "expectedOutputs": ["25.0"], "expected": "numerico"},
+    {"inputs": ["2", "2"], "expectedOutputs": ["12.56"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Shape\n    public method Area() as real\n        return 0.0;\n    endMethod\nendClass\n\nclass Square extends Shape\n    private define side as integer;\n\n    method constructor(aSide as integer)\n        this.side <- aSide;\n    endMethod\n\n    public method Area() as real\n        return this.side * this.side;\n    endMethod\nendClass\n\nclass Circle extends Shape\n    private define radius as integer;\n\n    method constructor(aRadius as integer)\n        this.radius <- aRadius;\n    endMethod\n\n    public method Area() as real\n        return this.radius * this.radius * 3.14;\n    endMethod\nendClass\n\nclass IsoscelesTriangle extends Shape\n    private define base as integer;\n\n    method constructor(aBase as integer)\n        this.base <- aBase;\n    endMethod\n\n    public method Area() as real\n        return this.base * this.base / 2;\n    endMethod\nendClass\n\nalgorithm ComputePolymorphicArea\n    define kind as integer;\n    define measure as integer;\n    define shape as Shape;\n    read kind;\n    read measure;\n    if kind = 1 then\n        shape <- new Square(measure);\n    else\n        if kind = 2 then\n            shape <- new Circle(measure);\n        else\n            shape <- new IsoscelesTriangle(measure);\n        endIf\n    endIf\n    write shape.Area();\nendAlgorithm\n"
+}

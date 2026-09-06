@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E1",
+  "title": "Cuenta regresiva",
+  "statement": "Lee un número entero n y escribe, uno por línea, todos los números desde n hasta 1 en orden descendente. Si n es 0 o menor, el bucle no escribe ninguna línea. Resuélvelo con un bucle Mientras.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4"], "expectedOutputs": ["4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["5", "4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["2", "1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-condicional", "requirement": "El enunciado pide resolverlo con un bucle Mientras."}
+  ],
+  "referenceSolution": "Proceso CuentaRegresiva\n    Definir i Como Entero;\n    Leer i;\n    Mientras i > 0 Hacer\n        Escribir i;\n        i <- i - 1;\n    FinMientras\nFinProceso\n"
+}

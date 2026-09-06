@@ -1,0 +1,24 @@
+{
+  "id": "CON-B7-E4",
+  "title": "Recursive digit count",
+  "statement": "Write a recursive DigitCount function that takes a non-negative integer and returns how many digits it has (a number under 10 has 1 digit). Solve it with pure recursion, with no loop at all. Read a number and write the result of calling it.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["123"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["9999"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["1000000"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["42"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "DigitCount", "arity": 1, "requirement": "The statement asks for a recursive function named DigitCount with one parameter."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."}
+  ],
+  "referenceSolution": "subroutine DigitCount(n as integer) as integer\n    if n < 10 then\n        return 1;\n    else\n        return 1 + DigitCount(n div 10);\n    endIf\nendSubroutine\n\nalgorithm ComputeDigitCount\n    define n as integer;\n    read n;\n    write DigitCount(n);\nendAlgorithm\n"
+}

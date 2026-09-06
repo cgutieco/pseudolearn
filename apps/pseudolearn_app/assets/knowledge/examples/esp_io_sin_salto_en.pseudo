@@ -1,0 +1,4 @@
+Algorithm OutputWithoutNewline
+  Write "Loading" Without Newline
+  Write "..."
+EndAlgorithm

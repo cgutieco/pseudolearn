@@ -1,0 +1,63 @@
+{
+  "id": "CON-B1-E1",
+  "title": "Sum of two numbers",
+  "statement": "Read two integers and write their sum. Write only the result, with no text around it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "7"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "10",
+        "0"
+      ],
+      "expectedOutputs": [
+        "10"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "-5",
+        "2"
+      ],
+      "expectedOutputs": [
+        "-3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "120",
+        "305"
+      ],
+      "expectedOutputs": [
+        "425"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm Sum\n    define a as integer;\n    define b as integer;\n    read a;\n    read b;\n    write a + b;\nendAlgorithm\n"
+}

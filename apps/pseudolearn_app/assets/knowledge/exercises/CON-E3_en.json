@@ -1,0 +1,20 @@
+{
+  "id": "CON-E3",
+  "title": "2x2 matrix multiplication",
+  "statement": "Read 8 integers: the 4 of matrix A (row by row) and the 4 of matrix B (row by row), both 2x2. Write the 4 elements of the product matrix A times B, row by row.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5", "6", "7", "8"], "expectedOutputs": ["19", "22", "43", "50"], "expected": "numerico"},
+    {"inputs": ["1", "0", "0", "1", "9", "8", "7", "6"], "expectedOutputs": ["9", "8", "7", "6"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0", "1", "2", "3", "4"], "expectedOutputs": ["0", "0", "0", "0"], "expected": "numerico"},
+    {"inputs": ["2", "0", "0", "2", "3", "4", "5", "6"], "expectedOutputs": ["6", "8", "10", "12"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1", "1", "1", "1"], "expectedOutputs": ["2", "2", "2", "2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with arrays."}
+  ],
+  "referenceSolution": "algorithm MatrixMultiplication\n    dimension a[2, 2] as integer;\n    dimension b[2, 2] as integer;\n    dimension c[2, 2] as integer;\n    define row as integer;\n    define column as integer;\n    define k as integer;\n    define total as integer;\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            read a[row, column];\n        endFor\n    endFor\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            read b[row, column];\n        endFor\n    endFor\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            total <- 0;\n            for k <- 0 to 1 step 1 do\n                total <- total + a[row, k] * b[k, column];\n            endFor\n            c[row, column] <- total;\n        endFor\n    endFor\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            write c[row, column];\n        endFor\n    endFor\nendAlgorithm\n"
+}

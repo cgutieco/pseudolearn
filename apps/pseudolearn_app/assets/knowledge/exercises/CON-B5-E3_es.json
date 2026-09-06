@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E3",
+  "title": "Invertir un vector",
+  "statement": "Lee 5 números enteros y escríbelos en orden inverso, uno por línea. Resuélvelo con un arreglo.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["5", "4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["50", "40", "30", "20", "10"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0", "0", "0", "0", "0"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-5", "-4", "-3", "-2", "-1"], "expected": "numerico"},
+    {"inputs": ["7", "7", "7", "7", "7"], "expectedOutputs": ["7", "7", "7", "7", "7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso InvertirVector\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer numeros[i];\n    FinPara\n    Para i <- 4 Hasta 0 Con Paso -1 Hacer\n        Escribir numeros[i];\n    FinPara\nFinProceso\n"
+}

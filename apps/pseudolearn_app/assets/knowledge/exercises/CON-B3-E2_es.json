@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E2",
+  "title": "Fin de semana o día laboral",
+  "statement": "Lee un número del 1 al 7 (1 es lunes y 7 es domingo) y escribe 1 si cae en fin de semana, 0 si es día laboral, o -1 si el número no es válido. Resuélvelo con una selección múltiple.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["8"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "El enunciado pide resolverlo con una selección múltiple."}
+  ],
+  "referenceSolution": "Proceso FinDeSemanaOLaboral\n    Definir dia Como Entero;\n    Leer dia;\n    Segun dia Hacer\n        1, 2, 3, 4, 5:\n            Escribir 0;\n        6, 7:\n            Escribir 1;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
+}

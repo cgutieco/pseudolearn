@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E1",
+  "title": "Circle class with perimeter and area",
+  "statement": "Define a Circle class with a constructor that takes a radius, a Perimeter method that returns 2 times the radius times 3.14, and an Area method that returns the radius squared times 3.14. Read the radius, create the object and write the perimeter and then the area, each on its own line.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["6.28", "3.14"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0.0", "0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["31.4", "78.5"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["62.8", "314.0"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["18.84", "28.26"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Circle\n    private define radius as integer;\n\n    method constructor(aRadius as integer)\n        this.radius <- aRadius;\n    endMethod\n\n    public method Perimeter() as real\n        return 2 * this.radius * 3.14;\n    endMethod\n\n    public method Area() as real\n        return this.radius * this.radius * 3.14;\n    endMethod\nendClass\n\nalgorithm ComputeCircle\n    define radius as integer;\n    define circle as Circle;\n    read radius;\n    circle <- new Circle(radius);\n    write circle.Perimeter();\n    write circle.Area();\nendAlgorithm\n"
+}

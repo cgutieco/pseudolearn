@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E4",
+  "title": "Product class with discount",
+  "statement": "Define a Product class with a constructor that takes a price, and a PriceWithDiscount method that takes a percentage and returns the price with that discount applied. Read the price and the percentage, create the object and write the result.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["100", "10"], "expectedOutputs": ["90.0"], "expected": "numerico"},
+    {"inputs": ["50", "0"], "expectedOutputs": ["50.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["200", "25"], "expectedOutputs": ["150.0"], "expected": "numerico"},
+    {"inputs": ["80", "50"], "expectedOutputs": ["40.0"], "expected": "numerico"},
+    {"inputs": ["10", "100"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Product\n    private define price as integer;\n\n    method constructor(aPrice as integer)\n        this.price <- aPrice;\n    endMethod\n\n    public method PriceWithDiscount(percentage as integer) as real\n        return this.price - this.price * percentage / 100;\n    endMethod\nendClass\n\nalgorithm ComputeDiscount\n    define price as integer;\n    define percentage as integer;\n    define product as Product;\n    read price;\n    read percentage;\n    product <- new Product(price);\n    write product.PriceWithDiscount(percentage);\nendAlgorithm\n"
+}

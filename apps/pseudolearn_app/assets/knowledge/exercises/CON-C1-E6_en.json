@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E6",
+  "title": "TrafficLight class with state",
+  "statement": "Define a TrafficLight class with a parameterless constructor that starts at state 0 (red), a Next method that advances to the next state (0, 1, 2 and back to 0), and a State method that returns the current state. Read how many times to advance, create the object, advance that many times and write the final state.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["6"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class TrafficLight\n    private define state as integer;\n\n    method constructor()\n        this.state <- 0;\n    endMethod\n\n    public method Next()\n        if this.state = 2 then\n            this.state <- 0;\n        else\n            this.state <- this.state + 1;\n        endIf\n    endMethod\n\n    public method State() as integer\n        return this.state;\n    endMethod\nendClass\n\nalgorithm RunTrafficLight\n    define times as integer;\n    define i as integer;\n    define light as TrafficLight;\n    read times;\n    light <- new TrafficLight();\n    for i <- 1 to times step 1 do\n        light.Next();\n    endFor\n    write light.State();\nendAlgorithm\n"
+}

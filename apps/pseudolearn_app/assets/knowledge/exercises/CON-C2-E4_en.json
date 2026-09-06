@@ -1,0 +1,75 @@
+{
+  "id": "CON-C2-E4",
+  "title": "AgeRange class with validation",
+  "statement": "Define an AgeRange class with a constructor that takes a minimum and a maximum, and an IsInRange method that takes an age and returns 1 if it is between the minimum and the maximum (both included) or 0 if not. Read the minimum, the maximum and the age, create the object and write the result.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "18",
+        "65",
+        "30"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "18",
+        "65",
+        "10"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "17",
+        "10"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "17",
+        "20"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "18",
+        "65",
+        "65"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "clase",
+      "requirement": "The statement asks you to solve it with a class."
+    }
+  ],
+  "referenceSolution": "class AgeRange\n    private define minimum as integer;\n    private define maximum as integer;\n\n    method constructor(aMinimum as integer, aMaximum as integer)\n        this.minimum <- aMinimum;\n        this.maximum <- aMaximum;\n    endMethod\n\n    public method IsInRange(age as integer) as integer\n        if age >= this.minimum and age <= this.maximum then\n            return 1;\n        else\n            return 0;\n        endIf\n    endMethod\nendClass\n\nalgorithm ValidateAge\n    define minimum as integer;\n    define maximum as integer;\n    define age as integer;\n    define range as AgeRange;\n    read minimum;\n    read maximum;\n    read age;\n    range <- new AgeRange(minimum, maximum);\n    write range.IsInRange(age);\nendAlgorithm\n"
+}

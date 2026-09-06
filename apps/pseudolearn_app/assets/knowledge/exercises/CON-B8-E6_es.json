@@ -1,0 +1,79 @@
+{
+  "id": "CON-B8-E6",
+  "title": "Aprobados y reprobados en dos líneas",
+  "statement": "Modifica el algoritmo que cuenta notas aprobadas para que escriba, en dos líneas, la cantidad de aprobadas y la cantidad de reprobadas.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B8",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4",
+        "6",
+        "8"
+      ],
+      "expectedOutputs": [
+        "2",
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "0",
+        "2"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedOutputs": [
+        "5",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "10"
+      ],
+      "expectedOutputs": [
+        "1",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "0",
+        "4"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso ContarAprobadosYReprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir aprobados Como Entero;\n    Definir reprobados Como Entero;\n    Leer cantidad;\n    aprobados <- 0;\n    reprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota >= 5 Entonces\n            aprobados <- aprobados + 1;\n        SiNo\n            reprobados <- reprobados + 1;\n        FinSi\n    FinPara\n    Escribir aprobados;\n    Escribir reprobados;\nFinProceso\n",
+  "starterCode": "Proceso ContarAprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir aprobados Como Entero;\n    Leer cantidad;\n    aprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota >= 5 Entonces\n            aprobados <- aprobados + 1;\n        FinSi\n    FinPara\n    Escribir aprobados;\nFinProceso\n"
+}

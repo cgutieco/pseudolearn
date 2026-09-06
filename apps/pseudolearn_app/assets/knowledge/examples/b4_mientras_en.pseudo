@@ -1,0 +1,8 @@
+algorithm Countdown
+    define i as integer;
+    read i;
+    while i > 0 do
+        write i;
+        i <- i - 1;
+    endWhile
+endAlgorithm

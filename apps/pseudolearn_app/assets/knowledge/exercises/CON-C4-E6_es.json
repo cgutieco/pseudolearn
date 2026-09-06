@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E6",
+  "title": "Jerarquía de tres niveles",
+  "statement": "Define Nivel1 con un método Valor que devuelva 1. Define Nivel2, que herede de Nivel1 y sobrescriba Valor para devolver Super.Valor() más 10. Define Nivel3, que herede de Nivel2 y sobrescriba Valor para devolver Super.Valor() más 100. Lee un número de nivel (1, 2 o cualquier otro valor para 3), crea el objeto de ese nivel y escribe su Valor.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["111"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2"], "expectedOutputs": ["11"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["111"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Nivel1\n    Publico Metodo Valor() Como Entero\n        Retornar 1;\n    FinMetodo\nFinClase\n\nClase Nivel2 Hereda De Nivel1\n    Publico Metodo Valor() Como Entero\n        Retornar Super.Valor() + 10;\n    FinMetodo\nFinClase\n\nClase Nivel3 Hereda De Nivel2\n    Publico Metodo Valor() Como Entero\n        Retornar Super.Valor() + 100;\n    FinMetodo\nFinClase\n\nProceso ProbarNiveles\n    Definir nivel Como Entero;\n    Definir objeto Como Nivel1;\n    Leer nivel;\n    Si nivel = 1 Entonces\n        objeto <- Nuevo Nivel1();\n    SiNo\n        Si nivel = 2 Entonces\n            objeto <- Nuevo Nivel2();\n        SiNo\n            objeto <- Nuevo Nivel3();\n        FinSi\n    FinSi\n    Escribir objeto.Valor();\nFinProceso\n"
+}

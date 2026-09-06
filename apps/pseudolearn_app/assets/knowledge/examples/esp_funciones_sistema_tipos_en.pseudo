@@ -1,0 +1,7 @@
+Algorithm TypeFunctions
+  Define txt As String
+  Define first As Character
+  txt <- toText(123)
+  first <- charAt(txt, 0)
+  Write txt, first
+EndAlgorithm

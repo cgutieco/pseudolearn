@@ -1,0 +1,25 @@
+{
+  "id": "CON-B7-E5",
+  "title": "Sum of a vector, recursively",
+  "statement": "Write a recursive SumVector function that takes an array of 5 integers by reference, a starting index and a size, and returns the sum of the elements from that index to the end. Solve it with pure recursion, with no loop at all. Read 5 numbers and write the sum of the whole vector.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-15"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "SumVector", "arity": 3, "requirement": "The statement asks for a recursive function named SumVector with three parameters."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."}
+  ],
+  "referenceSolution": "subroutine SumVector(data[] as integer by reference, index as integer, size as integer) as integer\n    if index >= size then\n        return 0;\n    else\n        return data[index] + SumVector(data, index + 1, size);\n    endIf\nendSubroutine\n\nalgorithm RunSumVector\n    dimension vector[5] as integer;\n    read vector[0];\n    read vector[1];\n    read vector[2];\n    read vector[3];\n    read vector[4];\n    write SumVector(vector, 0, 5);\nendAlgorithm\n"
+}

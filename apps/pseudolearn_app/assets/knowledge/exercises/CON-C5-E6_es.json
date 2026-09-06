@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E6",
+  "title": "Reproductor que delega en Cancion",
+  "statement": "Define una clase Cancion con constructor que reciba una duración en segundos, y un método Duracion que la devuelva. Define una clase Reproductor que tenga una Cancion como atributo, reciba la duración en su constructor, y un método Restante que reciba el tiempo transcurrido y devuelva cuánto falta delegando en la canción. Lee la duración y el tiempo transcurrido, crea el reproductor y escribe el tiempo restante.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["180", "60"], "expectedOutputs": ["120"], "expected": "numerico"},
+    {"inputs": ["100", "100"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["200", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["300", "299"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con clases."}
+  ],
+  "referenceSolution": "Clase Cancion\n    Privado Definir duracion Como Entero;\n\n    Metodo Constructor(unaDuracion Como Entero)\n        Este.duracion <- unaDuracion;\n    FinMetodo\n\n    Publico Metodo Duracion() Como Entero\n        Retornar Este.duracion;\n    FinMetodo\nFinClase\n\nClase Reproductor\n    Privado Definir cancion Como Cancion;\n\n    Metodo Constructor(unaDuracion Como Entero)\n        Este.cancion <- Nuevo Cancion(unaDuracion);\n    FinMetodo\n\n    Publico Metodo Restante(transcurrido Como Entero) Como Entero\n        Retornar Este.cancion.Duracion() - transcurrido;\n    FinMetodo\nFinClase\n\nProceso CalcularRestante\n    Definir duracion Como Entero;\n    Definir transcurrido Como Entero;\n    Definir reproductor Como Reproductor;\n    Leer duracion;\n    Leer transcurrido;\n    reproductor <- Nuevo Reproductor(duracion);\n    Escribir reproductor.Restante(transcurrido);\nFinProceso\n"
+}

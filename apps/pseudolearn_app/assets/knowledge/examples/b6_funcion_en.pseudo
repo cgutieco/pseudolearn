@@ -1,0 +1,15 @@
+subroutine Maximum(a as integer, b as integer) as integer
+    if a > b then
+        return a;
+    else
+        return b;
+    endIf
+endSubroutine
+
+algorithm ComputeMaximum
+    define x as integer;
+    define y as integer;
+    read x;
+    read y;
+    write Maximum(x, y);
+endAlgorithm

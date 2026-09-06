@@ -1,0 +1,20 @@
+{
+  "id": "CON-E1",
+  "title": "Criba de Eratóstenes",
+  "statement": "Lee un límite entero (entre 2 y 100) y escribe todos los números primos desde 2 hasta ese límite, uno por línea, usando la criba de Eratóstenes.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["2", "3", "5", "7"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["20"], "expectedOutputs": ["2", "3", "5", "7", "11", "13", "17", "19"], "expected": "numerico"},
+    {"inputs": ["30"], "expectedOutputs": ["2", "3", "5", "7", "11", "13", "17", "19", "23", "29"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["2", "3"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con la criba, que necesita un arreglo."}
+  ],
+  "referenceSolution": "Proceso CribaDeEratostenes\n    Dimension esCompuesto[101] Como Logico;\n    Definir limite Como Entero;\n    Definir i Como Entero;\n    Definir j Como Entero;\n    Leer limite;\n    Para i <- 0 Hasta 100 Con Paso 1 Hacer\n        esCompuesto[i] <- Falso;\n    FinPara\n    Para i <- 2 Hasta limite Con Paso 1 Hacer\n        Si esCompuesto[i] = Falso Entonces\n            Escribir i;\n            Para j <- i * i Hasta limite Con Paso i Hacer\n                esCompuesto[j] <- Verdadero;\n            FinPara\n        FinSi\n    FinPara\nFinProceso\n"
+}

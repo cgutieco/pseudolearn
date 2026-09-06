@@ -1,0 +1,18 @@
+{
+  "id": "CON-B8-E2",
+  "title": "Sum of the even numbers",
+  "statement": "Read a count of numbers and then that many integers, one at a time, and write the sum of the ones that are even.",
+  "level": 1,
+  "kind": "predecir",
+  "module": "CON-B8",
+  "visibleCases": [
+    {"inputs": ["4", "1", "2", "3", "4"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["3", "1", "3", "5"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "2", "4", "6", "8", "10"], "expectedOutputs": ["30"], "expected": "numerico"},
+    {"inputs": ["1", "7"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["2", "-2", "-4"], "expectedOutputs": ["-6"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm SumOfEvens\n    define count as integer;\n    define i as integer;\n    define number as integer;\n    define total as integer;\n    read count;\n    total <- 0;\n    for i <- 1 to count step 1 do\n        read number;\n        if number mod 2 = 0 then\n            total <- total + number;\n        endIf\n    endFor\n    write total;\nendAlgorithm\n"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E2",
+  "title": "Total cost of a purchase",
+  "statement": "Read the price of an item and the quantity bought, and write the total to pay.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["10", "3"], "expectedOutputs": ["30"], "expected": "numerico"},
+    {"inputs": ["7", "1"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "5"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["100", "10"], "expectedOutputs": ["1000"], "expected": "numerico"},
+    {"inputs": ["15", "4"], "expectedOutputs": ["60"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm TotalPurchase\n    define price as integer;\n    define quantity as integer;\n    define total as integer;\n    read price;\n    read quantity;\n    total <- price * quantity;\n    write total;\nendAlgorithm\n"
+}

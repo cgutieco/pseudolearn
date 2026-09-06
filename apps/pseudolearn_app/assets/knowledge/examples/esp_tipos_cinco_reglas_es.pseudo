@@ -1,0 +1,8 @@
+Algoritmo CincoReglas
+  Definir cociente Como Real
+  Definir divisionEntera, resto Como Entero
+  cociente <- 7 / 2
+  divisionEntera <- 7 div 2
+  resto <- 7 mod 2
+  Escribir cociente, divisionEntera, resto
+FinAlgoritmo

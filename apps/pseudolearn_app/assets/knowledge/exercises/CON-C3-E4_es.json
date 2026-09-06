@@ -1,0 +1,22 @@
+{
+  "id": "CON-C3-E4",
+  "title": "Intercambiar el contenido de dos cajas",
+  "statement": "Define una clase Caja con un atributo público contenido, y un subprograma Intercambiar que reciba dos cajas y les intercambie el contenido (sin usar paso por referencia: los objetos ya comparten su identidad). Lee dos valores, crea dos cajas, intercambia su contenido y escribe los dos valores resultantes, uno por línea.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["3", "9"], "expectedOutputs": ["9", "3"], "expected": "numerico"},
+    {"inputs": ["1", "2"], "expectedOutputs": ["2", "1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "5"], "expectedOutputs": ["5", "0"], "expected": "numerico"},
+    {"inputs": ["-3", "3"], "expectedOutputs": ["3", "-3"], "expected": "numerico"},
+    {"inputs": ["7", "7"], "expectedOutputs": ["7", "7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."},
+    {"kind": "declara-subprograma", "name": "Intercambiar", "arity": 2, "requirement": "El enunciado pide un subprograma llamado Intercambiar con dos parámetros."}
+  ],
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nSubProceso Intercambiar(cajaA Como Caja, cajaB Como Caja)\n    Definir auxiliar Como Entero;\n    auxiliar <- cajaA.contenido;\n    cajaA.contenido <- cajaB.contenido;\n    cajaB.contenido <- auxiliar;\nFinSubProceso\n\nProceso EjecutarIntercambioDeCajas\n    Definir v1 Como Entero;\n    Definir v2 Como Entero;\n    Definir caja1 Como Caja;\n    Definir caja2 Como Caja;\n    Leer v1;\n    Leer v2;\n    caja1 <- Nuevo Caja();\n    caja2 <- Nuevo Caja();\n    caja1.contenido <- v1;\n    caja2.contenido <- v2;\n    Intercambiar(caja1, caja2);\n    Escribir caja1.contenido;\n    Escribir caja2.contenido;\nFinProceso\n"
+}

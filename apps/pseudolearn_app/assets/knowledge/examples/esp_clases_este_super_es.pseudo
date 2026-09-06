@@ -1,0 +1,12 @@
+Clase Base
+  Metodo M()
+  FinMetodo
+FinClase
+Clase Derivada HeredaDe Base
+  Metodo M()
+    Super.M()
+  FinMetodo
+FinClase
+Algoritmo ProbarSuper
+  Definir d Como Derivada; d <- Nuevo Derivada(); d.M()
+FinAlgoritmo

@@ -1,0 +1,7 @@
+Algorithm Concatenation
+  Define n As Integer
+  Define t As String
+  n <- 1 + 2
+  t <- "A" + "B"
+  Write n, t
+EndAlgorithm

@@ -1,0 +1,21 @@
+{
+  "id": "CON-E8",
+  "title": "Largest element of a vector, with recursion",
+  "statement": "Define a recursive FindLargest function that takes an array of 5 integers by reference, a starting index and a size, and returns the largest element from that index to the end. Read 5 numbers and write the largest of them all, using that function.",
+  "level": 3,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["3", "7", "2", "9", "1"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["100", "1", "2", "3", "4"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."},
+    {"kind": "declara-subprograma", "name": "FindLargest", "arity": 3, "requirement": "The statement asks for a recursive function named FindLargest with three parameters."}
+  ],
+  "referenceSolution": "subroutine FindLargest(data[] as integer by reference, index as integer, size as integer) as integer\n    if index = size - 1 then\n        return data[index];\n    else\n        define rest as integer;\n        rest <- FindLargest(data, index + 1, size);\n        if data[index] > rest then\n            return data[index];\n        else\n            return rest;\n        endIf\n    endIf\nendSubroutine\n\nalgorithm RunRecursiveLargest\n    dimension numbers[5] as integer;\n    read numbers[0];\n    read numbers[1];\n    read numbers[2];\n    read numbers[3];\n    read numbers[4];\n    write FindLargest(numbers, 0, 5);\nendAlgorithm\n"
+}

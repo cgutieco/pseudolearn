@@ -1,0 +1,18 @@
+{
+  "id": "CON-E6",
+  "title": "Verificar si una palabra es palíndromo",
+  "statement": "Lee una palabra en minúsculas, sin espacios, y escribe 1 si se lee igual al derecho y al revés, o 0 si no.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["ana"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["hola"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["a"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["abba"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["abc"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [],
+  "referenceSolution": "Proceso VerificarPalindromo\n    Definir palabra Como Cadena;\n    Definir i Como Entero;\n    Definir longitud Como Entero;\n    Definir esPalindromo Como Entero;\n    Leer palabra;\n    longitud <- Longitud(palabra);\n    esPalindromo <- 1;\n    Para i <- 0 Hasta longitud Div 2 - 1 Con Paso 1 Hacer\n        Si CaracterEn(palabra, i) <> CaracterEn(palabra, longitud - 1 - i) Entonces\n            esPalindromo <- 0;\n        FinSi\n    FinPara\n    Escribir esPalindromo;\nFinProceso\n"
+}

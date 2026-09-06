@@ -1,0 +1,66 @@
+{
+  "id": "CON-B4-E4",
+  "title": "Sum of multiples of three",
+  "statement": "Read a non-negative integer bound and write the sum of the multiples of 3 between 0 and that bound, both included. Modify a For loop so it advances 3 at a time.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B4",
+  "visibleCases": [
+    {
+      "inputs": [
+        "9"
+      ],
+      "expectedOutputs": [
+        "18"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "10"
+      ],
+      "expectedOutputs": [
+        "18"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "3"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "20"
+      ],
+      "expectedOutputs": [
+        "63"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "bucle-contado",
+      "requirement": "The statement asks you to solve it with a For loop."
+    }
+  ],
+  "referenceSolution": "algorithm SumOfMultiplesOfThree\n    define bound as integer;\n    define i as integer;\n    define total as integer;\n    read bound;\n    total <- 0;\n    for i <- 0 to bound step 3 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n",
+  "starterCode": "algorithm SumMultiplesOfThree\n    define limit as integer;\n    define i as integer;\n    define total as integer;\n    read limit;\n    total <- 0;\n    for i <- 0 to limit step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
+}

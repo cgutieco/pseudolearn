@@ -1,0 +1,18 @@
+{
+  "id": "CON-B8-E5",
+  "title": "Count weekend days",
+  "statement": "Read a count of days and then that many numbers from 1 to 7 (1 is Monday, 7 is Sunday), and write how many fall on a weekend (6 or 7).",
+  "level": 2,
+  "kind": "predecir",
+  "module": "CON-B8",
+  "visibleCases": [
+    {"inputs": ["5", "1", "6", "3", "7", "2"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["3", "1", "2", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "1", "2", "3", "4", "5", "6", "7"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["2", "6", "6"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "4"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm CountWeekendDays\n    define count as integer;\n    define i as integer;\n    define day as integer;\n    define total as integer;\n    read count;\n    total <- 0;\n    for i <- 1 to count step 1 do\n        read day;\n        if day = 6 or day = 7 then\n            total <- total + 1;\n        endIf\n    endFor\n    write total;\nendAlgorithm\n"
+}

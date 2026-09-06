@@ -1,0 +1,64 @@
+{
+  "id": "CON-B1-E6",
+  "title": "From sum to difference",
+  "statement": "Start from the program that adds two numbers and change it so that it writes the difference of the first minus the second. Write only the result.",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "9",
+        "4"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "9"
+      ],
+      "expectedOutputs": [
+        "-5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "100",
+        "1"
+      ],
+      "expectedOutputs": [
+        "99"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-3",
+        "-3"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm Difference\n    define a as integer;\n    define b as integer;\n    define result as integer;\n    read a;\n    read b;\n    result <- a - b;\n    write result;\nendAlgorithm\n",
+  "starterCode": "algorithm Sum\n    define a as integer;\n    define b as integer;\n    define result as integer;\n    read a;\n    read b;\n    result <- a + b;\n    write result;\nendAlgorithm\n"
+}

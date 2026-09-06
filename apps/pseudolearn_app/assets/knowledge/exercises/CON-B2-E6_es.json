@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E6",
+  "title": "Conversión de temperatura con formato",
+  "statement": "Lee una temperatura en grados Celsius y escribe su equivalente en Fahrenheit seguido de ' F', en una sola línea, sin espacio entre el número y ' F' distinto del que ya trae el texto.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["0"], "expectedOutputs": ["32.0 F"], "expected": "texto"},
+    {"inputs": ["100"], "expectedOutputs": ["212.0 F"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["37"], "expectedOutputs": ["98.6 F"], "expected": "texto"},
+    {"inputs": ["-40"], "expectedOutputs": ["-40.0 F"], "expected": "texto"},
+    {"inputs": ["20"], "expectedOutputs": ["68.0 F"], "expected": "texto"}
+  ],
+  "referenceSolution": "Proceso CelsiusAFahrenheit\n    Definir celsius Como Entero;\n    Definir fahrenheit Como Real;\n    Leer celsius;\n    fahrenheit <- celsius * 9 / 5 + 32;\n    Escribir fahrenheit Sin Saltar;\n    Escribir \" F\";\nFinProceso\n"
+}

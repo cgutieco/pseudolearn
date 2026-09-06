@@ -1,0 +1,22 @@
+{
+  "id": "CON-C2-E2",
+  "title": "Clase CajaFuerte con contraseña",
+  "statement": "Define una clase CajaFuerte con un atributo privado clave y un constructor que la reciba, y un método Abrir que reciba un intento y devuelva 1 si coincide con la clave o 0 si no. Lee la clave y luego un intento, crea el objeto y escribe el resultado de llamar a Abrir.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1234", "1234"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1234", "0000"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["clave", "clave"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["clave", "otra"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["hola", "chao"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."},
+    {"kind": "declara-miembro", "class": "CajaFuerte", "member": "clave", "visibility": "privado", "requirement": "El enunciado pide que la clave sea un atributo privado."}
+  ],
+  "referenceSolution": "Clase CajaFuerte\n    Privado Definir clave Como Cadena;\n\n    Metodo Constructor(unaClave Como Cadena)\n        Este.clave <- unaClave;\n    FinMetodo\n\n    Publico Metodo Abrir(intento Como Cadena) Como Entero\n        Si intento = Este.clave Entonces\n            Retornar 1;\n        SiNo\n            Retornar 0;\n        FinSi\n    FinMetodo\nFinClase\n\nProceso EjecutarCajaFuerte\n    Definir clave Como Cadena;\n    Definir intento Como Cadena;\n    Definir caja Como CajaFuerte;\n    Leer clave;\n    Leer intento;\n    caja <- Nuevo CajaFuerte(clave);\n    Escribir caja.Abrir(intento);\nFinProceso\n"
+}

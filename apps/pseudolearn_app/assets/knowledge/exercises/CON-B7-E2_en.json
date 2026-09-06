@@ -1,0 +1,21 @@
+{
+  "id": "CON-B7-E2",
+  "title": "Recursive sum from 1 to n",
+  "statement": "Write a recursive SumUpTo function that takes a non-negative integer n and returns the sum of every integer from 1 to n. Read a number and write the result of calling it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10"], "expectedOutputs": ["55"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["6"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "SumUpTo", "arity": 1, "requirement": "The statement asks for a recursive function named SumUpTo with one parameter."}
+  ],
+  "referenceSolution": "subroutine SumUpTo(n as integer) as integer\n    if n <= 0 then\n        return 0;\n    else\n        return n + SumUpTo(n - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeSum\n    define n as integer;\n    read n;\n    write SumUpTo(n);\nendAlgorithm\n"
+}

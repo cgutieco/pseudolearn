@@ -1,0 +1,9 @@
+Subroutine Modify(v[] As Integer)
+  v[0] <- 99
+EndSubroutine
+Algorithm ArrayPassing
+  Dimension list[2] As Integer
+  list[0] <- 1
+  Modify(list)
+  Write list[0]
+EndAlgorithm

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E5",
+  "title": "Sum of a 2x2 matrix",
+  "statement": "Read 4 integers forming a matrix of 2 rows and 2 columns, row by row, and write the sum of all its elements. Solve it with an array.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "5", "5", "5"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4"], "expectedOutputs": ["-10"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm SumOf2x2Matrix\n    dimension data[2, 2] as integer;\n    define row as integer;\n    define column as integer;\n    define total as integer;\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    total <- 0;\n    for row <- 0 to 1 step 1 do\n        for column <- 0 to 1 step 1 do\n            total <- total + data[row, column];\n        endFor\n    endFor\n    write total;\nendAlgorithm\n"
+}

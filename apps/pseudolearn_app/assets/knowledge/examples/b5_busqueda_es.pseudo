@@ -1,0 +1,17 @@
+Proceso BuscarElemento
+    Dimension numeros[5] Como Entero;
+    Definir i Como Entero;
+    Definir objetivo Como Entero;
+    Definir indice Como Entero;
+    Para i <- 0 Hasta 4 Con Paso 1 Hacer
+        Leer numeros[i];
+    FinPara
+    Leer objetivo;
+    indice <- -1;
+    Para i <- 0 Hasta 4 Con Paso 1 Hacer
+        Si numeros[i] = objetivo Entonces
+            indice <- i;
+        FinSi
+    FinPara
+    Escribir indice;
+FinProceso

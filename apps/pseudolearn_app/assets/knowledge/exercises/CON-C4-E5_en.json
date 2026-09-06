@@ -1,0 +1,22 @@
+{
+  "id": "CON-C4-E5",
+  "title": "Savings account that extends Account",
+  "statement": "Define an Account class with a private attribute balance, a Balance method that returns it and a Deposit method that takes an amount and adds it to the balance. Define a SavingsAccount class that extends Account, also takes a rate, and has an ApplyInterest method that deposits the current balance times the rate divided by 100 (integer division). Read the balance and the rate, create the account, apply the interest and write the final balance.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1000", "10"], "expectedOutputs": ["1100"], "expected": "numerico"},
+    {"inputs": ["0", "50"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["500", "20"], "expectedOutputs": ["600"], "expected": "numerico"},
+    {"inputs": ["2000", "5"], "expectedOutputs": ["2100"], "expected": "numerico"},
+    {"inputs": ["100", "100"], "expectedOutputs": ["200"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."},
+    {"kind": "declara-miembro", "class": "SavingsAccount", "member": "rate", "visibility": "privado", "requirement": "The statement asks the rate to be a private attribute."}
+  ],
+  "referenceSolution": "class Account\n    private define balance as integer;\n\n    method constructor(aBalance as integer)\n        this.balance <- aBalance;\n    endMethod\n\n    public method Balance() as integer\n        return this.balance;\n    endMethod\n\n    public method Deposit(amount as integer)\n        this.balance <- this.balance + amount;\n    endMethod\nendClass\n\nclass SavingsAccount extends Account\n    private define rate as integer;\n\n    method constructor(aBalance as integer, aRate as integer)\n        super.constructor(aBalance);\n        this.rate <- aRate;\n    endMethod\n\n    public method ApplyInterest()\n        this.Deposit(this.Balance() * this.rate div 100);\n    endMethod\nendClass\n\nalgorithm RunInterest\n    define balance as integer;\n    define rate as integer;\n    define account as SavingsAccount;\n    read balance;\n    read rate;\n    account <- new SavingsAccount(balance, rate);\n    account.ApplyInterest();\n    write account.Balance();\nendAlgorithm\n"
+}

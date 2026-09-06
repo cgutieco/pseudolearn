@@ -1,0 +1,59 @@
+{
+  "id": "CON-A2-E3",
+  "title": "Completar el perímetro de un cuadrado",
+  "statement": "Completa el algoritmo: falta la línea que calcula el perímetro. Lee el lado de un cuadrado y escribe su perímetro.",
+  "level": 1,
+  "kind": "completar",
+  "module": "CON-A2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "5"
+      ],
+      "expectedOutputs": [
+        "20"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "3"
+      ],
+      "expectedOutputs": [
+        "12"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "10"
+      ],
+      "expectedOutputs": [
+        "40"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7"
+      ],
+      "expectedOutputs": [
+        "28"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso PerimetroCuadrado\n    Definir lado Como Entero;\n    Definir perimetro Como Entero;\n    Leer lado;\n    perimetro <- lado * 4;\n    Escribir perimetro;\nFinProceso\n",
+  "starterCode": "Proceso PerimetroCuadrado\n    Definir lado Como Entero;\n    Definir perimetro Como Entero;\n    Leer lado;\n\n    Escribir perimetro;\nFinProceso\n"
+}

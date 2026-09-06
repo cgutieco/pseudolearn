@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E3",
+  "title": "Clase Empleado con salario neto",
+  "statement": "Define una clase Empleado con constructor que reciba un salario bruto, y un método SalarioNeto que reciba un porcentaje de descuento y devuelva el salario con ese descuento aplicado. Lee el salario bruto y el porcentaje, crea el objeto y escribe el resultado.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1000", "10"], "expectedOutputs": ["900.0"], "expected": "numerico"},
+    {"inputs": ["500", "0"], "expectedOutputs": ["500.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2000", "20"], "expectedOutputs": ["1600.0"], "expected": "numerico"},
+    {"inputs": ["100", "50"], "expectedOutputs": ["50.0"], "expected": "numerico"},
+    {"inputs": ["0", "10"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Empleado\n    Privado Definir salarioBruto Como Entero;\n\n    Metodo Constructor(unSalario Como Entero)\n        Este.salarioBruto <- unSalario;\n    FinMetodo\n\n    Publico Metodo SalarioNeto(descuento Como Entero) Como Real\n        Retornar Este.salarioBruto - Este.salarioBruto * descuento / 100;\n    FinMetodo\nFinClase\n\nProceso CalcularSalario\n    Definir salario Como Entero;\n    Definir descuento Como Entero;\n    Definir empleado Como Empleado;\n    Leer salario;\n    Leer descuento;\n    empleado <- Nuevo Empleado(salario);\n    Escribir empleado.SalarioNeto(descuento);\nFinProceso\n"
+}

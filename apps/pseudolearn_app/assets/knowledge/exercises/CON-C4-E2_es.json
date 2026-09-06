@@ -1,0 +1,22 @@
+{
+  "id": "CON-C4-E2",
+  "title": "Empleado y Gerente con bono heredado",
+  "statement": "Define una clase Empleado con un atributo privado salario, un método público Salario que lo devuelva, y un método Bono que devuelva el 10% del salario. Define una clase Gerente que herede de Empleado y sobrescriba Bono para devolver el 20% del salario. Lee el salario, crea un Gerente y escribe su bono.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1000"], "expectedOutputs": ["200.0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["500"], "expectedOutputs": ["100.0"], "expected": "numerico"},
+    {"inputs": ["2000"], "expectedOutputs": ["400.0"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["20.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."},
+    {"kind": "declara-miembro", "class": "Empleado", "member": "salario", "visibility": "privado", "requirement": "El enunciado pide que el salario sea un atributo privado."}
+  ],
+  "referenceSolution": "Clase Empleado\n    Privado Definir salario Como Entero;\n\n    Metodo Constructor(unSalario Como Entero)\n        Este.salario <- unSalario;\n    FinMetodo\n\n    Publico Metodo Salario() Como Entero\n        Retornar Este.salario;\n    FinMetodo\n\n    Publico Metodo Bono() Como Real\n        Retornar Este.salario * 0.1;\n    FinMetodo\nFinClase\n\nClase Gerente Hereda De Empleado\n    Metodo Constructor(unSalario Como Entero)\n        Super.Constructor(unSalario);\n    FinMetodo\n\n    Publico Metodo Bono() Como Real\n        Retornar Este.Salario() * 0.2;\n    FinMetodo\nFinClase\n\nProceso CalcularBono\n    Definir salario Como Entero;\n    Definir gerente Como Gerente;\n    Leer salario;\n    gerente <- Nuevo Gerente(salario);\n    Escribir gerente.Bono();\nFinProceso\n"
+}

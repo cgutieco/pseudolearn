@@ -1,0 +1,18 @@
+algorithm SumOfMatrix
+    dimension data[2, 3] as integer;
+    define row as integer;
+    define column as integer;
+    define total as integer;
+    for row <- 0 to 1 step 1 do
+        for column <- 0 to 2 step 1 do
+            read data[row, column];
+        endFor
+    endFor
+    total <- 0;
+    for row <- 0 to 1 step 1 do
+        for column <- 0 to 2 step 1 do
+            total <- total + data[row, column];
+        endFor
+    endFor
+    write total;
+endAlgorithm

@@ -1,0 +1,20 @@
+{
+  "id": "CON-E3",
+  "title": "Multiplicación de matrices 2x2",
+  "statement": "Lee 8 números enteros: los 4 de una matriz A (fila por fila) y los 4 de una matriz B (fila por fila), ambas de 2x2. Escribe los 4 elementos de la matriz producto A por B, fila por fila.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5", "6", "7", "8"], "expectedOutputs": ["19", "22", "43", "50"], "expected": "numerico"},
+    {"inputs": ["1", "0", "0", "1", "9", "8", "7", "6"], "expectedOutputs": ["9", "8", "7", "6"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0", "1", "2", "3", "4"], "expectedOutputs": ["0", "0", "0", "0"], "expected": "numerico"},
+    {"inputs": ["2", "0", "0", "2", "3", "4", "5", "6"], "expectedOutputs": ["6", "8", "10", "12"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1", "1", "1", "1"], "expectedOutputs": ["2", "2", "2", "2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con arreglos."}
+  ],
+  "referenceSolution": "Proceso MultiplicacionDeMatrices\n    Dimension a[2, 2] Como Entero;\n    Dimension b[2, 2] Como Entero;\n    Dimension c[2, 2] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir k Como Entero;\n    Definir suma Como Entero;\n    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            Leer a[fila, columna];\n        FinPara\n    FinPara\n    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            Leer b[fila, columna];\n        FinPara\n    FinPara\n    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            suma <- 0;\n            Para k <- 0 Hasta 1 Con Paso 1 Hacer\n                suma <- suma + a[fila, k] * b[k, columna];\n            FinPara\n            c[fila, columna] <- suma;\n        FinPara\n    FinPara\n    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            Escribir c[fila, columna];\n        FinPara\n    FinPara\nFinProceso\n"
+}

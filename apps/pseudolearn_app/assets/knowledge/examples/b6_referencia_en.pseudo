@@ -1,0 +1,16 @@
+subroutine Swap(a as integer by reference, b as integer by reference)
+    define auxiliary as integer;
+    auxiliary <- a;
+    a <- b;
+    b <- auxiliary;
+endSubroutine
+
+algorithm TrySwap
+    define x as integer;
+    define y as integer;
+    read x;
+    read y;
+    Swap(x, y);
+    write x;
+    write y;
+endAlgorithm

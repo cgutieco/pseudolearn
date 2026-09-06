@@ -1,0 +1,9 @@
+Class Counter
+  Public Define total As Integer
+EndClass
+Algorithm ClassDeclaration
+  Define c As Counter
+  c <- New Counter()
+  c.total <- 5
+  Write c.total
+EndAlgorithm

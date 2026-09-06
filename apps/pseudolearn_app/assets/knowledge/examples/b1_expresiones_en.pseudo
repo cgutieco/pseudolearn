@@ -1,0 +1,12 @@
+algorithm Expressions
+    define base as integer;
+    define height as integer;
+    define withoutParentheses as integer;
+    define withParentheses as integer;
+    base <- 2;
+    height <- 3;
+    withoutParentheses <- base + height * 2;
+    withParentheses <- (base + height) * 2;
+    write withoutParentheses;
+    write withParentheses;
+endAlgorithm

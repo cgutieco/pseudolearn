@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E6",
+  "title": "Clase Semaforo con estado",
+  "statement": "Define una clase Semaforo con constructor sin parámetros que empiece en el estado 0 (rojo), un método Siguiente que avance al siguiente estado (0, 1, 2 y de vuelta a 0), y un método Estado que devuelva el estado actual. Lee cuántas veces avanzar, crea el objeto, avanza esa cantidad de veces y escribe el estado final.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["6"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Semaforo\n    Privado Definir estado Como Entero;\n\n    Metodo Constructor()\n        Este.estado <- 0;\n    FinMetodo\n\n    Publico Metodo Siguiente()\n        Si Este.estado = 2 Entonces\n            Este.estado <- 0;\n        SiNo\n            Este.estado <- Este.estado + 1;\n        FinSi\n    FinMetodo\n\n    Publico Metodo Estado() Como Entero\n        Retornar Este.estado;\n    FinMetodo\nFinClase\n\nProceso EjecutarSemaforo\n    Definir veces Como Entero;\n    Definir i Como Entero;\n    Definir semaforo Como Semaforo;\n    Leer veces;\n    semaforo <- Nuevo Semaforo();\n    Para i <- 1 Hasta veces Con Paso 1 Hacer\n        semaforo.Siguiente();\n    FinPara\n    Escribir semaforo.Estado();\nFinProceso\n"
+}

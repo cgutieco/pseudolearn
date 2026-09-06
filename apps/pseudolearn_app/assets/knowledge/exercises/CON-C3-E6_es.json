@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E6",
+  "title": "Copiar y comparar identidades",
+  "statement": "Define una clase Caja con un atributo público contenido. Lee un indicador (1 o 0). Crea un original. Si el indicador es 1, crea otro con la función incorporada de copia; si es 0, haz que otro sea el mismo objeto que original. Escribe 1 si original y otro son el mismo objeto, o 0 si no.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso CompararTrasCopiar\n    Definir bandera Como Entero;\n    Definir original Como Caja;\n    Definir otro Como Caja;\n    Leer bandera;\n    original <- Nuevo Caja();\n    Si bandera = 1 Entonces\n        otro <- Copiar(original);\n    SiNo\n        otro <- original;\n    FinSi\n    Si original = otro Entonces\n        Escribir 1;\n    SiNo\n        Escribir 0;\n    FinSi\nFinProceso\n"
+}

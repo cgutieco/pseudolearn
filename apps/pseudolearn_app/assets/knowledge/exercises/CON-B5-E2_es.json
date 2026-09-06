@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E2",
+  "title": "Elemento mayor de un vector",
+  "statement": "Lee 5 números enteros y escribe el mayor de todos. Resuélvelo con un arreglo.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["3", "7", "2", "9", "1"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["100", "1", "2", "3", "4"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso MayorDeVector\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir mayor Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer numeros[i];\n    FinPara\n    mayor <- numeros[0];\n    Para i <- 1 Hasta 4 Hacer\n        Si numeros[i] > mayor Entonces\n            mayor <- numeros[i];\n        FinSi\n    FinPara\n    Escribir mayor;\nFinProceso\n"
+}

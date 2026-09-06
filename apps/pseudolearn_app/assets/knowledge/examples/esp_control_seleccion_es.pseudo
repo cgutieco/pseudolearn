@@ -1,0 +1,12 @@
+Algoritmo SeleccionMultiple
+  Definir opc Como Entero
+  opc <- 2
+  Segun opc Hacer
+    1:
+      Escribir "Uno"
+    2:
+      Escribir "Dos"
+    De Otro Modo:
+      Escribir "Otro"
+  FinSegun
+FinAlgoritmo

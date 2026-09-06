@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E3",
+  "title": "Clase Termometro con conversión",
+  "statement": "Define una clase Termometro con constructor que reciba una temperatura en grados Celsius, y un método Fahrenheit que devuelva su equivalente. Lee la temperatura, crea el objeto y escribe el resultado de llamar a Fahrenheit.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["0"], "expectedOutputs": ["32.0"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["212.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["37"], "expectedOutputs": ["98.6"], "expected": "numerico"},
+    {"inputs": ["-40"], "expectedOutputs": ["-40.0"], "expected": "numerico"},
+    {"inputs": ["20"], "expectedOutputs": ["68.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Termometro\n    Privado Definir celsius Como Entero;\n\n    Metodo Constructor(unCelsius Como Entero)\n        Este.celsius <- unCelsius;\n    FinMetodo\n\n    Publico Metodo Fahrenheit() Como Real\n        Retornar Este.celsius * 9 / 5 + 32;\n    FinMetodo\nFinClase\n\nProceso ConvertirTemperatura\n    Definir celsius Como Entero;\n    Definir termometro Como Termometro;\n    Leer celsius;\n    termometro <- Nuevo Termometro(celsius);\n    Escribir termometro.Fahrenheit();\nFinProceso\n"
+}

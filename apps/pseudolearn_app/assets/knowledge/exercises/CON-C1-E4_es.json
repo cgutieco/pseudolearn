@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E4",
+  "title": "Clase Producto con descuento",
+  "statement": "Define una clase Producto con constructor que reciba un precio, y un método PrecioConDescuento que reciba un porcentaje y devuelva el precio con ese descuento aplicado. Lee el precio y el porcentaje, crea el objeto y escribe el resultado.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["100", "10"], "expectedOutputs": ["90.0"], "expected": "numerico"},
+    {"inputs": ["50", "0"], "expectedOutputs": ["50.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["200", "25"], "expectedOutputs": ["150.0"], "expected": "numerico"},
+    {"inputs": ["80", "50"], "expectedOutputs": ["40.0"], "expected": "numerico"},
+    {"inputs": ["10", "100"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Producto\n    Privado Definir precio Como Entero;\n\n    Metodo Constructor(unPrecio Como Entero)\n        Este.precio <- unPrecio;\n    FinMetodo\n\n    Publico Metodo PrecioConDescuento(porcentaje Como Entero) Como Real\n        Retornar Este.precio - Este.precio * porcentaje / 100;\n    FinMetodo\nFinClase\n\nProceso CalcularDescuento\n    Definir precio Como Entero;\n    Definir porcentaje Como Entero;\n    Definir producto Como Producto;\n    Leer precio;\n    Leer porcentaje;\n    producto <- Nuevo Producto(precio);\n    Escribir producto.PrecioConDescuento(porcentaje);\nFinProceso\n"
+}

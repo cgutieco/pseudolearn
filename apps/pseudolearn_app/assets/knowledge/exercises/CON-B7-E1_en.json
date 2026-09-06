@@ -1,0 +1,21 @@
+{
+  "id": "CON-B7-E1",
+  "title": "Recursive factorial",
+  "statement": "Write a recursive Factorial function that takes a non-negative integer and returns its factorial. Read a number and write the result of calling it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["4"], "expectedOutputs": ["24"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["120"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["6"], "expectedOutputs": ["720"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Factorial", "arity": 1, "requirement": "The statement asks for a recursive function named Factorial with one parameter."}
+  ],
+  "referenceSolution": "subroutine Factorial(n as integer) as integer\n    if n <= 1 then\n        return 1;\n    else\n        return n * Factorial(n - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeFactorial\n    define n as integer;\n    read n;\n    write Factorial(n);\nendAlgorithm\n"
+}

@@ -1,0 +1,7 @@
+Algoritmo Numeros
+  Definir a Como Entero
+  Definir b Como Real
+  a <- -42
+  b <- 3.14
+  Escribir a, b
+FinAlgoritmo

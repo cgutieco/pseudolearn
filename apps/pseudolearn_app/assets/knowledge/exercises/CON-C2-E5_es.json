@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E5",
+  "title": "Clase Libro con estado de préstamo",
+  "statement": "Define una clase Libro con constructor sin parámetros que empiece sin prestar, un método Prestar, un método Devolver y un método EstaPrestado que devuelva 1 si está prestado o 0 si no. Lee dos indicadores (1 o 0): si prestar el libro, y si devolverlo después. Crea el objeto, aplica esas dos acciones en orden y escribe el resultado de EstaPrestado.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1", "0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1", "1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0", "1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["1", "0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Libro\n    Privado Definir prestado Como Entero;\n\n    Metodo Constructor()\n        Este.prestado <- 0;\n    FinMetodo\n\n    Publico Metodo Prestar()\n        Este.prestado <- 1;\n    FinMetodo\n\n    Publico Metodo Devolver()\n        Este.prestado <- 0;\n    FinMetodo\n\n    Publico Metodo EstaPrestado() Como Entero\n        Retornar Este.prestado;\n    FinMetodo\nFinClase\n\nProceso EjecutarLibro\n    Definir prestar Como Entero;\n    Definir devolver Como Entero;\n    Definir libro Como Libro;\n    Leer prestar;\n    Leer devolver;\n    libro <- Nuevo Libro();\n    Si prestar = 1 Entonces\n        libro.Prestar();\n    FinSi\n    Si devolver = 1 Entonces\n        libro.Devolver();\n    FinSi\n    Escribir libro.EstaPrestado();\nFinProceso\n"
+}

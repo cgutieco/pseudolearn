@@ -1,0 +1,7 @@
+Algorithm ImplicitConversion
+  Define whole As Integer
+  Define decimal As Real
+  whole <- 7
+  decimal <- whole
+  Write decimal
+EndAlgorithm

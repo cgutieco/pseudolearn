@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E3",
+  "title": "Thermostat that delegates to Sensor",
+  "statement": "Define a Sensor class with a constructor that takes a temperature, and a Temperature method that returns it. Define a Thermostat class that has a Sensor as an attribute, takes the temperature in its constructor, and an IsHot method that returns 1 if the sensor's temperature is greater than 25 or 0 if not. Read the temperature, create the thermostat and write the result.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["30"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["20"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["25"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["26"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with classes."}
+  ],
+  "referenceSolution": "class Sensor\n    private define temperature as integer;\n\n    method constructor(aTemperature as integer)\n        this.temperature <- aTemperature;\n    endMethod\n\n    public method Temperature() as integer\n        return this.temperature;\n    endMethod\nendClass\n\nclass Thermostat\n    private define sensor as Sensor;\n\n    method constructor(aTemperature as integer)\n        this.sensor <- new Sensor(aTemperature);\n    endMethod\n\n    public method IsHot() as integer\n        if this.sensor.Temperature() > 25 then\n            return 1;\n        else\n            return 0;\n        endIf\n    endMethod\nendClass\n\nalgorithm TryThermostat\n    define temperature as integer;\n    define thermostat as Thermostat;\n    read temperature;\n    thermostat <- new Thermostat(temperature);\n    write thermostat.IsHot();\nendAlgorithm\n"
+}

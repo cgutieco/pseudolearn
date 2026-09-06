@@ -1,0 +1,70 @@
+{
+  "id": "CON-C5-E1",
+  "title": "Pedido que delega en Cliente",
+  "statement": "Define una clase Cliente con constructor que reciba un nombre, y un método Nombre que lo devuelva. Define una clase Pedido que tenga un Cliente como atributo (no que herede de él), reciba el nombre del cliente y un monto en su constructor, y un método Resumen que devuelva el nombre del cliente seguido de ': ' y el monto. Lee el nombre y el monto, crea el pedido y escribe el resumen.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {
+      "inputs": [
+        "Ana",
+        "100"
+      ],
+      "expectedOutputs": [
+        "Ana: 100"
+      ],
+      "expected": "texto"
+    },
+    {
+      "inputs": [
+        "Luis",
+        "0"
+      ],
+      "expectedOutputs": [
+        "Luis: 0"
+      ],
+      "expected": "texto"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "Eva",
+        "50"
+      ],
+      "expectedOutputs": [
+        "Eva: 50"
+      ],
+      "expected": "texto"
+    },
+    {
+      "inputs": [
+        "Bea",
+        "999"
+      ],
+      "expectedOutputs": [
+        "Bea: 999"
+      ],
+      "expected": "texto"
+    },
+    {
+      "inputs": [
+        "Ivan",
+        "1"
+      ],
+      "expectedOutputs": [
+        "Ivan: 1"
+      ],
+      "expected": "texto"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "clase",
+      "requirement": "El enunciado pide resolverlo con clases."
+    }
+  ],
+  "referenceSolution": "Clase Cliente\n    Privado Definir nombre Como Cadena;\n\n    Metodo Constructor(unNombre Como Cadena)\n        Este.nombre <- unNombre;\n    FinMetodo\n\n    Publico Metodo Nombre() Como Cadena\n        Retornar Este.nombre;\n    FinMetodo\nFinClase\n\nClase Pedido\n    Privado Definir cliente Como Cliente;\n    Privado Definir monto Como Entero;\n\n    Metodo Constructor(unNombre Como Cadena, unMonto Como Entero)\n        Este.cliente <- Nuevo Cliente(unNombre);\n        Este.monto <- unMonto;\n    FinMetodo\n\n    Publico Metodo Resumen() Como Cadena\n        Retornar Este.cliente.Nombre() + \": \" + ATexto(Este.monto);\n    FinMetodo\nFinClase\n\nProceso EjecutarPedido\n    Definir nombre Como Cadena;\n    Definir monto Como Entero;\n    Definir pedido Como Pedido;\n    Leer nombre;\n    Leer monto;\n    pedido <- Nuevo Pedido(nombre, monto);\n    Escribir pedido.Resumen();\nFinProceso\n"
+}

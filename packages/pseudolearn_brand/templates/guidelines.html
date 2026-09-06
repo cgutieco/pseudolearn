@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Marca PseudoLearn</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+    <style>
+        :root {
+            --ground: #F1F5F6;
+            --surface: #FFFFFF;
+            --well: #FFFFFF;
+            --ink: #222C2E;
+            --ink-2: #515D60;
+            --muted: #657174;
+            --line: #D3DBDD;
+            --line-soft: #E6ECED;
+            --brand: #247378;
+            --brand-deep: #0F4346;
+            --brand-tint: #EBF9FA;
+            --dark-well: #151D20;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --ground: #151D20;
+                --surface: #222C2E;
+                --well: #091113;
+                --ink: #E6ECED;
+                --ink-2: #BBC5C7;
+                --muted: #A1ABAE;
+                --line: #3D494C;
+                --line-soft: #2F3A3D;
+                --brand: #6EBBBF;
+                --brand-deep: #95D1D4;
+                --brand-tint: #072D2F;
+                --dark-well: #091113;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --ground: #151D20;
+            --surface: #222C2E;
+            --well: #091113;
+            --ink: #E6ECED;
+            --ink-2: #BBC5C7;
+            --muted: #A1ABAE;
+            --line: #3D494C;
+            --line-soft: #2F3A3D;
+            --brand: #6EBBBF;
+            --brand-deep: #95D1D4;
+            --brand-tint: #072D2F;
+            --dark-well: #091113;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: var(--ground);
+            color: var(--ink);
+            margin: 0;
+            font: 400 16px/1.6 "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 56px 28px 96px;
+            display: flex;
+            flex-direction: column;
+            gap: 64px
+        }
+
+        .mono {
+            font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace
+        }
+
+        code {
+            font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+            font-size: .86em;
+            color: var(--brand)
+        }
+
+        em {
+            font-style: italic
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 28px
+        }
+
+        .hero {
+            padding: 44px 40px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px
+        }
+
+        .hero svg {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            display: block
+        }
+
+        .on-dark {
+            display: none
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) .on-light {
+                display: none
+            }
+
+            :root:not([data-theme="light"]) .on-dark {
+                display: block
+            }
+        }
+
+        :root[data-theme="dark"] .on-light {
+            display: none
+        }
+
+        :root[data-theme="dark"] .on-dark {
+            display: block
+        }
+
+        h1 {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 0;
+            font-family: "IBM Plex Mono", monospace
+        }
+
+        .lede {
+            font-size: 19px;
+            line-height: 1.55;
+            color: var(--ink-2);
+            margin: 0;
+            max-width: 60ch;
+            text-wrap: balance
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            gap: 22px
+        }
+
+        h2 {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--brand);
+            margin: 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+            font-family: "IBM Plex Mono", monospace
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--ink)
+        }
+
+        p {
+            margin: 0;
+            max-width: 66ch;
+            color: var(--ink-2)
+        }
+
+        .cols {
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+            gap: 26px 40px;
+            align-items: start
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .specimen {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 32px
+        }
+
+        .specimen.dark {
+            background: var(--dark-well);
+            border-color: #3D494C
+        }
+
+        .specimen svg {
+            height: auto;
+            display: block
+        }
+
+        .hero-icon {
+            width: 168px;
+            border-radius: 37.6px
+        }
+
+        .layerbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px
+        }
+
+        .lay {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .lay .well {
+            position: relative;
+            width: 132px;
+            height: 132px;
+            background: #195C5F;
+            border-radius: 29.5px;
+            overflow: hidden
+        }
+
+        .lay .well svg, .lay .well > div {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        .lay figcaption {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .fig {
+            width: 100%;
+            max-width: 560px;
+            height: auto;
+            overflow: visible
+        }
+
+        .fig .solid {
+            fill: var(--brand-deep)
+        }
+
+        .fig .guide {
+            fill: none;
+            stroke: var(--brand);
+            stroke-width: .4;
+            stroke-dasharray: 2.4 2;
+            opacity: .55
+        }
+
+        .fig .dim {
+            stroke: var(--muted);
+            stroke-width: .45;
+            fill: none
+        }
+
+        .fig .dim text {
+            stroke: none;
+            fill: var(--muted);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 4.6px
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) .fig .solid {
+                fill: var(--ink)
+            }
+        }
+
+        :root[data-theme="dark"] .fig .solid {
+            fill: var(--ink)
+        }
+
+        .ladder {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            align-items: flex-end
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 9px
+        }
+
+        .step span {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .chip {
+            width: var(--s);
+            height: var(--s);
+            border-radius: calc(var(--s) * .2237);
+            overflow: hidden
+        }
+
+        .chip svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .mask {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            overflow: hidden
+        }
+
+        .mask svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14.5px
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 14px 10px 0;
+            border-bottom: 1px solid var(--line-soft);
+            vertical-align: top
+        }
+
+        th {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-bottom-color: var(--line)
+        }
+
+        td {
+            color: var(--ink-2)
+        }
+
+        .num {
+            font-family: "IBM Plex Mono", monospace;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            color: var(--ink)
+        }
+
+        .scroll {
+            overflow-x: auto
+        }
+
+        .rules {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 66ch
+        }
+
+        .rules li {
+            display: flex;
+            gap: 14px;
+            color: var(--ink-2)
+        }
+
+        .rules li::before {
+            content: "—";
+            color: var(--brand);
+            flex: none;
+            font-family: "IBM Plex Mono", monospace
+        }
+
+        .note {
+            border-left: 2px solid var(--brand);
+            padding-left: 18px;
+            color: var(--ink-2);
+            max-width: 64ch
+        }
+
+        .note strong {
+            color: var(--ink);
+            font-weight: 600
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>Identidad de marca</h1>
+        <div class="hero">
+            <div class="on-light">
+                <svg viewBox="0 -5.975 749.866 122.150" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:lockup-horizontal}}
+            </svg>
+            </div>
+            <div class="on-dark">
+                <svg viewBox="0 -5.975 749.866 122.150" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:lockup-horizontal-inverse}}
+            </svg>
+            </div>
+        </div>
+        <p class="lede">La ruta que recorre un algoritmo: sale de un nodo terminal, gira tres veces
+            en ángulo recto y termina en una bandera. Ninguna letra. Doce vectores, todos salidos de una
+            misma geometría paramétrica, y este documento con ellos.</p>
+    </header>
+
+    <section>
+        <h2>El símbolo</h2>
+        <div class="specimen">
+            <div class="chip hero-icon" style="--s:168px">
+                <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+            </div>
+
+            <svg viewBox="-72 -26 252 172" class="fig" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Construcción del símbolo: la ruta, acotada en unidades de la rejilla de 96">
+                <g class="guide">
+                    <path d="M0 0h95M0 96h95M0 0v96M95 0v96M10 96V8M36 96V8M62 96V8M88 96V8M10 86h78M10 60h78M10 34h78"/>
+                </g>
+                <g class="solid">
+                    <path d="{{path:symbol}}"
+                          fill="currentColor"/>
+                </g>
+                <g class="dim">
+                    <path d="M10 102v10M36 102v10M10 108h26M10 108l4-2M10 108l4 2M36 108l-4-2M36 108l-4 2"/>
+                    <text x="23" y="119" text-anchor="middle">26 tramo</text>
+                    <path d="M0 120v12M95 120v12M0 127h95M0 127l5-2.5M0 127l5 2.5M95 127l-5-2.5M95 127l-5 2.5"/>
+                    <text x="47" y="139" text-anchor="middle">95 caja de tinta</text>
+                    <path d="M81 20h-7M95 20h7M81 15v10M95 15v10M102 20h10"/>
+                    <text x="115" y="22">14 trazo</text>
+                    <path d="M88 3L120 -12h6"/>
+                    <text x="129" y="-10">bandera 26 × 26</text>
+                    <path d="M3 79L-14 62h-7"/>
+                    <text x="-24" y="64" text-anchor="end">nodo r 10</text>
+                </g>
+            </svg>
+        </div>
+        <div class="cols">
+            <div class="stack">
+                <h3>Tres piezas, dos del ordinograma</h3>
+                <p>Casi todo lo que dibuja la marca ya existe en el diagrama de flujo, con su radio.</p>
+                <div class="scroll">
+                    <table>
+                        <tr>
+                            <th>Pieza</th>
+                            <th>Figura</th>
+                            <th>Radio</th>
+                        </tr>
+                        <tr>
+                            <td>Punto de salida</td>
+                            <td>Nodo terminal</td>
+                            <td><code>radius-full</code></td>
+                        </tr>
+                        <tr>
+                            <td>Los tres giros</td>
+                            <td>Conector del ordinograma</td>
+                            <td><code>0° y 90°</code></td>
+                        </tr>
+                        <tr>
+                            <td>La bandera</td>
+                            <td>la meta</td>
+                            <td><code>ajena al diagrama</code></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="stack">
+                <h3>Todo se mide contra la rejilla</h3>
+                <p>Nada se ajusta a ojo. Solo hay ángulos de 0° y 90°: la única diagonal de toda la marca
+                    es la de la bandera. Terminaciones y uniones redondas, como manda la construcción de íconos
+                    del sistema.</p>
+                <div class="scroll">
+                    <table>
+                        <tr>
+                            <th>Medida</th>
+                            <th>Valor</th>
+                            <th>Razón</th>
+                        </tr>
+                        <tr>
+                            <td>Rejilla</td>
+                            <td class="num">96</td>
+                            <td>4 × la rejilla de 24 del sistema de íconos</td>
+                        </tr>
+                        <tr>
+                            <td>Trazo</td>
+                            <td class="num">14</td>
+                            <td>por debajo, los giros se cierran entre sí a 16 px</td>
+                        </tr>
+                        <tr>
+                            <td>Tramo</td>
+                            <td class="num">26</td>
+                            <td>los seis miden lo mismo: por eso los giros se leen como pasos</td>
+                        </tr>
+                        <tr>
+                            <td>Nodo de salida</td>
+                            <td class="num">r 10</td>
+                            <td>más gordo que el trazo, para que se lea como nodo</td>
+                        </tr>
+                        <tr>
+                            <td>Bandera</td>
+                            <td class="num">26 × 26</td>
+                            <td>mismo módulo que el tramo; el asta es el sexto tramo</td>
+                        </tr>
+                        <tr>
+                            <td>Caja de tinta</td>
+                            <td class="num">95 × 95</td>
+                            <td>consecuencia, no elección: la figura sale cuadrada</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p class="note"><strong>Por qué una figura y no una inicial.</strong> Ninguno de los íconos que
+            una persona reconoce de un vistazo en su pantalla de inicio es una letra: son un molinete, un pin,
+            un avión, un corazón. Una inicial obliga a saber ya el nombre para descifrarla, que es lo contrario
+            de lo que un ícono tiene que hacer. <strong>Y por qué no un diagrama:</strong> un ordinograma
+            dibujado se lee como organigrama, y unas barras indentadas se leen como «alinear texto». Son
+            esquemas, y un esquema parece un ícono de barra de herramientas. Una ruta es una cosa.</p>
+
+        <h3>Lo que se dibujó antes de llegar aquí, y por qué se descartó</h3>
+        <div class="scroll">
+            <table>
+                <tr>
+                    <th>Forma</th>
+                    <th>Qué se leyó en realidad</th>
+                </tr>
+                <tr>
+                    <td><code>P</code> con contraataque en rombo · <code>PL</code> a la par</td>
+                    <td>legibles y
+                        correctas, pero una inicial no transmite nada a quien aún no conoce el nombre
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ordinograma de tres nodos</td>
+                    <td>organigrama</td>
+                </tr>
+                <tr>
+                    <td>Bloque indentado <code>Si … FinSi</code></td>
+                    <td>«alinear texto»</td>
+                </tr>
+                <tr>
+                    <td>Laberinto</td>
+                    <td>código QR, o el marco de enfoque de una cámara</td>
+                </tr>
+                <tr>
+                    <td>Espiral cuadrada</td>
+                    <td>caracol</td>
+                </tr>
+                <tr>
+                    <td>Bifurcación con rombo</td>
+                    <td>una figura con antenas</td>
+                </tr>
+                <tr>
+                    <td>Ruta rematada en diana</td>
+                    <td>lupa; y el círculo pelea con los ángulos rectos</td>
+                </tr>
+                <tr>
+                    <td>Escalera con bandera</td>
+                    <td>funciona, pero dice «niveles» —gamificación— y no «algoritmo»</td>
+                </tr>
+                <tr>
+                    <td>Señal de dos caminos</td>
+                    <td>buena en grande, se empasta en pequeño</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>Reducción</h2>
+        <p>A 16 px la bandera se empasta un poco con el asta, y eso está previsto. Lo que no se admite
+            es que los tres giros dejen de contarse: si eso pasa, la ruta se vuelve una mancha en zigzag y la
+            marca deja de decir nada.</p>
+        <div class="specimen">
+            <div class="ladder">
+                <div class="step">
+                    <div class="chip" style="--s:16px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>16</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:20px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>20</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:24px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>24</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:32px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>32</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:48px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>48</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:64px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>64</span></div>
+                <div class="step">
+                    <div class="chip" style="--s:96px">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon}}
+            </svg>
+                    </div>
+                    <span>96</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>El logotipo</h2>
+        <div class="specimen">
+            <svg viewBox="0 0 598.400 75.200" class="" xmlns="http://www.w3.org/2000/svg" role="img"
+                 style="width:100%;max-width:600px">
+                {{svg:wordmark}}
+            </svg>
+        </div>
+        <div class="cols">
+            <div class="stack">
+                <h3>Dos familias, una métrica</h3>
+                <p>«Pseudo» en IBM Plex Mono Medium, «Learn» en IBM Plex Sans Bold. La palabra dice la tesis del
+                    producto: lo que es código va en monoespaciada, lo que es aprendizaje va en prosa. Las dos
+                    comparten altura de x y métricas verticales, así que se apoyan en la misma línea base sin
+                    compensación.</p>
+            </div>
+            <div class="stack">
+                <h3>Dos ajustes, ambos medidos</h3>
+                <p><strong>«Learn» lleva tracking −1.5</strong>, la proporción de <code>heading-1</code>. La
+                    monoespaciada no lleva ninguno: cerrarla destruiría la rejilla de paso constante, que es
+                    justamente la señal que la hace leer como código.</p>
+                <p><strong>La costura se cierra 6 unidades.</strong> Con el avance nominal, el hueco de tinta
+                    entre la <code>o</code> y la <code>L</code> mide 13.2, casi el doble del hueco interno de la
+                    monoespaciada. Cerrado a 7.2, la palabra se lee como una sola.</p>
+            </div>
+        </div>
+        <p class="note">Cada glifo es un <code>path</code>, no un elemento <code>&lt;text&gt;</code>. Un
+            logotipo que declara la fuente por nombre cae a la del sistema en cualquier máquina que no la tenga,
+            y lo hace en silencio.</p>
+    </section>
+
+    <section>
+        <h2>Lockups</h2>
+        <p>Dos composiciones, y solo dos. <strong>El lockup usa la placa, nunca la P desnuda:</strong> una P
+            suelta seguida de «PseudoLearn» produce «PPseudoLearn», porque el ojo lee el símbolo como la primera
+            letra de la palabra. La placa lo convierte en contenedor y el tartamudeo desaparece.</p>
+        <div class="specimen">
+            <svg viewBox="0 -5.975 749.866 122.150" class="" xmlns="http://www.w3.org/2000/svg" role="img"
+                 style="width:100%;max-width:420px">
+                {{svg:lockup-horizontal}}
+            </svg>
+            <svg viewBox="0 0 598.400 292.126" class="" xmlns="http://www.w3.org/2000/svg" role="img"
+                 style="width:190px">
+                {{svg:lockup-vertical}}
+            </svg>
+        </div>
+        <div class="specimen dark">
+            <svg viewBox="0 -5.975 749.866 122.150" class="" xmlns="http://www.w3.org/2000/svg" role="img"
+                 style="width:100%;max-width:420px">
+                {{svg:lockup-horizontal-inverse}}
+            </svg>
+            <svg viewBox="0 0 598.400 292.126" class="" xmlns="http://www.w3.org/2000/svg" role="img"
+                 style="width:190px">
+                {{svg:lockup-vertical-inverse}}
+            </svg>
+        </div>
+        <p class="note"><strong>Espacio libre mínimo:</strong> el ancho del asta al tamaño en uso, 0.23 × la
+            altura de la placa. Ningún elemento entra en ese margen.</p>
+    </section>
+
+    <section>
+        <h2>Íconos por plataforma</h2>
+        <p>El símbolo se inscribe en una caja de 0.64 × 0.55 del área visible, ajustada al límite que
+            primero lo restrinja — siendo la marca cuadrada, la altura. El <strong>0.55 está derivado, no
+                elegido</strong>: una marca cuadrada dentro del círculo seguro del 80 % que un ícono <em>maskable</em>
+            de web puede recortar no pasa de 0.566 del lado. A 1024 la marca mide 563 y su media diagonal es
+            398.2 contra un radio seguro de 409.6.</p>
+        <div class="scroll">
+            <table>
+                <tr>
+                    <th>Plataforma</th>
+                    <th>Lienzo</th>
+                    <th>Esquinas</th>
+                    <th>Por qué</th>
+                </tr>
+                <tr>
+                    <td>iOS · iPadOS · macOS</td>
+                    <td class="num">1024</td>
+                    <td>ninguna</td>
+                    <td>por capas, en Icon Composer; los tres dibujan la forma redondeada ellos mismos</td>
+                </tr>
+                <tr>
+                    <td>Android</td>
+                    <td class="num">108</td>
+                    <td>ninguna</td>
+                    <td>par adaptativo; recorta el lanzador, con su forma</td>
+                </tr>
+                <tr>
+                    <td>Web</td>
+                    <td class="num">64</td>
+                    <td class="num">22.37 %</td>
+                    <td>el navegador no enmascara</td>
+                </tr>
+            </table>
+        </div>
+        <h3>Las dos capas, y lo que Icon Composer pone encima</h3>
+        <p>Apple pide el material <strong>sin</strong> fondo, degradado, desenfoque, sombra ni opacidad:
+            esos los aplica la herramienta, que además los previsualiza contra fondos y tamaños reales. El
+            fondo se declara ahí como degradado vertical, y con él el aspecto oscuro.</p>
+        <div class="specimen">
+            <div class="layerbox">
+                <figure class="lay">
+                    <div class="well">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:01-ruta}}
+            </svg>
+                    </div>
+                    <figcaption>01-ruta</figcaption>
+                </figure>
+                <figure class="lay">
+                    <div class="well">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:02-bandera}}
+            </svg>
+                    </div>
+                    <figcaption>02-bandera</figcaption>
+                </figure>
+                <figure class="lay">
+                    <div class="well">
+                        <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:01-ruta}}
+            </svg>
+                        <div style="opacity:.55">
+                            <svg viewBox="0 0 1024 1024" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:02-bandera}}
+            </svg>
+                        </div>
+                    </div>
+                    <figcaption>compuesto, bandera al 55 %</figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="scroll">
+            <table>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>De</th>
+                    <th>A</th>
+                    <th>Marca</th>
+                    <th>Contraste</th>
+                </tr>
+                <tr>
+                    <td>Por defecto</td>
+                    <td class="num">#195C5F</td>
+                    <td class="num">#0F4346</td>
+                    <td class="num">#FFFFFF</td>
+                    <td class="num">7.67 – 10.99:1</td>
+                </tr>
+                <tr>
+                    <td>Oscuro</td>
+                    <td class="num">#0F4346</td>
+                    <td class="num">#072D2F</td>
+                    <td class="num">#D7F1F2</td>
+                    <td class="num">9.4 – 12.45:1</td>
+                </tr>
+            </table>
+        </div>
+        <p class="note"><strong>Un defecto corregido, no un refinamiento.</strong> El archivo de macOS
+            llevaba un recuadro de 824 sobre 1024, con esquinas propias y margen transparente. Esa era la
+            convención anterior: hoy macOS comparte cuadrado a sangre con iOS y enmascara él mismo, y entregar
+            una máscara ya dibujada degrada el reflejo especular y deja los bordes dentados.</p>
+
+        <h3>El par adaptativo bajo cada máscara de lanzador</h3>
+        <div class="specimen">
+            <div class="ladder">
+                <div class="step">
+                    <div class="mask" style="border-radius:50%">
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-background}}
+            </svg>
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-foreground}}
+            </svg>
+                    </div>
+                    <span>círculo</span></div>
+                <div class="step">
+                    <div class="mask" style="border-radius:22.4%">
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-background}}
+            </svg>
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-foreground}}
+            </svg>
+                    </div>
+                    <span>squircle</span></div>
+                <div class="step">
+                    <div class="mask" style="border-radius:12%">
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-background}}
+            </svg>
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-foreground}}
+            </svg>
+                    </div>
+                    <span>redondeado</span></div>
+                <div class="step">
+                    <div class="mask" style="border-radius:0">
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-background}}
+            </svg>
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-foreground}}
+            </svg>
+                    </div>
+                    <span>cuadrado</span></div>
+                <div class="step">
+                    <div class="mask" style="clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)">
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-background}}
+            </svg>
+                        <svg viewBox="0 0 108 108" class="" xmlns="http://www.w3.org/2000/svg" role="img">
+                {{svg:app-icon-android-foreground}}
+            </svg>
+                    </div>
+                    <span>hexágono</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Archivos</h2>
+        <div class="scroll">
+            <table>
+                <tr>
+                    <th>Archivo</th>
+                    <th>viewBox</th>
+                    <th>Para qué</th>
+                </tr>
+                <tr>
+                    <td><code>symbol.svg</code></td>
+                    <td class="num">95 × 95</td>
+                    <td>La ruta, recoloreable con <code>currentColor</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>wordmark.svg</code></td>
+                    <td class="num">598 × 75</td>
+                    <td>«PseudoLearn» contorneado. Sin dependencia de fuente.</td>
+                </tr>
+                <tr>
+                    <td><code>lockup-horizontal.svg</code></td>
+                    <td class="num">750 × 122</td>
+                    <td>Placa y palabra. Barra superior, pie, cabecera.</td>
+                </tr>
+                <tr>
+                    <td><code>lockup-horizontal-inverse.svg</code></td>
+                    <td class="num">750 × 122</td>
+                    <td>La misma, con la palabra en blanco.</td>
+                </tr>
+                <tr>
+                    <td><code>lockup-vertical.svg</code></td>
+                    <td class="num">598 × 292</td>
+                    <td>Placa sobre palabra. Bienvenida, portada.</td>
+                </tr>
+                <tr>
+                    <td><code>lockup-vertical-inverse.svg</code></td>
+                    <td class="num">598 × 292</td>
+                    <td>La misma, con la palabra en blanco.</td>
+                </tr>
+                <tr>
+                    <td><code>icon-composer/01-ruta.svg</code></td>
+                    <td class="num">1024</td>
+                    <td>Capa trasera para Icon Composer. Sin fondo, sin máscara.</td>
+                </tr>
+                <tr>
+                    <td><code>icon-composer/02-bandera.svg</code></td>
+                    <td class="num">1024</td>
+                    <td>Capa delantera; se compone sobre la anterior.</td>
+                </tr>
+                <tr>
+                    <td><code>app-icon.svg</code></td>
+                    <td class="num">1024</td>
+                    <td>Aplanado: iOS, iPadOS, macOS, App Store y <em>maskable</em> web.</td>
+                </tr>
+                <tr>
+                    <td><code>app-icon-android-background.svg</code></td>
+                    <td class="num">108</td>
+                    <td>Capa de fondo del par adaptativo.</td>
+                </tr>
+                <tr>
+                    <td><code>app-icon-android-foreground.svg</code></td>
+                    <td class="num">108</td>
+                    <td>Capa de símbolo, dentro del círculo seguro de 66.</td>
+                </tr>
+                <tr>
+                    <td><code>favicon.svg</code></td>
+                    <td class="num">64</td>
+                    <td>Redondeado: el navegador no enmascara.</td>
+                </tr>
+            </table>
+        </div>
+        <p>Ninguno se versiona: son salida del motor de marca. Se regeneran en
+            <code>packages/pseudolearn_brand/out/</code> con
+            <code>(cd packages/pseudolearn_brand &amp;&amp; python3 -m pseudolearn_brand build)</code>,
+            y ninguno se edita a mano.</p>
+    </section>
+
+    <section>
+        <h2>Reglas de uso</h2>
+        <ul class="rules">
+            <li>El símbolo no se rota, no se estira, no se inclina y no cambia de proporción interna.</li>
+            <li>La ruta no se recorta: los tres giros y los dos remates van siempre juntos.</li>
+            <li>El símbolo no lleva sombra, contorno ni brillo.</li>
+            <li>La bandera no cambia de color respecto del trazo: la marca es de una sola tinta, y eso le
+                permite funcionar bordada, grabada o en negativo.
+            </li>
+            <li>El logotipo no se compone escribiendo «PseudoLearn» con una fuente: se usa
+                <code>wordmark.svg</code>.
+            </li>
+            <li>No se crean lockups nuevos. Si hace falta una composición que no está aquí, se añade al
+                generador y se documenta en el README en el mismo cambio.
+            </li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>

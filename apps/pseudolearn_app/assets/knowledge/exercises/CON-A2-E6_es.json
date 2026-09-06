@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E6",
+  "title": "De Fahrenheit a Celsius",
+  "statement": "Lee una temperatura en grados Fahrenheit y escribe su equivalente en grados Celsius.",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["32"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["212"], "expectedOutputs": ["100.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["50"], "expectedOutputs": ["10.0"], "expected": "numerico"},
+    {"inputs": ["-4"], "expectedOutputs": ["-20.0"], "expected": "numerico"},
+    {"inputs": ["86"], "expectedOutputs": ["30.0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso FahrenheitACelsius\n    Definir fahrenheit Como Entero;\n    Definir celsius Como Real;\n    Leer fahrenheit;\n    celsius <- (fahrenheit - 32) * 5 / 9;\n    Escribir celsius;\nFinProceso\n"
+}

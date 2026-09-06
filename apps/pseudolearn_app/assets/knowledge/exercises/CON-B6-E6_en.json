@@ -1,0 +1,77 @@
+{
+  "id": "CON-B6-E6",
+  "title": "Procedure that orders two variables",
+  "statement": "Modify the Swap procedure to create Normalize, which takes two integers by reference and leaves them ordered from smaller to larger (swapping them only if needed). Read two numbers, call the procedure and write the two resulting values, one per line.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B6",
+  "visibleCases": [
+    {
+      "inputs": [
+        "5",
+        "3"
+      ],
+      "expectedOutputs": [
+        "3",
+        "5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "9"
+      ],
+      "expectedOutputs": [
+        "2",
+        "9"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "4",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4",
+        "4"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-1",
+        "-5"
+      ],
+      "expectedOutputs": [
+        "-5",
+        "-1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "100"
+      ],
+      "expectedOutputs": [
+        "0",
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "declara-subprograma",
+      "name": "Normalize",
+      "arity": 2,
+      "requirement": "The statement asks for a procedure named Normalize with two parameters."
+    }
+  ],
+  "referenceSolution": "subroutine Normalize(a as integer by reference, b as integer by reference)\n    define auxiliary as integer;\n    if a > b then\n        auxiliary <- a;\n        a <- b;\n        b <- auxiliary;\n    endIf\nendSubroutine\n\nalgorithm RunNormalization\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    Normalize(x, y);\n    write x;\n    write y;\nendAlgorithm\n",
+  "starterCode": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define temp as integer;\n    temp <- a;\n    a <- b;\n    b <- temp;\nendSubroutine\n\nalgorithm RunNormalization\n    define n1 as integer;\n    define n2 as integer;\n    read n1;\n    read n2;\n    Swap(n1, n2);\n    write n1;\n    write n2;\nendAlgorithm\n"
+}

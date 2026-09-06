@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E5",
+  "title": "Suma de una matriz 2x2",
+  "statement": "Lee 4 números enteros que forman una matriz de 2 filas y 2 columnas, fila por fila, y escribe la suma de todos sus elementos. Resuélvelo con un arreglo.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "5", "5", "5"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4"], "expectedOutputs": ["-10"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso SumaDeMatriz2x2\n    Dimension datos[2, 2] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 1 Hacer\n        Para columna <- 0 Hasta 1 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- 0;\n    Para fila <- 0 Hasta 1 Hacer\n        Para columna <- 0 Hasta 1 Hacer\n            total <- total + datos[fila, columna];\n        FinPara\n    FinPara\n    Escribir total;\nFinProceso\n"
+}

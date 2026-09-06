@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E5",
+  "title": "Area of a triangle",
+  "statement": "Read the base and height of a triangle and write its area.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["4", "6"], "expectedOutputs": ["12.0"], "expected": "numerico"},
+    {"inputs": ["10", "5"], "expectedOutputs": ["25.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "3"], "expectedOutputs": ["4.5"], "expected": "numerico"},
+    {"inputs": ["0", "5"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["7", "4"], "expectedOutputs": ["14.0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm TriangleArea\n    define base as integer;\n    define height as integer;\n    define area as real;\n    read base;\n    read height;\n    area <- (base * height) / 2;\n    write area;\nendAlgorithm\n"
+}

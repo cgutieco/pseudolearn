@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E6",
+  "title": "Clase Marcador con dos equipos",
+  "statement": "Define una clase Marcador con constructor sin parámetros que empiece 0 a 0, un método SumarLocal, un método SumarVisitante y un método Diferencia que devuelva los puntos del local menos los del visitante. Lee cuántos puntos sumar a cada equipo, crea el objeto, suma esa cantidad de veces a cada uno y escribe la diferencia final.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["3", "1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "5"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0", "4"], "expectedOutputs": ["-4"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["8"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Marcador\n    Privado Definir puntosLocal Como Entero;\n    Privado Definir puntosVisitante Como Entero;\n\n    Metodo Constructor()\n        Este.puntosLocal <- 0;\n        Este.puntosVisitante <- 0;\n    FinMetodo\n\n    Publico Metodo SumarLocal()\n        Este.puntosLocal <- Este.puntosLocal + 1;\n    FinMetodo\n\n    Publico Metodo SumarVisitante()\n        Este.puntosVisitante <- Este.puntosVisitante + 1;\n    FinMetodo\n\n    Publico Metodo Diferencia() Como Entero\n        Retornar Este.puntosLocal - Este.puntosVisitante;\n    FinMetodo\nFinClase\n\nProceso EjecutarMarcador\n    Definir golesLocal Como Entero;\n    Definir golesVisitante Como Entero;\n    Definir i Como Entero;\n    Definir marcador Como Marcador;\n    Leer golesLocal;\n    Leer golesVisitante;\n    marcador <- Nuevo Marcador();\n    Para i <- 1 Hasta golesLocal Con Paso 1 Hacer\n        marcador.SumarLocal();\n    FinPara\n    Para i <- 1 Hasta golesVisitante Con Paso 1 Hacer\n        marcador.SumarVisitante();\n    FinPara\n    Escribir marcador.Diferencia();\nFinProceso\n"
+}

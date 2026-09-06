@@ -1,0 +1,17 @@
+algorithm SearchElement
+    dimension numbers[5] as integer;
+    define i as integer;
+    define target as integer;
+    define index as integer;
+    for i <- 0 to 4 step 1 do
+        read numbers[i];
+    endFor
+    read target;
+    index <- -1;
+    for i <- 0 to 4 step 1 do
+        if numbers[i] = target then
+            index <- i;
+        endIf
+    endFor
+    write index;
+endAlgorithm

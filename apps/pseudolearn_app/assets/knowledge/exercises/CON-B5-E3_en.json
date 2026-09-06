@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E3",
+  "title": "Reverse a vector",
+  "statement": "Read 5 integers and write them in reverse order, one per line. Solve it with an array.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["5", "4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["50", "40", "30", "20", "10"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0", "0", "0", "0", "0"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-5", "-4", "-3", "-2", "-1"], "expected": "numerico"},
+    {"inputs": ["7", "7", "7", "7", "7"], "expectedOutputs": ["7", "7", "7", "7", "7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm ReverseVector\n    dimension numbers[5] as integer;\n    define i as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    for i <- 4 to 0 step -1 do\n        write numbers[i];\n    endFor\nendAlgorithm\n"
+}

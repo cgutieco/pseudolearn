@@ -1,0 +1,79 @@
+{
+  "id": "CON-B8-E6",
+  "title": "Passing and failing on two lines",
+  "statement": "Modify the algorithm that counts passing grades so it writes, on two lines, the count of passing and the count of failing grades.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B8",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4",
+        "6",
+        "8"
+      ],
+      "expectedOutputs": [
+        "2",
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "0",
+        "2"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedOutputs": [
+        "5",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "10"
+      ],
+      "expectedOutputs": [
+        "1",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "0",
+        "4"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm CountPassingAndFailing\n    define count as integer;\n    define i as integer;\n    define grade as integer;\n    define passing as integer;\n    define failing as integer;\n    read count;\n    passing <- 0;\n    failing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        else\n            failing <- failing + 1;\n        endIf\n    endFor\n    write passing;\n    write failing;\nendAlgorithm\n",
+  "starterCode": "algorithm CountPassing\n    define count as integer;\n    define i as integer;\n    define grade as integer;\n    define passing as integer;\n    read count;\n    passing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        endIf\n    endFor\n    write passing;\nendAlgorithm\n"
+}

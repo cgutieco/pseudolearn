@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E5",
+  "title": "Etiqueta y valor sin salto de línea",
+  "statement": "Lee una etiqueta y un valor entero, y escribe exactamente en una sola línea: <etiqueta>: <valor>. Usa dos sentencias de escritura y el modificador para no saltar de línea entre ellas.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["Peso", "70"], "expectedOutputs": ["Peso: 70"], "expected": "texto"},
+    {"inputs": ["Altura", "180"], "expectedOutputs": ["Altura: 180"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Edad", "0"], "expectedOutputs": ["Edad: 0"], "expected": "texto"},
+    {"inputs": ["Puntaje", "999"], "expectedOutputs": ["Puntaje: 999"], "expected": "texto"},
+    {"inputs": ["Nota", "5"], "expectedOutputs": ["Nota: 5"], "expected": "texto"}
+  ],
+  "referenceSolution": "Proceso EtiquetaValor\n    Definir etiqueta Como Cadena;\n    Definir valor Como Entero;\n    Leer etiqueta;\n    Leer valor;\n    Escribir etiqueta, \": \" Sin Saltar;\n    Escribir valor;\nFinProceso\n"
+}

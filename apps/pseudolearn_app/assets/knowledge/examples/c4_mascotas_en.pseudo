@@ -1,0 +1,34 @@
+class Pet
+    private define name as string;
+
+    method constructor(aName as string)
+        this.name <- aName;
+    endMethod
+
+    public method Name() as string
+        return this.name;
+    endMethod
+
+    public method Speak() as string
+        return "...";
+    endMethod
+endClass
+
+class Cat extends Pet
+    private define breed as string;
+
+    method constructor(aName as string, aBreed as string)
+        super.constructor(aName);
+        this.breed <- aBreed;
+    endMethod
+
+    public method Speak() as string
+        return this.Name() + " says meow";
+    endMethod
+endClass
+
+algorithm Shelter
+    define pet as Pet;
+    pet <- new Cat("Kitty", "Siamese");
+    write pet.Speak();
+endAlgorithm

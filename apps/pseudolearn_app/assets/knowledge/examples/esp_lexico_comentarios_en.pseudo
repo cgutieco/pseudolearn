@@ -1,0 +1,5 @@
+Algorithm Comments
+  Define x As Integer // Main variable
+  x <- 5 // Assign value
+  Write x // Output
+EndAlgorithm

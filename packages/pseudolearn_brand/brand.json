@@ -1,0 +1,174 @@
+{
+  "symbol": {
+    "grid": 96.0,
+    "stroke": 14.0,
+    "run": 26.0,
+    "terminal_radius": 10.0,
+    "pennant": 26.0,
+    "pennant_radius": 3.0,
+    "start_x": 10.0,
+    "start_y": 86.0,
+    "turns": 6
+  },
+  "typography": {
+    "mono_face": "IBMPlexMono-Medium.ttf",
+    "sans_face": "IBMPlexSans-Bold.ttf",
+    "mono_text": "Pseudo",
+    "sans_text": "Learn",
+    "type_size": 100.0,
+    "baseline": 90.0,
+    "cap_top": 20.2,
+    "sans_tracking": -1.5,
+    "seam": -6.0
+  },
+  "palette": {
+    "ground_top": "#195C5F",
+    "ground_bottom": "#0F4346",
+    "ink": "#FFFFFF",
+    "deep": "#0F4346"
+  },
+  "placement": {
+    "max_width": 0.64,
+    "max_height": 0.55,
+    "maskable_safe_circle": 0.8,
+    "squircle": 0.2237
+  },
+  "lockups": {
+    "horizontal": { "plate": 1.75, "gap": 0.24 },
+    "vertical": { "plate": 2.4, "gap": 0.32 },
+    "clear_space": 0.23
+  },
+  "variants": [
+    {
+      "name": "symbol",
+      "composition": "symbol",
+      "master": "symbol.svg",
+      "title": "PseudoLearn symbol",
+      "ink": "currentColor",
+      "color_attribute": "#0F4346"
+    },
+    {
+      "name": "wordmark",
+      "composition": "wordmark",
+      "master": "wordmark.svg",
+      "title": "PseudoLearn wordmark",
+      "ink": "currentColor",
+      "color_attribute": "#0F4346"
+    },
+    {
+      "name": "lockup-horizontal",
+      "composition": "lockup",
+      "master": "lockup-horizontal.svg",
+      "title": "PseudoLearn horizontal lockup",
+      "orientation": "horizontal",
+      "ink": "#0F4346",
+      "gradient_id": "bh0F4346"
+    },
+    {
+      "name": "lockup-horizontal-inverse",
+      "composition": "lockup",
+      "master": "lockup-horizontal-inverse.svg",
+      "title": "PseudoLearn horizontal lockup",
+      "orientation": "horizontal",
+      "ink": "#FFFFFF",
+      "gradient_id": "bhFFFFFF"
+    },
+    {
+      "name": "lockup-vertical",
+      "composition": "lockup",
+      "master": "lockup-vertical.svg",
+      "title": "PseudoLearn vertical lockup",
+      "orientation": "vertical",
+      "ink": "#0F4346",
+      "gradient_id": "bv0F4346"
+    },
+    {
+      "name": "lockup-vertical-inverse",
+      "composition": "lockup",
+      "master": "lockup-vertical-inverse.svg",
+      "title": "PseudoLearn vertical lockup",
+      "orientation": "vertical",
+      "ink": "#FFFFFF",
+      "gradient_id": "bvFFFFFF"
+    },
+    {
+      "name": "app-icon",
+      "composition": "icon",
+      "master": "app-icon.svg",
+      "title": "PseudoLearn app icon",
+      "canvas": 1024,
+      "visible": 1024,
+      "rounded": false,
+      "gradient_id": "ground",
+      "ink": "#FFFFFF"
+    },
+    {
+      "name": "01-ruta",
+      "composition": "layer",
+      "master": "icon-composer/01-ruta.svg",
+      "title": "PseudoLearn app icon layer 01-ruta",
+      "layer": "route",
+      "canvas": 1024,
+      "visible": 1024,
+      "ink": "#FFFFFF"
+    },
+    {
+      "name": "02-bandera",
+      "composition": "layer",
+      "master": "icon-composer/02-bandera.svg",
+      "title": "PseudoLearn app icon layer 02-bandera",
+      "layer": "flag",
+      "canvas": 1024,
+      "visible": 1024,
+      "ink": "#FFFFFF"
+    },
+    {
+      "name": "app-icon-android-background",
+      "composition": "ground",
+      "master": "app-icon-android-background.svg",
+      "title": "PseudoLearn adaptive icon background",
+      "canvas": 108,
+      "gradient_id": "ground"
+    },
+    {
+      "name": "app-icon-android-foreground",
+      "composition": "mark",
+      "master": "app-icon-android-foreground.svg",
+      "title": "PseudoLearn adaptive icon foreground",
+      "canvas": 108,
+      "visible": 72,
+      "ink": "#FFFFFF"
+    },
+    {
+      "name": "favicon",
+      "composition": "icon",
+      "master": "favicon.svg",
+      "title": "PseudoLearn favicon",
+      "canvas": 64,
+      "visible": 64,
+      "rounded": true,
+      "gradient_id": "ground",
+      "ink": "#FFFFFF",
+      "copies": ["apps/fe-pseudolearn/public/favicon.svg"]
+    }
+  ],
+  "emitters": {
+    "typescript_symbol_path": {
+      "path": "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts",
+      "mode": "write"
+    },
+    "dart_brand_metrics": {
+      "path": "apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart",
+      "mode": "verify"
+    },
+    "guidelines": {
+      "template": "templates/guidelines.html",
+      "path": "guidelines.html",
+      "mode": "write"
+    },
+    "vendored_fonts": {
+      "path": "apps/pseudolearn_app/assets/fonts",
+      "mode": "verify"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+SubProceso Factorial(n Como Entero) Como Entero
+  Si n <= 1 Entonces
+    Retornar 1
+  Sino
+    Retornar n * Factorial(n - 1)
+  FinSi
+FinSubProceso
+Algoritmo Recursion
+  Escribir Factorial(4)
+FinAlgoritmo

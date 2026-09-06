@@ -1,0 +1,32 @@
+Clase Persona
+    Privado Definir nombre Como Cadena;
+    Privado Definir edad Como Entero;
+
+    Metodo Constructor(unNombre Como Cadena, unaEdad Como Entero)
+        Este.nombre <- unNombre;
+        Este.edad <- unaEdad;
+    FinMetodo
+
+    Publico Metodo Nombre() Como Cadena
+        Retornar Este.nombre;
+    FinMetodo
+
+    Publico Metodo Edad() Como Entero
+        Retornar Este.edad;
+    FinMetodo
+
+    Publico Metodo Cumplir()
+        Este.edad <- Este.edad + 1;
+    FinMetodo
+FinClase
+
+Proceso ProbarPersona
+    Definir nombre Como Cadena;
+    Definir edad Como Entero;
+    Definir persona Como Persona;
+    Leer nombre;
+    Leer edad;
+    persona <- Nuevo Persona(nombre, edad);
+    persona.Cumplir();
+    Escribir persona.Edad();
+FinProceso

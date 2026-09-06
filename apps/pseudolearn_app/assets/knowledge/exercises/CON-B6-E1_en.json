@@ -1,0 +1,21 @@
+{
+  "id": "CON-B6-E1",
+  "title": "Square function",
+  "statement": "Write a Square function that takes an integer and returns its square. Read a number and write the result of calling it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-4"], "expectedOutputs": ["16"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Square", "arity": 1, "requirement": "The statement asks for a function named Square with one parameter."}
+  ],
+  "referenceSolution": "subroutine Square(n as integer) as integer\n    return n * n;\nendSubroutine\n\nalgorithm ComputeSquare\n    define n as integer;\n    read n;\n    write Square(n);\nendAlgorithm\n"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E6",
+  "title": "From Fahrenheit to Celsius",
+  "statement": "Read a temperature in Fahrenheit and write its equivalent in Celsius.",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["32"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["212"], "expectedOutputs": ["100.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["50"], "expectedOutputs": ["10.0"], "expected": "numerico"},
+    {"inputs": ["-4"], "expectedOutputs": ["-20.0"], "expected": "numerico"},
+    {"inputs": ["86"], "expectedOutputs": ["30.0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm FahrenheitToCelsius\n    define fahrenheit as integer;\n    define celsius as real;\n    read fahrenheit;\n    celsius <- (fahrenheit - 32) * 5 / 9;\n    write celsius;\nendAlgorithm\n"
+}

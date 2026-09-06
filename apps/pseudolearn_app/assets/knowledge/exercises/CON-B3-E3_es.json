@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E3",
+  "title": "Clasificación de una nota",
+  "statement": "Lee una nota entera de 0 a 10 y escribe su categoría como número: 4 si es 9 o más (sobresaliente), 3 si es 7 u 8 (notable), 2 si es 5 o 6 (aprobado), o 1 en otro caso (insuficiente).",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["8"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso ClasificacionNota\n    Definir nota Como Entero;\n    Leer nota;\n    Si nota >= 9 Entonces\n        Escribir 4;\n    SiNo\n        Si nota >= 7 Entonces\n            Escribir 3;\n        SiNo\n            Si nota >= 5 Entonces\n                Escribir 2;\n            SiNo\n                Escribir 1;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
+}

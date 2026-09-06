@@ -1,0 +1,15 @@
+SubProceso Maximo(a Como Entero, b Como Entero) Como Entero
+    Si a > b Entonces
+        Retornar a;
+    SiNo
+        Retornar b;
+    FinSi
+FinSubProceso
+
+Proceso CalculoDeMaximo
+    Definir n1 Como Entero;
+    Definir n2 Como Entero;
+    Leer n1;
+    Leer n2;
+    Escribir Maximo(n1, n2);
+FinProceso

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E3",
+  "title": "Employee class with net salary",
+  "statement": "Define an Employee class with a constructor that takes a gross salary, and a NetSalary method that takes a discount percentage and returns the salary with that discount applied. Read the gross salary and the percentage, create the object and write the result.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1000", "10"], "expectedOutputs": ["900.0"], "expected": "numerico"},
+    {"inputs": ["500", "0"], "expectedOutputs": ["500.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2000", "20"], "expectedOutputs": ["1600.0"], "expected": "numerico"},
+    {"inputs": ["100", "50"], "expectedOutputs": ["50.0"], "expected": "numerico"},
+    {"inputs": ["0", "10"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Employee\n    private define grossSalary as integer;\n\n    method constructor(aSalary as integer)\n        this.grossSalary <- aSalary;\n    endMethod\n\n    public method NetSalary(discount as integer) as real\n        return this.grossSalary - this.grossSalary * discount / 100;\n    endMethod\nendClass\n\nalgorithm ComputeSalary\n    define salary as integer;\n    define discount as integer;\n    define employee as Employee;\n    read salary;\n    read discount;\n    employee <- new Employee(salary);\n    write employee.NetSalary(discount);\nendAlgorithm\n"
+}

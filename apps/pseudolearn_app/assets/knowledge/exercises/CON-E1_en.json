@@ -1,0 +1,20 @@
+{
+  "id": "CON-E1",
+  "title": "Sieve of Eratosthenes",
+  "statement": "Read an integer limit (between 2 and 100) and write every prime number from 2 up to that limit, one per line, using the sieve of Eratosthenes.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["2", "3", "5", "7"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["20"], "expectedOutputs": ["2", "3", "5", "7", "11", "13", "17", "19"], "expected": "numerico"},
+    {"inputs": ["30"], "expectedOutputs": ["2", "3", "5", "7", "11", "13", "17", "19", "23", "29"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["2", "3"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with the sieve, which needs an array."}
+  ],
+  "referenceSolution": "algorithm SieveOfEratosthenes\n    dimension isComposite[101] as boolean;\n    define limit as integer;\n    define i as integer;\n    define j as integer;\n    read limit;\n    for i <- 0 to 100 step 1 do\n        isComposite[i] <- false;\n    endFor\n    for i <- 2 to limit step 1 do\n        if isComposite[i] = false then\n            write i;\n            for j <- i * i to limit step i do\n                isComposite[j] <- true;\n            endFor\n        endIf\n    endFor\nendAlgorithm\n"
+}

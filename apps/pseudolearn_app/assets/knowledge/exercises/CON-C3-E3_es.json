@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E3",
+  "title": "Copia que no afecta al original",
+  "statement": "Define una clase Caja con un atributo público contenido. Lee un valor inicial y un valor nuevo. Crea una Caja original con el valor inicial, crea una copia con la función incorporada de copia, cambia el contenido de la copia al valor nuevo, y escribe el contenido del original.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["10", "99"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["0", "5"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "7"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["100", "1"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["-5", "5"], "expectedOutputs": ["-5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso ProbarCopiaIndependiente\n    Definir valorInicial Como Entero;\n    Definir valorNuevo Como Entero;\n    Definir original Como Caja;\n    Definir copia Como Caja;\n    Leer valorInicial;\n    Leer valorNuevo;\n    original <- Nuevo Caja();\n    original.contenido <- valorInicial;\n    copia <- Copiar(original);\n    copia.contenido <- valorNuevo;\n    Escribir original.contenido;\nFinProceso\n"
+}

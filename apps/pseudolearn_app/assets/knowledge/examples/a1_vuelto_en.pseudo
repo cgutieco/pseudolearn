@@ -1,0 +1,9 @@
+algorithm Change
+    define price as integer;
+    define payment as integer;
+    define change as integer;
+    price <- 45;
+    payment <- 50;
+    change <- payment - price;
+    write change;
+endAlgorithm

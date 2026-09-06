@@ -1,0 +1,7 @@
+Algorithm Numbers
+  Define a As Integer
+  Define b As Real
+  a <- -42
+  b <- 3.14
+  Write a, b
+EndAlgorithm

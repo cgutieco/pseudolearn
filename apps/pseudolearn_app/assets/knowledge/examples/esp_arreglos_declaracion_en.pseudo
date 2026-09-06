@@ -1,0 +1,6 @@
+Algorithm ArrayDeclaration
+  Dimension a[3], b[2, 4] As Integer
+  a[0] <- 1
+  b[0, 0] <- 2
+  Write a[0], b[0, 0]
+EndAlgorithm

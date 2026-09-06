@@ -1,0 +1,15 @@
+name: pseudolearn_core
+description: Core language engine for PseudoLearn.
+version: 0.1.0
+publish_to: 'none'
+
+environment:
+  sdk: '^3.5.0'
+
+dev_dependencies:
+  analyzer: ^14.3.0
+  lints: ^6.1.0
+  path: ^1.9.1
+  test: ^1.32.0
+  yaml: ^3.1.4
+

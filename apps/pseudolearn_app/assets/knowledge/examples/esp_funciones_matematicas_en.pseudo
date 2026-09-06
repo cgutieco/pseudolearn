@@ -1,0 +1,6 @@
+Algorithm MathFunctions
+  Define t, r As Integer
+  t <- trunc(3.7)
+  r <- round(3.7)
+  Write t, r
+EndAlgorithm

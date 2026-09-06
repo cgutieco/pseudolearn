@@ -1,0 +1,1618 @@
+{
+  "@@locale": "en",
+  "appTitle": "PseudoLearn",
+  "@appTitle": {
+    "description": "Main application title"
+  },
+  "navEditor": "Editor",
+  "@navEditor": {
+    "description": "Navigation destination for the code editor"
+  },
+  "navFlowchart": "Flowchart",
+  "@navFlowchart": {
+    "description": "Navigation destination for flowchart"
+  },
+  "navTrace": "Trace table",
+  "@navTrace": {
+    "description": "Navigation destination for trace table"
+  },
+  "navKnowledge": "Knowledge base",
+  "@navKnowledge": {
+    "description": "Navigation destination for knowledge base"
+  },
+  "navLibrary": "My algorithms",
+  "@navLibrary": {
+    "description": "Navigation destination for algorithm library"
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Navigation destination for settings"
+  },
+  "actionSave": "Save",
+  "@actionSave": {
+    "description": "Action to save current document"
+  },
+  "actionRun": "Run",
+  "@actionRun": {
+    "description": "Action to run program"
+  },
+  "actionStep": "Step",
+  "@actionStep": {
+    "description": "Action to step through program"
+  },
+  "diagramZoomIn": "Zoom in",
+  "@diagramZoomIn": {
+    "description": "Action to zoom the diagram in"
+  },
+  "diagramZoomOut": "Zoom out",
+  "@diagramZoomOut": {
+    "description": "Action to zoom the diagram out"
+  },
+  "diagramFitToView": "Fit the diagram to the view",
+  "@diagramFitToView": {
+    "description": "Action to bring the whole diagram back into view"
+  },
+  "actionStop": "Stop",
+  "@actionStop": {
+    "description": "Action to stop program execution"
+  },
+  "actionStepOverBlock": "Step over block",
+  "@actionStepOverBlock": {
+    "description": "Action to run the focused block in one go"
+  },
+  "actionStepOutOfBlock": "Step out of block",
+  "@actionStepOutOfBlock": {
+    "description": "Action to finish the block containing the focus and stop after it"
+  },
+  "actionContinue": "Continue",
+  "@actionContinue": {
+    "description": "Action to resume execution without stopping at every statement"
+  },
+  "actionStepInto": "Step",
+  "@actionStepInto": {
+    "description": "Action to advance a single statement inside a debugging session"
+  },
+  "actionExport": "Export",
+  "@actionExport": {
+    "description": "Action to open export dialog"
+  },
+  "actionCancel": "Cancel",
+  "@actionCancel": {
+    "description": "Generic cancel action"
+  },
+  "actionDelete": "Delete",
+  "@actionDelete": {
+    "description": "Destructive delete action"
+  },
+  "actionRename": "Rename",
+  "@actionRename": {
+    "description": "Action to rename"
+  },
+  "actionCreate": "Create",
+  "@actionCreate": {
+    "description": "Action to create a new item"
+  },
+  "actionCopy": "Copy",
+  "@actionCopy": {
+    "description": "Action to copy content to clipboard"
+  },
+  "languageSystem": "System language",
+  "@languageSystem": {
+    "description": "Language option following operating system"
+  },
+  "languageSpanish": "Spanish",
+  "@languageSpanish": {
+    "description": "Spanish language option"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language option"
+  },
+  "profileSpanish": "Classic Spanish",
+  "@profileSpanish": {
+    "description": "Classic Spanish syntax profile"
+  },
+  "profileEnglish": "English",
+  "@profileEnglish": {
+    "description": "English syntax profile"
+  },
+  "diagnosticsCount": "{count, plural, =0{No issues} =1{1 issue} other{{count} issues}}",
+  "@diagnosticsCount": {
+    "description": "Diagnostics count with pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "libraryTitle": "My algorithms",
+  "@libraryTitle": {
+    "description": "Title of the library screen"
+  },
+  "librarySearchPlaceholder": "Search algorithms...",
+  "@librarySearchPlaceholder": {
+    "description": "Placeholder text for library search"
+  },
+  "libraryNewDocument": "New algorithm",
+  "@libraryNewDocument": {
+    "description": "Button text to create a new algorithm"
+  },
+  "libraryEmptyTitle": "No algorithms yet",
+  "@libraryEmptyTitle": {
+    "description": "Title of empty library state"
+  },
+  "libraryEmptyDescription": "Create your first algorithm to start programming.",
+  "@libraryEmptyDescription": {
+    "description": "Description of empty library state"
+  },
+  "libraryEmptySearchTitle": "No results",
+  "@libraryEmptySearchTitle": {
+    "description": "Title when search has no results"
+  },
+  "libraryEmptySearchDescription": "No algorithms found for \"{query}\".",
+  "@libraryEmptySearchDescription": {
+    "description": "Description for empty search results",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "fibonacci"
+      }
+    }
+  },
+  "dialogNewDocTitle": "New algorithm",
+  "@dialogNewDocTitle": {
+    "description": "Title for new document dialog"
+  },
+  "dialogNewDocNameLabel": "Algorithm name",
+  "@dialogNewDocNameLabel": {
+    "description": "Label for algorithm name input"
+  },
+  "dialogNewDocProfileLabel": "Syntax profile",
+  "@dialogNewDocProfileLabel": {
+    "description": "Label for syntax profile selector"
+  },
+  "dialogRenameDocTitle": "Rename algorithm",
+  "@dialogRenameDocTitle": {
+    "description": "Title for rename dialog"
+  },
+  "dialogDeleteDocTitle": "Delete algorithm",
+  "@dialogDeleteDocTitle": {
+    "description": "Title for delete confirmation dialog"
+  },
+  "dialogDeleteDocMessage": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+  "@dialogDeleteDocMessage": {
+    "description": "Confirmation message for deleting document",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Algorithm 1"
+      }
+    }
+  },
+  "tabEditor": "Editor",
+  "@tabEditor": {
+    "description": "Tab label for code editor"
+  },
+  "tabDiagrams": "Diagrams",
+  "@tabDiagrams": {
+    "description": "Tab label for the diagram tab and its notation switch"
+  },
+  "tabTrace": "Trace table",
+  "@tabTrace": {
+    "description": "Tab label for trace table"
+  },
+  "tabExport": "Export",
+  "@tabExport": {
+    "description": "Tab label for export"
+  },
+  "exportComingSoon": "Available when the export engine is ready",
+  "@exportComingSoon": {
+    "description": "Notice for export tab in Phase 0"
+  },
+  "outputPanelTitle": "Program output",
+  "@outputPanelTitle": {
+    "description": "Title for program output panel"
+  },
+  "outputLinesCount": "{count, plural, =0{0 lines} =1{1 line} other{{count} lines}}",
+  "@outputLinesCount": {
+    "description": "Output line count with pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "outputPreviousExecution": "from previous execution",
+  "@outputPreviousExecution": {
+    "description": "Notice that output is from prior execution"
+  },
+  "outputEmpty": "Program output will appear here.",
+  "@outputEmpty": {
+    "description": "Message when output panel is empty"
+  },
+  "stepCounter": "Step {current} of {max}",
+  "@stepCounter": {
+    "description": "Execution step counter",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "10000"
+      }
+    }
+  },
+  "executionStatusIdle": "Not running",
+  "@executionStatusIdle": {
+    "description": "Footer status when no execution is in progress"
+  },
+  "executionStatusPaused": "Paused on line {line}",
+  "@executionStatusPaused": {
+    "description": "Footer status when execution is paused on a line",
+    "placeholders": {
+      "line": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "executionStatusRunning": "Running",
+  "@executionStatusRunning": {
+    "description": "Footer status while execution advances without pausing"
+  },
+  "executionStatusAwaitingInput": "Waiting for input",
+  "@executionStatusAwaitingInput": {
+    "description": "Footer status when execution waits for input"
+  },
+  "executionStatusFinished": "Execution finished",
+  "@executionStatusFinished": {
+    "description": "Footer status when the program finished successfully"
+  },
+  "traceRowOpen": "In progress",
+  "@traceRowOpen": {
+    "description": "Marker for the table row whose statement has not finished yet"
+  },
+  "statementCounter": "Statement {current}",
+  "@statementCounter": {
+    "description": "Counter of statements executed while stepping",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "trackingStripEmpty": "No change in this step",
+  "@trackingStripEmpty": {
+    "description": "Tracking strip when the step changed no variable"
+  },
+  "trackingStripLabel": "Changed",
+  "@trackingStripLabel": {
+    "description": "Tracking strip label preceding the variables that changed"
+  },
+  "companionToggle": "Companion",
+  "@companionToggle": {
+    "description": "Toggle that promotes the active tab to a companion panel"
+  },
+  "tabEquivalentCode": "Equivalent code",
+  "@tabEquivalentCode": {
+    "description": "Label of the tab showing the program in Python or Rust"
+  },
+  "bannerStepLimitTitle": "Step limit reached",
+  "@bannerStepLimitTitle": {
+    "description": "Warning title when step limit reached"
+  },
+  "bannerStepLimitBody": "The program reached the step limit without terminating. Check for potential infinite loops.",
+  "@bannerStepLimitBody": {
+    "description": "Warning body when step limit reached"
+  },
+  "bannerSuccessTitle": "Execution finished successfully",
+  "@bannerSuccessTitle": {
+    "description": "Success banner title when program finishes"
+  },
+  "bannerErrorTitle": "Execution halted",
+  "@bannerErrorTitle": {
+    "description": "Error banner title when execution halts"
+  },
+  "bannerDismiss": "Dismiss notice",
+  "@bannerDismiss": {
+    "description": "Label of the control that removes the execution status banner"
+  },
+  "inputDialogTitle": "Data input",
+  "@inputDialogTitle": {
+    "description": "Title for input dialog"
+  },
+  "inputDialogPrompt": "Enter a value to continue:",
+  "@inputDialogPrompt": {
+    "description": "Prompt for input dialog"
+  },
+  "inputDialogSubmit": "Submit",
+  "@inputDialogSubmit": {
+    "description": "Submit button for input dialog"
+  },
+  "diagnosticsEmpty": "No issues detected",
+  "@diagnosticsEmpty": {
+    "description": "Message when diagnostics panel is clean"
+  },
+  "flowchartEmpty": "The flowchart will be available when code is error-free.",
+  "@flowchartEmpty": {
+    "description": "Message when flowchart has no valid AST"
+  },
+  "structogramEmpty": "The structogram will be available when code is error-free.",
+  "@structogramEmpty": {
+    "description": "Message when the structogram has no valid AST"
+  },
+  "diagramNotationFlowchart": "Flowchart",
+  "@diagramNotationFlowchart": {
+    "description": "Flowchart option of the canvas notation switch"
+  },
+  "diagramNotationClassDiagram": "Class diagram",
+  "@diagramNotationClassDiagram": {
+    "description": "Class diagram notation option in the canvas switch"
+  },
+  "classDiagramEmpty": "The class diagram will be available when code is error-free.",
+  "@classDiagramEmpty": {
+    "description": "Message when the class diagram has no valid AST"
+  },
+  "classDiagramNoClasses": "This document declares no classes.",
+  "@classDiagramNoClasses": {
+    "description": "Message when the document parses but declares no classes"
+  },
+  "diagramNotationStructogram": "Structogram",
+  "@diagramNotationStructogram": {
+    "description": "Structogram option of the canvas notation switch"
+  },
+  "traceEmpty": "Start execution to view the trace table.",
+  "@traceEmpty": {
+    "description": "Message when trace table has not started"
+  },
+  "traceStepHeader": "Step",
+  "@traceStepHeader": {
+    "description": "Step column header in trace table"
+  },
+  "traceLineHeader": "Line",
+  "@traceLineHeader": {
+    "description": "Line column header in trace table"
+  },
+  "traceScopeHeader": "Scope",
+  "@traceScopeHeader": {
+    "description": "Scope column header in trace table"
+  },
+  "knowledgeTitle": "Knowledge Base",
+  "@knowledgeTitle": {
+    "description": "Title of the knowledge base screen"
+  },
+  "knowledgeSearchPlaceholder": "Search knowledge base...",
+  "@knowledgeSearchPlaceholder": {
+    "description": "Placeholder text in knowledge base search"
+  },
+  "knowledgeSectionRoute": "Route",
+  "@knowledgeSectionRoute": {
+    "description": "Name of the learning route section"
+  },
+  "knowledgeSectionSpecification": "Specification",
+  "@knowledgeSectionSpecification": {
+    "description": "Name of the specification section"
+  },
+  "knowledgeSectionExercises": "Exercises",
+  "@knowledgeSectionExercises": {
+    "description": "Name of the exercises section"
+  },
+  "knowledgeRouteTrackFoundations": "Track A · Foundations",
+  "@knowledgeRouteTrackFoundations": {
+    "description": "Heading of the learning route's first track"
+  },
+  "knowledgeRouteTrackImperative": "Track B · Imperative and structured",
+  "@knowledgeRouteTrackImperative": {
+    "description": "Heading of the learning route's second track"
+  },
+  "knowledgeRouteTrackObjectOriented": "Track C · Object orientation",
+  "@knowledgeRouteTrackObjectOriented": {
+    "description": "Heading of the learning route's third track"
+  },
+  "knowledgeModuleVisited": "Visited",
+  "@knowledgeModuleVisited": {
+    "description": "Mark of an already visited module in the learning route"
+  },
+  "knowledgeTypeModule": "Module",
+  "@knowledgeTypeModule": {
+    "description": "Label for module type"
+  },
+  "knowledgeTypeSpecification": "Specification",
+  "@knowledgeTypeSpecification": {
+    "description": "Label for specification section type"
+  },
+  "knowledgeTypePrediction": "Prediction",
+  "@knowledgeTypePrediction": {
+    "description": "Label for prediction activity type"
+  },
+  "knowledgeTypeIllustration": "Illustration",
+  "@knowledgeTypeIllustration": {
+    "description": "Label for illustration type"
+  },
+  "knowledgeTypeExample": "Example",
+  "@knowledgeTypeExample": {
+    "description": "Label for example type"
+  },
+  "knowledgeTypeExercise": "Exercise",
+  "@knowledgeTypeExercise": {
+    "description": "Label for exercise type"
+  },
+  "knowledgeTypeReference": "Reference",
+  "@knowledgeTypeReference": {
+    "description": "Label for reference type"
+  },
+  "knowledgeEmptyTitle": "No content",
+  "@knowledgeEmptyTitle": {
+    "description": "Title when knowledge base is empty"
+  },
+  "knowledgeEmptyDescription": "No content is available in the knowledge base.",
+  "@knowledgeEmptyDescription": {
+    "description": "Description when knowledge base is empty"
+  },
+  "knowledgeEmptySearchTitle": "No results",
+  "@knowledgeEmptySearchTitle": {
+    "description": "Title when search returns no matches"
+  },
+  "knowledgeEmptySearchDescription": "No items found matching \"{query}\".",
+  "@knowledgeEmptySearchDescription": {
+    "description": "Description when search returns no matches",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "functions"
+      }
+    }
+  },
+  "knowledgeErrorTitle": "Content Error",
+  "@knowledgeErrorTitle": {
+    "description": "Title when content loading fails"
+  },
+  "knowledgeErrorDescription": "Could not load knowledge base content.",
+  "@knowledgeErrorDescription": {
+    "description": "Message when content loading fails"
+  },
+  "knowledgeActionRetry": "Retry",
+  "@knowledgeActionRetry": {
+    "description": "Button to retry loading"
+  },
+  "knowledgeDetailOpenInNewDocument": "Open in a new document",
+  "@knowledgeDetailOpenInNewDocument": {
+    "description": "Button to open example in new document"
+  },
+  "knowledgeDetailCopied": "Copied",
+  "@knowledgeDetailCopied": {
+    "description": "Tooltip when content is copied"
+  },
+  "knowledgeDetailNotFoundTitle": "Item not found",
+  "@knowledgeDetailNotFoundTitle": {
+    "description": "Title when detail entry is not found"
+  },
+  "knowledgeDetailNotFoundDescription": "The requested item does not exist in the knowledge base.",
+  "@knowledgeDetailNotFoundDescription": {
+    "description": "Description when entry is not found"
+  },
+  "knowledgeDetailBack": "Back to knowledge base",
+  "@knowledgeDetailBack": {
+    "description": "Button to return to knowledge list"
+  },
+  "knowledgeDetailSections": "Sections",
+  "@knowledgeDetailSections": {
+    "description": "Label for table of contents sections"
+  },
+  "knowledgeModulePartQuestion": "Question",
+  "@knowledgeModulePartQuestion": {
+    "description": "Heading for module part 1"
+  },
+  "knowledgeModulePartMachineModel": "What changes in your mental model of the machine",
+  "@knowledgeModulePartMachineModel": {
+    "description": "Heading for module part 2"
+  },
+  "knowledgeModulePartDevelopment": "Development",
+  "@knowledgeModulePartDevelopment": {
+    "description": "Heading for module part 3"
+  },
+  "knowledgeModulePartPrediction": "Predict and run",
+  "@knowledgeModulePartPrediction": {
+    "description": "Heading for module part 4"
+  },
+  "knowledgeModulePartCommonErrors": "Common errors",
+  "@knowledgeModulePartCommonErrors": {
+    "description": "Heading for module part 5"
+  },
+  "knowledgeModulePartSpecification": "In the specification",
+  "@knowledgeModulePartSpecification": {
+    "description": "Heading for module part 6"
+  },
+  "knowledgeModulePartExercises": "Exercises",
+  "@knowledgeModulePartExercises": {
+    "description": "Heading for module part 7"
+  },
+  "knowledgePredictionCheck": "Run",
+  "@knowledgePredictionCheck": {
+    "description": "Button to execute and verify prediction"
+  },
+  "knowledgePredictionRetry": "Try again",
+  "@knowledgePredictionRetry": {
+    "description": "Button to retry prediction activity"
+  },
+  "knowledgePredictionMatch": "Matches",
+  "@knowledgePredictionMatch": {
+    "description": "Message when prediction matches machine value"
+  },
+  "knowledgePredictionMismatch": "You expected {predicted}, the machine has {actual}",
+  "@knowledgePredictionMismatch": {
+    "description": "Message when prediction does not match machine value",
+    "placeholders": {
+      "predicted": {
+        "type": "String",
+        "example": "7"
+      },
+      "actual": {
+        "type": "String",
+        "example": "4"
+      }
+    }
+  },
+  "knowledgePredictionEmptyHint": "Write your prediction",
+  "@knowledgePredictionEmptyHint": {
+    "description": "Placeholder for prediction text input"
+  },
+  "knowledgePredictionNotReached": "The program doesn't reach step {step}",
+  "@knowledgePredictionNotReached": {
+    "description": "Error message when execution halts before expected step",
+    "placeholders": {
+      "step": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "knowledgeSpecReturnToModule": "Return to module {moduleTitle}",
+  "@knowledgeSpecReturnToModule": {
+    "description": "Button to return to the module referencing the specification section",
+    "placeholders": {
+      "moduleTitle": {
+        "type": "String",
+        "example": "Data: types, variables..."
+      }
+    }
+  },
+  "exerciseLevel1": "Level 1 · Reproduce",
+  "@exerciseLevel1": {
+    "description": "Name for difficulty level 1"
+  },
+  "exerciseLevel2": "Level 2 · Compose",
+  "@exerciseLevel2": {
+    "description": "Name for difficulty level 2"
+  },
+  "exerciseLevel3": "Level 3 · Design",
+  "@exerciseLevel3": {
+    "description": "Name for difficulty level 3"
+  },
+  "exerciseLevelShort1": "Level 1",
+  "@exerciseLevelShort1": {
+    "description": "Short label for level 1"
+  },
+  "exerciseLevelShort2": "Level 2",
+  "@exerciseLevelShort2": {
+    "description": "Short label for level 2"
+  },
+  "exerciseLevelShort3": "Level 3",
+  "@exerciseLevelShort3": {
+    "description": "Short label for level 3"
+  },
+  "exerciseKindPredict": "Predict",
+  "@exerciseKindPredict": {
+    "description": "Exercise kind: predict"
+  },
+  "exerciseKindComplete": "Complete",
+  "@exerciseKindComplete": {
+    "description": "Exercise kind: complete"
+  },
+  "exerciseKindModify": "Modify",
+  "@exerciseKindModify": {
+    "description": "Exercise kind: modify"
+  },
+  "exerciseKindCreate": "Create",
+  "@exerciseKindCreate": {
+    "description": "Exercise kind: create"
+  },
+  "exerciseCompletedBadge": "Completed",
+  "@exerciseCompletedBadge": {
+    "description": "Badge indicating that the exercise has been passed"
+  },
+  "exerciseFilterLevel": "Level",
+  "@exerciseFilterLevel": {
+    "description": "Filter label for level"
+  },
+  "exerciseFilterModule": "Module",
+  "@exerciseFilterModule": {
+    "description": "Filter label for module"
+  },
+  "exerciseFilterConstruct": "Construct",
+  "@exerciseFilterConstruct": {
+    "description": "Filter label for required construct"
+  },
+  "exerciseFilterAllLevels": "All levels",
+  "@exerciseFilterAllLevels": {
+    "description": "Option to not filter by level"
+  },
+  "exerciseFilterAllConstructs": "All constructs",
+  "@exerciseFilterAllConstructs": {
+    "description": "Option to not filter by construct"
+  },
+  "exerciseConstructConditional": "Conditional",
+  "@exerciseConstructConditional": {
+    "description": "Name for if/else construct"
+  },
+  "exerciseConstructMultipleSelection": "Multiple selection",
+  "@exerciseConstructMultipleSelection": {
+    "description": "Name for switch construct"
+  },
+  "exerciseConstructConditionalLoop": "Conditional loop",
+  "@exerciseConstructConditionalLoop": {
+    "description": "Name for while loop"
+  },
+  "exerciseConstructPostConditionalLoop": "Post-conditional loop",
+  "@exerciseConstructPostConditionalLoop": {
+    "description": "Name for repeat-until loop"
+  },
+  "exerciseConstructCountedLoop": "Counted loop",
+  "@exerciseConstructCountedLoop": {
+    "description": "Name for for loop"
+  },
+  "exerciseConstructArrayDeclaration": "Arrays",
+  "@exerciseConstructArrayDeclaration": {
+    "description": "Name for array / dimension construct"
+  },
+  "exerciseConstructSubprogram": "Subprograms",
+  "@exerciseConstructSubprogram": {
+    "description": "Name for functions / procedures construct"
+  },
+  "exerciseConstructClassDeclaration": "Classes",
+  "@exerciseConstructClassDeclaration": {
+    "description": "Name for classes and objects construct"
+  },
+  "exerciseClearFilters": "Clear filters",
+  "@exerciseClearFilters": {
+    "description": "Button to clear exercise filters"
+  },
+  "exerciseBankEmptyTitle": "No exercises",
+  "@exerciseBankEmptyTitle": {
+    "description": "Title when no exercises exist in catalog"
+  },
+  "exerciseBankEmptyDescription": "There are no exercises available in the knowledge base.",
+  "@exerciseBankEmptyDescription": {
+    "description": "Description when exercise catalog is empty"
+  },
+  "exerciseBankEmptyFilterTitle": "No matching exercises",
+  "@exerciseBankEmptyFilterTitle": {
+    "description": "Title when filters match no exercises"
+  },
+  "exerciseBankEmptyFilterDescription": "No exercises match the selected filters or search query.",
+  "@exerciseBankEmptyFilterDescription": {
+    "description": "Description when exercise filters yield no results"
+  },
+  "exerciseStripTitle": "Exercise: {title}",
+  "@exerciseStripTitle": {
+    "description": "Title of the exercise strip in editor",
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "exerciseStripCollapse": "Collapse exercise strip",
+  "@exerciseStripCollapse": {
+    "description": "Semantic label to collapse exercise strip"
+  },
+  "exerciseStripExpand": "Expand exercise strip",
+  "@exerciseStripExpand": {
+    "description": "Semantic label to expand exercise strip"
+  },
+  "exerciseActionCheck": "Check",
+  "@exerciseActionCheck": {
+    "description": "Button label to check exercise solution"
+  },
+  "exerciseChecking": "Checking...",
+  "@exerciseChecking": {
+    "description": "Text displayed while solution is being checked"
+  },
+  "exercisePassedCount": "Meets {passed} of {total} cases",
+  "@exercisePassedCount": {
+    "description": "Pedagogical result of passed cases",
+    "placeholders": {
+      "passed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "exerciseAllCasesPassed": "Meets all test cases!",
+  "@exerciseAllCasesPassed": {
+    "description": "Notice when all test cases are passed"
+  },
+  "exerciseHiddenFailureTitle": "First failed hidden case:",
+  "@exerciseHiddenFailureTitle": {
+    "description": "Header to reveal first failed hidden case"
+  },
+  "exerciseHiddenInputs": "Input: {inputs}",
+  "@exerciseHiddenInputs": {
+    "description": "Input of failed hidden case",
+    "placeholders": {
+      "inputs": { "type": "String" }
+    }
+  },
+  "exerciseHiddenExpected": "Expected: {expected}",
+  "@exerciseHiddenExpected": {
+    "description": "Expected output of failed hidden case",
+    "placeholders": {
+      "expected": { "type": "String" }
+    }
+  },
+  "exerciseHiddenActual": "Actual: {actual}",
+  "@exerciseHiddenActual": {
+    "description": "Actual output of failed hidden case",
+    "placeholders": {
+      "actual": { "type": "String" }
+    }
+  },
+  "exerciseOutcomeParseError": "Program contains syntax errors and cannot be checked.",
+  "@exerciseOutcomeParseError": {
+    "description": "Message when program does not parse cleanly"
+  },
+  "exerciseOutcomeHalted": "Execution halted unexpectedly.",
+  "@exerciseOutcomeHalted": {
+    "description": "Message when execution stopped abnormally"
+  },
+  "exerciseOutcomeStepLimit": "Step limit reached (possible infinite loop).",
+  "@exerciseOutcomeStepLimit": {
+    "description": "Message when step limit is reached"
+  },
+  "exerciseOutcomeInputExhausted": "Program requested more inputs than provided.",
+  "@exerciseOutcomeInputExhausted": {
+    "description": "Message when program exhausted inputs"
+  },
+  "exerciseNotFoundTitle": "Exercise not available",
+  "@exerciseNotFoundTitle": {
+    "description": "Title when linked exercise is not found"
+  },
+  "exerciseNotFoundInCatalog": "The linked exercise ({id}) does not exist in the catalog. You can edit and run this document normally.",
+  "@exerciseNotFoundInCatalog": {
+    "description": "Notice when linked exercise does not exist in catalog",
+    "placeholders": {
+      "id": { "type": "String" }
+    }
+  },
+  "exerciseVisibleCasesTitle": "Visible test cases:",
+  "@exerciseVisibleCasesTitle": {
+    "description": "Title of visible test cases section"
+  },
+  "exerciseCaseInputsLabel": "Input: {inputs}",
+  "@exerciseCaseInputsLabel": {
+    "description": "Inputs of a visible test case",
+    "placeholders": {
+      "inputs": { "type": "String" }
+    }
+  },
+  "exerciseCaseOutputsLabel": "Expected output: {outputs}",
+  "@exerciseCaseOutputsLabel": {
+    "description": "Outputs of a visible test case",
+    "placeholders": {
+      "outputs": { "type": "String" }
+    }
+  },
+  "exerciseUnmetAssertion": "Missing requirement: {requirement}",
+  "@exerciseUnmetAssertion": {
+    "description": "Message for unmet structural assertion",
+    "placeholders": {
+      "requirement": { "type": "String" }
+    }
+  },
+  "onboardingStepOf": "Step {current} of {total}",
+  "@onboardingStepOf": {
+    "description": "Step indicator progress text",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "onboardingWelcomeTitle": "Welcome to PseudoLearn",
+  "@onboardingWelcomeTitle": {
+    "description": "Title for the welcome step"
+  },
+  "onboardingWelcomeSubtitle": "Write pseudocode and watch it run: diagrams, trace table, and output, all at once.",
+  "@onboardingWelcomeSubtitle": {
+    "description": "Subtitle for the welcome step"
+  },
+  "onboardingWelcomeHighlightEngine": "An engine that really runs, one instruction at a time",
+  "@onboardingWelcomeHighlightEngine": {
+    "description": "First value point of the welcome step"
+  },
+  "onboardingWelcomeHighlightDiagrams": "Flowchart, structogram, and class diagram of the same program",
+  "@onboardingWelcomeHighlightDiagrams": {
+    "description": "Second value point of the welcome step"
+  },
+  "onboardingWelcomeHighlightRoute": "A learning route with exercises that check themselves",
+  "@onboardingWelcomeHighlightRoute": {
+    "description": "Third value point of the welcome step"
+  },
+  "onboardingLabTitle": "The live lab",
+  "@onboardingLabTitle": {
+    "description": "Title for the lab step"
+  },
+  "onboardingLabSubtitle": "Tap Step by step and watch the code, the diagrams, the trace table, and the output all react together.",
+  "@onboardingLabSubtitle": {
+    "description": "Subtitle for the lab step"
+  },
+  "onboardingLabBriefTitle": "The case",
+  "@onboardingLabBriefTitle": {
+    "description": "Label of the lab brief card"
+  },
+  "onboardingLabBriefStatement": "A thermometer starts at 30 degrees and cools three at a time until it reaches the 24-degree comfort point. Count how many times it cooled and announce the result.",
+  "@onboardingLabBriefStatement": {
+    "description": "Statement of the case the demo program solves"
+  },
+  "onboardingLabReadOnly": "Read-only view: here you watch, you do not edit.",
+  "@onboardingLabReadOnly": {
+    "description": "Notice that the lab does not allow editing"
+  },
+  "onboardingLabSurfaceDiagrams": "Diagrams",
+  "@onboardingLabSurfaceDiagrams": {
+    "description": "Label of the lab diagrams surface"
+  },
+  "onboardingLabSurfaceTrace": "Trace table",
+  "@onboardingLabSurfaceTrace": {
+    "description": "Label of the lab trace surface"
+  },
+  "onboardingLabSurfaceOutput": "Output",
+  "@onboardingLabSurfaceOutput": {
+    "description": "Label of the lab output surface"
+  },
+  "onboardingLabActionRestart": "Restart",
+  "@onboardingLabActionRestart": {
+    "description": "Button to start the demo over"
+  },
+  "onboardingLabStatusReady": "Ready to run the first instruction.",
+  "@onboardingLabStatusReady": {
+    "description": "Lab status before the first step"
+  },
+  "onboardingLabStatusStepping": "{count, plural, =1{1 instruction executed} other{{count} instructions executed}}",
+  "@onboardingLabStatusStepping": {
+    "description": "Lab status during execution",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "onboardingLabStatusFinished": "Program finished. Restart to watch it again.",
+  "@onboardingLabStatusFinished": {
+    "description": "Lab status when the program ends"
+  },
+  "onboardingLabUnavailable": "The demo is not available right now. You can continue without it.",
+  "@onboardingLabUnavailable": {
+    "description": "Notice when the demo program cannot be loaded"
+  },
+  "onboardingKnowledgeTitle": "Your knowledge base",
+  "@onboardingKnowledgeTitle": {
+    "description": "Title for the knowledge base step"
+  },
+  "onboardingKnowledgeSubtitle": "You are not alone in front of a blank page: a route, a specification, and an exercise bank are waiting for you.",
+  "@onboardingKnowledgeSubtitle": {
+    "description": "Subtitle for the knowledge base step"
+  },
+  "onboardingKnowledgeRouteTitle": "Personalised route",
+  "@onboardingKnowledgeRouteTitle": {
+    "description": "Title of the learning route card"
+  },
+  "onboardingKnowledgeRouteDescription": "Three chained tracks that lead from the foundations to object-oriented programming with pseudocode.",
+  "@onboardingKnowledgeRouteDescription": {
+    "description": "Description of the learning route card"
+  },
+  "onboardingKnowledgeTrackFoundations": "Foundations",
+  "@onboardingKnowledgeTrackFoundations": {
+    "description": "Name of the first track of the route"
+  },
+  "onboardingKnowledgeTrackImperative": "Imperative programming",
+  "@onboardingKnowledgeTrackImperative": {
+    "description": "Name of the second track of the route"
+  },
+  "onboardingKnowledgeTrackObjectOriented": "Objects with pseudocode",
+  "@onboardingKnowledgeTrackObjectOriented": {
+    "description": "Name of the third track of the route"
+  },
+  "onboardingKnowledgeModuleCount": "{count, plural, =1{1 module} other{{count} modules}}",
+  "@onboardingKnowledgeModuleCount": {
+    "description": "Module count of a track",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "onboardingKnowledgeSpecificationTitle": "Syntax specification",
+  "@onboardingKnowledgeSpecificationTitle": {
+    "description": "Title of the specification card"
+  },
+  "onboardingKnowledgeSpecificationDescription": "Every construct of the language, with its exact shape and its runnable examples.",
+  "@onboardingKnowledgeSpecificationDescription": {
+    "description": "Description of the specification card"
+  },
+  "onboardingKnowledgeSpecificationCount": "{count, plural, =1{1 section} other{{count} sections}}",
+  "@onboardingKnowledgeSpecificationCount": {
+    "description": "Specification section count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "onboardingKnowledgeExercisesTitle": "Exercise bank",
+  "@onboardingKnowledgeExercisesTitle": {
+    "description": "Title of the exercise bank card"
+  },
+  "onboardingKnowledgeExercisesDescription": "Statements with test cases the app checks for you, sorted by difficulty.",
+  "@onboardingKnowledgeExercisesDescription": {
+    "description": "Description of the exercise bank card"
+  },
+  "onboardingKnowledgeExerciseCount": "{count, plural, =1{1 exercise} other{{count} exercises}}",
+  "@onboardingKnowledgeExerciseCount": {
+    "description": "Total exercise count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "95"
+      }
+    }
+  },
+  "onboardingKnowledgeLevelCount": "Level {level}: {count}",
+  "@onboardingKnowledgeLevelCount": {
+    "description": "Exercise count for one difficulty level",
+    "placeholders": {
+      "level": {
+        "type": "int",
+        "example": "1"
+      },
+      "count": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "onboardingKnowledgeUnavailable": "The catalogue could not be read right now. It will be available inside the app.",
+  "@onboardingKnowledgeUnavailable": {
+    "description": "Notice when the knowledge catalogue fails to load"
+  },
+  "onboardingCompletionTitle": "All set to get started",
+  "@onboardingCompletionTitle": {
+    "description": "Title for the completion step"
+  },
+  "onboardingCompletionSubtitle": "Create your first algorithm from scratch, or enter through the learning route if you would rather be guided.",
+  "@onboardingCompletionSubtitle": {
+    "description": "Subtitle for the completion step"
+  },
+  "onboardingActionCreateFirst": "Create my first document",
+  "@onboardingActionCreateFirst": {
+    "description": "Primary action button to create the first document from onboarding"
+  },
+  "onboardingActionExploreRoute": "Enter the learning route",
+  "@onboardingActionExploreRoute": {
+    "description": "Secondary action button to open the learning route from onboarding"
+  },
+  "onboardingActionNext": "Next",
+  "@onboardingActionNext": {
+    "description": "Generic button to advance in onboarding"
+  },
+  "onboardingActionBack": "Back",
+  "@onboardingActionBack": {
+    "description": "Generic button to go back in onboarding"
+  },
+  "onboardingActionSkip": "Skip",
+  "@onboardingActionSkip": {
+    "description": "Button to skip the introduction"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Main title of settings screen"
+  },
+  "settingsSectionGeneral": "General",
+  "@settingsSectionGeneral": {
+    "description": "General settings section"
+  },
+  "settingsSectionInformation": "Information",
+  "@settingsSectionInformation": {
+    "description": "Information settings section"
+  },
+  "settingsLanguage": "Interface language",
+  "@settingsLanguage": {
+    "description": "Interface language option"
+  },
+  "settingsLanguageNotice": "Does not change the vocabulary of your documents",
+  "@settingsLanguageNotice": {
+    "description": "Notice that interface language is separate from document profile"
+  },
+  "settingsTheme": "Visual theme",
+  "@settingsTheme": {
+    "description": "Visual theme option"
+  },
+  "settingsThemeSystem": "System theme",
+  "@settingsThemeSystem": {
+    "description": "System theme option"
+  },
+  "settingsThemeLight": "Light theme",
+  "@settingsThemeLight": {
+    "description": "Light theme option"
+  },
+  "settingsThemeDark": "Dark theme",
+  "@settingsThemeDark": {
+    "description": "Dark theme option"
+  },
+  "settingsRestartOnboarding": "View introduction again",
+  "@settingsRestartOnboarding": {
+    "description": "Option to restart interactive onboarding"
+  },
+  "settingsContact": "Contact & support",
+  "@settingsContact": {
+    "description": "Contact and support option"
+  },
+  "settingsVersion": "v{version}",
+  "@settingsVersion": {
+    "description": "Application version",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0"
+      }
+    }
+  },
+  "settingsBack": "Back to settings",
+  "@settingsBack": {
+    "description": "Label of the back button in a settings subscreen"
+  },
+  "settingsAbout": "About this setting",
+  "@settingsAbout": {
+    "description": "Label of the group that explains a setting"
+  },
+  "settingsLanguageOptions": "Available languages",
+  "@settingsLanguageOptions": {
+    "description": "Label of the language options group"
+  },
+  "settingsThemeOptions": "Available themes",
+  "@settingsThemeOptions": {
+    "description": "Label of the theme options group"
+  },
+  "settingsThemeNotice": "\u201cSystem theme\u201d follows the light or dark appearance of your device",
+  "@settingsThemeNotice": {
+    "description": "Notice explaining what the system theme option does"
+  },
+  "settingsDiagramAssist": "Assisted zoom in diagrams",
+  "@settingsDiagramAssist": {
+    "description": "Option for following the active step in diagrams"
+  },
+  "settingsDiagramAssistOptions": "Behaviour while stepping through a program",
+  "@settingsDiagramAssistOptions": {
+    "description": "Label of the assisted zoom options group"
+  },
+  "settingsDiagramAssistOn": "Follow the active step",
+  "@settingsDiagramAssistOn": {
+    "description": "Option that turns following the active step on"
+  },
+  "settingsDiagramAssistOff": "Keep the diagram still",
+  "@settingsDiagramAssistOff": {
+    "description": "Option that turns following the active step off"
+  },
+  "settingsDiagramAssistNotice": "While following is on, the diagram zooms into the running block and glides to the next one instead of jumping",
+  "@settingsDiagramAssistNotice": {
+    "description": "Notice explaining what following the active step does"
+  },
+  "settingsContactTitle": "Contact & support",
+  "@settingsContactTitle": {
+    "description": "Contact screen title"
+  },
+  "settingsContactEmpty": "No contact information available.",
+  "@settingsContactEmpty": {
+    "description": "Message when no contact info is available"
+  },
+  "settingsContactTipsTitle": "Tips for reporting issues",
+  "@settingsContactTipsTitle": {
+    "description": "Title of the card with issue reporting tips"
+  },
+  "settingsContactTipsBody": "When contacting us about a technical issue, please describe the steps to reproduce and include the affected pseudocode snippet to help us assist you faster.",
+  "@settingsContactTipsBody": {
+    "description": "Body text of the card with issue reporting tips"
+  },
+  "targetLanguagePython": "Python",
+  "@targetLanguagePython": {
+    "description": "Name of Python language option"
+  },
+  "targetLanguageRust": "Rust",
+  "@targetLanguageRust": {
+    "description": "Name of Rust language option"
+  },
+  "exportAnalysisErrorTitle": "Program with errors",
+  "@exportAnalysisErrorTitle": {
+    "description": "Title for analysis error state in export"
+  },
+  "exportAnalysisErrorDescription": "Fix errors in the editor to view exported code.",
+  "@exportAnalysisErrorDescription": {
+    "description": "Description for analysis error state in export"
+  },
+  "exportCopyTooltip": "Copy code",
+  "@exportCopyTooltip": {
+    "description": "Tooltip for copy button in idle state"
+  },
+  "exportCopiedTooltip": "Copied!",
+  "@exportCopiedTooltip": {
+    "description": "Tooltip for copy button after confirmation"
+  },
+  "exportEmptySourceDescription": "Write or open an algorithm to see its translation.",
+  "@exportEmptySourceDescription": {
+    "description": "Description when source code is empty in export"
+  },
+  "exportNotesTitle": "Export notes",
+  "@exportNotesTitle": {
+    "description": "Title for export notes section"
+  },
+  "libraryDocumentOptions": "Document options",
+  "@libraryDocumentOptions": {
+    "description": "Accessible label for the per-document options menu"
+  },
+  "severityError": "ERROR",
+  "@severityError": {
+    "description": "Label of the error severity badge"
+  },
+  "severityWarning": "WARNING",
+  "@severityWarning": {
+    "description": "Label of the warning severity badge"
+  },
+  "severityInfo": "INFO",
+  "@severityInfo": {
+    "description": "Label of the info severity badge"
+  },
+  "severityHint": "HINT",
+  "@severityHint": {
+    "description": "Label of the hint severity badge"
+  },
+  "severitySuccess": "SUCCESS",
+  "@severitySuccess": {
+    "description": "Label of the success severity badge"
+  },
+  "validationNameEmpty": "The name cannot be empty",
+  "@validationNameEmpty": {
+    "description": "Validation error for an empty name"
+  },
+  "validationNameDuplicate": "A document with this name already exists",
+  "@validationNameDuplicate": {
+    "description": "Validation error when a document with the same name already exists"
+  },
+  "executionRuntimeError": "Runtime error",
+  "@executionRuntimeError": {
+    "description": "Default message when execution halts without its own reason"
+  },
+  "illustrationMemoryBoxesSemanticLabel": "Illustration: three memory boxes, each with its name above and its value inside.",
+  "@illustrationMemoryBoxesSemanticLabel": {
+    "description": "Accessible description of the memory boxes illustration"
+  },
+  "illustrationMemoryBoxesVariable1": "counter",
+  "@illustrationMemoryBoxesVariable1": {
+    "description": "Name of the first memory box in the illustration"
+  },
+  "illustrationMemoryBoxesValue1": "3",
+  "@illustrationMemoryBoxesValue1": {
+    "description": "Value of the first memory box in the illustration"
+  },
+  "illustrationMemoryBoxesVariable2": "total",
+  "@illustrationMemoryBoxesVariable2": {
+    "description": "Name of the second memory box in the illustration"
+  },
+  "illustrationMemoryBoxesValue2": "12.5",
+  "@illustrationMemoryBoxesValue2": {
+    "description": "Value of the second memory box in the illustration"
+  },
+  "illustrationMemoryBoxesVariable3": "active",
+  "@illustrationMemoryBoxesVariable3": {
+    "description": "Name of the third memory box in the illustration"
+  },
+  "illustrationMemoryBoxesValue3": "true",
+  "@illustrationMemoryBoxesValue3": {
+    "description": "Value of the third memory box in the illustration"
+  },
+  "settingsAccount": "Account",
+  "@settingsAccount": {
+    "description": "Label for account section and page in settings"
+  },
+  "settingsAccountNotLinked": "Not linked",
+  "@settingsAccountNotLinked": {
+    "description": "Account status when not linked or unauthenticated"
+  },
+  "settingsAccountLinked": "Linked",
+  "@settingsAccountLinked": {
+    "description": "Account status when linked with active session"
+  },
+  "settingsAccountSyncNotice": "Sign in to synchronize your algorithms and progress across devices.",
+  "@settingsAccountSyncNotice": {
+    "description": "Explanation of synchronization benefits on account page"
+  },
+  "settingsAccountOfflineNote": "PseudoLearn works completely without an account. Your algorithms and progress are saved on this device.",
+  "@settingsAccountOfflineNote": {
+    "description": "Note emphasizing offline capability without an account"
+  },
+  "settingsAccountSectionOptions": "Sign-in options",
+  "@settingsAccountSectionOptions": {
+    "description": "Heading for sign-in options section"
+  },
+  "settingsAccountSectionSession": "Active session",
+  "@settingsAccountSectionSession": {
+    "description": "Heading for active session details section"
+  },
+  "settingsAccountPrivateRelay": "Apple private email",
+  "@settingsAccountPrivateRelay": {
+    "description": "Clarification under an Apple private relay address"
+  },
+  "authSignInWithApple": "Continue with Apple",
+  "@authSignInWithApple": {
+    "description": "Button to sign in with Apple"
+  },
+  "authSignInWithGoogle": "Continue with Google",
+  "@authSignInWithGoogle": {
+    "description": "Button to sign in with Google"
+  },
+  "authSignInWithEmail": "Continue with email",
+  "@authSignInWithEmail": {
+    "description": "Button to sign in with magic link via email"
+  },
+  "authSignOut": "Sign out",
+  "@authSignOut": {
+    "description": "Button to sign out preserving local data"
+  },
+  "authSignOutAndDelete": "Sign out and delete data from this device",
+  "@authSignOutAndDelete": {
+    "description": "Destructive button to sign out and delete local data"
+  },
+  "authDeleteDataDialogTitle": "Sign out and delete data?",
+  "@authDeleteDataDialogTitle": {
+    "description": "Title of confirmation dialog for sign out and local data deletion"
+  },
+  "authDeleteDataDialogMessage": "All saved documents on this device will be deleted. This action cannot be undone.",
+  "@authDeleteDataDialogMessage": {
+    "description": "Warning message in local data deletion dialog"
+  },
+  "authDeleteDataConfirm": "Delete data and exit",
+  "@authDeleteDataConfirm": {
+    "description": "Confirm action in local data deletion dialog"
+  },
+  "authDeleteAccount": "Delete account",
+  "@authDeleteAccount": {
+    "description": "Destructive button to permanently delete the user account"
+  },
+  "authDeleteAccountDialogTitle": "Delete account?",
+  "@authDeleteAccountDialogTitle": {
+    "description": "Title of confirmation dialog for deleting account"
+  },
+  "authDeleteAccountDialogMessage": "Your account and all associated data will be permanently deleted from our servers. Local documents on this device will also be removed. This action cannot be undone.",
+  "@authDeleteAccountDialogMessage": {
+    "description": "Warning message in account deletion dialog"
+  },
+  "authDeleteAccountConfirm": "Delete account",
+  "@authDeleteAccountConfirm": {
+    "description": "Confirm action in account deletion dialog"
+  },
+  "authMagicLinkDialogTitle": "Sign in with magic link",
+  "@authMagicLinkDialogTitle": {
+    "description": "Title of dialog to input email for magic link"
+  },
+  "authMagicLinkEmailLabel": "Email address",
+  "@authMagicLinkEmailLabel": {
+    "description": "Label for email field in magic link dialog"
+  },
+  "authMagicLinkSend": "Send link",
+  "@authMagicLinkSend": {
+    "description": "Button to send magic link to input email"
+  },
+  "authMagicLinkSentNotice": "We have sent a sign-in link to {email}. Open it on this device to sign in.",
+  "@authMagicLinkSentNotice": {
+    "description": "Notice shown after magic link has been sent",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authAuthenticating": "Signing in...",
+  "@authAuthenticating": {
+    "description": "Progress indicator during authentication"
+  },
+  "authErrorGeneric": "Could not sign in. Please try again.",
+  "@authErrorGeneric": {
+    "description": "Generic authentication error message"
+  },
+  "authErrorNoConnection": "No internet connection. Please check your network.",
+  "@authErrorNoConnection": {
+    "description": "Network connection error message during authentication"
+  },
+  "syncBannerInProgress": "Syncing library...",
+  "@syncBannerInProgress": {
+    "description": "Information message while synchronization is in progress"
+  },
+  "syncBannerConflictTitle": "Conflicts detected",
+  "@syncBannerConflictTitle": {
+    "description": "Title of sync conflict banner"
+  },
+  "syncBannerConflictMessage": "{count, plural, =1{1 conflict copy was created.} other{{count} conflict copies were created.}}",
+  "@syncBannerConflictMessage": {
+    "description": "Message indicating conflict copies were detected",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncBannerErrorTitle": "Sync error",
+  "@syncBannerErrorTitle": {
+    "description": "Title of sync error banner"
+  },
+  "syncBannerErrorMessage": "Could not sync some changes.",
+  "@syncBannerErrorMessage": {
+    "description": "Detailed sync error message"
+  },
+  "syncRetryButton": "Retry",
+  "@syncRetryButton": {
+    "description": "Label for retry sync button"
+  },
+  "syncStatusSynced": "Synced",
+  "@syncStatusSynced": {
+    "description": "Accessible label for document synced with the cloud"
+  },
+  "syncStatusPending": "Pending upload",
+  "@syncStatusPending": {
+    "description": "Accessible label for document with local changes pending sync"
+  },
+  "syncStatusLocalOnly": "On this device only",
+  "@syncStatusLocalOnly": {
+    "description": "Accessible label for document existing only locally"
+  },
+  "syncConflictBadge": "Conflict copy",
+  "@syncConflictBadge": {
+    "description": "Visual and accessible label for conflict copy documents"
+  },
+  "navProgress": "Progress",
+  "@navProgress": {
+    "description": "Navigation destination for the progress dashboard"
+  },
+  "dashboardTitle": "My progress",
+  "@dashboardTitle": {
+    "description": "Title of the progress dashboard screen"
+  },
+  "dashboardEmptyTitle": "Nothing to summarise yet",
+  "@dashboardEmptyTitle": {
+    "description": "Title of the empty state of the progress dashboard"
+  },
+  "dashboardEmptyMessage": "Write your first algorithm or open a module of the learning route and your progress will show up here.",
+  "@dashboardEmptyMessage": {
+    "description": "Message of the empty state of the progress dashboard"
+  },
+  "dashboardErrorTitle": "The dashboard could not be built",
+  "@dashboardErrorTitle": {
+    "description": "Title of the error state of the progress dashboard"
+  },
+  "dashboardLibraryTitle": "Library",
+  "@dashboardLibraryTitle": {
+    "description": "Title of the library card"
+  },
+  "dashboardLibraryTotal": "Algorithms created",
+  "@dashboardLibraryTotal": {
+    "description": "Label for the total number of algorithms"
+  },
+  "dashboardLibraryProfileClassic": "Spanish profile",
+  "@dashboardLibraryProfileClassic": {
+    "description": "Label for algorithms written with the Spanish syntax profile"
+  },
+  "dashboardLibraryProfileEnglish": "English profile",
+  "@dashboardLibraryProfileEnglish": {
+    "description": "Label for algorithms written with the English syntax profile"
+  },
+  "dashboardRouteTitle": "Learning route",
+  "@dashboardRouteTitle": {
+    "description": "Title of the learning route card"
+  },
+  "dashboardRouteSubtitle": "Modules visited per track",
+  "@dashboardRouteSubtitle": {
+    "description": "Subtitle of the learning route card"
+  },
+  "dashboardExercisesTitle": "Exercises",
+  "@dashboardExercisesTitle": {
+    "description": "Title of the exercises card"
+  },
+  "dashboardExercisesByTrack": "By track",
+  "@dashboardExercisesByTrack": {
+    "description": "Label of the exercises-by-track group"
+  },
+  "dashboardExercisesByLevel": "By level",
+  "@dashboardExercisesByLevel": {
+    "description": "Label of the exercises-by-level group"
+  },
+  "dashboardExercisesByKind": "By kind",
+  "@dashboardExercisesByKind": {
+    "description": "Label of the exercises-by-kind group"
+  },
+  "dashboardNextStepTitle": "Next step",
+  "@dashboardNextStepTitle": {
+    "description": "Title of the next step card"
+  },
+  "dashboardNextStepDone": "You have visited all fifteen modules of the route.",
+  "@dashboardNextStepDone": {
+    "description": "Message shown when no module is left to visit"
+  },
+  "dashboardNextStepOpen": "Open module",
+  "@dashboardNextStepOpen": {
+    "description": "Action to open the suggested next module"
+  },
+  "dashboardSyncTitle": "Synchronisation",
+  "@dashboardSyncTitle": {
+    "description": "Title of the synchronisation card"
+  },
+  "dashboardSyncLastAt": "Last synchronisation",
+  "@dashboardSyncLastAt": {
+    "description": "Label for the date of the last synchronisation"
+  },
+  "dashboardSyncNever": "Not synchronised yet",
+  "@dashboardSyncNever": {
+    "description": "Value shown when no synchronisation ever happened"
+  },
+  "dashboardSyncPending": "Queued changes",
+  "@dashboardSyncPending": {
+    "description": "Label for the number of changes pending upload"
+  },
+  "dashboardSyncOldest": "Age of the oldest one",
+  "@dashboardSyncOldest": {
+    "description": "Label for the age of the oldest pending change"
+  },
+  "dashboardSyncConflicts": "Open conflicts",
+  "@dashboardSyncConflicts": {
+    "description": "Label for the number of unreviewed conflict copies"
+  },
+  "dashboardSyncDaysAgo": "{count, plural, =0{Today} =1{1 day} other{{count} days}}",
+  "@dashboardSyncDaysAgo": {
+    "description": "Age in days of a pending change",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dashboardConceptsTitle": "Concepts practised",
+  "@dashboardConceptsTitle": {
+    "description": "Title of the practised concepts card"
+  },
+  "dashboardConceptsSubtitle": "Constructs you have already written in your own algorithms",
+  "@dashboardConceptsSubtitle": {
+    "description": "Subtitle of the practised concepts card"
+  },
+  "dashboardConceptDocuments": "{count, plural, =0{Unused} =1{In 1 algorithm} other{In {count} algorithms}}",
+  "@dashboardConceptDocuments": {
+    "description": "Number of algorithms where a construct appears",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "dashboardConceptConditional": "Conditional",
+  "@dashboardConceptConditional": {
+    "description": "Name of the conditional construct"
+  },
+  "dashboardConceptMultipleSelection": "Multiple selection",
+  "@dashboardConceptMultipleSelection": {
+    "description": "Name of the multiple selection construct"
+  },
+  "dashboardConceptConditionalLoop": "Conditional loop",
+  "@dashboardConceptConditionalLoop": {
+    "description": "Name of the pre-tested loop"
+  },
+  "dashboardConceptPostConditionalLoop": "Post-tested loop",
+  "@dashboardConceptPostConditionalLoop": {
+    "description": "Name of the post-tested loop"
+  },
+  "dashboardConceptCountedLoop": "Counted loop",
+  "@dashboardConceptCountedLoop": {
+    "description": "Name of the counted loop"
+  },
+  "dashboardConceptArray": "Array",
+  "@dashboardConceptArray": {
+    "description": "Name of the array declaration"
+  },
+  "dashboardConceptSubprogram": "Subprogram",
+  "@dashboardConceptSubprogram": {
+    "description": "Name of the subprogram declaration"
+  },
+  "dashboardConceptClass": "Class",
+  "@dashboardConceptClass": {
+    "description": "Name of the class declaration"
+  },
+  "dashboardSpecificationTitle": "Specification coverage",
+  "@dashboardSpecificationTitle": {
+    "description": "Title of the specification coverage card"
+  },
+  "dashboardSpecificationSubtitle": "Normative sections your algorithms already exercise",
+  "@dashboardSpecificationSubtitle": {
+    "description": "Subtitle of the specification coverage card"
+  },
+  "dashboardSpecificationExercised": "Exercised",
+  "@dashboardSpecificationExercised": {
+    "description": "State of an already exercised specification section"
+  },
+  "dashboardSpecificationPending": "Not exercised",
+  "@dashboardSpecificationPending": {
+    "description": "State of a specification section not exercised yet"
+  },
+  "dashboardActivityTitle": "Activity timeline",
+  "@dashboardActivityTitle": {
+    "description": "Title of the activity timeline card"
+  },
+  "dashboardActivitySubtitle": "Modules and exercises per week",
+  "@dashboardActivitySubtitle": {
+    "description": "Subtitle of the activity timeline card"
+  },
+  "dashboardCreationsTitle": "Algorithms created over time",
+  "@dashboardCreationsTitle": {
+    "description": "Title of the algorithms-created card"
+  },
+  "dashboardCreationsSubtitle": "New algorithms per week",
+  "@dashboardCreationsSubtitle": {
+    "description": "Subtitle of the algorithms-created card"
+  },
+  "dashboardWeekOf": "Week of {day}/{month}",
+  "@dashboardWeekOf": {
+    "description": "Label of a week in the activity timeline",
+    "placeholders": {
+      "day": {
+        "type": "int",
+        "example": "13"
+      },
+      "month": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "dashboardCoverageRatio": "{done} of {total}",
+  "@dashboardCoverageRatio": {
+    "description": "Coverage count shown as a part of a total",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "8"
+      },
+      "total": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "editorKeyIndent": "Insert indentation",
+  "editorKeyDedent": "Remove indentation",
+  "editorKeyAssignment": "Insert assignment",
+  "editorKeyQuote": "Insert quotation marks",
+  "editorKeyOpenParenthesis": "Insert opening parenthesis",
+  "editorKeyCloseParenthesis": "Insert closing parenthesis",
+  "editorKeyGreaterOrEqual": "Insert greater than or equal",
+  "editorKeyLessOrEqual": "Insert less than or equal",
+  "editorKeyTemplatesShow": "Show structure templates",
+  "editorKeyTemplatesHide": "Hide structure templates",
+  "editorActionHideKeyboard": "Hide keyboard",
+  "actionExpand": "Expand",
+  "actionCollapse": "Collapse"
+}

@@ -1,0 +1,12 @@
+Algorithm SwitchCase
+  Define opt As Integer
+  opt <- 2
+  Switch opt Do
+    1:
+      Write "One"
+    2:
+      Write "Two"
+    Otherwise:
+      Write "Other"
+  EndSwitch
+EndAlgorithm

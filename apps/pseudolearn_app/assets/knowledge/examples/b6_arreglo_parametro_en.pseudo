@@ -1,0 +1,18 @@
+subroutine DoubleElements(data[] as integer by reference, size as integer)
+    define i as integer;
+    for i <- 0 to size - 1 step 1 do
+        data[i] <- data[i] * 2;
+    endFor
+endSubroutine
+
+algorithm TryDoubling
+    dimension vector[3] as integer;
+    define i as integer;
+    for i <- 0 to 2 step 1 do
+        read vector[i];
+    endFor
+    DoubleElements(vector, 3);
+    for i <- 0 to 2 step 1 do
+        write vector[i];
+    endFor
+endAlgorithm

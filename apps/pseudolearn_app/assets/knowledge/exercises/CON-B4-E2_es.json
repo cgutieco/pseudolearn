@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E2",
+  "title": "Cuenta de lecturas hasta el centinela",
+  "statement": "Lee números enteros, uno por uno, hasta leer un 0 (incluido). Escribe cuántos números se leyeron en total, contando el 0. Resuélvelo con un bucle Repetir.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["5", "3", "0"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "0"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["8", "8", "8", "8", "8", "0"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["4", "5", "6", "7", "8", "9", "0"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con un bucle Repetir."}
+  ],
+  "referenceSolution": "Proceso ContarHastaCero\n    Definir n Como Entero;\n    Definir contador Como Entero;\n    contador <- 0;\n    Repetir\n        Leer n;\n        contador <- contador + 1;\n    Hasta Que n = 0;\n    Escribir contador;\nFinProceso\n"
+}

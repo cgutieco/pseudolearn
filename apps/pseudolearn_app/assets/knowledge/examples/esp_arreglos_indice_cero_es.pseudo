@@ -1,0 +1,8 @@
+Algoritmo IndiceCero
+  Dimension numeros[3] Como Entero
+  Definir i Como Entero
+  Para i <- 0 Hasta 2 Hacer
+    numeros[i] <- i * 10
+    Escribir numeros[i]
+  FinPara
+FinAlgoritmo

@@ -1,0 +1,13 @@
+class Box
+    public define content as integer;
+endClass
+
+algorithm TryAlias
+    define a as Box;
+    define b as Box;
+    a <- new Box();
+    a.content <- 10;
+    b <- a;
+    b.content <- 99;
+    write a.content;
+endAlgorithm

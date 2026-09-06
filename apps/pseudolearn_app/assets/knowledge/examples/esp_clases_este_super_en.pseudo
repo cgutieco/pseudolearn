@@ -1,0 +1,12 @@
+Class Base
+  Method M()
+  EndMethod
+EndClass
+Class Derived Inherits From Base
+  Method M()
+    Super.M()
+  EndMethod
+EndClass
+Algorithm TestSuper
+  Define d As Derived; d <- New Derived(); d.M()
+EndAlgorithm

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E6",
+  "title": "Player that delegates to Song",
+  "statement": "Define a Song class with a constructor that takes a duration in seconds, and a Duration method that returns it. Define a Player class that has a Song as an attribute, takes the duration in its constructor, and a Remaining method that takes the elapsed time and returns how much is left by delegating to the song. Read the duration and the elapsed time, create the player and write the remaining time.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["180", "60"], "expectedOutputs": ["120"], "expected": "numerico"},
+    {"inputs": ["100", "100"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["200", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["300", "299"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with classes."}
+  ],
+  "referenceSolution": "class Song\n    private define duration as integer;\n\n    method constructor(aDuration as integer)\n        this.duration <- aDuration;\n    endMethod\n\n    public method Duration() as integer\n        return this.duration;\n    endMethod\nendClass\n\nclass Player\n    private define song as Song;\n\n    method constructor(aDuration as integer)\n        this.song <- new Song(aDuration);\n    endMethod\n\n    public method Remaining(elapsed as integer) as integer\n        return this.song.Duration() - elapsed;\n    endMethod\nendClass\n\nalgorithm ComputeRemaining\n    define duration as integer;\n    define elapsed as integer;\n    define player as Player;\n    read duration;\n    read elapsed;\n    player <- new Player(duration);\n    write player.Remaining(elapsed);\nendAlgorithm\n"
+}

@@ -1,0 +1,8 @@
+Algoritmo EscribirValores
+  Definir e Como Entero; Definir r Como Real
+  Definir l Como Logico; Definir c Como Caracter
+  Definir s Como Cadena
+  e <- 42; r <- 3.14; l <- Verdadero
+  c <- 'X'; s <- "Texto"
+  Escribir e, r, l, c, s
+FinAlgoritmo

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E5",
+  "title": "Nodo enlazado de dos elementos",
+  "statement": "Define una clase Nodo con un atributo público valor y un atributo público siguiente (de tipo Nodo). Lee dos valores, crea dos nodos, enlaza el primero con el segundo a través de siguiente, y escribe el valor del nodo al que apunta el primero.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1", "2"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "9"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["-1", "-2"], "expectedOutputs": ["-2"], "expected": "numerico"},
+    {"inputs": ["100", "7"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Nodo\n    Publico Definir valor Como Entero;\n    Publico Definir siguiente Como Nodo;\nFinClase\n\nProceso EjecutarNodoEnlazado\n    Definir v1 Como Entero;\n    Definir v2 Como Entero;\n    Definir primero Como Nodo;\n    Definir segundo Como Nodo;\n    Leer v1;\n    Leer v2;\n    primero <- Nuevo Nodo();\n    segundo <- Nuevo Nodo();\n    primero.valor <- v1;\n    segundo.valor <- v2;\n    primero.siguiente <- segundo;\n    Escribir primero.siguiente.valor;\nFinProceso\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E1",
+  "title": "Countdown",
+  "statement": "Read an integer n and write, one per line, every number from n down to 1. If n is 0 or less, the loop writes no line at all. Solve it with a While loop.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4"], "expectedOutputs": ["4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["5", "4", "3", "2", "1"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["2", "1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with a While loop."}
+  ],
+  "referenceSolution": "algorithm Countdown\n    define i as integer;\n    read i;\n    while i > 0 do\n        write i;\n        i <- i - 1;\n    endWhile\nendAlgorithm\n"
+}

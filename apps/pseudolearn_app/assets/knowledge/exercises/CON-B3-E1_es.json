@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E1",
+  "title": "Par o impar",
+  "statement": "Lee un número entero y escribe 0 si es par o 1 si es impar. Resuélvelo con un condicional.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["4"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["-3"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "condicional", "requirement": "El enunciado pide resolverlo con un condicional."}
+  ],
+  "referenceSolution": "Proceso ParOImpar\n    Definir n Como Entero;\n    Leer n;\n    Si n mod 2 = 0 Entonces\n        Escribir 0;\n    SiNo\n        Escribir 1;\n    FinSi\nFinProceso\n"
+}

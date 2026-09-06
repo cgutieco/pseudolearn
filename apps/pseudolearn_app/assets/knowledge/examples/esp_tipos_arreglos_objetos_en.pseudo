@@ -1,0 +1,10 @@
+Class Point
+  Public Define cx As Integer
+EndClass
+Algorithm ArraysAndObjects
+  Define p1, p2 As Point
+  p1 <- New Point()
+  p1.cx <- 10
+  p2 <- p1
+  Write p2.cx
+EndAlgorithm

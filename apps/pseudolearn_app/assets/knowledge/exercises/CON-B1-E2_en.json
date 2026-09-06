@@ -1,0 +1,63 @@
+{
+  "id": "CON-B1-E2",
+  "title": "Area of a rectangle",
+  "statement": "Read the base and the height of a rectangle, two integers, and write its area. Write only the result.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "12"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7",
+        "1"
+      ],
+      "expectedOutputs": [
+        "7"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "12",
+        "10"
+      ],
+      "expectedOutputs": [
+        "120"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "9"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "25",
+        "4"
+      ],
+      "expectedOutputs": [
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm RectangleArea\n    define base as integer;\n    define height as integer;\n    define area as integer;\n    read base;\n    read height;\n    area <- base * height;\n    write area;\nendAlgorithm\n"
+}

@@ -1,0 +1,18 @@
+SubProceso DuplicarElementos(datos[] Como Entero Por Referencia, tamano Como Entero)
+    Definir i Como Entero;
+    Para i <- 0 Hasta tamano - 1 Con Paso 1 Hacer
+        datos[i] <- datos[i] * 2;
+    FinPara
+FinSubProceso
+
+Proceso ProbarDuplicado
+    Dimension vector[3] Como Entero;
+    Definir i Como Entero;
+    Para i <- 0 Hasta 2 Con Paso 1 Hacer
+        Leer vector[i];
+    FinPara
+    DuplicarElementos(vector, 3);
+    Para i <- 0 Hasta 2 Con Paso 1 Hacer
+        Escribir vector[i];
+    FinPara
+FinProceso

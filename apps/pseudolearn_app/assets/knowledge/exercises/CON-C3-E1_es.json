@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E1",
+  "title": "Detectar si dos variables son el mismo objeto",
+  "statement": "Define una clase Caja con un atributo público contenido. Lee un indicador (1 o 0). Crea una Caja en la variable a. Si el indicador es 1, haz que b sea el mismo objeto que a; si es 0, crea una Caja nueva para b. Escribe 1 si a y b son el mismo objeto, o 0 si no.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso CompararObjetos\n    Definir bandera Como Entero;\n    Definir a Como Caja;\n    Definir b Como Caja;\n    Leer bandera;\n    a <- Nuevo Caja();\n    Si bandera = 1 Entonces\n        b <- a;\n    SiNo\n        b <- Nuevo Caja();\n    FinSi\n    Si a = b Entonces\n        Escribir 1;\n    SiNo\n        Escribir 0;\n    FinSi\nFinProceso\n"
+}

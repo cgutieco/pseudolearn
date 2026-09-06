@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E2",
+  "title": "Biblioteca que delega en Libro",
+  "statement": "Define una clase Libro con constructor sin parámetros que empiece disponible, un método Prestar y un método Disponible que devuelva 1 si está disponible o 0 si no. Define una clase Biblioteca que tenga un Libro como atributo, con un método Prestar que delegue en el libro y un método Disponible que también delegue. Lee un indicador (1 para prestar, 0 para no hacer nada) y escribe si el libro sigue disponible.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con clases."}
+  ],
+  "referenceSolution": "Clase Libro\n    Privado Definir disponible Como Entero;\n\n    Metodo Constructor()\n        Este.disponible <- 1;\n    FinMetodo\n\n    Publico Metodo Prestar()\n        Este.disponible <- 0;\n    FinMetodo\n\n    Publico Metodo Disponible() Como Entero\n        Retornar Este.disponible;\n    FinMetodo\nFinClase\n\nClase Biblioteca\n    Privado Definir libro Como Libro;\n\n    Metodo Constructor()\n        Este.libro <- Nuevo Libro();\n    FinMetodo\n\n    Publico Metodo Prestar()\n        Este.libro.Prestar();\n    FinMetodo\n\n    Publico Metodo Disponible() Como Entero\n        Retornar Este.libro.Disponible();\n    FinMetodo\nFinClase\n\nProceso EjecutarBiblioteca\n    Definir prestar Como Entero;\n    Definir biblioteca Como Biblioteca;\n    Leer prestar;\n    biblioteca <- Nuevo Biblioteca();\n    Si prestar = 1 Entonces\n        biblioteca.Prestar();\n    FinSi\n    Escribir biblioteca.Disponible();\nFinProceso\n"
+}

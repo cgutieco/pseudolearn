@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E6",
+  "title": "Cuenta regresiva con paso variable",
+  "statement": "Lee un valor inicial y un paso, ambos enteros positivos, y escribe, uno por línea, la cuenta regresiva desde el valor inicial hasta 0 o el primer valor no negativo que se alcance, bajando de a 'paso'. Resuélvelo con un bucle Para de paso negativo.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["6", "2"], "expectedOutputs": ["6", "4", "2", "0"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["5", "0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "3"], "expectedOutputs": ["10", "7", "4", "1"], "expected": "numerico"},
+    {"inputs": ["0", "1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["3", "1"], "expectedOutputs": ["3", "2", "1", "0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con un bucle Para."}
+  ],
+  "referenceSolution": "Proceso CuentaRegresivaConPaso\n    Definir inicio Como Entero;\n    Definir paso Como Entero;\n    Definir i Como Entero;\n    Leer inicio;\n    Leer paso;\n    Para i <- inicio Hasta 0 Con Paso -paso Hacer\n        Escribir i;\n    FinPara\nFinProceso\n"
+}

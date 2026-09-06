@@ -1,0 +1,63 @@
+{
+  "id": "CON-B1-E2",
+  "title": "Área de un rectángulo",
+  "statement": "Lee la base y la altura de un rectángulo, dos números enteros, y escribe su área. Escribe solo el resultado.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "12"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7",
+        "1"
+      ],
+      "expectedOutputs": [
+        "7"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "12",
+        "10"
+      ],
+      "expectedOutputs": [
+        "120"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "9"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "25",
+        "4"
+      ],
+      "expectedOutputs": [
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso AreaRectangulo\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir area Como Entero;\n    Leer base;\n    Leer altura;\n    area <- base * altura;\n    Escribir area;\nFinProceso\n"
+}

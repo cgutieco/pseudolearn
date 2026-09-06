@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E1",
+  "title": "Rectangle class with area",
+  "statement": "Define a Rectangle class with a constructor that takes base and height, and an Area method that returns the area. Read base and height, create the object and write its area.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["4", "5"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["0", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "7"], "expectedOutputs": ["49"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["1", "1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Rectangle\n    private define base as integer;\n    private define height as integer;\n\n    method constructor(aBase as integer, aHeight as integer)\n        this.base <- aBase;\n        this.height <- aHeight;\n    endMethod\n\n    public method Area() as integer\n        return this.base * this.height;\n    endMethod\nendClass\n\nalgorithm ComputeArea\n    define base as integer;\n    define height as integer;\n    define rectangle as Rectangle;\n    read base;\n    read height;\n    rectangle <- new Rectangle(base, height);\n    write rectangle.Area();\nendAlgorithm\n"
+}

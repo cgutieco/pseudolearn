@@ -1,0 +1,77 @@
+{
+  "id": "CON-C2-E2",
+  "title": "SafeBox class with password",
+  "statement": "Define a SafeBox class with a private attribute password and a constructor that takes it, and an Open method that takes an attempt and returns 1 if it matches the password or 0 if not. Read the password and then an attempt, create the object and write the result of calling Open.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "1234",
+        "1234"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1234",
+        "0000"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "clave",
+        "clave"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "clave",
+        "otra"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "hola",
+        "chao"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "clase",
+      "requirement": "The statement asks you to solve it with a class."
+    },
+    {
+      "kind": "declara-miembro",
+      "class": "SafeBox",
+      "member": "password",
+      "visibility": "privado",
+      "requirement": "The statement asks the password to be a private attribute."
+    }
+  ],
+  "referenceSolution": "class SafeBox\n    private define password as string;\n\n    method constructor(aPassword as string)\n        this.password <- aPassword;\n    endMethod\n\n    public method Open(attempt as string) as integer\n        if attempt = this.password then\n            return 1;\n        else\n            return 0;\n        endIf\n    endMethod\nendClass\n\nalgorithm RunSafeBox\n    define password as string;\n    define attempt as string;\n    define box as SafeBox;\n    read password;\n    read attempt;\n    box <- new SafeBox(password);\n    write box.Open(attempt);\nendAlgorithm\n"
+}

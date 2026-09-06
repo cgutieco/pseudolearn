@@ -1,0 +1,8 @@
+Algoritmo Identificadores
+  Definir total, _contador, valor1, suma_total Como Entero
+  total <- 1
+  _contador <- 2
+  valor1 <- 3
+  suma_total <- total + _contador + valor1
+  Escribir suma_total
+FinAlgoritmo

@@ -1,0 +1,22 @@
+{
+  "id": "CON-C3-E4",
+  "title": "Swap the content of two boxes",
+  "statement": "Define a Box class with a public attribute content, and a Swap subprogram that takes two boxes and swaps their content (with no by-reference passing needed: the objects already share their identity). Read two values, create two boxes, swap their content and write the two resulting values, one per line.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["3", "9"], "expectedOutputs": ["9", "3"], "expected": "numerico"},
+    {"inputs": ["1", "2"], "expectedOutputs": ["2", "1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "5"], "expectedOutputs": ["5", "0"], "expected": "numerico"},
+    {"inputs": ["-3", "3"], "expectedOutputs": ["3", "-3"], "expected": "numerico"},
+    {"inputs": ["7", "7"], "expectedOutputs": ["7", "7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."},
+    {"kind": "declara-subprograma", "name": "Swap", "arity": 2, "requirement": "The statement asks for a subprogram named Swap with two parameters."}
+  ],
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nsubroutine Swap(boxA as Box, boxB as Box)\n    define auxiliary as integer;\n    auxiliary <- boxA.content;\n    boxA.content <- boxB.content;\n    boxB.content <- auxiliary;\nendSubroutine\n\nalgorithm RunBoxSwap\n    define v1 as integer;\n    define v2 as integer;\n    define box1 as Box;\n    define box2 as Box;\n    read v1;\n    read v2;\n    box1 <- new Box();\n    box2 <- new Box();\n    box1.content <- v1;\n    box2.content <- v2;\n    Swap(box1, box2);\n    write box1.content;\n    write box2.content;\nendAlgorithm\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E5",
+  "title": "Menú de operaciones",
+  "statement": "Lee una opción (1 suma, 2 resta, 3 multiplica, 4 divide) y dos números, y escribe el resultado de esa operación. Si la opción no es 1, 2, 3 ni 4, escribe -1. Resuélvelo con una selección múltiple.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["1", "4", "3"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["3", "4", "3"], "expectedOutputs": ["12"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2", "10", "4"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["4", "10", "4"], "expectedOutputs": ["2.5"], "expected": "numerico"},
+    {"inputs": ["9", "1", "1"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "El enunciado pide resolverlo con una selección múltiple."}
+  ],
+  "referenceSolution": "Proceso MenuOperaciones\n    Definir opcion Como Entero;\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer opcion, a, b;\n    Segun opcion Hacer\n        1:\n            Escribir a + b;\n        2:\n            Escribir a - b;\n        3:\n            Escribir a * b;\n        4:\n            Escribir a / b;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
+}

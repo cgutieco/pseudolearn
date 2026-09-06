@@ -1,0 +1,6 @@
+Algoritmo DeclaracionArreglo
+  Dimension a[3], b[2, 4] Como Entero
+  a[0] <- 1
+  b[0, 0] <- 2
+  Escribir a[0], b[0, 0]
+FinAlgoritmo

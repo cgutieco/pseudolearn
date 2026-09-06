@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E2",
+  "title": "Count of readings until the sentinel",
+  "statement": "Read integers, one at a time, until a 0 is read (included). Write how many numbers were read in total, counting the 0. Solve it with a Repeat loop.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["5", "3", "0"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "0"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["8", "8", "8", "8", "8", "0"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["4", "5", "6", "7", "8", "9", "0"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with a Repeat loop."}
+  ],
+  "referenceSolution": "algorithm CountUntilZero\n    define n as integer;\n    define counter as integer;\n    counter <- 0;\n    repeat\n        read n;\n        counter <- counter + 1;\n    until n = 0;\n    write counter;\nendAlgorithm\n"
+}

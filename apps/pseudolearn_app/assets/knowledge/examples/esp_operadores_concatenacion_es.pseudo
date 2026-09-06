@@ -1,0 +1,7 @@
+Algoritmo Concatenacion
+  Definir n Como Entero
+  Definir t Como Cadena
+  n <- 1 + 2
+  t <- "A" + "B"
+  Escribir n, t
+FinAlgoritmo

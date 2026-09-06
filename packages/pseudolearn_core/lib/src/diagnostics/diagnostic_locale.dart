@@ -1,0 +1,4 @@
+enum DiagnosticLocale {
+  es,
+  en,
+}

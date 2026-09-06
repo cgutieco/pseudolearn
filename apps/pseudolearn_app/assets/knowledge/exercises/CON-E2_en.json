@@ -1,0 +1,20 @@
+{
+  "id": "CON-E2",
+  "title": "Bubble sort of a vector",
+  "statement": "Read 5 integers and write them sorted from smallest to largest, one per line, using the bubble sort algorithm.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["5", "3", "1", "4", "2"], "expectedOutputs": ["1", "2", "3", "4", "5"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["1", "1", "1", "1", "1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "9", "8", "7", "6"], "expectedOutputs": ["6", "7", "8", "9", "10"], "expected": "numerico"},
+    {"inputs": ["0", "-1", "5", "-3", "2"], "expectedOutputs": ["-3", "-1", "0", "2", "5"], "expected": "numerico"},
+    {"inputs": ["3", "3", "3", "3", "3"], "expectedOutputs": ["3", "3", "3", "3", "3"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm BubbleSort\n    dimension numbers[5] as integer;\n    define i as integer;\n    define j as integer;\n    define auxiliary as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    for i <- 0 to 3 step 1 do\n        for j <- 0 to 3 - i step 1 do\n            if numbers[j] > numbers[j + 1] then\n                auxiliary <- numbers[j];\n                numbers[j] <- numbers[j + 1];\n                numbers[j + 1] <- auxiliary;\n            endIf\n        endFor\n    endFor\n    for i <- 0 to 4 step 1 do\n        write numbers[i];\n    endFor\nendAlgorithm\n"
+}

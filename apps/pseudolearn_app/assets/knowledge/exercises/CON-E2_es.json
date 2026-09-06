@@ -1,0 +1,20 @@
+{
+  "id": "CON-E2",
+  "title": "Ordenamiento burbuja de un vector",
+  "statement": "Lee 5 números enteros y escríbelos ordenados de menor a mayor, uno por línea, usando el algoritmo de ordenamiento burbuja.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["5", "3", "1", "4", "2"], "expectedOutputs": ["1", "2", "3", "4", "5"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["1", "1", "1", "1", "1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "9", "8", "7", "6"], "expectedOutputs": ["6", "7", "8", "9", "10"], "expected": "numerico"},
+    {"inputs": ["0", "-1", "5", "-3", "2"], "expectedOutputs": ["-3", "-1", "0", "2", "5"], "expected": "numerico"},
+    {"inputs": ["3", "3", "3", "3", "3"], "expectedOutputs": ["3", "3", "3", "3", "3"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso OrdenamientoBurbuja\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir j Como Entero;\n    Definir auxiliar Como Entero;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];\n    FinPara\n    Para i <- 0 Hasta 3 Con Paso 1 Hacer\n        Para j <- 0 Hasta 3 - i Con Paso 1 Hacer\n            Si numeros[j] > numeros[j + 1] Entonces\n                auxiliar <- numeros[j];\n                numeros[j] <- numeros[j + 1];\n                numeros[j + 1] <- auxiliar;\n            FinSi\n        FinPara\n    FinPara\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Escribir numeros[i];\n    FinPara\nFinProceso\n"
+}

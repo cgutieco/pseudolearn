@@ -1,0 +1,9 @@
+algorithm Passed
+    define grade as integer;
+    read grade;
+    if grade >= 5 then
+        write "Passed";
+    else
+        write "Failed";
+    endIf
+endAlgorithm

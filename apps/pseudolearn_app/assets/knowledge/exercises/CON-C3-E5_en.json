@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E5",
+  "title": "Two-element linked node",
+  "statement": "Define a Node class with a public attribute value and a public attribute next (of type Node). Read two values, create two nodes, link the first to the second through next, and write the value of the node the first one points to.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1", "2"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "9"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["-1", "-2"], "expectedOutputs": ["-2"], "expected": "numerico"},
+    {"inputs": ["100", "7"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Node\n    public define value as integer;\n    public define next as Node;\nendClass\n\nalgorithm RunLinkedNode\n    define v1 as integer;\n    define v2 as integer;\n    define first as Node;\n    define second as Node;\n    read v1;\n    read v2;\n    first <- new Node();\n    second <- new Node();\n    first.value <- v1;\n    second.value <- v2;\n    first.next <- second;\n    write first.next.value;\nendAlgorithm\n"
+}

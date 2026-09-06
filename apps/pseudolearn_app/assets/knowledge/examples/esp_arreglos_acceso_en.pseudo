@@ -1,0 +1,5 @@
+Algorithm MatrixAccess
+  Dimension grid[2, 3] As Integer
+  grid[0, 1] <- 99
+  Write grid[0, 1]
+EndAlgorithm

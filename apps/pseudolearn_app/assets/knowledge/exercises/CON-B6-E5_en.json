@@ -1,0 +1,22 @@
+{
+  "id": "CON-B6-E5",
+  "title": "Function that counts elements larger than a bound",
+  "statement": "Write a CountLarger function that takes an array of 5 integers by reference, its size and a bound, and returns how many elements are larger than the bound. Read 5 numbers and then the bound, and write the result of calling it.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["1", "5", "10", "3", "8", "4"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50", "25"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["-5", "-4", "-3", "-2", "-1", "-3"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1", "1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "CountLarger", "arity": 3, "requirement": "The statement asks for a function named CountLarger with three parameters."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "subroutine CountLarger(data[] as integer by reference, size as integer, bound as integer) as integer\n    define i as integer;\n    define counter as integer;\n    counter <- 0;\n    for i <- 0 to size - 1 step 1 do\n        if data[i] > bound then\n            counter <- counter + 1;\n        endIf\n    endFor\n    return counter;\nendSubroutine\n\nalgorithm RunCount\n    dimension vector[5] as integer;\n    define i as integer;\n    define bound as integer;\n    for i <- 0 to 4 step 1 do\n        read vector[i];\n    endFor\n    read bound;\n    write CountLarger(vector, 5, bound);\nendAlgorithm\n"
+}

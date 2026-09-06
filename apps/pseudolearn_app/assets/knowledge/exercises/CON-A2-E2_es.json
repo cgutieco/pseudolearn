@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E2",
+  "title": "Total de una compra",
+  "statement": "Lee el precio de un artículo y la cantidad comprada, y escribe el total a pagar.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["10", "3"], "expectedOutputs": ["30"], "expected": "numerico"},
+    {"inputs": ["7", "1"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "5"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["100", "10"], "expectedOutputs": ["1000"], "expected": "numerico"},
+    {"inputs": ["15", "4"], "expectedOutputs": ["60"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso TotalCompra\n    Definir precio Como Entero;\n    Definir cantidad Como Entero;\n    Definir total Como Entero;\n    Leer precio;\n    Leer cantidad;\n    total <- precio * cantidad;\n    Escribir total;\nFinProceso\n"
+}

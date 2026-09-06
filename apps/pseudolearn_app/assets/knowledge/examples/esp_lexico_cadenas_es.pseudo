@@ -1,0 +1,8 @@
+Algoritmo Cadenas
+  Definir texto1, texto2 Como Cadena
+  Definir letra Como Caracter
+  texto1 <- "Hola"
+  texto2 <- 'Mundo'
+  letra <- 'A'
+  Escribir texto1, texto2, letra
+FinAlgoritmo

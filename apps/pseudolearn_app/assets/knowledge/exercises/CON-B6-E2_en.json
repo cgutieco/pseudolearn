@@ -1,0 +1,21 @@
+{
+  "id": "CON-B6-E2",
+  "title": "Maximum of two numbers function",
+  "statement": "Write a Maximum function that takes two integers and returns the larger one. Read two numbers and write the result of calling it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["5", "3"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["2", "9"], "expectedOutputs": ["9"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4", "4"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["-1", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["0", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Maximum", "arity": 2, "requirement": "The statement asks for a function named Maximum with two parameters."}
+  ],
+  "referenceSolution": "subroutine Maximum(a as integer, b as integer) as integer\n    if a > b then\n        return a;\n    else\n        return b;\n    endIf\nendSubroutine\n\nalgorithm ComputeMaximum\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    write Maximum(x, y);\nendAlgorithm\n"
+}

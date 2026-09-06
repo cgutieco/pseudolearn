@@ -1,0 +1,25 @@
+{
+  "id": "CON-B7-E5",
+  "title": "Suma de un vector, recursiva",
+  "statement": "Escribe una función recursiva SumaVector que reciba un arreglo de 5 enteros por referencia, un índice de inicio y un tamaño, y devuelva la suma de los elementos desde ese índice hasta el final. Resuélvelo con recursión pura, sin ningún bucle. Lee 5 números y escribe la suma de todo el vector.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-15"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "SumaVector", "arity": 3, "requirement": "El enunciado pide una función recursiva llamada SumaVector con tres parámetros."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."}
+  ],
+  "referenceSolution": "SubProceso SumaVector(datos[] Como Entero Por Referencia, indice Como Entero, tamano Como Entero) Como Entero\n    Si indice >= tamano Entonces\n        Retornar 0;\n    SiNo\n        Retornar datos[indice] + SumaVector(datos, indice + 1, tamano);\n    FinSi\nFinSubProceso\n\nProceso EjecutarSumaVector\n    Dimension vector[5] Como Entero;\n    Leer vector[0];\n    Leer vector[1];\n    Leer vector[2];\n    Leer vector[3];\n    Leer vector[4];\n    Escribir SumaVector(vector, 0, 5);\nFinProceso\n"
+}

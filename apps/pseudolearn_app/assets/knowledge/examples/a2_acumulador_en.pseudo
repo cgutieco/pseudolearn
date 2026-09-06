@@ -1,0 +1,10 @@
+algorithm Accumulator
+    define total as integer;
+    define n as integer;
+    total <- 0;
+    n <- 5;
+    total <- total + n;
+    n <- 3;
+    total <- total + n;
+    write total;
+endAlgorithm

@@ -1,0 +1,10 @@
+SubProceso Signo(n Como Entero) Como Entero
+  Si n >= 0 Entonces
+    Retornar 1
+  Sino
+    Retornar -1
+  FinSi
+FinSubProceso
+Algoritmo RetornoSubprograma
+  Escribir Signo(5), Signo(-3)
+FinAlgoritmo

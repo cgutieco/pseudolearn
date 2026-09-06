@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E1",
+  "title": "Even or odd",
+  "statement": "Read an integer and write 0 if it is even or 1 if it is odd. Solve it with a conditional.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["4"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["-3"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "condicional", "requirement": "The statement asks you to solve it with a conditional."}
+  ],
+  "referenceSolution": "algorithm EvenOrOdd\n    define n as integer;\n    read n;\n    if n mod 2 = 0 then\n        write 0;\n    else\n        write 1;\n    endIf\nendAlgorithm\n"
+}

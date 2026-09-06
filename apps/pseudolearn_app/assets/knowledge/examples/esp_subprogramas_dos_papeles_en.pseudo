@@ -1,0 +1,10 @@
+Subroutine Greet()
+  Write "Hello"
+EndSubroutine
+Subroutine Double(n As Integer) As Integer
+  Return n * 2
+EndSubroutine
+Algorithm TwoRoles
+  Greet()
+  Write Double(4)
+EndAlgorithm

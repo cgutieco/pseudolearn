@@ -1,0 +1,9 @@
+Algoritmo Condicional
+  Definir x Como Entero
+  x <- 5
+  Si x > 0 Entonces
+    Escribir "Positivo"
+  Sino
+    Escribir "No positivo"
+  FinSi
+FinAlgoritmo

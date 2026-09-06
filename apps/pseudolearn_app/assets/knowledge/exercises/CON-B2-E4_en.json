@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E4",
+  "title": "Average of four readings",
+  "statement": "Read four integers in a single read statement and write their average.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["4", "4", "4", "4"], "expectedOutputs": ["4.0"], "expected": "numerico"},
+    {"inputs": ["2", "4", "6", "8"], "expectedOutputs": ["5.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40"], "expectedOutputs": ["25.0"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4"], "expectedOutputs": ["2.5"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm AverageOfFour\n    define n1 as integer;\n    define n2 as integer;\n    define n3 as integer;\n    define n4 as integer;\n    define average as real;\n    read n1, n2, n3, n4;\n    average <- (n1 + n2 + n3 + n4) / 4;\n    write average;\nendAlgorithm\n"
+}

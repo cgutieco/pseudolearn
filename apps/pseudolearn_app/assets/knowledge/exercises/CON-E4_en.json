@@ -1,0 +1,18 @@
+{
+  "id": "CON-E4",
+  "title": "Count vowels in a text",
+  "statement": "Read a lowercase word, with no spaces, and write how many vowels (a, e, i, o, u) it has.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["banana"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["sky"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["aeiou"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["rhythm"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["queue"], "expectedOutputs": ["4"], "expected": "numerico"}
+  ],
+  "assertions": [],
+  "referenceSolution": "algorithm CountVowels\n    define word as string;\n    define i as integer;\n    define counter as integer;\n    define letter as character;\n    read word;\n    counter <- 0;\n    for i <- 0 to length(word) - 1 step 1 do\n        letter <- charAt(word, i);\n        if letter = 'a' or letter = 'e' or letter = 'i' or letter = 'o' or letter = 'u' then\n            counter <- counter + 1;\n        endIf\n    endFor\n    write counter;\nendAlgorithm\n"
+}

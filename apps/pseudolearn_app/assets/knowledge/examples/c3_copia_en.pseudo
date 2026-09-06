@@ -1,0 +1,13 @@
+class Box
+    public define content as integer;
+endClass
+
+algorithm TryCopy
+    define original as Box;
+    define cloned as Box;
+    original <- new Box();
+    original.content <- 10;
+    cloned <- copy(original);
+    cloned.content <- 99;
+    write original.content;
+endAlgorithm

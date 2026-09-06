@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E6",
+  "title": "Temperature conversion with formatting",
+  "statement": "Read a temperature in Celsius and write its Fahrenheit equivalent followed by ' F', on a single line, with no extra space beyond the one already in the text.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["0"], "expectedOutputs": ["32.0 F"], "expected": "texto"},
+    {"inputs": ["100"], "expectedOutputs": ["212.0 F"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["37"], "expectedOutputs": ["98.6 F"], "expected": "texto"},
+    {"inputs": ["-40"], "expectedOutputs": ["-40.0 F"], "expected": "texto"},
+    {"inputs": ["20"], "expectedOutputs": ["68.0 F"], "expected": "texto"}
+  ],
+  "referenceSolution": "algorithm CelsiusToFahrenheit\n    define celsius as integer;\n    define fahrenheit as real;\n    read celsius;\n    fahrenheit <- celsius * 9 / 5 + 32;\n    write fahrenheit without newline;\n    write \" F\";\nendAlgorithm\n"
+}

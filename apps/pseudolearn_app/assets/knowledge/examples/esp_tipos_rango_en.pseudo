@@ -1,0 +1,6 @@
+Algorithm NumericRange
+  Define minInt, maxInt As Integer
+  minInt <- -9223372036854775807
+  maxInt <- 9223372036854775807
+  Write minInt, maxInt
+EndAlgorithm

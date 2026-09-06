@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E1",
+  "title": "Presentación con nombre y edad",
+  "statement": "Lee un nombre y una edad, y escribe exactamente: <nombre> - <edad>",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["Ana", "20"], "expectedOutputs": ["Ana - 20"], "expected": "texto"},
+    {"inputs": ["Luis", "5"], "expectedOutputs": ["Luis - 5"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Eva", "99"], "expectedOutputs": ["Eva - 99"], "expected": "texto"},
+    {"inputs": ["Bea", "0"], "expectedOutputs": ["Bea - 0"], "expected": "texto"},
+    {"inputs": ["Ivan", "42"], "expectedOutputs": ["Ivan - 42"], "expected": "texto"}
+  ],
+  "referenceSolution": "Proceso Presentacion\n    Definir nombre Como Cadena;\n    Definir edad Como Entero;\n    Leer nombre;\n    Leer edad;\n    Escribir nombre, \" - \", edad;\nFinProceso\n"
+}

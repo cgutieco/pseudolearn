@@ -1,0 +1,9 @@
+Proceso Suma
+    Definir a Como Entero;
+    Definir b Como Entero;
+    Definir resultado Como Entero;
+    a <- 15;
+    b <- 27;
+    resultado <- a + b;
+    Escribir "Resultado: ", resultado;
+FinProceso

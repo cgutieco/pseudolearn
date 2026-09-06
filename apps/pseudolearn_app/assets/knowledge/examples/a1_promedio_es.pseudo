@@ -1,0 +1,13 @@
+Proceso Promedio
+    Definir n1 Como Entero;
+    Definir n2 Como Entero;
+    Definir n3 Como Entero;
+    Definir suma Como Entero;
+    Definir promedio Como Real;
+    n1 <- 8;
+    n2 <- 7;
+    n3 <- 9;
+    suma <- n1 + n2 + n3;
+    promedio <- suma / 3;
+    Escribir promedio;
+FinProceso

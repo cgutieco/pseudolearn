@@ -1,0 +1,7 @@
+Algorithm EvaluationOrder
+  Dimension v[3] As Integer
+  Define i As Integer
+  i <- 0
+  v[i] <- 10
+  Write v[i]
+EndAlgorithm

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E5",
+  "title": "Single-item Stack class",
+  "statement": "Define a StackOfOne class with a parameterless constructor, a Push method that takes an integer and stores it, and a Pop method that returns the stored value. Read a number, create the object, push it and write the result of popping it.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-3"], "expectedOutputs": ["-3"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class StackOfOne\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Push(aValue as integer)\n        this.value <- aValue;\n    endMethod\n\n    public method Pop() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunStack\n    define n as integer;\n    define stack as StackOfOne;\n    read n;\n    stack <- new StackOfOne();\n    stack.Push(n);\n    write stack.Pop();\nendAlgorithm\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E2",
+  "title": "Clase Contador con incremento",
+  "statement": "Define una clase Contador con constructor sin parámetros que empiece en 0, un método Incrementar que sume 1, y un método Valor que devuelva el valor actual. Lee cuántas veces incrementar, crea el objeto, incrementa esa cantidad de veces y escribe el valor final.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["10"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Contador\n    Privado Definir valor Como Entero;\n\n    Metodo Constructor()\n        Este.valor <- 0;\n    FinMetodo\n\n    Publico Metodo Incrementar()\n        Este.valor <- Este.valor + 1;\n    FinMetodo\n\n    Publico Metodo Valor() Como Entero\n        Retornar Este.valor;\n    FinMetodo\nFinClase\n\nProceso EjecutarContador\n    Definir veces Como Entero;\n    Definir i Como Entero;\n    Definir contador Como Contador;\n    Leer veces;\n    contador <- Nuevo Contador();\n    Para i <- 1 Hasta veces Con Paso 1 Hacer\n        contador.Incrementar();\n    FinPara\n    Escribir contador.Valor();\nFinProceso\n"
+}

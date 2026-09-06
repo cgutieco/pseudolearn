@@ -1,0 +1,12 @@
+Clase Punto
+  Publico Definir cx Como Entero
+  Publico Definir cy Como Entero
+  Metodo Constructor(px Como Entero, py Como Entero)
+    Este.cx <- px; Este.cy <- py
+  FinMetodo
+FinClase
+Algoritmo ConstructorClase
+  Definir p Como Punto
+  p <- Nuevo Punto(2, 3)
+  Escribir p.cx + p.cy
+FinAlgoritmo

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B6-E3",
+  "title": "Procedure that swaps two variables",
+  "statement": "Write a Swap procedure that takes two integers by reference and swaps their values. Read two numbers, call the procedure and write the two resulting values, one per line.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["3", "9"], "expectedOutputs": ["9", "3"], "expected": "numerico"},
+    {"inputs": ["1", "2"], "expectedOutputs": ["2", "1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "5"], "expectedOutputs": ["5", "0"], "expected": "numerico"},
+    {"inputs": ["-3", "3"], "expectedOutputs": ["3", "-3"], "expected": "numerico"},
+    {"inputs": ["7", "7"], "expectedOutputs": ["7", "7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Swap", "arity": 2, "requirement": "The statement asks for a procedure named Swap with two parameters."}
+  ],
+  "referenceSolution": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define auxiliary as integer;\n    auxiliary <- a;\n    a <- b;\n    b <- auxiliary;\nendSubroutine\n\nalgorithm RunSwap\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    Swap(x, y);\n    write x;\n    write y;\nendAlgorithm\n"
+}

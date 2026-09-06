@@ -1,0 +1,66 @@
+{
+  "id": "CON-B4-E4",
+  "title": "Suma de múltiplos de tres",
+  "statement": "Lee un límite entero no negativo y escribe la suma de los múltiplos de 3 entre 0 y ese límite, ambos incluidos. Modifica un bucle Para para que avance de 3 en 3.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B4",
+  "visibleCases": [
+    {
+      "inputs": [
+        "9"
+      ],
+      "expectedOutputs": [
+        "18"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "10"
+      ],
+      "expectedOutputs": [
+        "18"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "3"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "20"
+      ],
+      "expectedOutputs": [
+        "63"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "bucle-contado",
+      "requirement": "El enunciado pide resolverlo con un bucle Para."
+    }
+  ],
+  "referenceSolution": "Proceso SumaMultiplosDeTres\n    Definir limite Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer limite;\n    total <- 0;\n    Para i <- 0 Hasta limite Con Paso 3 Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n",
+  "starterCode": "Proceso SumaMultiplosDeTres\n    Definir limite Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer limite;\n    total <- 0;\n    Para i <- 0 Hasta limite Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n"
+}

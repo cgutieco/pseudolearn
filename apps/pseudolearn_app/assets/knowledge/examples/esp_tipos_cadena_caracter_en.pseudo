@@ -1,0 +1,7 @@
+Algorithm StringAndCharacter
+  Define c As Character
+  Define s As String
+  s <- "Hello"
+  c <- charAt(s, 0)
+  Write c
+EndAlgorithm

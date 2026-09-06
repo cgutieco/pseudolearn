@@ -1,0 +1,6 @@
+SubProceso Mensaje()
+  Escribir "Hermano del algoritmo"
+FinSubProceso
+Algoritmo DondeVive
+  Mensaje()
+FinAlgoritmo

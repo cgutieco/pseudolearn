@@ -1,0 +1,12 @@
+Class Value
+  Public Define n As Integer
+EndClass
+Subroutine PrintVal(v As Value)
+  Write v.n
+EndSubroutine
+Algorithm ClassesAsTypes
+  Define v As Value
+  v <- New Value()
+  v.n <- 42
+  PrintVal(v)
+EndAlgorithm

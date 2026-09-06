@@ -1,0 +1,22 @@
+class BankAccount
+    private define balance as integer;
+
+    method constructor(initialBalance as integer)
+        this.balance <- initialBalance;
+    endMethod
+
+    public method Balance() as integer
+        return this.balance;
+    endMethod
+
+    public method Deposit(amount as integer)
+        this.balance <- this.balance + amount;
+    endMethod
+endClass
+
+algorithm TryAccount
+    define account as BankAccount;
+    account <- new BankAccount(100);
+    account.Deposit(50);
+    write account.Balance();
+endAlgorithm

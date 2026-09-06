@@ -1,0 +1,10 @@
+algorithm VectorTraversal
+    dimension numbers[5] as integer;
+    define i as integer;
+    for i <- 0 to 4 step 1 do
+        read numbers[i];
+    endFor
+    for i <- 0 to 4 step 1 do
+        write numbers[i];
+    endFor
+endAlgorithm

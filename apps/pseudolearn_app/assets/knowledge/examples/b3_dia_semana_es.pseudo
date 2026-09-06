@@ -1,0 +1,12 @@
+Proceso DiaDeLaSemana
+    Definir dia Como Entero;
+    Leer dia;
+    Segun dia Hacer
+        1, 7:
+            Escribir "Fin de semana";
+        2, 3, 4, 5, 6:
+            Escribir "Laborable";
+        De Otro Modo:
+            Escribir "Dia invalido";
+    FinSegun
+FinProceso

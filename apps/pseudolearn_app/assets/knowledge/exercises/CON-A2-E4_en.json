@@ -1,0 +1,64 @@
+{
+  "id": "CON-A2-E4",
+  "title": "From two prices to their average",
+  "statement": "Modify the algorithm: instead of writing the sum of two prices, write their average.",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-A2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "10",
+        "20"
+      ],
+      "expectedOutputs": [
+        "15.0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4.0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "3.5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "10"
+      ],
+      "expectedOutputs": [
+        "5.0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7",
+        "8"
+      ],
+      "expectedOutputs": [
+        "7.5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm AverageOfPrices\n    define price1 as integer;\n    define price2 as integer;\n    define average as real;\n    read price1;\n    read price2;\n    average <- (price1 + price2) / 2;\n    write average;\nendAlgorithm\n",
+  "starterCode": "algorithm PriceAverage\n    define price1 as integer;\n    define price2 as integer;\n    define sum as integer;\n    read price1;\n    read price2;\n    sum <- price1 + price2;\n    write sum;\nendAlgorithm\n"
+}

@@ -1,0 +1,10 @@
+Proceso RecorridoDeVector
+    Dimension numeros[5] Como Entero;
+    Definir i Como Entero;
+    Para i <- 0 Hasta 4 Con Paso 1 Hacer
+        Leer numeros[i];
+    FinPara
+    Para i <- 0 Hasta 4 Con Paso 1 Hacer
+        Escribir numeros[i];
+    FinPara
+FinProceso

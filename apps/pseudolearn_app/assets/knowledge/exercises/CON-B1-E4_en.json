@@ -1,0 +1,68 @@
+{
+  "id": "CON-B1-E4",
+  "title": "Average of three marks",
+  "statement": "Read three integer marks and write their average. Write only the result.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4",
+        "5"
+      ],
+      "expectedOutputs": [
+        "4"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "10",
+        "10",
+        "10"
+      ],
+      "expectedOutputs": [
+        "10"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "1",
+        "2",
+        "3"
+      ],
+      "expectedOutputs": [
+        "2"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "0",
+        "9"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "8",
+        "5",
+        "2"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm Average\n    define first as integer;\n    define second as integer;\n    define third as integer;\n    define average as real;\n    read first;\n    read second;\n    read third;\n    average <- (first + second + third) / 3;\n    write average;\nendAlgorithm\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B7-E1",
+  "title": "Factorial recursivo",
+  "statement": "Escribe una función recursiva Factorial que reciba un entero no negativo y devuelva su factorial. Lee un número y escribe el resultado de llamarla.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["4"], "expectedOutputs": ["24"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["120"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["6"], "expectedOutputs": ["720"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Factorial", "arity": 1, "requirement": "El enunciado pide una función recursiva llamada Factorial con un parámetro."}
+  ],
+  "referenceSolution": "SubProceso Factorial(n Como Entero) Como Entero\n    Si n <= 1 Entonces\n        Retornar 1;\n    SiNo\n        Retornar n * Factorial(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularFactorial\n    Definir n Como Entero;\n    Leer n;\n    Escribir Factorial(n);\nFinProceso\n"
+}

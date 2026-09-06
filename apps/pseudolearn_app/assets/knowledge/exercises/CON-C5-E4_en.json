@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E4",
+  "title": "Invoice that delegates to two Products",
+  "statement": "Define a Product class with a constructor that takes a price, and a Price method that returns it. Define an Invoice class that has two Products as attributes, takes their two prices in its constructor, and a Total method that returns the sum of both prices by delegating to each Product. Read the two prices, create the invoice and write the total.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["10", "20"], "expectedOutputs": ["30"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["100", "1"], "expectedOutputs": ["101"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["-3", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with classes."}
+  ],
+  "referenceSolution": "class Product\n    private define price as integer;\n\n    method constructor(aPrice as integer)\n        this.price <- aPrice;\n    endMethod\n\n    public method Price() as integer\n        return this.price;\n    endMethod\nendClass\n\nclass Invoice\n    private define product1 as Product;\n    private define product2 as Product;\n\n    method constructor(aPrice1 as integer, aPrice2 as integer)\n        this.product1 <- new Product(aPrice1);\n        this.product2 <- new Product(aPrice2);\n    endMethod\n\n    public method Total() as integer\n        return this.product1.Price() + this.product2.Price();\n    endMethod\nendClass\n\nalgorithm ComputeInvoice\n    define p1 as integer;\n    define p2 as integer;\n    define invoice as Invoice;\n    read p1;\n    read p2;\n    invoice <- new Invoice(p1, p2);\n    write invoice.Total();\nendAlgorithm\n"
+}

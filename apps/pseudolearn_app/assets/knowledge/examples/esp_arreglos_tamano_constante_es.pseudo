@@ -1,0 +1,5 @@
+Algoritmo TamanoConstante
+  Dimension lista[2 + 3] Como Entero
+  lista[0] <- 42
+  Escribir lista[0]
+FinAlgoritmo

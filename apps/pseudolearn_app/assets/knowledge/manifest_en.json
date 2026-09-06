@@ -1,0 +1,1741 @@
+{
+  "manifestVersion": 2,
+  "contentVersion": 1,
+  "modules": [
+    {
+      "id": "CON-A1",
+      "track": "A",
+      "order": 1,
+      "title": "What is an algorithm",
+      "summary": "What has to be true of a sequence of steps for it to deserve the name algorithm.",
+      "path": "modules/CON-A1_en.md",
+      "constructs": []
+    },
+    {
+      "id": "CON-A2",
+      "track": "A",
+      "order": 2,
+      "title": "The notional machine",
+      "summary": "Named memory boxes and the trace table used to follow their value step by step.",
+      "path": "modules/CON-A2_en.md",
+      "constructs": []
+    },
+    {
+      "id": "CON-B1",
+      "track": "B",
+      "order": 1,
+      "title": "Data: types, variables, expressions and assignment",
+      "summary": "What kinds of values exist, how they are named and what happens when they are reassigned.",
+      "path": "modules/CON-B1_en.md",
+      "constructs": []
+    },
+    {
+      "id": "CON-B2",
+      "track": "B",
+      "order": 2,
+      "title": "Input and output",
+      "summary": "How a value is requested from outside and how a result is shown.",
+      "path": "modules/CON-B2_en.md",
+      "constructs": []
+    },
+    {
+      "id": "CON-B3",
+      "track": "B",
+      "order": 3,
+      "title": "Selection: conditional and multiple selection",
+      "summary": "The two ways of branching the path a program follows based on its data.",
+      "path": "modules/CON-B3_en.md",
+      "constructs": [
+        "condicional",
+        "seleccion-multiple"
+      ]
+    },
+    {
+      "id": "CON-B4",
+      "track": "B",
+      "order": 4,
+      "title": "Iteration: the three loops and when to use each",
+      "summary": "While, Repeat and For, and the rule for choosing which one fits each case.",
+      "path": "modules/CON-B4_en.md",
+      "constructs": [
+        "bucle-condicional",
+        "bucle-condicional-posterior",
+        "bucle-contado"
+      ]
+    },
+    {
+      "id": "CON-B5",
+      "track": "B",
+      "order": 5,
+      "title": "Arrays: one dimension and two",
+      "summary": "Vectors and matrices with zero-based indexing, traversal, search and element access.",
+      "path": "modules/CON-B5_en.md",
+      "constructs": [
+        "arreglo"
+      ]
+    },
+    {
+      "id": "CON-B6",
+      "track": "B",
+      "order": 6,
+      "title": "Decomposition: subprograms, functions, parameters and scope",
+      "summary": "Named subprograms, by-value and by-reference passing, and their own scope.",
+      "path": "modules/CON-B6_en.md",
+      "constructs": [
+        "subprograma"
+      ]
+    },
+    {
+      "id": "CON-B7",
+      "track": "B",
+      "order": 7,
+      "title": "Recursion",
+      "summary": "A subprogram that calls itself, the call stack and the base case.",
+      "path": "modules/CON-B7_en.md",
+      "constructs": [
+        "subprograma"
+      ]
+    },
+    {
+      "id": "CON-B8",
+      "track": "B",
+      "order": 8,
+      "title": "Reading a program: flowchart and structogram",
+      "summary": "Understanding a program from its diagram, with no new syntax.",
+      "path": "modules/CON-B8_en.md",
+      "constructs": []
+    },
+    {
+      "id": "CON-C1",
+      "track": "C",
+      "order": 1,
+      "title": "Why objects: from loose variables to a thing with state and behaviour",
+      "summary": "Grouping the state and behaviour that belong together into a class.",
+      "path": "modules/CON-C1_en.md",
+      "constructs": [
+        "clase"
+      ]
+    },
+    {
+      "id": "CON-C2",
+      "track": "C",
+      "order": 2,
+      "title": "Class: attributes, visibility, methods and constructor",
+      "summary": "Per-member visibility and the constructor as the piece that builds the object.",
+      "path": "modules/CON-C2_en.md",
+      "constructs": [
+        "clase"
+      ]
+    },
+    {
+      "id": "CON-C3",
+      "track": "C",
+      "order": 3,
+      "title": "Instance, identity and aliasing",
+      "summary": "Reference versus value: two variables on the same object, and the shallow copy that separates them.",
+      "path": "modules/CON-C3_en.md",
+      "constructs": [
+        "clase"
+      ]
+    },
+    {
+      "id": "CON-C4",
+      "track": "C",
+      "order": 4,
+      "title": "Inheritance and dynamic dispatch",
+      "summary": "A subclass inherits its superclass's boxes, and dispatch looks at the real object.",
+      "path": "modules/CON-C4_en.md",
+      "constructs": [
+        "clase"
+      ]
+    },
+    {
+      "id": "CON-C5",
+      "track": "C",
+      "order": 5,
+      "title": "Design: who owns each responsibility",
+      "summary": "Has-a versus is-a, and which class should answer each question.",
+      "path": "modules/CON-C5_en.md",
+      "constructs": [
+        "clase"
+      ]
+    }
+  ],
+  "specification": [
+    {
+      "id": "esp-i-lexico",
+      "document": "esp-i",
+      "anchor": "lexico",
+      "order": 1,
+      "title": "Lexical structure",
+      "summary": "How the text is split into pieces: names, numbers, texts and end of statement.",
+      "path": "specification/esp-i-lexico_en.md"
+    },
+    {
+      "id": "esp-i-tipos-primitivos",
+      "document": "esp-i",
+      "anchor": "tipos-primitivos",
+      "order": 2,
+      "title": "Primitive types",
+      "summary": "The five types, their values and their range.",
+      "path": "specification/esp-i-tipos-primitivos_en.md"
+    },
+    {
+      "id": "esp-i-operadores",
+      "document": "esp-i",
+      "anchor": "operadores",
+      "order": 3,
+      "title": "Operators, precedence and associativity",
+      "summary": "The complete priority table and short-circuit evaluation.",
+      "path": "specification/esp-i-operadores_en.md"
+    },
+    {
+      "id": "esp-i-declaracion",
+      "document": "esp-i",
+      "anchor": "declaracion",
+      "order": 4,
+      "title": "Declaration and assignment",
+      "summary": "The exact form of declaring and of assigning.",
+      "path": "specification/esp-i-declaracion_en.md"
+    },
+    {
+      "id": "esp-i-entrada-salida",
+      "document": "esp-i",
+      "anchor": "entrada-salida",
+      "order": 5,
+      "title": "Input and output",
+      "summary": "What output emits, what reading demands and how each value is written.",
+      "path": "specification/esp-i-entrada-salida_en.md"
+    },
+    {
+      "id": "esp-i-control",
+      "document": "esp-i",
+      "anchor": "control",
+      "order": 6,
+      "title": "Control structures",
+      "summary": "The conditional, the multiple selection and the three loops.",
+      "path": "specification/esp-i-control_en.md"
+    },
+    {
+      "id": "esp-i-arreglos",
+      "document": "esp-i",
+      "anchor": "arreglos",
+      "order": 7,
+      "title": "Arrays",
+      "summary": "Dimensioning, zero base and access to an element.",
+      "path": "specification/esp-i-arreglos_en.md"
+    },
+    {
+      "id": "esp-i-subprogramas",
+      "document": "esp-i",
+      "anchor": "subprogramas",
+      "order": 8,
+      "title": "Subprograms and functions",
+      "summary": "A single construct, parameters, passing, return, scope and recursion.",
+      "path": "specification/esp-i-subprogramas_en.md"
+    },
+    {
+      "id": "esp-i-sistema-de-tipos",
+      "document": "esp-i",
+      "anchor": "sistema-de-tipos",
+      "order": 9,
+      "title": "Type system and rigour policy",
+      "summary": "What a type error is and what changes between the strict and the flexible profile.",
+      "path": "specification/esp-i-sistema-de-tipos_en.md"
+    },
+    {
+      "id": "esp-i-funciones-incorporadas",
+      "document": "esp-i",
+      "anchor": "funciones-incorporadas",
+      "order": 10,
+      "title": "Built-in functions",
+      "summary": "The complete catalogue and why each function exists.",
+      "path": "specification/esp-i-funciones-incorporadas_en.md"
+    },
+    {
+      "id": "esp-o-clases",
+      "document": "esp-o",
+      "anchor": "clases",
+      "order": 11,
+      "title": "Object-oriented notation",
+      "summary": "Classes, attributes, methods, instances, inheritance, and what the language does not have.",
+      "path": "specification/esp-o-clases_en.md"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "CON-A2-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-A2",
+      "title": "Seconds in a span of minutes",
+      "summary": "Read minutes and write seconds.",
+      "path": "exercises/CON-A2-E1_en.json"
+    },
+    {
+      "id": "CON-A2-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-A2",
+      "title": "Total cost of a purchase",
+      "summary": "Read price and quantity and write the total.",
+      "path": "exercises/CON-A2-E2_en.json"
+    },
+    {
+      "id": "CON-A2-E3",
+      "level": 1,
+      "kind": "completar",
+      "module": "CON-A2",
+      "title": "Complete the perimeter of a square",
+      "summary": "Read the side and write the perimeter of a square.",
+      "path": "exercises/CON-A2-E3_en.json"
+    },
+    {
+      "id": "CON-A2-E4",
+      "level": 1,
+      "kind": "modificar",
+      "module": "CON-A2",
+      "title": "From two prices to their average",
+      "summary": "Read two prices and write their average.",
+      "path": "exercises/CON-A2-E4_en.json"
+    },
+    {
+      "id": "CON-A2-E5",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-A2",
+      "title": "Area of a triangle",
+      "summary": "Read base and height and write the area of a triangle.",
+      "path": "exercises/CON-A2-E5_en.json"
+    },
+    {
+      "id": "CON-A2-E6",
+      "level": 1,
+      "kind": "modificar",
+      "module": "CON-A2",
+      "title": "From Fahrenheit to Celsius",
+      "summary": "Read a Fahrenheit temperature and write its Celsius equivalent.",
+      "path": "exercises/CON-A2-E6_en.json"
+    },
+    {
+      "id": "CON-B1-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B1",
+      "title": "Sum of two numbers",
+      "summary": "Read two integers and write their sum.",
+      "path": "exercises/CON-B1-E1_en.json"
+    },
+    {
+      "id": "CON-B1-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B1",
+      "title": "Area of a rectangle",
+      "summary": "Read base and height and write the area.",
+      "path": "exercises/CON-B1-E2_en.json"
+    },
+    {
+      "id": "CON-B1-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B1",
+      "title": "Swapping two values",
+      "summary": "Write two values in reverse order.",
+      "path": "exercises/CON-B1-E3_en.json"
+    },
+    {
+      "id": "CON-B1-E4",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B1",
+      "title": "Average of three marks",
+      "summary": "Read three marks and write their average.",
+      "path": "exercises/CON-B1-E4_en.json"
+    },
+    {
+      "id": "CON-B1-E5",
+      "level": 1,
+      "kind": "completar",
+      "module": "CON-B1",
+      "title": "Complete the perimeter",
+      "summary": "Complete the perimeter computation.",
+      "path": "exercises/CON-B1-E5_en.json"
+    },
+    {
+      "id": "CON-B1-E6",
+      "level": 1,
+      "kind": "modificar",
+      "module": "CON-B1",
+      "title": "From sum to difference",
+      "summary": "Turn a sum into a difference.",
+      "path": "exercises/CON-B1-E6_en.json"
+    },
+    {
+      "id": "CON-B1-E7",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B1",
+      "title": "Discounted price, as a sequence",
+      "summary": "Compute a final price with no loops.",
+      "path": "exercises/CON-B1-E7_en.json"
+    },
+    {
+      "id": "CON-B2-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Introduction with name and age",
+      "summary": "Read a name and an age and write a greeting.",
+      "path": "exercises/CON-B2-E1_en.json"
+    },
+    {
+      "id": "CON-B2-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Sum of two values in a single read",
+      "summary": "Read two integers in a single read and write their sum.",
+      "path": "exercises/CON-B2-E2_en.json"
+    },
+    {
+      "id": "CON-B2-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Product record in one line",
+      "summary": "Read a name and a price and write a product record.",
+      "path": "exercises/CON-B2-E3_en.json"
+    },
+    {
+      "id": "CON-B2-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Average of four readings",
+      "summary": "Read four integers and write their average.",
+      "path": "exercises/CON-B2-E4_en.json"
+    },
+    {
+      "id": "CON-B2-E5",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Label and value with no line break",
+      "summary": "Read a label and a value and write them on one line.",
+      "path": "exercises/CON-B2-E5_en.json"
+    },
+    {
+      "id": "CON-B2-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B2",
+      "title": "Temperature conversion with formatting",
+      "summary": "Read Celsius degrees and write the Fahrenheit equivalent.",
+      "path": "exercises/CON-B2-E6_en.json"
+    },
+    {
+      "id": "CON-B3-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B3",
+      "title": "Even or odd",
+      "summary": "Read an integer and write whether it is even or odd.",
+      "path": "exercises/CON-B3-E1_en.json"
+    },
+    {
+      "id": "CON-B3-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B3",
+      "title": "Weekend or weekday",
+      "summary": "Read a day of the week and classify it as weekend, weekday, or invalid.",
+      "path": "exercises/CON-B3-E2_en.json"
+    },
+    {
+      "id": "CON-B3-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B3",
+      "title": "Classifying a grade",
+      "summary": "Read a grade and write its category.",
+      "path": "exercises/CON-B3-E3_en.json"
+    },
+    {
+      "id": "CON-B3-E4",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B3",
+      "title": "Larger of two numbers",
+      "summary": "Read two integers and write the larger one.",
+      "path": "exercises/CON-B3-E4_en.json"
+    },
+    {
+      "id": "CON-B3-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B3",
+      "title": "Operations menu",
+      "summary": "Read an option and two numbers and write the operation's result.",
+      "path": "exercises/CON-B3-E5_en.json"
+    },
+    {
+      "id": "CON-B3-E6",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B3",
+      "title": "Age category",
+      "summary": "Read an age and write its category.",
+      "path": "exercises/CON-B3-E6_en.json"
+    },
+    {
+      "id": "CON-B4-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B4",
+      "title": "Countdown",
+      "summary": "Read n and write the countdown to 1.",
+      "path": "exercises/CON-B4-E1_en.json"
+    },
+    {
+      "id": "CON-B4-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B4",
+      "title": "Count of readings until the sentinel",
+      "summary": "Read numbers until a 0 and count how many were read.",
+      "path": "exercises/CON-B4-E2_en.json"
+    },
+    {
+      "id": "CON-B4-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B4",
+      "title": "Sum of a range",
+      "summary": "Read start and end and write the range's sum.",
+      "path": "exercises/CON-B4-E3_en.json"
+    },
+    {
+      "id": "CON-B4-E4",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B4",
+      "title": "Sum of multiples of three",
+      "summary": "Read a bound and sum the multiples of 3 up to it.",
+      "path": "exercises/CON-B4-E4_en.json"
+    },
+    {
+      "id": "CON-B4-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B4",
+      "title": "Digit count of a number",
+      "summary": "Read a number and write its digit count.",
+      "path": "exercises/CON-B4-E5_en.json"
+    },
+    {
+      "id": "CON-B4-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B4",
+      "title": "Countdown with a variable step",
+      "summary": "Read a starting value and a step and write the countdown.",
+      "path": "exercises/CON-B4-E6_en.json"
+    },
+    {
+      "id": "CON-B5-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B5",
+      "title": "Sum of a vector's elements",
+      "summary": "Read 5 integers and write their sum.",
+      "path": "exercises/CON-B5-E1_en.json"
+    },
+    {
+      "id": "CON-B5-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B5",
+      "title": "Largest element of a vector",
+      "summary": "Read 5 integers and write the largest.",
+      "path": "exercises/CON-B5-E2_en.json"
+    },
+    {
+      "id": "CON-B5-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B5",
+      "title": "Reverse a vector",
+      "summary": "Read 5 integers and write them reversed.",
+      "path": "exercises/CON-B5-E3_en.json"
+    },
+    {
+      "id": "CON-B5-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B5",
+      "title": "Search for a value in a vector",
+      "summary": "Read 5 integers and a target, and write its position.",
+      "path": "exercises/CON-B5-E4_en.json"
+    },
+    {
+      "id": "CON-B5-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B5",
+      "title": "Sum of a 2x2 matrix",
+      "summary": "Read 4 integers and write the matrix's sum.",
+      "path": "exercises/CON-B5-E5_en.json"
+    },
+    {
+      "id": "CON-B5-E6",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B5",
+      "title": "Main diagonal of a 3x3 matrix",
+      "summary": "Read 9 integers and write the diagonal's sum.",
+      "path": "exercises/CON-B5-E6_en.json"
+    },
+    {
+      "id": "CON-B6-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B6",
+      "title": "Square function",
+      "summary": "Function that returns a number's square.",
+      "path": "exercises/CON-B6-E1_en.json"
+    },
+    {
+      "id": "CON-B6-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B6",
+      "title": "Maximum of two numbers function",
+      "summary": "Function that returns the larger of two numbers.",
+      "path": "exercises/CON-B6-E2_en.json"
+    },
+    {
+      "id": "CON-B6-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B6",
+      "title": "Procedure that swaps two variables",
+      "summary": "By-reference procedure that swaps two values.",
+      "path": "exercises/CON-B6-E3_en.json"
+    },
+    {
+      "id": "CON-B6-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B6",
+      "title": "Procedure that doubles a vector",
+      "summary": "Procedure that doubles every element of a vector.",
+      "path": "exercises/CON-B6-E4_en.json"
+    },
+    {
+      "id": "CON-B6-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B6",
+      "title": "Function that counts elements larger than a bound",
+      "summary": "Function that counts a vector's elements larger than a bound.",
+      "path": "exercises/CON-B6-E5_en.json"
+    },
+    {
+      "id": "CON-B6-E6",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B6",
+      "title": "Procedure that orders two variables",
+      "summary": "Procedure that leaves two variables ordered.",
+      "path": "exercises/CON-B6-E6_en.json"
+    },
+    {
+      "id": "CON-B7-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B7",
+      "title": "Recursive factorial",
+      "summary": "Recursive function that computes a factorial.",
+      "path": "exercises/CON-B7-E1_en.json"
+    },
+    {
+      "id": "CON-B7-E2",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-B7",
+      "title": "Recursive sum from 1 to n",
+      "summary": "Recursive function that sums from 1 to n.",
+      "path": "exercises/CON-B7-E2_en.json"
+    },
+    {
+      "id": "CON-B7-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B7",
+      "title": "Recursive power",
+      "summary": "Recursive function that computes a power.",
+      "path": "exercises/CON-B7-E3_en.json"
+    },
+    {
+      "id": "CON-B7-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B7",
+      "title": "Recursive digit count",
+      "summary": "Recursive function that counts digits.",
+      "path": "exercises/CON-B7-E4_en.json"
+    },
+    {
+      "id": "CON-B7-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-B7",
+      "title": "Sum of a vector, recursively",
+      "summary": "Recursive function that sums a vector's elements.",
+      "path": "exercises/CON-B7-E5_en.json"
+    },
+    {
+      "id": "CON-B7-E6",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B7",
+      "title": "Recursive Fibonacci",
+      "summary": "Recursive function that computes a Fibonacci number.",
+      "path": "exercises/CON-B7-E6_en.json"
+    },
+    {
+      "id": "CON-B8-E1",
+      "level": 1,
+      "kind": "predecir",
+      "module": "CON-B8",
+      "title": "Count passing grades",
+      "summary": "Read grades and count how many passed.",
+      "path": "exercises/CON-B8-E1_en.json"
+    },
+    {
+      "id": "CON-B8-E2",
+      "level": 1,
+      "kind": "predecir",
+      "module": "CON-B8",
+      "title": "Sum of the even numbers",
+      "summary": "Read numbers and sum the even ones.",
+      "path": "exercises/CON-B8-E2_en.json"
+    },
+    {
+      "id": "CON-B8-E3",
+      "level": 2,
+      "kind": "predecir",
+      "module": "CON-B8",
+      "title": "Largest of a series",
+      "summary": "Read a series and write the largest.",
+      "path": "exercises/CON-B8-E3_en.json"
+    },
+    {
+      "id": "CON-B8-E4",
+      "level": 1,
+      "kind": "modificar",
+      "module": "CON-B8",
+      "title": "From counting passing to counting failing",
+      "summary": "Modify the passing count to count failing grades.",
+      "path": "exercises/CON-B8-E4_en.json"
+    },
+    {
+      "id": "CON-B8-E5",
+      "level": 2,
+      "kind": "predecir",
+      "module": "CON-B8",
+      "title": "Count weekend days",
+      "summary": "Read weekdays and count the weekend ones.",
+      "path": "exercises/CON-B8-E5_en.json"
+    },
+    {
+      "id": "CON-B8-E6",
+      "level": 2,
+      "kind": "modificar",
+      "module": "CON-B8",
+      "title": "Passing and failing on two lines",
+      "summary": "Write passing and failing counts on two lines.",
+      "path": "exercises/CON-B8-E6_en.json"
+    },
+    {
+      "id": "CON-C1-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "Rectangle class with area",
+      "summary": "Class with base, height and an Area method.",
+      "path": "exercises/CON-C1-E1_en.json"
+    },
+    {
+      "id": "CON-C1-E2",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "Counter class with increment",
+      "summary": "Class that accumulates increments.",
+      "path": "exercises/CON-C1-E2_en.json"
+    },
+    {
+      "id": "CON-C1-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "Thermometer class with conversion",
+      "summary": "Class that converts Celsius to Fahrenheit.",
+      "path": "exercises/CON-C1-E3_en.json"
+    },
+    {
+      "id": "CON-C1-E4",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "Product class with discount",
+      "summary": "Class that applies a percentage discount.",
+      "path": "exercises/CON-C1-E4_en.json"
+    },
+    {
+      "id": "CON-C1-E5",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "Single-item Stack class",
+      "summary": "Class that stores and returns a single value.",
+      "path": "exercises/CON-C1-E5_en.json"
+    },
+    {
+      "id": "CON-C1-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C1",
+      "title": "TrafficLight class with state",
+      "summary": "Class that cycles through three states.",
+      "path": "exercises/CON-C1-E6_en.json"
+    },
+    {
+      "id": "CON-C2-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "Circle class with perimeter and area",
+      "summary": "Class with radius, perimeter and area.",
+      "path": "exercises/CON-C2-E1_en.json"
+    },
+    {
+      "id": "CON-C2-E2",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "SafeBox class with password",
+      "summary": "Class with a private attribute and password checking.",
+      "path": "exercises/CON-C2-E2_en.json"
+    },
+    {
+      "id": "CON-C2-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "Employee class with net salary",
+      "summary": "Class that applies a discount to a salary.",
+      "path": "exercises/CON-C2-E3_en.json"
+    },
+    {
+      "id": "CON-C2-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "AgeRange class with validation",
+      "summary": "Class that validates an age range.",
+      "path": "exercises/CON-C2-E4_en.json"
+    },
+    {
+      "id": "CON-C2-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "Book class with loan status",
+      "summary": "Class with mutable loan state.",
+      "path": "exercises/CON-C2-E5_en.json"
+    },
+    {
+      "id": "CON-C2-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C2",
+      "title": "Scoreboard class with two teams",
+      "summary": "Class that accumulates two teams' points.",
+      "path": "exercises/CON-C2-E6_en.json"
+    },
+    {
+      "id": "CON-C3-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Detect whether two variables are the same object",
+      "summary": "Compares object identities after an alias.",
+      "path": "exercises/CON-C3-E1_en.json"
+    },
+    {
+      "id": "CON-C3-E2",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Alias that mutates a shared counter",
+      "summary": "An alias that shares and mutates the same counter.",
+      "path": "exercises/CON-C3-E2_en.json"
+    },
+    {
+      "id": "CON-C3-E3",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Copy that does not affect the original",
+      "summary": "A shallow copy that does not affect the original.",
+      "path": "exercises/CON-C3-E3_en.json"
+    },
+    {
+      "id": "CON-C3-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Swap the content of two boxes",
+      "summary": "A subprogram that swaps two objects' content.",
+      "path": "exercises/CON-C3-E4_en.json"
+    },
+    {
+      "id": "CON-C3-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Two-element linked node",
+      "summary": "A node that links to another through an attribute.",
+      "path": "exercises/CON-C3-E5_en.json"
+    },
+    {
+      "id": "CON-C3-E6",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C3",
+      "title": "Copy and compare identities",
+      "summary": "Compares identities after copying versus assigning.",
+      "path": "exercises/CON-C3-E6_en.json"
+    },
+    {
+      "id": "CON-C4-E1",
+      "level": 1,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Shape hierarchy with overridden Area",
+      "summary": "A subclass that overrides Area.",
+      "path": "exercises/CON-C4-E1_en.json"
+    },
+    {
+      "id": "CON-C4-E2",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Employee and Manager with inherited bonus",
+      "summary": "A bonus computed differently in the subclass.",
+      "path": "exercises/CON-C4-E2_en.json"
+    },
+    {
+      "id": "CON-C4-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Vehicle and Motorcycle with super",
+      "summary": "Two subclasses that fix their wheel count with super.",
+      "path": "exercises/CON-C4-E3_en.json"
+    },
+    {
+      "id": "CON-C4-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Dispatch across three different shapes",
+      "summary": "Three shapes that compute their area differently.",
+      "path": "exercises/CON-C4-E4_en.json"
+    },
+    {
+      "id": "CON-C4-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Savings account that extends Account",
+      "summary": "An account that adds interest on top of the inherited base.",
+      "path": "exercises/CON-C4-E5_en.json"
+    },
+    {
+      "id": "CON-C4-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C4",
+      "title": "Three-level hierarchy",
+      "summary": "Three levels that accumulate with super.",
+      "path": "exercises/CON-C4-E6_en.json"
+    },
+    {
+      "id": "CON-C5-E1",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Order that delegates to Customer",
+      "summary": "Composition: Order has a Customer.",
+      "path": "exercises/CON-C5-E1_en.json"
+    },
+    {
+      "id": "CON-C5-E2",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Library that delegates to Book",
+      "summary": "Composition: Library has a Book.",
+      "path": "exercises/CON-C5-E2_en.json"
+    },
+    {
+      "id": "CON-C5-E3",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Thermostat that delegates to Sensor",
+      "summary": "Composition: Thermostat has a Sensor.",
+      "path": "exercises/CON-C5-E3_en.json"
+    },
+    {
+      "id": "CON-C5-E4",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Invoice that delegates to two Products",
+      "summary": "Composition with two collaborating objects.",
+      "path": "exercises/CON-C5-E4_en.json"
+    },
+    {
+      "id": "CON-C5-E5",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Team that delegates to two Players",
+      "summary": "Composition with two collaborating objects.",
+      "path": "exercises/CON-C5-E5_en.json"
+    },
+    {
+      "id": "CON-C5-E6",
+      "level": 2,
+      "kind": "crear",
+      "module": "CON-C5",
+      "title": "Player that delegates to Song",
+      "summary": "Composition: Player has a Song.",
+      "path": "exercises/CON-C5-E6_en.json"
+    },
+    {
+      "id": "CON-E1",
+      "level": 2,
+      "kind": "crear",
+      "title": "Sieve of Eratosthenes",
+      "summary": "Finds primes up to a limit with the classic sieve.",
+      "path": "exercises/CON-E1_en.json"
+    },
+    {
+      "id": "CON-E2",
+      "level": 2,
+      "kind": "crear",
+      "title": "Bubble sort of a vector",
+      "summary": "Sorts 5 numbers with the bubble algorithm.",
+      "path": "exercises/CON-E2_en.json"
+    },
+    {
+      "id": "CON-E3",
+      "level": 2,
+      "kind": "crear",
+      "title": "2x2 matrix multiplication",
+      "summary": "Multiplies two 2x2 matrices.",
+      "path": "exercises/CON-E3_en.json"
+    },
+    {
+      "id": "CON-E4",
+      "level": 2,
+      "kind": "crear",
+      "title": "Count vowels in a text",
+      "summary": "Counts a word's vowels, character by character.",
+      "path": "exercises/CON-E4_en.json"
+    },
+    {
+      "id": "CON-E5",
+      "level": 3,
+      "kind": "crear",
+      "title": "Polymorphic simulation of two shapes",
+      "summary": "Sums the areas of different shapes stored in an array.",
+      "path": "exercises/CON-E5_en.json"
+    },
+    {
+      "id": "CON-E6",
+      "level": 2,
+      "kind": "crear",
+      "title": "Check whether a word is a palindrome",
+      "summary": "Compares a word with its reverse.",
+      "path": "exercises/CON-E6_en.json"
+    },
+    {
+      "id": "CON-E7",
+      "level": 2,
+      "kind": "crear",
+      "title": "Secondary diagonal sum of a 3x3 matrix",
+      "summary": "Sums the three cells of the secondary diagonal.",
+      "path": "exercises/CON-E7_en.json"
+    },
+    {
+      "id": "CON-E8",
+      "level": 3,
+      "kind": "crear",
+      "title": "Largest element of a vector, with recursion",
+      "summary": "Finds a vector's largest element with a recursive function.",
+      "path": "exercises/CON-E8_en.json"
+    },
+    {
+      "id": "CON-E9",
+      "level": 2,
+      "kind": "crear",
+      "title": "Average of a vector with a Statistics class",
+      "summary": "Computes an average by delegating to a class.",
+      "path": "exercises/CON-E9_en.json"
+    },
+    {
+      "id": "CON-E10",
+      "level": 2,
+      "kind": "crear",
+      "title": "Matrix cells above the average",
+      "summary": "Counts how many cells exceed the matrix's average.",
+      "path": "exercises/CON-E10_en.json"
+    }
+  ],
+  "examples": [
+    {
+      "id": "example-a1-vuelto",
+      "title": "The change from a purchase",
+      "summary": "A precise sequence of three boxes.",
+      "path": "examples/a1_vuelto_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-a1-promedio",
+      "title": "Average of three grades",
+      "summary": "Why the order of the steps is not negotiable.",
+      "path": "examples/a1_promedio_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-a2-acumulador",
+      "title": "Simple accumulator",
+      "summary": "A box that updates twice on top of its own value.",
+      "path": "examples/a2_acumulador_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-sum",
+      "title": "Sum of two numbers",
+      "summary": "Declares, assigns and computes with three variables.",
+      "path": "examples/sum_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b1-expresiones",
+      "title": "Precedence in an expression",
+      "summary": "The same computation with and without parentheses.",
+      "path": "examples/b1_expresiones_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b1-intercambio",
+      "title": "Swap with an auxiliary box",
+      "summary": "Why a third box is needed.",
+      "path": "examples/b1_intercambio_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-guided-demo",
+      "title": "Guided demo",
+      "summary": "Interactive algorithm of the welcome experience.",
+      "path": "examples/guided_demo_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b2-lectura-multiple",
+      "title": "Sum in a single read",
+      "summary": "Two designators requested in a single statement.",
+      "path": "examples/b2_lectura_multiple_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b2-saludo",
+      "title": "Greeting with name and age",
+      "summary": "A list of expressions and the no-line-break modifier.",
+      "path": "examples/b2_saludo_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b3-aprobado",
+      "title": "Passed or failed",
+      "summary": "A simple conditional with both branches.",
+      "path": "examples/b3_aprobado_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b3-dia-semana",
+      "title": "Day of the week",
+      "summary": "A multiple selection with grouped labels and a default branch.",
+      "path": "examples/b3_dia_semana_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b4-mientras",
+      "title": "Countdown",
+      "summary": "A While loop that may run zero times.",
+      "path": "examples/b4_mientras_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b4-repetir",
+      "title": "Sum until the sentinel",
+      "summary": "A Repeat loop that always runs at least once.",
+      "path": "examples/b4_repetir_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b4-para",
+      "title": "Even numbers",
+      "summary": "A For loop with an explicit step other than one.",
+      "path": "examples/b4_para_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b5-recorrido",
+      "title": "Vector traversal",
+      "summary": "Filling and reading a whole array with a counted loop.",
+      "path": "examples/b5_recorrido_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b5-busqueda",
+      "title": "Searching for an element",
+      "summary": "Traversing a vector comparing every element against a target.",
+      "path": "examples/b5_busqueda_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b5-matriz",
+      "title": "Sum of a matrix",
+      "summary": "A counted loop inside another to traverse two dimensions.",
+      "path": "examples/b5_matriz_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b6-funcion",
+      "title": "Function with a return value",
+      "summary": "A function that returns the larger of two numbers.",
+      "path": "examples/b6_funcion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b6-referencia",
+      "title": "Passing by reference",
+      "summary": "Swapping two variables only works by reference.",
+      "path": "examples/b6_referencia_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b6-arreglo-parametro",
+      "title": "An array as a parameter",
+      "summary": "A procedure that mutates the array it received.",
+      "path": "examples/b6_arreglo_parametro_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b7-factorial",
+      "title": "Recursive factorial",
+      "summary": "Base case and recursive case, the canonical example.",
+      "path": "examples/b7_factorial_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b7-suma",
+      "title": "Recursive sum from 1 to n",
+      "summary": "Every call has its own frame and its own n.",
+      "path": "examples/b7_suma_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-b8-clasificar",
+      "title": "Count passing grades",
+      "summary": "A counted loop with a conditional inside, to read in both diagrams.",
+      "path": "examples/b8_clasificar_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c1-cuenta",
+      "title": "Bank account",
+      "summary": "A class with one private attribute and two public methods.",
+      "path": "examples/c1_cuenta_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c2-persona",
+      "title": "Person with constructor",
+      "summary": "Private attributes, public methods and a constructor that initialises them.",
+      "path": "examples/c2_persona_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c3-alias",
+      "title": "Two variables, one object",
+      "summary": "Assigning an object copies the reference, it does not create a new one.",
+      "path": "examples/c3_alias_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c3-copia",
+      "title": "Independent copy",
+      "summary": "Copying creates a new object with its own identity.",
+      "path": "examples/c3_copia_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c4-mascotas",
+      "title": "Pet and Cat",
+      "summary": "Single inheritance with a construction chain and an override.",
+      "path": "examples/c4_mascotas_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c4-despacho",
+      "title": "Dog and Cat taking turns to speak",
+      "summary": "Dispatch looks at the object's real class, not the declared type.",
+      "path": "examples/c4_despacho_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-c5-auto",
+      "title": "Car with an Engine",
+      "summary": "Composition: Car delegates to Engine instead of extending it.",
+      "path": "examples/c5_auto_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-identificadores",
+      "title": "Valid identifiers",
+      "summary": "Allowed naming structure for variables and subroutines.",
+      "path": "examples/esp_lexico_identificadores_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-mayusculas",
+      "title": "Case insensitivity",
+      "summary": "Keywords and identifiers do not distinguish uppercase from lowercase.",
+      "path": "examples/esp_lexico_mayusculas_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-numeros",
+      "title": "Numeric literals",
+      "summary": "Integers with optional sign and real numbers with a decimal point.",
+      "path": "examples/esp_lexico_numeros_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-cadenas",
+      "title": "String and character literals",
+      "summary": "Strings in double or single quotes and single character literals.",
+      "path": "examples/esp_lexico_cadenas_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-comentarios",
+      "title": "Single line comments",
+      "summary": "Double slash comments ignored by the analyzer.",
+      "path": "examples/esp_lexico_comentarios_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-fin-sentencia",
+      "title": "End of statement",
+      "summary": "Statement separation with newlines or semicolons.",
+      "path": "examples/esp_lexico_fin_sentencia_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-lexico-espacios",
+      "title": "Whitespace and indentation",
+      "summary": "Whitespace and indentation are free-form and do not alter structure.",
+      "path": "examples/esp_lexico_espacios_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-cadena-caracter",
+      "title": "String and Character",
+      "summary": "Difference between arbitrary text and an individual character.",
+      "path": "examples/esp_tipos_cadena_caracter_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-conversion-implicita",
+      "title": "Implicit conversion from integer to real",
+      "summary": "The only automatic type conversion between primitives.",
+      "path": "examples/esp_tipos_conversion_implicita_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-rango",
+      "title": "Numeric type range",
+      "summary": "Bounds of 64-bit integers and floating point reals.",
+      "path": "examples/esp_tipos_rango_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-operadores-parentesis",
+      "title": "Parentheses in expressions",
+      "summary": "Overriding default evaluation order with parentheses.",
+      "path": "examples/esp_operadores_parentesis_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-operadores-decisiones",
+      "title": "Precedence in powers and negations",
+      "summary": "Power associativity and logical not operator priority.",
+      "path": "examples/esp_operadores_decisiones_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-operadores-concatenacion",
+      "title": "Addition and concatenation operator",
+      "summary": "Numeric addition versus text concatenation using the plus operator.",
+      "path": "examples/esp_operadores_concatenacion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-operadores-cortocircuito",
+      "title": "Short circuit evaluation",
+      "summary": "Logical operators skip right operand evaluation when left determines the result.",
+      "path": "examples/esp_operadores_cortocircuito_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-declaracion-multiple",
+      "title": "Multiple declaration",
+      "summary": "Declaring multiple variables of the same type in one statement.",
+      "path": "examples/esp_declaracion_multiple_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-declaracion-orden-evaluacion",
+      "title": "Evaluation order in assignment",
+      "summary": "Evaluating the right hand expression before updating the target.",
+      "path": "examples/esp_declaracion_orden_evaluacion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-io-salida-expresiones",
+      "title": "Expression output",
+      "summary": "Emitting multiple comma-separated values.",
+      "path": "examples/esp_io_salida_expresiones_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-io-separador",
+      "title": "Manual output separator",
+      "summary": "Display does not add automatic spaces between arguments.",
+      "path": "examples/esp_io_separador_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-io-sin-salto",
+      "title": "Output without newline",
+      "summary": "Using the Without Newline modifier to stay on the same line.",
+      "path": "examples/esp_io_sin_salto_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-io-valores",
+      "title": "Output format by type",
+      "summary": "Textual representation of each primitive type.",
+      "path": "examples/esp_io_valores_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-io-lectura",
+      "title": "Reading into designators",
+      "summary": "Reading values from standard input into variables.",
+      "path": "examples/esp_io_lectura_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-condicional",
+      "title": "Conditional statement If-Then",
+      "summary": "Simple and nested branching based on boolean conditions.",
+      "path": "examples/esp_control_condicional_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-seleccion",
+      "title": "Multi-way selection Switch",
+      "summary": "Branching on exact values with an otherwise case.",
+      "path": "examples/esp_control_seleccion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-mientras",
+      "title": "While loop",
+      "summary": "Loop with condition check at the beginning.",
+      "path": "examples/esp_control_mientras_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-repetir",
+      "title": "Repeat-Until loop",
+      "summary": "Loop executing at least once with condition checked at the end.",
+      "path": "examples/esp_control_repetir_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-para",
+      "title": "For loop with step",
+      "summary": "Counted iteration with explicit or implicit step.",
+      "path": "examples/esp_control_para_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-control-para-garantias",
+      "title": "For loop guarantees",
+      "summary": "Negative step behavior and loop variable persistence upon termination.",
+      "path": "examples/esp_control_para_garantias_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-arreglos-declaracion",
+      "title": "Array declaration",
+      "summary": "One-dimensional and multi-dimensional allocation with Dimension.",
+      "path": "examples/esp_arreglos_declaracion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-arreglos-indice-cero",
+      "title": "Zero-based indexing",
+      "summary": "First element at index 0 and last element at size minus one.",
+      "path": "examples/esp_arreglos_indice_cero_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-arreglos-tamano-constante",
+      "title": "Constant expression size",
+      "summary": "Array dimensions must be statically evaluable at analysis time.",
+      "path": "examples/esp_arreglos_tamano_constante_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-arreglos-acceso",
+      "title": "Array element access",
+      "summary": "Reading and writing elements in arrays and matrices.",
+      "path": "examples/esp_arreglos_acceso_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-dos-papeles",
+      "title": "Subroutines with and without return",
+      "summary": "Procedures and functions under a single unified syntax.",
+      "path": "examples/esp_subprogramas_dos_papeles_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-donde-vive",
+      "title": "Subroutine placement",
+      "summary": "Declaring subroutines as siblings to the main algorithm.",
+      "path": "examples/esp_subprogramas_donde_vive_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-parametros",
+      "title": "Subroutine parameters",
+      "summary": "Passing scalars and arrays as arguments.",
+      "path": "examples/esp_subprogramas_parametros_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-paso",
+      "title": "Pass by value and by reference",
+      "summary": "By Value and By Reference modifiers on scalar parameters.",
+      "path": "examples/esp_subprogramas_paso_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-paso-arreglos",
+      "title": "Array passing by reference",
+      "summary": "Arrays are always passed by reference automatically.",
+      "path": "examples/esp_subprogramas_paso_arreglos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-retorno",
+      "title": "Return statement",
+      "summary": "Returning values using the Return statement.",
+      "path": "examples/esp_subprogramas_retorno_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-llamada",
+      "title": "Subroutine invocation",
+      "summary": "Invoking as a standalone statement or within an expression.",
+      "path": "examples/esp_subprogramas_llamada_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-subprogramas-recursion",
+      "title": "Subroutine recursion",
+      "summary": "Direct recursive calls with a base case.",
+      "path": "examples/esp_subprogramas_recursion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-relaciones",
+      "title": "Type compatibility",
+      "summary": "Allowed integer to real promotion and strict checks.",
+      "path": "examples/esp_tipos_relaciones_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-cinco-reglas",
+      "title": "Type rules in operations",
+      "summary": "Real division, integer division, and modulus typing rules.",
+      "path": "examples/esp_tipos_cinco_reglas_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-inferencia",
+      "title": "Type inference in flexible profile",
+      "summary": "Automatic type deduction for undeclared variables.",
+      "path": "examples/esp_tipos_inferencia_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-tipos-arreglos-objetos",
+      "title": "Reference type semantics",
+      "summary": "Objects and arrays are managed through references.",
+      "path": "examples/esp_tipos_arreglos_objetos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-funciones-nombre-no-reservado",
+      "title": "Non-reserved function names",
+      "summary": "Built-in functions can be shadowed by local variables.",
+      "path": "examples/esp_funciones_nombre_no_reservado_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-funciones-matematicas",
+      "title": "Built-in math functions",
+      "summary": "Truncation and rounding over real numbers.",
+      "path": "examples/esp_funciones_matematicas_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-funciones-sistema-tipos",
+      "title": "Conversion and text functions",
+      "summary": "Text conversion and character indexing.",
+      "path": "examples/esp_funciones_sistema_tipos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-funciones-aleatorio",
+      "title": "Random function",
+      "summary": "Generating random integers within a range.",
+      "path": "examples/esp_funciones_aleatorio_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-declaracion",
+      "title": "Class declaration",
+      "summary": "Class definitions with public attributes and members.",
+      "path": "examples/esp_clases_declaracion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-atributos",
+      "title": "Attribute visibility",
+      "summary": "Public and Private modifiers on class member variables.",
+      "path": "examples/esp_clases_atributos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-metodos",
+      "title": "Class methods",
+      "summary": "Defining methods with parameters and return values.",
+      "path": "examples/esp_clases_metodos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-constructor",
+      "title": "Class constructor",
+      "summary": "State initialization with Constructor and self reference via This.",
+      "path": "examples/esp_clases_constructor_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-instanciacion",
+      "title": "Object instantiation",
+      "summary": "Creating class instances using the New operator.",
+      "path": "examples/esp_clases_instanciacion_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-este-super",
+      "title": "Accessing This and Super",
+      "summary": "Invoking superclass methods and self reference with This.",
+      "path": "examples/esp_clases_este_super_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-miembro-sobrescritura",
+      "title": "Method overriding",
+      "summary": "Specializing behavior in derived classes.",
+      "path": "examples/esp_clases_miembro_sobrescritura_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-como-tipos",
+      "title": "Classes as types in subroutines",
+      "summary": "Using class types in parameters and return types.",
+      "path": "examples/esp_clases_como_tipos_en.pseudo",
+      "profile": "english"
+    },
+    {
+      "id": "example-esp-clases-copia",
+      "title": "Shallow copy of objects",
+      "summary": "Duplicating instances using ShallowCopy.",
+      "path": "examples/esp_clases_copia_en.pseudo",
+      "profile": "english"
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "cajas-memoria",
+      "title": "Named memory boxes",
+      "summary": "A row of boxes, each with its name and its value."
+    },
+    {
+      "id": "arreglo-indexado",
+      "title": "Contiguous memory indexed from zero",
+      "summary": "A row of boxes of the same type, numbered from 0."
+    },
+    {
+      "id": "pila-de-llamadas",
+      "title": "The call stack",
+      "summary": "One frame per active call, stacked one on top of another."
+    }
+  ],
+  "support": [
+    {
+      "id": "contact-support",
+      "title": "Contact and support",
+      "summary": "Support channels, issue reporting, and project feedback.",
+      "path": "support/contact_en.md"
+    }
+  ]
+}

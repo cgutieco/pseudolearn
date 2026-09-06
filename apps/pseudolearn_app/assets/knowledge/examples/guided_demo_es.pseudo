@@ -1,0 +1,12 @@
+Proceso DemostracionGuiada
+    Definir temperatura Como Entero;
+    Definir lecturas Como Entero;
+    temperatura <- 30;
+    lecturas <- 0;
+    Mientras temperatura > 24 Hacer
+        temperatura <- temperatura - 3;
+        lecturas <- lecturas + 1;
+        Escribir "Lectura ", lecturas, ": ", temperatura, " grados";
+    FinMientras
+    Escribir "Confort alcanzado tras ", lecturas, " lecturas";
+FinProceso

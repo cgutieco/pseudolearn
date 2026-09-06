@@ -1,0 +1,5 @@
+Algoritmo Comentarios
+  Definir x Como Entero // Variable principal
+  x <- 5 // Asignar valor
+  Escribir x // Salida
+FinAlgoritmo

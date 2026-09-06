@@ -1,0 +1,59 @@
+{
+  "id": "CON-A2-E3",
+  "title": "Complete the perimeter of a square",
+  "statement": "Complete the algorithm: the line that computes the perimeter is missing. Read the side of a square and write its perimeter.",
+  "level": 1,
+  "kind": "completar",
+  "module": "CON-A2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "5"
+      ],
+      "expectedOutputs": [
+        "20"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "3"
+      ],
+      "expectedOutputs": [
+        "12"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "10"
+      ],
+      "expectedOutputs": [
+        "40"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "7"
+      ],
+      "expectedOutputs": [
+        "28"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm SquarePerimeter\n    define side as integer;\n    define perimeter as integer;\n    read side;\n    perimeter <- side * 4;\n    write perimeter;\nendAlgorithm\n",
+  "starterCode": "algorithm SquarePerimeter\n    define side as integer;\n    define perimeter as integer;\n    read side;\n\n    write perimeter;\nendAlgorithm\n"
+}

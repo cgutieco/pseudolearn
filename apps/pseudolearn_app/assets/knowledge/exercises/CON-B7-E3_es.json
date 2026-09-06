@@ -1,0 +1,24 @@
+{
+  "id": "CON-B7-E3",
+  "title": "Potencia recursiva",
+  "statement": "Escribe una función recursiva Potencia que reciba una base entera y un exponente entero no negativo, y devuelva la base elevada al exponente. Resuélvelo con recursión pura, sin ningún bucle. Lee la base y el exponente y escribe el resultado de llamarla.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["2", "3"], "expectedOutputs": ["8"], "expected": "numerico"},
+    {"inputs": ["5", "0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "4"], "expectedOutputs": ["81"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "10"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Potencia", "arity": 2, "requirement": "El enunciado pide una función recursiva llamada Potencia con dos parámetros."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."}
+  ],
+  "referenceSolution": "SubProceso Potencia(base Como Entero, exponente Como Entero) Como Entero\n    Si exponente = 0 Entonces\n        Retornar 1;\n    SiNo\n        Retornar base * Potencia(base, exponente - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularPotencia\n    Definir base Como Entero;\n    Definir exponente Como Entero;\n    Leer base;\n    Leer exponente;\n    Escribir Potencia(base, exponente);\nFinProceso\n"
+}

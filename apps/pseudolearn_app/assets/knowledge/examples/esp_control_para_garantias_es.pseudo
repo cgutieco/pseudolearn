@@ -1,0 +1,7 @@
+Algoritmo GarantiasPara
+  Definir i Como Entero
+  Para i <- 5 Hasta 1 Con Paso -2 Hacer
+    Escribir i
+  FinPara
+  Escribir i
+FinAlgoritmo

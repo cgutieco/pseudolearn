@@ -1,0 +1,18 @@
+{
+  "id": "CON-E6",
+  "title": "Check whether a word is a palindrome",
+  "statement": "Read a lowercase word, with no spaces, and write 1 if it reads the same forwards and backwards, or 0 if not.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["ana"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["hola"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["a"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["abba"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["abc"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [],
+  "referenceSolution": "algorithm CheckPalindrome\n    define word as string;\n    define i as integer;\n    define wordLength as integer;\n    define isPalindrome as integer;\n    read word;\n    wordLength <- length(word);\n    isPalindrome <- 1;\n    for i <- 0 to wordLength div 2 - 1 step 1 do\n        if charAt(word, i) <> charAt(word, wordLength - 1 - i) then\n            isPalindrome <- 0;\n        endIf\n    endFor\n    write isPalindrome;\nendAlgorithm\n"
+}

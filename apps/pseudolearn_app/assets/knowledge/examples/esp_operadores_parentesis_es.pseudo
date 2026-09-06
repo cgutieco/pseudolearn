@@ -1,0 +1,6 @@
+Algoritmo Parentesis
+  Definir a, b Como Entero
+  a <- 2 + 3 * 4
+  b <- (2 + 3) * 4
+  Escribir a, b
+FinAlgoritmo

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E5",
+  "title": "Equipo que delega en dos Jugadores",
+  "statement": "Define una clase Jugador con constructor que reciba una cantidad de goles, y un método Goles que la devuelva. Define una clase Equipo que tenga dos Jugadores como atributos, reciba sus goles en su constructor, y un método TotalGoles que devuelva la suma delegando en cada Jugador. Lee los goles de los dos jugadores, crea el equipo y escribe el total.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["3", "2"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "10"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["1", "0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0", "7"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con clases."}
+  ],
+  "referenceSolution": "Clase Jugador\n    Privado Definir goles Como Entero;\n\n    Metodo Constructor(unosGoles Como Entero)\n        Este.goles <- unosGoles;\n    FinMetodo\n\n    Publico Metodo Goles() Como Entero\n        Retornar Este.goles;\n    FinMetodo\nFinClase\n\nClase Equipo\n    Privado Definir jugador1 Como Jugador;\n    Privado Definir jugador2 Como Jugador;\n\n    Metodo Constructor(unosGoles1 Como Entero, unosGoles2 Como Entero)\n        Este.jugador1 <- Nuevo Jugador(unosGoles1);\n        Este.jugador2 <- Nuevo Jugador(unosGoles2);\n    FinMetodo\n\n    Publico Metodo TotalGoles() Como Entero\n        Retornar Este.jugador1.Goles() + Este.jugador2.Goles();\n    FinMetodo\nFinClase\n\nProceso CalcularTotalGoles\n    Definir g1 Como Entero;\n    Definir g2 Como Entero;\n    Definir equipo Como Equipo;\n    Leer g1;\n    Leer g2;\n    equipo <- Nuevo Equipo(g1, g2);\n    Escribir equipo.TotalGoles();\nFinProceso\n"
+}

@@ -1,0 +1,34 @@
+Clase Mascota
+    Privado Definir nombre Como Cadena;
+
+    Metodo Constructor(unNombre Como Cadena)
+        Este.nombre <- unNombre;
+    FinMetodo
+
+    Publico Metodo Nombre() Como Cadena
+        Retornar Este.nombre;
+    FinMetodo
+
+    Publico Metodo Hablar() Como Cadena
+        Retornar "...";
+    FinMetodo
+FinClase
+
+Clase Gato Hereda De Mascota
+    Privado Definir raza Como Cadena;
+
+    Metodo Constructor(unNombre Como Cadena, unaRaza Como Cadena)
+        Super.Constructor(unNombre);
+        Este.raza <- unaRaza;
+    FinMetodo
+
+    Publico Metodo Hablar() Como Cadena
+        Retornar Este.Nombre() + " dice miau";
+    FinMetodo
+FinClase
+
+Proceso Refugio
+    Definir mascota Como Mascota;
+    mascota <- Nuevo Gato("Kitty", "Siames");
+    Escribir mascota.Hablar();
+FinProceso

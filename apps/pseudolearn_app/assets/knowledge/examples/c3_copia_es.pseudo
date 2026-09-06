@@ -1,0 +1,13 @@
+Clase Caja
+    Publico Definir contenido Como Entero;
+FinClase
+
+Proceso ProbarCopia
+    Definir original Como Caja;
+    Definir copia Como Caja;
+    original <- Nuevo Caja();
+    original.contenido <- 10;
+    copia <- Copiar(original);
+    copia.contenido <- 99;
+    Escribir original.contenido;
+FinProceso

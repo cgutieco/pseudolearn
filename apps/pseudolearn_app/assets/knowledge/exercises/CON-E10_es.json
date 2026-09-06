@@ -1,0 +1,20 @@
+{
+  "id": "CON-E10",
+  "title": "Celdas de una matriz por encima del promedio",
+  "statement": "Lee 9 números enteros que forman una matriz de 3 filas y 3 columnas, fila por fila, y escribe cuántas celdas son mayores que el promedio de toda la matriz.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5", "6", "7", "8", "9"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5", "5", "5", "5", "5"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "1", "1", "1", "1", "1", "1", "1", "100"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["9", "9", "9", "1", "1", "1", "1", "1", "1"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso ContarMayoresQuePromedio\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir suma Como Entero;\n    Definir promedio Como Real;\n    Definir contador Como Entero;\n    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    suma <- 0;\n    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            suma <- suma + datos[fila, columna];\n        FinPara\n    FinPara\n    promedio <- suma / 9;\n    contador <- 0;\n    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            Si datos[fila, columna] > promedio Entonces\n                contador <- contador + 1;\n            FinSi\n        FinPara\n    FinPara\n    Escribir contador;\nFinProceso\n"
+}

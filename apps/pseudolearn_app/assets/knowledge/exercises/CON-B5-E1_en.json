@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E1",
+  "title": "Sum of a vector's elements",
+  "statement": "Read 5 integers and write their sum. Solve it with an array.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-15"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm SumOfVector\n    dimension numbers[5] as integer;\n    define i as integer;\n    define total as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    total <- 0;\n    for i <- 0 to 4 step 1 do\n        total <- total + numbers[i];\n    endFor\n    write total;\nendAlgorithm\n"
+}

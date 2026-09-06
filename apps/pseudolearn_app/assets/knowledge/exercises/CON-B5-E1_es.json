@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E1",
+  "title": "Suma de los elementos de un vector",
+  "statement": "Lee 5 números enteros y escribe su suma. Resuélvelo con un arreglo.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["150"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-15"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso SumaDeVector\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer numeros[i];\n    FinPara\n    total <- 0;\n    Para i <- 0 Hasta 4 Hacer\n        total <- total + numeros[i];\n    FinPara\n    Escribir total;\nFinProceso\n"
+}

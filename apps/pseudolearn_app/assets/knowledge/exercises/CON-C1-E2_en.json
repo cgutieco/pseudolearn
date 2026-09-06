@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E2",
+  "title": "Counter class with increment",
+  "statement": "Define a Counter class with a parameterless constructor that starts at 0, an Increment method that adds 1, and a Value method that returns the current value. Read how many times to increment, create the object, increment that many times and write the final value.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["10"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Counter\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Increment()\n        this.value <- this.value + 1;\n    endMethod\n\n    public method Value() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunCounter\n    define times as integer;\n    define i as integer;\n    define counter as Counter;\n    read times;\n    counter <- new Counter();\n    for i <- 1 to times step 1 do\n        counter.Increment();\n    endFor\n    write counter.Value();\nendAlgorithm\n"
+}

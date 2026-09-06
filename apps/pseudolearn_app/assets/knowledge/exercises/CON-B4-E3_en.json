@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E3",
+  "title": "Sum of a range",
+  "statement": "Read two integers, start and end, and write the sum of every integer from start to end, both included. If start is greater than end, write 0. Solve it with a For loop.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["1", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["3", "3"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "10"], "expectedOutputs": ["55"], "expected": "numerico"},
+    {"inputs": ["5", "2"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with a For loop."}
+  ],
+  "referenceSolution": "algorithm SumOfRange\n    define start as integer;\n    define finish as integer;\n    define i as integer;\n    define total as integer;\n    read start;\n    read finish;\n    total <- 0;\n    for i <- start to finish step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
+}

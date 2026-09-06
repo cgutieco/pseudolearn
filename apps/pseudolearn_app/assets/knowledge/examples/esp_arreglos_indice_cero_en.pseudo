@@ -1,0 +1,8 @@
+Algorithm ZeroIndex
+  Dimension numbers[3] As Integer
+  Define i As Integer
+  For i <- 0 To 2 Do
+    numbers[i] <- i * 10
+    Write numbers[i]
+  EndFor
+EndAlgorithm

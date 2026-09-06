@@ -1,0 +1,5 @@
+Algoritmo LecturaDesignadores
+  Definir a, b Como Entero
+  Leer a, b
+  Escribir a + b
+FinAlgoritmo

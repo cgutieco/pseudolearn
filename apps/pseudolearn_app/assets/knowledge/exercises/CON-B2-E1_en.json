@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E1",
+  "title": "Introduction with name and age",
+  "statement": "Read a name and an age, and write exactly: <name> - <age>",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["Ana", "20"], "expectedOutputs": ["Ana - 20"], "expected": "texto"},
+    {"inputs": ["Luis", "5"], "expectedOutputs": ["Luis - 5"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Eva", "99"], "expectedOutputs": ["Eva - 99"], "expected": "texto"},
+    {"inputs": ["Bea", "0"], "expectedOutputs": ["Bea - 0"], "expected": "texto"},
+    {"inputs": ["Ivan", "42"], "expectedOutputs": ["Ivan - 42"], "expected": "texto"}
+  ],
+  "referenceSolution": "algorithm Introduction\n    define name as string;\n    define age as integer;\n    read name;\n    read age;\n    write name, \" - \", age;\nendAlgorithm\n"
+}

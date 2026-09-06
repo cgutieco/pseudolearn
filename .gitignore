@@ -1,0 +1,31 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+packages/*/pubspec.lock
+*.dill
+*.js_*
+doc/api/
+
+# Coverage
+coverage/
+lcov.info
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.junie/
+
+# macOS
+.DS_Store
+
+# Local defines / secrets
+dart_define.local.json
+
+# Salida del motor de marca
+packages/pseudolearn_brand/out/
+
+# Python
+__pycache__/
+*.pyc

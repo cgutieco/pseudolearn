@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E6",
+  "title": "Three-level hierarchy",
+  "statement": "Define Level1 with a Value method that returns 1. Define Level2, which extends Level1 and overrides Value to return super.Value() plus 10. Define Level3, which extends Level2 and overrides Value to return super.Value() plus 100. Read a level number (1, 2 or any other value for 3), create the object of that level and write its Value.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["111"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2"], "expectedOutputs": ["11"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["111"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Level1\n    public method Value() as integer\n        return 1;\n    endMethod\nendClass\n\nclass Level2 extends Level1\n    public method Value() as integer\n        return super.Value() + 10;\n    endMethod\nendClass\n\nclass Level3 extends Level2\n    public method Value() as integer\n        return super.Value() + 100;\n    endMethod\nendClass\n\nalgorithm TryLevels\n    define level as integer;\n    define object_ as Level1;\n    read level;\n    if level = 1 then\n        object_ <- new Level1();\n    else\n        if level = 2 then\n            object_ <- new Level2();\n        else\n            object_ <- new Level3();\n        endIf\n    endIf\n    write object_.Value();\nendAlgorithm\n"
+}

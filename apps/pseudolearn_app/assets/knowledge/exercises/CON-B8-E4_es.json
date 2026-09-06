@@ -1,0 +1,74 @@
+{
+  "id": "CON-B8-E4",
+  "title": "De contar aprobados a contar reprobados",
+  "statement": "Modifica el algoritmo que cuenta notas aprobadas para que en vez de eso cuente las reprobadas (menores a 5).",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-B8",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4",
+        "6",
+        "8"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "2"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "10"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso ContarReprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir reprobados Como Entero;\n    Leer cantidad;\n    reprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota < 5 Entonces\n            reprobados <- reprobados + 1;\n        FinSi\n    FinPara\n    Escribir reprobados;\nFinProceso\n",
+  "starterCode": "Proceso ContarAprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir aprobados Como Entero;\n    Leer cantidad;\n    aprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota >= 5 Entonces\n            aprobados <- aprobados + 1;\n        FinSi\n    FinPara\n    Escribir aprobados;\nFinProceso\n"
+}

@@ -1,0 +1,22 @@
+Clase CuentaBancaria
+    Privado Definir saldo Como Entero;
+
+    Metodo Constructor(saldoInicial Como Entero)
+        Este.saldo <- saldoInicial;
+    FinMetodo
+
+    Publico Metodo Saldo() Como Entero
+        Retornar Este.saldo;
+    FinMetodo
+
+    Publico Metodo Depositar(monto Como Entero)
+        Este.saldo <- Este.saldo + monto;
+    FinMetodo
+FinClase
+
+Proceso ProbarCuenta
+    Definir cuenta Como CuentaBancaria;
+    cuenta <- Nuevo CuentaBancaria(100);
+    cuenta.Depositar(50);
+    Escribir cuenta.Saldo();
+FinProceso

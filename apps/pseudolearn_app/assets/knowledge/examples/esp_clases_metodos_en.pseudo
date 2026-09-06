@@ -1,0 +1,10 @@
+Class Calculator
+  Method Add(a As Integer, b As Integer) As Integer
+    Return a + b
+  EndMethod
+EndClass
+Algorithm ClassMethods
+  Define c As Calculator
+  c <- New Calculator()
+  Write c.Add(3, 4)
+EndAlgorithm

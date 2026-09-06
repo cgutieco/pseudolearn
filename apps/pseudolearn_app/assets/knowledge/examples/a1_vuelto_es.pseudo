@@ -1,0 +1,9 @@
+Proceso Vuelto
+    Definir precio Como Entero;
+    Definir pago Como Entero;
+    Definir vuelto Como Entero;
+    precio <- 45;
+    pago <- 50;
+    vuelto <- pago - precio;
+    Escribir vuelto;
+FinProceso

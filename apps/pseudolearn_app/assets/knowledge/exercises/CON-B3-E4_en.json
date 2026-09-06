@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E4",
+  "title": "Larger of two numbers",
+  "statement": "Read two integers and write the larger one. If they are equal, write either one.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["5", "3"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["2", "9"], "expectedOutputs": ["9"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4", "4"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["-1", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["0", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm LargerOfTwo\n    define a as integer;\n    define b as integer;\n    read a, b;\n    if a > b then\n        write a;\n    else\n        write b;\n    endIf\nendAlgorithm\n"
+}

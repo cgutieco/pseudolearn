@@ -1,0 +1,21 @@
+{
+  "id": "CON-C1-E1",
+  "title": "Clase Rectangulo con área",
+  "statement": "Define una clase Rectangulo con constructor que reciba base y altura, y un método Area que devuelva el área. Lee base y altura, crea el objeto y escribe su área.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C1",
+  "visibleCases": [
+    {"inputs": ["4", "5"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["0", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "7"], "expectedOutputs": ["49"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["20"], "expected": "numerico"},
+    {"inputs": ["1", "1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Rectangulo\n    Privado Definir base Como Entero;\n    Privado Definir altura Como Entero;\n\n    Metodo Constructor(unaBase Como Entero, unaAltura Como Entero)\n        Este.base <- unaBase;\n        Este.altura <- unaAltura;\n    FinMetodo\n\n    Publico Metodo Area() Como Entero\n        Retornar Este.base * Este.altura;\n    FinMetodo\nFinClase\n\nProceso CalcularArea\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir rectangulo Como Rectangulo;\n    Leer base;\n    Leer altura;\n    rectangulo <- Nuevo Rectangulo(base, altura);\n    Escribir rectangulo.Area();\nFinProceso\n"
+}

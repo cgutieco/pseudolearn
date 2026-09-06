@@ -1,0 +1,21 @@
+{
+  "id": "CON-E8",
+  "title": "Mayor elemento de un vector, con recursión",
+  "statement": "Define una función recursiva EncontrarMayor que reciba un arreglo de 5 enteros por referencia, un índice de inicio y un tamaño, y devuelva el mayor elemento desde ese índice hasta el final. Lee 5 números y escribe el mayor de todos, usando esa función.",
+  "level": 3,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["3", "7", "2", "9", "1"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["100", "1", "2", "3", "4"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."},
+    {"kind": "declara-subprograma", "name": "EncontrarMayor", "arity": 3, "requirement": "El enunciado pide una función recursiva llamada EncontrarMayor con tres parámetros."}
+  ],
+  "referenceSolution": "SubProceso EncontrarMayor(datos[] Como Entero Por Referencia, indice Como Entero, tamano Como Entero) Como Entero\n    Si indice = tamano - 1 Entonces\n        Retornar datos[indice];\n    SiNo\n        Definir restante Como Entero;\n        restante <- EncontrarMayor(datos, indice + 1, tamano);\n        Si datos[indice] > restante Entonces\n            Retornar datos[indice];\n        SiNo\n            Retornar restante;\n        FinSi\n    FinSi\nFinSubProceso\n\nProceso EjecutarMayorRecursivo\n    Dimension numeros[5] Como Entero;\n    Leer numeros[0];\n    Leer numeros[1];\n    Leer numeros[2];\n    Leer numeros[3];\n    Leer numeros[4];\n    Escribir EncontrarMayor(numeros, 0, 5);\nFinProceso\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E6",
+  "title": "Scoreboard class with two teams",
+  "statement": "Define a Scoreboard class with a parameterless constructor that starts 0 to 0, an AddHome method, an AddAway method and a Difference method that returns the home points minus the away points. Read how many points to add to each team, create the object, add that many times to each and write the final difference.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["3", "1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "5"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0", "4"], "expectedOutputs": ["-4"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["8"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Scoreboard\n    private define homePoints as integer;\n    private define awayPoints as integer;\n\n    method constructor()\n        this.homePoints <- 0;\n        this.awayPoints <- 0;\n    endMethod\n\n    public method AddHome()\n        this.homePoints <- this.homePoints + 1;\n    endMethod\n\n    public method AddAway()\n        this.awayPoints <- this.awayPoints + 1;\n    endMethod\n\n    public method Difference() as integer\n        return this.homePoints - this.awayPoints;\n    endMethod\nendClass\n\nalgorithm RunScoreboard\n    define homeGoals as integer;\n    define awayGoals as integer;\n    define i as integer;\n    define scoreboard as Scoreboard;\n    read homeGoals;\n    read awayGoals;\n    scoreboard <- new Scoreboard();\n    for i <- 1 to homeGoals step 1 do\n        scoreboard.AddHome();\n    endFor\n    for i <- 1 to awayGoals step 1 do\n        scoreboard.AddAway();\n    endFor\n    write scoreboard.Difference();\nendAlgorithm\n"
+}

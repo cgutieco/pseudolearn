@@ -1,0 +1,8 @@
+algorithm Greeting
+    define name as string;
+    define age as integer;
+    read name;
+    read age;
+    write "Hello, ", name, ". " without newline;
+    write "You are ", age, " years old.";
+endAlgorithm

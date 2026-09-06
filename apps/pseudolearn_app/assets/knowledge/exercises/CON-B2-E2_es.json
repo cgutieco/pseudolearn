@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E2",
+  "title": "Suma de dos valores en una sola lectura",
+  "statement": "Lee dos números enteros en una sola sentencia de lectura y escribe su suma.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["3", "4"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["10", "0"], "expectedOutputs": ["10"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-2", "5"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["100", "250"], "expectedOutputs": ["350"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso SumaUnaLectura\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer a, b;\n    Escribir a + b;\nFinProceso\n"
+}

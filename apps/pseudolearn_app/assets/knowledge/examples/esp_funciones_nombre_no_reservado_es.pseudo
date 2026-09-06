@@ -1,0 +1,5 @@
+Algoritmo SombraFuncion
+  Definir Longitud Como Entero
+  Longitud <- 42
+  Escribir Longitud
+FinAlgoritmo

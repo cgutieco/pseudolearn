@@ -1,0 +1,12 @@
+algorithm Swap
+    define a as integer;
+    define b as integer;
+    define auxiliary as integer;
+    a <- 7;
+    b <- 4;
+    auxiliary <- a;
+    a <- b;
+    b <- auxiliary;
+    write a;
+    write b;
+endAlgorithm

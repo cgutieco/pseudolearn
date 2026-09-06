@@ -1,0 +1,21 @@
+{
+  "id": "CON-C2-E1",
+  "title": "Clase Circulo con perímetro y área",
+  "statement": "Define una clase Circulo con constructor que reciba un radio, un método Perimetro que devuelva 2 por el radio por 3.14, y un método Area que devuelva el radio al cuadrado por 3.14. Lee el radio, crea el objeto y escribe el perímetro y luego el área, cada uno en su línea.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["6.28", "3.14"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0.0", "0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["31.4", "78.5"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["62.8", "314.0"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["18.84", "28.26"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Circulo\n    Privado Definir radio Como Entero;\n\n    Metodo Constructor(unRadio Como Entero)\n        Este.radio <- unRadio;\n    FinMetodo\n\n    Publico Metodo Perimetro() Como Real\n        Retornar 2 * Este.radio * 3.14;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.radio * Este.radio * 3.14;\n    FinMetodo\nFinClase\n\nProceso CalcularCirculo\n    Definir radio Como Entero;\n    Definir circulo Como Circulo;\n    Leer radio;\n    circulo <- Nuevo Circulo(radio);\n    Escribir circulo.Perimetro();\n    Escribir circulo.Area();\nFinProceso\n"
+}

@@ -1,0 +1,8 @@
+Algorithm DisplayValues
+  Define e As Integer; Define r As Real
+  Define l As Boolean; Define c As Character
+  Define s As String
+  e <- 42; r <- 3.14; l <- True
+  c <- 'X'; s <- "Text"
+  Write e, r, l, c, s
+EndAlgorithm

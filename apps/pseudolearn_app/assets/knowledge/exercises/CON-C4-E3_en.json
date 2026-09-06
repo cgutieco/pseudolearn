@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E3",
+  "title": "Vehicle and Motorcycle with super",
+  "statement": "Define a Vehicle class with a constructor that takes a number of wheels, and a Wheels method that returns it. Define Motorcycle and Car, two classes that extend Vehicle: Motorcycle's constructor calls super.constructor(2) and Car's calls super.constructor(4), taking no parameters. Read a flag (1 for Motorcycle, any other value for Car), create the matching vehicle and write its number of wheels.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["4"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["4"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Vehicle\n    private define wheels as integer;\n\n    method constructor(someWheels as integer)\n        this.wheels <- someWheels;\n    endMethod\n\n    public method Wheels() as integer\n        return this.wheels;\n    endMethod\nendClass\n\nclass Motorcycle extends Vehicle\n    method constructor()\n        super.constructor(2);\n    endMethod\nendClass\n\nclass Car extends Vehicle\n    method constructor()\n        super.constructor(4);\n    endMethod\nendClass\n\nalgorithm CountWheels\n    define kind as integer;\n    define vehicle as Vehicle;\n    read kind;\n    if kind = 1 then\n        vehicle <- new Motorcycle();\n    else\n        vehicle <- new Car();\n    endIf\n    write vehicle.Wheels();\nendAlgorithm\n"
+}

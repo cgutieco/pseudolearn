@@ -1,0 +1,7 @@
+Algoritmo CadenaYCaracter
+  Definir c Como Caracter
+  Definir s Como Cadena
+  s <- "Hola"
+  c <- CaracterEn(s, 0)
+  Escribir c
+FinAlgoritmo

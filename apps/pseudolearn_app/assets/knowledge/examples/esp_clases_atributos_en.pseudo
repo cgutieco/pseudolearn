@@ -1,0 +1,10 @@
+Class Account
+  Public Define holder As String
+  Private Define balance As Integer
+EndClass
+Algorithm AttributesVisibility
+  Define c As Account
+  c <- New Account()
+  c.holder <- "Ana"
+  Write c.holder
+EndAlgorithm

@@ -1,0 +1,68 @@
+{
+  "id": "CON-B1-E3",
+  "title": "Swapping two values",
+  "statement": "Read two integers and write them in the opposite order to the one you read them in: the second one first, then the first one. One value per line.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "7",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4",
+        "7"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "2"
+      ],
+      "expectedOutputs": [
+        "2",
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "-3",
+        "9"
+      ],
+      "expectedOutputs": [
+        "9",
+        "-3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "100"
+      ],
+      "expectedOutputs": [
+        "100",
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "55",
+        "55"
+      ],
+      "expectedOutputs": [
+        "55",
+        "55"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "algorithm Swap\n    define a as integer;\n    define b as integer;\n    define auxiliary as integer;\n    read a;\n    read b;\n    auxiliary <- a;\n    a <- b;\n    b <- auxiliary;\n    write a;\n    write b;\nendAlgorithm\n"
+}

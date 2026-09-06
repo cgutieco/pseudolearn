@@ -1,0 +1,15 @@
+algorithm CountPassing
+    define count as integer;
+    define i as integer;
+    define grade as integer;
+    define passing as integer;
+    read count;
+    passing <- 0;
+    for i <- 1 to count step 1 do
+        read grade;
+        if grade >= 5 then
+            passing <- passing + 1;
+        endIf
+    endFor
+    write passing;
+endAlgorithm

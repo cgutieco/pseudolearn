@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E3",
+  "title": "Suma de un rango",
+  "statement": "Lee dos números enteros, inicio y fin, y escribe la suma de todos los enteros desde inicio hasta fin, ambos incluidos. Si inicio es mayor que fin, escribe 0. Resuélvelo con un bucle Para.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["1", "5"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["3", "3"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "10"], "expectedOutputs": ["55"], "expected": "numerico"},
+    {"inputs": ["5", "2"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con un bucle Para."}
+  ],
+  "referenceSolution": "Proceso SumaDeRango\n    Definir inicio Como Entero;\n    Definir fin Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer inicio;\n    Leer fin;\n    total <- 0;\n    Para i <- inicio Hasta fin Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n"
+}

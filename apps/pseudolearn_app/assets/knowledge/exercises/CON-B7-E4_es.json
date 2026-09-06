@@ -1,0 +1,24 @@
+{
+  "id": "CON-B7-E4",
+  "title": "Cantidad de cifras recursiva",
+  "statement": "Escribe una función recursiva CantidadDeCifras que reciba un entero no negativo y devuelva cuántas cifras tiene (un número menor que 10 tiene 1 cifra). Resuélvelo con recursión pura, sin ningún bucle. Lee un número y escribe el resultado de llamarla.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["123"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["9999"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["1000000"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["42"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "CantidadDeCifras", "arity": 1, "requirement": "El enunciado pide una función recursiva llamada CantidadDeCifras con un parámetro."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."}
+  ],
+  "referenceSolution": "SubProceso CantidadDeCifras(n Como Entero) Como Entero\n    Si n < 10 Entonces\n        Retornar 1;\n    SiNo\n        Retornar 1 + CantidadDeCifras(n div 10);\n    FinSi\nFinSubProceso\n\nProceso CalcularCantidadDeCifras\n    Definir n Como Entero;\n    Leer n;\n    Escribir CantidadDeCifras(n);\nFinProceso\n"
+}

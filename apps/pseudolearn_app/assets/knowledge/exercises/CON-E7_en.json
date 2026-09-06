@@ -1,0 +1,20 @@
+{
+  "id": "CON-E7",
+  "title": "Secondary diagonal sum of a 3x3 matrix",
+  "statement": "Read 9 integers forming a matrix of 3 rows and 3 columns, row by row, and write the sum of its secondary diagonal (the positions where row plus column equals 2).",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5", "6", "7", "8", "9"], "expectedOutputs": ["15"], "expected": "numerico"},
+    {"inputs": ["9", "8", "7", "6", "5", "4", "3", "2", "1"], "expectedOutputs": ["15"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "0", "0", "0", "1", "0", "0", "0", "1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["2", "2", "2", "2", "2", "2", "2", "2", "2"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "0", "0", "0", "0", "0", "0"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm SecondaryDiagonalSum\n    dimension data[3, 3] as integer;\n    define row as integer;\n    define column as integer;\n    define total as integer;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    total <- data[0, 2] + data[1, 1] + data[2, 0];\n    write total;\nendAlgorithm\n"
+}

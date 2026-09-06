@@ -1,0 +1,75 @@
+{
+  "id": "CON-C2-E4",
+  "title": "Clase RangoDeEdad con validación",
+  "statement": "Define una clase RangoDeEdad con constructor que reciba un mínimo y un máximo, y un método EstaEnRango que reciba una edad y devuelva 1 si está entre el mínimo y el máximo (ambos incluidos) o 0 si no. Lee el mínimo, el máximo y la edad, crea el objeto y escribe el resultado.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "18",
+        "65",
+        "30"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "18",
+        "65",
+        "10"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "17",
+        "10"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "17",
+        "20"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "18",
+        "65",
+        "65"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "clase",
+      "requirement": "El enunciado pide resolverlo con una clase."
+    }
+  ],
+  "referenceSolution": "Clase RangoDeEdad\n    Privado Definir minimo Como Entero;\n    Privado Definir maximo Como Entero;\n\n    Metodo Constructor(unMinimo Como Entero, unMaximo Como Entero)\n        Este.minimo <- unMinimo;\n        Este.maximo <- unMaximo;\n    FinMetodo\n\n    Publico Metodo EstaEnRango(edad Como Entero) Como Entero\n        Si edad >= Este.minimo Y edad <= Este.maximo Entonces\n            Retornar 1;\n        SiNo\n            Retornar 0;\n        FinSi\n    FinMetodo\nFinClase\n\nProceso ValidarEdad\n    Definir minimo Como Entero;\n    Definir maximo Como Entero;\n    Definir edad Como Entero;\n    Definir rango Como RangoDeEdad;\n    Leer minimo;\n    Leer maximo;\n    Leer edad;\n    rango <- Nuevo RangoDeEdad(minimo, maximo);\n    Escribir rango.EstaEnRango(edad);\nFinProceso\n"
+}

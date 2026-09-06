@@ -1,0 +1,7 @@
+Algoritmo RelacionesTipos
+  Definir e Como Entero
+  Definir r Como Real
+  e <- 5
+  r <- e
+  Escribir r
+FinAlgoritmo

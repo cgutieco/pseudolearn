@@ -1,0 +1,20 @@
+{
+  "id": "CON-E10",
+  "title": "Matrix cells above the average",
+  "statement": "Read 9 integers forming a matrix of 3 rows and 3 columns, row by row, and write how many cells are larger than the average of the whole matrix.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5", "6", "7", "8", "9"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5", "5", "5", "5", "5"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1", "1", "1", "1", "1", "1", "1", "1", "100"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["9", "9", "9", "1", "1", "1", "1", "1", "1"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm CountAboveAverage\n    dimension data[3, 3] as integer;\n    define row as integer;\n    define column as integer;\n    define total as integer;\n    define average as real;\n    define counter as integer;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    total <- 0;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            total <- total + data[row, column];\n        endFor\n    endFor\n    average <- total / 9;\n    counter <- 0;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            if data[row, column] > average then\n                counter <- counter + 1;\n            endIf\n        endFor\n    endFor\n    write counter;\nendAlgorithm\n"
+}

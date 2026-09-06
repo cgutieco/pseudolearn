@@ -1,0 +1,80 @@
+{
+  "id": "CON-B1-E7",
+  "title": "Precio con descuento, en secuencia",
+  "statement": "Lee un precio entero y un descuento entero en euros, y escribe el precio final. Resuelvelo como una secuencia de declaraciones y asignaciones: sin bucles, que este modulo todavia no los tiene. Escribe solo el resultado.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "100",
+        "20"
+      ],
+      "expectedOutputs": [
+        "80"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "50",
+        "0"
+      ],
+      "expectedOutputs": [
+        "50"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "30",
+        "30"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "999",
+        "1"
+      ],
+      "expectedOutputs": [
+        "998"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "12",
+        "5"
+      ],
+      "expectedOutputs": [
+        "7"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "no-contiene",
+      "requirement": "El enunciado pedia resolverlo como una secuencia, sin bucles.",
+      "construct": "bucle-contado"
+    },
+    {
+      "kind": "no-contiene",
+      "requirement": "El enunciado pedia resolverlo como una secuencia, sin bucles.",
+      "construct": "bucle-condicional"
+    },
+    {
+      "kind": "no-contiene",
+      "requirement": "El enunciado pedia resolverlo como una secuencia, sin bucles.",
+      "construct": "bucle-condicional-posterior"
+    }
+  ],
+  "referenceSolution": "Proceso PrecioFinal\n    Definir precio Como Entero;\n    Definir descuento Como Entero;\n    Definir final Como Entero;\n    Leer precio;\n    Leer descuento;\n    final <- precio - descuento;\n    Escribir final;\nFinProceso\n"
+}

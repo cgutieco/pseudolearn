@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E4",
+  "title": "Search for a value in a vector",
+  "statement": "Read 5 integers and then a target value, and write the position where the target appears in the vector, or -1 if it does not appear. Solve it with an array.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["4", "8", "15", "16", "23", "15"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "5", "100"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50", "10"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50", "50"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50", "25"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm SearchValue\n    dimension numbers[5] as integer;\n    define i as integer;\n    define target as integer;\n    define index as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    read target;\n    index <- -1;\n    for i <- 0 to 4 step 1 do\n        if numbers[i] = target then\n            index <- i;\n        endIf\n    endFor\n    write index;\nendAlgorithm\n"
+}

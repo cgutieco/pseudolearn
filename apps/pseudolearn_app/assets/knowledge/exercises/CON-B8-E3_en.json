@@ -1,0 +1,18 @@
+{
+  "id": "CON-B8-E3",
+  "title": "Largest of a series",
+  "statement": "Read a count of numbers and then that many integers, one at a time, and write the largest of them all.",
+  "level": 2,
+  "kind": "predecir",
+  "module": "CON-B8",
+  "visibleCases": [
+    {"inputs": ["4", "3", "7", "2", "9"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["1", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "-1", "-5", "-2"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["5", "10", "10", "10", "10", "10"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["2", "1", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm LargestOfSeries\n    define count as integer;\n    define i as integer;\n    define number as integer;\n    define largest as integer;\n    read count;\n    read largest;\n    for i <- 2 to count step 1 do\n        read number;\n        if number > largest then\n            largest <- number;\n        endIf\n    endFor\n    write largest;\nendAlgorithm\n"
+}

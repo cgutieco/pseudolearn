@@ -1,0 +1,8 @@
+Subroutine Process(v[] As Integer, n As Integer)
+  Write v[0] + n
+EndSubroutine
+Algorithm ArrayParameters
+  Dimension data[2] As Integer
+  data[0] <- 10
+  Process(data, 5)
+EndAlgorithm

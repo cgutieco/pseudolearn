@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E2",
+  "title": "Largest element of a vector",
+  "statement": "Read 5 integers and write the largest of them all. Solve it with an array.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["3", "7", "2", "9", "1"], "expectedOutputs": ["9"], "expected": "numerico"},
+    {"inputs": ["5", "5", "5", "5", "5"], "expectedOutputs": ["5"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["-1", "-2", "-3", "-4", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["100", "1", "2", "3", "4"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "algorithm LargestOfVector\n    dimension numbers[5] as integer;\n    define i as integer;\n    define largest as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    largest <- numbers[0];\n    for i <- 1 to 4 step 1 do\n        if numbers[i] > largest then\n            largest <- numbers[i];\n        endIf\n    endFor\n    write largest;\nendAlgorithm\n"
+}

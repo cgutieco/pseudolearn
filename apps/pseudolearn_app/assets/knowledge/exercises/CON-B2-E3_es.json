@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E3",
+  "title": "Ficha de producto en una línea",
+  "statement": "Lee el nombre de un producto y su precio, y escribe exactamente: <nombre> - <precio>",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["Lapiz", "5"], "expectedOutputs": ["Lapiz - 5"], "expected": "texto"},
+    {"inputs": ["Cuaderno", "12"], "expectedOutputs": ["Cuaderno - 12"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Goma", "1"], "expectedOutputs": ["Goma - 1"], "expected": "texto"},
+    {"inputs": ["Mochila", "230"], "expectedOutputs": ["Mochila - 230"], "expected": "texto"},
+    {"inputs": ["Tijeras", "0"], "expectedOutputs": ["Tijeras - 0"], "expected": "texto"}
+  ],
+  "referenceSolution": "Proceso FichaProducto\n    Definir nombre Como Cadena;\n    Definir precio Como Entero;\n    Leer nombre;\n    Leer precio;\n    Escribir nombre, \" - \", precio;\nFinProceso\n"
+}

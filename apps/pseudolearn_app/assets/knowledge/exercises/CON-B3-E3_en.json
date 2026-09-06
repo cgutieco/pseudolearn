@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E3",
+  "title": "Classifying a grade",
+  "statement": "Read an integer grade from 0 to 10 and write its category as a number: 4 for 9 or more (outstanding), 3 for 7 or 8 (good), 2 for 5 or 6 (passed), or 1 otherwise (insufficient).",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["8"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["3"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm GradeClassification\n    define grade as integer;\n    read grade;\n    if grade >= 9 then\n        write 4;\n    else\n        if grade >= 7 then\n            write 3;\n        else\n            if grade >= 5 then\n                write 2;\n            else\n                write 1;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
+}

@@ -1,0 +1,73 @@
+{
+  "id": "CON-B8-E3",
+  "title": "Mayor de una serie",
+  "statement": "Lee una cantidad de números y luego esa cantidad de números enteros, uno por uno, y escribe el mayor de todos.",
+  "level": 2,
+  "kind": "predecir",
+  "module": "CON-B8",
+  "visibleCases": [
+    {
+      "inputs": [
+        "4",
+        "3",
+        "7",
+        "2",
+        "9"
+      ],
+      "expectedOutputs": [
+        "9"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "5"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "3",
+        "-1",
+        "-5",
+        "-2"
+      ],
+      "expectedOutputs": [
+        "-1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "5",
+        "10",
+        "10",
+        "10",
+        "10",
+        "10"
+      ],
+      "expectedOutputs": [
+        "10"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "1",
+        "100"
+      ],
+      "expectedOutputs": [
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso MayorDeUnaSerie\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir valor Como Entero;\n    Definir mayor Como Entero;\n    Leer cantidad;\n    Leer mayor;\n    Para i <- 2 Hasta cantidad Hacer\n        Leer valor;\n        Si valor > mayor Entonces\n            mayor <- valor;\n        FinSi\n    FinPara\n    Escribir mayor;\nFinProceso\n"
+}

@@ -1,0 +1,13 @@
+SubProceso SumaHasta(n Como Entero) Como Entero
+    Si n <= 0 Entonces
+        Retornar 0;
+    SiNo
+        Retornar n + SumaHasta(n - 1);
+    FinSi
+FinSubProceso
+
+Proceso CalcularSuma
+    Definir n Como Entero;
+    Leer n;
+    Escribir SumaHasta(n);
+FinProceso

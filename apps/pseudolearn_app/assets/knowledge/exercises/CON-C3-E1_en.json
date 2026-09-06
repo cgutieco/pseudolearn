@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E1",
+  "title": "Detect whether two variables are the same object",
+  "statement": "Define a Box class with a public attribute content. Read a flag (1 or 0). Create a Box in variable a. If the flag is 1, make b the same object as a; if it is 0, create a new Box for b. Write 1 if a and b are the same object, or 0 if not.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareObjects\n    define flag as integer;\n    define a as Box;\n    define b as Box;\n    read flag;\n    a <- new Box();\n    if flag = 1 then\n        b <- a;\n    else\n        b <- new Box();\n    endIf\n    if a = b then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
+}

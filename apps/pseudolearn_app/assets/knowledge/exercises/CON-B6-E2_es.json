@@ -1,0 +1,71 @@
+{
+  "id": "CON-B6-E2",
+  "title": "Función máximo de dos números",
+  "statement": "Escribe una función Maximo que reciba dos enteros y devuelva el mayor. Lee dos números y escribe el resultado de llamarla.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {
+      "inputs": [
+        "5",
+        "3"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "9"
+      ],
+      "expectedOutputs": [
+        "9"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "4",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-1",
+        "-5"
+      ],
+      "expectedOutputs": [
+        "-1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "100"
+      ],
+      "expectedOutputs": [
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "declara-subprograma",
+      "name": "Maximo",
+      "arity": 2,
+      "requirement": "El enunciado pide una función llamada Maximo con dos parámetros."
+    }
+  ],
+  "referenceSolution": "SubProceso Maximo(a Como Entero, b Como Entero) Como Entero\n    Si a > b Entonces\n        Retornar a;\n    SiNo\n        Retornar b;\n    FinSi\nFinSubProceso\n\nProceso CalcularMaximo\n    Definir n1 Como Entero;\n    Definir n2 Como Entero;\n    Leer n1;\n    Leer n2;\n    Escribir Maximo(n1, n2);\nFinProceso\n"
+}

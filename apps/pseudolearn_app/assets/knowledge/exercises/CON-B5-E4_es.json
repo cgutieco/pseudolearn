@@ -1,0 +1,21 @@
+{
+  "id": "CON-B5-E4",
+  "title": "Buscar un valor en un vector",
+  "statement": "Lee 5 números enteros y luego un valor objetivo, y escribe la posición donde aparece el objetivo en el vector, o -1 si no aparece. Resuélvelo con un arreglo.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B5",
+  "visibleCases": [
+    {"inputs": ["4", "8", "15", "16", "23", "15"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4", "5", "100"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50", "10"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50", "50"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40", "50", "25"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "Proceso BuscarValor\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir objetivo Como Entero;\n    Definir indice Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer numeros[i];\n    FinPara\n    Leer objetivo;\n    indice <- -1;\n    Para i <- 0 Hasta 4 Hacer\n        Si numeros[i] = objetivo Entonces\n            indice <- i;\n        FinSi\n    FinPara\n    Escribir indice;\nFinProceso\n"
+}

@@ -1,0 +1,15 @@
+Proceso ContarAprobados
+    Definir cantidad Como Entero;
+    Definir i Como Entero;
+    Definir nota Como Entero;
+    Definir aprobados Como Entero;
+    Leer cantidad;
+    aprobados <- 0;
+    Para i <- 1 Hasta cantidad Con Paso 1 Hacer
+        Leer nota;
+        Si nota >= 5 Entonces
+            aprobados <- aprobados + 1;
+        FinSi
+    FinPara
+    Escribir aprobados;
+FinProceso

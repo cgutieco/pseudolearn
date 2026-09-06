@@ -1,0 +1,64 @@
+{
+  "id": "CON-B1-E6",
+  "title": "De la suma a la diferencia",
+  "statement": "Parte del programa que suma dos números y cámbialo para que escriba la diferencia del primero menos el segundo. Escribe solo el resultado.",
+  "level": 1,
+  "kind": "modificar",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "9",
+        "4"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "4",
+        "9"
+      ],
+      "expectedOutputs": [
+        "-5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "100",
+        "1"
+      ],
+      "expectedOutputs": [
+        "99"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-3",
+        "-3"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso Diferencia\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Definir resultado Como Entero;\n    Leer a;\n    Leer b;\n    resultado <- a - b;\n    Escribir resultado;\nFinProceso\n",
+  "starterCode": "Proceso Suma\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Definir resultado Como Entero;\n    Leer a;\n    Leer b;\n    resultado <- a + b;\n    Escribir resultado;\nFinProceso\n"
+}

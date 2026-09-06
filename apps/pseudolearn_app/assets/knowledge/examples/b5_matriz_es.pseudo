@@ -1,0 +1,18 @@
+Proceso SumaDeMatriz
+    Dimension datos[2, 3] Como Entero;
+    Definir fila Como Entero;
+    Definir columna Como Entero;
+    Definir total Como Entero;
+    Para fila <- 0 Hasta 1 Con Paso 1 Hacer
+        Para columna <- 0 Hasta 2 Con Paso 1 Hacer
+            Leer datos[fila, columna];
+        FinPara
+    FinPara
+    total <- 0;
+    Para fila <- 0 Hasta 1 Con Paso 1 Hacer
+        Para columna <- 0 Hasta 2 Con Paso 1 Hacer
+            total <- total + datos[fila, columna];
+        FinPara
+    FinPara
+    Escribir total;
+FinProceso

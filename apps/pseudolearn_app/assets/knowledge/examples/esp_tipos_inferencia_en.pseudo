@@ -1,0 +1,4 @@
+Algorithm FlexibleInference
+  x <- 10
+  Write x + 5
+EndAlgorithm

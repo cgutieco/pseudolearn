@@ -1,0 +1,10 @@
+Subroutine Factorial(n As Integer) As Integer
+  If n <= 1 Then
+    Return 1
+  Else
+    Return n * Factorial(n - 1)
+  EndIf
+EndSubroutine
+Algorithm Recursion
+  Write Factorial(4)
+EndAlgorithm

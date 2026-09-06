@@ -1,0 +1,31 @@
+Clase Motor
+    Privado Definir potencia Como Entero;
+
+    Metodo Constructor(unaPotencia Como Entero)
+        Este.potencia <- unaPotencia;
+    FinMetodo
+
+    Publico Metodo Potencia() Como Entero
+        Retornar Este.potencia;
+    FinMetodo
+FinClase
+
+Clase Auto
+    Privado Definir motor Como Motor;
+
+    Metodo Constructor(unaPotencia Como Entero)
+        Este.motor <- Nuevo Motor(unaPotencia);
+    FinMetodo
+
+    Publico Metodo Potencia() Como Entero
+        Retornar Este.motor.Potencia();
+    FinMetodo
+FinClase
+
+Proceso ProbarAuto
+    Definir potencia Como Entero;
+    Definir auto Como Auto;
+    Leer potencia;
+    auto <- Nuevo Auto(potencia);
+    Escribir auto.Potencia();
+FinProceso

@@ -1,0 +1,6 @@
+Proceso SumaEnUnaLectura
+    Definir a Como Entero;
+    Definir b Como Entero;
+    Leer a, b;
+    Escribir a + b;
+FinProceso

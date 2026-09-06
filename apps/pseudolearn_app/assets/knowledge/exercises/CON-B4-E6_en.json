@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E6",
+  "title": "Countdown with a variable step",
+  "statement": "Read a starting value and a step, both positive integers, and write, one per line, the countdown from the starting value to 0 or the first non-negative value reached, going down by 'step'. Solve it with a For loop with a negative step.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["6", "2"], "expectedOutputs": ["6", "4", "2", "0"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["5", "0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "3"], "expectedOutputs": ["10", "7", "4", "1"], "expected": "numerico"},
+    {"inputs": ["0", "1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["3", "1"], "expectedOutputs": ["3", "2", "1", "0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with a For loop."}
+  ],
+  "referenceSolution": "algorithm CountdownWithStep\n    define start as integer;\n    define step_ as integer;\n    define i as integer;\n    read start;\n    read step_;\n    for i <- start to 0 step -step_ do\n        write i;\n    endFor\nendAlgorithm\n"
+}

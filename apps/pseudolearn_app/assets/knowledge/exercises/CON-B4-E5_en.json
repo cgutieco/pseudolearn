@@ -1,0 +1,21 @@
+{
+  "id": "CON-B4-E5",
+  "title": "Digit count of a number",
+  "statement": "Read a non-negative integer and write how many digits it has. For this exercise, 0 has 0 digits. Solve it with a While loop.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B4",
+  "visibleCases": [
+    {"inputs": ["5"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["123"], "expectedOutputs": ["3"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["9999"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["1000000"], "expectedOutputs": ["7"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with a While loop."}
+  ],
+  "referenceSolution": "algorithm DigitCount\n    define n as integer;\n    define counter as integer;\n    read n;\n    counter <- 0;\n    while n > 0 do\n        counter <- counter + 1;\n        n <- n div 10;\n    endWhile\n    write counter;\nendAlgorithm\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E2",
+  "title": "Alias that mutates a shared counter",
+  "statement": "Define a Counter class with a public attribute value. Read a number n. Create a Counter in a with value 0, make b the same object as a, and use b to add 1 to the value n times. Write the final value read through a.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["3"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["10"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Counter\n    public define value as integer;\nendClass\n\nalgorithm RunAlias\n    define n as integer;\n    define i as integer;\n    define a as Counter;\n    define b as Counter;\n    read n;\n    a <- new Counter();\n    a.value <- 0;\n    b <- a;\n    for i <- 1 to n step 1 do\n        b.value <- b.value + 1;\n    endFor\n    write a.value;\nendAlgorithm\n"
+}

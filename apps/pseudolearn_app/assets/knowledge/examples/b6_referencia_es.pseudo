@@ -1,0 +1,16 @@
+SubProceso Intercambiar(a Como Entero Por Referencia, b Como Entero Por Referencia)
+    Definir auxiliar Como Entero;
+    auxiliar <- a;
+    a <- b;
+    b <- auxiliar;
+FinSubProceso
+
+Proceso ProbarIntercambio
+    Definir n1 Como Entero;
+    Definir n2 Como Entero;
+    Leer n1;
+    Leer n2;
+    Intercambiar(n1, n2);
+    Escribir n1;
+    Escribir n2;
+FinProceso

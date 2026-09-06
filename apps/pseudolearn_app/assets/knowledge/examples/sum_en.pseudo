@@ -1,0 +1,9 @@
+algorithm Sum
+    define a as integer;
+    define b as integer;
+    define result as integer;
+    a <- 15;
+    b <- 27;
+    result <- a + b;
+    write "Result: ", result;
+endAlgorithm

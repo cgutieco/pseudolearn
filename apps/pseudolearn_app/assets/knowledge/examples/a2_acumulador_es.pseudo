@@ -1,0 +1,10 @@
+Proceso Acumulador
+    Definir total Como Entero;
+    Definir n Como Entero;
+    total <- 0;
+    n <- 5;
+    total <- total + n;
+    n <- 3;
+    total <- total + n;
+    Escribir total;
+FinProceso

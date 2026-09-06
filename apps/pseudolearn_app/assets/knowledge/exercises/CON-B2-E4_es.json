@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E4",
+  "title": "Promedio de cuatro lecturas",
+  "statement": "Lee cuatro números enteros en una sola sentencia de lectura y escribe su promedio.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["4", "4", "4", "4"], "expectedOutputs": ["4.0"], "expected": "numerico"},
+    {"inputs": ["2", "4", "6", "8"], "expectedOutputs": ["5.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0", "0", "0", "0"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["10", "20", "30", "40"], "expectedOutputs": ["25.0"], "expected": "numerico"},
+    {"inputs": ["1", "2", "3", "4"], "expectedOutputs": ["2.5"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso PromedioCuatro\n    Definir n1 Como Entero;\n    Definir n2 Como Entero;\n    Definir n3 Como Entero;\n    Definir n4 Como Entero;\n    Definir promedio Como Real;\n    Leer n1, n2, n3, n4;\n    promedio <- (n1 + n2 + n3 + n4) / 4;\n    Escribir promedio;\nFinProceso\n"
+}

@@ -1,0 +1,4 @@
+enum CasePolicy {
+  sensitive,
+  insensitive,
+}

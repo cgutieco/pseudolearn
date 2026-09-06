@@ -1,0 +1,106 @@
+{
+  "id": "CON-B5-E6",
+  "title": "Diagonal principal de una matriz 3x3",
+  "statement": "Lee 9 números enteros que forman una matriz de 3 filas y 3 columnas, fila por fila, y escribe la suma de su diagonal principal (las posiciones donde la fila y la columna son iguales). Modifica el algoritmo que suma toda la matriz para que sume solo la diagonal.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B5",
+  "visibleCases": [
+    {
+      "inputs": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "expectedOutputs": [
+        "15"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "expectedOutputs": [
+        "15"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2"
+      ],
+      "expectedOutputs": [
+        "6"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "arreglo",
+      "requirement": "El enunciado pide resolverlo con un arreglo."
+    }
+  ],
+  "referenceSolution": "Proceso DiagonalPrincipal\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- datos[0, 0] + datos[1, 1] + datos[2, 2];\n    Escribir total;\nFinProceso\n",
+  "starterCode": "Proceso DiagonalPrincipal\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- 0;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            total <- total + datos[fila, columna];\n        FinPara\n    FinPara\n    Escribir total;\nFinProceso\n"
+}

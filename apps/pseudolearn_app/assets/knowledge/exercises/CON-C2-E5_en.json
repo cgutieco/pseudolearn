@@ -1,0 +1,70 @@
+{
+  "id": "CON-C2-E5",
+  "title": "Book class with loan status",
+  "statement": "Define a Book class with a parameterless constructor that starts unborrowed, a Borrow method, a GiveBack method, and an IsBorrowed method that returns 1 if it is borrowed or 0 if not. Read two flags (1 or 0): whether to borrow the book, and whether to give it back afterwards. Create the object, apply those two actions in order and write the result of IsBorrowed.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C2",
+  "visibleCases": [
+    {
+      "inputs": [
+        "1",
+        "0"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "1"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "1"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "0"
+      ],
+      "expectedOutputs": [
+        "1"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "clase",
+      "requirement": "The statement asks you to solve it with a class."
+    }
+  ],
+  "referenceSolution": "class Book\n    private define borrowed as integer;\n\n    method constructor()\n        this.borrowed <- 0;\n    endMethod\n\n    public method Borrow()\n        this.borrowed <- 1;\n    endMethod\n\n    public method GiveBack()\n        this.borrowed <- 0;\n    endMethod\n\n    public method IsBorrowed() as integer\n        return this.borrowed;\n    endMethod\nendClass\n\nalgorithm RunBook\n    define borrow as integer;\n    define giveBack as integer;\n    define book as Book;\n    read borrow;\n    read giveBack;\n    book <- new Book();\n    if borrow = 1 then\n        book.Borrow();\n    endIf\n    if giveBack = 1 then\n        book.GiveBack();\n    endIf\n    write book.IsBorrowed();\nendAlgorithm\n"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E1",
+  "title": "Seconds in a span of minutes",
+  "statement": "Read an amount of minutes and write how many seconds it is.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["2"], "expectedOutputs": ["120"], "expected": "numerico"},
+    {"inputs": ["5"], "expectedOutputs": ["300"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["0"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["10"], "expectedOutputs": ["600"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["60"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm Seconds\n    define minutes as integer;\n    define seconds as integer;\n    read minutes;\n    seconds <- minutes * 60;\n    write seconds;\nendAlgorithm\n"
+}

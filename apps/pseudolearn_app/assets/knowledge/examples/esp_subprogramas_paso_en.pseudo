@@ -1,0 +1,11 @@
+Subroutine TestPass(va As Integer By Value, vb As Integer By Reference)
+  va <- 10
+  vb <- 20
+EndSubroutine
+Algorithm ParameterPassing
+  Define n1, n2 As Integer
+  n1 <- 1
+  n2 <- 2
+  TestPass(n1, n2)
+  Write n1, n2
+EndAlgorithm

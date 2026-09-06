@@ -1,0 +1,64 @@
+{
+  "id": "CON-B1-E5",
+  "title": "Completar el perímetro",
+  "statement": "Este programa calcula el perímetro de un rectángulo y le faltan dos líneas. Complétalo: declara la casilla que guarda el perímetro y asígnale el valor correcto. Lee la base, lee la altura y escribe solo el perímetro.",
+  "level": 1,
+  "kind": "completar",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4"
+      ],
+      "expectedOutputs": [
+        "14"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "5",
+        "5"
+      ],
+      "expectedOutputs": [
+        "20"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "10",
+        "1"
+      ],
+      "expectedOutputs": [
+        "22"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "7"
+      ],
+      "expectedOutputs": [
+        "14"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "12",
+        "13"
+      ],
+      "expectedOutputs": [
+        "50"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso Perimetro\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir perimetro Como Entero;\n    Leer base;\n    Leer altura;\n    perimetro <- 2 * (base + altura);\n    Escribir perimetro;\nFinProceso\n",
+  "starterCode": "Proceso Perimetro\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Leer base;\n    Leer altura;\n    Escribir perimetro;\nFinProceso\n"
+}

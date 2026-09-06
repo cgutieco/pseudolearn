@@ -1,0 +1,12 @@
+Clase Animal
+  Metodo Hablar()
+  FinMetodo
+FinClase
+Clase Perro HeredaDe Animal
+  Metodo Hablar()
+    Escribir "Guau"
+  FinMetodo
+FinClase
+Algoritmo Sobrescritura
+  Definir a Como Animal; a <- Nuevo Perro(); a.Hablar()
+FinAlgoritmo

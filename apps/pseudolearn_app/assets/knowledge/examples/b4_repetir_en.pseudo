@@ -1,0 +1,10 @@
+algorithm SumUntilZero
+    define n as integer;
+    define total as integer;
+    total <- 0;
+    repeat
+        read n;
+        total <- total + n;
+    until n = 0;
+    write total;
+endAlgorithm

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E2",
+  "title": "Weekend or weekday",
+  "statement": "Read a number from 1 to 7 (1 is Monday and 7 is Sunday) and write 1 if it falls on the weekend, 0 if it is a weekday, or -1 if the number is not valid. Solve it with a multiple selection.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["7"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["8"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "The statement asks you to solve it with a multiple selection."}
+  ],
+  "referenceSolution": "algorithm WeekendOrWeekday\n    define day as integer;\n    read day;\n    switch day do\n        1, 2, 3, 4, 5:\n            write 0;\n        6, 7:\n            write 1;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
+}

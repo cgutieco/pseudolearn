@@ -1,0 +1,13 @@
+subroutine Factorial(n as integer) as integer
+    if n <= 1 then
+        return 1;
+    else
+        return n * Factorial(n - 1);
+    endIf
+endSubroutine
+
+algorithm ComputeFactorial
+    define n as integer;
+    read n;
+    write Factorial(n);
+endAlgorithm

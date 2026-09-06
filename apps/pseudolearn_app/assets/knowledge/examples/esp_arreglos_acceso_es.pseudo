@@ -1,0 +1,5 @@
+Algoritmo AccesoMatriz
+  Dimension tabla[2, 3] Como Entero
+  tabla[0, 1] <- 99
+  Escribir tabla[0, 1]
+FinAlgoritmo

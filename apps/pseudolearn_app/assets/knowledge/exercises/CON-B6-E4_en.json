@@ -1,0 +1,22 @@
+{
+  "id": "CON-B6-E4",
+  "title": "Procedure that doubles a vector",
+  "statement": "Write a DoubleElements procedure that takes an array of 3 integers by reference and its size, and doubles every element. Read 3 numbers, call the procedure and write the 3 resulting values, one per line.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3"], "expectedOutputs": ["2", "4", "6"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0"], "expectedOutputs": ["0", "0", "0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["5", "10", "15"], "expectedOutputs": ["10", "20", "30"], "expected": "numerico"},
+    {"inputs": ["-1", "-2", "-3"], "expectedOutputs": ["-2", "-4", "-6"], "expected": "numerico"},
+    {"inputs": ["100", "1", "1"], "expectedOutputs": ["200", "2", "2"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "DoubleElements", "arity": 2, "requirement": "The statement asks for a procedure named DoubleElements with two parameters."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
+  ],
+  "referenceSolution": "subroutine DoubleElements(data[] as integer by reference, size as integer)\n    define i as integer;\n    for i <- 0 to size - 1 step 1 do\n        data[i] <- data[i] * 2;\n    endFor\nendSubroutine\n\nalgorithm RunDoubling\n    dimension vector[3] as integer;\n    define i as integer;\n    for i <- 0 to 2 step 1 do\n        read vector[i];\n    endFor\n    DoubleElements(vector, 3);\n    for i <- 0 to 2 step 1 do\n        write vector[i];\n    endFor\nendAlgorithm\n"
+}

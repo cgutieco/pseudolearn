@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E6",
+  "title": "Copy and compare identities",
+  "statement": "Define a Box class with a public attribute content. Read a flag (1 or 0). Create an original. If the flag is 1, create another with the built-in copy function; if it is 0, make other the same object as original. Write 1 if original and other are the same object, or 0 if not.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareAfterCopy\n    define flag as integer;\n    define original as Box;\n    define other as Box;\n    read flag;\n    original <- new Box();\n    if flag = 1 then\n        other <- copy(original);\n    else\n        other <- original;\n    endIf\n    if original = other then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
+}

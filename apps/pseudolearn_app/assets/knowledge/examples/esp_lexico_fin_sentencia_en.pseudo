@@ -1,0 +1,4 @@
+Algorithm EndStatement
+  Define a, b As Integer; a <- 1; b <- 2
+  Write a + b
+EndAlgorithm

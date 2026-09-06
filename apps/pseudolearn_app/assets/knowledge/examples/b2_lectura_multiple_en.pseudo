@@ -1,0 +1,6 @@
+algorithm SumInOneRead
+    define a as integer;
+    define b as integer;
+    read a, b;
+    write a + b;
+endAlgorithm

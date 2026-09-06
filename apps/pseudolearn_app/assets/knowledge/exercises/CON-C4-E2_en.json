@@ -1,0 +1,22 @@
+{
+  "id": "CON-C4-E2",
+  "title": "Employee and Manager with inherited bonus",
+  "statement": "Define an Employee class with a private attribute salary, a public Salary method that returns it, and a Bonus method that returns 10% of the salary. Define a Manager class that extends Employee and overrides Bonus to return 20% of the salary. Read the salary, create a Manager and write its bonus.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1000"], "expectedOutputs": ["200.0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["500"], "expectedOutputs": ["100.0"], "expected": "numerico"},
+    {"inputs": ["2000"], "expectedOutputs": ["400.0"], "expected": "numerico"},
+    {"inputs": ["100"], "expectedOutputs": ["20.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."},
+    {"kind": "declara-miembro", "class": "Employee", "member": "salary", "visibility": "privado", "requirement": "The statement asks the salary to be a private attribute."}
+  ],
+  "referenceSolution": "class Employee\n    private define salary as integer;\n\n    method constructor(aSalary as integer)\n        this.salary <- aSalary;\n    endMethod\n\n    public method Salary() as integer\n        return this.salary;\n    endMethod\n\n    public method Bonus() as real\n        return this.salary * 0.1;\n    endMethod\nendClass\n\nclass Manager extends Employee\n    method constructor(aSalary as integer)\n        super.constructor(aSalary);\n    endMethod\n\n    public method Bonus() as real\n        return this.Salary() * 0.2;\n    endMethod\nendClass\n\nalgorithm ComputeBonus\n    define salary as integer;\n    define manager as Manager;\n    read salary;\n    manager <- new Manager(salary);\n    write manager.Bonus();\nendAlgorithm\n"
+}

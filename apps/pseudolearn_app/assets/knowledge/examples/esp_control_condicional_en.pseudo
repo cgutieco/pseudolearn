@@ -1,0 +1,9 @@
+Algorithm Conditional
+  Define x As Integer
+  x <- 5
+  If x > 0 Then
+    Write "Positive"
+  Else
+    Write "Not positive"
+  EndIf
+EndAlgorithm

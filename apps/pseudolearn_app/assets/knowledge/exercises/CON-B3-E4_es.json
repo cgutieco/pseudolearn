@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E4",
+  "title": "Mayor de dos números",
+  "statement": "Lee dos números enteros y escribe el mayor. Si son iguales, escribe cualquiera de los dos.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["5", "3"], "expectedOutputs": ["5"], "expected": "numerico"},
+    {"inputs": ["2", "9"], "expectedOutputs": ["9"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["4", "4"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["-1", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
+    {"inputs": ["0", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso MayorDeDos\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer a, b;\n    Si a > b Entonces\n        Escribir a;\n    SiNo\n        Escribir b;\n    FinSi\nFinProceso\n"
+}

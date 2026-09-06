@@ -1,0 +1,63 @@
+# Reglas de arquitectura de pseudolearn_core que los verificadores ejecutan.
+# El README.md de este paquete explica el por qué de cada valor. Este archivo es la única
+# definición que el test de arquitectura y el script de límites leen: si un número cambia,
+# cambia aquí y en el README, nunca solo en uno de los dos.
+
+package: pseudolearn_core
+source_root: lib/src
+public_entrypoint: lib/pseudolearn_core.dart
+
+# Capas concéntricas. Una capa importa de sí misma y de las que lista en may_import, de nada más.
+layers:
+  - id: 0
+    name: domain
+    path: domain
+    may_import: [ ]
+  - id: 1
+    name: syntax
+    path: syntax
+    may_import: [ domain ]
+  - id: 2
+    name: semantic
+    path: semantic
+    may_import: [ domain, syntax ]
+  - id: 3
+    name: evaluation
+    path: evaluation
+    may_import: [ domain, syntax, semantic ]
+  - id: 4
+    name: diagnostics
+    path: diagnostics
+    may_import: [ domain ]
+
+# Ningún archivo de lib/ puede importar esto. Es lo que garantiza que el paquete compile a
+# nativo, JS y WASM sin cambios.
+forbidden_imports:
+  - 'dart:io'
+  - 'dart:ui'
+  - 'dart:html'
+  - 'dart:js'
+  - 'dart:js_interop'
+  - 'dart:mirrors'
+  - 'dart:isolate'
+  - 'package:flutter/'
+
+# Dentro de lib/src/ los imports son relativos. Un import por 'package:' propio oculta la
+# capa de origen y hace indetectable la violación.
+forbid_self_package_imports: true
+
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+
+# Reglas de código.
+code_rules:
+  forbid_comments: true
+
+# Rutas exentas de los límites de tamaño. Los tests pueden ser largos; el código de lib/ no.
+limits_exempt:
+  - test/
+  - tool/

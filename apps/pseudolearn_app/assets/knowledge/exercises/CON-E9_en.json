@@ -1,0 +1,21 @@
+{
+  "id": "CON-E9",
+  "title": "Average of a vector with a Statistics class",
+  "statement": "Define a Statistics class with a constructor that takes a total and a count, and an Average method that returns the total divided by the count. Read 5 numbers, sum them, create the Statistics with that total and that count, and write the average.",
+  "level": 2,
+  "kind": "crear",
+  "visibleCases": [
+    {"inputs": ["1", "2", "3", "4", "5"], "expectedOutputs": ["3.0"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0"], "expectedOutputs": ["0.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50"], "expectedOutputs": ["30.0"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1"], "expectedOutputs": ["1.0"], "expected": "numerico"},
+    {"inputs": ["2", "4", "6", "8", "10"], "expectedOutputs": ["6.0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to read the numbers into an array."}
+  ],
+  "referenceSolution": "class Statistics\n    private define total as integer;\n    private define count as integer;\n\n    method constructor(aTotal as integer, aCount as integer)\n        this.total <- aTotal;\n        this.count <- aCount;\n    endMethod\n\n    public method Average() as real\n        return this.total / this.count;\n    endMethod\nendClass\n\nalgorithm ComputeAverage\n    dimension numbers[5] as integer;\n    define i as integer;\n    define total as integer;\n    define statistics as Statistics;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    total <- 0;\n    for i <- 0 to 4 step 1 do\n        total <- total + numbers[i];\n    endFor\n    statistics <- new Statistics(total, 5);\n    write statistics.Average();\nendAlgorithm\n"
+}

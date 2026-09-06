@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E4",
+  "title": "Factura que delega en dos Productos",
+  "statement": "Define una clase Producto con constructor que reciba un precio, y un método Precio que lo devuelva. Define una clase Factura que tenga dos Productos como atributos, reciba sus dos precios en su constructor, y un método Total que devuelva la suma de los dos precios delegando en cada Producto. Lee los dos precios, crea la factura y escribe el total.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["10", "20"], "expectedOutputs": ["30"], "expected": "numerico"},
+    {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["100", "1"], "expectedOutputs": ["101"], "expected": "numerico"},
+    {"inputs": ["5", "5"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["-3", "3"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con clases."}
+  ],
+  "referenceSolution": "Clase Producto\n    Privado Definir precio Como Entero;\n\n    Metodo Constructor(unPrecio Como Entero)\n        Este.precio <- unPrecio;\n    FinMetodo\n\n    Publico Metodo Precio() Como Entero\n        Retornar Este.precio;\n    FinMetodo\nFinClase\n\nClase Factura\n    Privado Definir producto1 Como Producto;\n    Privado Definir producto2 Como Producto;\n\n    Metodo Constructor(unPrecio1 Como Entero, unPrecio2 Como Entero)\n        Este.producto1 <- Nuevo Producto(unPrecio1);\n        Este.producto2 <- Nuevo Producto(unPrecio2);\n    FinMetodo\n\n    Publico Metodo Total() Como Entero\n        Retornar Este.producto1.Precio() + Este.producto2.Precio();\n    FinMetodo\nFinClase\n\nProceso CalcularFactura\n    Definir p1 Como Entero;\n    Definir p2 Como Entero;\n    Definir factura Como Factura;\n    Leer p1;\n    Leer p2;\n    factura <- Nuevo Factura(p1, p2);\n    Escribir factura.Total();\nFinProceso\n"
+}

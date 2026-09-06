@@ -1,0 +1,9 @@
+SubProceso Modificar(v[] Como Entero)
+  v[0] <- 99
+FinSubProceso
+Algoritmo PasoArreglos
+  Dimension lista[2] Como Entero
+  lista[0] <- 1
+  Modificar(lista)
+  Escribir lista[0]
+FinAlgoritmo

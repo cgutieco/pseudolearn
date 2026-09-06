@@ -1,0 +1,12 @@
+Class Animal
+  Method Speak()
+  EndMethod
+EndClass
+Class Dog Inherits From Animal
+  Method Speak()
+    Write "Woof"
+  EndMethod
+EndClass
+Algorithm Overriding
+  Define a As Animal; a <- New Dog(); a.Speak()
+EndAlgorithm

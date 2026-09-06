@@ -1,0 +1,5 @@
+Algoritmo Espacios
+Definir x Como Entero
+    x <- 10
+  Escribir x
+FinAlgoritmo

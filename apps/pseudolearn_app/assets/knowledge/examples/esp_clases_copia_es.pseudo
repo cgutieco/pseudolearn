@@ -1,0 +1,11 @@
+Clase Item
+  Publico Definir valor Como Entero
+FinClase
+Algoritmo CopiaSuperficialEjemplo
+  Definir i1, i2 Como Item
+  i1 <- Nuevo Item()
+  i1.valor <- 10
+  i2 <- Copiar(i1)
+  i2.valor <- 20
+  Escribir i1.valor, i2.valor
+FinAlgoritmo

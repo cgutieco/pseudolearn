@@ -1,0 +1,13 @@
+subroutine SumUpTo(n as integer) as integer
+    if n <= 0 then
+        return 0;
+    else
+        return n + SumUpTo(n - 1);
+    endIf
+endSubroutine
+
+algorithm ComputeSum
+    define n as integer;
+    read n;
+    write SumUpTo(n);
+endAlgorithm

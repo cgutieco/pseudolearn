@@ -1,0 +1,8 @@
+SubProceso Procesar(v[] Como Entero, n Como Entero)
+  Escribir v[0] + n
+FinSubProceso
+Algoritmo ParametrosArreglo
+  Dimension datos[2] Como Entero
+  datos[0] <- 10
+  Procesar(datos, 5)
+FinAlgoritmo

@@ -1,0 +1,18 @@
+{
+  "id": "CON-A2-E5",
+  "title": "Área de un triángulo",
+  "statement": "Lee la base y la altura de un triángulo y escribe su área.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-A2",
+  "visibleCases": [
+    {"inputs": ["4", "6"], "expectedOutputs": ["12.0"], "expected": "numerico"},
+    {"inputs": ["10", "5"], "expectedOutputs": ["25.0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "3"], "expectedOutputs": ["4.5"], "expected": "numerico"},
+    {"inputs": ["0", "5"], "expectedOutputs": ["0.0"], "expected": "numerico"},
+    {"inputs": ["7", "4"], "expectedOutputs": ["14.0"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso AreaTriangulo\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir area Como Real;\n    Leer base;\n    Leer altura;\n    area <- (base * altura) / 2;\n    Escribir area;\nFinProceso\n"
+}

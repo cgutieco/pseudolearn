@@ -1,0 +1,13 @@
+SubProceso Factorial(n Como Entero) Como Entero
+    Si n <= 1 Entonces
+        Retornar 1;
+    SiNo
+        Retornar n * Factorial(n - 1);
+    FinSi
+FinSubProceso
+
+Proceso CalcularFactorial
+    Definir n Como Entero;
+    Leer n;
+    Escribir Factorial(n);
+FinProceso

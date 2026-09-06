@@ -1,0 +1,6 @@
+Algorithm RandomFunction
+  Define r1, r2 As Real
+  r1 <- random()
+  r2 <- random()
+  Write r1, r2
+EndAlgorithm

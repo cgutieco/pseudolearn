@@ -1,0 +1,68 @@
+{
+  "id": "CON-B1-E4",
+  "title": "Promedio de tres notas",
+  "statement": "Lee tres notas enteras y escribe su promedio. Escribe solo el resultado.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B1",
+  "visibleCases": [
+    {
+      "inputs": [
+        "3",
+        "4",
+        "5"
+      ],
+      "expectedOutputs": [
+        "4"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "10",
+        "10",
+        "10"
+      ],
+      "expectedOutputs": [
+        "10"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "1",
+        "2",
+        "3"
+      ],
+      "expectedOutputs": [
+        "2"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "0",
+        "9"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "8",
+        "5",
+        "2"
+      ],
+      "expectedOutputs": [
+        "5"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "referenceSolution": "Proceso Promedio\n    Definir primera Como Entero;\n    Definir segunda Como Entero;\n    Definir tercera Como Entero;\n    Definir promedio Como Real;\n    Leer primera;\n    Leer segunda;\n    Leer tercera;\n    promedio <- (primera + segunda + tercera) / 3;\n    Escribir promedio;\nFinProceso\n"
+}

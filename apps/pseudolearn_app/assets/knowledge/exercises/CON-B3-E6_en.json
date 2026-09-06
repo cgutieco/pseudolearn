@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E6",
+  "title": "Age category",
+  "statement": "Read an integer age and write its category as a number: 1 (child) if under 13, 2 (teen) if under 18, 3 (adult) if under 65, or 4 (senior) otherwise.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["15"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["30"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["70"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["13"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "referenceSolution": "algorithm AgeCategory\n    define age as integer;\n    read age;\n    if age < 13 then\n        write 1;\n    else\n        if age < 18 then\n            write 2;\n        else\n            if age < 65 then\n                write 3;\n            else\n                write 4;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
+}

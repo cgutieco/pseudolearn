@@ -1,0 +1,18 @@
+{
+  "id": "CON-B2-E5",
+  "title": "Label and value with no line break",
+  "statement": "Read a label and an integer value, and write exactly on a single line: <label>: <value>. Use two write statements and the modifier that skips the line break between them.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-B2",
+  "visibleCases": [
+    {"inputs": ["Peso", "70"], "expectedOutputs": ["Peso: 70"], "expected": "texto"},
+    {"inputs": ["Altura", "180"], "expectedOutputs": ["Altura: 180"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Edad", "0"], "expectedOutputs": ["Edad: 0"], "expected": "texto"},
+    {"inputs": ["Puntaje", "999"], "expectedOutputs": ["Puntaje: 999"], "expected": "texto"},
+    {"inputs": ["Nota", "5"], "expectedOutputs": ["Nota: 5"], "expected": "texto"}
+  ],
+  "referenceSolution": "algorithm LabelValue\n    define label as string;\n    define value as integer;\n    read label;\n    read value;\n    write label, \": \" without newline;\n    write value;\nendAlgorithm\n"
+}

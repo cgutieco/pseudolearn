@@ -1,0 +1,21 @@
+{
+  "id": "CON-C4-E3",
+  "title": "Vehiculo y Motocicleta con Super",
+  "statement": "Define una clase Vehiculo con constructor que reciba un número de ruedas, y un método Ruedas que lo devuelva. Define Motocicleta y Automovil, dos clases que hereden de Vehiculo: el constructor de Motocicleta llama a Super.Constructor(2) y el de Automovil a Super.Constructor(4), sin recibir parámetros. Lee un indicador (1 para Motocicleta, cualquier otro valor para Automovil), crea el vehículo correspondiente y escribe su número de ruedas.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C4",
+  "visibleCases": [
+    {"inputs": ["1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["4"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["2"], "expectedOutputs": ["4"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
+  ],
+  "referenceSolution": "Clase Vehiculo\n    Privado Definir ruedas Como Entero;\n\n    Metodo Constructor(unasRuedas Como Entero)\n        Este.ruedas <- unasRuedas;\n    FinMetodo\n\n    Publico Metodo Ruedas() Como Entero\n        Retornar Este.ruedas;\n    FinMetodo\nFinClase\n\nClase Motocicleta Hereda De Vehiculo\n    Metodo Constructor()\n        Super.Constructor(2);\n    FinMetodo\nFinClase\n\nClase Automovil Hereda De Vehiculo\n    Metodo Constructor()\n        Super.Constructor(4);\n    FinMetodo\nFinClase\n\nProceso ContarRuedas\n    Definir tipo Como Entero;\n    Definir vehiculo Como Vehiculo;\n    Leer tipo;\n    Si tipo = 1 Entonces\n        vehiculo <- Nuevo Motocicleta();\n    SiNo\n        vehiculo <- Nuevo Automovil();\n    FinSi\n    Escribir vehiculo.Ruedas();\nFinProceso\n"
+}

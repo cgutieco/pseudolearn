@@ -1,0 +1,24 @@
+{
+  "id": "CON-B7-E3",
+  "title": "Recursive power",
+  "statement": "Write a recursive Power function that takes an integer base and a non-negative integer exponent, and returns the base raised to the exponent. Solve it with pure recursion, with no loop at all. Read the base and the exponent and write the result of calling it.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B7",
+  "visibleCases": [
+    {"inputs": ["2", "3"], "expectedOutputs": ["8"], "expected": "numerico"},
+    {"inputs": ["5", "0"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["3", "4"], "expectedOutputs": ["81"], "expected": "numerico"},
+    {"inputs": ["10", "2"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["1", "10"], "expectedOutputs": ["1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "Power", "arity": 2, "requirement": "The statement asks for a recursive function named Power with two parameters."},
+    {"kind": "no-contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
+    {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."}
+  ],
+  "referenceSolution": "subroutine Power(base as integer, exponent as integer) as integer\n    if exponent = 0 then\n        return 1;\n    else\n        return base * Power(base, exponent - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputePower\n    define base as integer;\n    define exponent as integer;\n    read base;\n    read exponent;\n    write Power(base, exponent);\nendAlgorithm\n"
+}

@@ -1,0 +1,7 @@
+Algoritmo DecisionesOperadores
+  Definir potencia Como Entero
+  Definir flag Como Logico
+  potencia <- 2 ^ 3 ^ 2
+  flag <- !(2 > 3)
+  Escribir potencia, flag
+FinAlgoritmo

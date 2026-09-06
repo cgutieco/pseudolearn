@@ -1,0 +1,21 @@
+{
+  "id": "CON-C3-E3",
+  "title": "Copy that does not affect the original",
+  "statement": "Define a Box class with a public attribute content. Read an initial value and a new value. Create an original Box with the initial value, create a copy with the built-in copy function, change the copy's content to the new value, and write the original's content.",
+  "level": 1,
+  "kind": "crear",
+  "module": "CON-C3",
+  "visibleCases": [
+    {"inputs": ["10", "99"], "expectedOutputs": ["10"], "expected": "numerico"},
+    {"inputs": ["0", "5"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["7", "7"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["100", "1"], "expectedOutputs": ["100"], "expected": "numerico"},
+    {"inputs": ["-5", "5"], "expectedOutputs": ["-5"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
+  ],
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm TryIndependentCopy\n    define initialValue as integer;\n    define newValue as integer;\n    define original as Box;\n    define cloned as Box;\n    read initialValue;\n    read newValue;\n    original <- new Box();\n    original.content <- initialValue;\n    cloned <- copy(original);\n    cloned.content <- newValue;\n    write original.content;\nendAlgorithm\n"
+}

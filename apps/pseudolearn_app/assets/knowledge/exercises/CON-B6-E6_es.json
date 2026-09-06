@@ -1,0 +1,77 @@
+{
+  "id": "CON-B6-E6",
+  "title": "Procedimiento que ordena dos variables",
+  "statement": "Modifica el procedimiento Intercambiar para crear Normalizar, que reciba dos enteros por referencia y los deje ordenados de menor a mayor (intercambiándolos solo si hace falta). Lee dos números, llama al procedimiento y escribe los dos valores resultantes, uno por línea.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B6",
+  "visibleCases": [
+    {
+      "inputs": [
+        "5",
+        "3"
+      ],
+      "expectedOutputs": [
+        "3",
+        "5"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "9"
+      ],
+      "expectedOutputs": [
+        "2",
+        "9"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "4",
+        "4"
+      ],
+      "expectedOutputs": [
+        "4",
+        "4"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "-1",
+        "-5"
+      ],
+      "expectedOutputs": [
+        "-5",
+        "-1"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "100"
+      ],
+      "expectedOutputs": [
+        "0",
+        "100"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "declara-subprograma",
+      "name": "Normalizar",
+      "arity": 2,
+      "requirement": "El enunciado pide un procedimiento llamado Normalizar con dos parámetros."
+    }
+  ],
+  "referenceSolution": "SubProceso Normalizar(a Como Entero Por Referencia, b Como Entero Por Referencia)\n    Definir auxiliar Como Entero;\n    Si a > b Entonces\n        auxiliar <- a;\n        a <- b;\n        b <- auxiliar;\n    FinSi\nFinSubProceso\n\nProceso EjecutarNormalizacion\n    Definir n1 Como Entero;\n    Definir n2 Como Entero;\n    Leer n1;\n    Leer n2;\n    Normalizar(n1, n2);\n    Escribir n1;\n    Escribir n2;\nFinProceso\n",
+  "starterCode": "SubProceso Intercambiar(a Como Entero Por Referencia, b Como Entero Por Referencia)\n    Definir auxiliar Como Entero;\n    auxiliar <- a;\n    a <- b;\n    b <- auxiliar;\nFinSubProceso\n\nProceso EjecutarNormalizacion\n    Definir n1 Como Entero;\n    Definir n2 Como Entero;\n    Leer n1;\n    Leer n2;\n    Intercambiar(n1, n2);\n    Escribir n1;\n    Escribir n2;\nFinProceso\n"
+}

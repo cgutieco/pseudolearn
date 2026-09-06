@@ -1,0 +1,10 @@
+Clase Punto
+  Publico Definir cx Como Entero
+FinClase
+Algoritmo ArreglosYObjetos
+  Definir p1, p2 Como Punto
+  p1 <- Nuevo Punto()
+  p1.cx <- 10
+  p2 <- p1
+  Escribir p2.cx
+FinAlgoritmo

@@ -1,0 +1,21 @@
+{
+  "id": "CON-B3-E5",
+  "title": "Operations menu",
+  "statement": "Read an option (1 add, 2 subtract, 3 multiply, 4 divide) and two numbers, and write the result of that operation. If the option is not 1, 2, 3 or 4, write -1. Solve it with a multiple selection.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["1", "4", "3"], "expectedOutputs": ["7"], "expected": "numerico"},
+    {"inputs": ["3", "4", "3"], "expectedOutputs": ["12"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["2", "10", "4"], "expectedOutputs": ["6"], "expected": "numerico"},
+    {"inputs": ["4", "10", "4"], "expectedOutputs": ["2.5"], "expected": "numerico"},
+    {"inputs": ["9", "1", "1"], "expectedOutputs": ["-1"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "The statement asks you to solve it with a multiple selection."}
+  ],
+  "referenceSolution": "algorithm OperationsMenu\n    define option as integer;\n    define a as integer;\n    define b as integer;\n    read option, a, b;\n    switch option do\n        1:\n            write a + b;\n        2:\n            write a - b;\n        3:\n            write a * b;\n        4:\n            write a / b;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
+}

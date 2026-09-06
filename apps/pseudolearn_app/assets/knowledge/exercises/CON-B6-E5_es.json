@@ -1,0 +1,22 @@
+{
+  "id": "CON-B6-E5",
+  "title": "Función que cuenta elementos mayores que un límite",
+  "statement": "Escribe una función ContarMayores que reciba un arreglo de 5 enteros por referencia, su tamaño y un límite, y devuelva cuántos elementos son mayores que el límite. Lee 5 números y luego el límite, y escribe el resultado de llamarla.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-B6",
+  "visibleCases": [
+    {"inputs": ["1", "5", "10", "3", "8", "4"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["0", "0", "0", "0", "0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["10", "20", "30", "40", "50", "25"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["-5", "-4", "-3", "-2", "-1", "-3"], "expectedOutputs": ["2"], "expected": "numerico"},
+    {"inputs": ["1", "1", "1", "1", "1", "1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "declara-subprograma", "name": "ContarMayores", "arity": 3, "requirement": "El enunciado pide una función llamada ContarMayores con tres parámetros."},
+    {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
+  ],
+  "referenceSolution": "SubProceso ContarMayores(datos[] Como Entero Por Referencia, tamano Como Entero, limite Como Entero) Como Entero\n    Definir i Como Entero;\n    Definir contador Como Entero;\n    contador <- 0;\n    Para i <- 0 Hasta tamano - 1 Hacer\n        Si datos[i] > limite Entonces\n            contador <- contador + 1;\n        FinSi\n    FinPara\n    Retornar contador;\nFinSubProceso\n\nProceso EjecutarConteo\n    Dimension vector[5] Como Entero;\n    Definir i Como Entero;\n    Definir limite Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer vector[i];\n    FinPara\n    Leer limite;\n    Escribir ContarMayores(vector, 5, limite);\nFinProceso\n"
+}

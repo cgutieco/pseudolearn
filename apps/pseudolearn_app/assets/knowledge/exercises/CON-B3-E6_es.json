@@ -1,0 +1,18 @@
+{
+  "id": "CON-B3-E6",
+  "title": "Categoría de una edad",
+  "statement": "Lee una edad entera y escribe su categoría como número: 1 (niño) si es menor de 13, 2 (adolescente) si es menor de 18, 3 (adulto) si es menor de 65, o 4 (adulto mayor) en otro caso.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B3",
+  "visibleCases": [
+    {"inputs": ["10"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["15"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["30"], "expectedOutputs": ["3"], "expected": "numerico"},
+    {"inputs": ["70"], "expectedOutputs": ["4"], "expected": "numerico"},
+    {"inputs": ["13"], "expectedOutputs": ["2"], "expected": "numerico"}
+  ],
+  "referenceSolution": "Proceso CategoriaEdad\n    Definir edad Como Entero;\n    Leer edad;\n    Si edad < 13 Entonces\n        Escribir 1;\n    SiNo\n        Si edad < 18 Entonces\n            Escribir 2;\n        SiNo\n            Si edad < 65 Entonces\n                Escribir 3;\n            SiNo\n                Escribir 4;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
+}

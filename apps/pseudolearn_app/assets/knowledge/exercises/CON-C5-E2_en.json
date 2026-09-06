@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E2",
+  "title": "Library that delegates to Book",
+  "statement": "Define a Book class with a parameterless constructor that starts available, a Borrow method and an Available method that returns 1 if available or 0 if not. Define a Library class that has a Book as an attribute, with a Borrow method that delegates to the book and an Available method that also delegates. Read a flag (1 to borrow, 0 to do nothing) and write whether the book is still available.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"},
+    {"inputs": ["0"], "expectedOutputs": ["1"], "expected": "numerico"},
+    {"inputs": ["1"], "expectedOutputs": ["0"], "expected": "numerico"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with classes."}
+  ],
+  "referenceSolution": "class Book\n    private define available as integer;\n\n    method constructor()\n        this.available <- 1;\n    endMethod\n\n    public method Borrow()\n        this.available <- 0;\n    endMethod\n\n    public method Available() as integer\n        return this.available;\n    endMethod\nendClass\n\nclass Library\n    private define book as Book;\n\n    method constructor()\n        this.book <- new Book();\n    endMethod\n\n    public method Borrow()\n        this.book.Borrow();\n    endMethod\n\n    public method Available() as integer\n        return this.book.Available();\n    endMethod\nendClass\n\nalgorithm RunLibrary\n    define borrow as integer;\n    define library as Library;\n    read borrow;\n    library <- new Library();\n    if borrow = 1 then\n        library.Borrow();\n    endIf\n    write library.Available();\nendAlgorithm\n"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "CON-C5-E1",
+  "title": "Order that delegates to Customer",
+  "statement": "Define a Customer class with a constructor that takes a name, and a Name method that returns it. Define an Order class that has a Customer as an attribute (not that extends it), takes the customer's name and an amount in its constructor, and a Summary method that returns the customer's name followed by ': ' and the amount. Read the name and the amount, create the order and write the summary.",
+  "level": 2,
+  "kind": "crear",
+  "module": "CON-C5",
+  "visibleCases": [
+    {"inputs": ["Ana", "100"], "expectedOutputs": ["Ana: 100"], "expected": "texto"},
+    {"inputs": ["Luis", "0"], "expectedOutputs": ["Luis: 0"], "expected": "texto"}
+  ],
+  "hiddenCases": [
+    {"inputs": ["Eva", "50"], "expectedOutputs": ["Eva: 50"], "expected": "texto"},
+    {"inputs": ["Bea", "999"], "expectedOutputs": ["Bea: 999"], "expected": "texto"},
+    {"inputs": ["Ivan", "1"], "expectedOutputs": ["Ivan: 1"], "expected": "texto"}
+  ],
+  "assertions": [
+    {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with classes."}
+  ],
+  "referenceSolution": "class Customer\n    private define name as string;\n\n    method constructor(aName as string)\n        this.name <- aName;\n    endMethod\n\n    public method Name() as string\n        return this.name;\n    endMethod\nendClass\n\nclass Order\n    private define customer as Customer;\n    private define amount as integer;\n\n    method constructor(aName as string, anAmount as integer)\n        this.customer <- new Customer(aName);\n        this.amount <- anAmount;\n    endMethod\n\n    public method Summary() as string\n        return this.customer.Name() + \": \" + toText(this.amount);\n    endMethod\nendClass\n\nalgorithm RunOrder\n    define name as string;\n    define amount as integer;\n    define order as Order;\n    read name;\n    read amount;\n    order <- new Order(name, amount);\n    write order.Summary();\nendAlgorithm\n"
+}

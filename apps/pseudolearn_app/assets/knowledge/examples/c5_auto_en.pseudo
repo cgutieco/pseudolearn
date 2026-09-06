@@ -1,0 +1,31 @@
+class Engine
+    private define power as integer;
+
+    method constructor(aPower as integer)
+        this.power <- aPower;
+    endMethod
+
+    public method Power() as integer
+        return this.power;
+    endMethod
+endClass
+
+class Car
+    private define engine as Engine;
+
+    method constructor(aPower as integer)
+        this.engine <- new Engine(aPower);
+    endMethod
+
+    public method Power() as integer
+        return this.engine.Power();
+    endMethod
+endClass
+
+algorithm TryCar
+    define power as integer;
+    define car as Car;
+    read power;
+    car <- new Car(power);
+    write car.Power();
+endAlgorithm

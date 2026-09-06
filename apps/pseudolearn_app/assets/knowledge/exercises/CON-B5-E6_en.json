@@ -1,0 +1,106 @@
+{
+  "id": "CON-B5-E6",
+  "title": "Main diagonal of a 3x3 matrix",
+  "statement": "Read 9 integers forming a matrix of 3 rows and 3 columns, row by row, and write the sum of its main diagonal (the positions where the row and the column are equal). Modify the algorithm that sums the whole matrix so it sums only the diagonal.",
+  "level": 2,
+  "kind": "modificar",
+  "module": "CON-B5",
+  "visibleCases": [
+    {
+      "inputs": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "expectedOutputs": [
+        "15"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "expectedOutputs": [
+        "0"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "hiddenCases": [
+    {
+      "inputs": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "expectedOutputs": [
+        "15"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+      ],
+      "expectedOutputs": [
+        "3"
+      ],
+      "expected": "numerico"
+    },
+    {
+      "inputs": [
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2"
+      ],
+      "expectedOutputs": [
+        "6"
+      ],
+      "expected": "numerico"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "contiene",
+      "construct": "arreglo",
+      "requirement": "The statement asks you to solve it with an array."
+    }
+  ],
+  "referenceSolution": "algorithm MainDiagonal\n    dimension data[3, 3] as integer;\n    define row as integer;\n    define column as integer;\n    define total as integer;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    total <- data[0, 0] + data[1, 1] + data[2, 2];\n    write total;\nendAlgorithm\n",
+  "starterCode": "algorithm MainDiagonal\n    dimension data[3, 3] as integer;\n    define row as integer;\n    define col as integer;\n    define total as integer;\n    for row <- 0 to 2 step 1 do\n        for col <- 0 to 2 step 1 do\n            read data[row, col];\n        endFor\n    endFor\n    total <- 0;\n    for row <- 0 to 2 step 1 do\n        for col <- 0 to 2 step 1 do\n            total <- total + data[row, col];\n        endFor\n    endFor\n    write total;\nendAlgorithm\n"
+}
