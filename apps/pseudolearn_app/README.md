@@ -108,7 +108,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
-| «Continuar con Apple» en macOS distribuido por Developer ID    | Migrar el flujo nativo a OAuth web de Apple contra Supabase; el entitlement nativo no existe fuera de la Mac App Store (ver §2.6)            | Abierto: el botón está presente y falla al pulsarlo en macOS                                            |
+| Canal de distribución de macOS en la Mac App Store             | Certificados *Apple Distribution* y *Mac Installer Distribution*, perfil de Mac App Store, ficha en App Store Connect y reescritura del workflow de publicación (§4.40)                                          | Abierto: la distribución vigente es por `.dmg` de Developer ID, sin proveedor de Apple operativo en macOS |
 
 ---
 
@@ -240,17 +240,9 @@ flutter test
       comparte el llavero con el SDK de Google Sign-In, y el perfil lo autoriza como `<prefijo>.*`.
       `com.apple.security.app-sandbox` es otro entitlement restringido, y se queda fuera de Release a
       propósito: el sandbox solo hace falta para la Mac App Store, que no es un canal de este proyecto.
-    - **`Runner/Release.entitlements` no declara `com.apple.developer.applesignin`, y por eso el flujo
-      nativo de «Continuar con Apple» no funciona en la app distribuida por Developer ID.** Sign in with
-      Apple no es una capacidad admitida fuera de la Mac App Store: aunque el App ID tenga la capability
-      activada, el perfil de aprovisionamiento *Developer ID* que emite Apple no incluye ese entitlement,
-      así que AMFI lo cuenta como insatisfecho y mata el proceso. Se comprobó firmando el mismo `.app` con
-      el perfil embebido y variando solo los entitlements: con `keychain-access-groups` arranca, y basta
-      añadir `com.apple.developer.applesignin` para que vuelva el `SIGKILL`. No es un fallo de
-      configuración y ninguna regeneración del perfil lo corrige. El botón de Apple queda como pendiente
-      declarado (§1.5): la salida es el flujo OAuth web de Apple contra Supabase, que no necesita
-      entitlement y reutiliza el enlace profundo `pseudolearn://` que la app ya registra y resuelve en
-      `completeSignInFromLink`.
+    - **`Runner/Release.entitlements` no declara `com.apple.developer.applesignin`.** Ese entitlement es
+      restringido y ningún perfil *Developer ID* lo autoriza, de modo que firmarlo mata el arranque con el
+      mismo `Error -413`. El fundamento y las vías admitidas están en §4.40.
     - **`$(AppIdentifierPrefix)` se resuelve en el runner, no se escribe a mano en el archivo.** Esa
       variable la expande Xcode; `codesign` invocado desde la línea de órdenes no la expande y firmaría el
       literal, produciendo un grupo de llavero inválido. El workflow lee el prefijo de equipo del propio
@@ -1609,6 +1601,35 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   el llamante y obliga a repetirla en el siguiente; y reordenar el guardado y la comprobación dentro de `_onPace`, que
   no
   arregla nada porque el oyente se dispara igual, solo que más tarde.
+
+### 4.40 Autenticación con Apple en macOS: el flujo nativo no es firmable bajo Developer ID
+
+- **Problema:** `SignInWithApple.getAppleIDCredential` exige el entitlement `com.apple.developer.applesignin`. Ese
+  entitlement es *restringido*: AMFI solo lo admite si un perfil de aprovisionamiento embebido en el bundle lo declara
+  para el identificador de la app. Los perfiles que Apple emite para el canal *Developer ID* no lo declaran, esté o no
+  activada la capacidad *Sign In with Apple* en el App ID, porque esa capacidad pertenece a los canales de App Store y de
+  desarrollo. Un bundle firmado con el entitlement recibe `SIGKILL` en el arranque y macOS muestra «La aplicación no se
+  puede abrir», con firma válida, notarización grapada y `spctl` aceptando la app. El canal de distribución de macOS de
+  este proyecto es la descarga directa de un `.dmg`, no la Mac App Store (§2.6).
+- **Elección:** la app de macOS se publica en la Mac App Store, el mismo canal que la de iOS. Ese canal autoriza el
+  entitlement y, por la directriz 4.8 de App Review, lo exige: toda app que ofrezca inicio de sesión social de terceros
+  —aquí, Google— debe ofrecer también Sign in with Apple. El flujo nativo de `ASAuthorization` queda idéntico en las dos
+  plataformas y `AuthMethod.apple` no necesita variante por sistema operativo. La migración del canal figura como
+  pendiente declarado (§1.5); mientras esté abierta, `Release.entitlements` no declara el entitlement, porque bajo
+  Developer ID mata el arranque.
+- **Alternativas descartadas y por qué:**
+    - *Regenerar el perfil Developer ID con la capacidad activada en el App ID:* Apple emite el perfil sin el
+      entitlement. No es un defecto de configuración y ninguna regeneración lo corrige.
+    - *Retirar el proveedor de Apple de la interfaz de macOS y conservar la distribución directa:* recorta una vía de
+      acceso en el primer contacto del usuario con la app, y en el canal de App Store constituiría un motivo de rechazo.
+    - *Conservar el entitlement bajo Developer ID y absorber el fallo en tiempo de ejecución:* el binario no arranca en
+      ninguna máquina, de modo que rompe la app entera y no solo un proveedor.
+    - *Canje web de Apple contra Supabase:* evita el entitlement abriendo el punto de autorización de Apple en el
+      navegador contra un *Services ID*, con retorno por el enlace profundo `pseudolearn://` (§4.32). Añade un
+      *Services ID*, su dominio y su URL de retorno a la superficie de configuración, y deja dos flujos de Apple
+      distintos según la plataforma, para sortear una limitación que el canal de App Store no tiene.
+    - *Mantener los dos canales, `.dmg` y App Store:* duplica certificados, perfiles, pipelines y ficha de producto, y
+      obliga a sostener dos juegos de entitlements divergentes de forma permanente.
 
 ---
 
