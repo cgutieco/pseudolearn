@@ -160,7 +160,7 @@ flutter run -d macos --observe --dart-define-from-file=dart_define.local.json
 ### 2.4 Compilación y build
 
 ```bash
-# Artefacto de producción para macOS (.app empaquetable en DMG)
+# Artefacto de producción para macOS (.app sin firmar, empaquetable en DMG)
 flutter build macos --release
 # Ruta de salida: build/macos/Build/Products/Release/PseudoLearn.app
 
@@ -168,6 +168,14 @@ flutter build macos --release
 flutter build ipa --no-codesign
 # Ruta de salida: build/ios/archive/Runner.xcarchive
 ```
+
+La configuración *Release* del target `Runner` en `macos/Runner.xcodeproj` usa `CODE_SIGN_STYLE = Manual` y
+`CODE_SIGN_IDENTITY = "-"` (ad-hoc) a propósito: este build nunca queda firmado con una identidad real
+en este paso. La firma con el certificado *Developer ID Application* la aplica después
+`.github/workflows/release-macos.yml` (§2.6), tanto si se compila en CI como si alguien lo compila a
+mano. La firma automática (`Automatic`) que trae el proyecto por defecto en Debug/Profile exige una
+sesión de Xcode con Apple ID y un perfil de aprovisionamiento, algo que un runner de CI no tiene y que
+esta build de producción no necesita.
 
 ### 2.5 Pruebas y verificación inmediata
 
