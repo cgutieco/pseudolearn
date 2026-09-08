@@ -39,6 +39,11 @@ jobs:
           JSON
 
       - name: Build macOS release bundle
+        env:
+          CODE_SIGNING_ALLOWED: "NO"
+          CODE_SIGNING_REQUIRED: "NO"
+          CODE_SIGN_IDENTITY: "-"
+          EXPANDED_CODE_SIGN_IDENTITY: "-"
         run: flutter build macos --release --dart-define-from-file=dart_define.ci.json
 
       - name: Import Developer ID certificate into a temporary keychain
