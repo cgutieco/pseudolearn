@@ -9,11 +9,16 @@ Las reglas transversales de calidad, documentación y capas están en `AGENTS.md
 en la misma carpeta que este archivo. Este documento no repite esas reglas: describe el mapa del
 repositorio y las decisiones de organización que las hacen posibles. La arquitectura de cada paquete vive
 en su propio `README.md`: `packages/pseudolearn_core/README.md` para el motor del lenguaje,
-`packages/pseudolearn_brand/README.md` para el motor de la identidad visual,
-`apps/pseudolearn_app/README.md` para el cliente Flutter y `apps/fe-pseudolearn/README.md` para el sitio
-público.
+`packages/pseudolearn_brand/README.md` para el motor de la identidad visual y
+`apps/pseudolearn_app/README.md` para el cliente Flutter.
 
-**Estado:** Monorepo de cuatro miembros activos —dos paquetes bajo `packages/` y dos aplicaciones bajo
+El sitio público (landing, descargas) vive en su propio repositorio de git, fuera de este monorepo, y no
+tiene entrada en el catálogo de carpetas de §3.3. Para que el motor de marca y el script de capturas de
+producto puedan escribirle directo, se lo clona localmente como `apps/fe-pseudolearn/` —una carpeta que
+este repositorio ignora (`.gitignore`) y no versiona— y ese es el único motivo por el que aparece como
+destino de ruta en `packages/pseudolearn_brand/brand.json` y en `apps/pseudolearn_app/README.md` §2.8.
+
+**Estado:** Monorepo de tres miembros activos —dos paquetes bajo `packages/` y una aplicación bajo
 `apps/`— con una única arista de dependencia en tiempo de compilación, de la app hacia el núcleo por ruta
 relativa, y una relación de generación de `pseudolearn_brand` hacia sus consumidores; sin tooling de
 orquestación multi-proyecto (`melos` u otro) instalado.
@@ -65,10 +70,13 @@ tener que descubrirlo por ensayo y error.
   orquestación multi-paquete instalada. Cada paquete se prepara, compila y prueba con sus propios
   comandos nativos de su propia cadena de herramientas desde su propio directorio; el número de
   miembros del monorepo no justifica la complejidad operativa de un orquestador dedicado, que además
-  tendría que abarcar tres cadenas de herramientas distintas.
-- **CI/CD centralizado en la raíz:** No hay configuración de integración continua en este repositorio.
-  La verificación mecánica de cada miembro se ejecuta localmente con los comandos declarados en su
-  propio `README.md` y reunidos en §2.5.
+  tendría que abarcar dos cadenas de herramientas distintas.
+- **CI/CD centralizado que ejecute los verificadores de cada paquete:** No hay integración continua que
+  corra `flutter test`, `dart analyze` ni los scripts de `tool/` en cada cambio. La verificación mecánica
+  de cada miembro se ejecuta localmente con los comandos declarados en su propio `README.md` y reunidos
+  en §2.5. `.github/workflows/release-macos.yml` es la única automatización presente, y es de
+  publicación —construye, firma, notariza y sube el `.dmg` al crear un tag `v*.*.*`—, no de verificación
+  continua (`apps/pseudolearn_app/README.md` §2.6).
 - **`pubspec.yaml` de raíz:** La raíz no es un paquete Dart ni Flutter y no declara dependencias propias.
   Cada miembro del monorepo resuelve las suyas de forma independiente.
 
@@ -99,9 +107,8 @@ tener que descubrirlo por ensayo y error.
 ### 2.1 Requisitos previos y plataformas objetivo
 
 - **Entorno de ejecución y SDKs:** Dart SDK `^3.5.0` (ambos paquetes Dart); Flutter SDK `>=3.24.0`
-  (requerido únicamente por `apps/pseudolearn_app`); Node `>=22.12.0` con `pnpm` (requerido únicamente
-  por `apps/fe-pseudolearn`); Python `>=3.9` con `fonttools` (requerido únicamente por
-  `packages/pseudolearn_brand`).
+  (requerido únicamente por `apps/pseudolearn_app`); Python `>=3.9` con `fonttools` (requerido
+  únicamente por `packages/pseudolearn_brand`).
 - **Plataformas soportadas:** Las declaradas por cada miembro en su propio `README.md`; la raíz no
   impone restricción de plataforma adicional.
 - **Variables de entorno y flags requeridos:** Ninguna a nivel de raíz.
@@ -143,9 +150,6 @@ Verificación mecánica completa del monorepo, paquete por paquete:
 
 # Motor de marca: artefactos de consumidor, capas, límites y tests
 (cd packages/pseudolearn_brand && python3 -m pseudolearn_brand check && python3 tool/check_limits.py && python3 -m unittest discover -s test -t .)
-
-# Sitio público: formato, lints, tipos, verificadores estáticos, tests y presupuesto
-(cd apps/fe-pseudolearn && pnpm check:all)
 ```
 
 La lista exhaustiva de verificadores, con qué detecta cada uno y dónde vive su regla, está en la sección
@@ -168,7 +172,8 @@ Monorepo estructurado de dos categorías de miembro, y la regla de qué va en ca
 - **`packages/` — todo lo reutilizable que no es una aplicación.** Librerías y utilidades, en el lenguaje
   que a cada una le corresponda. Un miembro de `packages/` no tiene interfaz de usuario, no se despliega
   y no depende de ninguna aplicación.
-- **`apps/` — lo que se despliega a una persona.** El cliente Flutter y el sitio público.
+- **`apps/` — lo que se despliega a una persona.** El cliente Flutter. El sitio público vive en un
+  repositorio separado y no es miembro de este monorepo.
 
 Un único árbol git gobierna ambas categorías; cada miembro es, puertas adentro, arquitectónicamente
 independiente y define su propio paradigma en su propio `README.md`.
@@ -182,28 +187,35 @@ La única arista de dependencia entre miembros del monorepo es unidireccional: l
 núcleo, nunca al revés (`LAYER-DIRECTION`).
 
 Hay dos relaciones, y son de naturaleza distinta. Una es de compilación: la app no compila sin el
-núcleo. La otra es de generación: el motor de marca escribe artefactos que sus consumidores versionan, y
-ninguno de ellos lo necesita para compilar.
+núcleo. La otra es de generación: el motor de marca escribe artefactos que su consumidor versiona, y no
+lo necesita para compilar.
 
 ```
-┌──────────────────────────┐        ┌──────────────────────────┐
-│ apps/pseudolearn_app     │        │ apps/fe-pseudolearn      │
-│ (cliente Flutter)        │        │ (sitio público, Astro)   │
-└─────────┬────────────────┘        └───────────┬──────────────┘
-          │ depende de (path relativo)          │
-          ▼                                     │
-┌─────────────────────────────┐                 │
-│ packages/pseudolearn_core   │                 │
-│ (motor de lenguaje, Dart)   │                 │
-└─────────────────────────────┘                 │
-                                                │
-          ▲ genera y verifica                   ▲ genera y verifica
-          │                                     │
-┌─────────┴─────────────────────────────────────┴──────────────┐
-│ packages/pseudolearn_brand                                    │
-│ (motor de la identidad visual, Python)                        │
-└───────────────────────────────────────────────────────────────┘
+┌──────────────────────────┐
+│ apps/pseudolearn_app     │
+│ (cliente Flutter)        │
+└─────────┬────────────────┘
+          │ depende de (path relativo)
+          ▼
+┌─────────────────────────────┐
+│ packages/pseudolearn_core   │
+│ (motor de lenguaje, Dart)   │
+└─────────────────────────────┘
+
+          ▲ genera y verifica
+          │
+┌─────────┴─────────────────────┐
+│ packages/pseudolearn_brand     │
+│ (motor de la identidad visual, │
+│ Python)                        │
+└─────────────────────────────────┘
 ```
+
+El sitio público, en su propio repositorio, recibe los artefactos que `pseudolearn_brand` escribe
+directo en su árbol de trabajo local (clonado como `apps/fe-pseudolearn/`, ignorado por git en este
+repositorio) y consume las entradas de versión publicadas por `apps/pseudolearn_app` (§4.4). Esa
+relación cruza el límite del monorepo y no participa del grafo de dependencias interno ni de
+`LAYER-DIRECTION`.
 
 `packages/pseudolearn_core` no importa, referencia ni conoce nada de `apps/pseudolearn_app`. Es un
 paquete de Dart puro sin dependencia de Flutter (`packages/pseudolearn_core/README.md` §1.3).
@@ -215,14 +227,13 @@ vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages
 
 ### 3.3 Catálogo de carpetas, responsabilidades e invariantes
 
-| Directorio                    | Responsabilidad única                                                                                                  | Puede importar (`may_import`)                                                                                                              | Prohibido importar (`forbidden_imports`)                                    |
-|:------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------|
-| `packages/pseudolearn_core/`  | Motor de lenguaje: lexer, parser, AST, chequeo de tipos, evaluación, diagnósticos                                      | Dart SDK puro; capas internas según su propio `architecture.yaml`                                                                          | `package:flutter/`, `dart:io`, `dart:isolate`, cualquier símbolo de `apps/` |
-| `apps/pseudolearn_app/`       | Cliente Flutter: interfaz, orquestación de estado, persistencia local, adaptación al núcleo                            | `packages/pseudolearn_core` por ruta relativa; paquetes de `pubspec.yaml` propio; capas internas según su propio `architecture.yaml`       | Símbolos internos de `pseudolearn_core` no exportados en su API pública     |
-| `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                              | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
-| `apps/fe-pseudolearn/`        | Sitio público: landing, contacto y soporte, e historial de versiones                                                   | Paquetes de su propio `package.json`; el módulo de marca que `pseudolearn_brand` emite; capas internas según su propio `architecture.yaml` | Símbolos de `packages/pseudolearn_core`; geometría de marca escrita a mano  |
-| `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                              | —                                                                           |
-| `AGENTS.md` (raíz)            | Reglas transversales de todos los paquetes: contrato de reglas, precedencia, skills                                    | — (documento)                                                                                                                              | Arquitectura específica de un paquete concreto                              |
+| Directorio                    | Responsabilidad única                                                                                                  | Puede importar (`may_import`)                                                                                                        | Prohibido importar (`forbidden_imports`)                                    |
+|:------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------|
+| `packages/pseudolearn_core/`  | Motor de lenguaje: lexer, parser, AST, chequeo de tipos, evaluación, diagnósticos                                      | Dart SDK puro; capas internas según su propio `architecture.yaml`                                                                    | `package:flutter/`, `dart:io`, `dart:isolate`, cualquier símbolo de `apps/` |
+| `apps/pseudolearn_app/`       | Cliente Flutter: interfaz, orquestación de estado, persistencia local, adaptación al núcleo                            | `packages/pseudolearn_core` por ruta relativa; paquetes de `pubspec.yaml` propio; capas internas según su propio `architecture.yaml` | Símbolos internos de `pseudolearn_core` no exportados en su API pública     |
+| `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                        | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
+| `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                        | —                                                                           |
+| `AGENTS.md` (raíz)            | Reglas transversales de todos los paquetes: contrato de reglas, precedencia, skills                                    | — (documento)                                                                                                                        | Arquitectura específica de un paquete concreto                              |
 
 Cada paquete declara su propio catálogo de carpetas internas, con sus propios `may_import` y
 `forbidden_imports`, en la sección 3.3 de su `README.md` y en su `architecture.yaml`. Este catálogo cubre
@@ -248,22 +259,22 @@ propio `README.md`.
 
 ### 4.1 Monorepo de git puro sin orquestador multi-paquete
 
-- **Problema:** Con cuatro miembros escritos en tres cadenas de herramientas y una única arista de
+- **Problema:** Con tres miembros escritos en dos cadenas de herramientas y una única arista de
   dependencia en tiempo de compilación entre ellos, cualquier herramienta de orquestación multi-paquete (`melos`, `nx`,
   workspaces) añade una capa de configuración, un archivo de reglas propio y una curva de
-  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las tres cadenas.
+  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las dos cadenas.
 - **Elección:** Git puro como mecanismo de agrupación. Cada paquete se prepara, compila, prueba y
   despliega desde su propio directorio con los comandos nativos de `pub`/`flutter`. La única
   coordinación entre miembros es la dependencia por ruta relativa declarada en
   `apps/pseudolearn_app/pubspec.yaml`.
 - **Alternativas descartadas y por qué:**
     - *`melos`:* Aporta ejecución de comandos en paralelo sobre N paquetes y versionado sincronizado.
-      Solo entiende paquetes de Dart, con lo que dejaría fuera a la mitad del monorepo; y sobre la mitad
-      que sí cubre, el paralelismo no ahorra tiempo apreciable con una dependencia unidireccional, y el
-      versionado sincronizado no aplica porque el núcleo no se publica.
+      Solo entiende paquetes de Dart, con lo que dejaría fuera al motor de marca (Python); y sobre los
+      dos miembros que sí cubre, el paralelismo no ahorra tiempo apreciable con una dependencia
+      unidireccional, y el versionado sincronizado no aplica porque el núcleo no se publica.
     - *Workspaces de un gestor de paquetes ajeno al ecosistema Dart/Flutter (npm, yarn):* Fuera del
-      ecosistema del lenguaje de ambos miembros; introduciría una segunda cadena de herramientas sin
-      beneficio.
+      ecosistema del lenguaje de los miembros de este monorepo; introduciría una cadena de herramientas
+      nueva sin beneficio.
 
 ### 4.2 Dos puntos de entrada, una fuente de verdad (symlinks de tooling)
 
@@ -296,23 +307,20 @@ propio `README.md`.
 
 ### 4.4 Versión de producto con núcleo anclado
 
-- **Problema:** `pseudolearn_core`, `apps/pseudolearn_app` y `apps/fe-pseudolearn` cambian por
-  razones distintas, pero el público necesita un solo número con el que hablar del producto, y el
-  repositorio necesita que ninguna publicación del núcleo se quede sin llegar a nadie. Una versión
-  compartida por los tres obliga a subir el núcleo cada vez que se corrige una errata de la web y
-  miente sobre lo que cambió; tres versiones sueltas no obligan a nada y dejan que un núcleo nuevo se
-  quede sin app que lo lleve.
-- **Elección:** tres números con dueños distintos y una sola regla que ata dos de ellos.
+- **Problema:** `pseudolearn_core` y `apps/pseudolearn_app` cambian por razones distintas, pero el
+  público necesita un solo número con el que hablar del producto, y el repositorio necesita que ninguna
+  publicación del núcleo se quede sin llegar a nadie. Una versión compartida por ambos obliga a subir el
+  núcleo cada vez que cambia solo la interfaz de la app y miente sobre lo que cambió; dos versiones
+  sueltas sin regla no obligan a nada y dejan que un núcleo nuevo se quede sin app que lo lleve.
+- **Elección:** dos números con dueños distintos y una regla que ata uno al otro.
     - `pseudolearn_core` lleva versionado semántico de su **contrato**: los tipos y firmas que expone,
       y la gramática que acepta. Es interno; nadie fuera del repositorio lo consume.
     - `apps/pseudolearn_app` lleva la **versión de producto**: la de la tienda, la que publica el sitio
-      y la que se pide al reportar un fallo.
-    - `apps/fe-pseudolearn` lleva la suya y no entra en la regla: publicar una errata en la web no
-      publica una versión del producto.
+      público (en su propio repositorio) y la que se pide al reportar un fallo.
       La regla de propagación va en una sola dirección, la misma que la única arista del grafo interno:
 
   | Cambio en el núcleo | Obliga en la app                                              |
-    |:--------------------|:--------------------------------------------------------------|
+      |:--------------------|:--------------------------------------------------------------|
   | MAYOR               | MENOR como mínimo; MAYOR si cambia lo que el estudiante escribe |
   | MENOR               | MENOR como mínimo                                             |
   | PARCHE              | PARCHE como mínimo                                            |
@@ -321,13 +329,15 @@ propio `README.md`.
   argumento es que un motor que ninguna app lleva dentro no le ha llegado a nadie, así que la versión
   de la app es el acuse de recibo de que ese núcleo se probó en producto.
 - **Unidad de publicación:** el par `(app, núcleo)`. Toda publicación se declara como una entrada con
-  la versión de producto, la del núcleo anclado, la fecha y los identificadores de lo que trae. De esa
-  entrada sale lo que el sitio muestra, de modo que no hay una segunda lista que pueda divergir.
+  la versión de producto, la del núcleo anclado, la fecha y los identificadores de lo que trae. Esa
+  entrada es lo que el sitio público, en su propio repositorio, consume para mostrar el historial de
+  versiones, de modo que no hay una segunda lista que pueda divergir.
 - **Alternativas descartadas y por qué:**
-    - *Versión única compartida por los tres miembros:* cada cambio de interfaz o de copia obligaría a
+    - *Versión única compartida por ambos miembros:* cada cambio de interfaz o de copia obligaría a
       subir la versión del núcleo, que es un contrato: el número dejaría de significar nada.
-    - *Tres versiones completamente independientes:* no obliga a nada, y la pregunta que el proyecto
-      necesita poder contestar —«¿con qué motor se probó esta app?»— se queda sin respuesta declarada.
+    - *Dos versiones completamente independientes, sin regla que las ate:* no obliga a nada, y la
+      pregunta que el proyecto necesita poder contestar —«¿con qué motor se probó esta app?»— se queda
+      sin respuesta declarada.
 - **Pendiente declarado:** el verificador que rechaza una versión que cambia sin su entrada, y una
   entrada cuyo núcleo anclado no coincide con el `pubspec.yaml` real, está en la tabla de §1.5.
 
@@ -342,11 +352,9 @@ propio `README.md`.
   despliegue— y no por **en qué lenguaje está escrito**. `apps/` sigue siendo lo que se despliega a una
   persona. Ninguna carpeta nueva en la raíz: una raíz con una carpeta por excepción deja de ser un mapa.
 - **Consecuencia:** el criterio para ubicar un archivo se vuelve una pregunta sobre su papel, que es
-  estable, en vez de una sobre su lenguaje, que no lo es —el monorepo ya sostiene Dart, TypeScript y
-  Python—. A cambio, `packages/` deja de tener una cadena de herramientas única: no hay un comando que
-  prepare o pruebe todos sus miembros a la vez, y cada uno declara los suyos en su `README.md` §2. Eso ya
-  era cierto entre `apps/pseudolearn_app` y `apps/fe-pseudolearn`, así que no introduce una situación
-  nueva, solo la extiende.
+  estable, en vez de una sobre su lenguaje, que no lo es —el monorepo ya sostiene Dart y Python—. A
+  cambio, `packages/` deja de tener una cadena de herramientas única: no hay un comando que prepare o
+  pruebe todos sus miembros a la vez, y cada uno declara los suyos en su `README.md` §2.
 - **Alternativas descartadas y por qué:**
     - *Dejar el motor de marca en una carpeta `brand/` de raíz:* Es lo que había. Una carpeta de raíz por
       cada cosa que no encaja convierte el primer nivel del repositorio en una lista de excepciones, y
@@ -376,7 +384,7 @@ se aplican y verifican dentro de cada paquete según su propio `architecture.yam
 
 No hay archivo de reglas de raíz. Cada miembro declara los suyos, en el formato que su propio
 intérprete lee sin dependencias añadidas: `packages/pseudolearn_core/architecture.yaml`,
-`apps/pseudolearn_app/architecture.yaml` y `apps/fe-pseudolearn/architecture.yaml` en YAML;
+`apps/pseudolearn_app/architecture.yaml` en YAML;
 `packages/pseudolearn_brand/architecture.json` en JSON, por la razón registrada en el §4.3 de ese
 paquete.
 
@@ -430,7 +438,6 @@ técnica prioriza densidad y precisión sobre estilo editorial (`AGENTS.md`, ski
 | Artefactos de marca          | `cd packages/pseudolearn_brand && python3 -m pseudolearn_brand check`         | Copia de marca que el motor ya no produce, medida redibujada que dejó de coincidir, cara tipográfica divergente, geometría a mano en la plantilla | `packages/pseudolearn_brand/brand.json`           |
 | Capas y límites de la marca  | `cd packages/pseudolearn_brand && python3 tool/check_limits.py`               | Violación de `may_import`, tamaño de archivo/función, parámetros, anidamiento, comentarios                                                        | `packages/pseudolearn_brand/architecture.json`    |
 | Tests de la marca            | `cd packages/pseudolearn_brand && python3 -m unittest discover -s test -t .`  | Regresiones de geometría, tipografía, composición, emisión y verificación                                                                         | `packages/pseudolearn_brand/test/`                |
-| Verificación del sitio       | `cd apps/fe-pseudolearn && pnpm check:all`                                    | Formato, lints, tipos, capas, i18n, comentarios, marca pegada a mano, tamaño, tests y presupuesto                                                 | `apps/fe-pseudolearn/architecture.yaml`           |
 
 Esta tabla enumera los verificadores por su punto de entrada desde la raíz. El detalle de qué código
 ejecuta cada uno y su caso de prueba negativo está en la sección 7.1 del `README.md` de cada paquete.
@@ -477,5 +484,5 @@ registradas en la sección 4.1.
   la sección 4.5.
 - **Qué se rechazó deliberadamente y por qué:** El tooling de orquestación multi-paquete que
   habitualmente acompaña esa convención (`melos` y equivalentes), por las razones técnicas registradas
-  en la sección 4.1: no abarca las tres cadenas de herramientas del monorepo, y sobre la parte que sí
+  en la sección 4.1: no abarca las dos cadenas de herramientas del monorepo, y sobre la parte que sí
   abarca no resuelve un problema que hoy exista.

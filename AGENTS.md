@@ -173,9 +173,12 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
 
 ## 9. Entorno
 
-- El monorepo sostiene tres cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
-  para el núcleo y la app, `node` con `pnpm` para el sitio, `python3` con `fonttools` para el motor de
-  marca. Todas están en el `PATH`; los comandos se documentan sin rutas absolutas.
+- El monorepo sostiene dos cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
+  para el núcleo y la app, `python3` con `fonttools` para el motor de marca. Todas están en el `PATH`;
+  los comandos se documentan sin rutas absolutas. El sitio público vive en su propio repositorio y no es
+  miembro de este monorepo (`README.md` de la raíz §1.1); `node` con `pnpm` solo aparece en
+  `.claude/launch.json` como conveniencia para levantar ese sitio cuando se lo clona localmente como
+  `apps/fe-pseudolearn/`, ruta que este repositorio ignora.
 - `packages/` aloja lo reutilizable que no se despliega, en el lenguaje que a cada miembro le
   corresponda; `apps/` aloja lo que se despliega. El criterio es el papel del miembro, no su lenguaje (`README.md` de la
   raíz §3.1 y §4.5).

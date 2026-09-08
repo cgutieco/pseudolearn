@@ -23,6 +23,10 @@ lcov.info
 # Local defines / secrets
 dart_define.local.json
 
+# Clon local del sitio público (repositorio separado), destino de
+# packages/pseudolearn_brand/brand.json y de las capturas de producto
+apps/fe-pseudolearn/
+
 # Salida del motor de marca
 packages/pseudolearn_brand/out/
 

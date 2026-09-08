@@ -1,0 +1,132 @@
+name: Release macOS DMG
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch: {}
+
+jobs:
+  build-sign-notarize:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install core package dependencies
+        working-directory: packages/pseudolearn_core
+        run: dart pub get
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Write build-time auth configuration
+        run: |
+          cat > dart_define.ci.json <<JSON
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
+            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          }
+          JSON
+
+      - name: Build macOS release bundle
+        run: flutter build macos --release --dart-define-from-file=dart_define.ci.json
+
+      - name: Import Developer ID certificate into a temporary keychain
+        env:
+          APPLE_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          KEYCHAIN_PATH="$RUNNER_TEMP/release-signing.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 24)
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          echo "$APPLE_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$RUNNER_TEMP/certificate.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
+
+      - name: Sign nested frameworks and libraries
+        env:
+          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          find "$APP_PATH" \( -name "*.framework" -o -name "*.dylib" \) -print0 \
+            | while IFS= read -r -d '' item; do
+                codesign --force --options runtime --sign "$APPLE_DEVELOPER_ID_IDENTITY" "$item"
+              done
+
+      - name: Sign application bundle
+        env:
+          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          codesign --force --options runtime \
+            --entitlements macos/Runner/Release.entitlements \
+            --sign "$APPLE_DEVELOPER_ID_IDENTITY" \
+            "$APP_PATH"
+          codesign --verify --deep --strict --verbose=2 "$APP_PATH"
+
+      - name: Create disk image
+        run: |
+          mkdir -p dist
+          hdiutil create -volname "PseudoLearn" \
+            -srcfolder build/macos/Build/Products/Release/PseudoLearn.app \
+            -ov -format UDZO dist/PseudoLearn.dmg
+
+      - name: Sign disk image
+        env:
+          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
+        run: codesign --force --sign "$APPLE_DEVELOPER_ID_IDENTITY" dist/PseudoLearn.dmg
+
+      - name: Notarize disk image
+        env:
+          APPLE_NOTARIZATION_KEY_ID: ${{ secrets.APPLE_NOTARIZATION_KEY_ID }}
+          APPLE_NOTARIZATION_ISSUER_ID: ${{ secrets.APPLE_NOTARIZATION_ISSUER_ID }}
+          APPLE_NOTARIZATION_KEY_P8_BASE64: ${{ secrets.APPLE_NOTARIZATION_KEY_P8_BASE64 }}
+        run: |
+          echo "$APPLE_NOTARIZATION_KEY_P8_BASE64" | base64 --decode > "$RUNNER_TEMP/notarization-key.p8"
+          xcrun notarytool submit dist/PseudoLearn.dmg \
+            --key "$RUNNER_TEMP/notarization-key.p8" \
+            --key-id "$APPLE_NOTARIZATION_KEY_ID" \
+            --issuer "$APPLE_NOTARIZATION_ISSUER_ID" \
+            --wait
+
+      - name: Staple notarization ticket
+        run: xcrun stapler staple dist/PseudoLearn.dmg
+
+      - name: Upload disk image to Cloudflare R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          CLOUDFLARE_R2_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_R2_ACCOUNT_ID }}
+          CLOUDFLARE_R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
+        run: |
+          ENDPOINT="https://${CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          aws s3 cp dist/PseudoLearn.dmg \
+            "s3://${CLOUDFLARE_R2_BUCKET}/releases/PseudoLearn-${TAG_VERSION}.dmg" \
+            --endpoint-url "$ENDPOINT"
+          aws s3 cp dist/PseudoLearn.dmg \
+            "s3://${CLOUDFLARE_R2_BUCKET}/PseudoLearn-latest.dmg" \
+            --endpoint-url "$ENDPOINT"
+
+      - name: Remove temporary keychain
+        if: always()
+        run: |
+          if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH"
+          fi

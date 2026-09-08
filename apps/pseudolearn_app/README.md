@@ -162,7 +162,7 @@ flutter run -d macos --observe --dart-define-from-file=dart_define.local.json
 ```bash
 # Artefacto de producción para macOS (.app empaquetable en DMG)
 flutter build macos --release
-# Ruta de salida: build/macos/Build/Products/Release/pseudolearn_app.app
+# Ruta de salida: build/macos/Build/Products/Release/PseudoLearn.app
 
 # Artefacto de producción para iOS (paquete .ipa sin firma para staging)
 flutter build ipa --no-codesign
@@ -192,11 +192,35 @@ flutter test
 
 ### 2.6 Despliegue y distribución
 
-- **Distribución en macOS:** Binario firmado y notarizado vía script de release o DMG directo.
-- **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane.
+- **Distribución en macOS:** Automatizada por `.github/workflows/release-macos.yml`, en la raíz del
+  monorepo. Un push de un tag `v*.*.*` (o un disparo manual, `workflow_dispatch`) hace que un runner
+  `macos-14` compile el `.app` en modo release, firme el binario y sus frameworks anidados con un
+  certificado *Developer ID Application*, empaquete un `.dmg` con `hdiutil`, lo notarice con
+  `xcrun notarytool` usando una API Key de App Store Connect, le grape el ticket de notarización
+  (`xcrun stapler staple`) y lo suba a un bucket de Cloudflare R2 en dos rutas: `releases/PseudoLearn-<versión>.dmg`
+  (histórico) y `PseudoLearn-latest.dmg` (la que enlaza la landing, que vive en su propio repositorio —
+  ver `README.md` de la raíz §1.1). No crea ni sube nada a GitHub Releases; el `.dmg` vive únicamente en
+  R2.
+    - **Credenciales de firma y notarización (Secrets del repositorio de GitHub, nunca en el código ni
+      en el workflow):** `APPLE_CERTIFICATE_P12_BASE64`, `APPLE_CERTIFICATE_PASSWORD`,
+      `APPLE_DEVELOPER_ID_IDENTITY` (nombre exacto de la identidad, ej. `Developer ID Application: NOMBRE (EQUIPO)`),
+      `APPLE_NOTARIZATION_KEY_ID`, `APPLE_NOTARIZATION_ISSUER_ID`, `APPLE_NOTARIZATION_KEY_P8_BASE64`.
+    - **Credenciales de subida (Secrets):** `CLOUDFLARE_R2_ACCOUNT_ID`, `CLOUDFLARE_R2_ACCESS_KEY_ID`,
+      `CLOUDFLARE_R2_SECRET_ACCESS_KEY`, `CLOUDFLARE_R2_BUCKET`.
+    - **Variables de auth de la app en CI (Secrets, categoría distinta de las dos anteriores):**
+      `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GOOGLE_IOS_CLIENT_ID` — las mismas tres claves que en
+      desarrollo local se cargan desde `dart_define.local.json` (§2.1). El workflow las escribe a un
+      `dart_define.ci.json` efímero, en el propio runner, justo antes de `flutter build macos`, y ese
+      archivo nunca se commitea ni queda en el log del job.
+    - Ningún secret vive en el repositorio, en `dart_define.local.json` ni en el propio archivo del
+      workflow: los cuatro grupos se configuran en GitHub → *Settings → Secrets and variables → Actions*
+      del repositorio.
+- **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane. No
+  automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
 - **Checklist de liberación:**
     - [ ] `flutter test` y todos los scripts de `tool/` al 100 % en verde.
     - [ ] Versión y build sincronizados en `pubspec.yaml`.
+    - [ ] El tag empujado (`vX.Y.Z`) coincide con `version:` en `pubspec.yaml`.
     - [ ] Documentación técnica (`README.md`) y contratos de `architecture.yaml` actualizados.
 
 ### 2.7 Regeneración de los activos de marca
@@ -1446,7 +1470,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 ### 4.37 La marca dentro de la app es geometría redibujada, no un activo cargado
 
 - **Problema:** el paquete no lleva renderizador de SVG y `pubspec.yaml` no puede declarar activos fuera del directorio
-  del paquete, así que los vectores que emite `packages/pseudolearn_brand` son inalcanzables desde aquí. Cargarlos exigía una dependencia de
+  del paquete, así que los vectores que emite `packages/pseudolearn_brand` son inalcanzables desde aquí. Cargarlos
+  exigía una dependencia de
   terceros
   y una copia a mano de un artefacto generado.
 - **Elección:** `presentation/brand/` redibuja el símbolo con las mismas primitivas que el generador de vectores —seis
