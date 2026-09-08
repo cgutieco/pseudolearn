@@ -58,6 +58,31 @@ jobs:
           EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
           security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
 
+      - name: Embed Developer ID provisioning profile and resolve entitlements
+        env:
+          APPLE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          PROFILE_PATH="$RUNNER_TEMP/embedded.provisionprofile"
+          echo "$APPLE_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist"
+          TEAM_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :ApplicationIdentifierPrefix:0" "$RUNNER_TEMP/profile.plist")
+          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.application-identifier" "$RUNNER_TEMP/profile.plist" 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$RUNNER_TEMP/profile.plist")
+          if [ "$PROFILE_APP_ID" != "${TEAM_PREFIX}.com.pseudolearn.app" ]; then
+            echo "Provisioning profile targets $PROFILE_APP_ID, expected ${TEAM_PREFIX}.com.pseudolearn.app" >&2
+            exit 1
+          fi
+          if ! /usr/libexec/PlistBuddy -c "Print :Entitlements:keychain-access-groups" "$RUNNER_TEMP/profile.plist" >/dev/null 2>&1; then
+            echo "Provisioning profile does not authorize keychain-access-groups: regenerate it for com.pseudolearn.app" >&2
+            exit 1
+          fi
+          cp "$PROFILE_PATH" "$APP_PATH/Contents/embedded.provisionprofile"
+          RESOLVED_ENTITLEMENTS="$RUNNER_TEMP/Release.resolved.entitlements"
+          sed 's|\$(AppIdentifierPrefix)|@TEAM_PREFIX@|g' macos/Runner/Release.entitlements \
+            | sed "s|@TEAM_PREFIX@|${TEAM_PREFIX}.|g" > "$RESOLVED_ENTITLEMENTS"
+          echo "RESOLVED_ENTITLEMENTS=$RESOLVED_ENTITLEMENTS" >> "$GITHUB_ENV"
+
       - name: Sign nested frameworks and libraries
         env:
           APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
@@ -74,17 +99,50 @@ jobs:
         run: |
           APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
           codesign --force --options runtime \
-            --entitlements macos/Runner/Release.entitlements \
+            --entitlements "$RESOLVED_ENTITLEMENTS" \
             --sign "$APPLE_DEVELOPER_ID_IDENTITY" \
             "$APP_PATH"
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
-      - name: Create disk image
+      - name: Create disk image with install window layout
         run: |
           mkdir -p dist
-          hdiutil create -volname "PseudoLearn" \
-            -srcfolder build/macos/Build/Products/Release/PseudoLearn.app \
-            -ov -format UDZO dist/PseudoLearn.dmg
+          STAGING="$RUNNER_TEMP/dmg-staging"
+          READ_WRITE_IMAGE="$RUNNER_TEMP/PseudoLearn-rw.dmg"
+          if [ -d "/Volumes/PseudoLearn" ]; then hdiutil detach "/Volumes/PseudoLearn" -force; fi
+          rm -rf "$STAGING"
+          mkdir -p "$STAGING"
+          cp -R build/macos/Build/Products/Release/PseudoLearn.app "$STAGING/"
+          ln -s /Applications "$STAGING/Applications"
+          STAGING_KILOBYTES=$(du -sk "$STAGING" | cut -f1)
+          hdiutil create -volname "PseudoLearn" -srcfolder "$STAGING" \
+            -ov -format UDRW -fs HFS+ -size $((STAGING_KILOBYTES + 51200))k "$READ_WRITE_IMAGE"
+          hdiutil attach "$READ_WRITE_IMAGE" -readwrite -noverify -noautoopen
+          osascript <<'APPLESCRIPT'
+          tell application "Finder"
+            tell disk "PseudoLearn"
+              open
+              set current view of container window to icon view
+              set toolbar visible of container window to false
+              set statusbar visible of container window to false
+              set the bounds of container window to {400, 120, 1000, 520}
+              set viewOptions to the icon view options of container window
+              set arrangement of viewOptions to not arranged
+              set icon size of viewOptions to 128
+              set position of item "PseudoLearn.app" of container window to {150, 190}
+              set position of item "Applications" of container window to {450, 190}
+              close
+              open
+              update without registering applications
+              delay 3
+              close
+            end tell
+          end tell
+          APPLESCRIPT
+          sync
+          hdiutil detach "/Volumes/PseudoLearn"
+          hdiutil convert "$READ_WRITE_IMAGE" -format UDZO -imagekey zlib-level=9 \
+            -ov -o dist/PseudoLearn.dmg
 
       - name: Sign disk image
         env:

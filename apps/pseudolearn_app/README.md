@@ -108,6 +108,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
+| «Continuar con Apple» en macOS distribuido por Developer ID    | Migrar el flujo nativo a OAuth web de Apple contra Supabase; el entitlement nativo no existe fuera de la Mac App Store (ver §2.6)            | Abierto: el botón está presente y falla al pulsarlo en macOS                                            |
 
 ---
 
@@ -202,8 +203,9 @@ flutter test
 
 - **Distribución en macOS:** Automatizada por `.github/workflows/release-macos.yml`, en la raíz del
   monorepo. Un push de un tag `v*.*.*` (o un disparo manual, `workflow_dispatch`) hace que un runner
-  `macos-14` compile el `.app` en modo release, firme el binario y sus frameworks anidados con un
-  certificado *Developer ID Application*, empaquete un `.dmg` con `hdiutil`, lo notarice con
+  `macos-14` compile el `.app` en modo release, le embeba el perfil de aprovisionamiento *Developer ID*,
+  firme el binario y sus frameworks anidados con un certificado *Developer ID Application*, empaquete un
+  `.dmg` con `hdiutil` y su ventana de instalación (el `.app` junto a un alias de `/Applications`), lo notarice con
   `xcrun notarytool` usando una API Key de App Store Connect, le grape el ticket de notarización
   (`xcrun stapler staple`) y lo suba a un bucket de Cloudflare R2 en dos rutas: `releases/PseudoLearn-<versión>.dmg`
   (histórico) y `PseudoLearn-latest.dmg` (la que enlaza la landing, que vive en su propio repositorio —
@@ -212,7 +214,12 @@ flutter test
     - **Credenciales de firma y notarización (Secrets del repositorio de GitHub, nunca en el código ni
       en el workflow):** `APPLE_CERTIFICATE_P12_BASE64`, `APPLE_CERTIFICATE_PASSWORD`,
       `APPLE_DEVELOPER_ID_IDENTITY` (nombre exacto de la identidad, ej. `Developer ID Application: NOMBRE (EQUIPO)`),
-      `APPLE_NOTARIZATION_KEY_ID`, `APPLE_NOTARIZATION_ISSUER_ID`, `APPLE_NOTARIZATION_KEY_P8_BASE64`.
+      `APPLE_NOTARIZATION_KEY_ID`, `APPLE_NOTARIZATION_ISSUER_ID`, `APPLE_NOTARIZATION_KEY_P8_BASE64`,
+      `APPLE_PROVISIONING_PROFILE_BASE64` (el `.provisionprofile` de tipo *Developer ID* emitido para
+      `com.pseudolearn.app`, codificado en base64). El perfil se genera en el portal de Apple Developer,
+      en *Certificates, Identifiers & Profiles → Profiles → Developer ID*; caduca y hay que renovarlo, y
+      el workflow falla de forma explícita si el `application-identifier` del perfil no coincide con el de
+      la app o si el perfil no autoriza `keychain-access-groups`.
     - **Credenciales de subida (Secrets):** `CLOUDFLARE_R2_ACCOUNT_ID`, `CLOUDFLARE_R2_ACCESS_KEY_ID`,
       `CLOUDFLARE_R2_SECRET_ACCESS_KEY`, `CLOUDFLARE_R2_BUCKET`.
     - **Variables de auth de la app en CI (Secrets, categoría distinta de las dos anteriores):**
@@ -223,15 +230,42 @@ flutter test
     - Ningún secret vive en el repositorio, en `dart_define.local.json` ni en el propio archivo del
       workflow: los cuatro grupos se configuran en GitHub → *Settings → Secrets and variables → Actions*
       del repositorio.
-    - **`Runner/Release.entitlements` no lleva `com.apple.security.app-sandbox`, a diferencia de
-      `DebugProfile.entitlements`.** El sandbox de macOS es un entitlement restringido: firmado con
-      *Developer ID* (fuera de la Mac App Store) exige un perfil de aprovisionamiento embebido que
-      declare esa capacidad para `com.pseudolearn.app`, o AMFI rechaza arrancar el proceso con
-      `Error -413 "No matching profile found"` aunque la firma y la notarización sean válidas — así
-      falló la primera prueba real de este pipeline. Generar y embeber ese perfil solo tiene sentido si
-      algún día se publica en la Mac App Store; para distribución directa por Developer ID, que es el
-      único canal de este proyecto hoy, sacar el sandbox de Release es la solución estándar y evita esa
-      capa de configuración entera.
+    - **El `.app` lleva un perfil de aprovisionamiento *Developer ID* embebido en
+      `Contents/embedded.provisionprofile`, y el workflow lo copia ahí antes de firmar el bundle.** Un
+      *entitlement* restringido no lo autoriza el certificado: lo autoriza un perfil embebido que lo
+      declare para `com.pseudolearn.app`. Sin él, AMFI mata el proceso al arrancar con
+      `Error -413 "No matching profile found"` y macOS muestra «La aplicación no se puede abrir», aunque
+      `spctl` acepte la app y la notarización esté grapada — la firma es válida y el binario aun así no
+      llega a ejecutarse. El entitlement restringido que la app conserva es `keychain-access-groups`, que
+      comparte el llavero con el SDK de Google Sign-In, y el perfil lo autoriza como `<prefijo>.*`.
+      `com.apple.security.app-sandbox` es otro entitlement restringido, y se queda fuera de Release a
+      propósito: el sandbox solo hace falta para la Mac App Store, que no es un canal de este proyecto.
+    - **`Runner/Release.entitlements` no declara `com.apple.developer.applesignin`, y por eso el flujo
+      nativo de «Continuar con Apple» no funciona en la app distribuida por Developer ID.** Sign in with
+      Apple no es una capacidad admitida fuera de la Mac App Store: aunque el App ID tenga la capability
+      activada, el perfil de aprovisionamiento *Developer ID* que emite Apple no incluye ese entitlement,
+      así que AMFI lo cuenta como insatisfecho y mata el proceso. Se comprobó firmando el mismo `.app` con
+      el perfil embebido y variando solo los entitlements: con `keychain-access-groups` arranca, y basta
+      añadir `com.apple.developer.applesignin` para que vuelva el `SIGKILL`. No es un fallo de
+      configuración y ninguna regeneración del perfil lo corrige. El botón de Apple queda como pendiente
+      declarado (§1.5): la salida es el flujo OAuth web de Apple contra Supabase, que no necesita
+      entitlement y reutiliza el enlace profundo `pseudolearn://` que la app ya registra y resuelve en
+      `completeSignInFromLink`.
+    - **`$(AppIdentifierPrefix)` se resuelve en el runner, no se escribe a mano en el archivo.** Esa
+      variable la expande Xcode; `codesign` invocado desde la línea de órdenes no la expande y firmaría el
+      literal, produciendo un grupo de llavero inválido. El workflow lee el prefijo de equipo del propio
+      perfil (`security cms -D` sobre el `.provisionprofile`, clave `ApplicationIdentifierPrefix`), genera
+      una copia resuelta de `Release.entitlements` en el directorio temporal del runner y firma con esa
+      copia. El archivo del repositorio conserva la variable para que las compilaciones locales con Xcode
+      sigan funcionando, y el prefijo de equipo nunca se duplica como constante en el repositorio.
+    - **El `.dmg` se construye con ventana de instalación, no como volumen desnudo.** `hdiutil create`
+      apuntando directamente al `.app` produce una imagen con un único icono, sin alias a `/Applications`:
+      quien la abre no tiene dónde arrastrar. El workflow prepara una carpeta de montaje con el `.app` y
+      un enlace simbólico a `/Applications`, crea la imagen en formato `UDRW`, la monta, fija la vista con
+      AppleScript sobre Finder (vista de iconos, sin barra de herramientas ni de estado, ventana de
+      600 × 400, iconos de 128 px y posiciones fijas para los dos elementos), la desmonta para que el
+      `.DS_Store` con esa disposición quede escrito en el volumen, y la convierte a `UDZO` comprimida. La
+      firma, la notarización y el grapado operan sobre la imagen ya convertida.
 - **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane. No
   automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
 - **Checklist de liberación:**
@@ -239,6 +273,10 @@ flutter test
     - [ ] Versión y build sincronizados en `pubspec.yaml`.
     - [ ] El tag empujado (`vX.Y.Z`) coincide con `version:` en `pubspec.yaml`.
     - [ ] Documentación técnica (`README.md`) y contratos de `architecture.yaml` actualizados.
+    - [ ] El perfil de `APPLE_PROVISIONING_PROFILE_BASE64` sigue vigente y cubre los entitlements
+      restringidos de `Release.entitlements`.
+    - [ ] El `.dmg` publicado, descargado desde R2, monta con su ventana de instalación y la app arranca
+      desde `/Applications` en un Mac que no sea el de compilación.
 
 ### 2.7 Regeneración de los activos de marca
 
