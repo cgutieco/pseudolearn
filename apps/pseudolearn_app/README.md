@@ -223,6 +223,15 @@ flutter test
     - Ningún secret vive en el repositorio, en `dart_define.local.json` ni en el propio archivo del
       workflow: los cuatro grupos se configuran en GitHub → *Settings → Secrets and variables → Actions*
       del repositorio.
+    - **`Runner/Release.entitlements` no lleva `com.apple.security.app-sandbox`, a diferencia de
+      `DebugProfile.entitlements`.** El sandbox de macOS es un entitlement restringido: firmado con
+      *Developer ID* (fuera de la Mac App Store) exige un perfil de aprovisionamiento embebido que
+      declare esa capacidad para `com.pseudolearn.app`, o AMFI rechaza arrancar el proceso con
+      `Error -413 "No matching profile found"` aunque la firma y la notarización sean válidas — así
+      falló la primera prueba real de este pipeline. Generar y embeber ese perfil solo tiene sentido si
+      algún día se publica en la Mac App Store; para distribución directa por Developer ID, que es el
+      único canal de este proyecto hoy, sacar el sandbox de Release es la solución estándar y evita esa
+      capa de configuración entera.
 - **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane. No
   automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
 - **Checklist de liberación:**
