@@ -254,6 +254,15 @@ flutter test
       Store sí, y sin ella `altool --validate-app` rechaza el paquete con un 409 antes de subirlo. El valor
       es la categoría con la que la app se lista en la tienda y debe coincidir con la categoría elegida en
       la ficha de App Store Connect.
+    - **`Runner/Info.plist` declara `ITSAppUsesNonExemptEncryption` como falso.** La app solo emplea el
+      cifrado estándar del sistema operativo: TLS hacia Supabase y hacia Google, y el llavero de macOS. No
+      incorpora algoritmos criptográficos propios, de modo que queda exenta de la normativa de exportación.
+      Sin esa declaración en el bundle, App Store Connect retiene cada compilación pidiendo la respuesta a
+      mano y TestFlight no la ofrece a ningún tester.
+    - **`Runner/Info.plist` declara `CFBundleLocalizations` con `es` y `en`.** Flutter resuelve el idioma en
+      tiempo de ejecución, así que sin esa lista el bundle no anuncia ningún idioma y la ficha de la tienda
+      aparece como si la app fuese solo inglesa. El español va primero porque es la lengua plantilla de la
+      localización (`app_es.arb` en `l10n.yaml`) y el público objetivo del producto.
     - **El número de compilación lo fija el workflow, no `pubspec.yaml`.** App Store Connect rechaza una
       subida cuyo `CFBundleVersion` repita el de otra anterior de la misma versión de mercado.
       `flutter build macos` recibe `--build-number` con el número de ejecución del job, monotónico por
