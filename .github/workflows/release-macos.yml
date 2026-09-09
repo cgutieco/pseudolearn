@@ -1,4 +1,4 @@
-name: Release macOS DMG
+name: Release macOS to the Mac App Store
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  build-sign-notarize:
+  build-sign-upload:
     runs-on: macos-14
     defaults:
       run:
@@ -39,31 +39,62 @@ jobs:
           JSON
 
       - name: Build macOS release bundle
-        run: flutter build macos --release --dart-define-from-file=dart_define.ci.json
-
-      - name: Import Developer ID certificate into a temporary keychain
-        env:
-          APPLE_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
+          flutter build macos --release \
+            --dart-define-from-file=dart_define.ci.json \
+            --build-number="$GITHUB_RUN_NUMBER"
+
+      - name: Import distribution certificates into a temporary keychain
+        env:
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+          APPLE_INSTALLER_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_P12_BASE64 }}
+          APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
+        run: |
+          for required in APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 APPLE_INSTALLER_CERTIFICATE_P12_BASE64; do
+            if [ -z "${!required}" ]; then
+              echo "Secret $required is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+              exit 1
+            fi
+          done
           KEYCHAIN_PATH="$RUNNER_TEMP/release-signing.keychain-db"
           KEYCHAIN_PASSWORD=$(openssl rand -base64 24)
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
-          echo "$APPLE_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$RUNNER_TEMP/certificate.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          echo "$APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
+          echo "$APPLE_INSTALLER_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+          security import "$RUNNER_TEMP/distribution.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security import "$RUNNER_TEMP/installer.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -T /usr/bin/productbuild
           security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
           security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
 
-      - name: Embed Developer ID provisioning profile and resolve entitlements
+      - name: Resolve signing identities
+        run: |
+          INSTALLED_IDENTITIES=$( { security find-identity -v "$KEYCHAIN_PATH"; security find-identity "$KEYCHAIN_PATH"; } \
+            | sed -n 's/.*"\(.*\)".*/\1/p' | sort -u )
+          APPLICATION_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^(Apple Distribution|3rd Party Mac Developer Application):" || true)
+          INSTALLER_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^3rd Party Mac Developer Installer:" || true)
+          if [ -z "$APPLICATION_IDENTITY" ]; then
+            echo "No Apple Distribution certificate in the keychain: APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 must hold an Apple Distribution or 3rd Party Mac Developer Application certificate, not a Developer ID one" >&2
+            exit 1
+          fi
+          if [ -z "$INSTALLER_IDENTITY" ]; then
+            echo "No Mac Installer Distribution certificate in the keychain: APPLE_INSTALLER_CERTIFICATE_P12_BASE64 must hold a 3rd Party Mac Developer Installer certificate" >&2
+            exit 1
+          fi
+          echo "APPLICATION_IDENTITY=$APPLICATION_IDENTITY" >> "$GITHUB_ENV"
+          echo "INSTALLER_IDENTITY=$INSTALLER_IDENTITY" >> "$GITHUB_ENV"
+
+      - name: Embed Mac App Store provisioning profile and resolve entitlements
         env:
           APPLE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
         run: |
           APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
           PROFILE_PATH="$RUNNER_TEMP/embedded.provisionprofile"
+          PROFILE_PLIST="$RUNNER_TEMP/profile.plist"
           if [ -z "$APPLE_PROVISIONING_PROFILE_BASE64" ]; then
             echo "Secret APPLE_PROVISIONING_PROFILE_BASE64 is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
             exit 1
@@ -72,21 +103,23 @@ jobs:
             echo "Secret APPLE_PROVISIONING_PROFILE_BASE64 is not valid base64" >&2
             exit 1
           fi
-          if ! security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist"; then
+          if ! security cms -D -i "$PROFILE_PATH" > "$PROFILE_PLIST"; then
             echo "Decoded secret is not a provisioning profile: re-encode the .provisionprofile file with base64" >&2
             exit 1
           fi
-          TEAM_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :ApplicationIdentifierPrefix:0" "$RUNNER_TEMP/profile.plist")
-          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.application-identifier" "$RUNNER_TEMP/profile.plist" 2>/dev/null \
-            || /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$RUNNER_TEMP/profile.plist")
+          TEAM_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :ApplicationIdentifierPrefix:0" "$PROFILE_PLIST")
+          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.application-identifier" "$PROFILE_PLIST" 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST")
           if [ "$PROFILE_APP_ID" != "${TEAM_PREFIX}.com.pseudolearn.app" ]; then
             echo "Provisioning profile targets $PROFILE_APP_ID, expected ${TEAM_PREFIX}.com.pseudolearn.app" >&2
             exit 1
           fi
-          if ! /usr/libexec/PlistBuddy -c "Print :Entitlements:keychain-access-groups" "$RUNNER_TEMP/profile.plist" >/dev/null 2>&1; then
-            echo "Provisioning profile does not authorize keychain-access-groups: regenerate it for com.pseudolearn.app" >&2
-            exit 1
-          fi
+          for restricted in com.apple.developer.applesignin keychain-access-groups; do
+            if ! /usr/libexec/PlistBuddy -c "Print :Entitlements:$restricted" "$PROFILE_PLIST" >/dev/null 2>&1; then
+              echo "Provisioning profile does not authorize $restricted: it must be a Mac App Store profile for com.pseudolearn.app with Sign In with Apple enabled on the App ID" >&2
+              exit 1
+            fi
+          done
           cp "$PROFILE_PATH" "$APP_PATH/Contents/embedded.provisionprofile"
           RESOLVED_ENTITLEMENTS="$RUNNER_TEMP/Release.resolved.entitlements"
           sed 's|\$(AppIdentifierPrefix)|@TEAM_PREFIX@|g' macos/Runner/Release.entitlements \
@@ -94,107 +127,52 @@ jobs:
           echo "RESOLVED_ENTITLEMENTS=$RESOLVED_ENTITLEMENTS" >> "$GITHUB_ENV"
 
       - name: Sign nested frameworks and libraries
-        env:
-          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
         run: |
           APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
           find "$APP_PATH" \( -name "*.framework" -o -name "*.dylib" \) -print0 \
             | while IFS= read -r -d '' item; do
-                codesign --force --options runtime --sign "$APPLE_DEVELOPER_ID_IDENTITY" "$item"
+                codesign --force --options runtime --sign "$APPLICATION_IDENTITY" "$item"
               done
 
       - name: Sign application bundle
-        env:
-          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
         run: |
           APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
           codesign --force --options runtime \
             --entitlements "$RESOLVED_ENTITLEMENTS" \
-            --sign "$APPLE_DEVELOPER_ID_IDENTITY" \
+            --sign "$APPLICATION_IDENTITY" \
             "$APP_PATH"
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
-      - name: Create disk image with install window layout
+      - name: Build signed installer package
         run: |
           mkdir -p dist
-          STAGING="$RUNNER_TEMP/dmg-staging"
-          READ_WRITE_IMAGE="$RUNNER_TEMP/PseudoLearn-rw.dmg"
-          if [ -d "/Volumes/PseudoLearn" ]; then hdiutil detach "/Volumes/PseudoLearn" -force; fi
-          rm -rf "$STAGING"
-          mkdir -p "$STAGING"
-          cp -R build/macos/Build/Products/Release/PseudoLearn.app "$STAGING/"
-          ln -s /Applications "$STAGING/Applications"
-          STAGING_KILOBYTES=$(du -sk "$STAGING" | cut -f1)
-          hdiutil create -volname "PseudoLearn" -srcfolder "$STAGING" \
-            -ov -format UDRW -fs HFS+ -size $((STAGING_KILOBYTES + 51200))k "$READ_WRITE_IMAGE"
-          hdiutil attach "$READ_WRITE_IMAGE" -readwrite -noverify -noautoopen
-          osascript <<'APPLESCRIPT'
-          tell application "Finder"
-            tell disk "PseudoLearn"
-              open
-              set current view of container window to icon view
-              set toolbar visible of container window to false
-              set statusbar visible of container window to false
-              set the bounds of container window to {400, 120, 1000, 520}
-              set viewOptions to the icon view options of container window
-              set arrangement of viewOptions to not arranged
-              set icon size of viewOptions to 128
-              set position of item "PseudoLearn.app" of container window to {150, 190}
-              set position of item "Applications" of container window to {450, 190}
-              close
-              open
-              update without registering applications
-              delay 3
-              close
-            end tell
-          end tell
-          APPLESCRIPT
-          sync
-          hdiutil detach "/Volumes/PseudoLearn"
-          hdiutil convert "$READ_WRITE_IMAGE" -format UDZO -imagekey zlib-level=9 \
-            -ov -o dist/PseudoLearn.dmg
+          productbuild --component build/macos/Build/Products/Release/PseudoLearn.app /Applications \
+            --sign "$INSTALLER_IDENTITY" \
+            dist/PseudoLearn.pkg
+          pkgutil --check-signature dist/PseudoLearn.pkg
 
-      - name: Sign disk image
+      - name: Upload package to App Store Connect
         env:
-          APPLE_DEVELOPER_ID_IDENTITY: ${{ secrets.APPLE_DEVELOPER_ID_IDENTITY }}
-        run: codesign --force --sign "$APPLE_DEVELOPER_ID_IDENTITY" dist/PseudoLearn.dmg
-
-      - name: Notarize disk image
-        env:
-          APPLE_NOTARIZATION_KEY_ID: ${{ secrets.APPLE_NOTARIZATION_KEY_ID }}
-          APPLE_NOTARIZATION_ISSUER_ID: ${{ secrets.APPLE_NOTARIZATION_ISSUER_ID }}
-          APPLE_NOTARIZATION_KEY_P8_BASE64: ${{ secrets.APPLE_NOTARIZATION_KEY_P8_BASE64 }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_KEY_P8_BASE64 }}
         run: |
-          echo "$APPLE_NOTARIZATION_KEY_P8_BASE64" | base64 --decode > "$RUNNER_TEMP/notarization-key.p8"
-          xcrun notarytool submit dist/PseudoLearn.dmg \
-            --key "$RUNNER_TEMP/notarization-key.p8" \
-            --key-id "$APPLE_NOTARIZATION_KEY_ID" \
-            --issuer "$APPLE_NOTARIZATION_ISSUER_ID" \
-            --wait
+          if [ -z "$APP_STORE_CONNECT_KEY_P8_BASE64" ]; then
+            echo "Secret APP_STORE_CONNECT_KEY_P8_BASE64 is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+            exit 1
+          fi
+          PRIVATE_KEYS_DIR="$HOME/.appstoreconnect/private_keys"
+          mkdir -p "$PRIVATE_KEYS_DIR"
+          echo "$APP_STORE_CONNECT_KEY_P8_BASE64" | base64 --decode > "$PRIVATE_KEYS_DIR/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8"
+          xcrun altool --validate-app --type macos --file dist/PseudoLearn.pkg \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
+          xcrun altool --upload-app --type macos --file dist/PseudoLearn.pkg \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
 
-      - name: Staple notarization ticket
-        run: xcrun stapler staple dist/PseudoLearn.dmg
-
-      - name: Upload disk image to Cloudflare R2
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: auto
-          CLOUDFLARE_R2_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_R2_ACCOUNT_ID }}
-          CLOUDFLARE_R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
-        run: |
-          ENDPOINT="https://${CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
-          aws s3 cp dist/PseudoLearn.dmg \
-            "s3://${CLOUDFLARE_R2_BUCKET}/releases/PseudoLearn-${TAG_VERSION}.dmg" \
-            --endpoint-url "$ENDPOINT"
-          aws s3 cp dist/PseudoLearn.dmg \
-            "s3://${CLOUDFLARE_R2_BUCKET}/PseudoLearn-latest.dmg" \
-            --endpoint-url "$ENDPOINT"
-
-      - name: Remove temporary keychain
+      - name: Remove temporary keychain and private key
         if: always()
         run: |
+          rm -rf "$HOME/.appstoreconnect/private_keys"
           if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
             security delete-keychain "$KEYCHAIN_PATH"
           fi
