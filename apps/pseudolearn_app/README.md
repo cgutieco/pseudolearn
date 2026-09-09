@@ -242,6 +242,13 @@ flutter test
       `keychain-access-groups`, que el perfil de Mac App Store autoriza; y `com.apple.security.app-sandbox`,
       obligatorio en ese canal y ya vigente en `DebugProfile.entitlements`, de modo que el
       almacenamiento de la app corre bajo sandbox también en desarrollo.
+    - **`Release.entitlements` declara `com.apple.application-identifier` explícitamente.** Xcode inyecta esa
+      clave por su cuenta cuando firma con un perfil embebido; `codesign` invocado desde la línea de órdenes
+      no lo hace, y firma solo lo que el archivo de entitlements diga. Un bundle cuyo perfil declara un
+      identificador de aplicación y cuya firma no lo lleva se sube y se valida sin queja, pero TestFlight lo
+      rechaza con `ITMS-90886` y la compilación queda como no disponible para pruebas. El valor debe coincidir
+      con el `com.apple.application-identifier` del perfil, y coincide porque ambos se derivan del mismo
+      prefijo de equipo.
     - **`$(AppIdentifierPrefix)` se resuelve en el runner, no se escribe a mano en el archivo.** Esa
       variable la expande Xcode; `codesign` invocado desde la línea de órdenes no la expande y firmaría el
       literal, produciendo un grupo de llavero inválido. El workflow lee el prefijo de equipo del propio
