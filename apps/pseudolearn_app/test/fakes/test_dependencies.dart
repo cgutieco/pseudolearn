@@ -4,14 +4,17 @@ import 'package:pseudolearn_app/domain/ports/connectivity_monitor.dart';
 import 'package:pseudolearn_app/domain/ports/document_repository.dart';
 import 'package:pseudolearn_app/domain/ports/exercise_checker.dart';
 import 'package:pseudolearn_app/domain/ports/incoming_link_source.dart';
+import 'package:pseudolearn_app/domain/ports/knowledge_repository.dart';
 import 'package:pseudolearn_app/domain/ports/local_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/preferences_store.dart';
 import 'package:pseudolearn_app/domain/ports/program_construct_reader.dart';
+import 'package:pseudolearn_app/domain/ports/program_exporter.dart';
 import 'package:pseudolearn_app/domain/ports/progress_history.dart';
 import 'package:pseudolearn_app/domain/ports/remote_document_store.dart';
 import 'package:pseudolearn_app/domain/ports/remote_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
 import 'package:pseudolearn_app/domain/ports/sync_queue.dart';
+import 'package:pseudolearn_app/domain/ports/syntax_reference_source.dart';
 import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
 import 'package:pseudolearn_app/engine/completion/profile_completion_source.dart';
 import 'package:pseudolearn_app/engine/editing/lexicon_source_editor.dart';
@@ -44,9 +47,9 @@ AppDependencies buildTestDependencies({
   DocumentRepository? repository,
   FakeIdentifierGenerator? identifiers,
   FakeClock? clock,
-  FakeKnowledgeRepository? knowledgeRepository,
-  FakeSyntaxReferenceSource? syntaxReferenceSource,
-  FakeProgramExporter? programExporter,
+  KnowledgeRepository? knowledgeRepository,
+  SyntaxReferenceSource? syntaxReferenceSource,
+  ProgramExporter? programExporter,
   LocalProgressStore? localProgressStore,
   ProgressHistory? progressHistory,
   ProgramConstructReader? programConstructReader,

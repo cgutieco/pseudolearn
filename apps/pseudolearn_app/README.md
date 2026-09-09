@@ -339,6 +339,69 @@ familias empaquetadas no se cargaron los dos avances coinciden y la captura sald
 segunda exige que la ejecución haya dejado líneas de salida, porque una captura de un editor en reposo se parece
 demasiado a una correcta como para detectarla mirando.
 
+### 2.9 Regeneración del material promocional para tiendas
+
+Las capturas de pantalla y el gráfico destacado de Google Play no son maquetas estáticas dibujadas a mano ni capturas
+manuales en emuladores: se componen mecánicamente montando la aplicación viva (`CubitScope`, rutas y armazón completo)
+dentro de un marco de presentación (`PromoFrame`) con fondo de gradiente del sistema de diseño, sombras de elevación y
+titulares tipográficos localizados. Se ejecutan cuando cambie la interfaz, la marca o los textos promocionales:
+
+```bash
+# Compone y rasteriza las 40 capturas de pantalla y los 2 gráficos destacados en build/store/
+flutter test tool/generate_store_material.dart
+```
+
+#### Destinos, resoluciones y factores de escala
+
+| Destino de tienda               | Carpeta bajo `build/store/`    | Resolución en píxeles | Escala | Lienzo lógico app | Proporción |
+|:--------------------------------|:-------------------------------|:----------------------|:-------|:------------------|:-----------|
+| Mac App Store                   | `mac-app-store/`               | 2880 × 1800           | 2.0x   | 1440 × 900        | 16:10      |
+| iOS App Store (iPhone 6.9")     | `ios-app-store-iphone-6-9/`    | 1320 × 2868           | 3.0x   | 393 × 852         | 9.2:20     |
+| iOS App Store (iPad 13")        | `ios-app-store-ipad-13/`       | 2064 × 2752           | 2.0x   | 1024 × 1366       | 3:4        |
+| Google Play (Teléfono)          | `google-play-phone/`           | 1080 × 1920           | 2.0x   | 393 × 852         | 9:16       |
+| Google Play (Gráfico destacado) | `google-play-feature-graphic/` | 1024 × 500            | 2.0x   | 512 × 250         | 2.048:1    |
+
+Cada destino de captura genera las 5 escenas de la historia en español (`es/`) y en inglés (`en/`), sumando 40 capturas
+de pantalla, a las que se añaden los 2 gráficos destacados de Google Play (`es.png` y `en.png`), totalizando 42 activos.
+
+#### Escenas interactivas y aserciones de estado
+
+Cada captura ejecuta un guion determinista sobre la interfaz viva y comprueba que el estado sea el esperado:
+
+1. `01-synced-views` (*Tu algoritmo, en código y en diagrama*): Carga el programa guiado, avanza 11 pasos en depuración,
+   abre la pestaña de ordinograma y despliega el panel acompañante. Verifica que el estado de ejecución esté en pausa a
+   mitad del programa (`statementNumber > 1`).
+2. `02-step-by-step` (*Avanza instrucción por instrucción*): Carga el programa guiado, avanza 11 pasos y expande el
+   panel de salida interactivo. Verifica que la ejecución permanezca pausada mid-step.
+3. `03-trace-table` (*Mira cada variable cambiar en la tabla*): Carga la demostración de aliasing de objetos, abre la
+   pestaña de traza, abre el panel acompañante y avanza 4 pasos. Verifica que la tabla de traza muestre aliasing activo
+   con distintivos de identidad de objeto (`NombreClase#id`).
+4. `04-equivalent-code` (*El mismo algoritmo en Python y Rust*): Carga el programa de funciones, abre la pestaña de
+   código equivalente y despliega el panel acompañante. Verifica que la exportación haya emitido código no vacío.
+5. `05-knowledge-base` (*Módulos y ejercicios para practicar*): Navega a la ruta de conocimiento (`/conocimiento`) y
+   espera a que el catálogo, la ruta de aprendizaje y el banco de ejercicios completen su carga (`status == success`).
+
+#### Validaciones mecánicas obligatorias del flujo
+
+Cuatro comprobaciones automáticas blindan la generación antes y durante la rasterización:
+
+1. **Rasterización de familias empaquetadas:** Comprueba la diferencia de avance métrico entre `iiii` y `MMMM` en la
+   tipografía de interfaz. Si las fuentes empaquetadas (IBM Plex Sans) no se cargaron, el ancho coincide y la prueba
+   falla.
+2. **Auditoría de vocabulario y directrices de tiendas:** Audita cada titular contra las políticas de App Store y Google
+   Play (`marketing_lexicon.dart`), rechazando referencias a precios o gratuidad, términos beta, superlativos ("el
+   mejor"),
+   reclamos de premios, llamadas a la acción agresivas ("descarga ahora"), mención a plataformas rivales ("Android" en
+   material de Apple, o "iOS" en Google Play) y longitudes mayores a 7 palabras o 48 caracteres.
+3. **Ajuste geométrico de titulares:** Verifica mediante `TextPainter` que el titular no supere el número máximo de
+   líneas
+   permitido (2 en vertical, 1 en horizontal) sobre el ancho asignado por `PromoLayout`.
+4. **Codificación PNG opaca sin canal alfa:** Ambas tiendas rechazan tajantemente imágenes con canal alfa. El flujo
+   utiliza
+   un codificador propio (`opaque_png.dart`) que inspecciona cada píxel (arrojando `TransparentPixelFound` si algún alfa
+   difiere de 255) y escribe un archivo PNG Truecolour (color type 2) con filtro Paeth y compresión Deflate. La cabecera
+   del archivo resultante es leída y verificada tras la escritura (`PngHeader.colourType == 2`).
+
 ---
 
 ## 3. Arquitectura y modelo del sistema
@@ -1625,7 +1688,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Problema:** `SignInWithApple.getAppleIDCredential` exige el entitlement `com.apple.developer.applesignin`. Ese
   entitlement es *restringido*: AMFI solo lo admite si un perfil de aprovisionamiento embebido en el bundle lo declara
   para el identificador de la app. Los perfiles que Apple emite para el canal *Developer ID* no lo declaran, esté o no
-  activada la capacidad *Sign In with Apple* en el App ID, porque esa capacidad pertenece a los canales de App Store y de
+  activada la capacidad *Sign In with Apple* en el App ID, porque esa capacidad pertenece a los canales de App Store y
+  de
   desarrollo. Un bundle firmado con el entitlement recibe `SIGKILL` en el arranque y macOS muestra «La aplicación no se
   puede abrir», con firma válida, notarización grapada y `spctl` aceptando la app.
 - **Elección:** la app de macOS se publica en la Mac App Store, el mismo canal que la de iOS. Ese canal autoriza el
@@ -1642,11 +1706,50 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - *Conservar el entitlement bajo Developer ID y absorber el fallo en tiempo de ejecución:* el binario no arranca en
       ninguna máquina, de modo que rompe la app entera y no solo un proveedor.
     - *Canje web de Apple contra Supabase:* evita el entitlement abriendo el punto de autorización de Apple en el
-      navegador contra un *Services ID*, con retorno por el enlace profundo `pseudolearn://` (§4.32). Añade un
-      *Services ID*, su dominio y su URL de retorno a la superficie de configuración, y deja dos flujos de Apple
+      navegador contra un *Services ID*, con retorno por el enlace profundo `pseudolearn://` (§4.32). Añade un *Services
+      ID*, su dominio y su URL de retorno a la superficie de configuración, y deja dos flujos de Apple
       distintos según la plataforma, para sortear una limitación que el canal de App Store no tiene.
     - *Mantener los dos canales, `.dmg` y App Store:* duplica certificados, perfiles, pipelines y ficha de producto, y
       obliga a sostener dos juegos de entitlements divergentes de forma permanente.
+
+### 4.41 Composición automatizada del material de tiendas: aplicación viva en marco con codificación PNG opaca
+
+- **Problema:** Las tiendas de aplicaciones (App Store de Apple y Google Play Store) imponen especificaciones estrictas
+  e
+  inflexibles para los activos promocionales: rechazan imágenes con canal alfa o píxeles translúcidos (incluso si el
+  lienzo parece visualmente opaco, si el encabezado PNG declara color type 6 / RGBA la subida es rechazada), imponen
+  resoluciones exactas por clase de dispositivo (iPhone 6.9", iPad 13", Mac 16:10, Play Store 16:9 y Feature Graphic
+  1024×500), penalizan titulares con vocabulario promocional prohibido (precios, plataformas rivales, superlativos o
+  llamadas a la acción), y descalifican capturas vacías que no demuestren el producto en uso real. La preparación manual
+  en herramientas de diseño externo genera divergencia visual constante frente a los tokens de color y fuentes de la
+  aplicación, requiere un mantenimiento costoso por idioma y expone el proceso a canales alfa residuales generados por
+  herramientas gráficas.
+- **Elección:** El material de tiendas se compone y rasteriza mediante pruebas de widget en
+  `tool/generate_store_material.dart`. La herramienta monta el armazón vivo de la aplicación (`AppStage` con
+  `CubitScope` y dependencias inyectadas), ejecuta secuencias interactivas sobre widgets reales (abrir documentos,
+  avanzar
+  pasos de depuración, expandir salidas y abrir paneles acompañantes) y aloja la vista dentro de un marco (`PromoFrame`)
+  con gradiente semántico, sombra de elevación de nivel 3 y titular localizado (`es`/`en`). Los píxeles crudos de la
+  superficie se procesan mediante un codificador PNG propio (`opaque_png.dart`) que valida la opacidad absoluta (alfa
+  estricto de 255 en cada píxel) y emite un flujo Truecolour puro (color type 2) con filtro Paeth y compresión Deflate.
+  Tres verificadores mecánicos custodian el proceso: inspección de avance tipográfico para descartar la fuente de
+  relleno de pruebas, auditoría léxica del titular contra directrices de tienda (`marketing_lexicon.dart`) y
+  comprobación
+  geométrica de desbordamiento en el marco.
+- **Alternativas descartadas y por qué:**
+    - *Composición manual en herramientas de diseño vectorial (Figma / Illustrator):* desacopla el material del código,
+      obliga a reconstruir manualmente pantallas ante cualquier cambio en tokens o diagramas, y no previene errores
+      humanos en dimensiones o inclusión involuntaria de canales alfa.
+    - *Captura manual de pantalla sobre simuladores:* inconsistente entre resoluciones de ventana, incapaz de fijar un
+      estado determinista idéntico en cada versión, carente de marcos y titulares integrados, y dependiente del estado
+      del
+      sistema operativo del host.
+    - *Uso de frameworks de automatización pesados (`fastlane snapshot`, `integration_test` en emuladores):* requiere
+      levantar emuladores completos y lentos, añade dependencias complejas de integración continua y no ofrece control a
+      nivel de bytes sobre el encabezado y tipo de color del archivo PNG resultante.
+    - *Exportación estándar mediante `toByteData(format: ImageByteFormat.png)` de `dart:ui`:* la implementación nativa
+      de la plataforma emite invariablemente PNGs con canal alfa (RGBA, tipo de color 6), lo que provoca el rechazo
+      automático de los activos en los validadores de carga de App Store Connect y Google Play Console.
 
 ---
 
@@ -1851,6 +1954,7 @@ comparación entre estudiantes.
 | Consultas de plataforma        | `flutter test test/presentation/platform_target_verification_test.dart`  | Constructores adaptativos prohibidos en todo `lib/`, y `Platform.isX` / `defaultTargetPlatform` / `TargetPlatform.` solo en las rutas declaradas | `architecture.yaml`             |
 | Familias empaquetadas          | `flutter test test/presentation/theme/bundled_fonts_test.dart`           | Que la suite rasterice con IBM Plex y no con el tipo de relleno del motor, con un caso negativo sobre una familia inexistente                    | `test/flutter_test_config.dart` |
 | Fidelidad de la marca          | `flutter test test/presentation/brand/ test/presentation/goldens/brand/` | Que las medidas del lockup sigan coincidiendo con las del generador de vectores, y que el símbolo aguante la reducción a 16, 24, 32 y 48 px      | `brand/README.md`               |
+| Material para tiendas          | `flutter test tool/generate_store_material.dart`                         | Composición sobre app viva, ausencia de canal alfa (Truecolour tipo 2), auditoría de directrices de tienda y tipografía empaquetada              | `tool/product/`                 |
 
 ### 7.2 Estrategia y pirámide de pruebas
 
@@ -1886,15 +1990,16 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-| Fuente consultada                                                 | Qué se tomó                                                                                                                                         | Qué se rechazó deliberadamente y por qué                                                                                             |
-|:------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------|
-| Material Design 3 (Google)                                        | Corte base de 600 dp entre clases de ventana compacta y mediana.                                                                                    | Escala de cinco clases y comportamientos adaptativos automáticos de widgets que rompen la consistencia multiplataforma.              |
-| Guía de diseño adaptativo de Flutter                              | Estructura de armazón con navegación compartida entre barra inferior y riel lateral.                                                                | Variaciones automáticas de densidad, física de scroll y estilos dependientes del sistema operativo.                                  |
-| Arquitectura Hexagonal (A. Cockburn)                              | Puertos independientes de la tecnología y adaptadores periféricos intercambiables.                                                                  | Terminología empresarial compleja (DTOs, repositorios genéricos pesados) innecesaria en un cliente de aplicación interactivo.        |
-| BLoC Pattern (`package:bloc`)                                     | Modelo de estados inmutables precalculados y comandos unidireccionales mediante `Cubit`.                                                            | Patrón completo de eventos por introducir burocracia redundante frente a la traza ya provista por el núcleo.                         |
-| ISO 5807:1985 (Símbolos para diagramas de procesamiento de datos) | Convenciones geométricas: terminal ovalado, proceso rectangular, decisión en rombo, E/S en romboide y proceso predefinido en rectángulo con barras. | Símbolos de almacenamiento físico (cintas magnéticas, discos, tarjetas perforadas) por carecer de sentido en pseudocódigo abstracto. |
-| PSeInt (Pablo Novara)                                             | Representación del bucle `Para` como nodo único de preparación e inspiración en estructogramas integrados.                                          | Estética visual no estructurada, diagramado como imágenes fijas no interactivas y falta de determinismo algorítmico documentado.     |
-| Nassi, I. y Shneiderman, B. (1973)                                | Principio fundamental del estructograma: modelado jerárquico de control estructurado sin aristas explícitas de salto.                               | Repertorio original sin normalizar previo a la adopción de selección múltiple estandarizada.                                         |
-| DIN 66261:1985-11                                                 | Catálogo de celdas para estructogramas: proceso, selección con cabecera de cuñas, bucles con franja indentada y subprogramas con doble barra.       | Proporciones fijas inflexibles y ausencia de representaciones explícitas para salida anticipada (`Retornar`).                        |
-| Ruteo ortogonal y diagramas de clases UML (OMG UML 2.5)           | Caja de tres compartimentos, visibilidad `+`/`-`, jerarquía de generalización y relación de asociación.                                             | Diagramado libre manual, multiplicidades complejas innecesarias en el nivel de abstracción del lenguaje y conectores diagonales.     |
-| Sign in with Apple (Human Interface Guidelines y App Store 4.8)   | Prioridad del acceso con Apple, colores y contraste del botón de marca, y flujo de nonce con resumen SHA-256 contra reutilización de token.         | Botón nativo del complemento, por imponer métricas, radios y tipografía propias que rompen el sistema de diseño de la aplicación.    |
+| Fuente consultada                                                 | Qué se tomó                                                                                                                                                                   | Qué se rechazó deliberadamente y por qué                                                                                                      |
+|:------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| Material Design 3 (Google)                                        | Corte base de 600 dp entre clases de ventana compacta y mediana.                                                                                                              | Escala de cinco clases y comportamientos adaptativos automáticos de widgets que rompen la consistencia multiplataforma.                       |
+| Guía de diseño adaptativo de Flutter                              | Estructura de armazón con navegación compartida entre barra inferior y riel lateral.                                                                                          | Variaciones automáticas de densidad, física de scroll y estilos dependientes del sistema operativo.                                           |
+| Arquitectura Hexagonal (A. Cockburn)                              | Puertos independientes de la tecnología y adaptadores periféricos intercambiables.                                                                                            | Terminología empresarial compleja (DTOs, repositorios genéricos pesados) innecesaria en un cliente de aplicación interactivo.                 |
+| BLoC Pattern (`package:bloc`)                                     | Modelo de estados inmutables precalculados y comandos unidireccionales mediante `Cubit`.                                                                                      | Patrón completo de eventos por introducir burocracia redundante frente a la traza ya provista por el núcleo.                                  |
+| ISO 5807:1985 (Símbolos para diagramas de procesamiento de datos) | Convenciones geométricas: terminal ovalado, proceso rectangular, decisión en rombo, E/S en romboide y proceso predefinido en rectángulo con barras.                           | Símbolos de almacenamiento físico (cintas magnéticas, discos, tarjetas perforadas) por carecer de sentido en pseudocódigo abstracto.          |
+| PSeInt (Pablo Novara)                                             | Representación del bucle `Para` como nodo único de preparación e inspiración en estructogramas integrados.                                                                    | Estética visual no estructurada, diagramado como imágenes fijas no interactivas y falta de determinismo algorítmico documentado.              |
+| Nassi, I. y Shneiderman, B. (1973)                                | Principio fundamental del estructograma: modelado jerárquico de control estructurado sin aristas explícitas de salto.                                                         | Repertorio original sin normalizar previo a la adopción de selección múltiple estandarizada.                                                  |
+| DIN 66261:1985-11                                                 | Catálogo de celdas para estructogramas: proceso, selección con cabecera de cuñas, bucles con franja indentada y subprogramas con doble barra.                                 | Proporciones fijas inflexibles y ausencia de representaciones explícitas para salida anticipada (`Retornar`).                                 |
+| Ruteo ortogonal y diagramas de clases UML (OMG UML 2.5)           | Caja de tres compartimentos, visibilidad `+`/`-`, jerarquía de generalización y relación de asociación.                                                                       | Diagramado libre manual, multiplicidades complejas innecesarias en el nivel de abstracción del lenguaje y conectores diagonales.              |
+| Sign in with Apple (Human Interface Guidelines y App Store 4.8)   | Prioridad del acceso con Apple, colores y contraste del botón de marca, y flujo de nonce con resumen SHA-256 contra reutilización de token.                                   | Botón nativo del complemento, por imponer métricas, radios y tipografía propias que rompen el sistema de diseño de la aplicación.             |
+| Directrices de activos gráficos de App Store y Google Play        | Requisitos dimensionales (iPhone 6.9", iPad 13", Mac 16:10, Feature Graphic 1024×500), exigencia estricta de opacidad (sin canal alfa) y políticas de contenido en titulares. | Composición manual en herramientas externas y captura manual sobre simuladores por inducir desalineación visual y canales alfa involuntarios. |
