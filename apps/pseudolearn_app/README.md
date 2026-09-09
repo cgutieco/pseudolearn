@@ -249,6 +249,11 @@ flutter test
       una copia resuelta de `Release.entitlements` en el directorio temporal del runner y firma con esa
       copia. El archivo del repositorio conserva la variable para que las compilaciones locales con Xcode
       sigan funcionando, y el prefijo de equipo nunca se duplica como constante en el repositorio.
+    - **`Runner/Info.plist` declara `LSApplicationCategoryType` como `public.app-category.education`.** La
+      plantilla de macOS de Flutter no trae esa clave porque la distribución directa no la exige; la App
+      Store sí, y sin ella `altool --validate-app` rechaza el paquete con un 409 antes de subirlo. El valor
+      es la categoría con la que la app se lista en la tienda y debe coincidir con la categoría elegida en
+      la ficha de App Store Connect.
     - **El número de compilación lo fija el workflow, no `pubspec.yaml`.** App Store Connect rechaza una
       subida cuyo `CFBundleVersion` repita el de otra anterior de la misma versión de mercado.
       `flutter build macos` recibe `--build-number` con el número de ejecución del job, monotónico por
