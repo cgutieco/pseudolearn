@@ -47,6 +47,15 @@ const List<ScreenshotTarget> screenshotTargets = <ScreenshotTarget>[
     maxScreenshotsPerListing: appleScreenshotsPerListing,
   ),
   ScreenshotTarget(
+    destination: StoreDestination.iosAppStoreIphoneLegacy,
+    audience: MarketingAudience.appleStore,
+    pixelSize: Size(1290, 2796),
+    rasterScale: 3.0,
+    appLogicalSize: Size(430, 932),
+    themeMode: AppThemeMode.light,
+    maxScreenshotsPerListing: appleScreenshotsPerListing,
+  ),
+  ScreenshotTarget(
     destination: StoreDestination.iosAppStoreIpad,
     audience: MarketingAudience.appleStore,
     pixelSize: Size(2064, 2752),

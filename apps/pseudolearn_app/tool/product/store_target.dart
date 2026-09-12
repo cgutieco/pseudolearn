@@ -7,6 +7,7 @@ import 'marketing_audience.dart';
 enum StoreDestination {
   macAppStore('mac-app-store'),
   iosAppStoreIphone('ios-app-store-iphone-6-9'),
+  iosAppStoreIphoneLegacy('ios-app-store-iphone-6-5'),
   iosAppStoreIpad('ios-app-store-ipad-13'),
   googlePlayPhone('google-play-phone'),
   googlePlayFeatureGraphic('google-play-feature-graphic');
