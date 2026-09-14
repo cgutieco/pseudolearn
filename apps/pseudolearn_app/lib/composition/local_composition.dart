@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:supabase/supabase.dart' show SupabaseClient;
 import '../data/auth/native_credential_source.dart';
+import '../data/auth/supabase_account_deletion_gateway.dart';
 import '../data/auth/supabase_auth_gateway.dart';
 import '../data/index/metadata_index.dart';
 import '../data/knowledge/bundled_knowledge_repository.dart';
@@ -11,6 +13,7 @@ import '../data/platform/random_identifier_generator.dart';
 import '../data/platform/system_clock.dart';
 import '../data/preferences/file_preferences_store.dart';
 import '../data/progress/sqlite_progress_history.dart';
+import '../domain/ports/account_deletion_gateway.dart';
 import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/clock.dart';
 import '../domain/ports/exercise_checker.dart';
@@ -63,6 +66,33 @@ final class _EngineServices {
   });
 }
 
+final class _AccountServices {
+  final AuthGateway authGateway;
+  final AccountDeletionGateway deletionGateway;
+  final IncomingLinkSource incomingLinks;
+
+  const _AccountServices({
+    required this.authGateway,
+    required this.deletionGateway,
+    required this.incomingLinks,
+  });
+}
+
+_AccountServices _buildAccountServices(SupabaseClient client) {
+  final credentialSource = PlatformNativeCredentialSource();
+  return _AccountServices(
+    authGateway: SupabaseAuthGateway(
+      client: client,
+      credentialSource: credentialSource,
+    ),
+    deletionGateway: SupabaseAccountDeletionGateway(
+      client: client,
+      credentialSource: credentialSource,
+    ),
+    incomingLinks: AppLinksIncomingLinkSource(),
+  );
+}
+
 AppDependencies buildLocalDependencies({
   required Directory documentsDirectory,
   required MetadataIndex index,
@@ -71,10 +101,7 @@ AppDependencies buildLocalDependencies({
   final identifierGenerator = RandomIdentifierGenerator();
   final analyses = AnalysisCache();
   final supabaseClient = buildSupabaseClient();
-  final authGateway = SupabaseAuthGateway(
-    client: supabaseClient,
-    credentialSource: PlatformNativeCredentialSource(),
-  );
+  final account = _buildAccountServices(supabaseClient);
   const clock = SystemClock();
   return _assembleDependencies(
     clock: clock,
@@ -88,12 +115,11 @@ AppDependencies buildLocalDependencies({
       index: index,
       documentsDirectory: documentsDirectory,
       client: supabaseClient,
-      authGateway: authGateway,
+      authGateway: account.authGateway,
       identifiers: identifierGenerator,
       clock: clock,
     ),
-    authGateway: authGateway,
-    incomingLinkSource: AppLinksIncomingLinkSource(),
+    account: account,
     engine: _EngineServices(
       analyzer: CoreProgramAnalyzer(analyses: analyses),
       analyses: analyses,
@@ -107,8 +133,7 @@ AppDependencies _assembleDependencies({
   required IdentifierGenerator identifiers,
   required _LocalStores stores,
   required SyncServices sync,
-  required AuthGateway authGateway,
-  required IncomingLinkSource incomingLinkSource,
+  required _AccountServices account,
   required _EngineServices engine,
 }) {
   return AppDependencies(
@@ -116,9 +141,10 @@ AppDependencies _assembleDependencies({
     identifiers: identifiers,
     preferences: stores.preferences,
     documentRepository: sync.repository,
-    authGateway: authGateway,
-    incomingLinkSource: incomingLinkSource,
-    remoteDocumentStore: sync.remoteStore,
+    authGateway: account.authGateway,
+    incomingLinkSource: account.incomingLinks,
+    accountDeletionGateway: account.deletionGateway,
+    localAccountDataPurger: sync.accountDataPurger,
     remoteProgressStore: sync.remoteProgressStore,
     syncQueue: sync.queue,
     connectivityMonitor: sync.connectivity,

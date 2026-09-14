@@ -1,3 +1,4 @@
+import '../domain/ports/account_deletion_gateway.dart';
 import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/class_diagram_builder.dart';
 import '../domain/ports/clock.dart';
@@ -10,6 +11,7 @@ import '../domain/ports/flowchart_builder.dart';
 import '../domain/ports/identifier_generator.dart';
 import '../domain/ports/incoming_link_source.dart';
 import '../domain/ports/knowledge_repository.dart';
+import '../domain/ports/local_account_data_purger.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
 import '../domain/ports/program_analyzer.dart';
@@ -17,7 +19,6 @@ import '../domain/ports/program_construct_reader.dart';
 import '../domain/ports/program_execution.dart';
 import '../domain/ports/program_exporter.dart';
 import '../domain/ports/progress_history.dart';
-import '../domain/ports/remote_document_store.dart';
 import '../domain/ports/remote_progress_store.dart';
 import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
@@ -33,7 +34,8 @@ final class AppDependencies {
   final DocumentRepository documentRepository;
   final AuthGateway authGateway;
   final IncomingLinkSource incomingLinkSource;
-  final RemoteDocumentStore remoteDocumentStore;
+  final AccountDeletionGateway accountDeletionGateway;
+  final LocalAccountDataPurger localAccountDataPurger;
   final RemoteProgressStore remoteProgressStore;
   final SyncQueue syncQueue;
   final ConnectivityMonitor connectivityMonitor;
@@ -62,7 +64,8 @@ final class AppDependencies {
     required this.documentRepository,
     required this.authGateway,
     required this.incomingLinkSource,
-    required this.remoteDocumentStore,
+    required this.accountDeletionGateway,
+    required this.localAccountDataPurger,
     required this.remoteProgressStore,
     required this.syncQueue,
     required this.connectivityMonitor,

@@ -1,7 +1,3 @@
--- Sincronización de documentos
--- Tablas, políticas RLS y RPC atómica de asignación de revisión.
-
--- 1. Tablas
 create table if not exists account_revision (
   user_id       uuid primary key references auth.users on delete cascade,
   last_revision bigint not null default 0
@@ -35,7 +31,6 @@ create table if not exists devices (
   primary key (user_id, device_id)
 );
 
--- 2. Row Level Security (RLS)
 alter table account_revision enable row level security;
 alter table documents enable row level security;
 alter table devices enable row level security;
@@ -49,7 +44,6 @@ create policy own_documents on documents
 create policy own_devices on devices
   for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 
--- 3. Función RPC atómica para push de documentos (D1)
 create or replace function push_documents(payload jsonb)
 returns bigint
 language plpgsql
@@ -65,7 +59,6 @@ begin
     raise exception 'Unauthorized';
   end if;
 
-  -- Bloquea la fila de revisión del usuario o la crea
   insert into account_revision (user_id, last_revision)
   values (v_user_id, 0)
   on conflict (user_id) do nothing;
@@ -113,7 +106,6 @@ begin
 end;
 $$;
 
--- 4. Función RPC para purga completa de cuenta
 create or replace function delete_account()
 returns void
 language plpgsql

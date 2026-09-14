@@ -1300,13 +1300,33 @@
   "@authDeleteAccountDialogTitle": {
     "description": "Título del diálogo de confirmación para eliminar la cuenta"
   },
-  "authDeleteAccountDialogMessage": "Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos de este dispositivo. Esta acción no se puede deshacer.",
+  "authDeleteAccountDialogMessage": "Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos y el progreso de este dispositivo. Si iniciaste sesión con Apple, se te pedirá confirmar tu identidad. Esta acción no se puede deshacer.",
   "@authDeleteAccountDialogMessage": {
     "description": "Mensaje de advertencia del diálogo de confirmación de eliminación de cuenta"
   },
   "authDeleteAccountConfirm": "Eliminar cuenta",
   "@authDeleteAccountConfirm": {
     "description": "Acción afirmativa del diálogo de confirmación de eliminación de cuenta"
+  },
+  "authDeletingAccount": "Eliminando cuenta...",
+  "@authDeletingAccount": {
+    "description": "Indicador de progreso mientras el servidor elimina la cuenta"
+  },
+  "authDeleteAccountErrorNoConnection": "No se pudo eliminar la cuenta porque no hay conexión a internet. Tu cuenta y tus documentos siguen intactos.",
+  "@authDeleteAccountErrorNoConnection": {
+    "description": "Error de eliminación de cuenta sin conexión de red"
+  },
+  "authDeleteAccountErrorApple": "Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.",
+  "@authDeleteAccountErrorApple": {
+    "description": "Error de eliminación de cuenta cuando falla la reautenticación o la revocación de Apple"
+  },
+  "authDeleteAccountErrorGeneric": "No se pudo eliminar la cuenta. Tu cuenta y tus documentos siguen intactos; inténtalo de nuevo.",
+  "@authDeleteAccountErrorGeneric": {
+    "description": "Error general de eliminación de cuenta en el servidor"
+  },
+  "authDeleteAccountErrorLocalCleanup": "La cuenta se eliminó, pero no se pudieron borrar todos los datos de este dispositivo. Reinstala la aplicación para eliminarlos.",
+  "@authDeleteAccountErrorLocalCleanup": {
+    "description": "Error cuando la cuenta se eliminó en el servidor pero falló la purga local"
   },
   "authMagicLinkDialogTitle": "Iniciar sesión con enlace mágico",
   "@authMagicLinkDialogTitle": {

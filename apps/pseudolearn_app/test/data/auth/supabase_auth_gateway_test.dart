@@ -8,23 +8,7 @@ import 'package:pseudolearn_app/domain/model/account/auth_method.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_outcome.dart';
 import 'package:supabase/supabase.dart';
 
-final class FakeNativeCredentialSource implements NativeCredentialSource {
-  NativeAppleCredential? appleCredential;
-  NativeGoogleCredential? googleCredential;
-  bool throwError = false;
-
-  @override
-  Future<NativeAppleCredential?> getAppleCredential() async {
-    if (throwError) throw Exception('Apple native failure');
-    return appleCredential;
-  }
-
-  @override
-  Future<NativeGoogleCredential?> getGoogleCredential() async {
-    if (throwError) throw Exception('Google native failure');
-    return googleCredential;
-  }
-}
+import '../../fakes/fake_native_credential_source.dart';
 
 final class InMemoryPkceStorage extends GotrueAsyncStorage {
   final Map<String, String> entries = {};
@@ -177,6 +161,7 @@ void main() {
     test('signIn with Apple forwards the raw nonce to the token exchange', () async {
       credentialSource.appleCredential = const NativeAppleCredential(
         identityToken: 'apple-identity-token',
+        authorizationCode: 'apple-authorization-code',
         rawNonce: 'raw-nonce-value',
       );
 
@@ -190,6 +175,7 @@ void main() {
     test('signIn with Apple stores the full name the first authorization returns', () async {
       credentialSource.appleCredential = const NativeAppleCredential(
         identityToken: 'apple-identity-token',
+        authorizationCode: 'apple-authorization-code',
         rawNonce: 'raw-nonce-value',
         displayName: 'Ada Lovelace',
       );
@@ -210,6 +196,7 @@ void main() {
       server.userMetadata = {'full_name': 'Ada King'};
       credentialSource.appleCredential = const NativeAppleCredential(
         identityToken: 'apple-identity-token',
+        authorizationCode: 'apple-authorization-code',
         rawNonce: 'raw-nonce-value',
         displayName: 'Ada Lovelace',
       );
@@ -223,6 +210,7 @@ void main() {
     test('signIn with Apple skips the update when Apple sends no name', () async {
       credentialSource.appleCredential = const NativeAppleCredential(
         identityToken: 'apple-identity-token',
+        authorizationCode: 'apple-authorization-code',
         rawNonce: 'raw-nonce-value',
       );
 
@@ -237,6 +225,7 @@ void main() {
       server.updateUserStatus = 500;
       credentialSource.appleCredential = const NativeAppleCredential(
         identityToken: 'apple-identity-token',
+        authorizationCode: 'apple-authorization-code',
         rawNonce: 'raw-nonce-value',
         displayName: 'Ada Lovelace',
       );

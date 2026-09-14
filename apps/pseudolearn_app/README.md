@@ -107,6 +107,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
+| Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 
 ---
@@ -287,6 +288,10 @@ flutter test
       restringidos de `Release.entitlements`.
     - [ ] La compilación aparece en App Store Connect, arranca en un Mac distinto del de compilación y
       completa el inicio de sesión por los tres proveedores con el almacenamiento dentro del sandbox.
+    - [ ] La Edge Function `delete-account` y sus secretos de Apple están desplegados en producción antes
+      de publicar una versión que la invoque (`apps/pseudolearn_backend/README.md` §2.6), y «Eliminar
+      cuenta» con una cuenta de prueba de Apple la retira de `auth.users` y de los ajustes de Apple ID del
+      dispositivo.
 
 ### 2.7 Regeneración de los activos de marca
 
@@ -437,7 +442,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | Capa / Directorio        | Responsabilidad única                                                                                                                                                                                                                                                                                              | Puede importar (`may_import`)                                             | Prohibido importar (`forbidden_imports`)                                                                                                       |
 |:-------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
 | `domain/model/`          | Entidades y valores de datos inmutables de la aplicación                                                                                                                                                                                                                                                           | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
-| `domain/model/account/`  | Entidades inmutables de cuenta, sesión, perfiles y resultado tipado de autenticación (`AccountSession`, `AccountProfile`, `AuthMethod`, `AuthOutcome`)                                                                                                                                                             | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
+| `domain/model/account/`  | Entidades inmutables de cuenta, sesión, perfiles y resultados tipados de autenticación y de eliminación de cuenta (`AccountSession`, `AccountProfile`, `AuthMethod`, `AuthOutcome`, `AccountDeletionOutcome`)                                                                                                     | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
 | `domain/model/sync/`     | Modelos inmutables de reconciliación, instantáneas, resultados y función pura de resolución trilateral (`DocumentSnapshot`, `ReconciliationOutcome`, `reconcileDocument`, `SyncStatus`, `OutboxEntry`)                                                                                                             | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`, `sqflite`                                                 |
 | `domain/model/progress/` | Modelos inmutables de avance curricular y marcas temporales de primer logro (`ProgressEntry`)                                                                                                                                                                                                                      | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
 | `domain/model/editor/`   | Cursor propio (`CaretRange`), tecla del editor (`EditorKey`) y resultado de una edición (`SourceEdit`). No usa `TextSelection`: es de Flutter y el modelo no lo importa                                                                                                                                            | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
@@ -445,9 +450,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | `engine/`                | Adaptación y traducción entre `pseudolearn_core` y `domain`                                                                                                                                                                                                                                                        | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
-| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                                                               | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes y modalidad de entrada de texto (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`            | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`)                                                                                                                                | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, `pseudolearn_core`, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
 | `composition/`           | Ensamblado estático e inyección de dependencias en arranque                                                                                                                                                                                                                                                        | `model`, `ports`, `engine`, `data`, `application`, `presentation`         | Contener lógica o ramificaciones condicionales (`if`, `switch`, ternarios)                                                                     |
@@ -785,10 +790,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   cuando la dirección es un reenvío privado de Apple, estado reactivo de sincronización, acción manual "Sincronizar
   ahora", listado de dispositivos vinculados con etiqueta de sistema editable y las tres acciones de sesión
   (`SessionActions`) segregadas por jerarquía visual («Cerrar sesión», «Cerrar sesión y borrar datos de este
-  dispositivo» tras confirmación modal, y «Eliminar cuenta» con diálogo destructivo de confirmación que invoca la purga
-  integral en servidor mediante `RemoteDocumentStore.deleteAccount()` y la eliminación de documentos locales en
-  cumplimiento de la directriz 5.1.1 (v) de App Store; la revocación de tokens de Apple Sign-In ante el endpoint REST
-  oficial se delega al backend/Edge Functions para resguardar la clave privada de desarrollador fuera del cliente).
+  dispositivo» tras confirmación modal, y «Eliminar cuenta» con diálogo destructivo de confirmación). «Eliminar
+  cuenta» invoca `AccountDeletionGateway.deleteAccount()`, que llama a la Edge Function `delete-account` del backend;
+  mientras dura, la tarjeta muestra «Eliminando cuenta...» con las tres acciones deshabilitadas
+  (`AccountDeletingAccount`). Si el servidor no confirma, la sesión sigue visible con un aviso según el código de
+  fallo y la acción reintentable (`AccountDeletionFailed`); los datos del dispositivo solo se purgan tras la
+  confirmación (decisión 4.42).
 - **Diálogos modales:** Creación de documento con selección de perfil (`NewDocumentDialog`), Confirmaciones
   destructivas (`ConfirmationDialog`), Entrada interactiva de datos durante la ejecución (`DataInputDialog`), y acceso
   por enlace mágico (`SignInOptions`). Todo diálogo modal se acota geométricamente mediante
@@ -1096,9 +1103,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - *Sobrescribir `full_name` en cada acceso con Apple:* Descartado porque revocar y repetir la autorización
       devolvería el
       nombre del sistema y pisaría cualquier corrección posterior del usuario.
-    - *Conservar el código de autorización de Apple para revocación:* Descartado mientras la aplicación no ofrezca
-      borrado de
-      cuenta remota; un dato de sesión sin consumidor es superficie de exposición sin contrapartida.
+    - *Conservar el código de autorización de Apple del inicio de sesión para revocar al eliminar la cuenta:*
+      Descartado porque el código caduca a los cinco minutos y es de un solo uso. `NativeAppleCredential` transporta
+      `authorizationCode` porque la eliminación de cuenta pide una autorización nueva y lo consume en ese momento
+      (decisión 4.42); el canje de inicio de sesión no lo usa y nada lo persiste.
 
 ### 4.24 Reconciliación pura de documentos y política de preservación no destructiva
 
@@ -1751,6 +1759,45 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       de la plataforma emite invariablemente PNGs con canal alfa (RGBA, tipo de color 6), lo que provoca el rechazo
       automático de los activos en los validadores de carga de App Store Connect y Google Play Console.
 
+### 4.42 Eliminación de cuenta confirmada por servidor, con reautenticación de Apple y purga local sin lápidas
+
+- **Problema:** La directriz 5.1.1(v) de App Store exige eliminar la cuenta, no solo sus datos, y revocar el token de
+  Sign in with Apple. Revocar exige la clave `.p8` de desarrollador, que no puede viajar en el cliente, y un código de
+  autorización fresco. Además, borrar documentos por `SyncingDocumentRepository` encola una lápida por documento en el
+  outbox, que ningún servidor puede ya aceptar y que contaminaría la biblioteca de la siguiente cuenta.
+- **Elección:**
+    - `AccountDeletionGateway` (`domain/ports/`) expone un único método, `deleteAccount()`, que devuelve la clase
+      sellada `AccountDeletionOutcome`: `AccountDeleted`, `AccountDeletionCancelled`, `AccountDeletionNoConnection`,
+      `AccountDeletionRejected(code)`. Nunca lanza. Es un puerto propio porque `AuthGateway` ya tiene cinco métodos
+      públicos y porque eliminar la cuenta no es responsabilidad de `RemoteDocumentStore`.
+    - `SupabaseAccountDeletionGateway` (`data/auth/`) detecta una identidad `apple` en `User.identities` o en
+      `app_metadata.providers`. Si la hay, pide a `NativeCredentialSource` una autorización nueva (`null` →
+      `AccountDeletionCancelled`, sin llamar al servidor) y envía solo `apple_authorization_code`. Invoca
+      `functions.invoke('delete-account')`. `FunctionsFetchException` y `SocketException` → `NoConnection`;
+      `FunctionException` → `Rejected` con el `code` del cuerpo o `http_<estado>`; cualquier otra excepción →
+      `Rejected('unexpected_failure')`; sin usuario → `Rejected('no_session')`.
+    - `AccountCubit.deleteAccount()` actúa solo desde `AccountAuthenticated` o `AccountDeletionFailed`; emite
+      `AccountDeletingAccount` e ignora invocaciones y eventos de sesión mientras dura. Con `AccountDeleted` cierra la
+      sesión local y llama a `LocalAccountDataPurger.purgeAccountData()`; si la purga lanza, emite
+      `AccountError('local_cleanup_failed')`. Con `Cancelled` vuelve a `AccountAuthenticated`. Con `NoConnection` y
+      `Rejected` emite `AccountDeletionFailed(session, code)` sin tocar sesión ni datos.
+    - `LocalAccountDataPurgerAdapter` (`data/sync/`) vacía en una transacción SQLite `sync_outbox`, `sync_state`,
+      `content_progress` y `documents_index`, y después borra los archivos `.pseudo` y `.pseudo.tmp` del directorio de
+      documentos. Conserva las preferencias. No pasa por `SyncingDocumentRepository`, así que no encola lápidas.
+    - La presentación mapea los códigos del backend: `no_connection`, los cuatro `apple_*` y el resto a un aviso
+      genérico; `local_cleanup_failed` a un aviso de datos remanentes en el dispositivo.
+- **Alternativas descartadas y por qué:**
+    - *RPC SQL `delete_account` invocada con la clave publicable:* no elimina el usuario de `auth.users` ni revoca
+      Apple, y su fallo no se distinguía de un éxito.
+    - *Borrar los datos locales aunque el servidor falle:* deja una cuenta viva en el servidor y un dispositivo vacío,
+      y la persona cree haber eliminado una cuenta que sigue existiendo.
+    - *Revocar Apple desde el cliente:* exige embeber la clave `.p8` en el binario.
+    - *Enviar el `identityToken` y el nonce para que el servidor los verifique:* el `id_token` que Apple devuelve al
+      canjear el código ya prueba la identidad (`apps/pseudolearn_backend/README.md`, decisión sobre la identidad de
+      Apple).
+    - *Añadir `deleteAccount` a `AuthGateway`:* supera el límite de métodos públicos y obliga a todo consumidor de
+      autenticación a conocer la eliminación.
+
 ---
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
@@ -1815,7 +1862,7 @@ del verificador, porque una excepción que solo consta en el código de un test 
 - Ninguna excepción no controlada puede cruzar fronteras de capas o puertos públicos.
 - Todo fallo esperable (falla de análisis, fallo de lectura de archivos, error de carga de contenido) se modela y
   retorna como un tipo de datos explícito mediante uniones o clases selladas (`ContentLoadResult`,
-  `ExerciseCheckResult`, etc.).
+  `ExerciseCheckResult`, `AccountDeletionOutcome`, etc.).
 
 ---
 
@@ -1933,6 +1980,13 @@ con nadie. Quedan fuera por decisión de producto, no por alcance: intentos por 
 sistema no almacena intentos—, tiempo dedicado por módulo —sería telemetría de comportamiento— y cualquier
 comparación entre estudiantes.
 
+### 6.14 La cuenta solo se da por eliminada cuando el servidor lo confirma
+
+«Eliminar cuenta» es irreversible y completo: borra el usuario del servidor, todos sus datos sincronizados, revoca Sign
+in with Apple y purga documentos y progreso del dispositivo. Mientras el servidor no responda con éxito, la aplicación no
+toca nada local y lo dice: la cuenta y los documentos siguen intactos y la acción se puede repetir. Las cuentas de Apple
+confirman la identidad con la hoja nativa de Apple en el momento de eliminar, y el diálogo de confirmación lo anticipa.
+
 ---
 
 ## 7. Verificación, testing y aseguramiento de calidad
@@ -2002,4 +2056,5 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 | DIN 66261:1985-11                                                 | Catálogo de celdas para estructogramas: proceso, selección con cabecera de cuñas, bucles con franja indentada y subprogramas con doble barra.                                 | Proporciones fijas inflexibles y ausencia de representaciones explícitas para salida anticipada (`Retornar`).                                 |
 | Ruteo ortogonal y diagramas de clases UML (OMG UML 2.5)           | Caja de tres compartimentos, visibilidad `+`/`-`, jerarquía de generalización y relación de asociación.                                                                       | Diagramado libre manual, multiplicidades complejas innecesarias en el nivel de abstracción del lenguaje y conectores diagonales.              |
 | Sign in with Apple (Human Interface Guidelines y App Store 4.8)   | Prioridad del acceso con Apple, colores y contraste del botón de marca, y flujo de nonce con resumen SHA-256 contra reutilización de token.                                   | Botón nativo del complemento, por imponer métricas, radios y tipografía propias que rompen el sistema de diseño de la aplicación.             |
+| App Store Review Guidelines 5.1.1(v)                              | Eliminación de cuenta iniciable desde la app, completa e inmediata, con revocación de Sign in with Apple.                                                                     | Enlazar a un formulario web o a soporte para eliminar la cuenta, por exigir salir de la aplicación.                                          |
 | Directrices de activos gráficos de App Store y Google Play        | Requisitos dimensionales (iPhone 6.9", iPad 13", Mac 16:10, Feature Graphic 1024×500), exigencia estricta de opacidad (sin canal alfa) y políticas de contenido en titulares. | Composición manual en herramientas externas y captura manual sobre simuladores por inducir desalineación visual y canales alfa involuntarios. |

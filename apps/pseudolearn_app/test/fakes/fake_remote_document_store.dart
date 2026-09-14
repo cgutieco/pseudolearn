@@ -46,17 +46,6 @@ final class FakeRemoteDocumentStore implements RemoteDocumentStore {
     return PullBatchSuccess(documents: filtered, nextCursor: nextCursor);
   }
 
-  bool throwOnDeleteAccount = false;
-
-  @override
-  Future<void> deleteAccount() async {
-    if (throwOnDeleteAccount) {
-      throw Exception('deleteAccount error');
-    }
-    _userDocuments.remove(activeUserId);
-    _userRevisions.remove(activeUserId);
-  }
-
   List<DocumentSnapshot> get activeUserDocuments =>
       List.unmodifiable(_userDocuments[activeUserId] ?? []);
 }

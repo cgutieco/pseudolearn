@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "fmt": "deno fmt --check",
+    "lint": "deno lint",
+    "check": "deno check supabase/functions/delete-account/index.ts tool/check_architecture.ts test/",
+    "architecture": "deno run --allow-read=. tool/check_architecture.ts",
+    "test": "deno test --allow-read=. test/",
+    "verify": "deno task fmt && deno task lint && deno task check && deno task architecture && deno task test"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1.0.14"
+  },
+  "fmt": {
+    "lineWidth": 100
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}

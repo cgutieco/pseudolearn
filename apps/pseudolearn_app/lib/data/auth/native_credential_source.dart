@@ -5,12 +5,14 @@ import 'sign_in_nonce.dart';
 
 final class NativeAppleCredential {
   final String identityToken;
+  final String authorizationCode;
   final String rawNonce;
   final String? email;
   final String? displayName;
 
   const NativeAppleCredential({
     required this.identityToken,
+    required this.authorizationCode,
     required this.rawNonce,
     this.email,
     this.displayName,
@@ -55,6 +57,7 @@ final class PlatformNativeCredentialSource implements NativeCredentialSource {
 
       return NativeAppleCredential(
         identityToken: idToken,
+        authorizationCode: credential.authorizationCode,
         rawNonce: nonce.raw,
         email: credential.email,
         displayName: _fullNameOf(credential),

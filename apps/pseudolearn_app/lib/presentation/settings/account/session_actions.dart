@@ -73,12 +73,14 @@ final class SessionActions extends StatelessWidget {
   final VoidCallback onSignOut;
   final VoidCallback onSignOutAndDeleteLocalData;
   final VoidCallback onDeleteAccount;
+  final bool deletingAccount;
 
   const SessionActions({
     super.key,
     required this.onSignOut,
     required this.onSignOutAndDeleteLocalData,
     required this.onDeleteAccount,
+    this.deletingAccount = false,
   });
 
   @override
@@ -93,12 +95,18 @@ final class SessionActions extends StatelessWidget {
         AppButton(
           label: l10n.authSignOut,
           variant: AppButtonVariant.secondary,
-          onPressed: onSignOut,
+          onPressed: deletingAccount ? null : onSignOut,
         ),
         SizedBox(height: gap),
-        _DeleteDataButton(onConfirm: onSignOutAndDeleteLocalData),
+        _DeleteDataButton(
+          onConfirm: onSignOutAndDeleteLocalData,
+          enabled: !deletingAccount,
+        ),
         SizedBox(height: gap),
-        _DeleteAccountButton(onConfirm: onDeleteAccount),
+        _DeleteAccountButton(
+          onConfirm: onDeleteAccount,
+          deletingAccount: deletingAccount,
+        ),
       ],
     );
   }
@@ -106,8 +114,9 @@ final class SessionActions extends StatelessWidget {
 
 final class _DeleteDataButton extends StatelessWidget {
   final VoidCallback onConfirm;
+  final bool enabled;
 
-  const _DeleteDataButton({required this.onConfirm});
+  const _DeleteDataButton({required this.onConfirm, required this.enabled});
 
   @override
   Widget build(BuildContext context) {
@@ -116,30 +125,38 @@ final class _DeleteDataButton extends StatelessWidget {
       label: l10n.authSignOutAndDelete,
       variant: AppButtonVariant.tertiary,
       destructive: true,
-      onPressed: () => _showDeleteDataConfirmationDialog(
-        context: context,
-        onConfirm: onConfirm,
-      ),
+      onPressed: enabled
+          ? () => _showDeleteDataConfirmationDialog(
+                context: context,
+                onConfirm: onConfirm,
+              )
+          : null,
     );
   }
 }
 
 final class _DeleteAccountButton extends StatelessWidget {
   final VoidCallback onConfirm;
+  final bool deletingAccount;
 
-  const _DeleteAccountButton({required this.onConfirm});
+  const _DeleteAccountButton({
+    required this.onConfirm,
+    required this.deletingAccount,
+  });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AppButton(
-      label: l10n.authDeleteAccount,
+      label: deletingAccount ? l10n.authDeletingAccount : l10n.authDeleteAccount,
       variant: AppButtonVariant.tertiary,
       destructive: true,
-      onPressed: () => _showDeleteAccountConfirmationDialog(
-        context: context,
-        onConfirm: onConfirm,
-      ),
+      onPressed: deletingAccount
+          ? null
+          : () => _showDeleteAccountConfirmationDialog(
+                context: context,
+                onConfirm: onConfirm,
+              ),
     );
   }
 }

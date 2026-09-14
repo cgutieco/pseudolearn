@@ -88,7 +88,7 @@ void main() {
       expect(find.text('Seguir el paso activo'), findsOneWidget);
       expect(find.text('Ver la introducción de nuevo'), findsOneWidget);
       expect(find.text('Contacto y soporte'), findsOneWidget);
-      expect(find.text('v1.0.0'), findsOneWidget);
+      expect(find.text('v1.0.1'), findsOneWidget);
       expect(find.bySemanticsLabel('PseudoLearn'), findsOneWidget);
 
       expect(find.text('Cuenta'), findsOneWidget);

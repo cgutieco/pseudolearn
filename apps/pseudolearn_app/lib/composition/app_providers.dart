@@ -204,7 +204,8 @@ List<BlocProvider> createSettingsProviders(AppDependencies dependencies) {
         authGateway: dependencies.authGateway,
         incomingLinks: dependencies.incomingLinkSource,
         documentRepository: dependencies.documentRepository,
-        remoteDocumentStore: dependencies.remoteDocumentStore,
+        accountDeletionGateway: dependencies.accountDeletionGateway,
+        localAccountDataPurger: dependencies.localAccountDataPurger,
       )..init(),
     ),
   ];

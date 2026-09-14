@@ -1,14 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/account/account_cubit.dart';
 import 'package:pseudolearn_app/application/account/account_state.dart';
+import 'package:pseudolearn_app/domain/model/account/account_deletion_outcome.dart';
 import 'package:pseudolearn_app/domain/model/account/account_session.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_method.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_outcome.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
+import 'dart:async';
+import '../../fakes/fake_account_deletion_gateway.dart';
 import '../../fakes/fake_auth_gateway.dart';
 import '../../fakes/fake_incoming_link_source.dart';
-import '../../fakes/fake_remote_document_store.dart';
+import '../../fakes/fake_local_account_data_purger.dart';
 import '../../fakes/in_memory_document_repository.dart';
 
 void main() {
@@ -16,7 +19,8 @@ void main() {
     late FakeAuthGateway authGateway;
     late FakeIncomingLinkSource incomingLinks;
     late InMemoryDocumentRepository documentRepository;
-    late FakeRemoteDocumentStore remoteDocumentStore;
+    late FakeAccountDeletionGateway deletionGateway;
+    late FakeLocalAccountDataPurger purger;
     late AccountCubit cubit;
 
     const testSession = AccountSession(
@@ -30,12 +34,14 @@ void main() {
       authGateway = FakeAuthGateway();
       incomingLinks = FakeIncomingLinkSource();
       documentRepository = InMemoryDocumentRepository();
-      remoteDocumentStore = FakeRemoteDocumentStore();
+      deletionGateway = FakeAccountDeletionGateway();
+      purger = FakeLocalAccountDataPurger();
       cubit = AccountCubit(
         authGateway: authGateway,
         incomingLinks: incomingLinks,
         documentRepository: documentRepository,
-        remoteDocumentStore: remoteDocumentStore,
+        accountDeletionGateway: deletionGateway,
+        localAccountDataPurger: purger,
       );
     });
 
@@ -281,46 +287,142 @@ void main() {
     });
 
     group('deleteAccount()', () {
-      test('deletes remote data, signs out, purges local documents and emits AccountUnauthenticated', () async {
+      Future<void> signInWithSession() async {
         authGateway.currentSession = testSession;
         await cubit.init();
         expect(cubit.state, isA<AccountAuthenticated>());
+      }
 
-        final doc = Document(
-          id: 'doc_local',
-          title: 'Local Doc',
-          content: 'inicio fin',
-          profileId: SyntaxProfileId.classicSpanish,
-          revision: 1,
-          createdAt: DateTime(2026, 1, 1),
-          updatedAt: DateTime(2026, 1, 1),
-        );
-        await documentRepository.saveDocument(doc);
+      test('server confirmation signs out, purges local data and emits AccountUnauthenticated', () async {
+        await signInWithSession();
+        final emitted = <AccountState>[];
+        final subscription = cubit.stream.listen(emitted.add);
+
+        await cubit.deleteAccount();
+        await pumpEventQueue();
+        await subscription.cancel();
+
+        expect(emitted.first, equals(const AccountDeletingAccount(testSession)));
+        expect(cubit.state, isA<AccountUnauthenticated>());
+        expect(authGateway.currentSession, isNull);
+        expect(purger.purgeCalls, 1);
+        expect(deletionGateway.deleteCalls, 1);
+      });
+
+      test('rejected deletion keeps the session and never purges local data', () async {
+        await signInWithSession();
+        deletionGateway.nextOutcome = const AccountDeletionRejected('apple_revoke_failed');
+
+        await cubit.deleteAccount();
+
+        expect(cubit.state, equals(const AccountDeletionFailed(testSession, 'apple_revoke_failed')));
+        expect(authGateway.currentSession, equals(testSession));
+        expect(purger.purgeCalls, 0);
+      });
+
+      test('missing connection maps to no_connection and never purges local data', () async {
+        await signInWithSession();
+        deletionGateway.nextOutcome = const AccountDeletionNoConnection();
+
+        await cubit.deleteAccount();
+
+        expect(cubit.state, equals(const AccountDeletionFailed(testSession, 'no_connection')));
+        expect(purger.purgeCalls, 0);
+      });
+
+      test('cancelled Apple re-authentication returns to the authenticated state', () async {
+        await signInWithSession();
+        deletionGateway.nextOutcome = const AccountDeletionCancelled();
+
+        await cubit.deleteAccount();
+
+        expect(cubit.state, equals(const AccountAuthenticated(testSession)));
+        expect(purger.purgeCalls, 0);
+      });
+
+      test('unexpected gateway exception is contained as unexpected_failure', () async {
+        await signInWithSession();
+        deletionGateway.throwOnDelete = true;
+
+        await expectLater(cubit.deleteAccount(), completes);
+
+        expect(cubit.state, equals(const AccountDeletionFailed(testSession, 'unexpected_failure')));
+        expect(purger.purgeCalls, 0);
+      });
+
+      test('a failed deletion can be retried until the server confirms', () async {
+        await signInWithSession();
+        deletionGateway.nextOutcome = const AccountDeletionNoConnection();
+        await cubit.deleteAccount();
+        deletionGateway.nextOutcome = const AccountDeleted();
 
         await cubit.deleteAccount();
 
         expect(cubit.state, isA<AccountUnauthenticated>());
+        expect(deletionGateway.deleteCalls, 2);
+        expect(purger.purgeCalls, 1);
+      });
+
+      test('purge failure after server confirmation emits local_cleanup_failed', () async {
+        await signInWithSession();
+        purger.throwOnPurge = true;
+
+        await expectLater(cubit.deleteAccount(), completes);
+
+        expect(cubit.state, equals(const AccountError('local_cleanup_failed')));
         expect(authGateway.currentSession, isNull);
-        final remainingDocs = await documentRepository.listDocuments();
-        expect(remainingDocs, isEmpty);
       });
 
-      test('catches error when remoteDocumentStore throws and emits AccountError', () async {
-        authGateway.currentSession = testSession;
-        await cubit.init();
-        remoteDocumentStore.throwOnDeleteAccount = true;
+      test('a second request while deletion is in flight is ignored', () async {
+        await signInWithSession();
+        final release = Completer<void>();
+        deletionGateway.pendingCompletion = release.future;
 
-        await expectLater(cubit.deleteAccount(), completes);
-        expect(cubit.state, isA<AccountError>());
+        final first = cubit.deleteAccount();
+        await pumpEventQueue();
+        await cubit.deleteAccount();
+        release.complete();
+        await first;
+
+        expect(deletionGateway.deleteCalls, 1);
+        expect(cubit.state, isA<AccountUnauthenticated>());
       });
 
-      test('catches error when authGateway throws during deleteAccount and emits AccountError', () async {
-        authGateway.currentSession = testSession;
-        await cubit.init();
-        authGateway.throwOnSignOut = true;
+      test('session refresh events during deletion do not re-enable the account actions', () async {
+        await signInWithSession();
+        final release = Completer<void>();
+        deletionGateway.pendingCompletion = release.future;
 
-        await expectLater(cubit.deleteAccount(), completes);
-        expect(cubit.state, isA<AccountError>());
+        final pending = cubit.deleteAccount();
+        await pumpEventQueue();
+        authGateway.emitSession(testSession);
+        await pumpEventQueue();
+
+        expect(cubit.state, equals(const AccountDeletingAccount(testSession)));
+        release.complete();
+        await pending;
+      });
+
+      test('does nothing without an authenticated session', () async {
+        await cubit.deleteAccount();
+
+        expect(cubit.state, isA<AccountUnauthenticated>());
+        expect(deletionGateway.deleteCalls, 0);
+        expect(purger.purgeCalls, 0);
+      });
+
+      test('does not emit when the cubit closes while the server request is in flight', () async {
+        await signInWithSession();
+        final release = Completer<void>();
+        deletionGateway.pendingCompletion = release.future;
+
+        final pending = cubit.deleteAccount();
+        await pumpEventQueue();
+        await cubit.close();
+        release.complete();
+
+        await expectLater(pending, completes);
+        expect(purger.purgeCalls, 0);
       });
     });
   });

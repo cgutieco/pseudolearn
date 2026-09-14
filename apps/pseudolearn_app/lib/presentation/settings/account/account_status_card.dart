@@ -37,9 +37,11 @@ final class _ErrorBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-    final text = message == 'no_connection'
-        ? l10n.authErrorNoConnection
-        : l10n.authErrorGeneric;
+    final text = switch (message) {
+      'no_connection' => l10n.authErrorNoConnection,
+      'local_cleanup_failed' => l10n.authDeleteAccountErrorLocalCleanup,
+      _ => l10n.authErrorGeneric,
+    };
 
     return AppCard(
       child: AppText(
