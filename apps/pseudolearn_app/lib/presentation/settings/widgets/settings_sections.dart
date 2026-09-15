@@ -93,7 +93,7 @@ final class VersionFooter extends StatelessWidget {
       children: [
         const BrandLockup(typeSize: BrandMetricsTokens.lockupTypeSizeFooter),
         AppText(
-          l10n.settingsVersion('1.0.1'),
+          l10n.settingsVersion('1.0.0'),
           variant: AppTextVariant.caption,
           color: theme.colors.text.tertiary,
           textAlign: TextAlign.center,

@@ -79,11 +79,11 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 
 ### 1.5 Pendientes técnicos declarados
 
-| Pendiente                                        | De quién depende                                                                                                                                                  | Estado actual |
-| :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| Eliminar `public.delete_account()` en producción | Publicación de `apps/pseudolearn_app` 1.0.1: la 1.0.0 todavía la invoca. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla | Abierto       |
-| Límite de líneas por función en el verificador   | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                    | Abierto       |
-| Prueba de extremo a extremo contra Apple real    | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                            | Abierto       |
+| Pendiente                                        | De quién depende                                                                                                                                                                                                                           | Estado actual |
+| :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| Eliminar `public.delete_account()` en producción | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla | Abierto       |
+| Límite de líneas por función en el verificador   | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                             | Abierto       |
+| Prueba de extremo a extremo contra Apple real    | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                     | Abierto       |
 
 ---
 
@@ -154,12 +154,14 @@ supabase db push --linked
 ```
 
 1. Secretos → función: la función desplegada sin secretos de Apple rechaza cuentas de Apple.
-2. Función → app 1.0.1: la app nueva invoca la función; sin función responde `http_404`.
+2. Función → build nuevo de la app: ese build invoca la función; sin función responde `http_404`.
 3. `migration repair`: el esquema de las migraciones `20260101000001` y `20260101000002` ya existe
    en producción, aplicado fuera de la CLI; `repair` las registra sin volver a ejecutarlas.
-4. `db push`: aplica `20260914000001_restrict_rpc_execute.sql`, compatible con la 1.0.0.
-5. Tras la publicación de la 1.0.1: mover `supabase/deferred/20260914000002_drop_delete_account.sql`
-   a `supabase/migrations/` y ejecutar `supabase db push --linked`.
+4. `db push`: aplica `20260914000001_restrict_rpc_execute.sql`, compatible con el build rechazado de
+   la 1.0.0.
+5. Tras la publicación del build que invoca `delete-account`: mover
+   `supabase/deferred/20260914000002_drop_delete_account.sql` a `supabase/migrations/` y ejecutar
+   `supabase db push --linked`.
 
 - **Checklist de release:**
   - [ ] `deno task verify` en verde.
@@ -322,8 +324,8 @@ estado parcial; la app impide la doble pulsación.
 
 ### 4.7 Migraciones diferidas en carpeta propia
 
-- **Problema:** `public.delete_account()` debe desaparecer, pero la 1.0.0 publicada la invoca y
-  `supabase db push` aplica todo lo que hay en `supabase/migrations/`.
+- **Problema:** `public.delete_account()` debe desaparecer, pero el build rechazado de la 1.0.0 la
+  invoca y `supabase db push` aplica todo lo que hay en `supabase/migrations/`.
 - **Elección:** la migración lista vive en `supabase/deferred/` con su nombre definitivo hasta que
   se cumple su condición (§1.5); entonces se mueve a `supabase/migrations/`. La restricción de
   `EXECUTE` en `push_documents` y `push_progress` (revocado a `public` y `anon`, concedido a
