@@ -1,8 +1,8 @@
 import type { AccountUser } from "../domain/account_user.ts";
 import type { UserVerifier } from "../domain/ports.ts";
 import type { Fetcher } from "./fetcher.ts";
-import { remoteRequestTimeoutMilliseconds } from "./fetcher";
-import { isRecord } from "./jwt_payload";
+import { remoteRequestTimeoutMilliseconds } from "./fetcher.ts";
+import { isRecord } from "./jwt_payload.ts";
 
 export interface SupabaseAuthEndpoint {
   readonly supabaseUrl: string;

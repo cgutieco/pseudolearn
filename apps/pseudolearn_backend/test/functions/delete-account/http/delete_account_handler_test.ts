@@ -1,12 +1,12 @@
 import { assertEquals } from "@std/assert";
 import type { DeletionOutcome } from "../../../../supabase/functions/delete-account/domain/deletion_outcome.ts";
-import { createDeleteAccountHandler } from "../../../../supabase/functions/delete-account/http/delete_account_handler";
+import { createDeleteAccountHandler } from "../../../../supabase/functions/delete-account/http/delete_account_handler.ts";
 import {
   CallLog,
   FakeAppleTokenClient,
   FakeUserDeleter,
   FakeUserVerifier,
-} from "../../../support/fake_ports";
+} from "../../../support/fake_ports.ts";
 
 function post(body?: string): Request {
   return new Request("https://example.test", {

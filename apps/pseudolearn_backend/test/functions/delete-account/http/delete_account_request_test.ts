@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { parseDeleteAccountRequest } from "../../../../supabase/functions/delete-account/http/delete_account_request";
+import { parseDeleteAccountRequest } from "../../../../supabase/functions/delete-account/http/delete_account_request.ts";
 
 function request(init: { method?: string; authorization?: string | null; body?: string }): Request {
   const headers = new Headers();

@@ -1,4 +1,4 @@
-import { decodeBase64UrlText } from "./base64url";
+import { decodeBase64UrlText } from "./base64url.ts";
 
 export function decodeJwtPayload(token: string): Record<string, unknown> | null {
   const segments = token.split(".");

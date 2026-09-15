@@ -3,7 +3,7 @@ import type { DeletionFailureCode } from "../../../../supabase/functions/delete-
 import {
   responseFor,
   statusByFailureCode,
-} from "../../../../supabase/functions/delete-account/http/delete_account_response";
+} from "../../../../supabase/functions/delete-account/http/delete_account_response.ts";
 
 Deno.test("deleted outcome answers 200 with status deleted", async () => {
   const response = responseFor({ kind: "deleted" });

@@ -1,16 +1,16 @@
 import type { DeleteAccountDependencies } from "./application/delete_account.ts";
 import type { DeletionOutcome } from "./domain/deletion_outcome.ts";
-import { createDeleteAccountHandler } from "./http/delete_account_handler";
-import { createAppleClientSecret } from "./infrastructure/apple_client_secret";
-import { AppleRestTokenClient } from "./infrastructure/apple_rest_token_client";
+import { createDeleteAccountHandler } from "./http/delete_account_handler.ts";
+import { createAppleClientSecret } from "./infrastructure/apple_client_secret.ts";
+import { AppleRestTokenClient } from "./infrastructure/apple_rest_token_client.ts";
 import {
   type AppleConfiguration,
   type FunctionEnvironment,
   readFunctionEnvironment,
-} from "./infrastructure/environment";
+} from "./infrastructure/environment.ts";
 import type { Fetcher } from "./infrastructure/fetcher.ts";
-import { SupabaseUserDeleter } from "./infrastructure/supabase_user_deleter";
-import { SupabaseUserVerifier } from "./infrastructure/supabase_user_verifier";
+import { SupabaseUserDeleter } from "./infrastructure/supabase_user_deleter.ts";
+import { SupabaseUserVerifier } from "./infrastructure/supabase_user_verifier.ts";
 
 const fetcher: Fetcher = (url, init) => fetch(url, init);
 

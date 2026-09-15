@@ -7,8 +7,8 @@ import {
   findUndeclaredLayerViolations,
   type SourceFile,
   type Violation,
-} from "./architecture_rules";
-import { tokenize } from "./source_lexer";
+} from "./architecture_rules.ts";
+import { tokenize } from "./source_lexer.ts";
 
 export function checkSourceFile(file: SourceFile, rules: ArchitectureRules): Violation[] {
   return [

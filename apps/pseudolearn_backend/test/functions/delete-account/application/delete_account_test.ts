@@ -2,13 +2,13 @@ import { assertEquals } from "@std/assert";
 import {
   deleteAccount,
   type DeleteAccountCommand,
-} from "../../../../supabase/functions/delete-account/application/delete_account";
+} from "../../../../supabase/functions/delete-account/application/delete_account.ts";
 import {
   CallLog,
   FakeAppleTokenClient,
   FakeUserDeleter,
   FakeUserVerifier,
-} from "../../../support/fake_ports";
+} from "../../../support/fake_ports.ts";
 
 function scenario(appleSubject: string | null) {
   const log = new CallLog();

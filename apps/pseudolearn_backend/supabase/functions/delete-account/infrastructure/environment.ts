@@ -1,4 +1,4 @@
-import { isRecord } from "./jwt_payload";
+import { isRecord } from "./jwt_payload.ts";
 
 export interface AppleConfiguration {
   readonly teamId: string;

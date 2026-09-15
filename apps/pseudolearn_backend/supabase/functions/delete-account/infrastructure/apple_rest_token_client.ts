@@ -1,8 +1,8 @@
 import type { AppleCodeExchange, AppleTokenClient, RevocableToken } from "../domain/ports.ts";
-import { appleAudience } from "./apple_client_secret";
+import { appleAudience } from "./apple_client_secret.ts";
 import type { Fetcher } from "./fetcher.ts";
-import { remoteRequestTimeoutMilliseconds } from "./fetcher";
-import { decodeJwtPayload, isRecord } from "./jwt_payload";
+import { remoteRequestTimeoutMilliseconds } from "./fetcher.ts";
+import { decodeJwtPayload, isRecord } from "./jwt_payload.ts";
 
 export const appleTokenUrl = `${appleAudience}/auth/token`;
 export const appleRevokeUrl = `${appleAudience}/auth/revoke`;

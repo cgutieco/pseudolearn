@@ -1,4 +1,4 @@
-import { encodeBase64Url, encodeBase64UrlText } from "./base64url";
+import { encodeBase64Url, encodeBase64UrlText } from "./base64url.ts";
 import type { AppleConfiguration } from "./environment.ts";
 
 export const appleAudience = "https://appleid.apple.com";

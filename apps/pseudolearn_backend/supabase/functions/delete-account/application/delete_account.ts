@@ -3,7 +3,7 @@ import {
   accountDeleted,
   deletionFailed,
   type DeletionOutcome,
-} from "../domain/deletion_outcome";
+} from "../domain/deletion_outcome.ts";
 import type { AppleTokenClient, UserDeleter, UserVerifier } from "../domain/ports.ts";
 
 export interface DeleteAccountCommand {

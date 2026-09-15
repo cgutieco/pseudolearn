@@ -1,7 +1,7 @@
-import { deleteAccount, type DeleteAccountDependencies } from "../application/delete_account";
-import { deletionFailed, type DeletionOutcome } from "../domain/deletion_outcome";
-import { parseDeleteAccountRequest } from "./delete_account_request";
-import { responseFor } from "./delete_account_response";
+import { deleteAccount, type DeleteAccountDependencies } from "../application/delete_account.ts";
+import { deletionFailed, type DeletionOutcome } from "../domain/deletion_outcome.ts";
+import { parseDeleteAccountRequest } from "./delete_account_request.ts";
+import { responseFor } from "./delete_account_response.ts";
 
 export type OutcomeRecorder = (outcome: DeletionOutcome) => void;
 

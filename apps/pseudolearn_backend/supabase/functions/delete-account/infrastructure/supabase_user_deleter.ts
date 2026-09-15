@@ -1,5 +1,5 @@
 import type { UserDeleter } from "../domain/ports.ts";
-import { remoteRequestTimeoutMilliseconds } from "./fetcher";
+import { remoteRequestTimeoutMilliseconds } from "./fetcher.ts";
 import type { SupabaseAuthEndpoint } from "./supabase_user_verifier.ts";
 
 export class SupabaseUserDeleter implements UserDeleter {
