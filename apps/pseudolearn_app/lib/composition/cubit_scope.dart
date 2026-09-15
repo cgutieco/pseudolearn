@@ -8,6 +8,7 @@ import '../domain/model/settings/app_theme_mode.dart';
 import '../domain/model/settings/ui_language_id.dart';
 import '../presentation/l10n/generated/app_localizations.dart';
 import '../presentation/routing/app_router.dart';
+import '../presentation/settings/account/local_account_data_refresher.dart';
 import '../presentation/shell/design_canvas.dart';
 import '../presentation/theme/app_theme.dart';
 import 'app_dependencies.dart';
@@ -38,7 +39,7 @@ final class CubitScope extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: buildAppProviders(dependencies),
-      child: _CubitScopeApp(router: router),
+      child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
     );
   }
 }

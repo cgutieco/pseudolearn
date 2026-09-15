@@ -38,3 +38,22 @@ final class AccountError extends AccountState {
   @override
   List<Object?> get props => [message];
 }
+
+final class AccountDeletingAccount extends AccountState {
+  final AccountSession session;
+
+  const AccountDeletingAccount(this.session);
+
+  @override
+  List<Object?> get props => [session];
+}
+
+final class AccountDeletionFailed extends AccountState {
+  final AccountSession session;
+  final String code;
+
+  const AccountDeletionFailed(this.session, this.code);
+
+  @override
+  List<Object?> get props => [session, code];
+}

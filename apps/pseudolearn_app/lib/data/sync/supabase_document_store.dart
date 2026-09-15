@@ -81,11 +81,4 @@ final class SupabaseDocumentStore implements RemoteDocumentStore {
       return PullBatchFailure(e.toString());
     }
   }
-
-  @override
-  Future<void> deleteAccount() async {
-    try {
-      await _client.rpc<void>('delete_account');
-    } catch (_) {}
-  }
 }

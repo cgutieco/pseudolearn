@@ -1823,7 +1823,7 @@ abstract class AppLocalizations {
   /// Mensaje de advertencia del diálogo de confirmación de eliminación de cuenta
   ///
   /// In es, this message translates to:
-  /// **'Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos de este dispositivo. Esta acción no se puede deshacer.'**
+  /// **'Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos y el progreso de este dispositivo. Si iniciaste sesión con Apple, se te pedirá confirmar tu identidad. Esta acción no se puede deshacer.'**
   String get authDeleteAccountDialogMessage;
 
   /// Acción afirmativa del diálogo de confirmación de eliminación de cuenta
@@ -1831,6 +1831,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Eliminar cuenta'**
   String get authDeleteAccountConfirm;
+
+  /// Indicador de progreso mientras el servidor elimina la cuenta
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminando cuenta...'**
+  String get authDeletingAccount;
+
+  /// Error de eliminación de cuenta sin conexión de red
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar la cuenta porque no hay conexión a internet. Tu cuenta y tus documentos siguen intactos.'**
+  String get authDeleteAccountErrorNoConnection;
+
+  /// Error de eliminación de cuenta cuando falla la reautenticación o la revocación de Apple
+  ///
+  /// In es, this message translates to:
+  /// **'Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.'**
+  String get authDeleteAccountErrorApple;
+
+  /// Error general de eliminación de cuenta en el servidor
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo eliminar la cuenta. Tu cuenta y tus documentos siguen intactos; inténtalo de nuevo.'**
+  String get authDeleteAccountErrorGeneric;
+
+  /// Error cuando la cuenta se eliminó en el servidor pero falló la purga local
+  ///
+  /// In es, this message translates to:
+  /// **'La cuenta se eliminó, pero no se pudieron borrar todos los datos de este dispositivo. Reinstala la aplicación para eliminarlos.'**
+  String get authDeleteAccountErrorLocalCleanup;
 
   /// Título del diálogo para ingresar correo electrónico de enlace mágico
   ///

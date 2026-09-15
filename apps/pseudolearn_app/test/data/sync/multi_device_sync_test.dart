@@ -220,53 +220,5 @@ void main() {
       final remoteDocs = remoteStore.activeUserDocuments;
       expect(remoteDocs.where((d) => d.id == 'doc-idemp').length, equals(1));
     });
-
-    test(
-        'deleteAccount purges only active user documents and leaves other accounts intact',
-        () async {
-      final doc1 = Document(
-        id: 'doc-u1',
-        title: 'Doc User 1',
-        content: '1',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: clock.now(),
-        updatedAt: clock.now(),
-      );
-      await deviceA.syncingRepo.saveDocument(doc1);
-      await deviceA.drainer.drain();
-
-      final deviceC = await _TestDevice.create(
-        remoteStore: remoteStore,
-        userId: 'user-2',
-        clock: clock,
-        identifiers: identifiers,
-      );
-      remoteStore.activeUserId = 'user-2';
-      final doc2 = Document(
-        id: 'doc-u2',
-        title: 'Doc User 2',
-        content: '2',
-        profileId: SyntaxProfileId.classicSpanish,
-        revision: 1,
-        createdAt: clock.now(),
-        updatedAt: clock.now(),
-      );
-      await deviceC.syncingRepo.saveDocument(doc2);
-      await deviceC.drainer.drain();
-
-      expect(remoteStore.activeUserDocuments.length, equals(1));
-
-      remoteStore.activeUserId = 'user-1';
-      await remoteStore.deleteAccount();
-
-      expect(remoteStore.activeUserDocuments, isEmpty);
-
-      remoteStore.activeUserId = 'user-2';
-      expect(remoteStore.activeUserDocuments.length, equals(1));
-      expect(remoteStore.activeUserDocuments.first.id, equals('doc-u2'));
-
-      await deviceC.dispose();
-    });
   });
 }

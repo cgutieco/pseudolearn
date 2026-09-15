@@ -8,6 +8,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
 import '../widgets/settings_group.dart';
 import 'account_avatar.dart';
+import 'account_deletion_failure_banner.dart';
 import 'session_actions.dart';
 
 final class AccountSessionCard extends StatelessWidget {
@@ -15,6 +16,8 @@ final class AccountSessionCard extends StatelessWidget {
   final VoidCallback onSignOut;
   final VoidCallback onSignOutAndDelete;
   final VoidCallback onDeleteAccount;
+  final bool deletingAccount;
+  final String? deletionFailureCode;
 
   const AccountSessionCard({
     super.key,
@@ -22,16 +25,23 @@ final class AccountSessionCard extends StatelessWidget {
     required this.onSignOut,
     required this.onSignOutAndDelete,
     required this.onDeleteAccount,
+    this.deletingAccount = false,
+    this.deletionFailureCode,
   });
 
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
     final l10n = AppLocalizations.of(context)!;
+    final failureCode = deletionFailureCode;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (failureCode != null) ...[
+          AccountDeletionFailureBanner(code: failureCode),
+          SizedBox(height: canvas.scaled(SpacingTokens.space4)),
+        ],
         SettingsGroup(
           title: l10n.settingsAccountSectionSession,
           items: [_SessionProfileTile(session: session)],
@@ -41,6 +51,7 @@ final class AccountSessionCard extends StatelessWidget {
           onSignOut: onSignOut,
           onSignOutAndDeleteLocalData: onSignOutAndDelete,
           onDeleteAccount: onDeleteAccount,
+          deletingAccount: deletingAccount,
         ),
       ],
     );

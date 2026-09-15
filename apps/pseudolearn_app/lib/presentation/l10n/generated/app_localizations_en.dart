@@ -1008,10 +1008,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authDeleteAccountDialogMessage =>
-      'Your account and all associated data will be permanently deleted from our servers. Local documents on this device will also be removed. This action cannot be undone.';
+      'Your account and all associated data will be permanently deleted from our servers. Documents and progress on this device will also be removed. If you signed in with Apple, you will be asked to confirm your identity. This action cannot be undone.';
 
   @override
   String get authDeleteAccountConfirm => 'Delete account';
+
+  @override
+  String get authDeletingAccount => 'Deleting account...';
+
+  @override
+  String get authDeleteAccountErrorNoConnection =>
+      'Your account could not be deleted because there is no internet connection. Your account and documents are unchanged.';
+
+  @override
+  String get authDeleteAccountErrorApple =>
+      'Apple did not confirm the deletion. Your account is unchanged; try again and confirm your identity with Apple.';
+
+  @override
+  String get authDeleteAccountErrorGeneric =>
+      'Your account could not be deleted. Your account and documents are unchanged; please try again.';
+
+  @override
+  String get authDeleteAccountErrorLocalCleanup =>
+      'Your account was deleted, but some data could not be removed from this device. Reinstall the app to remove it.';
 
   @override
   String get authMagicLinkDialogTitle => 'Sign in with magic link';

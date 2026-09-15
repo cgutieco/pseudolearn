@@ -4,6 +4,7 @@ import '../data/auth/session_storage.dart';
 import '../data/documents/file_document_repository.dart';
 import '../data/index/metadata_index.dart';
 import '../data/sync/sqlite_progress_sync_store.dart';
+import '../data/sync/local_account_data_purger_adapter.dart';
 import '../data/sync/sqlite_sync_queue.dart';
 import '../data/sync/supabase_document_store.dart';
 import '../data/sync/supabase_progress_store.dart';
@@ -16,26 +17,27 @@ import '../domain/ports/clock.dart';
 import '../domain/ports/connectivity_monitor.dart';
 import '../domain/ports/document_repository.dart';
 import '../domain/ports/identifier_generator.dart';
+import '../domain/ports/local_account_data_purger.dart';
 import '../domain/ports/remote_document_store.dart';
 import '../domain/ports/remote_progress_store.dart';
 import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
 
 final class SyncServices {
-  final RemoteDocumentStore remoteStore;
   final RemoteProgressStore remoteProgressStore;
   final SyncQueue queue;
   final ConnectivityMonitor connectivity;
   final SyncCoordinator coordinator;
   final DocumentRepository repository;
+  final LocalAccountDataPurger accountDataPurger;
 
   const SyncServices({
-    required this.remoteStore,
     required this.remoteProgressStore,
     required this.queue,
     required this.connectivity,
     required this.coordinator,
     required this.repository,
+    required this.accountDataPurger,
   });
 }
 
@@ -73,7 +75,6 @@ SyncServices buildSyncServices({
     clock: clock,
   );
   return SyncServices(
-    remoteStore: remoteStore,
     remoteProgressStore: remoteProgressStore,
     queue: queue,
     connectivity: ConnectivityMonitorAdapter(),
@@ -83,6 +84,10 @@ SyncServices buildSyncServices({
       queue: queue,
       identifiers: identifiers,
       clock: clock,
+    ),
+    accountDataPurger: LocalAccountDataPurgerAdapter(
+      database: index.database,
+      documentsDirectory: documentsDirectory,
     ),
   );
 }

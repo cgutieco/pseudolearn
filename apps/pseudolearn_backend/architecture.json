@@ -1,0 +1,45 @@
+{
+  "package": "pseudolearn_backend",
+  "functions_root": "supabase/functions",
+  "layers": [
+    {
+      "name": "domain",
+      "path": "domain",
+      "may_import": [],
+      "forbidden_identifiers": ["Deno", "fetch", "crypto", "console"]
+    },
+    {
+      "name": "application",
+      "path": "application",
+      "may_import": ["domain"],
+      "forbidden_identifiers": ["Deno", "fetch", "crypto", "console"]
+    },
+    {
+      "name": "infrastructure",
+      "path": "infrastructure",
+      "may_import": ["domain"],
+      "forbidden_identifiers": ["Deno", "fetch", "console"]
+    },
+    {
+      "name": "http",
+      "path": "http",
+      "may_import": ["domain", "application"],
+      "forbidden_identifiers": ["Deno", "fetch", "crypto", "console"]
+    },
+    {
+      "name": "composition",
+      "path": "index.ts",
+      "may_import": ["domain", "application", "infrastructure", "http"],
+      "forbidden_identifiers": []
+    }
+  ],
+  "forbidden_import_prefixes": ["npm:", "jsr:", "node:", "http:", "https:"],
+  "code_rules": {
+    "forbid_comments": true,
+    "scanned_roots": ["supabase/functions", "test", "tool"]
+  },
+  "limits": {
+    "file_lines": 120
+  },
+  "limits_exempt": ["test/", "tool/"]
+}

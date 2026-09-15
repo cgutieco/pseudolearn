@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../application/account/account_state.dart';
+import '../../../domain/model/account/account_session.dart';
 import '../../components/card/app_card.dart';
 import '../../components/layout/app_page.dart';
 import '../../components/typography/app_text.dart';
@@ -85,12 +86,12 @@ final class _AccountPrimaryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = view.accountState;
     return switch (state) {
-      AccountAuthenticated(:final session) => AccountSessionCard(
-          session: session,
-          onSignOut: view.onSignOut,
-          onSignOutAndDelete: view.onSignOutAndDeleteLocalData,
-          onDeleteAccount: view.onDeleteAccount,
-        ),
+      AccountAuthenticated(:final session) =>
+        _SessionContent(view: view, session: session),
+      AccountDeletingAccount(:final session) =>
+        _SessionContent(view: view, session: session, deletingAccount: true),
+      AccountDeletionFailed(:final session, :final code) =>
+        _SessionContent(view: view, session: session, deletionFailureCode: code),
       AccountAuthenticating() => const AuthenticatingContent(),
       AccountError(:final message) => AccountErrorCard(
           message: message,
@@ -106,6 +107,32 @@ final class _AccountPrimaryContent extends StatelessWidget {
           onSignInMagicLink: view.onSignInMagicLink,
         ),
     };
+  }
+}
+
+final class _SessionContent extends StatelessWidget {
+  final AccountView view;
+  final AccountSession session;
+  final bool deletingAccount;
+  final String? deletionFailureCode;
+
+  const _SessionContent({
+    required this.view,
+    required this.session,
+    this.deletingAccount = false,
+    this.deletionFailureCode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AccountSessionCard(
+      session: session,
+      onSignOut: view.onSignOut,
+      onSignOutAndDelete: view.onSignOutAndDeleteLocalData,
+      onDeleteAccount: view.onDeleteAccount,
+      deletingAccount: deletingAccount,
+      deletionFailureCode: deletionFailureCode,
+    );
   }
 }
 

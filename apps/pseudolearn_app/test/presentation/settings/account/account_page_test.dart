@@ -180,7 +180,7 @@ void main() {
       expect(find.text('¿Eliminar cuenta?'), findsOneWidget);
       expect(
         find.text(
-          'Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos de este dispositivo. Esta acción no se puede deshacer.',
+          'Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos y el progreso de este dispositivo. Si iniciaste sesión con Apple, se te pedirá confirmar tu identidad. Esta acción no se puede deshacer.',
         ),
         findsOneWidget,
       );
@@ -197,6 +197,86 @@ void main() {
       ));
       await tester.pumpAndSettle();
       expect(deleteAccountCalled, isTrue);
+    });
+
+    testWidgets('Deleting state disables every session action and shows progress', (tester) async {
+      var deleteAccountCalled = false;
+      var signOutCalled = false;
+      await tester.pumpWidget(_buildTestApp(
+        state: const AccountDeletingAccount(testSession),
+        onDeleteAccount: () => deleteAccountCalled = true,
+        onSignOut: () => signOutCalled = true,
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Eliminando cuenta...'), findsOneWidget);
+      await tester.tap(find.text('Eliminando cuenta...'));
+      await tester.tap(find.text('Cerrar sesión'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AppDialog), findsNothing);
+      expect(deleteAccountCalled, isFalse);
+      expect(signOutCalled, isFalse);
+    });
+
+    testWidgets('Failed deletion keeps the session visible with a retryable action', (tester) async {
+      var deleteAccountCalled = false;
+      await tester.pumpWidget(_buildTestApp(
+        state: const AccountDeletionFailed(testSession, 'no_connection'),
+        onDeleteAccount: () => deleteAccountCalled = true,
+      ));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('No se pudo eliminar la cuenta porque no hay conexión a internet. Tu cuenta y tus documentos siguen intactos.'),
+        findsOneWidget,
+      );
+      expect(find.text('Ada Lovelace'), findsOneWidget);
+      expect(find.text('Continuar con Apple'), findsNothing);
+
+      await tester.tap(find.text('Eliminar cuenta'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.descendant(
+        of: find.byType(AppDialog),
+        matching: find.text('Eliminar cuenta'),
+      ));
+      await tester.pumpAndSettle();
+      expect(deleteAccountCalled, isTrue);
+    });
+
+    testWidgets('Apple failure codes share the Apple-specific deletion notice', (tester) async {
+      for (final code in ['apple_reauthentication_required', 'apple_identity_mismatch', 'apple_token_exchange_failed', 'apple_revoke_failed']) {
+        await tester.pumpWidget(_buildTestApp(
+          state: AccountDeletionFailed(testSession, code),
+        ));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.text('Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.'),
+          findsOneWidget,
+        );
+      }
+    });
+
+    testWidgets('Unknown deletion failure codes fall back to the generic notice', (tester) async {
+      await tester.pumpWidget(_buildTestApp(
+        state: const AccountDeletionFailed(testSession, 'http_500'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('No se pudo eliminar la cuenta. Tu cuenta y tus documentos siguen intactos; inténtalo de nuevo.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('Local cleanup failure after deletion explains the remaining device data', (tester) async {
+      await tester.pumpWidget(_buildTestApp(
+        state: const AccountError('local_cleanup_failed'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('La cuenta se eliminó'), findsOneWidget);
     });
 
     testWidgets('Error state renders error notice and sign-in options', (tester) async {

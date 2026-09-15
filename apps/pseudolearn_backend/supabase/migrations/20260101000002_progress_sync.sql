@@ -1,7 +1,3 @@
--- Sincronización de progreso y preferencias
--- Tabla de progreso, política RLS, función RPC atómica de unión monotónica y actualización de purge.
-
--- 1. Tabla de progreso
 create table if not exists progress (
   user_id            uuid not null references auth.users on delete cascade,
   content_id         text not null,
@@ -15,13 +11,11 @@ create table if not exists progress (
 
 create index if not exists progress_user_server_revision_idx on progress (user_id, server_revision);
 
--- 2. Row Level Security (RLS)
 alter table progress enable row level security;
 
 create policy own_progress on progress
   for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 
--- 3. Función RPC atómica para push de progreso con unión monotónica (D4)
 create or replace function push_progress(payload jsonb)
 returns bigint
 language plpgsql
@@ -37,7 +31,6 @@ begin
     raise exception 'Unauthorized';
   end if;
 
-  -- Bloquea la fila de revisión del usuario o la crea
   insert into account_revision (user_id, last_revision)
   values (v_user_id, 0)
   on conflict (user_id) do nothing;
@@ -86,7 +79,6 @@ begin
 end;
 $$;
 
--- 4. Actualización de función RPC para purga completa de cuenta (incluyendo progreso)
 create or replace function delete_account()
 returns void
 language plpgsql
