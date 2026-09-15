@@ -450,7 +450,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | `engine/`                | Adaptación y traducción entre `pseudolearn_core` y `domain`                                                                                                                                                                                                                                                        | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
-| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes y modalidad de entrada de texto (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`            | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
@@ -1079,11 +1079,24 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       su token de identidad ya los traslada a `user_metadata`.
     - `SupabaseAuthGateway` canjea las credenciales nativas ante el backend empleando el paquete de Dart puro `supabase`
       (en lugar de `supabase_flutter`).
-    - `SessionStorage` delega la persistencia del token de refresco a almacenamiento seguro de plataforma
-      (`FlutterSecureStorage`)
-      inyectando un adaptador `GotrueAsyncStorage` en `AuthClientOptions`.
+    - El paquete `supabase` de Dart puro mantiene la sesión solo en memoria. `SupabaseSessionPersistence`
+      (`data/auth/`) la hace sobrevivir al cierre de la app: escucha `onAuthStateChange` y, ante `initialSession`,
+      `signedIn`, `tokenRefreshed` y `userUpdated`, escribe `Session.toJson()` bajo la clave `supabase.auth.session` en
+      `SecureSessionStorage` (Llavero en iOS y macOS, mediante `FlutterSecureStorage`); ante `signedOut` la borra, lo que
+      cubre el cierre de sesión y la sesión local cerrada tras eliminar la cuenta. `SupabaseAuthGateway.restoreSession()`
+      usa la sesión en memoria o, si no la hay, `recover()`, que llama a `GoTrueClient.recoverSession` (renueva el token
+      si expiró). Refresh token revocado o inválido (`AuthException`) y datos corruptos (`FormatException`) borran lo
+      guardado y devuelven sin sesión; un fallo de red (`AuthRetryableFetchException`) devuelve sin sesión y **conserva**
+      lo guardado para el siguiente arranque con conexión. Un fallo del Llavero al leer o escribir no invalida la sesión
+      en memoria: la app sigue autenticada hasta cerrarse. `sessionChanges()` descarta los errores que `GoTrueClient`
+      emite en el flujo de estado, que no son sesiones. `pkceAsyncStorage` sigue guardando únicamente el verificador
+      PKCE del enlace mágico.
+    - En iOS el Llavero sobrevive a la desinstalación: una reinstalación puede recuperar la sesión anterior; si la
+      cuenta ya no existe, el refresh token falla y la sesión guardada se borra.
     - `AccountCubit` gestiona el estado inmutable `AccountState` y tipifica cualquier fallo en `AccountError`.
 - **Alternativas descartadas y por qué:**
+    - *Guardar solo el refresh token y llamar a `setSession`:* pierde el usuario y la expiración del access token,
+      obliga a una llamada de red en cada arranque y no funciona sin conexión mientras el access token sigue vigente.
     - *`supabase_flutter`:* Descartado por incorporar widgets, escuchas implícitas del ciclo de vida de Flutter y
       acoplamiento a `BuildContext` en la infraestructura de datos.
     - *Adaptador de autenticación implementado en `composition/`:* Descartado porque la capa de composición tiene
@@ -1704,8 +1717,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   entitlement y, por la directriz 4.8 de App Review, lo exige: toda app que ofrezca inicio de sesión social de terceros
   —aquí, Google— debe ofrecer también Sign in with Apple. `Release.entitlements` lo declara junto a
   `com.apple.security.app-sandbox`, que ese canal impone y que el almacenamiento de la app ya cumple por confinarse a
-  `getApplicationDocumentsDirectory()`. El flujo nativo de `ASAuthorization` queda idéntico en las dos plataformas y
-  `AuthMethod.apple` no necesita variante por sistema operativo.
+  `getApplicationDocumentsDirectory()`. En iOS, `ios/Runner/Runner.entitlements` declara el mismo
+  `com.apple.developer.applesignin` y las tres configuraciones del target `Runner` (Debug, Profile, Release) lo
+  referencian con `CODE_SIGN_ENTITLEMENTS`; sin ese archivo, la firma automática no incluye el entitlement y
+  `getAppleIDCredential` falla con `AuthorizationErrorCode.unknown` en todo build de iOS. El flujo nativo de
+  `ASAuthorization` queda idéntico en las dos plataformas y `AuthMethod.apple` no necesita variante por sistema
+  operativo.
 - **Alternativas descartadas y por qué:**
     - *Regenerar el perfil Developer ID con la capacidad activada en el App ID:* Apple emite el perfil sin el
       entitlement. No es un defecto de configuración y ninguna regeneración lo corrige.
@@ -1786,6 +1803,13 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       documentos. Conserva las preferencias. No pasa por `SyncingDocumentRepository`, así que no encola lápidas.
     - La presentación mapea los códigos del backend: `no_connection`, los cuatro `apple_*` y el resto a un aviso
       genérico; `local_cleanup_failed` a un aviso de datos remanentes en el dispositivo.
+    - Las ramas del armazón (`StatefulShellRoute.indexedStack`) conservan sus páginas vivas y cada cubit de datos
+      locales carga una sola vez al montar su página. `LocalAccountDataRefresher` (`presentation/settings/account/`),
+      montado en `CubitScope` por encima del router, escucha `AccountCubit` y, cuando
+      `isLocalAccountDataPurge(previous, current)` (`application/account/`) detecta la transición
+      `AccountDeletingAccount → AccountUnauthenticated`, recarga `LibraryCubit`, `DashboardCubit`,
+      `LearningRouteCubit` y `ExerciseBankCubit` y notifica a `SyncCubit`. Sin esa recarga, «Mis algoritmos» sigue
+      mostrando documentos ya borrados del disco hasta reiniciar la app.
 - **Alternativas descartadas y por qué:**
     - *RPC SQL `delete_account` invocada con la clave publicable:* no elimina el usuario de `auth.users` ni revoca
       Apple, y su fallo no se distinguía de un éxito.
@@ -1795,6 +1819,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - *Enviar el `identityToken` y el nonce para que el servidor los verifique:* el `id_token` que Apple devuelve al
       canjear el código ya prueba la identidad (`apps/pseudolearn_backend/README.md`, decisión sobre la identidad de
       Apple).
+    - *Recargar cada página desde un `BlocListener` propio:* repite la misma condición en tres páginas y obliga a
+      cada test de página a proveer `AccountCubit`.
     - *Añadir `deleteAccount` a `AuthGateway`:* supera el límite de métodos públicos y obliga a todo consumidor de
       autenticación a conocer la eliminación.
 

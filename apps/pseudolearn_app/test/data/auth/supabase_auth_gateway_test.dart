@@ -8,7 +8,10 @@ import 'package:pseudolearn_app/domain/model/account/auth_method.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_outcome.dart';
 import 'package:supabase/supabase.dart';
 
+import 'package:pseudolearn_app/data/auth/supabase_session_persistence.dart';
+
 import '../../fakes/fake_native_credential_source.dart';
+import '../../fakes/in_memory_session_storage.dart';
 
 final class InMemoryPkceStorage extends GotrueAsyncStorage {
   final Map<String, String> entries = {};
@@ -137,6 +140,10 @@ void main() {
       credentialSource = FakeNativeCredentialSource();
       gateway = SupabaseAuthGateway(
         client: client,
+        sessionPersistence: SupabaseSessionPersistence(
+          auth: client.auth,
+          storage: InMemorySessionStorage(),
+        ),
         credentialSource: credentialSource,
       );
     });

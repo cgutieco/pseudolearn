@@ -6,22 +6,27 @@ import '../../domain/model/account/auth_outcome.dart';
 import '../../domain/ports/auth_gateway.dart';
 import 'auth_callback_link.dart';
 import 'native_credential_source.dart';
+import 'supabase_session_persistence.dart';
 
 final class SupabaseAuthGateway implements AuthGateway {
   final SupabaseClient _client;
   final NativeCredentialSource _credentialSource;
+  final SupabaseSessionPersistence _sessionPersistence;
 
   SupabaseAuthGateway({
     required SupabaseClient client,
+    required SupabaseSessionPersistence sessionPersistence,
     NativeCredentialSource? credentialSource,
   })  : _client = client,
+        _sessionPersistence = sessionPersistence,
         _credentialSource =
             credentialSource ?? PlatformNativeCredentialSource();
 
   @override
   Future<AccountSession?> restoreSession() async {
     try {
-      final session = _client.auth.currentSession;
+      final session =
+          _client.auth.currentSession ?? await _sessionPersistence.recover();
       if (session == null) return null;
       if (session.isExpired) {
         final response = await _client.auth.refreshSession();
@@ -80,7 +85,9 @@ final class SupabaseAuthGateway implements AuthGateway {
 
   @override
   Stream<AccountSession?> sessionChanges() {
-    return _client.auth.onAuthStateChange.map((authState) {
+    return _client.auth.onAuthStateChange
+        .handleError((Object _) {})
+        .map((authState) {
       final session = authState.session;
       if (session == null) return null;
       return _mapToAccountSession(session);

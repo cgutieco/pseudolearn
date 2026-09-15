@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase/supabase.dart' show SupabaseClient;
 import '../data/auth/native_credential_source.dart';
+import '../data/auth/session_storage.dart';
 import '../data/auth/supabase_account_deletion_gateway.dart';
 import '../data/auth/supabase_auth_gateway.dart';
+import '../data/auth/supabase_session_persistence.dart';
 import '../data/index/metadata_index.dart';
 import '../data/knowledge/bundled_knowledge_repository.dart';
 import '../data/knowledge/marker_resolver.dart';
@@ -80,9 +82,14 @@ final class _AccountServices {
 
 _AccountServices _buildAccountServices(SupabaseClient client) {
   final credentialSource = PlatformNativeCredentialSource();
+  final sessionPersistence = SupabaseSessionPersistence(
+    auth: client.auth,
+    storage: const SecureSessionStorage(),
+  )..start();
   return _AccountServices(
     authGateway: SupabaseAuthGateway(
       client: client,
+      sessionPersistence: sessionPersistence,
       credentialSource: credentialSource,
     ),
     deletionGateway: SupabaseAccountDeletionGateway(

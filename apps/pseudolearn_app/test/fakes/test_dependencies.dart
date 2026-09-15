@@ -6,6 +6,7 @@ import 'package:pseudolearn_app/domain/ports/document_repository.dart';
 import 'package:pseudolearn_app/domain/ports/exercise_checker.dart';
 import 'package:pseudolearn_app/domain/ports/incoming_link_source.dart';
 import 'package:pseudolearn_app/domain/ports/knowledge_repository.dart';
+import 'package:pseudolearn_app/domain/ports/local_account_data_purger.dart';
 import 'package:pseudolearn_app/domain/ports/local_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/preferences_store.dart';
 import 'package:pseudolearn_app/domain/ports/program_construct_reader.dart';
@@ -59,6 +60,7 @@ AppDependencies buildTestDependencies({
   AuthGateway? authGateway,
   IncomingLinkSource? incomingLinkSource,
   AccountDeletionGateway? accountDeletionGateway,
+  LocalAccountDataPurger? localAccountDataPurger,
   RemoteProgressStore? remoteProgressStore,
   SyncQueue? syncQueue,
   ConnectivityMonitor? connectivityMonitor,
@@ -73,7 +75,7 @@ AppDependencies buildTestDependencies({
     authGateway: authGateway ?? FakeAuthGateway(),
     incomingLinkSource: incomingLinkSource ?? FakeIncomingLinkSource(),
     accountDeletionGateway: accountDeletionGateway ?? FakeAccountDeletionGateway(),
-    localAccountDataPurger: FakeLocalAccountDataPurger(),
+    localAccountDataPurger: localAccountDataPurger ?? FakeLocalAccountDataPurger(),
     remoteProgressStore: remoteProgressStore ?? FakeRemoteProgressStore(),
     syncQueue: syncQueue ?? FakeSyncQueue(),
     connectivityMonitor: connectivityMonitor ?? FakeConnectivityMonitor(),
