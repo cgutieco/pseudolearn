@@ -115,13 +115,15 @@ forbidden_identifiers:
   engine:
     - RegExp
 
-# El único archivo autorizado a preguntar por el sistema operativo. La pregunta es legítima
-# —hay que saber si el texto entra por un teclado en pantalla o por uno físico— pero tiene un
-# solo dueño: un adaptador de `data/platform/` detrás de un puerto. Cualquier otra aparición de
-# `Platform.isX`, `defaultTargetPlatform` o `TargetPlatform.` en `lib/` es una ramificación de
-# plataforma encubierta.
+# Archivos autorizados a preguntar por el sistema operativo. Las preguntas son legítimas
+# —saber si el texto entra por teclado físico o en pantalla, e inicializar FFI de SQLite en
+# escritorios— pero tienen dueños únicos: adaptadores de `data/platform/` detrás de un puerto o
+# función de inicialización. Cualquier otra aparición de `Platform.isX`, `defaultTargetPlatform`
+# o `TargetPlatform.` en `lib/` es una ramificación de plataforma encubierta.
 platform_query_allowed_paths:
   - data/platform/platform_text_entry_modality.dart
+  - data/platform/platform_database_factory.dart
+  - data/platform/platform_native_auth_support.dart
 
 # Construcciones de widget adaptativo al sistema operativo. Prohibidas en toda la app: son la
 # vía por la que un mismo código produce dos aspectos distintos según el sistema.

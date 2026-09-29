@@ -117,9 +117,9 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 ### 2.1 Requisitos previos y plataformas objetivo
 
 - **SDKs:** Flutter SDK `>= 3.24.0`, Dart SDK `>= 3.5.0`.
-- **Plataformas objetivo primarias:** macOS 13+ (Apple Silicon y x86_64), iOS 16+ (iPhone y iPad).
-- **Plataformas secundarias:** Linux (GTK), Windows 10/11, Web (WASM). Son objetivo declarado, **no andamiaje
-  existente**: el proyecto solo contiene las carpetas `ios/` y `macos/`. Toda afirmación sobre el comportamiento en
+- **Plataformas objetivo primarias:** macOS 13+ (Apple Silicon y x86_64), iOS 16+ (iPhone y iPad), Windows 10/11 (x64).
+- **Plataformas secundarias:** Linux (GTK), Web (WASM). Son objetivo declarado, **no andamiaje
+  existente**: el proyecto contiene las carpetas `ios/`, `macos/` y `windows/`. Toda afirmación sobre el comportamiento en
   navegador —el redimensionado del *viewport* al subir el teclado, en particular— es hipótesis sin verificar hasta que
   la carpeta `web/` exista.
 - **Variables de entorno:** La autenticación remota (Apple, Google, magic link) y la sincronización
@@ -168,6 +168,10 @@ flutter build macos --release
 # Artefacto de producción para iOS (paquete .ipa sin firma para staging)
 flutter build ipa --no-codesign
 # Ruta de salida: build/ios/archive/Runner.xcarchive
+
+# Artefacto de producción para Windows (ejecutable pseudolearn.exe y bundle)
+flutter build windows --release
+# Ruta de salida: build/windows/x64/runner/Release/
 ```
 
 La configuración *Release* del target `Runner` en `macos/Runner.xcodeproj` usa `CODE_SIGN_STYLE = Manual` y
@@ -279,6 +283,22 @@ flutter test
       `$(FLUTTER_BUILD_NAME)` a `CFBundleShortVersionString`.
 - **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane. No
   automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
+- **Distribución en Windows (Cloudflare R2):**
+  - **Instalador ejecutable (`PseudoLearn-Setup.exe`) y `.zip` portable:** Compilados automáticamente en el workflow
+    `.github/workflows/release-windows.yml` en runners `windows-latest` ante la creación de un tag `v*.*.*` o despacho manual.
+  - **Empaquetado con Inno Setup (`packaging/windows/inno_setup.iss`):** Genera un instalador por usuario
+    (`{localappdata}\Programs\PseudoLearn`) sin requerir elevación de privilegios UAC. Registra el protocolo
+    `pseudolearn://` en `HKCU\Software\Classes\pseudolearn` con comando `"{app}\pseudolearn.exe" "%1"` para captura en
+    caliente de callbacks OAuth/Magic Link, y asocia la extensión `.pseudo`.
+  - **Almacenamiento y CDN:** Los binarios se suben a un bucket de Cloudflare R2 mediante la API compatible con S3.
+    Se mantienen punteros estables (`windows/PseudoLearn-Setup.exe` y `windows/PseudoLearn-Windows-Portable.zip`) y
+    rutas inmutables versionadas (`windows/vX.Y.Z/...`).
+  - **Secretos de GitHub Actions necesarios:**
+    - `R2_ACCOUNT_ID`: Account ID de Cloudflare.
+    - `R2_ACCESS_KEY_ID`: Clave de acceso del token R2 con permisos de lectura y escritura sobre el bucket.
+    - `R2_SECRET_ACCESS_KEY`: Secreto de acceso de R2.
+    - `R2_BUCKET_NAME`: Nombre del bucket de almacenamiento (ej. `pseudolearn-releases`).
+    - `SUPABASE_URL` y `SUPABASE_ANON_KEY`: Credenciales inyectadas en tiempo de compilación.
 - **Checklist de liberación:**
     - [ ] `flutter test` y todos los scripts de `tool/` al 100 % en verde.
     - [ ] Versión de mercado actualizada en `pubspec.yaml`; el número de compilación lo pone el workflow.
@@ -451,7 +471,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
 | `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes y modalidad de entrada de texto (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`            | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, `pseudolearn_core`, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
@@ -1823,6 +1843,56 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       cada test de página a proveer `AccountCubit`.
     - *Añadir `deleteAccount` a `AuthGateway`:* supera el límite de métodos públicos y obliga a todo consumidor de
       autenticación a conocer la eliminación.
+
+### 4.43 Inicialización de SQLite FFI en escritorio y restricciones de ventana en Windows
+
+- **Problema:** En Windows (y Linux), el paquete `sqflite` carece de implementación por canales de plataforma nativos y
+  requiere activar el backend FFI (`sqflite_common_ffi`) antes de cualquier invocación a `openDatabase()`. Además, la
+  arquitectura impone una prohibición estricta de consultas a `Platform` en `lib/` fuera de los archivos declarados en
+  `platform_query_allowed_paths`. Asimismo, en Windows el usuario puede redimensionar la ventana arbitrariamente, lo que
+  rompería las aserciones visuales del lienzo si el tamaño cae por debajo de la clase de dispositivo mínima (320 × 568 dp).
+- **Elección:**
+    - La inicialización de la factoría SQLite se encapsula en `initializePlatformDatabaseFactory()` dentro de
+      `data/platform/platform_database_factory.dart`. Es el único archivo autorizado junto con
+      `platform_text_entry_modality.dart` y `platform_native_auth_support.dart` para consultar `Platform.is*`.
+    - Se invoca de forma determinista en `main.dart` inmediatamente después de `WidgetsFlutterBinding.ensureInitialized()`.
+      Soporta el parámetro opcional `forceFfi` para permitir pruebas unitarias aisladas sin alterar el entorno del host.
+    - Las restricciones de tamaño mínimo de ventana se aplican a nivel nativo en C++ en `windows/runner/win32_window.cpp`
+      mediante la intercepción del mensaje `WM_GETMINMAXINFO`, escalando los límites de 320 × 568 dp según el DPI del monitor.
+- **Alternativas descartadas y por qué:**
+    - *Consultar `Platform.isWindows` directamente en `main.dart`:* Rompe el invariante de arquitectura de que las
+      preguntas por el sistema operativo pertenecen con exclusividad a adaptadores de `data/platform/`.
+    - *Inicializar FFI incondicionalmente en todas las plataformas:* En macOS e iOS `sqflite` cuenta con implementaciones
+      nativas en Objective-C/Swift optimizadas que se integran con los ciclos de vida del sistema sin sobrecarga FFI.
+    - *Usar un plugin de Flutter de terceros para restringir la ventana:* Introduce dependencias innecesarias cuando la
+      API nativa de Win32 (`WM_GETMINMAXINFO`) en el runner existente lo resuelve de forma limpia y directa.
+
+### 4.44 Autenticación unificada en Windows mediante Web OAuth y desacoplamiento de enlaces externos
+
+- **Problema:** En Windows, los plugins oficiales de autenticación nativa (`sign_in_with_apple` y `google_sign_in`)
+  carecen de implementación nativa o lanzan excepciones de plataforma no soportada. La aplicación debe mantener paridad
+  absoluta de métodos de inicio de sesión (Apple, Google, Magic Link) sin introducir ramificaciones de plataforma
+  prohibidas en la capa de datos o presentación.
+- **Elección:**
+    - Se define el puerto `ExternalUrlLauncher` en `domain/ports/external_url_launcher.dart` y su adaptador
+      `PlatformExternalUrlLauncher` en `data/platform/platform_external_url_launcher.dart` utilizando `package:url_launcher`
+      en modo aplicación externa (`LaunchMode.externalApplication`).
+    - La consulta de disponibilidad de SDKs nativos se abstrae en `NativeAuthSupport` (`data/auth/`) y se implementa
+      exclusivamente en `PlatformNativeAuthSupport` (`data/platform/platform_native_auth_support.dart`), declarada en
+      `platform_query_allowed_paths`.
+    - En `SupabaseAuthGateway`, cuando el soporte nativo no está disponible (Windows), las solicitudes de Apple o Google
+      derivan a la URL de autorización Web OAuth de Supabase (`_client.auth.getOAuthSignInUrl`) con redirección a
+      `pseudolearn://auth-callback` y abren el navegador predeterminado del sistema.
+    - La respuesta de autorización es interceptada por el manejador del protocolo de Windows en `windows/runner/main.cpp`
+      vía `SendAppLinkToInstance`, recibida por `AppLinksIncomingLinkSource` y finalizada en
+      `SupabaseAuthGateway.completeSignInFromLink` mediante `_client.auth.getSessionFromUrl`.
+- **Alternativas descartadas y por qué:**
+    - *Ocultar los botones de Apple y Google en Windows:* Rompe el principio de paridad funcional entre plataformas y
+      degrada la experiencia de usuario.
+    - *Embeber un WebView en la ventana de Flutter:* Genera riesgos de seguridad y es rechazado activamente por Google
+      OAuth ("disallowed_useragent"). Abrir el navegador del sistema es el estándar recomendado (RFC 8252).
+    - *Consultar `Platform.isWindows` en `SupabaseAuthGateway`:* Viola las reglas de arquitectura y la frontera de capas
+      definida en `architecture.yaml`.
 
 ---
 

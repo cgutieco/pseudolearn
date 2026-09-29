@@ -356,7 +356,8 @@ List<LimitViolation> checkFileLimits(
   String packageRoot,
 ) {
   final violations = <LimitViolation>[];
-  final relativePath = p.relative(file.path, from: packageRoot);
+  final relativePath =
+      p.relative(file.path, from: packageRoot).replaceAll(r'\', '/');
   final isExemptFromSize = limits.isExempt(relativePath);
   final content = file.readAsStringSync();
 
@@ -445,7 +446,8 @@ List<LimitViolation> checkPackageLimits(String packageRoot) {
 
   for (final entity in rootDir.listSync(recursive: true)) {
     if (entity is File && entity.path.endsWith('.dart')) {
-      final relative = p.relative(entity.path, from: packageRoot);
+      final relative =
+          p.relative(entity.path, from: packageRoot).replaceAll(r'\', '/');
       if (relative.startsWith('.dart_tool/') ||
           relative.startsWith('build/') ||
           relative.startsWith('macos/') ||

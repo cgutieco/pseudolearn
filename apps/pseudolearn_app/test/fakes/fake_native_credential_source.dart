@@ -5,6 +5,10 @@ final class FakeNativeCredentialSource implements NativeCredentialSource {
   NativeGoogleCredential? googleCredential;
   bool throwError = false;
   int appleCredentialRequests = 0;
+  @override
+  bool isAppleSupported = true;
+  @override
+  bool isGoogleSupported = true;
 
   @override
   Future<NativeAppleCredential?> getAppleCredential() async {

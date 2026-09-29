@@ -19,7 +19,9 @@ final class ModuleDocumentParser {
     ModulePart? currentPart;
     final currentLines = <String>[];
 
-    for (final line in source.split('\n')) {
+    final normalized =
+        source.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+    for (final line in normalized.split('\n')) {
       if (!line.startsWith(partDelimiter)) {
         currentLines.add(line);
         continue;

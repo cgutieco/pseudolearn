@@ -4,6 +4,8 @@ import '../../domain/model/account/account_session.dart';
 import '../../domain/model/account/auth_method.dart';
 import '../../domain/model/account/auth_outcome.dart';
 import '../../domain/ports/auth_gateway.dart';
+import '../../domain/ports/external_url_launcher.dart';
+import '../platform/platform_external_url_launcher.dart';
 import 'auth_callback_link.dart';
 import 'native_credential_source.dart';
 import 'supabase_session_persistence.dart';
@@ -12,15 +14,19 @@ final class SupabaseAuthGateway implements AuthGateway {
   final SupabaseClient _client;
   final NativeCredentialSource _credentialSource;
   final SupabaseSessionPersistence _sessionPersistence;
+  final ExternalUrlLauncher _externalUrlLauncher;
 
   SupabaseAuthGateway({
     required SupabaseClient client,
     required SupabaseSessionPersistence sessionPersistence,
     NativeCredentialSource? credentialSource,
+    ExternalUrlLauncher? externalUrlLauncher,
   })  : _client = client,
         _sessionPersistence = sessionPersistence,
         _credentialSource =
-            credentialSource ?? PlatformNativeCredentialSource();
+            credentialSource ?? PlatformNativeCredentialSource(),
+        _externalUrlLauncher =
+            externalUrlLauncher ?? const PlatformExternalUrlLauncher();
 
   @override
   Future<AccountSession?> restoreSession() async {
@@ -95,6 +101,9 @@ final class SupabaseAuthGateway implements AuthGateway {
   }
 
   Future<AuthOutcome> _signInWithApple() async {
+    if (!_credentialSource.isAppleSupported) {
+      return _signInWithWebOAuth(OAuthProvider.apple);
+    }
     final credential = await _credentialSource.getAppleCredential();
     if (credential == null) return const Cancelled();
 
@@ -127,6 +136,9 @@ final class SupabaseAuthGateway implements AuthGateway {
   }
 
   Future<AuthOutcome> _signInWithGoogle() async {
+    if (!_credentialSource.isGoogleSupported) {
+      return _signInWithWebOAuth(OAuthProvider.google);
+    }
     final credential = await _credentialSource.getGoogleCredential();
     if (credential == null) return const Cancelled();
 
@@ -143,6 +155,19 @@ final class SupabaseAuthGateway implements AuthGateway {
     return Authenticated(
       _mapToAccountSession(session, fallbackProvider: AuthMethod.google),
     );
+  }
+
+  Future<AuthOutcome> _signInWithWebOAuth(OAuthProvider provider) async {
+    final response = await _client.auth.getOAuthSignInUrl(
+      provider: provider,
+      redirectTo: authCallbackUrl,
+    );
+    final launched =
+        await _externalUrlLauncher.launchExternalUrl(Uri.parse(response.url));
+    if (!launched) {
+      return const Rejected('Failed to launch browser for authentication');
+    }
+    return const Cancelled();
   }
 
   Future<AuthOutcome> _signInWithMagicLink(String? email) async {

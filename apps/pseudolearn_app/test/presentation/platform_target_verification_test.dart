@@ -20,6 +20,8 @@ const List<String> _platformQueryTerms = [
   'Platform.isIOS',
   'Platform.isMacOS',
   'Platform.isAndroid',
+  'Platform.isWindows',
+  'Platform.isLinux',
   'defaultTargetPlatform',
   'TargetPlatform.',
 ];

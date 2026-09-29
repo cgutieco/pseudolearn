@@ -10,6 +10,7 @@ import 'package:supabase/supabase.dart';
 
 import 'package:pseudolearn_app/data/auth/supabase_session_persistence.dart';
 
+import '../../fakes/fake_external_url_launcher.dart';
 import '../../fakes/fake_native_credential_source.dart';
 import '../../fakes/in_memory_session_storage.dart';
 
@@ -123,6 +124,7 @@ void main() {
     late InMemoryPkceStorage pkceStorage;
     late SupabaseClient client;
     late FakeNativeCredentialSource credentialSource;
+    late FakeExternalUrlLauncher urlLauncher;
     late SupabaseAuthGateway gateway;
 
     setUp(() {
@@ -138,6 +140,7 @@ void main() {
         ),
       );
       credentialSource = FakeNativeCredentialSource();
+      urlLauncher = FakeExternalUrlLauncher();
       gateway = SupabaseAuthGateway(
         client: client,
         sessionPersistence: SupabaseSessionPersistence(
@@ -145,6 +148,7 @@ void main() {
           storage: InMemorySessionStorage(),
         ),
         credentialSource: credentialSource,
+        externalUrlLauncher: urlLauncher,
       );
     });
 
@@ -354,6 +358,40 @@ void main() {
     test('sessionChanges stream emits without throwing', () async {
       final stream = gateway.sessionChanges();
       expect(stream, isNotNull);
+    });
+
+    test('signIn with Apple on non-supported platform triggers Web OAuth flow', () async {
+      credentialSource.isAppleSupported = false;
+
+      final outcome = await gateway.signIn(AuthMethod.apple);
+
+      expect(outcome, isA<Cancelled>());
+      expect(urlLauncher.launchedUrls, hasLength(1));
+      final launched = urlLauncher.launchedUrls.first.toString();
+      expect(launched, contains('provider=apple'));
+      expect(launched, contains('redirect_to=pseudolearn%3A%2F%2Fauth-callback'));
+    });
+
+    test('signIn with Google on non-supported platform triggers Web OAuth flow', () async {
+      credentialSource.isGoogleSupported = false;
+
+      final outcome = await gateway.signIn(AuthMethod.google);
+
+      expect(outcome, isA<Cancelled>());
+      expect(urlLauncher.launchedUrls, hasLength(1));
+      final launched = urlLauncher.launchedUrls.first.toString();
+      expect(launched, contains('provider=google'));
+      expect(launched, contains('redirect_to=pseudolearn%3A%2F%2Fauth-callback'));
+    });
+
+    test('signIn with Web OAuth returns Rejected when browser launch fails', () async {
+      credentialSource.isGoogleSupported = false;
+      urlLauncher.shouldSucceed = false;
+
+      final outcome = await gateway.signIn(AuthMethod.google);
+
+      expect(outcome, isA<Rejected>());
+      expect((outcome as Rejected).reason, contains('launch'));
     });
   });
 }

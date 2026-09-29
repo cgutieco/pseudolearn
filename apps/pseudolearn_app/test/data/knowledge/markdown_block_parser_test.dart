@@ -81,5 +81,15 @@ FinAlgoritmo
             .having((b) => b.rows.first, 'first row', ['entero', 'numeros enteros']),
       );
     });
+
+    test('parses markdown with CRLF line endings identically to LF', () {
+      const markdown = 'Paragraph 1\r\n\r\n{{ejemplo:foo}}\r\n\r\nParagraph 2\r\n';
+      final blocks = parser.parse(markdown);
+
+      expect(blocks.length, 3);
+      expect(blocks[0], isA<ParagraphBlock>().having((b) => b.text, 'text', 'Paragraph 1'));
+      expect(blocks[1], isA<ParagraphBlock>().having((b) => b.text, 'text', '{{ejemplo:foo}}'));
+      expect(blocks[2], isA<ParagraphBlock>().having((b) => b.text, 'text', 'Paragraph 2'));
+    });
   });
 }

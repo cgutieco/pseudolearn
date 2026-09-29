@@ -7,6 +7,7 @@ import 'composition/cubit_scope.dart';
 import 'composition/local_composition.dart';
 import 'data/index/index_schema.dart';
 import 'data/index/metadata_index.dart';
+import 'data/platform/platform_database_factory.dart';
 import 'data/progress/sqlite_local_progress_store.dart';
 
 Future<Directory> resolveDocumentsDirectory() async {
@@ -29,6 +30,7 @@ Future<Database> openLocalDatabase(Directory directory) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initializePlatformDatabaseFactory();
   final directory = await resolveDocumentsDirectory();
   final database = await openLocalDatabase(directory);
   final index = MetadataIndex(database);
