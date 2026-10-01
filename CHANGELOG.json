@@ -1,0 +1,154 @@
+{
+  "releases": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-01",
+      "core": "0.1.0",
+      "headline": {
+        "es": "PseudoLearn llega a Windows",
+        "en": "PseudoLearn comes to Windows"
+      },
+      "summary": {
+        "es": "La misma app, ahora también en Windows. No cambia el lenguaje, no cambia la ruta de aprendizaje y no se corrige ningún fallo: esta versión existe para llegar a más ordenadores.",
+        "en": "The same app, now on Windows too. The language does not change, the learning track does not change and no bug is fixed: this version exists to reach more computers."
+      },
+      "changes": [
+        {
+          "id": "windows",
+          "kind": "platform",
+          "title": {
+            "es": "Windows",
+            "en": "Windows"
+          },
+          "description": {
+            "es": "Instalador para Windows 10 y 11 de 64 bits, descargable desde esta web. Se instala solo para tu usuario, sin pedir permisos de administrador, y abre los mismos programas <code>.pseudo</code> que en el Mac.",
+            "en": "Installer for 64-bit Windows 10 and 11, downloadable from this website. It installs for your user only, without asking for administrator rights, and opens the same <code>.pseudo</code> programs as on the Mac."
+          }
+        },
+        {
+          "id": "windows-account",
+          "kind": "platform",
+          "title": {
+            "es": "Tu cuenta en Windows",
+            "en": "Your account on Windows"
+          },
+          "description": {
+            "es": "El inicio de sesión con Apple, Google o enlace por correo se completa en el navegador y vuelve a la app. Tus documentos te siguen entre Windows, el Mac, el iPhone y el iPad.",
+            "en": "Signing in with Apple, Google or an email link completes in the browser and returns to the app. Your documents follow you between Windows, the Mac, the iPhone and the iPad."
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-09-17",
+      "core": "0.1.0",
+      "headline": {
+        "es": "Primera versión estable",
+        "en": "First stable version"
+      },
+      "summary": {
+        "es": "Sale completa: el lenguaje entero, las cuatro superficies sincronizadas y la ruta de aprendizaje de punta a punta. No es un adelanto ni un acceso anticipado.",
+        "en": "It ships complete: the whole language, the four synchronized surfaces and the learning track end to end. It is not a preview and it is not early access."
+      },
+      "changes": [
+        {
+          "id": "language",
+          "kind": "feature",
+          "title": {
+            "es": "Lenguaje",
+            "en": "Language"
+          },
+          "description": {
+            "es": "Programación imperativa, estructurada y orientada a objetos: tipos primitivos, decisiones, los tres bucles, arreglos, subprogramas, recursión, clases, herencia y polimorfismo.",
+            "en": "Imperative, structured and object-oriented programming: primitive types, decisions, the three loops, arrays, subprograms, recursion, classes, inheritance and polymorphism."
+          }
+        },
+        {
+          "id": "execution",
+          "kind": "feature",
+          "title": {
+            "es": "Ejecución",
+            "en": "Execution"
+          },
+          "description": {
+            "es": "El intérprete avanza una sentencia por vez, a cuatro ritmos, con diagnósticos que señalan su tramo exacto mientras escribes.",
+            "en": "The interpreter advances one statement at a time, at four paces, with diagnostics that point at their exact span while you type."
+          }
+        },
+        {
+          "id": "diagrams",
+          "kind": "feature",
+          "title": {
+            "es": "Diagramas",
+            "en": "Diagrams"
+          },
+          "description": {
+            "es": "Ordinograma, estructograma y tabla de prueba de escritorio, trazados por el motor y resaltados a la vez que el código. Diagrama de clases UML cuando el programa usa objetos.",
+            "en": "Flowchart, structogram and desk-check table, drawn by the engine and highlighted along with the code. UML class diagram when the program uses objects."
+          }
+        },
+        {
+          "id": "projection",
+          "kind": "feature",
+          "title": {
+            "es": "Código equivalente",
+            "en": "Equivalent code"
+          },
+          "description": {
+            "es": "Proyección línea a línea de tu programa a Python y a Rust.",
+            "en": "Line-by-line projection of your program into Python and Rust."
+          }
+        },
+        {
+          "id": "track",
+          "kind": "feature",
+          "title": {
+            "es": "Ruta de aprendizaje",
+            "en": "Learning track"
+          },
+          "description": {
+            "es": "Tres tramos, 15 módulos y 95 ejercicios que se comprueban solos, con la base de conocimiento del lenguaje al lado.",
+            "en": "Three stages, 15 modules and 95 exercises that check themselves, with the language knowledge base alongside."
+          }
+        },
+        {
+          "id": "files",
+          "kind": "feature",
+          "title": {
+            "es": "Tus archivos",
+            "en": "Your files"
+          },
+          "description": {
+            "es": "Programas <code>.pseudo</code> en texto plano, guardados en tu disco. La app funciona entera sin conexión.",
+            "en": "Plain-text <code>.pseudo</code> programs saved on your own disk. The app works entirely offline."
+          }
+        },
+        {
+          "id": "account",
+          "kind": "feature",
+          "title": {
+            "es": "Cuenta",
+            "en": "Account"
+          },
+          "description": {
+            "es": "Opcional. Si la activas, tus documentos te siguen entre el Mac, el iPhone y el iPad; si no, la app no te pide nada.",
+            "en": "Optional. Turn it on and your documents follow you between the Mac, the iPhone and the iPad; leave it off and the app asks you for nothing."
+          }
+        },
+        {
+          "id": "app",
+          "kind": "feature",
+          "title": {
+            "es": "La app",
+            "en": "The app"
+          },
+          "description": {
+            "es": "macOS 13, iOS 16 e iPadOS 16 o superiores, en español y en inglés, con tema claro y oscuro.",
+            "en": "macOS 13, iOS 16 and iPadOS 16 or later, in Spanish and English, with a light and a dark theme."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,9 @@ import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
 import { ANCHORS } from '@shared/config/site';
+import { latestRelease } from '@entities/release/model/release-catalog';
 import type { DownloadCardModel } from './download-cards';
+import InstallGuide from './InstallGuide.astro';
 
 export interface Props {
   locale: Locale;
@@ -11,35 +13,40 @@ export interface Props {
 }
 
 const { locale, card } = Astro.props;
-const { t } = useTranslations(locale);
+const { t, formatDate } = useTranslations(locale);
+const release = latestRelease();
+const releaseValues = { version: release.version, date: formatDate(release.date) };
 ---
 
-<article class="pl-card download-card">
-  <h3 class="download-card__title">
-    <Icon name={card.icon} size={22} strokeWidth={1.6} class="download-card__icon" />
-    <span>{t(card.titleKey)}</span>
-    <span class="pl-tag">{t('home.downloads.availableTag')}</span>
-  </h3>
-  <div class="download-card__actions">
-    {card.actions.map((action) => (
-      <a
-        class:list={['pl-btn', action.variant, 'pl-btn--sm']}
-        href={action.href ?? `#${ANCHORS.downloads}`}
-        target={action.external ? '_blank' : undefined}
-        rel={action.external ? 'noopener noreferrer' : undefined}
-      >
-        {t(action.labelKey)}
-      </a>
-    ))}
+<article class:list={['pl-card', 'download-card', { 'download-card--guided': card.guide }]}>
+  <div class="download-card__main">
+    <h3 class="download-card__title">
+      <Icon name={card.icon} size={22} strokeWidth={1.6} class="download-card__icon" />
+      <span>{t(card.titleKey)}</span>
+      <span class="pl-tag">{t('home.downloads.availableTag')}</span>
+    </h3>
+    <div class="download-card__actions">
+      {card.actions.map((action) => (
+        <a
+          class:list={['pl-btn', action.variant, 'pl-btn--sm']}
+          href={action.href ?? `#${ANCHORS.downloads}`}
+          target={action.external ? '_blank' : undefined}
+          rel={action.external ? 'noopener noreferrer' : undefined}
+        >
+          {t(action.labelKey)}
+        </a>
+      ))}
+    </div>
+    <dl class="download-card__specs">
+      {card.specs.map((spec) => (
+        <div class="download-card__spec">
+          <dt>{t(spec.labelKey)}</dt>
+          <dd>{t(spec.valueKey, releaseValues)}</dd>
+        </div>
+      ))}
+    </dl>
   </div>
-  <dl class="download-card__specs">
-    {card.specs.map((spec) => (
-      <div class="download-card__spec">
-        <dt>{t(spec.labelKey)}</dt>
-        <dd>{t(spec.valueKey)}</dd>
-      </div>
-    ))}
-  </dl>
+  {card.guide && <InstallGuide locale={locale} guide={card.guide} />}
 </article>
 
 <style>
@@ -94,9 +101,23 @@ const { t } = useTranslations(locale);
     color: var(--pl-ink-2);
   }
 
+  .download-card--guided {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   @media (min-width: 900px) {
     .download-card {
       padding: 28px;
+    }
+
+    .download-card--guided {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      align-items: start;
+      gap: var(--pl-space-xl);
     }
 
     .download-card__title {

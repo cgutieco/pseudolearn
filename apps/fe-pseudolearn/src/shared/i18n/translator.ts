@@ -17,6 +17,7 @@ export interface Translator {
   t(key: TranslationKey, values?: TranslationValues): string;
   plural(baseKey: PluralBaseKey, count: number, values?: TranslationValues): string;
   formatNumber(value: number): string;
+  formatDate(isoDate: string): string;
 }
 
 const DICTIONARIES: Record<Locale, Record<string, string>> = {
@@ -37,6 +38,7 @@ export function createTranslator(locale: Locale): Translator {
   const fallback = DICTIONARIES[DEFAULT_LOCALE];
   const pluralRules = new Intl.PluralRules(locale);
   const numberFormat = new Intl.NumberFormat(locale);
+  const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' });
 
   const lookup = (key: string): string => dictionary[key] ?? fallback[key] ?? key;
 
@@ -49,7 +51,13 @@ export function createTranslator(locale: Locale): Translator {
       return interpolate(template, { count, ...values });
     },
     formatNumber: (value) => numberFormat.format(value),
+    formatDate: (isoDate) => formatCalendarDate(dateFormat, isoDate),
   };
+}
+
+function formatCalendarDate(format: Intl.DateTimeFormat, isoDate: string): string {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? isoDate : format.format(date);
 }
 
 export function useTranslations(locale: Locale): Translator {

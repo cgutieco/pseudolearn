@@ -42,6 +42,7 @@ forbiddenDirectories:
 exclusiveImports:
   'cloudflare:workers': src/shared/lib/runtime-env.ts
   'cloudflare:sockets': src/entities/contact-request/api/oci-smtp-mail-gateway.ts
+  '@changelog': src/entities/release/model/release-catalog.ts
 
 globalStylesheets: src/shared/styles
 globalClassPrefix: pl-

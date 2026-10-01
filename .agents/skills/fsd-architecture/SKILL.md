@@ -51,6 +51,9 @@ nunca `@views/*` ni `@app/*`.
    ([src/shared/lib/runtime-env.ts](../../../src/shared/lib/runtime-env.ts)) y uno solo
    `cloudflare:sockets` (el adaptador SMTP). Si necesitas un secreto en otro sitio, llama a
    `getRuntimeEnv()`.
+   Con el mismo mecanismo (`exclusiveImports`), un solo archivo importa el registro de cambios
+   compartido `@changelog`: `entities/release/model/release-catalog.ts`. El resto del sitio consume
+   `RELEASES`, `latestRelease()` y `oldestRelease()`.
 5. **Envoltorios finos.** Todo `src/pages/**/*.astro` tiene 14 líneas o menos y solo importa de
    `@views/*` y `@shared/*`.
 

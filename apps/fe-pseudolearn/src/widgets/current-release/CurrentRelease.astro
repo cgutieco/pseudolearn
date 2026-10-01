@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const { locale } = Astro.props;
-const { t } = useTranslations(locale);
+const { t, formatDate } = useTranslations(locale);
 const release = latestRelease();
 const downloadsHref = anchorOnHome(ANCHORS.downloads, locale);
 ---
@@ -30,15 +30,15 @@ const downloadsHref = anchorOnHome(ANCHORS.downloads, locale);
           <span class="pl-status-dot"></span>
           <span>{t('versions.channelStable')}</span>
         </span>
-        <span class="pl-mono current-release__date">
-          {t('versions.current.published', { date: t('versions.releaseDate') })}
-        </span>
+        <time class="pl-mono current-release__date" datetime={release.date}>
+          {t('versions.current.published', { date: formatDate(release.date) })}
+        </time>
       </div>
 
       <div class="current-release__version">
         <span class="pl-mono current-release__version-number">{release.version}</span>
-        <h3 class="current-release__version-headline">{t(`versions.release.${release.id}.headline`)}</h3>
-        <p class="current-release__version-summary">{t(`versions.release.${release.id}.summary`)}</p>
+        <h3 class="current-release__version-headline">{release.headline[locale]}</h3>
+        <p class="current-release__version-summary">{release.summary[locale]}</p>
       </div>
 
       <p class="pl-mono current-release__requirements">{t('versions.current.requirements')}</p>

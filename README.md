@@ -233,8 +233,8 @@ mapea exactamente esos códigos.
 
 El frontend web (`apps/fe-pseudolearn/`), desplegado en Cloudflare Workers, recibe los artefactos que
 `pseudolearn_brand` escribe (como el favicon y el path SVG de la marca) y consume las versiones publicadas
-de la app cliente (§4.4). Al igual que los demás miembros, no importa código de otras aplicaciones y mantiene
-aislamiento total de capas.
+de la app cliente leyendo el registro `CHANGELOG.json` de la raíz (§4.4). Al igual que los demás miembros, no
+importa código de otras aplicaciones y mantiene aislamiento total de capas.
 
 `packages/pseudolearn_core` no importa, referencia ni conoce nada de `apps/pseudolearn_app`. Es un
 paquete de Dart puro sin dependencia de Flutter (`packages/pseudolearn_core/README.md` §1.3).
@@ -253,6 +253,7 @@ vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages
 | `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                        | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
 | `apps/pseudolearn_backend/`   | Backend de Supabase: Edge Functions con secretos de servidor y migraciones del esquema de Postgres                     | API web de Deno; capas internas según su propio `architecture.json`                                                                  | Imports remotos (`npm:`, `jsr:`, `https:`); cualquier símbolo de otro miembro |
 | `apps/fe-pseudolearn/`        | Frontend web (landing y descargas en Astro): interfaz pública, internacionalización y contacto                         | Paquetes de su `package.json` propio; capas internas según su propio `architecture.yaml`                                             | Cualquier símbolo de `packages/` o de otras `apps/`                         |
+| `CHANGELOG.json` (raíz)       | Registro de publicaciones del producto: una entrada por versión del par `(app, núcleo)` con fecha y cambios bilingües (§4.4) | — (datos)                                                                                                                            | —                                                                           |
 | `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                        | —                                                                           |
 | `AGENTS.md` (raíz)            | Reglas transversales de todos los paquetes: contrato de reglas, precedencia, skills                                    | — (documento)                                                                                                                        | Arquitectura específica de un paquete concreto                              |
 
@@ -350,10 +351,16 @@ propio `README.md`.
   Al revés no existe: un cambio de interfaz, de texto o de atajo en la app no toca el núcleo. El
   argumento es que un motor que ninguna app lleva dentro no le ha llegado a nadie, así que la versión
   de la app es el acuse de recibo de que ese núcleo se probó en producto.
-- **Unidad de publicación:** el par `(app, núcleo)`. Toda publicación se declara como una entrada con
-  la versión de producto, la del núcleo anclado, la fecha y los identificadores de lo que trae. Esa
-  entrada es lo que el sitio público, en su propio repositorio, consume para mostrar el historial de
-  versiones, de modo que no hay una segunda lista que pueda divergir.
+- **Unidad de publicación:** el par `(app, núcleo)`. Toda publicación se declara como una entrada de
+  `CHANGELOG.json`, en la raíz del monorepo, con la versión de producto (`version`), la del núcleo
+  anclado (`core`), la fecha ISO de publicación (`date`), un titular y un resumen, y la lista de cambios
+  que trae, cada uno con identificador, tipo (`feature`, `platform` o `fix`) y su texto en español e
+  inglés. Las entradas van de la más reciente a la más antigua. Ese archivo es a la vez el registro de
+  quien publica —qué salió y cuándo— y lo que `apps/fe-pseudolearn` consume para mostrar el historial
+  de versiones, de modo que no hay una segunda lista que pueda divergir. Vive en la raíz y no dentro
+  de `apps/pseudolearn_app` porque describe el par, no solo la app, y porque ningún miembro importa de
+  otra aplicación (§3.3); su único lector en código valida cada entrada y detiene el build de la web si
+  alguna está incompleta (`apps/fe-pseudolearn/README.md`, decisión 9).
 - **Alternativas descartadas y por qué:**
     - *Versión única compartida por ambos miembros:* cada cambio de interfaz o de copia obligaría a
       subir la versión del núcleo, que es un contrato: el número dejaría de significar nada.

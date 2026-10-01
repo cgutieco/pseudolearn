@@ -11,7 +11,7 @@ export interface Platform {
 export const PLATFORMS: readonly Platform[] = [
   { id: 'macos', translationKey: 'platform.macos', availability: 'available', minimumVersion: '13+' },
   { id: 'ios', translationKey: 'platform.ios', availability: 'available', minimumVersion: '16+' },
-  { id: 'windows', translationKey: 'platform.windows', availability: 'planned' },
+  { id: 'windows', translationKey: 'platform.windows', availability: 'available', minimumVersion: '10+' },
   { id: 'linux', translationKey: 'platform.linux', availability: 'planned' },
   { id: 'android', translationKey: 'platform.android', availability: 'planned' },
   { id: 'other', translationKey: 'platform.other', availability: 'planned' },
