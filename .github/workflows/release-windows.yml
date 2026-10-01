@@ -113,6 +113,9 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($env:R2_ACCESS_KEY_ID)) { $missing += "R2_ACCESS_KEY_ID" }
           if ([string]::IsNullOrWhiteSpace($env:R2_SECRET_ACCESS_KEY)) { $missing += "R2_SECRET_ACCESS_KEY" }
           if ([string]::IsNullOrWhiteSpace($env:R2_BUCKET_NAME)) { $missing += "R2_BUCKET_NAME" }
+          if ($env:R2_ACCESS_KEY_ID.Length -ne 0 -and $env:R2_ACCESS_KEY_ID.Length -ne 32) {
+            throw "R2_ACCESS_KEY_ID must be the 32-character Access Key ID of the R2 API token, not the token value."
+          }
           if ($missing.Count -gt 0) {
             Write-Warning "Missing R2 secrets: $($missing -join ', '). Artifacts are saved in GitHub Actions run."
             echo "CONFIGURED=false" >> $env:GITHUB_ENV
@@ -128,6 +131,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          $ErrorActionPreference = "Stop"
           $endpoint = "https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
           $bucket = "${{ secrets.R2_BUCKET_NAME }}"
           $version = $env:VERSION
