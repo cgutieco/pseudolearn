@@ -10,6 +10,7 @@ import '../data/index/metadata_index.dart';
 import '../data/knowledge/bundled_knowledge_repository.dart';
 import '../data/knowledge/marker_resolver.dart';
 import '../data/platform/app_links_incoming_link_source.dart';
+import '../data/platform/platform_app_version_source.dart';
 import '../data/platform/platform_text_entry_modality.dart';
 import '../data/platform/random_identifier_generator.dart';
 import '../data/platform/system_clock.dart';
@@ -165,6 +166,7 @@ AppDependencies _assembleDependencies({
     sourceEditor: const LexiconSourceEditor(),
     editorKeySource: const ProfileKeySource(),
     textEntryModality: const PlatformTextEntryModality(),
+    appVersionSource: const PlatformAppVersionSource(),
     knowledgeRepository: _buildKnowledgeRepository(engine.syntaxReference),
     syntaxReferenceSource: engine.syntaxReference,
     programExporter: CoreProgramExporter(analyses: engine.analyses),

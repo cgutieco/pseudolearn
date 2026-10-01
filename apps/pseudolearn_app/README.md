@@ -484,7 +484,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
 | `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, `pseudolearn_core`, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
@@ -1909,6 +1909,26 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       OAuth ("disallowed_useragent"). Abrir el navegador del sistema es el estándar recomendado (RFC 8252).
     - *Consultar `Platform.isWindows` en `SupabaseAuthGateway`:* Viola las reglas de arquitectura y la frontera de capas
       definida en `architecture.yaml`.
+
+### 4.45 La versión que muestra Ajustes se lee de la compilación instalada, no de un literal
+
+- **Problema:** el pie de Ajustes mostraba `v1.0.0` escrito a mano en la presentación. Al subir la versión de mercado en
+  `pubspec.yaml` el binario instalado seguía anunciando la anterior, porque nada obligaba a mantener los dos valores
+  iguales.
+- **Elección:**
+    - `pubspec.yaml` sigue siendo la fuente única de la versión de mercado (§2.6). La aplicación la lee en ejecución con
+      `package:package_info_plus`, que expone la versión con la que se compiló el binario en iOS, macOS y Windows.
+    - El puerto `AppVersionSource` (`domain/ports/app_version_source.dart`) y su adaptador `PlatformAppVersionSource`
+      (`data/platform/platform_app_version_source.dart`) encapsulan la lectura; `AppVersionCubit` la publica y
+      `SettingsOverviewPage` se la entrega como texto a `SettingsOverviewView`, que sigue siendo una vista sin cubits.
+    - Antes de que la lectura termine el estado es una cadena vacía y el pie muestra solo el logotipo con su versión
+      vacía; la lectura es local y casi instantánea, por lo que no se añade un estado de carga.
+- **Alternativas descartadas y por qué:**
+    - *Inyectar la versión con `--dart-define` desde cada workflow:* duplica la fuente de verdad en tres workflows y
+      un build local olvidaría el valor.
+    - *Añadir la versión a `SettingsCubit`:* la versión no es una preferencia; mezcla dos razones de cambio y obligaría
+      a tocar todos los tests que construyen ese cubit.
+    - *Seguir con el literal y actualizarlo a mano en cada release:* es el defecto que motiva esta decisión.
 
 ---
 

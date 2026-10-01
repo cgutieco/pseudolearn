@@ -19,6 +19,7 @@ import '../application/library/library_cubit.dart';
 import '../application/onboarding/demo/guided_demo_cubit.dart';
 import '../application/onboarding/demo/guided_demo_loader.dart';
 import '../application/onboarding/onboarding_cubit.dart';
+import '../application/settings/app_version_cubit.dart';
 import '../application/settings/settings_cubit.dart';
 import '../application/sync/sync_cubit.dart';
 import '../application/trace/trace_cubit.dart';
@@ -197,6 +198,10 @@ List<BlocProvider> createSettingsProviders(AppDependencies dependencies) {
     BlocProvider<SettingsCubit>(
       create: (_) =>
           SettingsCubit(preferences: dependencies.preferences)..init(),
+    ),
+    BlocProvider<AppVersionCubit>(
+      create: (_) =>
+          AppVersionCubit(source: dependencies.appVersionSource)..init(),
     ),
     BlocProvider<AccountCubit>(
       lazy: false,

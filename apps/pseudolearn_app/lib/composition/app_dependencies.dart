@@ -1,4 +1,5 @@
 import '../domain/ports/account_deletion_gateway.dart';
+import '../domain/ports/app_version_source.dart';
 import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/class_diagram_builder.dart';
 import '../domain/ports/clock.dart';
@@ -49,6 +50,7 @@ final class AppDependencies {
   final SourceEditor sourceEditor;
   final EditorKeySource editorKeySource;
   final TextEntryModality textEntryModality;
+  final AppVersionSource appVersionSource;
   final KnowledgeRepository knowledgeRepository;
   final SyntaxReferenceSource syntaxReferenceSource;
   final ProgramExporter programExporter;
@@ -79,6 +81,7 @@ final class AppDependencies {
     required this.sourceEditor,
     required this.editorKeySource,
     required this.textEntryModality,
+    required this.appVersionSource,
     required this.knowledgeRepository,
     required this.syntaxReferenceSource,
     required this.programExporter,
