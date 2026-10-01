@@ -15,6 +15,7 @@ Widget _buildSettingsOverviewTestApp({
   UiLanguageId currentLanguage = UiLanguageId.spanish,
   AppThemeMode currentThemeMode = AppThemeMode.system,
   bool assistedDiagramZoom = true,
+  String appVersion = '1.0.0',
   VoidCallback? onNavigateAccount,
   VoidCallback? onNavigateLanguage,
   VoidCallback? onNavigateTheme,
@@ -38,6 +39,7 @@ Widget _buildSettingsOverviewTestApp({
         currentLanguage: currentLanguage,
         currentThemeMode: currentThemeMode,
         assistedDiagramZoom: assistedDiagramZoom,
+        appVersion: appVersion,
         onNavigateAccount: onNavigateAccount ?? () {},
         onNavigateLanguage: onNavigateLanguage ?? () {},
         onNavigateTheme: onNavigateTheme ?? () {},
@@ -72,6 +74,15 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(called, isTrue);
+    });
+
+    testWidgets('Shows the version it is given in the footer', (tester) async {
+      await tester.pumpWidget(
+        _buildSettingsOverviewTestApp(appVersion: '1.1.0'),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('v1.1.0'), findsOneWidget);
     });
 
     testWidgets('Renders all sections, list items, and version footer', (tester) async {

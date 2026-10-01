@@ -39,6 +39,7 @@ import 'fake_remote_progress_store.dart';
 import 'fake_sync_coordinator.dart';
 import 'fake_sync_queue.dart';
 import 'fake_syntax_reference_source.dart';
+import 'fake_app_version_source.dart';
 import 'fake_text_entry_modality.dart';
 import 'in_memory_document_repository.dart';
 import 'in_memory_local_progress_store.dart';
@@ -66,6 +67,7 @@ AppDependencies buildTestDependencies({
   ConnectivityMonitor? connectivityMonitor,
   SyncCoordinator? syncCoordinator,
   FakeTextEntryModality? textEntryModality,
+  FakeAppVersionSource? appVersionSource,
 }) {
   return AppDependencies(
     clock: clock ?? FakeClock(DateTime(2026, 8, 15, 12, 0)),
@@ -89,6 +91,7 @@ AppDependencies buildTestDependencies({
     sourceEditor: const LexiconSourceEditor(),
     editorKeySource: const ProfileKeySource(),
     textEntryModality: textEntryModality ?? const FakeTextEntryModality(),
+    appVersionSource: appVersionSource ?? const FakeAppVersionSource(),
     knowledgeRepository: knowledgeRepository ?? FakeKnowledgeRepository(),
     syntaxReferenceSource: syntaxReferenceSource ?? FakeSyntaxReferenceSource(),
     programExporter: programExporter ?? FakeProgramExporter(),

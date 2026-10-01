@@ -82,7 +82,9 @@ final class InformationSection extends StatelessWidget {
 }
 
 final class VersionFooter extends StatelessWidget {
-  const VersionFooter({super.key});
+  final String version;
+
+  const VersionFooter({super.key, required this.version});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,7 @@ final class VersionFooter extends StatelessWidget {
       children: [
         const BrandLockup(typeSize: BrandMetricsTokens.lockupTypeSizeFooter),
         AppText(
-          l10n.settingsVersion('1.0.0'),
+          l10n.settingsVersion(version),
           variant: AppTextVariant.caption,
           color: theme.colors.text.tertiary,
           textAlign: TextAlign.center,

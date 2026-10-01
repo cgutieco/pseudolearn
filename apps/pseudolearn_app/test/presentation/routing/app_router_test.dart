@@ -21,6 +21,7 @@ import 'package:pseudolearn_app/application/diagram/diagram_projection.dart';
 import 'package:pseudolearn_app/application/onboarding/demo/guided_demo_cubit.dart';
 import 'package:pseudolearn_app/application/onboarding/demo/guided_demo_loader.dart';
 import 'package:pseudolearn_app/application/onboarding/onboarding_cubit.dart';
+import 'package:pseudolearn_app/application/settings/app_version_cubit.dart';
 import 'package:pseudolearn_app/application/settings/settings_cubit.dart';
 import 'package:pseudolearn_app/application/sync/sync_cubit.dart';
 import 'package:pseudolearn_app/application/trace/trace_cubit.dart';
@@ -138,6 +139,9 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
         create: (_) => SettingsCubit(
           preferences: dependencies.preferences,
         ),
+      ),
+      BlocProvider<AppVersionCubit>(
+        create: (_) => AppVersionCubit(source: dependencies.appVersionSource),
       ),
       BlocProvider<DashboardCubit>(
         create: (_) => DashboardCubit(

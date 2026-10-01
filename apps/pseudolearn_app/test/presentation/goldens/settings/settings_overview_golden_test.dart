@@ -35,6 +35,7 @@ Future<void> _pumpSettingsOverviewView(
           currentLanguage: UiLanguageId.spanish,
           currentThemeMode: AppThemeMode.system,
           assistedDiagramZoom: true,
+          appVersion: '1.0.0',
           onNavigateAccount: () {},
           onNavigateLanguage: () {},
           onNavigateTheme: () {},
