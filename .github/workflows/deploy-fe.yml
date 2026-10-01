@@ -1,0 +1,38 @@
+name: Deploy — Frontend (fe-pseudolearn)
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'apps/fe-pseudolearn/**'
+      - '.github/workflows/deploy-fe.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-fe
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Cloudflare Workers
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/fe-pseudolearn
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: apps/fe-pseudolearn/.nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/fe-pseudolearn/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/fe-pseudolearn

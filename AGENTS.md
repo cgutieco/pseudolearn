@@ -168,18 +168,19 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
 | `language-spec-authoring` | Al añadir construcciones al lenguaje, **antes** de escribir el parser          |
 | `ast-node-authoring`      | Al añadir o modificar un nodo del AST                                          |
 | `phase-gate`              | Al cerrar una fase, antes de informar                                          |
+| `fsd-architecture`        | Al crear un archivo nuevo o mover uno de capa en `apps/fe-pseudolearn`         |
+| `design-system`           | Tokens de diseño y convenciones de UI en `apps/fe-pseudolearn`                 |
+| `i18n-authoring`          | Al añadir, cambiar o borrar cadenas y textos en `apps/fe-pseudolearn`          |
+| `commit-message`          | Formato de los mensajes de commit del repositorio y sus paquetes               |
 
 ---
 
 ## 9. Entorno
 
-- El monorepo sostiene tres cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
-  para el núcleo y la app, `python3` con `fonttools` para el motor de marca, y `deno` con la CLI de
-  `supabase` para el backend (`apps/pseudolearn_backend`). Todas están en el `PATH`;
-  los comandos se documentan sin rutas absolutas. El sitio público vive en su propio repositorio y no es
-  miembro de este monorepo (`README.md` de la raíz §1.1); `node` con `pnpm` solo aparece en
-  `.claude/launch.json` como conveniencia para levantar ese sitio cuando se lo clona localmente como
-  `apps/fe-pseudolearn/`, ruta que este repositorio ignora.
+- El monorepo sostiene cuatro cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
+  para el núcleo y la app, `python3` con `fonttools` para el motor de marca, `deno` con la CLI de
+  `supabase` para el backend (`apps/pseudolearn_backend`), y `node` con `pnpm` para el frontend web
+  (`apps/fe-pseudolearn`). Todas están en el `PATH`; los comandos se documentan sin rutas absolutas.
 - `packages/` aloja lo reutilizable que no se despliega, en el lenguaje que a cada miembro le
   corresponda; `apps/` aloja lo que se despliega. El criterio es el papel del miembro, no su lenguaje (`README.md` de la
   raíz §3.1 y §4.5).

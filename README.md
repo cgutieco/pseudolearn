@@ -10,18 +10,12 @@ en la misma carpeta que este archivo. Este documento no repite esas reglas: desc
 repositorio y las decisiones de organización que las hacen posibles. La arquitectura de cada paquete vive
 en su propio `README.md`: `packages/pseudolearn_core/README.md` para el motor del lenguaje,
 `packages/pseudolearn_brand/README.md` para el motor de la identidad visual,
-`apps/pseudolearn_app/README.md` para el cliente Flutter y `apps/pseudolearn_backend/README.md` para el
-backend de Supabase.
+`apps/pseudolearn_app/README.md` para el cliente Flutter, `apps/pseudolearn_backend/README.md` para el
+backend de Supabase y `apps/fe-pseudolearn/README.md` para el sitio web y landing en Astro.
 
-El sitio público (landing, descargas) vive en su propio repositorio de git, fuera de este monorepo, y no
-tiene entrada en el catálogo de carpetas de §3.3. Para que el motor de marca y el script de capturas de
-producto puedan escribirle directo, se lo clona localmente como `apps/fe-pseudolearn/` —una carpeta que
-este repositorio ignora (`.gitignore`) y no versiona— y ese es el único motivo por el que aparece como
-destino de ruta en `packages/pseudolearn_brand/brand.json` y en `apps/pseudolearn_app/README.md` §2.8.
-
-**Estado:** Monorepo de cuatro miembros activos —dos paquetes bajo `packages/` y dos desplegables bajo
+**Estado:** Monorepo de cinco miembros activos —dos paquetes bajo `packages/` y tres desplegables bajo
 `apps/`— con una única arista de dependencia en tiempo de compilación, de la app hacia el núcleo por ruta
-relativa, una relación de generación de `pseudolearn_brand` hacia sus consumidores y una relación de
+relativa, una relación de generación de `pseudolearn_brand` hacia sus consumidores (la app Flutter y `fe-pseudolearn`) y una relación de
 invocación HTTP de la app hacia el backend; sin tooling de orquestación multi-proyecto (`melos` u otro)
 instalado.
 
@@ -32,11 +26,10 @@ instalado.
 ### 1.1 Propósito y problema que resuelve
 
 `pseudolearn` es el monorepo raíz del ecosistema PseudoLearn: agrupa el motor de lenguaje puro en Dart,
-la aplicación cliente en Flutter que lo consume y el backend de Supabase que esa aplicación invoca, bajo
-un único árbol de control de versiones. Resuelve la
-coherencia entre ambos proyectos —un cambio de contrato en el núcleo y su adaptación en la app se
-revisan y versionan juntos— sin forzar a que compartan arquitectura, límites de tamaño ni criterios de
-capas, porque un motor de lenguaje puro y un cliente de interfaz gráfica no tienen las mismas
+la aplicación cliente en Flutter que lo consume, el backend de Supabase que esa aplicación invoca, y el
+sitio web y landing en Astro (`apps/fe-pseudolearn`), bajo un único árbol de control de versiones. Resuelve la
+coherencia entre los proyectos —un cambio de contrato en el núcleo y su adaptación en la app, o una actualización de marca y su reflejo en la web pública— sin forzar a que compartan arquitectura, límites de tamaño ni criterios de
+capas, porque un motor de lenguaje, un cliente de interfaz gráfica y un sitio web no tienen las mismas
 responsabilidades ni las mismas tentaciones de acoplamiento.
 
 Lo consume, en primer lugar, quien desarrolla sobre el repositorio: da el punto de entrada para ubicar
@@ -73,7 +66,7 @@ tener que descubrirlo por ensayo y error.
   orquestación multi-paquete instalada. Cada paquete se prepara, compila y prueba con sus propios
   comandos nativos de su propia cadena de herramientas desde su propio directorio; el número de
   miembros del monorepo no justifica la complejidad operativa de un orquestador dedicado, que además
-  tendría que abarcar tres cadenas de herramientas distintas.
+  tendría que abarcar cuatro cadenas de herramientas distintas.
 - **CI/CD centralizado que ejecute los verificadores de cada paquete:** No hay integración continua que
   corra `flutter test`, `dart analyze` ni los scripts de `tool/` en cada cambio. La verificación mecánica
   de cada miembro se ejecuta localmente con los comandos declarados en su propio `README.md` y reunidos
@@ -161,6 +154,9 @@ Verificación mecánica completa del monorepo, paquete por paquete:
 
 # Backend: formato, lint, tipos, arquitectura y tests
 (cd apps/pseudolearn_backend && deno task verify)
+
+# Frontend web: formato, lint, tipos, arquitectura, verificadores propios y tests
+(cd apps/fe-pseudolearn && pnpm check:all)
 ```
 
 La lista exhaustiva de verificadores, con qué detecta cada uno y dónde vive su regla, está en la sección
@@ -169,8 +165,9 @@ La lista exhaustiva de verificadores, con qué detecta cada uno y dónde vive su
 ### 2.6 Despliegue y distribución
 
 No aplica a la raíz. El canal de distribución de la aplicación cliente está en
-`apps/pseudolearn_app/README.md` §2.6, y el despliegue de funciones, secretos y migraciones del backend
-en `apps/pseudolearn_backend/README.md` §2.6. El núcleo no se publica: es un paquete de monorepo interno
+`apps/pseudolearn_app/README.md` §2.6, el despliegue de funciones, secretos y migraciones del backend
+en `apps/pseudolearn_backend/README.md` §2.6, y el despliegue del frontend web a Cloudflare Workers
+en `apps/fe-pseudolearn/README.md` §2.6. El núcleo no se publica: es un paquete de monorepo interno
 consumido por ruta relativa (`packages/pseudolearn_core/README.md` §2.6).
 
 ---
@@ -184,9 +181,9 @@ Monorepo estructurado de dos categorías de miembro, y la regla de qué va en ca
 - **`packages/` — todo lo reutilizable que no es una aplicación.** Librerías y utilidades, en el lenguaje
   que a cada una le corresponda. Un miembro de `packages/` no tiene interfaz de usuario, no se despliega
   y no depende de ninguna aplicación.
-- **`apps/` — lo que se despliega.** El cliente Flutter, que se entrega a una persona, y el backend de
-  Supabase, que se despliega al proyecto de producción que ese cliente invoca. El sitio público vive en
-  un repositorio separado y no es miembro de este monorepo.
+- **`apps/` — lo que se despliega.** El cliente Flutter, que se entrega a una persona; el backend de
+  Supabase, que se despliega al proyecto de producción que ese cliente invoca; y el frontend web
+  `apps/fe-pseudolearn`, desplegado como Cloudflare Worker.
 
 Un único árbol git gobierna ambas categorías; cada miembro es, puertas adentro, arquitectónicamente
 independiente y define su propio paradigma en su propio `README.md`.
@@ -234,11 +231,10 @@ La relación entre la app y el backend es de contrato de red: la app llama a la 
 contrato (rutas, cuerpo, códigos de error) está en `apps/pseudolearn_backend/README.md` §3.4, y la app
 mapea exactamente esos códigos.
 
-El sitio público, en su propio repositorio, recibe los artefactos que `pseudolearn_brand` escribe
-directo en su árbol de trabajo local (clonado como `apps/fe-pseudolearn/`, ignorado por git en este
-repositorio) y consume las entradas de versión publicadas por `apps/pseudolearn_app` (§4.4). Esa
-relación cruza el límite del monorepo y no participa del grafo de dependencias interno ni de
-`LAYER-DIRECTION`.
+El frontend web (`apps/fe-pseudolearn/`), desplegado en Cloudflare Workers, recibe los artefactos que
+`pseudolearn_brand` escribe (como el favicon y el path SVG de la marca) y consume las versiones publicadas
+de la app cliente (§4.4). Al igual que los demás miembros, no importa código de otras aplicaciones y mantiene
+aislamiento total de capas.
 
 `packages/pseudolearn_core` no importa, referencia ni conoce nada de `apps/pseudolearn_app`. Es un
 paquete de Dart puro sin dependencia de Flutter (`packages/pseudolearn_core/README.md` §1.3).
@@ -256,6 +252,7 @@ vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages
 | `apps/pseudolearn_app/`       | Cliente Flutter: interfaz, orquestación de estado, persistencia local, adaptación al núcleo                            | `packages/pseudolearn_core` por ruta relativa; paquetes de `pubspec.yaml` propio; capas internas según su propio `architecture.yaml` | Símbolos internos de `pseudolearn_core` no exportados en su API pública     |
 | `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                        | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
 | `apps/pseudolearn_backend/`   | Backend de Supabase: Edge Functions con secretos de servidor y migraciones del esquema de Postgres                     | API web de Deno; capas internas según su propio `architecture.json`                                                                  | Imports remotos (`npm:`, `jsr:`, `https:`); cualquier símbolo de otro miembro |
+| `apps/fe-pseudolearn/`        | Frontend web (landing y descargas en Astro): interfaz pública, internacionalización y contacto                         | Paquetes de su `package.json` propio; capas internas según su propio `architecture.yaml`                                             | Cualquier símbolo de `packages/` o de otras `apps/`                         |
 | `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                        | —                                                                           |
 | `AGENTS.md` (raíz)            | Reglas transversales de todos los paquetes: contrato de reglas, precedencia, skills                                    | — (documento)                                                                                                                        | Arquitectura específica de un paquete concreto                              |
 
@@ -283,13 +280,13 @@ propio `README.md`.
 
 ### 4.1 Monorepo de git puro sin orquestador multi-paquete
 
-- **Problema:** Con cuatro miembros escritos en tres cadenas de herramientas y una única arista de
+- **Problema:** Con cinco miembros escritos en cuatro cadenas de herramientas y una única arista de
   dependencia en tiempo de compilación entre ellos, cualquier herramienta de orquestación multi-paquete (`melos`, `nx`,
   workspaces) añade una capa de configuración, un archivo de reglas propio y una curva de
-  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las tres cadenas.
+  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las cuatro cadenas.
 - **Elección:** Git puro como mecanismo de agrupación. Cada paquete se prepara, compila, prueba y
   despliega desde su propio directorio con los comandos nativos de su cadena (`pub`/`flutter`, `python3`,
-  `deno`/`supabase`). La única coordinación de compilación entre miembros es la dependencia por ruta
+  `deno`/`supabase`, `node`/`pnpm`). La única coordinación de compilación entre miembros es la dependencia por ruta
   relativa declarada en `apps/pseudolearn_app/pubspec.yaml`.
 - **Alternativas descartadas y por qué:**
     - *`melos`:* Aporta ejecución de comandos en paralelo sobre N paquetes y versionado sincronizado.
@@ -512,5 +509,5 @@ registradas en la sección 4.1.
   la sección 4.5.
 - **Qué se rechazó deliberadamente y por qué:** El tooling de orquestación multi-paquete que
   habitualmente acompaña esa convención (`melos` y equivalentes), por las razones técnicas registradas
-  en la sección 4.1: no abarca las tres cadenas de herramientas del monorepo, y sobre la parte que sí
+  en la sección 4.1: no abarca las cuatro cadenas de herramientas del monorepo, y sobre la parte que sí
   abarca no resuelve un problema que hoy exista.
