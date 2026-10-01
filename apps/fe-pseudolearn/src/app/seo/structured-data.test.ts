@@ -29,6 +29,6 @@ describe('buildStructuredData', () => {
 
     const app = graph[2];
     expect(app?.name).toBe('PseudoLearn · Aprende a programar');
-    expect(app?.operatingSystem).toBe('macOS 13+, iOS 16+');
+    expect(app?.operatingSystem).toBe('macOS 13+, Windows 10+, iOS 16+');
   });
 });

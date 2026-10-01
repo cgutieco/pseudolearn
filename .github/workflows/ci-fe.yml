@@ -5,10 +5,12 @@ on:
     branches: [master, main]
     paths:
       - 'apps/fe-pseudolearn/**'
+      - 'CHANGELOG.json'
       - '.github/workflows/ci-fe.yml'
   pull_request:
     paths:
       - 'apps/fe-pseudolearn/**'
+      - 'CHANGELOG.json'
       - '.github/workflows/ci-fe.yml'
 
 concurrency:

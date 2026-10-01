@@ -20,6 +20,11 @@ export const ICONS = {
     rects: [{ x: 3, y: 4.5, width: 18, height: 12, rx: 1.6 }],
     linejoin: true,
   },
+  monitor: {
+    paths: ['M12 16.5V20', 'M8 20h8'],
+    rects: [{ x: 3, y: 4, width: 18, height: 12.5, rx: 1.6 }],
+    linejoin: true,
+  },
   phone: {
     paths: ['M10.6 5.4h2.8'],
     rects: [{ x: 6.5, y: 2.5, width: 11, height: 19, rx: 2.2 }],

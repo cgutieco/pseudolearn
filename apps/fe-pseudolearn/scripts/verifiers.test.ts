@@ -35,6 +35,13 @@ describe('check-architecture', () => {
     const violations = collectArchitectureViolations(fixture('fat-route'));
     expect(rules(violations)).toContain('FE-THIN-ROUTES');
   });
+
+  it('rejects a second reader of an exclusive import and accepts its owner', () => {
+    const violations = collectArchitectureViolations(fixture('leaked-changelog'));
+    expect(violations.map((violation) => `${violation.file}:${violation.rule}`)).toEqual([
+      'src/widgets/history/bypass.ts:FE-RUNTIME-ISOLATION',
+    ]);
+  });
 });
 
 describe('check-no-comments', () => {

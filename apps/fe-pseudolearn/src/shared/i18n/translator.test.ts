@@ -47,6 +47,20 @@ describe('createTranslator', () => {
   it('formats numbers with the locale conventions', () => {
     expect(createTranslator('en').formatNumber(1500)).toBe('1,500');
   });
+
+  it('formats a calendar date with the locale conventions', () => {
+    expect(createTranslator('es').formatDate('2026-09-17')).toBe('17 de septiembre de 2026');
+    expect(createTranslator('en').formatDate('2026-09-17')).toBe('September 17, 2026');
+  });
+
+  it('keeps the calendar day regardless of the host time zone', () => {
+    expect(createTranslator('en').formatDate('2026-01-01')).toBe('January 1, 2026');
+  });
+
+  it('returns an unreadable date untouched instead of throwing', () => {
+    expect(createTranslator('es').formatDate('not-a-date')).toBe('not-a-date');
+    expect(createTranslator('es').formatDate('')).toBe('');
+  });
 });
 
 describe('dictionaries', () => {

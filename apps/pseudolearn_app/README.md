@@ -316,6 +316,9 @@ flutter test
     - [ ] `flutter test` y todos los scripts de `tool/` al 100 % en verde.
     - [ ] Versión de mercado actualizada en `pubspec.yaml`; el número de compilación lo pone el workflow.
     - [ ] El tag empujado (`vX.Y.Z`) coincide con `version:` en `pubspec.yaml`.
+    - [ ] Entrada nueva al principio de `CHANGELOG.json`, en la raíz del monorepo, con la misma versión, la fecha
+      de publicación, el núcleo anclado y cada cambio en español e inglés (`README.md` de la raíz, §4.4). La
+      web la publica sola al llegar a `master`.
     - [ ] Documentación técnica (`README.md`) y contratos de `architecture.yaml` actualizados.
     - [ ] El perfil de `APPLE_PROVISIONING_PROFILE_BASE64` sigue vigente y autoriza los entitlements
       restringidos de `Release.entitlements`.

@@ -14,7 +14,7 @@ export function buildSoftwareApplication(input: StructuredDataInput): Record<str
     description: input.description,
     url: SITE.url,
     applicationCategory: 'EducationalApplication',
-    operatingSystem: 'macOS 13+, iOS 16+',
+    operatingSystem: 'macOS 13+, Windows 10+, iOS 16+',
     inLanguage: input.locale,
     offers: { '@type': 'Offer', category: 'paid' },
     author: { '@type': 'Person', name: 'Cesar Antonio Gutierrez Contreras', url: SITE.authorUrl },

@@ -33,7 +33,10 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
 - Servir la landing (`/`), el contacto (`/contact`), las versiones (`/versions`), la privacidad (`/privacy`) y los
   términos (`/terms`), en español e inglés, con redirecciones de compatibilidad
   desde `/contacto`, `/versiones`, `/privacidad`, `/terminos` y `/legal`.
-- Publicar qué versión de la app hay disponible, sus novedades y el registro de cambios detallado (changelog).
+- Publicar qué versión de la app hay disponible, sus novedades y el registro de cambios detallado
+  (changelog), leídos del `CHANGELOG.json` compartido de la raíz del monorepo (decisión 9).
+- Ofrecer la descarga directa del instalador de Windows y explicar cómo superar el aviso de
+  SmartScreen mientras no esté firmado (decisión 13).
 - Recibir y entregar los mensajes del formulario de contacto, con verificación anti-bot.
 - Cumplir WCAG 2.1 AA, verificado automáticamente en las diez rutas y en los dos temas.
 - Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cuatro excepciones
@@ -153,6 +156,11 @@ Las reglas de capas, los imports permitidos, los imports exclusivos y los límit
 declarados en [architecture.yaml](architecture.yaml) y los **leen** los verificadores. No hay una
 segunda copia de las reglas dentro de los scripts.
 
+Una sola dependencia de datos sale del paquete: el registro de cambios `CHANGELOG.json` de la raíz del
+monorepo, importado con el alias `@changelog` únicamente desde `entities/release/model/release-catalog.ts`
+(decisión 9). Por eso los workflows `ci-fe.yml` y `deploy-fe.yml` también se disparan cuando cambia ese
+archivo: registrar una versión publica la web sin tocar nada de este paquete.
+
 ---
 
 ## 4. Decisiones de diseño
@@ -236,27 +244,42 @@ sin segunda implementación es coste sin beneficio.
 
 ---
 
-### Decisión 9: el catálogo de publicaciones es una entidad centrada en la aplicación y su registro de cambios
+### Decisión 9: el historial de versiones se lee del registro de cambios compartido del monorepo
 
-- **Problema.** El mismo número de versión lo necesitan dos widgets —la tarjeta de lo publicado y la
-  entrada del historial— y la página entera existe para prometer que ese número no se contradice
-  consigo mismo. Escribirlo dos veces es exactamente el fallo que la página dice no cometer.
-- **Elección.** `entities/release/model/release-catalog.ts`, con `RELEASES` declarado `as const` de
-  la publicación más reciente a la más antigua. Cada entrada lleva `id`, `version` y
-  la lista de `highlights`; el texto vive en el diccionario bajo `versions.release.<id>.*`, igual que
-  los módulos de la ruta de aprendizaje. La web presenta exclusivamente la versión de la aplicación y
-  su changelog de cara al usuario, sin exponer ni sobreexplicar el versionado técnico interno del motor.
-  El `as const` no es decoración: es lo que convierte
-  `versions.release.${release.id}.${highlight}Text` en una clave tipada en vez de un `string`.
-  Se gana la condición de entidad por la segunda razón que admite `fsd-architecture`: dos
-  consumidores independientes del mismo modelo.
+- **Problema.** El mismo número de versión lo necesitan tres widgets —la tarjeta de lo publicado, la
+  entrada del historial y la especificación «Versión» de cada tarjeta de descarga— y la página entera
+  existe para prometer que ese número no se contradice consigo mismo. Además, quien publica la app
+  necesita un registro propio de qué salió y cuándo; si ese registro vive aparte del de la web, son
+  dos listas que divergen en la primera publicación que se olvide en una de ellas.
+- **Elección.** La fuente es `CHANGELOG.json`, en la raíz del monorepo: la entrada de publicación que
+  el `README.md` de la raíz (§4.4) exige por cada versión de producto, con versión, fecha ISO, núcleo
+  anclado, titular, resumen y la lista de cambios, cada uno con `id`, tipo (`feature`, `platform`,
+  `fix`) y su texto en los dos idiomas. Se importa con el alias `@changelog` (declarado en
+  `tsconfig.json`) y **un solo archivo** puede hacerlo, `entities/release/model/release-catalog.ts`,
+  regla declarada en `exclusiveImports` de `architecture.yaml`. Ese archivo pasa el JSON por
+  `readChangelog`, que valida forma, versiones semánticas, fechas de calendario reales, textos en los
+  dos idiomas, tipos conocidos, identificadores únicos y orden de más reciente a más antigua, y
+  devuelve los problemas como valores; si hay alguno, el catálogo detiene el build con la lista, de
+  modo que un registro roto nunca se despliega. La fecha se formatea con `Intl` mediante
+  `formatDate` del traductor, nunca a mano. El historial agrupa los cambios por tipo
+  (`groupChangesByKind`) en vez de etiquetar cada fila. Se gana la condición de entidad por la
+  segunda razón que admite `fsd-architecture`: varios consumidores independientes del mismo modelo.
+- **Consecuencia.** El texto de cada versión **no** vive en `es.json`/`en.json`: es contenido del
+  registro, no de la interfaz, y lo escribe quien publica la app. Los diccionarios conservan lo que
+  rodea al registro (etiquetas de tipo, contadores, encabezados). La paridad de idiomas de ese texto
+  no la comprueba `check:i18n` sino `readChangelog`, con el mismo rigor: una traducción vacía o
+  ausente es un problema que para el build. El campo `core` se valida pero la web no lo muestra: el
+  versionado del motor no es superficie pública (sección 6).
 - **Descartado.** _Leer la versión de `package.json`_: la del sitio no es la del producto, y una
   errata corregida en la web no publica una versión de la app.
+- **Descartado.** _Mantener el texto en los diccionarios con claves `versions.release.<id>.*`_: era
+  el diseño anterior. Obligaba a editar la web para registrar una publicación de la app, y dejaba el
+  registro de quien publica repartido en dos archivos de otro paquete.
+- **Descartado.** _Ubicar el registro dentro de `apps/pseudolearn_app/`_: la web no importa nada de
+  otras aplicaciones (`README.md` de la raíz, §3.3). La raíz es el lugar del par `(app, núcleo)`.
 - **Descartado.** _Un campo `channel`_: hoy tendría un solo valor, y una enumeración de un caso es
   ceremonia (`SCOPE-YAGNI`). La etiqueta sale de una clave fija; el campo se añade el día que exista
   un segundo canal.
-- **Coste asumido.** La fecha es el marcador `[FECHA]` hasta que 1.0.0 se publique. Cuando exista,
-  entra en el modelo como fecha ISO y se formatea con `Intl`, nunca a mano.
 
 ---
 
@@ -322,6 +345,32 @@ sin segunda implementación es coste sin beneficio.
 
 ---
 
+### Decisión 13: Windows se descarga directo y la guía del aviso de SmartScreen va junto al botón
+
+- **Problema.** Desde 1.1.0 la app se distribuye para Windows con un instalador servido desde
+  Cloudflare R2 (`https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe`), fuera de
+  cualquier tienda. El instalador no lleva firma Authenticode (pendiente declarado en el `README.md`
+  de `apps/pseudolearn_app`), así que Microsoft Defender SmartScreen lo detiene la primera vez con
+  la pantalla azul «Windows protegió su PC», y la mayoría de quien la ve abandona si nadie le dijo
+  antes que iba a aparecer.
+- **Elección.** Una tercera tarjeta en el panel de descargas, con el enlace directo en
+  `SITE.windowsInstallerUrl` y sin abrir pestaña nueva, porque es un archivo y no una ficha de tienda.
+  La tarjeta lleva un modelo opcional `guide` (`InstallGuideModel`) que `DownloadCard` pinta con
+  `InstallGuide` al lado de la acción: qué es el aviso, los cuatro pasos para continuar (aviso del
+  navegador, «Más información», «Ejecutar de todas formas», instalación sin permisos de
+  administrador) y una advertencia de descargar el instalador solo desde esta página. La presencia de
+  la guía es dato del modelo, no una rama por plataforma, y ensancha la tarjeta a toda la rejilla en
+  escritorio (`download-card--guided`). Solo se ofrece el instalador: el `.zip` portable no registra
+  `pseudolearn://` y en él el inicio de sesión no vuelve a la app.
+- **Descartado.** _Una ruta propia para la guía_: exige la pareja en los dos idiomas, un hueco en la
+  navegación y en el sitemap, y aleja las instrucciones del botón justo cuando hacen falta.
+- **Descartado.** _Ocultar la guía en un `<details>` plegado_: quien no lo abre llega a la pantalla
+  azul sin aviso, que es el fallo que la guía existe para evitar.
+- **Coste asumido.** Cuando el instalador se firme, la guía se retira quitando `guide` de la tarjeta y
+  sus claves de los diccionarios; no queda nada más que deshacer.
+
+---
+
 ## 5. Reglas de código
 
 Están en [AGENTS.md](AGENTS.md) con identificador estable y verificador asociado. Las tres que más
@@ -343,8 +392,8 @@ condicionan el día a día:
 - **La preferencia de tema se respeta y se recuerda**, y se aplica antes del primer pintado para que
   no haya parpadeo ni salto de contenido.
 - **La web presenta la versión de la aplicación y su registro de cambios.** Al usuario final de la landing
-  le interesa la app: qué versión instala desde la tienda, qué novedades trae y el changelog de cada
-  actualización. El versionado interno del motor del lenguaje y sus contratos técnicos pertenecen al desarrollo del
+  le interesa la app: qué versión instala desde la tienda o desde la descarga directa de Windows, qué
+  novedades trae y el changelog de cada actualización. El versionado interno del motor del lenguaje y sus contratos técnicos pertenecen al desarrollo del
   núcleo y la app, no a la superficie pública de la web comercial.
 - **Nada de métricas de terceros.** No hay analítica, ni píxeles, ni fuentes remotas: las fuentes se
   autohospedan, lo que además evita transferir la IP de cada visitante a un tercero.
