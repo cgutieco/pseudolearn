@@ -45,7 +45,7 @@ jobs:
             $ver = $ver.Substring(1)
           }
           if ([string]::IsNullOrWhiteSpace($ver)) {
-            $ver = "1.0.0"
+            $ver = "1.1.0"
           }
           Write-Host "Resolved version: $ver"
           echo "VERSION=$ver" >> $env:GITHUB_ENV
