@@ -64,7 +64,19 @@ jobs:
         run: |
           flutter build windows --release `
             --dart-define-from-file=dart_define.ci.json `
+            --build-name=$env:VERSION `
             --build-number=$env:GITHUB_RUN_NUMBER
+
+      - name: Verify bundled Visual C++ runtime
+        shell: pwsh
+        run: |
+          $bundle = "build\windows\x64\runner\Release"
+          $missing = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll") |
+            Where-Object { -not (Test-Path (Join-Path $bundle $_)) }
+          if ($missing.Count -gt 0) {
+            Write-Error "Visual C++ runtime missing from the bundle: $($missing -join ', ')"
+            exit 1
+          }
 
       - name: Compile Inno Setup installer
         shell: pwsh

@@ -1033,6 +1033,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.';
 
   @override
+  String get authDeleteAccountErrorAppleUnavailable =>
+      'Esta cuenta usa Sign in with Apple y solo se puede eliminar desde un iPhone, iPad o Mac, donde Apple confirma tu identidad. Tu cuenta sigue intacta.';
+
+  @override
   String get authDeleteAccountErrorGeneric =>
       'No se pudo eliminar la cuenta. Tu cuenta y tus documentos siguen intactos; inténtalo de nuevo.';
 

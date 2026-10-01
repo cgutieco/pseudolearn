@@ -32,6 +32,9 @@ final class AccountDeletionFailureBanner extends StatelessWidget {
 
   String _messageFor(AppLocalizations l10n) {
     if (code == 'no_connection') return l10n.authDeleteAccountErrorNoConnection;
+    if (code == 'apple_reauthentication_unavailable') {
+      return l10n.authDeleteAccountErrorAppleUnavailable;
+    }
     if (_appleFailureCodes.contains(code)) return l10n.authDeleteAccountErrorApple;
     return l10n.authDeleteAccountErrorGeneric;
   }

@@ -258,6 +258,18 @@ void main() {
       }
     });
 
+    testWidgets('Apple re-authentication unavailable points to an Apple device', (tester) async {
+      await tester.pumpWidget(_buildTestApp(
+        state: const AccountDeletionFailed(testSession, 'apple_reauthentication_unavailable'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Esta cuenta usa Sign in with Apple y solo se puede eliminar desde un iPhone, iPad o Mac, donde Apple confirma tu identidad. Tu cuenta sigue intacta.'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('Unknown deletion failure codes fall back to the generic notice', (tester) async {
       await tester.pumpWidget(_buildTestApp(
         state: const AccountDeletionFailed(testSession, 'http_500'),

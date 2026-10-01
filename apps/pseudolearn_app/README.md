@@ -108,6 +108,8 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
+| Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
+| Firma Authenticode en Windows                                  | Decidir proveedor (Artifact Signing de Azure, certificado OV) y firmar `pseudolearn.exe` y el instalador (`SignTool` de Inno Setup)         | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 
 ---
@@ -290,6 +292,17 @@ flutter test
     (`{localappdata}\Programs\PseudoLearn`) sin requerir elevación de privilegios UAC. Registra el protocolo
     `pseudolearn://` en `HKCU\Software\Classes\pseudolearn` con comando `"{app}\pseudolearn.exe" "%1"` para captura en
     caliente de callbacks OAuth/Magic Link, y asocia la extensión `.pseudo`.
+  - **Runtime de Visual C++ local a la aplicación:** `windows/CMakeLists.txt` incluye
+    `InstallRequiredSystemLibraries` y copia `msvcp140.dll`, `vcruntime140.dll` y `vcruntime140_1.dll` junto a
+    `pseudolearn.exe`, así que el instalador y el `.zip` arrancan en un Windows sin el redistribuible instalado. El
+    workflow falla antes de empaquetar si falta alguna. Se descartó instalar `vc_redist.x64.exe` desde Inno Setup:
+    exige elevación UAC y el instalador es por usuario.
+  - **Versión del ejecutable:** el workflow pasa la versión del tag como `--build-name`, de modo que el recurso de
+    versión de `pseudolearn.exe` coincide con la del instalador.
+  - **Versión portable:** no registra `pseudolearn://`, así que en ella el inicio de sesión con Apple, Google o enlace
+    mágico no vuelve a la aplicación (pendiente declarado en §1.5).
+  - **Sin firma Authenticode:** ni `pseudolearn.exe` ni el instalador están firmados; SmartScreen muestra «Editor
+    desconocido» (pendiente declarado en §1.5).
   - **Almacenamiento y CDN:** Los binarios se suben a un bucket de Cloudflare R2 mediante la API compatible con S3.
     Se mantienen punteros estables (`windows/PseudoLearn-Setup.exe` y `windows/PseudoLearn-Windows-Portable.zip`) y
     rutas inmutables versionadas (`windows/vX.Y.Z/...`).
@@ -1809,7 +1822,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       públicos y porque eliminar la cuenta no es responsabilidad de `RemoteDocumentStore`.
     - `SupabaseAccountDeletionGateway` (`data/auth/`) detecta una identidad `apple` en `User.identities` o en
       `app_metadata.providers`. Si la hay, pide a `NativeCredentialSource` una autorización nueva (`null` →
-      `AccountDeletionCancelled`, sin llamar al servidor) y envía solo `apple_authorization_code`. Invoca
+      `AccountDeletionCancelled`, sin llamar al servidor) y envía solo `apple_authorization_code`. Si la plataforma no
+      tiene Apple nativo (`NativeCredentialSource.isAppleSupported` falso, hoy Windows), devuelve
+      `Rejected('apple_reauthentication_unavailable')` sin abrir la hoja ni llamar al servidor: el código que el flujo
+      web emitiría pertenece al Services ID, y la Edge Function solo canjea códigos del Bundle ID. Invoca
       `functions.invoke('delete-account')`. `FunctionsFetchException` y `SocketException` → `NoConnection`;
       `FunctionException` → `Rejected` con el `code` del cuerpo o `http_<estado>`; cualquier otra excepción →
       `Rejected('unexpected_failure')`; sin usuario → `Rejected('no_session')`.
@@ -1822,7 +1838,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       `content_progress` y `documents_index`, y después borra los archivos `.pseudo` y `.pseudo.tmp` del directorio de
       documentos. Conserva las preferencias. No pasa por `SyncingDocumentRepository`, así que no encola lápidas.
     - La presentación mapea los códigos del backend: `no_connection`, los cuatro `apple_*` y el resto a un aviso
-      genérico; `local_cleanup_failed` a un aviso de datos remanentes en el dispositivo.
+      genérico; `apple_reauthentication_unavailable` a un aviso que pide eliminar la cuenta desde un iPhone, iPad o Mac; `local_cleanup_failed` a un aviso de datos remanentes en el dispositivo.
     - Las ramas del armazón (`StatefulShellRoute.indexedStack`) conservan sus páginas vivas y cada cubit de datos
       locales carga una sola vez al montar su página. `LocalAccountDataRefresher` (`presentation/settings/account/`),
       montado en `CubitScope` por encima del router, escucha `AccountCubit` y, cuando
@@ -2082,6 +2098,8 @@ comparación entre estudiantes.
 in with Apple y purga documentos y progreso del dispositivo. Mientras el servidor no responda con éxito, la aplicación no
 toca nada local y lo dice: la cuenta y los documentos siguen intactos y la acción se puede repetir. Las cuentas de Apple
 confirman la identidad con la hoja nativa de Apple en el momento de eliminar, y el diálogo de confirmación lo anticipa.
+Donde esa hoja no existe (Windows), la aplicación no lo intenta: dice que la cuenta se elimina desde un dispositivo de
+Apple y no toca nada.
 
 ---
 
