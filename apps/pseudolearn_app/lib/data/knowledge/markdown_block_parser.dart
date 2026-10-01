@@ -10,7 +10,9 @@ final class MarkdownBlockParser {
       return const [];
     }
 
-    final lines = markdownSource.split('\n');
+    final normalized =
+        markdownSource.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+    final lines = normalized.split('\n');
     final document = md.Document(
       blockSyntaxes: const [
         md.FencedCodeBlockSyntax(),

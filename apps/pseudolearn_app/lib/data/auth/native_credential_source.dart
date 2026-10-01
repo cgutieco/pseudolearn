@@ -1,6 +1,8 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../platform/platform_native_auth_support.dart';
+import 'native_auth_support.dart';
 import 'sign_in_nonce.dart';
 
 final class NativeAppleCredential {
@@ -30,16 +32,28 @@ final class NativeGoogleCredential {
 }
 
 abstract interface class NativeCredentialSource {
+  bool get isAppleSupported;
+  bool get isGoogleSupported;
   Future<NativeAppleCredential?> getAppleCredential();
   Future<NativeGoogleCredential?> getGoogleCredential();
 }
 
 final class PlatformNativeCredentialSource implements NativeCredentialSource {
   final GoogleSignIn _googleSignIn;
+  final NativeAuthSupport _authSupport;
   bool _initialized = false;
 
-  PlatformNativeCredentialSource({GoogleSignIn? googleSignIn})
-      : _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
+  PlatformNativeCredentialSource({
+    GoogleSignIn? googleSignIn,
+    NativeAuthSupport? authSupport,
+  })  : _googleSignIn = googleSignIn ?? GoogleSignIn.instance,
+        _authSupport = authSupport ?? const PlatformNativeAuthSupport();
+
+  @override
+  bool get isAppleSupported => _authSupport.isAppleSupported;
+
+  @override
+  bool get isGoogleSupported => _authSupport.isGoogleSupported;
 
   @override
   Future<NativeAppleCredential?> getAppleCredential() async {

@@ -5,6 +5,8 @@ import '../../domain/ports/account_deletion_gateway.dart';
 import 'native_credential_source.dart';
 
 const String deleteAccountFunctionName = 'delete-account';
+const String appleReauthenticationUnavailableCode =
+    'apple_reauthentication_unavailable';
 
 final class SupabaseAccountDeletionGateway implements AccountDeletionGateway {
   final SupabaseClient _client;
@@ -20,6 +22,9 @@ final class SupabaseAccountDeletionGateway implements AccountDeletionGateway {
   Future<AccountDeletionOutcome> deleteAccount() async {
     final user = _client.auth.currentUser;
     if (user == null) return const AccountDeletionRejected('no_session');
+    if (hasAppleIdentity(user) && !_credentialSource.isAppleSupported) {
+      return const AccountDeletionRejected(appleReauthenticationUnavailableCode);
+    }
     try {
       final body = await _requestBodyFor(user);
       if (body == null) return const AccountDeletionCancelled();

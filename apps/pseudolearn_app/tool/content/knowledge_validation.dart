@@ -51,7 +51,7 @@ List<String> _validateFileReferences(
     for (final entry in language.entries) {
       final path = entry.path;
       if (path == null) continue;
-      referenced.add(p.normalize(path));
+      referenced.add(p.normalize(path).replaceAll(r'\', '/'));
       final file = File(p.join(knowledgeDir.path, path));
       if (!file.existsSync()) {
         errors.add('Manifest "${language.code}" references missing file: $path');
@@ -68,7 +68,7 @@ List<String> _orphanFiles(Directory knowledgeDir, Set<String> referenced) {
     final name = p.basename(file.path);
     if (name.startsWith('manifest_') && name.endsWith('.json')) continue;
     if (name.startsWith('.')) continue;
-    final relative = p.normalize(p.relative(file.path, from: knowledgeDir.path));
+    final relative = p.normalize(p.relative(file.path, from: knowledgeDir.path)).replaceAll(r'\', '/');
     if (referenced.contains(relative)) continue;
     errors.add('Orphan file in knowledge assets not referenced by any manifest: $relative');
   }

@@ -1025,6 +1025,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Apple did not confirm the deletion. Your account is unchanged; try again and confirm your identity with Apple.';
 
   @override
+  String get authDeleteAccountErrorAppleUnavailable =>
+      'This account uses Sign in with Apple and can only be deleted from an iPhone, iPad or Mac, where Apple confirms your identity. Your account is unchanged.';
+
+  @override
   String get authDeleteAccountErrorGeneric =>
       'Your account could not be deleted. Your account and documents are unchanged; please try again.';
 

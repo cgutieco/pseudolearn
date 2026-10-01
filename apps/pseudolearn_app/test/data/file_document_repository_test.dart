@@ -193,5 +193,35 @@ void main() {
       final result = parseDocumentFile(corruptedFile);
       expect(result, isNull);
     });
+
+    test('overwrites an existing document safely without throwing', () async {
+      final now = DateTime(2026, 8, 15, 12, 0);
+      final initial = Document(
+        id: 'doc-overwrite',
+        title: 'Version 1',
+        content: 'content 1',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+      );
+      await repo.saveDocument(initial);
+
+      final updated = Document(
+        id: 'doc-overwrite',
+        title: 'Version 2',
+        content: 'content 2',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 2,
+        createdAt: now,
+        updatedAt: now.add(const Duration(minutes: 5)),
+      );
+      final saved = await repo.saveDocument(updated);
+      expect(saved.title, 'Version 2');
+
+      final loaded = await repo.loadDocument('doc-overwrite');
+      expect(loaded?.title, 'Version 2');
+      expect(loaded?.content, 'content 2');
+    });
   });
 }

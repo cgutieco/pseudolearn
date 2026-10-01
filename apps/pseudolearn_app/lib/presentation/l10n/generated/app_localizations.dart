@@ -1850,6 +1850,12 @@ abstract class AppLocalizations {
   /// **'Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.'**
   String get authDeleteAccountErrorApple;
 
+  /// Error de eliminación de cuenta cuando la plataforma no puede reautenticar con Apple
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cuenta usa Sign in with Apple y solo se puede eliminar desde un iPhone, iPad o Mac, donde Apple confirma tu identidad. Tu cuenta sigue intacta.'**
+  String get authDeleteAccountErrorAppleUnavailable;
+
   /// Error general de eliminación de cuenta en el servidor
   ///
   /// In es, this message translates to:

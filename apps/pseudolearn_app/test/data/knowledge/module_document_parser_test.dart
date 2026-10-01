@@ -92,5 +92,13 @@ void main() {
         ContentLoadFailure.moduleMalformed,
       );
     });
+
+    test('parses documents with CRLF line endings identically to LF', () {
+      final crlf = _complete.replaceAll('\n', '\r\n');
+      final sections = _sectionsOf(crlf);
+
+      expect(sections.map((s) => s.part).toList(), ModulePart.values);
+      expect(sections.first.blocks.single, isA<ParagraphBlock>());
+    });
   });
 }

@@ -1320,6 +1320,10 @@
   "@authDeleteAccountErrorApple": {
     "description": "Account deletion error when Apple re-authentication or revocation fails"
   },
+  "authDeleteAccountErrorAppleUnavailable": "This account uses Sign in with Apple and can only be deleted from an iPhone, iPad or Mac, where Apple confirms your identity. Your account is unchanged.",
+  "@authDeleteAccountErrorAppleUnavailable": {
+    "description": "Account deletion error when the platform cannot re-authenticate with Apple"
+  },
   "authDeleteAccountErrorGeneric": "Your account could not be deleted. Your account and documents are unchanged; please try again.",
   "@authDeleteAccountErrorGeneric": {
     "description": "Generic server-side account deletion error"

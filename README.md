@@ -77,9 +77,10 @@ tener que descubrirlo por ensayo y error.
 - **CI/CD centralizado que ejecute los verificadores de cada paquete:** No hay integración continua que
   corra `flutter test`, `dart analyze` ni los scripts de `tool/` en cada cambio. La verificación mecánica
   de cada miembro se ejecuta localmente con los comandos declarados en su propio `README.md` y reunidos
-  en §2.5. `.github/workflows/release-macos.yml` es la única automatización presente, y es de
-  publicación —construye, firma, empaqueta y sube el `.pkg` a App Store Connect al crear un tag `v*.*.*`—, no de verificación
-  continua (`apps/pseudolearn_app/README.md` §2.6).
+  en §2.5. Los flujos de `.github/workflows/` son de publicación —`release-macos.yml` construye, firma, empaqueta
+  y sube el `.pkg` a App Store Connect, y `release-windows.yml` construye, empaqueta el instalador con Inno Setup y
+  distribuye los binarios a Cloudflare R2 al crear un tag `v*.*.*`—, no de verificación continua
+  (`apps/pseudolearn_app/README.md` §2.6).
 - **`pubspec.yaml` de raíz:** La raíz no es un paquete Dart ni Flutter y no declara dependencias propias.
   Cada miembro del monorepo resuelve las suyas de forma independiente.
 

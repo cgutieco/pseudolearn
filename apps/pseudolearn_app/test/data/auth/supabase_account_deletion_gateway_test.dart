@@ -165,6 +165,30 @@ void main() {
       expect(backend.functionRequests, isEmpty);
     });
 
+    test('Apple account on a platform without native Apple is rejected before the server', () async {
+      await signInAs('apple');
+      credentialSource.isAppleSupported = false;
+
+      final outcome = await gateway.deleteAccount();
+
+      expect(
+        (outcome as AccountDeletionRejected).code,
+        appleReauthenticationUnavailableCode,
+      );
+      expect(credentialSource.appleCredentialRequests, 0);
+      expect(backend.functionRequests, isEmpty);
+    });
+
+    test('Google account on a platform without native Apple is still deleted', () async {
+      await signInAs('google');
+      credentialSource.isAppleSupported = false;
+
+      final outcome = await gateway.deleteAccount();
+
+      expect(outcome, isA<AccountDeleted>());
+      expect(backend.lastFunctionBody, isEmpty);
+    });
+
     test('Apple native failure is contained as unexpected_failure', () async {
       await signInAs('apple');
       credentialSource.throwError = true;

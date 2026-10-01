@@ -1,0 +1,147 @@
+name: Release Windows to Cloudflare R2
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 1.0.0)"
+        required: false
+        default: ""
+
+jobs:
+  build-package-upload:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install core package dependencies
+        working-directory: packages/pseudolearn_core
+        run: dart pub get
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Resolve release version
+        id: resolve-version
+        shell: pwsh
+        run: |
+          $ver = "${{ github.event.inputs.version }}"
+          if ([string]::IsNullOrWhiteSpace($ver)) {
+            $ver = "${{ github.ref_name }}"
+          }
+          if ($ver.StartsWith("v")) {
+            $ver = $ver.Substring(1)
+          }
+          if ([string]::IsNullOrWhiteSpace($ver)) {
+            $ver = "1.0.0"
+          }
+          Write-Host "Resolved version: $ver"
+          echo "VERSION=$ver" >> $env:GITHUB_ENV
+
+      - name: Write build-time auth configuration
+        shell: pwsh
+        run: |
+          $config = @{
+            SUPABASE_URL = "${{ secrets.SUPABASE_URL }}"
+            SUPABASE_ANON_KEY = "${{ secrets.SUPABASE_ANON_KEY }}"
+          } | ConvertTo-Json
+          Set-Content -Path dart_define.ci.json -Value $config
+
+      - name: Build Windows release bundle
+        shell: pwsh
+        run: |
+          flutter build windows --release `
+            --dart-define-from-file=dart_define.ci.json `
+            --build-name=$env:VERSION `
+            --build-number=$env:GITHUB_RUN_NUMBER
+
+      - name: Verify bundled Visual C++ runtime
+        shell: pwsh
+        run: |
+          $bundle = "build\windows\x64\runner\Release"
+          $missing = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll") |
+            Where-Object { -not (Test-Path (Join-Path $bundle $_)) }
+          if ($missing.Count -gt 0) {
+            Write-Error "Visual C++ runtime missing from the bundle: $($missing -join ', ')"
+            exit 1
+          }
+
+      - name: Compile Inno Setup installer
+        shell: pwsh
+        run: |
+          iscc "/DAppVersion=$env:VERSION" packaging/windows/inno_setup.iss
+
+      - name: Create portable ZIP archive
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "packaging\windows\Output\PseudoLearn-Windows-Portable.zip" `
+            -Force
+
+      - name: Upload build artifacts to GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: pseudolearn-windows-${{ env.VERSION }}
+          path: |
+            apps/pseudolearn_app/packaging/windows/Output/PseudoLearn-Setup.exe
+            apps/pseudolearn_app/packaging/windows/Output/PseudoLearn-Windows-Portable.zip
+
+      - name: Check Cloudflare R2 secrets configuration
+        id: check-r2-secrets
+        shell: pwsh
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+        run: |
+          $missing = @()
+          if ([string]::IsNullOrWhiteSpace($env:R2_ACCOUNT_ID)) { $missing += "R2_ACCOUNT_ID" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_ACCESS_KEY_ID)) { $missing += "R2_ACCESS_KEY_ID" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_SECRET_ACCESS_KEY)) { $missing += "R2_SECRET_ACCESS_KEY" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_BUCKET_NAME)) { $missing += "R2_BUCKET_NAME" }
+          if ($missing.Count -gt 0) {
+            Write-Warning "Missing R2 secrets: $($missing -join ', '). Artifacts are saved in GitHub Actions run."
+            echo "CONFIGURED=false" >> $env:GITHUB_ENV
+          } else {
+            echo "CONFIGURED=true" >> $env:GITHUB_ENV
+          }
+
+      - name: Upload release binaries to Cloudflare R2
+        if: env.CONFIGURED == 'true'
+        shell: pwsh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          $endpoint = "https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          $bucket = "${{ secrets.R2_BUCKET_NAME }}"
+          $version = $env:VERSION
+
+          Write-Host "Uploading latest installer..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Setup.exe "s3://$bucket/windows/PseudoLearn-Setup.exe" --endpoint-url $endpoint
+
+          Write-Host "Uploading versioned installer (v$version)..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Setup.exe "s3://$bucket/windows/v$version/PseudoLearn-Setup-v$version.exe" --endpoint-url $endpoint
+
+          Write-Host "Uploading latest portable ZIP..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Windows-Portable.zip "s3://$bucket/windows/PseudoLearn-Windows-Portable.zip" --endpoint-url $endpoint
+
+          Write-Host "Uploading versioned portable ZIP (v$version)..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Windows-Portable.zip "s3://$bucket/windows/v$version/PseudoLearn-Windows-Portable-v$version.zip" --endpoint-url $endpoint
+
+          Write-Host "Cloudflare R2 distribution completed successfully."

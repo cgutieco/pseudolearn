@@ -120,6 +120,9 @@ final class FileDocumentRepository implements DocumentRepository {
     final content = serializeDocumentFile(document);
     final tempFile = File('${file.path}.tmp');
     tempFile.writeAsStringSync(content, flush: true);
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
     tempFile.renameSync(file.path);
 
     await index.upsert(document.toSummary());

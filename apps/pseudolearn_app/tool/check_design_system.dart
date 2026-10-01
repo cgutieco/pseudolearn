@@ -151,7 +151,8 @@ List<DesignViolation> checkSpacingLiterals(String packageRoot) {
   final violations = <DesignViolation>[];
   for (final entry in root.listSync(recursive: true)) {
     if (entry is! File || !entry.path.endsWith('.dart')) continue;
-    if (entry.path.contains('/l10n/')) continue;
+    final normalizedPath = entry.path.replaceAll(r'\', '/');
+    if (normalizedPath.contains('/l10n/')) continue;
     violations.addAll(spacingLiteralsIn(entry, packageRoot));
   }
   return violations;
@@ -220,7 +221,8 @@ List<DesignViolation> checkSingleCanvas(String packageRoot) {
 
   for (final entry in root.listSync(recursive: true)) {
     if (entry is! File || !entry.path.endsWith('.dart')) continue;
-    if (entry.path.endsWith('shell/design_canvas.dart')) continue;
+    final normalizedPath = entry.path.replaceAll(r'\', '/');
+    if (normalizedPath.endsWith('shell/design_canvas.dart')) continue;
     final parsed = parseString(
         content: entry.readAsStringSync(), throwIfDiagnostics: false);
     final visitor = _CanvasSiteVisitor(
