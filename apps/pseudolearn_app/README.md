@@ -119,7 +119,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 
 ### 2.1 Requisitos previos y plataformas objetivo
 
-- **SDKs:** Flutter SDK `>= 3.24.0`, Dart SDK `>= 3.5.0`.
+- **SDKs:** Flutter SDK `3.47.5` exacto (fijado en `environment.flutter` de `pubspec.yaml`, ver §4.47), Dart SDK `>= 3.5.0`.
 - **Plataformas objetivo primarias:** macOS 13+ (Apple Silicon y x86_64), iOS 16+ (iPhone y iPad), Windows 10/11 (x64).
 - **Plataformas secundarias:** Linux (GTK), Web (WASM). Son objetivo declarado, **no andamiaje
   existente**: el proyecto contiene las carpetas `ios/`, `macos/` y `windows/`. Toda afirmación sobre el comportamiento en
@@ -1972,6 +1972,29 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       resueltos no depende de ella.
     - *Preguntar antes con un diálogo propio («¿Te gusta PseudoLearn?»):* filtra a quien está contento hacia la tienda y
       a quien no hacia otro sitio, práctica que las directrices de Apple desaconsejan, y añade texto que traducir.
+
+### 4.47 Versión exacta de Flutter fijada en `pubspec.yaml` y leída por los workflows
+
+- **Problema:** los *goldens* de `test/presentation/goldens/` se generaron el 6 de septiembre de 2026. Al actualizar
+  Flutter localmente a la 3.47.5 (motor del 16 de septiembre) fallaron 176 de ellos con diferencias de entre el 0,03 % y
+  el 1,7 % de píxeles, todas en el suavizado de bordes de texto, iconos y esquinas: ningún elemento se movió ni cambió de
+  color. La restricción `>=3.24.0` admitía cualquier versión, y los workflows instalaban la última de `stable` en cada
+  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. Ningún workflow ejecuta
+  `flutter test`, por lo que nada lo detectó.
+- **Elección:**
+    - `environment.flutter` en `pubspec.yaml` declara la versión exacta (`3.47.5`). Es la única fuente: `flutter pub get`
+      rechaza otra versión en local, y `release-macos.yml` y `release-windows.yml` la leen con `flutter-version-file`
+      de `subosito/flutter-action`.
+    - Los *goldens* se regeneraron con esa versión tras revisar las imágenes de diferencias de mayor porcentaje.
+    - Actualizar Flutter es un cambio deliberado: subir la versión en `pubspec.yaml`, regenerar los *goldens*
+      revisando sus diferencias y verificar la suite completa, en el mismo cambio.
+- **Alternativas descartadas y por qué:**
+    - *Tolerancia de píxeles en el comparador de goldens:* ocultaría también regresiones visuales reales pequeñas, que
+      es justo lo que los goldens existen para detectar.
+    - *Repetir la versión en cada workflow con `flutter-version`:* tres copias del mismo número que divergen en la
+      primera actualización que olvide una.
+    - *FVM u otro gestor de versiones:* añade una herramienta al entorno (§9 de `AGENTS.md` fija las cadenas de
+      herramientas) para algo que `pubspec.yaml` y la acción de CI ya resuelven.
 
 ---
 

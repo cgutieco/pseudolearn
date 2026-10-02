@@ -103,8 +103,8 @@ tener que descubrirlo por ensayo y error.
 
 ### 2.1 Requisitos previos y plataformas objetivo
 
-- **Entorno de ejecución y SDKs:** Dart SDK `^3.5.0` (ambos paquetes Dart); Flutter SDK `>=3.24.0`
-  (requerido únicamente por `apps/pseudolearn_app`); Python `>=3.9` con `fonttools` (requerido
+- **Entorno de ejecución y SDKs:** Dart SDK `^3.5.0` (ambos paquetes Dart); Flutter SDK `3.47.5` exacto
+  (requerido únicamente por `apps/pseudolearn_app`, que la fija en su `pubspec.yaml`); Python `>=3.9` con `fonttools` (requerido
   únicamente por `packages/pseudolearn_brand`); Deno `>=2.9` y la CLI de Supabase (requeridos
   únicamente por `apps/pseudolearn_backend`).
 - **Plataformas soportadas:** Las declaradas por cada miembro en su propio `README.md`; la raíz no
