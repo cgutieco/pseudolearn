@@ -1,6 +1,33 @@
 {
   "releases": [
     {
+      "version": "1.1.1",
+      "date": "2026-10-02",
+      "core": "0.1.0",
+      "headline": {
+        "es": "Valora PseudoLearn cuando te sirva",
+        "en": "Rate PseudoLearn when it helps you"
+      },
+      "summary": {
+        "es": "Una versión pequeña: no cambia el lenguaje ni la ruta de aprendizaje. En el Mac, el iPhone y el iPad, la App Store puede ofrecerte valorar la app justo después de un logro, y nunca antes.",
+        "en": "A small version: the language and the learning track do not change. On the Mac, the iPhone and the iPad, the App Store may offer you to rate the app right after an achievement, and never before."
+      },
+      "changes": [
+        {
+          "id": "store-review",
+          "kind": "feature",
+          "title": {
+            "es": "Valorar en la App Store",
+            "en": "Rating on the App Store"
+          },
+          "description": {
+            "es": "Al resolver tu primer ejercicio, y de nuevo el décimo y el trigésimo, el sistema puede mostrarte el diálogo de valoración de Apple. Lo decide Apple, como mucho tres veces al año, y PseudoLearn no ve tu respuesta ni envía nada. En Windows no aparece.",
+            "en": "When you solve your first exercise, and again your tenth and your thirtieth, the system may show you Apple's rating dialog. Apple decides, at most three times a year, and PseudoLearn neither sees your answer nor sends anything. It does not appear on Windows."
+          }
+        }
+      ]
+    },
+    {
       "version": "1.1.0",
       "date": "2026-10-01",
       "core": "0.1.0",
