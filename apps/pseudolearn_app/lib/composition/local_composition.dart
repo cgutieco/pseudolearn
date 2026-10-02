@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase/supabase.dart' show SupabaseClient;
+import '../application/review/review_prompting_progress_store.dart';
 import '../data/auth/native_credential_source.dart';
 import '../data/auth/session_storage.dart';
 import '../data/auth/supabase_account_deletion_gateway.dart';
@@ -11,6 +12,7 @@ import '../data/knowledge/bundled_knowledge_repository.dart';
 import '../data/knowledge/marker_resolver.dart';
 import '../data/platform/app_links_incoming_link_source.dart';
 import '../data/platform/platform_app_version_source.dart';
+import '../data/platform/platform_store_review_prompt.dart';
 import '../data/platform/platform_text_entry_modality.dart';
 import '../data/platform/random_identifier_generator.dart';
 import '../data/platform/system_clock.dart';
@@ -116,7 +118,10 @@ AppDependencies buildLocalDependencies({
     identifiers: identifierGenerator,
     stores: _LocalStores(
       preferences: FilePreferencesStore(directory: documentsDirectory),
-      progress: progressStore,
+      progress: ReviewPromptingProgressStore(
+        inner: progressStore,
+        prompt: const PlatformStoreReviewPrompt(),
+      ),
       history: SqliteProgressHistory(index.database),
     ),
     sync: buildSyncServices(

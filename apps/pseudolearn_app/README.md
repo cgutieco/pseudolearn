@@ -110,6 +110,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
 | Firma Authenticode en Windows                                  | Decidir proveedor (Artifact Signing de Azure, certificado OV) y firmar `pseudolearn.exe` y el instalador (`SignTool` de Inno Setup)         | Abierto |
+| Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 
 ---
@@ -487,7 +488,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 | `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
 | `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
 | `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, `pseudolearn_core`, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
@@ -1933,6 +1934,45 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       a tocar todos los tests que construyen ese cubit.
     - *Seguir con el literal y actualizarlo a mano en cada release:* es el defecto que motiva esta decisión.
 
+### 4.46 Petición de reseña nativa en hitos de ejercicios resueltos, solo donde hay tienda
+
+- **Problema:** la posición en App Store depende de las valoraciones, y la app no pedía ninguna. Pedirla en un momento
+  arbitrario (al abrir, tras un tiempo de uso) llega cuando la persona no ha obtenido nada todavía, y Apple solo permite
+  mostrar el diálogo nativo tres veces cada 365 días por usuario: cada petición gastada sin satisfacción es irrecuperable.
+- **Elección:**
+    - **Momento:** la petición sale al resolver por primera vez un ejercicio cuando el total de ejercicios resueltos
+      alcanza un hito. Los hitos son un dato, `ReviewPromptPolicy.standard` (`domain/model/review/`): 1, 10 y 30. Tres
+      hitos, a juego con el tope anual de Apple. Volver a resolver un ejercicio ya resuelto no cuenta.
+    - **Disparo sin tocar la sesión de ejercicio:** `ReviewPromptingProgressStore` (`application/review/`) decora
+      `LocalProgressStore` igual que `SyncingDocumentRepository` decora el repositorio de documentos (§4.27): primero
+      persiste la marca en el almacén interno y después consulta la política. `ExerciseSessionCubit` no gana una segunda
+      razón de cambio y no sabe que existe la reseña. Solo ese cubit llama a `markExerciseCompleted`; el progreso que
+      llega por sincronización entra por SQL en `data/sync/` y no dispara la petición.
+    - **Plataforma:** el puerto `StoreReviewPrompt` (`domain/ports/`) lo implementa `PlatformStoreReviewPrompt`
+      (`data/platform/`) con `package:in_app_review`, que llama a `SKStoreReviewController` en iOS y macOS. En Windows el
+      paquete no registra plugin nativo: `isAvailable()` responde `false` y el adaptador no hace nada. Por eso el adaptador
+      no pregunta por el sistema operativo y no figura en `platform_query_allowed_paths`, y la composición lo cablea sin
+      condicional en todas las plataformas.
+    - **Contrato del puerto:** `request()` nunca lanza. El adaptador absorbe `MissingPluginException` y
+      `PlatformException`, porque una reseña fallida no puede convertir en error un ejercicio resuelto.
+    - **Privacidad (§6.6):** el recuento es local, sale del mismo `content_progress` que el panel de progreso, y la app no
+      envía nada a ningún servidor. El diálogo y su resultado pertenecen al sistema operativo; la app no sabe si la persona
+      valoró ni con cuántas estrellas.
+    - **Comportamiento esperado al verificar:** en compilaciones de desarrollo el diálogo aparece siempre, en TestFlight
+      no aparece nunca, y en la versión publicada lo decide Apple. Que no salga en TestFlight no es un fallo.
+    - **Límite conocido:** un hito se compara por igualdad. Si una sincronización hace saltar el total por encima de un
+      hito (de 9 a 12, por ejemplo), ese hito se pierde. Se acepta: cuesta una petición de tres, y comparar por cruce
+      exigiría persistir qué hitos se usaron.
+- **Alternativas descartadas y por qué:**
+    - *Llamar a la reseña desde `ExerciseSessionCubit`:* añade al cubit una dependencia y una razón de cambio ajenas a
+      comprobar ejercicios.
+    - *Un botón «Valorar la app»:* Apple prohíbe invocar la petición nativa desde un botón; un enlace a la ficha no
+      cuenta con el tope ni con el diálogo dentro de la app.
+    - *Pedirla al terminar el Tramo A:* ata la política a la organización del temario, que puede cambiar; contar ejercicios
+      resueltos no depende de ella.
+    - *Preguntar antes con un diálogo propio («¿Te gusta PseudoLearn?»):* filtra a quien está contento hacia la tienda y
+      a quien no hacia otro sitio, práctica que las directrices de Apple desaconsejan, y añade texto que traducir.
+
 ---
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
@@ -2195,3 +2235,4 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 | Sign in with Apple (Human Interface Guidelines y App Store 4.8)   | Prioridad del acceso con Apple, colores y contraste del botón de marca, y flujo de nonce con resumen SHA-256 contra reutilización de token.                                   | Botón nativo del complemento, por imponer métricas, radios y tipografía propias que rompen el sistema de diseño de la aplicación.             |
 | App Store Review Guidelines 5.1.1(v)                              | Eliminación de cuenta iniciable desde la app, completa e inmediata, con revocación de Sign in with Apple.                                                                     | Enlazar a un formulario web o a soporte para eliminar la cuenta, por exigir salir de la aplicación.                                          |
 | Directrices de activos gráficos de App Store y Google Play        | Requisitos dimensionales (iPhone 6.9", iPad 13", Mac 16:10, Feature Graphic 1024×500), exigencia estricta de opacidad (sin canal alfa) y políticas de contenido en titulares. | Composición manual en herramientas externas y captura manual sobre simuladores por inducir desalineación visual y canales alfa involuntarios. |
+| Apple: valoraciones y reseñas (HIG) y `RequestReviewAction`      | Petición nativa tras un logro y no al abrir la app; tope de tres peticiones cada 365 días como criterio para elegir tres hitos.                                               | Invocar la petición desde un botón y filtrar antes con un diálogo propio de satisfacción, por ir contra las directrices de Apple.            |
