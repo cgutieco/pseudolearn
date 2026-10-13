@@ -97,7 +97,7 @@ msix_config:
   capabilities: internetClient
   protocol_activation: pseudolearn
   file_extension: .pseudo
-  languages: es-es, en-us
+  languages: es-ES, en-US
   architecture: x64
   output_path: packaging/windows/Output
   output_name: PseudoLearn-Store

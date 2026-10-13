@@ -82,10 +82,14 @@ jobs:
       - name: Pack MSIX for Microsoft Store
         shell: pwsh
         run: |
-          dart run msix:pack `
+          New-Item -ItemType Directory -Force -Path packaging/windows/Output
+          $outputPath = (Resolve-Path packaging/windows/Output).Path
+          dart run msix:create `
+            --build-windows false `
             --version "$($env:VERSION).0" `
-            --output-path packaging/windows/Output `
-            --output-name PseudoLearn-Store
+            --output-path $outputPath `
+            --output-name PseudoLearn-Store `
+            -v
 
       - name: Upload MSIX artifact to GitHub Actions
         uses: actions/upload-artifact@v4
