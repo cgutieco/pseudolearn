@@ -6,12 +6,12 @@
 Sitio oficial de [PseudoLearn](https://pseudolearn.app): landing, contacto y soporte, e historial de versiones.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D22.12.0-339933?logo=node.js&logoColor=white)](.nvmrc)
+[![Node](https://img.shields.io/badge/node-%3E%3D22.23.3-339933?logo=node.js&logoColor=white)](.nvmrc)
 ![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflare&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-5-6E9F18?logo=vitest&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-1.63-2EAD33?logo=playwright&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-1.64-2EAD33?logo=playwright&logoColor=white)
 
 </div>
 
@@ -60,7 +60,7 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
 
 ### Requisitos
 
-- Node.js `>= 22.12.0` (ver [.nvmrc](.nvmrc))
+- Node.js `>= 22.23.3` (ver [.nvmrc](.nvmrc))
 - pnpm
 - Cuenta de Cloudflare con Wrangler configurado, solo para desplegar
 

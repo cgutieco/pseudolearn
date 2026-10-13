@@ -16,7 +16,7 @@ jobs:
         working-directory: apps/pseudolearn_app
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -92,7 +92,7 @@ jobs:
             -v
 
       - name: Upload MSIX artifact to GitHub Actions
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pseudolearn-store-windows-${{ env.VERSION }}
           path: apps/pseudolearn_app/packaging/windows/Output/PseudoLearn-Store.msix

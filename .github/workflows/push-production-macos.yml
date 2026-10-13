@@ -5,13 +5,13 @@ on:
 
 jobs:
   build-sign-upload:
-    runs-on: macos-14
+    runs-on: macos-15
     defaults:
       run:
         working-directory: apps/pseudolearn_app
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2

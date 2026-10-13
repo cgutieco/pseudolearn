@@ -6,3 +6,5 @@ minimumReleaseAgeExclude:
   - astro@7.3.2
   - '@types/node@22.20.2'
   - lint-staged@17.5.1
+  - miniflare@5.20261006.2-beta
+  - wrangler@4.150.0
