@@ -158,8 +158,8 @@ segunda copia de las reglas dentro de los scripts.
 
 Una sola dependencia de datos sale del paquete: el registro de cambios `CHANGELOG.json` de la raíz del
 monorepo, importado con el alias `@changelog` únicamente desde `entities/release/model/release-catalog.ts`
-(decisión 9). Por eso los workflows `ci-fe.yml` y `deploy-fe.yml` también se disparan cuando cambia ese
-archivo: registrar una versión publica la web sin tocar nada de este paquete.
+(decisión 9). Por eso el workflow `push-production-web.yml` se lanza solo a mano (`workflow_dispatch`); al registrar una versión en ese
+archivo hay que lanzarlo para publicar la web.
 
 ---
 
@@ -402,7 +402,7 @@ condicionan el día a día:
 
 ## 7. Verificación
 
-Pirámide de cinco niveles, toda en CI:
+Pirámide de cinco niveles, que se ejecuta de forma local (no hay pipeline de CI en GitHub):
 
 | Nivel             | Herramienta               | Alcance                                                                      |
 | ----------------- | ------------------------- | ---------------------------------------------------------------------------- |

@@ -180,7 +180,7 @@ flutter build windows --release
 La configuración *Release* del target `Runner` en `macos/Runner.xcodeproj` usa `CODE_SIGN_STYLE = Manual` y
 `CODE_SIGN_IDENTITY = "-"` (ad-hoc) a propósito: este build nunca queda firmado con una identidad real
 en este paso. La firma con el certificado *Apple Distribution* la aplica después
-`.github/workflows/release-macos.yml` (§2.6), tanto si se compila en CI como si alguien lo compila a
+`.github/workflows/push-production-macos.yml` (§2.6), tanto si se compila en CI como si alguien lo compila a
 mano. La firma automática (`Automatic`) que trae el proyecto por defecto en Debug/Profile exige una
 sesión de Xcode con Apple ID y un perfil de aprovisionamiento, algo que un runner de CI no tiene y que
 esta build de producción no necesita.
@@ -208,8 +208,8 @@ flutter test
 
 ### 2.6 Despliegue y distribución
 
-- **Distribución en macOS:** Automatizada por `.github/workflows/release-macos.yml`, en la raíz del
-  monorepo. Un push de un tag `v*.*.*` (o un disparo manual, `workflow_dispatch`) hace que un runner
+- **Distribución en macOS:** Automatizada por `.github/workflows/push-production-macos.yml`, en la raíz del
+  monorepo. Un disparo manual (`workflow_dispatch`) hace que un runner
   `macos-14` compile el `.app` en modo release, le embeba el perfil de aprovisionamiento de *Mac App
   Store*, firme sus frameworks anidados y el bundle con un certificado *Apple Distribution*, lo empaquete
   con `productbuild` en un `.pkg` firmado con un certificado *Mac Installer Distribution*, y lo valide y
@@ -288,7 +288,7 @@ flutter test
   automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
 - **Distribución en Windows (Cloudflare R2):**
   - **Instalador ejecutable (`PseudoLearn-Setup.exe`) y `.zip` portable:** Compilados automáticamente en el workflow
-    `.github/workflows/release-windows.yml` en runners `windows-latest` ante la creación de un tag `v*.*.*` o despacho manual.
+    `.github/workflows/push-production-windows-r2.yml` en runners `windows-latest` solo por despacho manual (`workflow_dispatch`), con la versión como input opcional; si se omite, la lee de `pubspec.yaml`.
   - **Empaquetado con Inno Setup (`packaging/windows/inno_setup.iss`):** Genera un instalador por usuario
     (`{localappdata}\Programs\PseudoLearn`) sin requerir elevación de privilegios UAC. Registra el protocolo
     `pseudolearn://` en `HKCU\Software\Classes\pseudolearn` con comando `"{app}\pseudolearn.exe" "%1"` para captura en
@@ -1983,7 +1983,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `flutter test`, por lo que nada lo detectó.
 - **Elección:**
     - `environment.flutter` en `pubspec.yaml` declara la versión exacta (`3.47.5`). Es la única fuente: `flutter pub get`
-      rechaza otra versión en local, y `release-macos.yml` y `release-windows.yml` la leen con `flutter-version-file`
+      rechaza otra versión en local, y `push-production-macos.yml` y `push-production-windows-r2.yml` la leen con `flutter-version-file`
       de `subosito/flutter-action`.
     - Los *goldens* se regeneraron con esa versión tras revisar las imágenes de diferencias de mayor porcentaje.
     - Actualizar Flutter es un cambio deliberado: subir la versión en `pubspec.yaml`, regenerar los *goldens*

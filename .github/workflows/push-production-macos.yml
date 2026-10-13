@@ -1,9 +1,6 @@
-name: Release macOS to the Mac App Store
+name: Push Production macOS
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch: {}
 
 jobs:

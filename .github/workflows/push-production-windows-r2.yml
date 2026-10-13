@@ -1,13 +1,10 @@
-name: Release Windows to Cloudflare R2
+name: Push Production Windows R2
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (e.g. 1.0.0)"
+        description: "Release version (e.g. 1.0.0); defaults to the version in pubspec.yaml"
         required: false
         default: ""
 
@@ -40,14 +37,17 @@ jobs:
         run: |
           $ver = "${{ github.event.inputs.version }}"
           if ([string]::IsNullOrWhiteSpace($ver)) {
-            $ver = "${{ github.ref_name }}"
+            $line = Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)' | Select-Object -First 1
+            if ($null -eq $line) {
+              Write-Error "pubspec.yaml has no version field"
+              exit 1
+            }
+            $ver = $line.Matches[0].Groups[1].Value
           }
           if ($ver.StartsWith("v")) {
             $ver = $ver.Substring(1)
           }
-          if ([string]::IsNullOrWhiteSpace($ver)) {
-            $ver = "1.1.0"
-          }
+          $ver = $ver.Split("+")[0]
           Write-Host "Resolved version: $ver"
           echo "VERSION=$ver" >> $env:GITHUB_ENV
 
