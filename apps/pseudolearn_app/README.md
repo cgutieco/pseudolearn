@@ -109,7 +109,8 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
-| Firma Authenticode en Windows                                  | Decidir proveedor (Artifact Signing de Azure, certificado OV) y firmar `pseudolearn.exe` y el instalador (`SignTool` de Inno Setup)         | Abierto |
+| Distribución en Microsoft Store y firma de binarios | Configuración de empaquetado MSIX (`CESARGUTIERREZ.PseudoLearn`, Store ID `9MXZB1XDWP9J`) y workflow `.github/workflows/push-production-windows-store.yml`; Microsoft Store firma el paquete oficial en certificación | Resuelto (pendiente revisión en Partner Center) |
+| Firma Authenticode en instalador directo Inno Setup | Decidir proveedor (Artifact Signing de Azure, certificado OV) si se mantiene la distribución directa fuera de la Store | Abierto |
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 
@@ -297,6 +298,14 @@ flutter test
   `releaseType` manual, rellena *Novedades* desde `CHANGELOG.json`, y asocia la compilación. **No envía a revisión**:
   ese paso lo da la persona en App Store Connect. Si la versión de `pubspec.yaml` ya está publicada, el workflow se
   detiene: hay que subir la versión.
+- **Distribución en Windows (Microsoft Store):** Automatizada por `.github/workflows/push-production-windows-store.yml`.
+  Un despacho manual (`workflow_dispatch`) en runner `windows-latest` compila la versión release con
+  `--dart-define-from-file=dart_define.ci.json`, verifica la presencia de los redistribuibles de Visual C++
+  (`msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`), y empaqueta el bundle mediante `dart run msix:pack`
+  en `PseudoLearn-Store.msix` configurado con la identidad de Partner Center (`CESARGUTIERREZ.PseudoLearn`,
+  `CN=EDFD3B2E-83F3-4BC3-9577-7798545994BB`, Store ID `9MXZB1XDWP9J`). El paquete declara la capacidad `runFullTrust`,
+  el protocolo `pseudolearn://` para captura de callbacks de autenticación y la asociación de archivos `.pseudo`.
+  Microsoft Store firma el paquete oficialmente tras la certificación en Partner Center.
 - **Distribución en Windows (Cloudflare R2):**
   - **Instalador ejecutable (`PseudoLearn-Setup.exe`) y `.zip` portable:** Compilados automáticamente en el workflow
     `.github/workflows/push-production-windows-r2.yml` en runners `windows-latest` solo por despacho manual (`workflow_dispatch`), con la versión como input opcional; si se omite, la lee de `pubspec.yaml`.

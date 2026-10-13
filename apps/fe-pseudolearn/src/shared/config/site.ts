@@ -4,6 +4,7 @@ export const SITE = {
   macAppStoreUrl: 'https://apps.apple.com/app/pseudolearn/id6810296577',
   iosAppStoreUrl: 'https://apps.apple.com/app/pseudolearn/id6810296577',
   windowsInstallerUrl: 'https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe',
+  microsoftStoreUrl: 'https://apps.microsoft.com/detail/9MXZB1XDWP9J',
   supportEmail: 'support@pseudolearn.com',
   authorHandle: '@cgutieco',
   authorUrl: 'https://www.linkedin.com/in/cesar-gutierrez-contreras',

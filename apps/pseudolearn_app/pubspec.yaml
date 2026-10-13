@@ -45,6 +45,7 @@ dev_dependencies:
   plugin_platform_interface: ^2.1.8
   url_launcher_platform_interface: ^2.3.2
   in_app_review_platform_interface: ^2.0.5
+  msix: ^3.18.0
 
 flutter:
   uses-material-design: true
@@ -83,4 +84,21 @@ flutter:
           weight: 500
         - asset: assets/fonts/IBMPlexMono-SemiBold.ttf
           weight: 600
+
+msix_config:
+  display_name: PseudoLearn
+  publisher_display_name: CESAR GUTIERREZ
+  identity_name: CESARGUTIERREZ.PseudoLearn
+  publisher: CN=EDFD3B2E-83F3-4BC3-9577-7798545994BB
+  msix_version: 1.1.1.0
+  logo_path: windows/runner/resources/app_icon.png
+  store: true
+  sign_msix: false
+  capabilities: internetClient
+  protocol_activation: pseudolearn
+  file_extension: .pseudo
+  languages: es-es, en-us
+  architecture: x64
+  output_path: packaging/windows/Output
+  output_name: PseudoLearn-Store
 
