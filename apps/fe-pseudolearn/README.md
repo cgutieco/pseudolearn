@@ -5,7 +5,6 @@
 **Programar se entiende cuando se ve.**
 Sitio oficial de [PseudoLearn](https://pseudolearn.app): landing, contacto y soporte, e historial de versiones.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22.23.3-339933?logo=node.js&logoColor=white)](.nvmrc)
 ![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
@@ -432,9 +431,3 @@ humana queda para lo que ninguna regla puede juzgar.
 - **Estructura FSD**: se tomó la separación en capas y la disciplina de envoltorios finos de un
   proyecto hermano. Se **rechazó** su patrón de reglas incrustadas en el script de verificación, a
   favor de `architecture.yaml` como fuente única.
-
-## Licencia
-
-Código bajo [MIT](LICENSE). Los activos de marca y las capturas del producto están bajo
-[reserva expresa de derechos](LICENSE-BRAND): el repositorio es abierto, la identidad del producto no
-se cede.
