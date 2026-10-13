@@ -284,8 +284,19 @@ flutter test
       repositorio, y ese valor llega a `CFBundleVersion` a través de `$(FLUTTER_BUILD_NUMBER)`.
       `pubspec.yaml` sigue siendo la fuente única de la versión de mercado, que viaja por
       `$(FLUTTER_BUILD_NAME)` a `CFBundleShortVersionString`.
-- **Distribución en iOS:** Archivo `.ipa` subido a TestFlight mediante `xcrun altool` o Fastlane. No
-  automatizado todavía (pendiente declarado, §1.5 del `README.md` de la raíz aplica el mismo criterio).
+- **Distribución en iOS:** Automatizada por `.github/workflows/push-production-ios.yml`, solo por despacho manual
+  (`workflow_dispatch`), con los mismos secretos que el canal de macOS (sin el instalador ni el perfil de Mac App
+  Store). El script `.github/scripts/app_store_connect.rb` habla con la API de App Store Connect: calcula el siguiente
+  número de compilación de iOS para la versión de `pubspec.yaml` (el mayor ya subido más uno, porque
+  `GITHUB_RUN_NUMBER` de un workflow nuevo colisionaría con compilaciones existentes), crea en cada ejecución un perfil
+  `IOS_APP_STORE` con todos los certificados de distribución y lo borra al terminar (los perfiles guardados caducan o
+  quedan `INVALID` cuando cambian las capacidades del App ID, por eso no se guarda uno en un secreto). La firma pasa a
+  manual solo en el runner, añadiendo ajustes a `ios/Flutter/Release.xcconfig` antes de `flutter build ipa`; el
+  proyecto versionado conserva la firma automática. Tras `altool --upload-app` espera a que la compilación quede
+  `VALID`, declara el cifrado como exento si falta, crea (o reutiliza) la versión editable de la App Store con
+  `releaseType` manual, rellena *Novedades* desde `CHANGELOG.json`, y asocia la compilación. **No envía a revisión**:
+  ese paso lo da la persona en App Store Connect. Si la versión de `pubspec.yaml` ya está publicada, el workflow se
+  detiene: hay que subir la versión.
 - **Distribución en Windows (Cloudflare R2):**
   - **Instalador ejecutable (`PseudoLearn-Setup.exe`) y `.zip` portable:** Compilados automáticamente en el workflow
     `.github/workflows/push-production-windows-r2.yml` en runners `windows-latest` solo por despacho manual (`workflow_dispatch`), con la versión como input opcional; si se omite, la lee de `pubspec.yaml`.

@@ -1,0 +1,182 @@
+name: Push Production iOS
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: push-production-ios
+  cancel-in-progress: false
+
+env:
+  BUNDLE_IDENTIFIER: com.pseudolearn.app
+  TEAM_ID: K5D5UP52UM
+
+jobs:
+  build-sign-upload:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Install core package dependencies
+        working-directory: packages/pseudolearn_core
+        run: dart pub get
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Install App Store Connect API key
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_KEY_P8_BASE64 }}
+        run: |
+          for required in APP_STORE_CONNECT_KEY_ID APP_STORE_CONNECT_ISSUER_ID APP_STORE_CONNECT_KEY_P8_BASE64; do
+            if [ -z "${!required}" ]; then
+              echo "Secret $required is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+              exit 1
+            fi
+          done
+          PRIVATE_KEYS_DIR="$HOME/.appstoreconnect/private_keys"
+          mkdir -p "$PRIVATE_KEYS_DIR"
+          echo "$APP_STORE_CONNECT_KEY_P8_BASE64" | base64 --decode > "$PRIVATE_KEYS_DIR/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8"
+          echo "ASC_KEY_ID=$APP_STORE_CONNECT_KEY_ID" >> "$GITHUB_ENV"
+          echo "ASC_ISSUER_ID=$APP_STORE_CONNECT_ISSUER_ID" >> "$GITHUB_ENV"
+          echo "ASC_KEY_PATH=$PRIVATE_KEYS_DIR/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      - name: Resolve version and next build number
+        run: |
+          APP_VERSION=$(sed -n 's/^version:[[:space:]]*\([^+[:space:]]*\).*/\1/p' pubspec.yaml | head -1)
+          if [ -z "$APP_VERSION" ]; then
+            echo "pubspec.yaml has no version field" >&2
+            exit 1
+          fi
+          BUILD_NUMBER=$(ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" next-build-number "$APP_VERSION")
+          echo "Releasing iOS $APP_VERSION build $BUILD_NUMBER"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Write build-time auth configuration
+        run: |
+          cat > dart_define.ci.json <<JSON
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
+            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          }
+          JSON
+
+      - name: Import distribution certificate into a temporary keychain
+        env:
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+        run: |
+          if [ -z "$APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64" ]; then
+            echo "Secret APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+            exit 1
+          fi
+          KEYCHAIN_PATH="$RUNNER_TEMP/release-signing.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 24)
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          echo "$APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
+          security import "$RUNNER_TEMP/distribution.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
+
+      - name: Resolve signing identity
+        run: |
+          INSTALLED_IDENTITIES=$( { security find-identity -v "$KEYCHAIN_PATH"; security find-identity "$KEYCHAIN_PATH"; } \
+            | sed -n 's/.*"\(.*\)".*/\1/p' | sort -u )
+          APPLICATION_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^(Apple Distribution|iPhone Distribution):" || true)
+          if [ -z "$APPLICATION_IDENTITY" ]; then
+            echo "No Apple Distribution certificate in the keychain: APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 must hold an Apple Distribution certificate" >&2
+            exit 1
+          fi
+          echo "APPLICATION_IDENTITY=$APPLICATION_IDENTITY" >> "$GITHUB_ENV"
+
+      - name: Create and install the App Store provisioning profile
+        run: |
+          PROFILE_NAME="PseudoLearn iOS App Store CI $GITHUB_RUN_ID"
+          PROFILE_FILE="$RUNNER_TEMP/profile.mobileprovision"
+          ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" create-profile "$PROFILE_NAME" "$PROFILE_FILE" > "$RUNNER_TEMP/profile.env"
+          cat "$RUNNER_TEMP/profile.env" >> "$GITHUB_ENV"
+          echo "PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
+          source "$RUNNER_TEMP/profile.env"
+          PROFILES_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_DIR"
+          cp "$PROFILE_FILE" "$PROFILES_DIR/$PROFILE_UUID.mobileprovision"
+
+      - name: Switch the Runner target to manual signing
+        run: |
+          cat >> ios/Flutter/Release.xcconfig <<XCCONFIG
+          CODE_SIGN_STYLE = Manual
+          DEVELOPMENT_TEAM = $TEAM_ID
+          CODE_SIGN_IDENTITY = $APPLICATION_IDENTITY
+          CODE_SIGN_IDENTITY[sdk=iphoneos*] = $APPLICATION_IDENTITY
+          PROVISIONING_PROFILE_SPECIFIER = $PROFILE_NAME
+          OTHER_CODE_SIGN_FLAGS = --keychain $KEYCHAIN_PATH
+          XCCONFIG
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>$APPLICATION_IDENTITY</string>
+            <key>provisioningProfiles</key>
+            <dict><key>$BUNDLE_IDENTIFIER</key><string>$PROFILE_NAME</string></dict>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          PLIST
+
+      - name: Build signed iOS archive
+        run: |
+          flutter build ipa --release \
+            --dart-define-from-file=dart_define.ci.json \
+            --build-name="$APP_VERSION" \
+            --build-number="$BUILD_NUMBER" \
+            --export-options-plist="$RUNNER_TEMP/ExportOptions.plist"
+
+      - name: Upload package to App Store Connect
+        run: |
+          IPA_PATH=$(ls build/ios/ipa/*.ipa | head -1)
+          xcrun altool --validate-app --type ios --file "$IPA_PATH" \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+          xcrun altool --upload-app --type ios --file "$IPA_PATH" \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Attach the processed build to the App Store version
+        run: |
+          ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" prepare-release \
+            "$APP_VERSION" "$BUILD_NUMBER" "$GITHUB_WORKSPACE/CHANGELOG.json"
+
+      - name: Remove provisioning profile, temporary keychain and private key
+        if: always()
+        run: |
+          if [ -n "$PROFILE_ID" ]; then
+            ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" delete-profile "$PROFILE_ID" || true
+          fi
+          if [ -n "$PROFILE_UUID" ]; then
+            rm -f "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          fi
+          rm -rf "$HOME/.appstoreconnect/private_keys"
+          if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH"
+          fi
