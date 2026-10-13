@@ -2126,19 +2126,12 @@ externos.
 Un programa dado produce siempre la misma escena gráfica en los diagramas y la misma traza de ejecución, con
 independencia de la resolución del monitor, la plataforma de hardware o la tipografía instalada en el sistema.
 
-### 6.8 Reserva de columnas institucionales en el esquema local
-
-Para evitar migraciones disruptivas de base de datos ante futuras integraciones institucionales o multiusuario, el
-esquema local SQLite incluye
-columnas nulas para metadatos institucionales (`institution_id`, `class_id`, `membership_id`,
-`submission_id`). La aplicación no las puebla ni añade abstracciones en el dominio para ellas.
-
-### 6.9 Comprobación pedagógica no punitiva
+### 6.8 Comprobación pedagógica no punitiva
 
 La resolución de ejercicios tiene carácter formativo. Se informa qué casos de prueba cumplen y se orienta sobre el
 primer caso anómalo sin asociar notas numéricas, calificaciones ni penalizaciones.
 
-### 6.10 Salida de sesión con preservación o borrado local selectivo
+### 6.9 Salida de sesión con preservación o borrado local selectivo
 
 La aplicación ofrece dos acciones visualmente diferenciadas al cerrar sesión:
 
@@ -2156,7 +2149,7 @@ La aplicación ofrece dos acciones visualmente diferenciadas al cerrar sesión:
   El
   producto no oculta ni maquilla la dirección: es a donde llega el correo de la cuenta.
 
-### 6.11 Arquitectura de sincronización offline-first y resolución no destructiva
+### 6.10 Arquitectura de sincronización offline-first y resolución no destructiva
 
 - **Outbox persistente:** Toda mutación de documento encola una entrada en la tabla SQLite `sync_outbox`. El usuario
   siempre interactúa a velocidad de disco local, independientemente de la latencia o disponibilidad del backend.
@@ -2168,7 +2161,7 @@ La aplicación ofrece dos acciones visualmente diferenciadas al cerrar sesión:
 - **Composición incondicional:** `SyncingDocumentRepository` decora siempre a `FileDocumentRepository` en la raíz de
   composición, eliminando ramas condicionales de runtime entre modos online y offline.
 
-### 6.12 Unión monotónica de progreso y partición de preferencias
+### 6.11 Unión monotónica de progreso y partición de preferencias
 
 - **Convergencia sin intervención:** El progreso de aprendizaje es un conjunto de crecimiento monótono. Al no existir
   eliminaciones ni regresiones de avance en el uso ordinario, cualquier sincronización converge calculando la unión
@@ -2180,7 +2173,7 @@ La aplicación ofrece dos acciones visualmente diferenciadas al cerrar sesión:
   del usuario (`AccountPreferences`), mientras que los parámetros de renderizado visual y fuentes pertenecen al entorno
   físico de ejecución (`DevicePreferences`). Solo los primeros se sincronizan.
 
-### 6.13 El panel de progreso mide cobertura, nunca rendimiento
+### 6.12 El panel de progreso mide cobertura, nunca rendimiento
 
 El panel resume el trabajo hecho sin emitir juicio: cuenta módulos visitados, ejercicios resueltos, algoritmos
 escritos y construcciones ejercitadas, siempre como «hechos de un total» y nunca como porcentaje de logro, nota ni
@@ -2189,7 +2182,7 @@ con nadie. Quedan fuera por decisión de producto, no por alcance: intentos por 
 sistema no almacena intentos—, tiempo dedicado por módulo —sería telemetría de comportamiento— y cualquier
 comparación entre estudiantes.
 
-### 6.14 La cuenta solo se da por eliminada cuando el servidor lo confirma
+### 6.13 La cuenta solo se da por eliminada cuando el servidor lo confirma
 
 «Eliminar cuenta» es irreversible y completo: borra el usuario del servidor, todos sus datos sincronizados, revoca Sign
 in with Apple y purga documentos y progreso del dispositivo. Mientras el servidor no responda con éxito, la aplicación no

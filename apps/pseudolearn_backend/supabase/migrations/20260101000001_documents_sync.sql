@@ -14,11 +14,7 @@ create table if not exists documents (
   updated_at      timestamptz not null,
   server_revision bigint not null,
   deleted_at      timestamptz,
-  origin_device   text not null,
-  institution_id  uuid,
-  class_id        uuid,
-  membership_id   uuid,
-  submission_id   uuid
+  origin_device   text not null
 );
 
 create index if not exists documents_user_server_revision_idx on documents (user_id, server_revision);

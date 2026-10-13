@@ -3,7 +3,7 @@ import 'package:pseudolearn_app/data/index/index_schema.dart';
 
 void main() {
   group('IndexSchema', () {
-    test('contains expected columns including sync columns, institutional columns, and tables', () {
+    test('contains expected columns including sync columns and tables', () {
       expect(IndexSchema.currentVersion, 3);
       expect(IndexSchema.tableName, 'documents_index');
       expect(IndexSchema.progressTableName, 'content_progress');
@@ -15,10 +15,6 @@ void main() {
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnProfileId));
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnUpdatedAt));
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnExerciseId));
-      expect(IndexSchema.createTableSql, contains(IndexSchema.columnInstitutionId));
-      expect(IndexSchema.createTableSql, contains(IndexSchema.columnClassId));
-      expect(IndexSchema.createTableSql, contains(IndexSchema.columnMembershipId));
-      expect(IndexSchema.createTableSql, contains(IndexSchema.columnSubmissionId));
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnDeletedAt));
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnServerRevision));
       expect(IndexSchema.createTableSql, contains(IndexSchema.columnLastSyncedRevision));

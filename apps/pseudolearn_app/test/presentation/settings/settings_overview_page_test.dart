@@ -104,7 +104,6 @@ void main() {
 
       expect(find.text('Cuenta'), findsOneWidget);
       expect(find.text('Perfil y sincronización'), findsNothing);
-      expect(find.text('Planes y suscripción'), findsNothing);
       expect(find.text('Sin sincronizar aún'), findsNothing);
     });
 

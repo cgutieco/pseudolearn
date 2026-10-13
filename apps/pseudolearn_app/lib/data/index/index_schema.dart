@@ -17,11 +17,6 @@ final class IndexSchema {
   static const String columnSynced = 'synced';
   static const String columnExerciseId = 'exercise_id';
 
-  static const String columnInstitutionId = 'institution_id';
-  static const String columnClassId = 'class_id';
-  static const String columnMembershipId = 'membership_id';
-  static const String columnSubmissionId = 'submission_id';
-
   static const String columnDeletedAt = 'deleted_at';
   static const String columnServerRevision = 'server_revision';
   static const String columnLastSyncedRevision = 'last_synced_revision';
@@ -54,10 +49,6 @@ final class IndexSchema {
       $columnRevision INTEGER NOT NULL,
       $columnSynced INTEGER NOT NULL,
       $columnExerciseId TEXT,
-      $columnInstitutionId TEXT,
-      $columnClassId TEXT,
-      $columnMembershipId TEXT,
-      $columnSubmissionId TEXT,
       $columnDeletedAt TEXT,
       $columnServerRevision INTEGER,
       $columnLastSyncedRevision INTEGER

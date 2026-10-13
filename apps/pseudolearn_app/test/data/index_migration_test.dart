@@ -23,7 +23,7 @@ void main() {
     });
 
     test(
-        'migrates v1 schema to v2 preserving existing documents and institutional nulls',
+        'migrates v1 schema to v2 preserving existing documents',
         () async {
       const v1CreateSql = '''
         CREATE TABLE documents_index (
@@ -33,11 +33,7 @@ void main() {
           updated_at TEXT NOT NULL,
           created_at TEXT NOT NULL,
           revision INTEGER NOT NULL,
-          synced INTEGER NOT NULL,
-          institution_id TEXT,
-          class_id TEXT,
-          membership_id TEXT,
-          submission_id TEXT
+          synced INTEGER NOT NULL
         )
       ''';
       await db.execute(v1CreateSql);
@@ -50,10 +46,6 @@ void main() {
         'created_at': '2026-08-01T10:00:00.000',
         'revision': 1,
         'synced': 1,
-        'institution_id': null,
-        'class_id': null,
-        'membership_id': null,
-        'submission_id': null,
       });
 
       await IndexSchema.migrate(db, 1, 2);
@@ -110,11 +102,7 @@ void main() {
           created_at TEXT NOT NULL,
           revision INTEGER NOT NULL,
           synced INTEGER NOT NULL,
-          exercise_id TEXT,
-          institution_id TEXT,
-          class_id TEXT,
-          membership_id TEXT,
-          submission_id TEXT
+          exercise_id TEXT
         )
       ''';
       const v2ProgressSql = '''
@@ -136,10 +124,6 @@ void main() {
         'revision': 5,
         'synced': 1,
         'exercise_id': 'con-b1-ej2',
-        'institution_id': null,
-        'class_id': null,
-        'membership_id': null,
-        'submission_id': null,
       });
 
       await db.insert('content_progress', {
@@ -217,11 +201,7 @@ void main() {
           updated_at TEXT NOT NULL,
           created_at TEXT NOT NULL,
           revision INTEGER NOT NULL,
-          synced INTEGER NOT NULL,
-          institution_id TEXT,
-          class_id TEXT,
-          membership_id TEXT,
-          submission_id TEXT
+          synced INTEGER NOT NULL
         )
       ''';
       await db.execute(v1CreateSql);
@@ -234,10 +214,6 @@ void main() {
         'created_at': '2026-08-01T10:00:00.000',
         'revision': 1,
         'synced': 1,
-        'institution_id': null,
-        'class_id': null,
-        'membership_id': null,
-        'submission_id': null,
       });
 
       await IndexSchema.migrate(db, 1, 3);
