@@ -476,7 +476,8 @@ técnica prioriza densidad y precisión sobre estilo editorial (`AGENTS.md`, ski
 Cada miembro conserva sus comandos nativos y verificadores negativos. Los nuevos miembros Rust se
 descubren por `rust-toolchain.toml` versionado y ejecutan `cargo xtask verify`; CI rechaza anclajes
 distintos. El arnés E-01 corre en macOS arm64, Linux x64 y Windows x64 y conserva artefactos crudos.
-La web ejecuta también Playwright en macOS para usar referencias visuales Darwin verificadas.
+La app usa `xcode-27` (macOS 27) para sus goldens exactos. La web ejecuta también Playwright
+en macOS 26 para usar referencias visuales Darwin verificadas.
 La conformidad del corpus se incorpora desde R1, cuando exista `see`; no se simula en R0.
 
 

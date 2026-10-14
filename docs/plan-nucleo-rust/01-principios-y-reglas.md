@@ -1,8 +1,8 @@
 # 01 · Principios y reglas de trabajo
 
-> **Estado:** propuesta. Las reglas nuevas llevan un identificador provisional y se proponen para
-> `AGENTS.md` §2 en [08](08-decisiones-riesgos-y-cambios-de-reglas.md) §3. Mientras no se aprueben,
-> valen como criterio de revisión de este plan, no como regla del monorepo.
+> **Estado:** principios y reglas de R0 aprobados. Las reglas transversales aplicadas viven en
+> `AGENTS.md`; los verificadores Rust documentan su operación en su README. El flujo de corpus y
+> sus herramientas se implementan en R1; los contratos del motor conservan sus fases R2–R9.
 
 ---
 
@@ -49,7 +49,7 @@ Notas sobre el orden:
 
 ---
 
-## 3. Nombres semánticos (`QUALITY-SEMANTIC-NAMES`, propuesta)
+## 3. Nombres semánticos (`QUALITY-SEMANTIC-NAMES`)
 
 El código no tiene comentarios, así que **los nombres son la documentación**. Un nombre dice el
 **papel** que cumple un valor en ese punto del programa, no su tipo ni su forma.
@@ -91,11 +91,11 @@ El código no tiene comentarios, así que **los nombres son la documentación**.
 | `clippy::min_ident_chars` con umbral 3 y la lista cerrada de §3.1.1 | Identificadores cortos                    |
 | `clippy::disallowed_names` con la lista de §3.1.2          | Nombres de relleno                                  |
 | `clippy::many_single_char_names`                           | Refuerzo del anterior                               |
-| `tool/check_names` del workspace (propio)                  | Abreviaturas (por componente de `snake_case`), parámetros genéricos y tiempos de vida de una letra, archivos prohibidos |
+| `rust-checks names` del workspace (propio)                  | Abreviaturas (por componente de `snake_case`), parámetros genéricos y tiempos de vida de una letra, archivos prohibidos |
 | Caso negativo de cada verificador                          | Un archivo con violaciones deliberadas que el verificador debe rechazar (`AGENTS.md` §5) |
 
-Las opciones exactas de Clippy se fijan en `clippy.toml` del workspace al cerrar R2. Si una no existe
-en la versión fijada de la cadena, se cubre con `tool/check_names` y se registra en el `README.md` del
+Las opciones de Clippy de los verificadores se fijan en `clippy.toml` en R0; los futuros workspaces las fijan en su fase. Si una no existe
+en la versión fijada de la cadena, se cubre con `rust-checks names` y se registra en el `README.md` del
 workspace.
 
 ---
@@ -142,7 +142,7 @@ estructura cuyo nombre describe la petición (`CountedLoopBounds`, `RunRequest`)
 
 ---
 
-## 6. Frontera sin pánicos (`QUALITY-NO-PANIC`, propuesta)
+## 6. Frontera sin pánicos (`QUALITY-NO-PANIC`)
 
 «Ninguna excepción sin control cruza la frontera pública de un paquete» (`AGENTS.md` §5) se traduce en
 Rust a **ningún pánico alcanzable**:

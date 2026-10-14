@@ -26,7 +26,7 @@ jobs:
       - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart
         working-directory: packages/pseudolearn_core
   app:
-    runs-on: macos-26
+    runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2

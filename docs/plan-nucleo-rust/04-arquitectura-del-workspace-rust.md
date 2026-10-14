@@ -1,8 +1,8 @@
 # 04 · Arquitectura del workspace Rust
 
-> **Estado:** propuesta. Cuando se apruebe, el contenido de este documento pasa a los `README.md` de
-> los miembros nuevos, que son su fuente de verdad (`DOC-README-TRUTH`). Este documento deja de ser
-> normativo en ese momento. Los nombres de crates y módulos son provisionales hasta R0.
+> **Estado:** arquitectura de ADR-001 aprobada en R0; cada miembro adquiere implementación en su
+> fase. El README de cada miembro existente es su fuente de verdad operativa. Los verificadores de
+> R0 usan los crates de infraestructura descritos en su README; el motor sigue sin código hasta R4.
 
 ---
 

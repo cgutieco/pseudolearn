@@ -1999,8 +1999,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   Flutter localmente a la 3.47.5 (motor del 16 de septiembre) fallaron 176 de ellos con diferencias de entre el 0,03 % y
   el 1,7 % de píxeles, todas en el suavizado de bordes de texto, iconos y esquinas: ningún elemento se movió ni cambió de
   color. La restricción `>=3.24.0` admitía cualquier versión, y los workflows instalaban la última de `stable` en cada
-  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. Ningún workflow ejecuta
-  `flutter test`, por lo que nada lo detectó.
+  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. La CI ejecuta `flutter test` en cada push y PR.
 - **Elección:**
     - `environment.flutter` en `pubspec.yaml` declara la versión exacta (`3.47.5`). Es la única fuente: `flutter pub get`
       rechaza otra versión en local, y `push-production-macos.yml` y `push-production-windows-r2.yml` la leen con `flutter-version-file`
@@ -2015,6 +2014,18 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       primera actualización que olvide una.
     - *FVM u otro gestor de versiones:* añade una herramienta al entorno (§9 de `AGENTS.md` fija las cadenas de
       herramientas) para algo que `pubspec.yaml` y la acción de CI ya resuelven.
+
+
+### 4.48 Entorno de rasterización de goldens en CI
+
+- **Problema:** fijar Flutter no fija CoreText ni el suavizado del sistema operativo; una referencia
+  generada en macOS 27 difiere de macOS 26 aunque el layout y el SDK sean iguales.
+- **Elección:** los tests de la app usan Flutter exacto y el runner `xcode-27`, con macOS 27.0.1
+  arm64, que corresponde al entorno de las referencias versionadas. El comparador conserva igualdad
+  exacta de píxeles. Los verificadores y la suite completa corren en ese mismo job.
+- **Alternativas descartadas:** tolerancia de píxeles, omitir goldens o regenerarlos automáticamente
+  para cerrar CI, porque ocultan diferencias sin revisión. El runner está en vista previa: su
+  disponibilidad se comprueba por ejecución; cambiar de imagen requiere revisar los goldens.
 
 ---
 
@@ -2272,3 +2283,6 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 | App Store Review Guidelines 5.1.1(v)                              | Eliminación de cuenta iniciable desde la app, completa e inmediata, con revocación de Sign in with Apple.                                                                     | Enlazar a un formulario web o a soporte para eliminar la cuenta, por exigir salir de la aplicación.                                          |
 | Directrices de activos gráficos de App Store y Google Play        | Requisitos dimensionales (iPhone 6.9", iPad 13", Mac 16:10, Feature Graphic 1024×500), exigencia estricta de opacidad (sin canal alfa) y políticas de contenido en titulares. | Composición manual en herramientas externas y captura manual sobre simuladores por inducir desalineación visual y canales alfa involuntarios. |
 | Apple: valoraciones y reseñas (HIG) y `RequestReviewAction`      | Petición nativa tras un logro y no al abrir la app; tope de tres peticiones cada 365 días como criterio para elegir tres hitos.                                               | Invocar la petición desde un botón y filtrar antes con un diálogo propio de satisfacción, por ir contra las directrices de Apple.            |
+
+El inventario oficial de [xcode-27](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)
+se usa para seleccionar macOS y arquitectura del entorno de prueba, no para definir el producto.
