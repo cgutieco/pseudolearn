@@ -14,6 +14,8 @@ Imports internos permitidos: model, translation. Prohibidas las capas superiores
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+diagnosticos compara multiconjuntos; diagnosticos_ordenados compara en orden los mismos campos observables. Ninguna comparación ordena ni deduplica resultados del sujeto. La semilla del caso se transmite sin transformación a seed del protocolo; su ausencia usa 42. La fuente y sus tramos se transmiten originales, también en casos de normalización NFC.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
@@ -23,7 +25,7 @@ Reglas y límites en `architecture.yaml` del miembro; código inglés sin coment
 
 ## 6. Decisiones de producto que condicionan el código
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

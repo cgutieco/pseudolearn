@@ -14,6 +14,8 @@ Imports internos permitidos: model, change. Prohibidas las capas superiores y lo
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Extrae recursos normativos del campo valor de definiciones: vocabulario, firmas, fichas de diagnósticos y gramática. Los incorpora a see-export/1; la CLI materializa el vocabulario consumidor y los catálogos derivados. Rechaza recursos duplicados. El vocabulario consumidor incluye alias por idioma; function: distingue nombres de funciones de tokens reservados, para preservar variables homónimas.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
@@ -23,7 +25,7 @@ Reglas y límites en `architecture.yaml` del miembro; código inglés sin coment
 
 ## 6. Decisiones de producto que condicionan el código
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

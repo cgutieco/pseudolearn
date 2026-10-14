@@ -66,12 +66,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.1.0#R1",
+      "regla": "SEE.FORMAT@0.2.0#R1",
       "verificacion": "crates/see_format/tests/parsing.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.GENERATION@0.1.0#R1",
+      "regla": "SEE.GENERATION@0.2.0#R1",
       "verificacion": "crates/see_cli/tests/commands.rs",
       "estado": "cumple"
     },
@@ -116,12 +116,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.VALIDATION@0.1.0#R1",
+      "regla": "SEE.VALIDATION@0.2.0#R1",
       "verificacion": "crates/see_validation/tests/lib.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.VALIDATION@0.1.0#R2",
+      "regla": "SEE.VALIDATION@0.2.0#R2",
       "verificacion": "crates/see_validation/tests/lib.rs",
       "estado": "cumple"
     },
@@ -133,6 +133,21 @@
     {
       "regla": "SEE.VERSIONING@0.1.0#R2",
       "verificacion": "crates/see_validation/tests/lifecycle.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.FORMAT@0.2.0#R2",
+      "verificacion": "crates/see_validation/tests/schema.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.GENERATION@0.2.0#R2",
+      "verificacion": "crates/see_export/tests/resources.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.VALIDATION@0.2.0#R3",
+      "verificacion": "crates/see_validation/tests/resources.rs",
       "estado": "cumple"
     }
   ]

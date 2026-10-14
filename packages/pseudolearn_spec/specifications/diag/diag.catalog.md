@@ -1,0 +1,2596 @@
+---
+{
+  "formato": "see/1",
+  "id": "DIAG.CATALOG",
+  "titulo": "Catálogo bilingüe de diagnósticos",
+  "dominio": "lenguaje",
+  "estado": "experimental",
+  "version": "0.1.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "sujetos": [
+    "reference"
+  ],
+  "resumen": "Catálogo bilingüe de diagnósticos.",
+  "edicion": {
+    "introducida_en": "2026"
+  },
+  "depende_de": [
+    {
+      "id": "DIAG.MODEL",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "requiere"
+    },
+    {
+      "id": "DIAG.SEVERITY.POLICY",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Catálogo bilingüe de diagnósticos
+
+```definicion
+{
+  "id": "D1",
+  "termino": "diagnostics",
+  "texto": "Fichas de diagnóstico y plantillas de presentación de la edición vigente.",
+  "valor": {
+    "expectedSubroutineName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del subprograma",
+        "en": "Expected subroutine name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedSubroutineLeftParenthesis": {
+      "mensajes": {
+        "es": "Se esperaba el paréntesis de apertura en la cabecera del subprograma",
+        "en": "Expected opening parenthesis in subroutine header"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedSubroutine": {
+      "mensajes": {
+        "es": "Subprograma sin cerrar al final del archivo",
+        "en": "Unclosed subroutine at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "subroutineInsideAlgorithm": {
+      "mensajes": {
+        "es": "No se permite declarar un subprograma dentro del cuerpo del algoritmo",
+        "en": "Declaring a subroutine inside the algorithm body is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "subroutineInsideSubroutine": {
+      "mensajes": {
+        "es": "No se permite declarar un subprograma dentro de otro subprograma",
+        "en": "Declaring a subroutine inside another subroutine is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "returnOutsideSubroutine": {
+      "mensajes": {
+        "es": "La instrucción de retorno solo es válida dentro de un subprograma",
+        "en": "Return statement is only valid inside a subroutine"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedParameterName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del parámetro",
+        "en": "Expected parameter name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicatePassingModifier": {
+      "mensajes": {
+        "es": "No se puede especificar Por Valor y Por Referencia en el mismo parámetro",
+        "en": "Cannot specify both By Value and By Reference for the same parameter"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "passingModifierBeforeParameterName": {
+      "mensajes": {
+        "es": "El modificador de paso debe colocarse después del tipo del parámetro",
+        "en": "Passing modifier must be placed after parameter type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "invalidArrayReturnType": {
+      "mensajes": {
+        "es": "El tipo de retorno no puede ser un arreglo",
+        "en": "Return type cannot be an array"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "multipleAlgorithms": {
+      "mensajes": {
+        "es": "No se permite más de un algoritmo por archivo fuente",
+        "en": "Multiple algorithms in a single source file are not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unexpectedTokenOutsideProgramUnit": {
+      "mensajes": {
+        "es": "Elemento inesperado fuera del algoritmo y de los subprogramas: {lexeme}",
+        "en": "Unexpected token outside algorithm and subroutines: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "expectedThenKeyword": {
+      "mensajes": {
+        "es": "Se esperaba la palabra condicional intermedia",
+        "en": "Expected then keyword"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedIfStatement": {
+      "mensajes": {
+        "es": "Estructura condicional sin cerrar",
+        "en": "Unclosed if statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicateElseClause": {
+      "mensajes": {
+        "es": "La estructura condicional no puede tener más de una rama alternativa",
+        "en": "If statement cannot have more than one else branch"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedDoKeyword": {
+      "mensajes": {
+        "es": "Se esperaba la palabra intermedia de acción",
+        "en": "Expected do keyword"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedBranchSeparator": {
+      "mensajes": {
+        "es": "Se esperaba el separador de rama",
+        "en": "Expected branch separator"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "nonLiteralSwitchCaseLabel": {
+      "mensajes": {
+        "es": "Las etiquetas del selector múltiple deben ser valores literales",
+        "en": "Switch case labels must be literal values"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicateSwitchCaseLabel": {
+      "mensajes": {
+        "es": "Etiqueta duplicada en el selector múltiple: {lexeme}",
+        "en": "Duplicate label in switch statement: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateDefaultCase": {
+      "mensajes": {
+        "es": "No puede haber más de una rama por defecto",
+        "en": "Cannot have more than one default branch"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "invalidDefaultCasePosition": {
+      "mensajes": {
+        "es": "La rama por defecto debe ser la última del selector múltiple",
+        "en": "Default branch must be the last branch in switch statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedSwitchStatement": {
+      "mensajes": {
+        "es": "Selector múltiple sin cerrar",
+        "en": "Unclosed switch statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedWhileStatement": {
+      "mensajes": {
+        "es": "Bucle condicional sin cerrar",
+        "en": "Unclosed while loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedRepeatStatement": {
+      "mensajes": {
+        "es": "Bucle de repetición sin cerrar",
+        "en": "Unclosed repeat loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedForLoopVariable": {
+      "mensajes": {
+        "es": "Se esperaba la variable de control del bucle contado",
+        "en": "Expected control variable for counted loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedToKeyword": {
+      "mensajes": {
+        "es": "Se esperaba el límite final del bucle contado",
+        "en": "Expected to keyword for counted loop limit"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "missingStepClause": {
+      "mensajes": {
+        "es": "Se requiere especificar el paso del bucle contado",
+        "en": "Step clause is required in counted loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedForStatement": {
+      "mensajes": {
+        "es": "Bucle contado sin cerrar",
+        "en": "Unclosed for loop"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "mismatchedBlockEnd": {
+      "mensajes": {
+        "es": "El cierre no corresponde a la estructura abierta: {lexeme}",
+        "en": "Closing token does not match open block: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unexpectedBlockEnd": {
+      "mensajes": {
+        "es": "Cierre de estructura sin bloque abierto correspondiente: {lexeme}",
+        "en": "Unexpected block closing without matching open block: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unexpectedStatement": {
+      "mensajes": {
+        "es": "Instrucción o elemento no reconocido: {lexeme}",
+        "en": "Unrecognized statement or token: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unsupportedStructuredConstruct": {
+      "mensajes": {
+        "es": "Instrucción fuera del alcance estructurado: {lexeme}",
+        "en": "Construct not supported in structured programming: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "maxDiagnosticsExceeded": {
+      "mensajes": {
+        "es": "Se ha alcanzado el límite máximo de diagnósticos sintácticos",
+        "en": "Maximum limit of syntactic diagnostics exceeded"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedClassName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre de la clase",
+        "en": "Expected class name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedClass": {
+      "mensajes": {
+        "es": "Clase sin cerrar al final del archivo",
+        "en": "Unclosed class at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "classInsideAlgorithm": {
+      "mensajes": {
+        "es": "No se permite declarar una clase dentro del cuerpo del algoritmo",
+        "en": "Declaring a class inside the algorithm body is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "classInsideSubroutine": {
+      "mensajes": {
+        "es": "No se permite declarar una clase dentro de un subprograma",
+        "en": "Declaring a class inside a subroutine is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "nestedClassNotSupported": {
+      "mensajes": {
+        "es": "No se permite declarar una clase dentro de otra clase",
+        "en": "Declaring a class inside another class is not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "subroutineInsideClass": {
+      "mensajes": {
+        "es": "No se permite declarar un subprograma dentro de una clase; use la declaración de método",
+        "en": "Declaring a subroutine inside a class is not allowed; use a method declaration"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "multipleInheritanceNotSupported": {
+      "mensajes": {
+        "es": "La herencia múltiple no está permitida; solo se admite herencia simple",
+        "en": "Multiple inheritance is not allowed; only single inheritance is supported"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicateVisibilityModifier": {
+      "mensajes": {
+        "es": "No se puede especificar más de un modificador de visibilidad en el mismo miembro",
+        "en": "Cannot specify more than one visibility modifier for the same member"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "constructorVisibilityNotAllowed": {
+      "mensajes": {
+        "es": "El constructor no admite modificador de visibilidad; es siempre público",
+        "en": "Constructor does not allow a visibility modifier; it is always public"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "constructorReturnTypeNotAllowed": {
+      "mensajes": {
+        "es": "El constructor no admite tipo de retorno",
+        "en": "Constructor does not allow a return type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicateConstructor": {
+      "mensajes": {
+        "es": "No se permite más de un constructor en la misma clase",
+        "en": "Multiple constructors in the same class are not allowed"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "methodNamedAsClass": {
+      "mensajes": {
+        "es": "Para declarar el constructor use la palabra reservada Constructor en lugar del nombre de la clase",
+        "en": "To declare a constructor use the keyword Constructor instead of the class name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "methodOutsideClass": {
+      "mensajes": {
+        "es": "La declaración de método solo es válida dentro de una clase",
+        "en": "Method declaration is only valid inside a class"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "constructorOutsideClass": {
+      "mensajes": {
+        "es": "El constructor solo es válido dentro de una clase",
+        "en": "Constructor is only valid inside a class"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedMethod": {
+      "mensajes": {
+        "es": "Método sin cerrar al final del archivo",
+        "en": "Unclosed method at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "integerLiteralOutOfRange": {
+      "mensajes": {
+        "es": "El literal entero {lexeme} está fuera del rango de 64 bits con signo",
+        "en": "Integer literal {lexeme} is out of the signed 64-bit range"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "divisionByZero": {
+      "mensajes": {
+        "es": "División por cero",
+        "en": "Division by zero"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "integerOverflow": {
+      "mensajes": {
+        "es": "La operación produce un entero fuera del rango de 64 bits con signo",
+        "en": "The operation produces an integer outside the signed 64-bit range"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "nonFiniteRealResult": {
+      "mensajes": {
+        "es": "La operación produce un valor real no finito",
+        "en": "The operation produces a non-finite real value"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "negativeIntegerExponent": {
+      "mensajes": {
+        "es": "La potencia entera no admite un exponente negativo: {exponent}",
+        "en": "Integer power does not allow a negative exponent: {exponent}"
+      },
+      "argumentos": [
+        "exponent"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "exponent": "entero"
+      }
+    },
+    "arrayIndexOutOfRange": {
+      "mensajes": {
+        "es": "Índice {index} fuera de rango para un arreglo de tamaño {size}",
+        "en": "Index {index} is out of range for an array of size {size}"
+      },
+      "argumentos": [
+        "index",
+        "size"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "index": "numero",
+        "size": "numero"
+      }
+    },
+    "negativeArraySize": {
+      "mensajes": {
+        "es": "El tamaño de un arreglo no puede ser negativo: {size}",
+        "en": "An array size cannot be negative: {size}"
+      },
+      "argumentos": [
+        "size"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "size": "numero"
+      }
+    },
+    "zeroStepInCountedLoop": {
+      "mensajes": {
+        "es": "El paso de un bucle contado no puede ser cero",
+        "en": "The step of a counted loop cannot be zero"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "recursionDepthExceeded": {
+      "mensajes": {
+        "es": "Se alcanzó el límite de profundidad de recursión: {limit}",
+        "en": "Recursion depth limit reached: {limit}"
+      },
+      "argumentos": [
+        "limit"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
+    "uninitializedVariableRead": {
+      "mensajes": {
+        "es": "La variable {lexeme} se lee sin haber sido inicializada",
+        "en": "Variable {lexeme} is read without being initialized"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "stringToNumberConversionFailed": {
+      "mensajes": {
+        "es": "El texto {lexeme} no representa un número",
+        "en": "Text {lexeme} does not represent a number"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "stringPositionOutOfRange": {
+      "mensajes": {
+        "es": "Posición {position} fuera de rango para una cadena de longitud {length}",
+        "en": "Position {position} is out of range for a string of length {length}"
+      },
+      "argumentos": [
+        "length",
+        "position"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "length": "numero",
+        "position": "numero"
+      }
+    },
+    "invalidCharacterCode": {
+      "mensajes": {
+        "es": "El código {code} no designa ningún punto de código Unicode válido",
+        "en": "Code {code} does not designate a valid Unicode code point"
+      },
+      "argumentos": [
+        "code"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "code": "numero"
+      }
+    },
+    "subroutineEndedWithoutReturn": {
+      "mensajes": {
+        "es": "Un camino de ejecución de {lexeme} llega al cierre sin retornar",
+        "en": "An execution path of {lexeme} reaches the end without returning"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "readValueTypeMismatch": {
+      "mensajes": {
+        "es": "Se esperaba un valor de tipo {expected}, y se recibió {found}",
+        "en": "Expected a value of type {expected}, and received {found}"
+      },
+      "argumentos": [
+        "expected",
+        "found"
+      ],
+      "politica": "E",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "expected": "tipo",
+        "found": "lexema"
+      }
+    },
+    "privateMemberAccess": {
+      "mensajes": {
+        "es": "No se puede acceder al miembro privado {lexeme} de la clase {className}",
+        "en": "Cannot access private member {lexeme} of class {className}"
+      },
+      "argumentos": [
+        "className",
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "className": "lexema",
+        "lexeme": "lexema"
+      }
+    },
+    "expectedAlgorithmStart": {
+      "mensajes": {
+        "es": "Se esperaba el inicio del algoritmo",
+        "en": "Expected algorithm start"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedAlgorithmName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del algoritmo",
+        "en": "Expected algorithm name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedAlgorithm": {
+      "mensajes": {
+        "es": "Algoritmo sin cerrar al final del archivo",
+        "en": "Unclosed algorithm at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unexpectedTokenOutsideAlgorithm": {
+      "mensajes": {
+        "es": "Elemento inesperado fuera del algoritmo: {lexeme}",
+        "en": "Unexpected token outside algorithm: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "missingStatementTerminator": {
+      "mensajes": {
+        "es": "Se esperaba un punto y coma al final de la sentencia",
+        "en": "Expected a semicolon at the end of the statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedIdentifierInDeclaration": {
+      "mensajes": {
+        "es": "Se esperaba al menos una variable para declarar",
+        "en": "Expected at least one variable to declare"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "reservedLexemeUsedAsName": {
+      "mensajes": {
+        "es": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+        "en": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name."
+      },
+      "argumentos": [
+        "lexeme",
+        "token"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "token": "token"
+      }
+    },
+    "expectedTypeConnector": {
+      "mensajes": {
+        "es": "Se esperaba la palabra de tipo",
+        "en": "Expected type connector"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedType": {
+      "mensajes": {
+        "es": "Se esperaba un tipo de dato primitivo",
+        "en": "Expected a primitive data type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "initializationInDeclarationNotAllowed": {
+      "mensajes": {
+        "es": "La declaración de variables no admite asignación de valor inicial",
+        "en": "Variable declaration does not support initial value assignment"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedIdentifierInDimension": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del arreglo a dimensionar",
+        "en": "Expected array name to dimension"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "emptyDimensionList": {
+      "mensajes": {
+        "es": "El dimensionamiento requiere al menos una dimensión",
+        "en": "Dimension declaration requires at least one dimension"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "invalidAssignmentTarget": {
+      "mensajes": {
+        "es": "El destino de la asignación no es una variable o elemento válido",
+        "en": "Assignment target is not a valid variable or array element"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedAssignmentOperator": {
+      "mensajes": {
+        "es": "Se esperaba el operador de asignación",
+        "en": "Expected assignment operator"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedReadTarget": {
+      "mensajes": {
+        "es": "La sentencia de lectura requiere al menos una variable",
+        "en": "Read statement requires at least one variable"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "invalidReadTarget": {
+      "mensajes": {
+        "es": "El elemento a leer no es una variable o elemento válido",
+        "en": "Read target is not a valid variable or array element"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unexpectedModifierPosition": {
+      "mensajes": {
+        "es": "El modificador sin salto debe colocarse al final de la sentencia",
+        "en": "Without newline modifier must be placed at the end of the statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "duplicateModifier": {
+      "mensajes": {
+        "es": "Modificador duplicado",
+        "en": "Duplicate modifier"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedClassNameInInstantiation": {
+      "mensajes": {
+        "es": "Se esperaba el nombre de la clase tras la palabra reservada Nuevo",
+        "en": "Expected class name after keyword new"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "missingInstantiationParentheses": {
+      "mensajes": {
+        "es": "La instanciación requiere paréntesis con o sin argumentos",
+        "en": "Instantiation requires parentheses with or without arguments"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedMemberNameAfterDot": {
+      "mensajes": {
+        "es": "Se esperaba un nombre de miembro tras el operador de acceso punto",
+        "en": "Expected member name after dot access operator"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "thisOutsideMethod": {
+      "mensajes": {
+        "es": "La palabra reservada Este solo es válida dentro de un método o constructor",
+        "en": "Keyword this is only valid inside a method or constructor"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedMemberNameAfterThis": {
+      "mensajes": {
+        "es": "La palabra reservada Este debe ir seguida de un acceso a miembro (.nombre)",
+        "en": "Keyword this must be followed by a member access (.name)"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "superOutsideMethod": {
+      "mensajes": {
+        "es": "La palabra reservada Super solo es válida dentro de un método o constructor",
+        "en": "Keyword super is only valid inside a method or constructor"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "superInClassWithoutSuperclass": {
+      "mensajes": {
+        "es": "No se puede usar Super en una clase que no hereda de ninguna superclase",
+        "en": "Cannot use super in a class that does not inherit from any superclass"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "superNotFollowedByCall": {
+      "mensajes": {
+        "es": "La palabra reservada Super solo puede usarse como destino de llamada a método o constructor",
+        "en": "Keyword super can only be used as target of a method or constructor call"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedInterfaceConstruct": {
+      "mensajes": {
+        "es": "Las interfaces no forman parte de PseudoLearn",
+        "en": "Interfaces are not supported in PseudoLearn"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedAbstractConstruct": {
+      "mensajes": {
+        "es": "Las clases y métodos abstractos no forman parte de PseudoLearn",
+        "en": "Abstract classes and methods are not supported in PseudoLearn"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedStaticConstruct": {
+      "mensajes": {
+        "es": "Los miembros estáticos no forman parte de PseudoLearn",
+        "en": "Static members are not supported in PseudoLearn"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedProtectedConstruct": {
+      "mensajes": {
+        "es": "La visibilidad protegida no forma parte de PseudoLearn; use Publico o Privado",
+        "en": "Protected visibility is not supported in PseudoLearn; use public or private"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedGenericsConstruct": {
+      "mensajes": {
+        "es": "Los tipos genéricos no forman parte de PseudoLearn",
+        "en": "Generic types are not supported in PseudoLearn"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unsupportedExceptionConstruct": {
+      "mensajes": {
+        "es": "El manejo de excepciones estructurado no forma parte de PseudoLearn",
+        "en": "Structured exception handling is not supported in PseudoLearn"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "undeclaredVariable": {
+      "mensajes": {
+        "es": "Variable no declarada: {lexeme}",
+        "en": "Undeclared variable: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "B",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "variableUsedBeforeDeclaration": {
+      "mensajes": {
+        "es": "La variable {lexeme} se usa antes de su declaración",
+        "en": "Variable {lexeme} is used before its declaration"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateVariableDeclaration": {
+      "mensajes": {
+        "es": "Declaración duplicada de la variable {lexeme} en el mismo ámbito",
+        "en": "Duplicate declaration of variable {lexeme} in the same scope"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateParameterName": {
+      "mensajes": {
+        "es": "Parámetro duplicado: {lexeme}",
+        "en": "Duplicate parameter name: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateSubroutine": {
+      "mensajes": {
+        "es": "Declaración duplicada del subprograma {lexeme}",
+        "en": "Duplicate declaration of subroutine {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateClass": {
+      "mensajes": {
+        "es": "Declaración duplicada de la clase {lexeme}",
+        "en": "Duplicate declaration of class {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "classAndSubroutineSameName": {
+      "mensajes": {
+        "es": "Conflicto de nombres: la clase y el subprograma no pueden llamarse {lexeme}",
+        "en": "Name conflict: class and subroutine cannot both be named {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "subroutineAndVariableSameName": {
+      "mensajes": {
+        "es": "La variable {lexeme} no puede llamarse igual que un subprograma en el mismo ámbito",
+        "en": "Variable {lexeme} cannot have the same name as a subroutine in the same scope"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undeclaredSubroutine": {
+      "mensajes": {
+        "es": "Subprograma no declarado: {lexeme}",
+        "en": "Undeclared subroutine: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undeclaredClass": {
+      "mensajes": {
+        "es": "Clase no declarada: {lexeme}",
+        "en": "Undeclared class: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undeclaredSuperclass": {
+      "mensajes": {
+        "es": "La superclase {lexeme} no está declarada",
+        "en": "Superclass {lexeme} is not declared"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "circularInheritance": {
+      "mensajes": {
+        "es": "Herencia circular detectada en la clase {lexeme}",
+        "en": "Circular inheritance detected in class {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateMember": {
+      "mensajes": {
+        "es": "Miembro duplicado {lexeme} en la clase",
+        "en": "Duplicate member {lexeme} in class"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "inheritedAttributeShadowed": {
+      "mensajes": {
+        "es": "El atributo {lexeme} ya está declarado en una superclase",
+        "en": "Attribute {lexeme} is already declared in a superclass"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "incompatibleMethodOverride": {
+      "mensajes": {
+        "es": "La firma del método sobrescrito {lexeme} no coincide con la de la superclase",
+        "en": "Overridden method {lexeme} signature does not match superclass method"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "missingSuperConstructorCall": {
+      "mensajes": {
+        "es": "Falta la invocación obligatoria al constructor de la superclase",
+        "en": "Missing required call to superclass constructor"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "invalidSuperConstructorCallPosition": {
+      "mensajes": {
+        "es": "La invocación al constructor de la superclase debe ser la primera sentencia",
+        "en": "Call to superclass constructor must be the first statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "returnWithValueInConstructor": {
+      "mensajes": {
+        "es": "Un constructor no puede retornar un valor",
+        "en": "A constructor cannot return a value"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "identifierMatchesFieldWithoutThis": {
+      "mensajes": {
+        "es": "Acceso a atributo no calificado; use Este.{lexeme}",
+        "en": "Unqualified field access; use this.{lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undefinedMember": {
+      "mensajes": {
+        "es": "Miembro no definido: {lexeme}",
+        "en": "Undefined member: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "variableDeclaredNeverUsed": {
+      "mensajes": {
+        "es": "Variable declarada y nunca usada: {lexeme}",
+        "en": "Variable declared but never used: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "variableAssignedNeverRead": {
+      "mensajes": {
+        "es": "Variable asignada pero nunca leída: {lexeme}",
+        "en": "Variable assigned but never read: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unusedParameter": {
+      "mensajes": {
+        "es": "Parámetro nunca usado: {lexeme}",
+        "en": "Parameter never used: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unusedSubroutine": {
+      "mensajes": {
+        "es": "Subprograma declarado pero nunca llamado: {lexeme}",
+        "en": "Subroutine declared but never called: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unrecognizedCharacter": {
+      "mensajes": {
+        "es": "Carácter no reconocido: {lexeme}",
+        "en": "Unrecognized character: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "lexical",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unterminatedString": {
+      "mensajes": {
+        "es": "Cadena de texto sin cerrar",
+        "en": "Unterminated string literal"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "lexical",
+      "tipos_argumentos": {}
+    },
+    "invalidEscapeSequence": {
+      "mensajes": {
+        "es": "Secuencia de escape no válida: {lexeme}",
+        "en": "Invalid escape sequence: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "lexical",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "expectedExpression": {
+      "mensajes": {
+        "es": "Se esperaba una expresión",
+        "en": "Expected an expression"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unexpectedTokenInExpression": {
+      "mensajes": {
+        "es": "Elemento inesperado en la expresión: {lexeme}",
+        "en": "Unexpected token in expression: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unclosedParenthesis": {
+      "mensajes": {
+        "es": "Paréntesis de apertura sin cerrar",
+        "en": "Unclosed opening parenthesis"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unexpectedClosingParenthesis": {
+      "mensajes": {
+        "es": "Paréntesis de cierre inesperado",
+        "en": "Unexpected closing parenthesis"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "emptyParentheses": {
+      "mensajes": {
+        "es": "Los paréntesis no pueden estar vacíos",
+        "en": "Parentheses cannot be empty"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedBracket": {
+      "mensajes": {
+        "es": "Corchete de apertura sin cerrar",
+        "en": "Unclosed opening bracket"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "emptyIndexList": {
+      "mensajes": {
+        "es": "El acceso a arreglo requiere al menos un índice",
+        "en": "Array access requires at least one index"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "trailingComma": {
+      "mensajes": {
+        "es": "Coma sobrante",
+        "en": "Trailing comma"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "chainedArrayAccess": {
+      "mensajes": {
+        "es": "El acceso multidimensional encadenado no está permitido; use corchetes con comas",
+        "en": "Chained multidimensional array access is not allowed; use single brackets with commas"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "incompatibleTypesInAssignment": {
+      "mensajes": {
+        "es": "Tipo incompatible en la asignación: no se puede asignar {found} a {expected}",
+        "en": "Incompatible types in assignment: cannot assign {found} to {expected}"
+      },
+      "argumentos": [
+        "expected",
+        "found"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "expected": "tipo|lexema",
+        "found": "tipo|lexema"
+      }
+    },
+    "incompatibleOperandTypes": {
+      "mensajes": {
+        "es": "Tipos incompatibles para el operador {lexeme}",
+        "en": "Incompatible types for operator {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "cannotConcatenateNumberWithText": {
+      "mensajes": {
+        "es": "No se puede concatenar un número con texto; use la función de conversión o separe las expresiones con coma",
+        "en": "Cannot concatenate number with text; use conversion function or separate expressions with comma"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "divOrModWithRealOperand": {
+      "mensajes": {
+        "es": "Los operadores div y mod solo admiten enteros; use truncamiento o redondeo para valores reales",
+        "en": "The div and mod operators only accept integers; use trunc or round for real values"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "noOrderBetweenBooleans": {
+      "mensajes": {
+        "es": "Los operadores relacionales de orden no están permitidos entre valores lógicos",
+        "en": "Relational order operators are not permitted between boolean values"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "realEqualityComparison": {
+      "mensajes": {
+        "es": "Comparación de igualdad entre valores reales; los errores de precisión pueden producir resultados inesperados",
+        "en": "Equality comparison between real values; precision errors may yield unexpected results"
+      },
+      "argumentos": [],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "argumentCountMismatch": {
+      "mensajes": {
+        "es": "Número incorrecto de argumentos: se esperaban {expected} pero se encontraron {found}",
+        "en": "Incorrect number of arguments: expected {expected} but found {found}"
+      },
+      "argumentos": [
+        "expected",
+        "found"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "expected": "numero",
+        "found": "numero"
+      }
+    },
+    "incompatibleArgumentType": {
+      "mensajes": {
+        "es": "Tipo de argumento incompatible para el parámetro {lexeme}",
+        "en": "Incompatible argument type for parameter {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "byReferenceArgumentRequiresDesignator": {
+      "mensajes": {
+        "es": "Un argumento pasado por referencia debe ser una variable o elemento de arreglo",
+        "en": "An argument passed by reference must be a variable or array element"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "byReferenceArgumentTypeMismatch": {
+      "mensajes": {
+        "es": "El tipo del argumento pasado por referencia a {lexeme} debe coincidir exactamente con el parámetro",
+        "en": "The type of argument passed by reference to {lexeme} must match parameter type exactly"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "incompatibleReturnType": {
+      "mensajes": {
+        "es": "El tipo de la expresión retornada no coincide con el tipo de retorno declarado",
+        "en": "The returned expression type does not match the declared return type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "returnExpressionInVoidSubroutine": {
+      "mensajes": {
+        "es": "Un subprograma o método sin tipo de retorno no puede retornar un valor",
+        "en": "A subroutine or method with no return type cannot return a value"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "missingReturnExpression": {
+      "mensajes": {
+        "es": "Se esperaba una expresión en la sentencia de retorno",
+        "en": "Expected an expression in the return statement"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "subroutineWithoutReturn": {
+      "mensajes": {
+        "es": "El subprograma {lexeme} declara tipo de retorno pero su cuerpo no contiene ninguna sentencia Retornar",
+        "en": "Subroutine {lexeme} declares a return type but its body contains no return statement"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "callAsExpressionWithoutReturnType": {
+      "mensajes": {
+        "es": "El subprograma {lexeme} no devuelve ningún valor y no puede usarse dentro de una expresión",
+        "en": "Subroutine {lexeme} does not return a value and cannot be used in an expression"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "discardedReturnValue": {
+      "mensajes": {
+        "es": "Se descarta el valor devuelto por el subprograma {lexeme}",
+        "en": "Return value from subroutine {lexeme} is discarded"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "nonBooleanCondition": {
+      "mensajes": {
+        "es": "La condición debe ser una expresión de tipo Lógico",
+        "en": "Condition must be a boolean expression"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "nonIntegerForBound": {
+      "mensajes": {
+        "es": "La variable de control y los límites del bucle Para deben ser de tipo Entero",
+        "en": "For loop control variable and bounds must be of integer type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "nonIntegerArrayIndex": {
+      "mensajes": {
+        "es": "El índice del arreglo debe ser de tipo Entero",
+        "en": "Array index must be of integer type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "arrayDimensionCountMismatch": {
+      "mensajes": {
+        "es": "Número de índices incorrecto para el arreglo {lexeme}",
+        "en": "Incorrect number of indices for array {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "arrayCannotBeUsedAsValue": {
+      "mensajes": {
+        "es": "Un arreglo no puede usarse como valor escalar en una expresión o asignación",
+        "en": "An array cannot be used as a scalar value in an expression or assignment"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "objectCannotBeWritten": {
+      "mensajes": {
+        "es": "No se puede escribir un objeto directamente en la salida; acceda a sus atributos",
+        "en": "Cannot write an object directly to output; access its attributes"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "incompatibleSwitchCaseType": {
+      "mensajes": {
+        "es": "El tipo de la etiqueta del caso no es compatible con el selector",
+        "en": "Case label type is not compatible with switch selector"
+      },
+      "argumentos": [],
+      "politica": "B",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "inferredVariableType": {
+      "mensajes": {
+        "es": "Tipo inferido para {lexeme}: {type}",
+        "en": "Inferred type for {lexeme}: {type}"
+      },
+      "argumentos": [
+        "lexeme",
+        "type"
+      ],
+      "politica": "D",
+      "severidad": {
+        "estricto": "info",
+        "flexible": "info"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "type": "tipo"
+      }
+    },
+    "widenedVariableType": {
+      "mensajes": {
+        "es": "Tipo de {lexeme} ampliado de Entero a Real",
+        "en": "Type of {lexeme} widened from Integer to Real"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "D",
+      "severidad": {
+        "estricto": "info",
+        "flexible": "info"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "typeConflictOnInferredVariable": {
+      "mensajes": {
+        "es": "Conflicto de tipos para la variable {lexeme}: no se puede reasignar a un tipo incompatible",
+        "en": "Type conflict for variable {lexeme}: cannot reassign to incompatible type"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "variableUsedUninitialized": {
+      "mensajes": {
+        "es": "La variable {lexeme} se usa sin haber sido inicializada",
+        "en": "Variable {lexeme} is used without being initialized"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "B",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "controlVariableModified": {
+      "mensajes": {
+        "es": "La variable de control {lexeme} se modifica dentro del bucle",
+        "en": "Control variable {lexeme} is modified inside the loop"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      },
+      "clase": "semantic",
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      }
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "D1 declara códigos, clases, políticas, argumentos y plantillas bilingües. Cada código tiene ficha completa, iguales marcadores en español e inglés y severidad en ambos rigores. Identidades de código son independientes del idioma; la exportación es fuente del catálogo consumidor. Las situaciones adicionales normadas por reglas de lenguaje se registran con ficha propia, sin reutilizar códigos genéricos.",
+  "verificacion": [
+    "C1",
+    "C2"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1 / 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1 / 0;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "divisionByZero"
+    }
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```

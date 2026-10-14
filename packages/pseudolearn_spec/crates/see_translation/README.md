@@ -14,6 +14,8 @@ Imports internos permitidos: model. Prohibidas las capas superiores y los sujeto
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+El vocabulario consumidor incluye alias derivados, con prioridad de forma canónica al reimprimir. Las identidades con prefijo function: solo se traducen en posición de llamada; nunca se renombran variables que oculten nombres de funciones ni se cuentan como reservadas para colisiones. Los nombres declarados de subprogramas, métodos y clases y los accesos detrás de punto conservan identidad aunque coincidan con una función incorporada. Se preservan literales, comentarios y fronteras de identificador.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 

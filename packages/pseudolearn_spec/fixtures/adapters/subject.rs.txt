@@ -17,6 +17,9 @@ fn main() {
             break;
         } else if mode == "wrong-kind" {
             println!("{{\"kind\":\"unexpected\"}}");
+        } else if mode == "seed" {
+            let seed = if line.contains("\"seed\":7") { "7" } else { "42" };
+            println!("{{\"kind\":\"execute\",\"tree\":true,\"diagnostics\":[],\"output\":\"{seed}\\n\",\"termination\":{{\"kind\":\"completed\"}}}}");
         } else {
             let kind = if line.contains("analyze") { "analyze" } else { "execute" };
             println!("{{\"kind\":\"{kind}\",\"tree\":true,\"diagnostics\":[],\"output\":\"1\\n\",\"termination\":{{\"kind\":\"completed\"}}}}");

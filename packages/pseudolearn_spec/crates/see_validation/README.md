@@ -14,6 +14,8 @@ Imports internos permitidos: model, graph, change. Prohibidas las capas superior
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Las definiciones admiten valor como objeto normativo. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
@@ -23,7 +25,7 @@ Reglas y límites en `architecture.yaml` del miembro; código inglés sin coment
 
 ## 6. Decisiones de producto que condicionan el código
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

@@ -5,7 +5,7 @@
   "titulo": "Exportación para consumidores",
   "dominio": "proceso",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -13,7 +13,14 @@
     "see"
   ],
   "resumen": "Exportación para consumidores.",
-  "depende_de": []
+  "depende_de": [],
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
+    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
+    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
+  }
 }
 ---
 
@@ -32,6 +39,15 @@
 }
 ```
 
-## Alcance
-
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "La exportación incluye recursos normativos de vocabulario, funciones, diagnósticos y gramática. El vocabulario consumidor, incluidos alias y función por identidad, se deriva del corpus; --check rechaza cualquier artefacto desactualizado.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Pruebas felices e infelices en las capas responsables y verificación local completa."
+}
+```

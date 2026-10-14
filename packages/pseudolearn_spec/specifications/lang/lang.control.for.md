@@ -5,7 +5,7 @@
   "titulo": "Bucle contado",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -22,6 +22,13 @@
   ],
   "edicion": {
     "introducida_en": "2026"
+  },
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
+    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
+    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
   }
 }
 ---
@@ -396,6 +403,125 @@
 }
 ```
 
-## Alcance
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El control es un identificador entero; límites y paso son enteros. Estricto exige paso explícito. El incremento usa aritmética entera comprobada, también tras la última iteración válida. El cuerpo vacío es admisible.",
+  "verificacion": [
+    "C10",
+    "C11",
+    "C12",
+    "C13"
+  ]
+}
+```
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+```caso
+{
+  "id": "C10",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 0 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 0 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
+  },
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "completed"
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 2 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 2 do\nendFor\nwrite counter;\nendAlgorithm\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "diagnosticos": [
+      {
+        "codigo": "missingStepClause",
+        "severidad": "error"
+      }
+    ]
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 2.5 Con Paso 1 Hacer\nEscribir counter;\nFinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 2.5 step 1 do\nwrite counter;\nendFor\nendAlgorithm\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "diagnosticos": [
+      {
+        "codigo": "nonIntegerForBound",
+        "severidad": "error"
+      }
+    ]
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 9223372036854775807 Hasta 9223372036854775807 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 9223372036854775807 to 9223372036854775807 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
+  },
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "integerOverflow"
+    }
+  },
+  "origen": "derivado"
+}
+```

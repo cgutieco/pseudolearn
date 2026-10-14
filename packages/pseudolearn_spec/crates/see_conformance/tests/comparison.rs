@@ -32,3 +32,23 @@ fn compares_spans_trees_termination_and_warning_severity() -> Result<(), String>
     assert!(!see_conformance::comparison::compare(&json!({"unknown":true}), &wrong).is_empty());
     Ok(())
 }
+
+#[test]
+fn observes_order_when_requested_without_changing_multiset_comparison() {
+    let expected = json!([{"codigo":"first"},{"codigo":"second"}]);
+    let actual = json!({"diagnostics":[{"code":"second"},{"code":"first"}]});
+    assert!(
+        see_conformance::comparison::compare(&json!({"diagnosticos":expected}), &actual).is_empty()
+    );
+    assert!(
+        !see_conformance::comparison::compare(&json!({"diagnosticos_ordenados":expected}), &actual)
+            .is_empty()
+    );
+    assert!(
+        see_conformance::comparison::compare(
+            &json!({"diagnosticos_ordenados":[]}),
+            &json!({"diagnostics":[]})
+        )
+        .is_empty()
+    );
+}

@@ -1,8 +1,37 @@
 use see_model::{Block, Corpus, contract::Vocabulary, field, strings};
 use std::path::Path;
 
+pub fn export(root: &Path, corpus: &Corpus, check: bool) -> Result<String, String> {
+    let exported = see_export::generate(corpus)?;
+    let resources = exported
+        .get("resources")
+        .ok_or("SEE-RESOURCE: missing export resources")?;
+    if resources.get("vocabulary").is_some() {
+        crate::storage::artifact(
+            &root.join("specifications/cases/vocabulary.json"),
+            &see_export::resources::vocabulary(resources)?,
+            check,
+        )?;
+        crate::storage::artifact(
+            &root.join("specifications/cases/catalogs.json"),
+            resources,
+            check,
+        )?;
+    }
+    crate::storage::artifact(&root.join("specifications/export.json"), &exported, check)
+}
+
 pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
     let mut errors = features(root, corpus)?;
+    let manifest = root.join("specifications/cases/migration.json");
+    if manifest.exists() {
+        let manifest = crate::storage::read_json(&manifest)?;
+        let index = std::fs::read_to_string(root.join("../pseudolearn_core/docs/language-spec.md"))
+            .map_err(|error| error.to_string())?;
+        if let Err(error) = see_validation::migration::check(&manifest, &index, corpus) {
+            errors.push(error);
+        }
+    }
     let path = root.join("specifications/cases/vocabulary.json");
     let vocabulary: Vocabulary = if path.exists() {
         crate::storage::read_json(&path)?

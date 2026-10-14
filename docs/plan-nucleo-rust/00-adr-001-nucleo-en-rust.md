@@ -17,7 +17,7 @@ pendiente de registrarse en `AGENTS.md` y en el `README.md` raíz cuando se apru
 - El núcleo Dart funciona, pero el diagnóstico ([02](../02-diagnostico-del-sistema-actual.md)) encontró
   37 hallazgos, once de ellos divergencias entre lo escrito y lo ejecutado. Sus tests verifican lo que
   el código hace, no lo que el lenguaje debe hacer.
-- La documentación vigente se contradice en varios puntos (H-02, H-04, H-07, H-18, H-37) porque **no
+- La documentación vigente se contradice en varios puntos (H-02, H-07, H-18, H-37) porque **no
   es ejecutable**.
 - Restricciones de plataforma ([05](../05-rendimiento-motor-y-compilacion.md) §3.4):
   - iOS prohíbe generar código ejecutable en tiempo de ejecución, así que en la app no hay JIT;

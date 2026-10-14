@@ -1,6 +1,6 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0 y R1 completadas; R2–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0 y R1 completadas; R2 verificada localmente, pendiente de publicación; R3–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -103,29 +103,29 @@ R0 Fundación
 
 ### R2 · Especificación del lenguaje vigente
 
-- [ ] **Experimentos:** E-10 y E-14.
+- [x] **Experimentos:** E-10 local y comprobaciones técnicas bilingües terminadas; estudio humano E-14 diferido por autorización explícita a la evolución posterior a R9.
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [ ] **Fase terminada:** verificaciones locales completas; push pendiente de confirmación.
 
 - **Depende de.** R1 y E-15 aprobado.
 - **Contenido.**
-  - [ ] Las especificaciones `LANG`, `DIAG` y `LIB` de [03](03-catalogo-de-especificaciones.md) §2.2–2.4,
+  - [x] Las especificaciones `LANG`, `DIAG` y `LIB` de [03](03-catalogo-de-especificaciones.md) §2.2–2.4,
      en el orden del grafo de §3 de ese documento.
-  - [ ] `LANG.SYNTAX.GRAMMAR`: la gramática formal que `language-spec.md` §14 dejó pendiente. Se escribe
+  - [x] `LANG.SYNTAX.GRAMMAR`: la gramática formal que `language-spec.md` §14 dejó pendiente. Se escribe
      **al final de R2**, cuando las construcciones están especificadas.
-  - [ ] Poda: `LANG.PROFILE.INSTITUTIONAL` como `rechazada` y la tabla de
+  - [x] Completar la tabla de poda de
      [03](03-catalogo-de-especificaciones.md) §4 completada con lo que aparezca al contrastar.
-  - [ ] Decisiones del lenguaje que la migración obliga a tomar: D-13 (palabras reservadas), D-14 (NFC),
+  - [x] Decisiones del lenguaje que la migración obliga a tomar: D-13 (palabras reservadas), D-14 (NFC),
      D-20 confirmada.
-  - [ ] Tabla de correspondencia `language-spec.md` § → identificadores, verificada mecánicamente
+  - [x] Tabla de correspondencia `language-spec.md` § → identificadores, verificada mecánicamente
      ([11](../11-especificaciones-ejecutables-diseno.md) §13.4).
 - **Criterios de aceptación.**
-  - [ ] Toda sección de `language-spec.md` tiene correspondencia en el corpus. `language-spec.md` pasa a
+  - [x] Toda sección de `language-spec.md` tiene correspondencia en el corpus. `language-spec.md` pasa a
      ser un índice que remite al corpus o desaparece, según D-09.
-  - [ ] Todas las especificaciones de R2 en `experimental` o `estable`, con casos en los dos perfiles.
-  - [ ] Toda divergencia con `reference` está clasificada: especificación corregida, `exento` con
+  - [x] Las 85 especificaciones de R2 en `experimental`, con casos en los dos perfiles.
+  - [x] Toda divergencia con `reference` está clasificada: especificación corregida, `exento` con
      hallazgo, o decisión registrada.
-  - [ ] Ninguna línea de código del motor Rust escrita.
+  - [x] Ninguna línea de código del motor Rust escrita.
 
 ### R3 · Especificación del motor y sus fronteras
 
@@ -568,3 +568,48 @@ No se ejecuta GitHub Actions: R1 exige verificación local y no pide comprobaci�
 El workflow permanece manual. La primera revisión automática del push rechazó el destino por no
 verificado; la consulta de solo lectura confirmó el repositorio público y permisos ADMIN, y el
 reintento fue aprobado y terminó correctamente.
+
+## 7. Informe de ejecución R2 · 2026-10-14
+
+**Estado: implementación y verificaciones locales completas. Publicación pendiente de comprobación remota del HEAD.**
+
+### Implementación
+
+- Regla `DOC-NO-TRANSIENT-REFS` documentada antes de implementar: archivos externos no citan documentos o secciones de la investigación transitoria de la raíz. Enlaces internos y documentación de paquetes conservan su ámbito. Puerta local con rechazos deliberados de enlaces, rutas, citas y README raíz.
+- Corpus de R2: 85 contratos LANG/DIAG/LIB experimentales, 98 reglas y 265 casos derivados, incluido el piloto ampliado. La gramática abstracta se escribe después de las construcciones; sus referencias, delimitadores y alcanzabilidad se verifican.
+- Fuente normativa bilingüe de 73 tokens, 18 funciones y 160 fichas de diagnóstico. Los recursos consumidores, incluidos alias, se generan desde el corpus y se comprueba su vigencia. No hay copias manuales.
+- Correspondencia mecánica de las 71 secciones originales hacia contratos existentes. La especificación antigua es un índice y conserva su proyección educativa, verificada por Flutter.
+- Palabras reservadas y alfabeto vigentes conservados; NFC en nombres y reconocimiento léxico, sin modificar contenido de literales ni posiciones originales. Identificadores de contratos en inglés ASCII y documentación normativa en español.
+- SEE admite objetos normativos de definición, semilla explícita con signo de 64 bits y comparación ordenada de diagnósticos. El protocolo conserva see/1 y see-protocol/1. Los cambios de contratos existentes tienen versión y clasificación de impacto; el lock conserva historia.
+- Adaptador reference corregido mediante API pública: transmite una vez el resultado de tipos que incluye resolución, sin deduplicar diagnósticos reales; conserva advertencias de entrada mediante observador. Ningún archivo de lib/ Dart ni motor Rust modificado o creado.
+
+### Pruebas
+
+| Suite o comando | Resultado |
+|---|---|
+| cargo xtask verify de pseudolearn_spec | Verde; 54 tests Rust |
+| cargo xtask verify de pseudolearn_rust_checks | Verde; 39 tests Rust |
+| dart test del núcleo | Verde; 782 tests, incluidos objetivos JS/Wasm y 10 del adaptador |
+| flutter test de la app | Verde; 1.948 tests, incluida cobertura educativa |
+| see conform --subject reference | 1.016 observaciones: 930 cumplen, 86 divergen con exención específica |
+
+### Verificadores
+
+- Rustfmt, Clippy estricto, capas, comentarios, nombres, límites, unsafe, atributos y versión exacta de cadena en verde. Auditoría de avisos, licencias, duplicados y fuentes en verde, sin excepciones.
+- see validate: 100 contratos válidos; todos los contratos R2 experimentales. Lock y exportación vigentes, incluidos catálogos y vocabulario derivados. Matriz sin reglas sin vínculo ni regresiones exigibles.
+- DOC-NO-TRANSIENT-REFS en verde. Casos negativos de lexemas, firmas, marcadores, tipos de argumentos, severidad, gramática y correspondencia documental en verde.
+- Núcleo Dart: análisis estricto y límites en verde. App Flutter: análisis estricto, límites, contenido y sistema de diseño en verde.
+
+### Observaciones y resolución
+
+- El primer contraste contenía un error de autoría: el alias español Algoritmo no se tradujo en los programas ingleses. Se corrigieron programas a partir del vocabulario oficial, conservando resultados iniciales en results/r2-first-reference.json; no se cambiaron esperados para copiar salidas del sujeto. Otros casos se aislaron según higiene, rigor y severidad definidos por reglas.
+- La inspección confirmó que el resultado de tipos contiene diagnósticos de resolución; concatenar ambas listas duplicaba evidencia. La corrección del adaptador no elimina duplicados emitidos por el parser y conserva el hallazgo de recuperación.
+- Las 86 divergencias se clasifican en 23 reglas exentas y 14 hallazgos permanentes, documentados en el README de SEE y results/r2-findings.json. Incluyen recuperación y cierre de bloques, BOM/NFC, carácter suplementario contado como UTF-16, chequeo estático de miembros y contexto de objetos, inicialización flexible, inferencia estricta y cascadas sobre símbolos inválidos. La matriz conserva incumplimiento medido, casos y motivo; el motor Rust R4 resolverá las obligaciones sin modificar reference.
+- E-10 mide candidatos de declaraciones y controles contados en 172 ejemplos locales. Se registra procedencia, presupuesto por perfil y ausencia de colisiones en esa muestra editorial; no se infiere representatividad humana ni conveniencia de cambiar Y/O. Se reproduce con see budget.
+- E-14 no atribuye precisión ni tiempos humanos a comprobaciones técnicas. Su estudio de construcciones nuevas requiere la evolución posterior a R9, formas aprobadas, participantes y tareas disponibles. Método, motivo y condición están en results/e14.json.
+
+### Pendientes y publicación
+
+No quedan tareas obligatorias de implementación o verificación local de R2. El estudio humano E-14 se difiere según autorización explícita, y los defectos del sujeto congelado se resuelven en R4; ambas cosas mantienen evidencia y condición de resolución. Las propiedades generativas se incorporan al sistema cuando un contrato las requiera, sin declarar ninguna propiedad no ejecutada como cumplida.
+
+Rama codex/implement-r2. La publicación usa push ordinario, sin coautoría ni atribución de IA. No se ejecuta GitHub Actions: R2 no requiere comprobación remota obligatoria y los workflows son manuales. R3 no se inicia.

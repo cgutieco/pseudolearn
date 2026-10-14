@@ -7,6 +7,8 @@ description: Extender la especificación del lenguaje PseudoLearn cuando una fas
 
 ## La regla
 
+El corpus es autosustentable: no cita documentos ni secciones de la investigación transitoria de la raíz (`DOC-NO-TRANSIENT-REFS`).
+
 **La construcción se especifica antes de que exista su parser.** Sin excepción.
 
 La razón no es formalismo. Un parser escrito antes de la especificación **es** la especificación, con
@@ -21,8 +23,7 @@ no que esté decidida y sin escribir.
 
 - **Plano abstracto:** tipos de token y construcciones. Es lo que el árbol, el chequeador y el evaluador
   conocen. Es único, normativo, y no depende del idioma.
-- **Plano superficial:** los lexemas concretos. Es un dato del perfil, y hay uno por idioma y por perfil
-  institucional.
+- **Plano superficial:** los lexemas concretos. Es un dato del perfil, y los dos perfiles oficiales son español e inglés.
 
 La especificación define el plano abstracto. Los lexemas de los ejemplos son ilustrativos del perfil de
 referencia: cambiar de perfil cambia los lexemas, nunca la gramática.

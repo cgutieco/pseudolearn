@@ -1,0 +1,379 @@
+{
+  "formato": "see-migration/1",
+  "secciones": {
+    "1": "Convenciones de la especificación",
+    "1.1": "Metanotación de las formas",
+    "1.2": "Clases de error",
+    "1.3": "Estrategia de recuperación de errores de sintaxis",
+    "2": "Modelo de perfil",
+    "2.1": "La prueba del eje",
+    "2.2": "Lo que nunca es configurable",
+    "2.3": "Eje de vocabulario",
+    "2.4": "Inventario de tipos de token",
+    "2.5": "Eje de rigor",
+    "2.6": "Segregación por consumidor",
+    "2.7": "Independencia de ejes y traducción entre perfiles",
+    "2.8": "Casos límite y errores",
+    "3": "Estructura léxica",
+    "4": "Tipos primitivos",
+    "5": "Operadores, precedencia y asociatividad",
+    "6": "Declaración y asignación",
+    "6.1": "Estructura del programa",
+    "6.2": "Sentencias y su terminación",
+    "6.3": "Declaración de variables",
+    "6.4": "Designadores",
+    "6.5": "Asignación",
+    "7": "Entrada y salida",
+    "7.1": "Salida",
+    "7.2": "Entrada",
+    "8": "Estructuras de control",
+    "8.1": "Condicional",
+    "8.2": "Selección múltiple",
+    "8.3": "Bucle condicional anterior",
+    "8.4": "Bucle condicional posterior",
+    "8.5": "Bucle contado",
+    "9": "Arreglos",
+    "9.1": "Dimensionamiento",
+    "9.2": "Acceso a un elemento",
+    "10": "Subprocesos y funciones",
+    "10.1": "Estructura del texto de origen",
+    "10.2": "Declaración",
+    "10.3": "Parámetros",
+    "10.4": "Paso por referencia: qué es un argumento válido",
+    "10.5": "Retorno",
+    "10.6": "Llamada",
+    "10.7": "Ámbito y espacios de nombres",
+    "10.8": "Recursión",
+    "10.9": "Interacción con lo ya especificado",
+    "11": "Orientación a objetos",
+    "11.1": "Declaración de clase",
+    "11.2": "Atributos y visibilidad",
+    "11.3": "Métodos",
+    "11.4": "Constructor",
+    "11.5": "Instanciación",
+    "11.6": "Objeto actual y superclase",
+    "11.7": "Acceso a miembro, llamada a método y sobrescritura",
+    "11.8": "Las clases como tipos",
+    "11.9": "Copia",
+    "11.10": "Diagnósticos pedagógicos de construcciones fuera de alcance",
+    "11.11": "Ejemplo",
+    "12": "Sistema de tipos y política de rigor",
+    "12.1": "Las tres relaciones entre tipos",
+    "12.2": "Rango de los tipos numéricos y desbordamiento",
+    "12.3": "El tipo de cada operador",
+    "12.4": "Quién comprueba qué: la regla de los dos niveles",
+    "12.5": "Inferencia de tipos en perfil flexible",
+    "12.6": "Ampliación aceptable y conflicto real de tipos",
+    "12.7": "Variable usada sin inicializar",
+    "12.8": "Variable no usada",
+    "12.9": "Tipado de arreglos y de objetos",
+    "12.10": "La política de severidad",
+    "12.11": "Funciones incorporadas que este sistema de tipos obliga a tener",
+    "12.12": "Casos límite",
+    "13": "Funciones incorporadas",
+    "14": "Gramática formal"
+  },
+  "correspondencias": {
+    "1": [
+      "LANG.PROFILE.MODEL",
+      "DIAG.CLASSES"
+    ],
+    "1.1": [
+      "LANG.SYNTAX.GRAMMAR"
+    ],
+    "1.2": [
+      "DIAG.CLASSES"
+    ],
+    "1.3": [
+      "LANG.SYNTAX.RECOVERY"
+    ],
+    "2": [
+      "LANG.PROFILE.MODEL"
+    ],
+    "2.1": [
+      "LANG.PROFILE.MODEL"
+    ],
+    "2.2": [
+      "LANG.PROFILE.STRICTNESS"
+    ],
+    "2.3": [
+      "LANG.PROFILE.VOCABULARY",
+      "LIB.MODEL"
+    ],
+    "2.4": [
+      "LANG.PROFILE.VOCABULARY"
+    ],
+    "2.5": [
+      "LANG.PROFILE.STRICTNESS"
+    ],
+    "2.6": [
+      "LANG.PROFILE.MODEL"
+    ],
+    "2.7": [
+      "LANG.PROFILE.TRANSLATION"
+    ],
+    "2.8": [
+      "LANG.PROFILE.VOCABULARY",
+      "LANG.LEXICAL.KEYWORD"
+    ],
+    "3": [
+      "LANG.SOURCE.ENCODING",
+      "LANG.SOURCE.POSITION",
+      "LANG.LEXICAL.WHITESPACE",
+      "LANG.LEXICAL.COMMENT",
+      "LANG.LEXICAL.IDENTIFIER",
+      "LANG.LEXICAL.KEYWORD",
+      "LANG.LEXICAL.NUMBER-LITERAL",
+      "LANG.LEXICAL.TEXT-LITERAL",
+      "LANG.LEXICAL.CHARACTER-LITERAL",
+      "LANG.LEXICAL.OPERATOR-TOKEN",
+      "LANG.LEXICAL.ERRORS"
+    ],
+    "4": [
+      "LANG.TYPES.REAL",
+      "LANG.TYPES.BOOLEAN",
+      "LANG.TYPES.CHARACTER",
+      "LANG.TYPES.TEXT",
+      "LANG.TYPES.INTEGER"
+    ],
+    "5": [
+      "LANG.OPS.PRECEDENCE",
+      "LANG.OPS.ARITHMETIC",
+      "LANG.OPS.DIVISION",
+      "LANG.OPS.POWER",
+      "LANG.OPS.COMPARISON",
+      "LANG.OPS.LOGICAL",
+      "LANG.OPS.CONCATENATION"
+    ],
+    "6": [
+      "LANG.DECL.VARIABLE",
+      "LANG.STMT.ASSIGNMENT"
+    ],
+    "6.1": [
+      "LANG.PROGRAM.STRUCTURE"
+    ],
+    "6.2": [
+      "LANG.STMT.TERMINATION"
+    ],
+    "6.3": [
+      "LANG.DECL.VARIABLE"
+    ],
+    "6.4": [
+      "LANG.DECL.DESIGNATOR"
+    ],
+    "6.5": [
+      "LANG.STMT.ASSIGNMENT"
+    ],
+    "7": [
+      "LANG.IO.OUTPUT",
+      "LANG.IO.INPUT",
+      "LANG.IO.VALUE-FORMAT"
+    ],
+    "7.1": [
+      "LANG.IO.OUTPUT",
+      "LANG.IO.VALUE-FORMAT"
+    ],
+    "7.2": [
+      "LANG.IO.INPUT"
+    ],
+    "8": [
+      "LANG.CONTROL.IF",
+      "LANG.CONTROL.SWITCH",
+      "LANG.CONTROL.WHILE",
+      "LANG.CONTROL.REPEAT",
+      "LANG.CONTROL.FOR"
+    ],
+    "8.1": [
+      "LANG.CONTROL.IF"
+    ],
+    "8.2": [
+      "LANG.CONTROL.SWITCH"
+    ],
+    "8.3": [
+      "LANG.CONTROL.WHILE"
+    ],
+    "8.4": [
+      "LANG.CONTROL.REPEAT"
+    ],
+    "8.5": [
+      "LANG.CONTROL.FOR"
+    ],
+    "9": [
+      "LANG.TYPES.ARRAY",
+      "LANG.ARRAY.DIMENSION",
+      "LANG.ARRAY.ACCESS"
+    ],
+    "9.1": [
+      "LANG.ARRAY.DIMENSION"
+    ],
+    "9.2": [
+      "LANG.ARRAY.ACCESS"
+    ],
+    "10": [
+      "LANG.SUBPROGRAM.DECLARATION",
+      "LANG.SUBPROGRAM.PARAMETERS",
+      "LANG.SUBPROGRAM.BY-REFERENCE",
+      "LANG.SUBPROGRAM.RETURN",
+      "LANG.SUBPROGRAM.CALL",
+      "LANG.SUBPROGRAM.SCOPE",
+      "LANG.SUBPROGRAM.RECURSION",
+      "LANG.SUBPROGRAM.INTERACTIONS"
+    ],
+    "10.1": [
+      "LANG.PROGRAM.STRUCTURE"
+    ],
+    "10.2": [
+      "LANG.SUBPROGRAM.DECLARATION"
+    ],
+    "10.3": [
+      "LANG.SUBPROGRAM.PARAMETERS"
+    ],
+    "10.4": [
+      "LANG.SUBPROGRAM.BY-REFERENCE"
+    ],
+    "10.5": [
+      "LANG.SUBPROGRAM.RETURN"
+    ],
+    "10.6": [
+      "LANG.SUBPROGRAM.CALL"
+    ],
+    "10.7": [
+      "LANG.SUBPROGRAM.SCOPE"
+    ],
+    "10.8": [
+      "LANG.SUBPROGRAM.RECURSION"
+    ],
+    "10.9": [
+      "LANG.SUBPROGRAM.INTERACTIONS"
+    ],
+    "11": [
+      "LANG.CLASS.DECLARATION",
+      "LANG.CLASS.INHERITANCE",
+      "LANG.CLASS.FIELDS",
+      "LANG.CLASS.METHODS",
+      "LANG.CLASS.CONSTRUCTOR",
+      "LANG.CLASS.INSTANTIATION",
+      "LANG.CLASS.SELF-AND-SUPER",
+      "LANG.CLASS.MEMBER-ACCESS",
+      "LANG.CLASS.OVERRIDE",
+      "LANG.CLASS.COPY",
+      "LANG.CLASS.OUT-OF-SCOPE"
+    ],
+    "11.1": [
+      "LANG.CLASS.DECLARATION",
+      "LANG.CLASS.INHERITANCE"
+    ],
+    "11.2": [
+      "LANG.CLASS.FIELDS"
+    ],
+    "11.3": [
+      "LANG.CLASS.METHODS"
+    ],
+    "11.4": [
+      "LANG.CLASS.CONSTRUCTOR"
+    ],
+    "11.5": [
+      "LANG.CLASS.INSTANTIATION"
+    ],
+    "11.6": [
+      "LANG.CLASS.SELF-AND-SUPER"
+    ],
+    "11.7": [
+      "LANG.CLASS.MEMBER-ACCESS",
+      "LANG.CLASS.OVERRIDE"
+    ],
+    "11.8": [
+      "LANG.TYPES.CLASS"
+    ],
+    "11.9": [
+      "LANG.CLASS.COPY"
+    ],
+    "11.10": [
+      "LANG.CLASS.OUT-OF-SCOPE"
+    ],
+    "11.11": [
+      "LANG.CLASS.DECLARATION",
+      "LANG.CLASS.CONSTRUCTOR",
+      "LANG.CLASS.OVERRIDE"
+    ],
+    "12": [
+      "LANG.TYPES.REAL",
+      "LANG.TYPES.BOOLEAN",
+      "LANG.TYPES.CHARACTER",
+      "LANG.TYPES.TEXT",
+      "LANG.TYPES.ARRAY",
+      "LANG.TYPES.CLASS",
+      "LANG.TYPES.RELATIONS",
+      "LANG.TYPES.INFERENCE",
+      "LANG.TYPES.CHECKING-LEVELS",
+      "DIAG.SEVERITY.POLICY",
+      "LANG.TYPES.INTEGER"
+    ],
+    "12.1": [
+      "LANG.TYPES.RELATIONS"
+    ],
+    "12.2": [
+      "LANG.TYPES.INTEGER",
+      "LANG.TYPES.REAL"
+    ],
+    "12.3": [
+      "LANG.OPS.PRECEDENCE",
+      "LANG.OPS.ARITHMETIC",
+      "LANG.OPS.DIVISION",
+      "LANG.OPS.POWER",
+      "LANG.OPS.COMPARISON",
+      "LANG.OPS.LOGICAL",
+      "LANG.OPS.CONCATENATION"
+    ],
+    "12.4": [
+      "LANG.TYPES.CHECKING-LEVELS"
+    ],
+    "12.5": [
+      "LANG.TYPES.INFERENCE"
+    ],
+    "12.6": [
+      "LANG.TYPES.RELATIONS"
+    ],
+    "12.7": [
+      "LANG.DECL.UNINITIALIZED"
+    ],
+    "12.8": [
+      "LANG.DECL.UNUSED"
+    ],
+    "12.9": [
+      "LANG.TYPES.ARRAY",
+      "LANG.TYPES.CLASS"
+    ],
+    "12.10": [
+      "DIAG.SEVERITY.POLICY"
+    ],
+    "12.11": [
+      "LIB.MODEL",
+      "LIB.CORE.MATH",
+      "LIB.CORE.ROUNDING",
+      "LIB.CORE.RANDOM",
+      "LIB.CORE.CONVERSION",
+      "LIB.CORE.TEXT",
+      "LIB.CORE.COPY"
+    ],
+    "12.12": [
+      "LANG.TYPES.INTEGER",
+      "LANG.TYPES.REAL",
+      "LANG.ARRAY.ACCESS",
+      "LANG.OPS.DIVISION",
+      "LANG.OPS.POWER"
+    ],
+    "13": [
+      "LIB.MODEL",
+      "LIB.CORE.MATH",
+      "LIB.CORE.ROUNDING",
+      "LIB.CORE.RANDOM",
+      "LIB.CORE.CONVERSION",
+      "LIB.CORE.TEXT",
+      "LIB.CORE.COPY"
+    ],
+    "14": [
+      "LANG.SYNTAX.GRAMMAR"
+    ]
+  }
+}

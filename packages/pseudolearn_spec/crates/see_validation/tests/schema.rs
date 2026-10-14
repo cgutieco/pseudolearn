@@ -30,3 +30,32 @@ fn rejects_wrong_case_origin_and_empty_profiles() -> Result<(), String> {
     assert!(errors.iter().any(|error| error.starts_with("SEE-PROFILE")));
     Ok(())
 }
+
+#[test]
+fn accepts_signed_seed_boundaries_and_rejects_non_integer_seeds() -> Result<(), String> {
+    for seed in [
+        serde_json::json!(0),
+        serde_json::json!(-1),
+        serde_json::json!(i64::MAX),
+    ] {
+        let mut specification = support::specification()?;
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("Missing case")?
+            .fields
+            .insert("semilla".to_owned(), seed);
+        assert!(see_validation::schema::check(&specification).is_empty());
+    }
+    for seed in [serde_json::json!("42"), serde_json::json!(u64::MAX)] {
+        let mut specification = support::specification()?;
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("Missing case")?
+            .fields
+            .insert("semilla".to_owned(), seed);
+        assert!(!see_validation::schema::check(&specification).is_empty());
+    }
+    Ok(())
+}

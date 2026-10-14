@@ -95,7 +95,7 @@ fn request(
         _ => "flexible",
     };
     Ok(
-        json!({"kind":operation, "program":program, "profile":profile, "strictness":strictness, "inputs":case.fields.get("entradas").cloned().unwrap_or(json!([])), "seed":42, "observe":"none", "limits":{"micro_steps":100_000}}),
+        json!({"kind":operation, "program":program, "profile":profile, "strictness":strictness, "inputs":case.fields.get("entradas").cloned().unwrap_or(json!([])), "seed":case.fields.get("semilla").cloned().unwrap_or(json!(42)), "observe":"none", "limits":{"micro_steps":100_000}}),
     )
 }
 

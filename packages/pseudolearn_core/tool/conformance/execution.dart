@@ -1,7 +1,7 @@
 import 'package:pseudolearn_core/pseudolearn_core.dart';
 
 import 'analysis.dart';
-import 'wire.dart';
+import 'diagnostic_observer.dart';
 
 Map<String, Object?> execute(
     Map<String, Object?> request, ReferenceAnalysis analysis) {
@@ -31,8 +31,11 @@ Map<String, Object?> execute(
   if (maximum is! int || maximum < 1 || maximum > 1000000) {
     throw const FormatException('Invalid micro-step limit');
   }
-  final start =
-      Interpreter.start(program: program, random: SeededRandomSource(seed));
+  final diagnostics = response['diagnostics']! as List<Map<String, Object?>>;
+  final start = Interpreter.start(
+      program: program,
+      random: SeededRandomSource(seed),
+      observer: ReferenceDiagnosticObserver(diagnostics));
   if (start is! ExecutionReady) return response;
   return run(start.interpreter, inputs.cast<String>(), maximum, response);
 }
@@ -55,9 +58,6 @@ Map<String, Object?> run(Interpreter interpreter, List<String> inputs,
       interpreter.provideInput(iterator.current);
     }
     if (outcome is StepHalted) {
-      final diagnostics =
-          response['diagnostics']! as List<Map<String, Object?>>;
-      diagnostics.add(diagnosticWire(outcome.diagnostic, 'runtime'));
       return finish(response, output,
           {'kind': 'failed', 'code': outcome.diagnostic.code.name});
     }

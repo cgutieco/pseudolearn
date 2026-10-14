@@ -86,12 +86,7 @@ gramaticales, de tipado y de evaluación residen exclusivamente aquí.
 - **Instrucciones de salto arbitrario (`Interrumpir`, `Continuar`, `Ir A`):** Excluidas para preservar estrictamente los
   principios de la programación estructurada. La sentencia `Retornar` se admite exclusivamente como terminación natural
   de subprogramas.
-- **Perfiles de sintaxis personalizados o programables por el usuario:** Excluidos formalmente por complejidad técnica y
-  falta de viabilidad. Permitir que el usuario o el entorno definan libremente nuevos perfiles léxicos introduce
-  colisiones impredecibles entre palabras clave y nombres de variables/identificadores, fragmentación en la experiencia
-  didáctica y severas fricciones en componentes periféricos (autocompletado en editor, resaltado de sintaxis, teclados
-  contextuales). El soporte de sintaxis está cerrado y garantizado exclusivamente sobre dos perfiles oficiales, maduros
-  y documentados: `ClassicSpanishProfile` y `EnglishProfile`.
+- **Vocabularios oficiales:** español e inglés, con políticas de rigor estricta y flexible.
 
 #### De implementación técnica
 
@@ -320,7 +315,7 @@ El procesamiento de un programa en `pseudolearn_core` sigue un ciclo estrictamen
 **Elección:** `dart run tool/conformance_adapter.dart` negocia `see-protocol/1` y atiende JSON por línea;
 `tool/conformance/` separa protocolo, análisis, ejecución y serialización. El nombre del sujeto es
 `reference` y su versión se lee del `pubspec.yaml`. No se ejecutan fases semánticas sobre sintaxis con
-errores. La respuesta conserva presencia real del árbol, multiplicidad, clase, severidad, tramos,
+errores. El resultado de tipos ya incluye diagnósticos de resolución; el adaptador transmite esa lista una vez, sin deduplicarla. Un observador de la API pública conserva diagnósticos de ejecución, incluidos reintentos de entrada, sin alterar el motor. La respuesta conserva presencia real del árbol, multiplicidad, clase, severidad, tramos,
 tramos relacionados y argumentos de diagnósticos. `analyze` y `execute` son las capacidades anunciadas.
 La ejecución admite entradas, semilla y un límite de micro-pasos propio del adaptador; devuelve
 `completed`, `failed`, `awaiting_input` o `limit_reached`. No anuncia observación de memoria o eventos.
@@ -418,11 +413,7 @@ reservada al protocolo. `tool/` puede importar E/S del SDK y la entrada pública
       identificadores y palabras reservadas.
 - **Superficie de extensión y su alcance actual:** El paquete incluye y soporta exclusivamente dos perfiles oficiales
   completos y simétricos: `ClassicSpanishProfile` («Español clásico») y `EnglishProfile` («English»), ambos con paridad
-  total y constructores `.strict()` y `.flexible()`. La creación de perfiles personalizados o programables por el
-  usuario
-  queda excluida deliberadamente por complejidad técnica (colisiones léxicas con identificadores, inconsistencias en el
-  autocompletado del editor y fragmentación del dialecto didáctico) y por no resultar viable frente a dos perfiles
-  maduros y formalmente documentados. El catálogo de perfiles es cerrado; toda la maquinaria del analizador léxico,
+  total y constructores `.strict()` y `.flexible()`. El catálogo de perfiles es cerrado; toda la maquinaria del analizador léxico,
   sintáctico, semántico y evaluador opera sobre las interfaces del dominio (`LanguageProfile`, `LexerProfile`,
   `ParserProfile`, `SemanticProfile`) desacopladas de las palabras clave concretas, garantizando portabilidad sin abrir
   la
@@ -626,7 +617,7 @@ técnica.
 ### 6.2 La semántica está desacoplada de la sintaxis superficial
 
 El AST y el evaluador referencian tipos de token y enumeraciones semánticas, nunca los lexemas textuales utilizados en
-el código fuente. Los perfiles institucionales e idiomas son datos inyectados, no bifurcaciones condicionales de código.
+el código fuente. Los dos vocabularios oficiales son datos inyectados, no bifurcaciones condicionales de código.
 
 ### 6.3 Extensibilidad mecánica y verificable
 

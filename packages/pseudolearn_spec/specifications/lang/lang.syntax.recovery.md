@@ -5,7 +5,7 @@
   "titulo": "Recuperación sintáctica",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -16,6 +16,13 @@
   "depende_de": [],
   "edicion": {
     "introducida_en": "2026"
+  },
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
+    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
+    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
   }
 }
 ---
@@ -192,6 +199,553 @@
 }
 ```
 
-## Alcance
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "sintactica",
+  "texto": "La recuperación sincroniza en fin de línea, terminador y fronteras de bloque; suprime diagnósticos cuyo inicio cae en tokens descartados. Las sentencias irrecuperables conservan estructura de error sin impedir reconocer las siguientes.",
+  "verificacion": [
+    "C6"
+  ]
+}
+```
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "sintactica",
+  "texto": "Un bloque sin cerrar produce un diagnóstico sintáctico principal con tramo relacionado de apertura, sin cascada por cada bloque exterior pendiente.",
+  "verificacion": [
+    "C7",
+    "C8"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "sintactica",
+  "texto": "Se informan como máximo cien diagnósticos sintácticos principales; al alcanzar el tope se añade maxDiagnosticsExceeded como resumen. El árbol recuperable no se elimina al alcanzar el límite.",
+  "verificacion": [
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1 +;\nEscribir 7;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1 +;\nwrite 7;\nendAlgorithm\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente"
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\n",
+    "en": "algorithm P\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unclosedAlgorithm",
+        "severidad": "error"
+      }
+    ]
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nSi Verdadero Entonces\nMientras Verdadero Hacer\n",
+    "en": "algorithm P\nif true then\nwhile true do\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unclosedWhileStatement",
+        "severidad": "error"
+      }
+    ]
+  },
+  "origen": "derivado"
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nEscribir 1 +;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nwrite 1 +;\nendAlgorithm\n"
+  },
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      },
+      {
+        "codigo": "maxDiagnosticsExceeded",
+        "severidad": "error"
+      }
+    ]
+  },
+  "origen": "derivado"
+}
+```

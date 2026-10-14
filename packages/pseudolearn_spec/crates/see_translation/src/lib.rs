@@ -14,16 +14,28 @@ pub fn translate(
         return Ok(program.to_owned());
     }
     let mut pairs = Vec::new();
-    for profiles in vocabulary.values() {
+    let declared = declarations(program, source, vocabulary);
+    for (identity, profiles) in vocabulary {
         let original = profiles.get(source).ok_or("Missing source vocabulary")?;
         let translated = profiles.get(target).ok_or("Missing target vocabulary")?;
-        pairs.push((original.as_str(), translated.as_str()));
+        if identity.starts_with("function:")
+            && declared
+                .iter()
+                .any(|name| name.eq_ignore_ascii_case(original))
+        {
+            continue;
+        }
+        pairs.push((
+            original.as_str(),
+            translated.as_str(),
+            identity.starts_with("function:"),
+        ));
     }
-    pairs.sort_by_key(|(original, _)| std::cmp::Reverse(original.len()));
+    pairs.sort_by_key(|(original, _, _)| std::cmp::Reverse(original.len()));
     reprint(program, &pairs)
 }
 
-fn reprint(program: &str, pairs: &[(&str, &str)]) -> Result<String, String> {
+fn reprint(program: &str, pairs: &[(&str, &str, bool)]) -> Result<String, String> {
     let mut output = String::new();
     let mut remaining = program;
     while !remaining.is_empty() {
@@ -60,12 +72,18 @@ fn quoted(remaining: &str) -> Result<(&str, &str), String> {
 
 fn token<'source>(
     remaining: &'source str,
-    pairs: &[(&str, &str)],
+    pairs: &[(&str, &str, bool)],
     output: &mut String,
 ) -> &'source str {
-    for (original, translated) in pairs {
+    for (original, translated, function) in pairs {
         let prefix = remaining.get(..original.len());
         let tail = remaining.get(original.len()..);
+        if *function
+            && (output.trim_end().ends_with('.')
+                || tail.is_none_or(|tail| !tail.trim_start().starts_with('(')))
+        {
+            continue;
+        }
         if prefix.is_some_and(|prefix| prefix.eq_ignore_ascii_case(original))
             && tail.is_some_and(|tail| {
                 !tail.starts_with(|character: char| character.is_alphanumeric() || character == '_')
@@ -81,6 +99,35 @@ fn token<'source>(
     tail
 }
 
+fn declarations<'source>(
+    program: &'source str,
+    source: &str,
+    vocabulary: &Vocabulary,
+) -> Vec<&'source str> {
+    let keywords: Vec<_> = vocabulary
+        .iter()
+        .filter(|(identity, _)| {
+            ["subroutine", "method", "classKeyword"]
+                .iter()
+                .any(|prefix| {
+                    *identity == prefix || identity.starts_with(&format!("{prefix}.alias."))
+                })
+        })
+        .filter_map(|(_, profiles)| profiles.get(source))
+        .collect();
+    words(program)
+        .windows(2)
+        .filter(|pair| {
+            pair.first().is_some_and(|word| {
+                keywords
+                    .iter()
+                    .any(|keyword| word.eq_ignore_ascii_case(keyword))
+            })
+        })
+        .filter_map(|pair| pair.get(1).copied())
+        .collect()
+}
+
 pub fn collisions(
     program: &str,
     source: &str,
@@ -88,13 +135,15 @@ pub fn collisions(
     vocabulary: &Vocabulary,
 ) -> Vec<String> {
     let source_words: Vec<_> = vocabulary
-        .values()
-        .filter_map(|profiles| profiles.get(source))
+        .iter()
+        .filter(|(identity, _)| !identity.starts_with("function:"))
+        .filter_map(|(_, profiles)| profiles.get(source))
         .map(|word| word.to_lowercase())
         .collect();
     let target_words: Vec<_> = vocabulary
-        .values()
-        .filter_map(|profiles| profiles.get(target))
+        .iter()
+        .filter(|(identity, _)| !identity.starts_with("function:"))
+        .filter_map(|(_, profiles)| profiles.get(target))
         .map(|word| word.to_lowercase())
         .collect();
     words(program)

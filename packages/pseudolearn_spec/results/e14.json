@@ -1,0 +1,9 @@
+{
+  "experiment": "E-14",
+  "estado": "estudio_humano_diferido",
+  "alcance_tecnico": "Casos bilingües del lenguaje vigente y pruebas de traducción, alias, literales, comentarios y nombres homónimos. No miden lectura humana.",
+  "motivo": "Las construcciones nuevas y el autocompletado translingüe del estudio pertenecen a la evolución del lenguaje, fuera de R2.",
+  "fase_destinataria": "Evolución posterior a R9",
+  "condicion": "Construcciones aprobadas, participantes y tareas de lectura/escritura disponibles; registrar precisión y tiempo reales.",
+  "mediciones_humanas": null
+}

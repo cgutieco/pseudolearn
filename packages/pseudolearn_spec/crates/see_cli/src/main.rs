@@ -4,6 +4,7 @@ mod arguments;
 mod bindings;
 mod commands;
 mod conformance;
+mod e10;
 mod history;
 mod resources;
 mod storage;

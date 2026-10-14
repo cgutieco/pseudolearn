@@ -40,6 +40,8 @@ decorativos ni prosa de marketing. Requiere documentación técnica operativa, e
 
 ---
 
+La investigación documental de la raíz es transitoria: no se cita desde archivos externos (`DOC-NO-TRANSIENT-REFS`). Incorporar el fundamento necesario en el README y las reglas observables en el corpus. Los enlaces internos entre documentos transitorios no crean autoridad sobre consumidores.
+
 ## Estructura obligatoria de 8 secciones
 
 Todo `README.md` tiene exactamente estas ocho secciones, en este orden:

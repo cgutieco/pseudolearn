@@ -10,9 +10,11 @@ Capa cli del sistema SEE; responsabilidad y contratos definidos en el README del
 
 ## 3. Arquitectura y modelo del sistema
 
-Imports internos permitidos: model, format, graph, change, validation, conformance, report, export, translation. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+Sin imports de crates del producto: ejecuta comandos por proceso y recorre archivos mediante la biblioteca estándar. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+La puerta DOC-NO-TRANSIENT-REFS examina archivos versionados de texto fuera de la carpeta documental de la raíz. Resuelve rutas relativas y enlaces; una mención general a la carpeta no es una referencia a un documento. Las pruebas incluyen citas, rutas y enlaces válidos e inválidos.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.

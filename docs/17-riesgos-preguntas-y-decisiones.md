@@ -48,18 +48,6 @@
   [11](11-especificaciones-ejecutables-diseno.md#transicion-readme). Esta investigación **no** cambia
   las reglas ni declara resuelta la transición.
 
-<a id="c-04"></a>
-
-### C-04 · Perfiles institucionales: especificación frente a `README.md` del núcleo
-
-- **Fuentes.** `language-spec.md` §2.7 describe que «una institución declare un perfil con vocabulario
-  propio». `README.md` del núcleo §1.3 y §4.5: perfiles personalizados excluidos; catálogo cerrado.
-- **Nivel.** La especificación es nivel 4 y el `README.md` nivel 3 de la precedencia: según `AGENTS.md`
-  manda el `README.md`, pero la contradicción existe y nadie la detectó (H-04).
-- **Qué hace falta.** Confirmar que la frase de §2.7 es solo una justificación del pivote no lingüístico
-  y corregirla; o reabrir la exclusión. La investigación recomienda lo primero (refuerza un vocabulario
-  cerrado bilingüe, [03](03-identidad-bilingue-y-gramatica.md)).
-
 <a id="c-05"></a>
 
 ### C-05 · Licencia propietaria frente a una comunidad

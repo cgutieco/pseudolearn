@@ -1,58 +1,670 @@
 {
   "algorithm": {
-    "es": "Algoritmo",
-    "en": "algorithm"
+    "en": "algorithm",
+    "es": "Proceso"
   },
-  "endAlgorithm": {
-    "es": "FinAlgoritmo",
-    "en": "endAlgorithm"
+  "algorithm.alias.es.0": {
+    "en": "algorithm",
+    "es": "Algoritmo"
   },
-  "declare": {
-    "es": "Definir",
-    "en": "define"
+  "and": {
+    "en": "and",
+    "es": "Y"
   },
-  "typeConnector": {
-    "es": "Como",
-    "en": "as"
+  "and.alias.en.0": {
+    "en": "&",
+    "es": "Y"
   },
-  "integerType": {
-    "es": "Entero",
-    "en": "integer"
+  "and.alias.es.0": {
+    "en": "and",
+    "es": "&"
   },
-  "write": {
-    "es": "Escribir",
-    "en": "write"
+  "assignment": {
+    "en": "<-",
+    "es": "<-"
   },
-  "forKeyword": {
-    "es": "Para",
-    "en": "for"
+  "assignment.alias.en.0": {
+    "en": ":=",
+    "es": "<-"
   },
-  "to": {
-    "es": "Hasta",
-    "en": "to"
-  },
-  "step": {
-    "es": "Con Paso",
-    "en": "step"
-  },
-  "doKeyword": {
-    "es": "Hacer",
-    "en": "do"
-  },
-  "endFor": {
-    "es": "FinPara",
-    "en": "endFor"
-  },
-  "withoutNewline": {
-    "es": "Sin Saltar",
-    "en": "without newline"
-  },
-  "booleanTrue": {
-    "es": "Verdadero",
-    "en": "true"
+  "assignment.alias.es.0": {
+    "en": "<-",
+    "es": ":="
   },
   "booleanFalse": {
-    "es": "Falso",
-    "en": "false"
+    "en": "false",
+    "es": "Falso"
+  },
+  "booleanTrue": {
+    "en": "true",
+    "es": "Verdadero"
+  },
+  "booleanType": {
+    "en": "boolean",
+    "es": "Logico"
+  },
+  "branchSeparator": {
+    "en": ":",
+    "es": ":"
+  },
+  "byReference": {
+    "en": "by reference",
+    "es": "Por Referencia"
+  },
+  "byReference.alias.en.0": {
+    "en": "byReference",
+    "es": "Por Referencia"
+  },
+  "byReference.alias.es.0": {
+    "en": "by reference",
+    "es": "PorReferencia"
+  },
+  "byValue": {
+    "en": "by value",
+    "es": "Por Valor"
+  },
+  "byValue.alias.en.0": {
+    "en": "byValue",
+    "es": "Por Valor"
+  },
+  "byValue.alias.es.0": {
+    "en": "by value",
+    "es": "PorValor"
+  },
+  "characterType": {
+    "en": "character",
+    "es": "Caracter"
+  },
+  "characterType.alias.en.0": {
+    "en": "char",
+    "es": "Caracter"
+  },
+  "classKeyword": {
+    "en": "class",
+    "es": "Clase"
+  },
+  "comma": {
+    "en": ",",
+    "es": ","
+  },
+  "constructor": {
+    "en": "constructor",
+    "es": "Constructor"
+  },
+  "declare": {
+    "en": "define",
+    "es": "Definir"
+  },
+  "declare.alias.en.0": {
+    "en": "declare",
+    "es": "Definir"
+  },
+  "defaultCase": {
+    "en": "otherwise",
+    "es": "De Otro Modo"
+  },
+  "defaultCase.alias.en.0": {
+    "en": "default",
+    "es": "De Otro Modo"
+  },
+  "defaultCase.alias.es.0": {
+    "en": "otherwise",
+    "es": "DeOtroModo"
+  },
+  "dimension": {
+    "en": "dimension",
+    "es": "Dimension"
+  },
+  "divide": {
+    "en": "/",
+    "es": "/"
+  },
+  "doKeyword": {
+    "en": "do",
+    "es": "Hacer"
+  },
+  "dot": {
+    "en": ".",
+    "es": "."
+  },
+  "elseKeyword": {
+    "en": "else",
+    "es": "SiNo"
+  },
+  "elseKeyword.alias.es.0": {
+    "en": "else",
+    "es": "Sino"
+  },
+  "elseKeyword.alias.es.1": {
+    "en": "else",
+    "es": "Si No"
+  },
+  "endAlgorithm": {
+    "en": "endAlgorithm",
+    "es": "FinProceso"
+  },
+  "endAlgorithm.alias.en.0": {
+    "en": "end algorithm",
+    "es": "FinProceso"
+  },
+  "endAlgorithm.alias.es.0": {
+    "en": "endAlgorithm",
+    "es": "FinAlgoritmo"
+  },
+  "endAlgorithm.alias.es.1": {
+    "en": "endAlgorithm",
+    "es": "Fin Proceso"
+  },
+  "endAlgorithm.alias.es.2": {
+    "en": "endAlgorithm",
+    "es": "Fin Algoritmo"
+  },
+  "endClass": {
+    "en": "endClass",
+    "es": "FinClase"
+  },
+  "endClass.alias.en.0": {
+    "en": "end class",
+    "es": "FinClase"
+  },
+  "endClass.alias.es.0": {
+    "en": "endClass",
+    "es": "Fin Clase"
+  },
+  "endFor": {
+    "en": "endFor",
+    "es": "FinPara"
+  },
+  "endFor.alias.en.0": {
+    "en": "end for",
+    "es": "FinPara"
+  },
+  "endFor.alias.es.0": {
+    "en": "endFor",
+    "es": "Fin Para"
+  },
+  "endIf": {
+    "en": "endIf",
+    "es": "FinSi"
+  },
+  "endIf.alias.en.0": {
+    "en": "end if",
+    "es": "FinSi"
+  },
+  "endIf.alias.es.0": {
+    "en": "endIf",
+    "es": "Fin Si"
+  },
+  "endMethod": {
+    "en": "endMethod",
+    "es": "FinMetodo"
+  },
+  "endMethod.alias.en.0": {
+    "en": "end method",
+    "es": "FinMetodo"
+  },
+  "endMethod.alias.es.0": {
+    "en": "endMethod",
+    "es": "Fin Metodo"
+  },
+  "endSubroutine": {
+    "en": "endSubroutine",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.en.0": {
+    "en": "end subroutine",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.en.1": {
+    "en": "end function",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.en.2": {
+    "en": "end procedure",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.es.0": {
+    "en": "endSubroutine",
+    "es": "FinSubAlgoritmo"
+  },
+  "endSubroutine.alias.es.1": {
+    "en": "endSubroutine",
+    "es": "FinFuncion"
+  },
+  "endSubroutine.alias.es.2": {
+    "en": "endSubroutine",
+    "es": "FinProcedimiento"
+  },
+  "endSubroutine.alias.es.3": {
+    "en": "endSubroutine",
+    "es": "Fin SubProceso"
+  },
+  "endSubroutine.alias.es.4": {
+    "en": "endSubroutine",
+    "es": "Fin SubAlgoritmo"
+  },
+  "endSubroutine.alias.es.5": {
+    "en": "endSubroutine",
+    "es": "Fin Funcion"
+  },
+  "endSubroutine.alias.es.6": {
+    "en": "endSubroutine",
+    "es": "Fin Procedimiento"
+  },
+  "endSwitch": {
+    "en": "endSwitch",
+    "es": "FinSegun"
+  },
+  "endSwitch.alias.en.0": {
+    "en": "end switch",
+    "es": "FinSegun"
+  },
+  "endSwitch.alias.es.0": {
+    "en": "endSwitch",
+    "es": "Fin Segun"
+  },
+  "endWhile": {
+    "en": "endWhile",
+    "es": "FinMientras"
+  },
+  "endWhile.alias.en.0": {
+    "en": "end while",
+    "es": "FinMientras"
+  },
+  "endWhile.alias.es.0": {
+    "en": "endWhile",
+    "es": "Fin Mientras"
+  },
+  "equal": {
+    "en": "=",
+    "es": "="
+  },
+  "forKeyword": {
+    "en": "for",
+    "es": "Para"
+  },
+  "function:absoluteValue": {
+    "en": "abs",
+    "es": "abs"
+  },
+  "function:arcTangent": {
+    "en": "atan",
+    "es": "atan"
+  },
+  "function:arcTangent.alias.es.0": {
+    "en": "atan",
+    "es": "arctan"
+  },
+  "function:characterAt": {
+    "en": "charAt",
+    "es": "CaracterEn"
+  },
+  "function:characterCode": {
+    "en": "charCode",
+    "es": "CodigoDe"
+  },
+  "function:characterFromCode": {
+    "en": "charFromCode",
+    "es": "CaracterDesde"
+  },
+  "function:cosine": {
+    "en": "cos",
+    "es": "cos"
+  },
+  "function:exponential": {
+    "en": "exp",
+    "es": "exp"
+  },
+  "function:length": {
+    "en": "length",
+    "es": "Longitud"
+  },
+  "function:naturalLogarithm": {
+    "en": "ln",
+    "es": "ln"
+  },
+  "function:naturalLogarithm.alias.en.0": {
+    "en": "log",
+    "es": "ln"
+  },
+  "function:random": {
+    "en": "random",
+    "es": "azar"
+  },
+  "function:random.alias.en.0": {
+    "en": "rand",
+    "es": "azar"
+  },
+  "function:random.alias.es.0": {
+    "en": "random",
+    "es": "aleatorio"
+  },
+  "function:round": {
+    "en": "round",
+    "es": "redon"
+  },
+  "function:shallowCopy": {
+    "en": "copy",
+    "es": "Copiar"
+  },
+  "function:sine": {
+    "en": "sin",
+    "es": "sen"
+  },
+  "function:sine.alias.es.0": {
+    "en": "sin",
+    "es": "sin"
+  },
+  "function:squareRoot": {
+    "en": "sqrt",
+    "es": "rc"
+  },
+  "function:squareRoot.alias.es.0": {
+    "en": "sqrt",
+    "es": "raiz"
+  },
+  "function:textToInteger": {
+    "en": "toInteger",
+    "es": "AEntero"
+  },
+  "function:textToReal": {
+    "en": "toReal",
+    "es": "AReal"
+  },
+  "function:toText": {
+    "en": "toText",
+    "es": "ATexto"
+  },
+  "function:toText.alias.es.0": {
+    "en": "toText",
+    "es": "ConvertirATexto"
+  },
+  "function:truncate": {
+    "en": "trunc",
+    "es": "trunc"
+  },
+  "greaterThan": {
+    "en": ">",
+    "es": ">"
+  },
+  "greaterThanOrEqual": {
+    "en": ">=",
+    "es": ">="
+  },
+  "ifKeyword": {
+    "en": "if",
+    "es": "Si"
+  },
+  "inheritsFrom": {
+    "en": "inherits from",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.en.0": {
+    "en": "inheritsFrom",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.en.1": {
+    "en": "extends",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.es.0": {
+    "en": "inherits from",
+    "es": "HeredaDe"
+  },
+  "integerDivide": {
+    "en": "div",
+    "es": "div"
+  },
+  "integerDivide.alias.es.0": {
+    "en": "div",
+    "es": "DIV"
+  },
+  "integerType": {
+    "en": "integer",
+    "es": "Entero"
+  },
+  "leftBracket": {
+    "en": "[",
+    "es": "["
+  },
+  "leftParenthesis": {
+    "en": "(",
+    "es": "("
+  },
+  "lessThan": {
+    "en": "<",
+    "es": "<"
+  },
+  "lessThanOrEqual": {
+    "en": "<=",
+    "es": "<="
+  },
+  "method": {
+    "en": "method",
+    "es": "Metodo"
+  },
+  "minus": {
+    "en": "-",
+    "es": "-"
+  },
+  "modulo": {
+    "en": "mod",
+    "es": "mod"
+  },
+  "modulo.alias.en.0": {
+    "en": "%",
+    "es": "mod"
+  },
+  "modulo.alias.es.0": {
+    "en": "mod",
+    "es": "MOD"
+  },
+  "modulo.alias.es.1": {
+    "en": "mod",
+    "es": "%"
+  },
+  "multiply": {
+    "en": "*",
+    "es": "*"
+  },
+  "newInstance": {
+    "en": "new",
+    "es": "Nuevo"
+  },
+  "not": {
+    "en": "not",
+    "es": "NO"
+  },
+  "not.alias.en.0": {
+    "en": "!",
+    "es": "NO"
+  },
+  "not.alias.es.0": {
+    "en": "not",
+    "es": "~"
+  },
+  "not.alias.es.1": {
+    "en": "not",
+    "es": "!"
+  },
+  "notEqual": {
+    "en": "<>",
+    "es": "<>"
+  },
+  "notEqual.alias.en.0": {
+    "en": "!=",
+    "es": "<>"
+  },
+  "notEqual.alias.es.0": {
+    "en": "<>",
+    "es": "!="
+  },
+  "or": {
+    "en": "or",
+    "es": "O"
+  },
+  "or.alias.en.0": {
+    "en": "|",
+    "es": "O"
+  },
+  "or.alias.es.0": {
+    "en": "or",
+    "es": "|"
+  },
+  "plus": {
+    "en": "+",
+    "es": "+"
+  },
+  "power": {
+    "en": "^",
+    "es": "^"
+  },
+  "power.alias.en.0": {
+    "en": "**",
+    "es": "^"
+  },
+  "power.alias.es.0": {
+    "en": "^",
+    "es": "**"
+  },
+  "privateVisibility": {
+    "en": "private",
+    "es": "Privado"
+  },
+  "publicVisibility": {
+    "en": "public",
+    "es": "Publico"
+  },
+  "quote": {
+    "en": "\"",
+    "es": "\""
+  },
+  "read": {
+    "en": "read",
+    "es": "Leer"
+  },
+  "realType": {
+    "en": "real",
+    "es": "Real"
+  },
+  "repeat": {
+    "en": "repeat",
+    "es": "Repetir"
+  },
+  "returnKeyword": {
+    "en": "return",
+    "es": "Retornar"
+  },
+  "rightBracket": {
+    "en": "]",
+    "es": "]"
+  },
+  "rightParenthesis": {
+    "en": ")",
+    "es": ")"
+  },
+  "semicolon": {
+    "en": ";",
+    "es": ";"
+  },
+  "step": {
+    "en": "step",
+    "es": "Con Paso"
+  },
+  "step.alias.en.0": {
+    "en": "with step",
+    "es": "Con Paso"
+  },
+  "step.alias.es.0": {
+    "en": "step",
+    "es": "ConPaso"
+  },
+  "stringType": {
+    "en": "string",
+    "es": "Cadena"
+  },
+  "subroutine": {
+    "en": "subroutine",
+    "es": "SubProceso"
+  },
+  "subroutine.alias.en.0": {
+    "en": "function",
+    "es": "SubProceso"
+  },
+  "subroutine.alias.en.1": {
+    "en": "procedure",
+    "es": "SubProceso"
+  },
+  "subroutine.alias.es.0": {
+    "en": "subroutine",
+    "es": "SubAlgoritmo"
+  },
+  "subroutine.alias.es.1": {
+    "en": "subroutine",
+    "es": "Funcion"
+  },
+  "subroutine.alias.es.2": {
+    "en": "subroutine",
+    "es": "Procedimiento"
+  },
+  "superClass": {
+    "en": "super",
+    "es": "Super"
+  },
+  "switchKeyword": {
+    "en": "switch",
+    "es": "Segun"
+  },
+  "then": {
+    "en": "then",
+    "es": "Entonces"
+  },
+  "thisObject": {
+    "en": "this",
+    "es": "Este"
+  },
+  "to": {
+    "en": "to",
+    "es": "Hasta"
+  },
+  "typeConnector": {
+    "en": "as",
+    "es": "Como"
+  },
+  "until": {
+    "en": "until",
+    "es": "Hasta Que"
+  },
+  "until.alias.es.0": {
+    "en": "until",
+    "es": "HastaQue"
+  },
+  "whileKeyword": {
+    "en": "while",
+    "es": "Mientras"
+  },
+  "withoutNewline": {
+    "en": "without newline",
+    "es": "Sin Saltar"
+  },
+  "withoutNewline.alias.en.0": {
+    "en": "withoutNewline",
+    "es": "Sin Saltar"
+  },
+  "withoutNewline.alias.es.0": {
+    "en": "without newline",
+    "es": "SinSaltar"
+  },
+  "write": {
+    "en": "write",
+    "es": "Escribir"
+  },
+  "write.alias.en.0": {
+    "en": "print",
+    "es": "Escribir"
+  },
+  "write.alias.es.0": {
+    "en": "write",
+    "es": "Mostrar"
   }
 }

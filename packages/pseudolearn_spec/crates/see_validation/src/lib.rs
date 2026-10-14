@@ -3,7 +3,9 @@
 pub mod bindings;
 pub mod identity;
 pub mod lifecycle;
+pub mod migration;
 pub mod references;
+pub mod resources;
 pub mod schema;
 pub mod schema_engine;
 
@@ -22,6 +24,7 @@ pub fn validate(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
         errors.extend(references::check(specification));
         errors.extend(references::capture_review(specification));
         errors.extend(lifecycle::check(specification, lock));
+        errors.extend(resources::check(specification));
     }
     errors.sort();
     errors.dedup();

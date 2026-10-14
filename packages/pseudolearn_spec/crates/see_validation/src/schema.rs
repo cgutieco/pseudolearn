@@ -36,6 +36,13 @@ pub fn check(specification: &Specification) -> Vec<String> {
 }
 
 fn check_block(block: &Block, errors: &mut Vec<String>) {
+    if block
+        .fields
+        .get("semilla")
+        .is_some_and(|value| value.as_i64().is_none())
+    {
+        errors.push("SEE-SCHEMA: seed must be a signed 64-bit integer".to_owned());
+    }
     let (required, optional) = fields(&block.kind);
     for name in required.split_whitespace() {
         if !block.fields.contains_key(name) {
@@ -69,9 +76,9 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles rigor espera origen",
-            "programa programas esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita",
+            "programa programas esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
         ),
-        "definicion" => ("id termino texto", ""),
+        "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),
         "propiedad" => ("id regla generador propiedad oraculo", "justificacion"),
         "lapida" => ("id justificacion", "reemplazada_por"),

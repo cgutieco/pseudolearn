@@ -9,6 +9,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
     let corpus = storage::valid(&arguments.root)?;
     match arguments.command.as_str() {
         "validate" => Ok(format!("Validated {} specifications", corpus.len())),
+        "budget" => crate::e10::execute(&arguments.root, &corpus),
         "graph" => see_graph::render(
             &corpus,
             arguments.options.get("focus").map(String::as_str),
@@ -25,9 +26,9 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
                 arguments.options.contains_key("check"),
             )
         }
-        "export" => storage::artifact(
-            &arguments.root.join("specifications/export.json"),
-            &see_export::generate(&corpus)?,
+        "export" => crate::resources::export(
+            &arguments.root,
+            &corpus,
             arguments.options.contains_key("check"),
         ),
         "diff" => crate::history::diff(&arguments, &corpus),

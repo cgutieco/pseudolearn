@@ -72,7 +72,7 @@ Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. El resto se consul
 3. **El núcleo Dart pasa a ser el sujeto `reference`**: oráculo de contraste, congelado, que se retira
    cuando la matriz de conformidad del sujeto Rust esté completa ([07](07-fases.md) R9).
 4. **Lo que no tiene especificación no se porta.** Así se poda código muerto y funciones a medias
-   (por ejemplo, los perfiles institucionales: [03](03-catalogo-de-especificaciones.md) §4).
+   (catálogo de poda: [03](03-catalogo-de-especificaciones.md) §4).
 5. **Cada crate es una capa.** La dirección de dependencias la impone Cargo al compilar, no un test
    ([04](04-arquitectura-del-workspace-rust.md) §2).
 6. **En móvil se interpreta; en escritorio se compila.** La VM de bytecode es el motor en iOS, Android

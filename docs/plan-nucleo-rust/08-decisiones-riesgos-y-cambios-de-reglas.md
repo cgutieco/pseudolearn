@@ -17,7 +17,7 @@
 | —       | Las especificaciones ejecutables son la fuente de verdad; orden especificación → casos → tests → código     | D-09 en su forma R2                      |
 | —       | Los tests del núcleo Dart dejan de ser normativos; el corpus los sustituye como oráculo                      | —                                        |
 | —       | Código en inglés, documentación y especificaciones en español; nombres semánticos; cero comentarios        | `LANG-EN-CODE`, `LANG-ES-DOCS`, `QUALITY-NO-COMMENTS`; nueva `QUALITY-SEMANTIC-NAMES` |
-| —       | Se podan las funciones a medias y el código muerto: lo que no tiene especificación no se porta              | C-04 (perfiles institucionales: se retiran) |
+| —       | Se podan las funciones a medias y el código muerto: lo que no tiene especificación no se porta              | Catálogo de poda |
 
 ### 1.2 Asumidas de la investigación («el resto de la documentación es coherente»), aprobadas en R0
 

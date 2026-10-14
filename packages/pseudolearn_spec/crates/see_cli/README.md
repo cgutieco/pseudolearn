@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature y export. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. El único adaptador ejecutable en R1 es reference.
+Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export y budget. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. El adaptador ejecutable es reference.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -14,6 +14,10 @@ Imports internos permitidos: model, format, graph, change, validation, conforman
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Budget mide E-10 sobre archivos .pseudo de ejemplos locales: recoge candidatos de declaraciones y controles contados sin usar el sujeto ni descartar los que colisionan. Registra revisión Git, archivos, candidatos, presupuesto de lexemas y colisiones. Es una muestra editorial local, no una muestra de estudiantes ni evidencia suficiente para cambiar palabras reservadas.
+
+Export comprueba además los recursos derivados; la correspondencia educativa se comprueba desde el índice del núcleo sin que el corpus dependa del índice. Los contratos estructurales producen evidencia separada del sujeto reference.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
@@ -23,7 +27,7 @@ Reglas y límites en `architecture.yaml` del miembro; código inglés sin coment
 
 ## 6. Decisiones de producto que condicionan el código
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

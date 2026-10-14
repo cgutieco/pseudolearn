@@ -52,9 +52,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 
 #### De producto
 
-- **Capa institucional y gestión docente:** No existen entidades de instituciones, aulas, códigos de acceso, roles
-  administrativos, inscripciones, tareas asignadas, fechas límite, calificaciones, rúbricas ni seguimiento agregado de
-  grupos. La aplicación modela estrictamente un espacio personal e individual.
+
 - **Edición gráfica bidireccional de diagramas:** Los diagramas se generan exclusivamente como proyección de solo
   lectura a partir del código fuente. No se soporta manipulación de nodos por arrastre para mutar el AST ni diagramado
   inverso a código.

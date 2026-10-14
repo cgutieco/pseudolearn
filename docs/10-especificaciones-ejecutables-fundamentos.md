@@ -24,7 +24,6 @@ encontró que **lo escrito y lo ejecutado divergen sin que nada lo detecte**:
 | El `README.md` nombra tipos y métodos públicos que no existen                                    | H-07       | Extraer la superficie pública en vez de copiarla                        |
 | Una plantilla de autocompletado contradice la gramática                                          | H-18       | Que una afirmación sobre la gramática se compruebe contra la gramática  |
 | «Paridad semántica entre objetivos» comprobada solo compilando                                   | H-27       | Distinguir «compila» de «se comporta igual»                             |
-| Dos documentos del mismo nivel se contradicen (perfiles institucionales)                         | H-04       | Identidad de cada regla y detección de reglas contradictorias           |
 | Cifras de estado escritas a mano y desactualizadas                                               | H-01       | Que el estado derivado se genere                                        |
 
 **[INFERENCIA]** Ninguno de estos fallos se debe a descuido: es lo que ocurre a cualquier texto

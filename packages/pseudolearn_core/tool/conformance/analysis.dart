@@ -31,8 +31,6 @@ ReferenceAnalysis analyze(String source, LanguageProfile profile) {
   final resolution = NameResolver(profile: profile).resolve(tree);
   final types =
       TypeChecker(resolution: resolution, profile: profile).check(tree);
-  diagnostics.addAll(resolution.diagnostics
-      .map((diagnostic) => diagnosticWire(diagnostic, 'semantic')));
   diagnostics.addAll(types.diagnostics
       .map((diagnostic) => diagnosticWire(diagnostic, 'semantic')));
   final program = AnalyzedProgram(

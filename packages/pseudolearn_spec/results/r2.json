@@ -1,0 +1,26 @@
+{
+  "phase": "R2",
+  "date": "2026-10-14",
+  "contracts": 85,
+  "rules": 98,
+  "cases": 265,
+  "source_sections": 71,
+  "observations": 1016,
+  "verdicts": {
+    "cumple": 930,
+    "incumple": 86,
+    "no aplicable": 0
+  },
+  "exempt_rules": 23,
+  "findings": 14,
+  "tests": {
+    "spec": 54,
+    "rust_checks": 39,
+    "core": 782,
+    "flutter": 1948
+  },
+  "checks": "local-green",
+  "remote_ci": "not-required-not-run",
+  "deferred": "E-14 human study after R9, explicitly authorized",
+  "engine_code": "none"
+}

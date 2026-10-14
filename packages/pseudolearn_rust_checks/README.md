@@ -58,7 +58,7 @@ Las dependencias internas siguen `may_import`; las externas siguen `external_dep
   contratos se admiten; los pánicos explícitos y unwrap/expect siguen prohibidos en tests.
 - **Problema:** el proyecto es propietario y no publica estos crates. **Elección:** `publish = false`,
   sin inventar licencia pública; cargo-deny permite dependencias MIT/Apache-2.0/BSD/ISC/Unicode/Zlib.
-  **Descartado:** asignar al proyecto una licencia de terceros. D-01 permanece para publicación.
+  **Descartado:** asignar al proyecto una licencia de terceros. La licencia de publicación es una decisión pendiente.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

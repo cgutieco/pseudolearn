@@ -5,7 +5,7 @@
   "titulo": "Validación por capas",
   "dominio": "proceso",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -13,7 +13,14 @@
     "see"
   ],
   "resumen": "Validación por capas.",
-  "depende_de": []
+  "depende_de": [],
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
+    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
+    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
+  }
 }
 ---
 
@@ -45,6 +52,15 @@
 }
 ```
 
-## Alcance
-
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "La validación comprueba integridad de lexemas bilingües, firmas, marcadores de diagnósticos, tipos de argumento, políticas de severidad, gramática alcanzable y correspondencia completa de secciones hacia contratos existentes.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Pruebas felices e infelices en las capas responsables y verificación local completa."
+}
+```

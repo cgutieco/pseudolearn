@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+mod documentation;
+
 fn main() -> std::process::ExitCode {
     match verify() {
         Ok(()) => std::process::ExitCode::SUCCESS,
@@ -14,6 +16,7 @@ fn verify() -> Result<(), String> {
     if std::env::args().nth(1).as_deref() != Some("verify") {
         return Err("Usage: cargo xtask verify".to_owned());
     }
+    documentation::check(std::path::Path::new("../.."))?;
     for arguments in commands() {
         let status = std::process::Command::new("cargo")
             .args(&arguments)

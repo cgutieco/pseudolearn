@@ -308,6 +308,8 @@ propio `README.md`.
 
 ---
 
+La investigación documental de la raíz es transitoria. Ningún archivo externo depende de sus documentos o secciones: el comportamiento vive en el corpus y las decisiones técnicas en los README (`DOC-NO-TRANSIENT-REFS`).
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 ### 4.1 Monorepo de git puro sin orquestador multi-paquete

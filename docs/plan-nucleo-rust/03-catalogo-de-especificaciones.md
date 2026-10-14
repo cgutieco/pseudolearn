@@ -89,7 +89,6 @@ el motor, sus fronteras y sus herramientas.
 | `LANG.PROFILE.VOCABULARY`       | Tabla bilingüe de lexemas (**fuente del léxico generado**)     | §2.3, §2.4     | reference, engine |
 | `LANG.PROFILE.STRICTNESS`       | Eje de rigor: estricto y flexible; solo invalida, nunca cambia el significado | §2.5, docs/04 §1.3 | reference, engine |
 | `LANG.PROFILE.TRANSLATION`      | Traducción entre perfiles por reimpresión de tokens; ida y vuelta | §2.7       | engine            |
-| `LANG.PROFILE.INSTITUTIONAL`    | Perfiles declarados por instituciones — **`rechazada`** (lápida) | §2.7, H-04, C-04 | —           |
 
 #### 2.2.3 Estructura del programa y sintaxis (Impl. R4)
 
@@ -356,7 +355,6 @@ contrastar el corpus con el sujeto `reference`:
 
 | Qué                                                    | Dónde está hoy                                   | Por qué no se porta                                     | Qué lo sustituye                    |
 |--------------------------------------------------------|--------------------------------------------------|---------------------------------------------------------|-------------------------------------|
-| Perfiles institucionales                               | `language-spec.md` §2.7 (frase)                  | Contradice la exclusión del `README.md` del núcleo (H-04, C-04) | `LANG.PROFILE.INSTITUTIONAL`, `rechazada` |
 | Tope de 10 000 micro-pasos                             | `step_batch_runner.dart` (app)                   | Unidad sin significado (H-14)                            | `ENG.LIMITS`, `ENG.TRACE.STEP`      |
 | `PseudoInteger` sobre `BigInt`                         | `domain/pseudo_integer.dart`                     | Detalle del anfitrión Dart (H-16)                        | `LANG.TYPES.INTEGER` + `i64` comprobado |
 | `NotExecutableReason.containsClassDeclaration`         | `execution_result.dart`                          | Código muerto (H-02)                                     | Nada                                |

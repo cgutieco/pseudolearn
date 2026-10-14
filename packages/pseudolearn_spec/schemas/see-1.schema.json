@@ -656,6 +656,134 @@
               "items": {
                 "type": "object"
               }
+            },
+            "diagnosticos_ordenados": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "codigo": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "severidad": {
+                    "type": "string",
+                    "enum": [
+                      "error",
+                      "advertencia",
+                      "warning",
+                      "info",
+                      "hint"
+                    ]
+                  },
+                  "clase": {
+                    "type": "string"
+                  },
+                  "tramo": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "object",
+                        "properties": {
+                          "line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "column": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "line",
+                          "column"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "end": {
+                        "type": "object",
+                        "properties": {
+                          "line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "column": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "line",
+                          "column"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "relacionados": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "end": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "argumentos": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "codigo",
+                  "severidad"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [],
@@ -837,6 +965,134 @@
                 "items": {
                   "type": "object"
                 }
+              },
+              "diagnosticos_ordenados": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "codigo": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "severidad": {
+                      "type": "string",
+                      "enum": [
+                        "error",
+                        "advertencia",
+                        "warning",
+                        "info",
+                        "hint"
+                      ]
+                    },
+                    "clase": {
+                      "type": "string"
+                    },
+                    "tramo": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "end": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "relacionados": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "start": {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "end": {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "start",
+                          "end"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "argumentos": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "codigo",
+                    "severidad"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
             "required": [],
@@ -911,6 +1167,9 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "semilla": {
+          "type": "integer"
         }
       },
       "required": [
@@ -937,6 +1196,9 @@
         "texto": {
           "type": "string",
           "minLength": 1
+        },
+        "valor": {
+          "type": "object"
         }
       },
       "required": [
