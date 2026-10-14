@@ -22,12 +22,12 @@
   ],
   "vinculos": [
     {
-      "regla": "SEE.ADAPTER.PROTOCOL@0.1.0#R1",
+      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R1",
       "verificacion": "crates/see_conformance/tests/protocol.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.ADAPTER.PROTOCOL@0.1.0#R2",
+      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R2",
       "verificacion": "crates/see_conformance/tests/protocol.rs",
       "estado": "cumple"
     },
@@ -52,12 +52,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.CONFORMANCE.MATRIX@0.1.0#R1",
+      "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R1",
       "verificacion": "crates/see_report/tests/lib.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.CONFORMANCE.MATRIX@0.1.0#R2",
+      "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R2",
       "verificacion": "crates/see_report/tests/lib.rs",
       "estado": "cumple"
     },
@@ -67,7 +67,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.2.0#R1",
+      "regla": "SEE.FORMAT@0.3.0#R1",
       "verificacion": "crates/see_format/tests/parsing.rs",
       "estado": "cumple"
     },
@@ -87,7 +87,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.IDENTITY@0.1.0#R1",
+      "regla": "SEE.IDENTITY@0.2.0#R1",
       "verificacion": "crates/see_validation/tests/identity.rs",
       "estado": "cumple"
     },
@@ -117,12 +117,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.VALIDATION@0.2.0#R1",
+      "regla": "SEE.VALIDATION@0.3.0#R1",
       "verificacion": "crates/see_validation/tests/lib.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.VALIDATION@0.2.0#R2",
+      "regla": "SEE.VALIDATION@0.3.0#R2",
       "verificacion": "crates/see_validation/tests/lib.rs",
       "estado": "cumple"
     },
@@ -137,7 +137,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.2.0#R2",
+      "regla": "SEE.FORMAT@0.3.0#R2",
       "verificacion": "crates/see_validation/tests/schema.rs",
       "estado": "cumple"
     },
@@ -147,8 +147,28 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.VALIDATION@0.2.0#R3",
+      "regla": "SEE.VALIDATION@0.3.0#R3",
       "verificacion": "crates/see_validation/tests/resources.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R3",
+      "verificacion": "crates/see_conformance/tests/execution.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R3",
+      "verificacion": "crates/see_report/tests/coverage.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.FORMAT@0.3.0#R3",
+      "verificacion": "crates/see_validation/tests/schema.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.VALIDATION@0.3.0#R4",
+      "verificacion": "crates/see_validation/tests/lib.rs",
       "estado": "cumple"
     }
   ]

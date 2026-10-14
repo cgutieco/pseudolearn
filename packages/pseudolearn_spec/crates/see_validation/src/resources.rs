@@ -10,10 +10,16 @@ pub fn check(specification: &Specification) -> Vec<String> {
         let Some(value) = definition.fields.get("valor") else {
             continue;
         };
+        if field(definition, "termino") == crate::messages::CATALOG_TERM {
+            errors.extend(crate::messages::check(value));
+            continue;
+        }
         let result = match field(definition, "termino") {
             "vocabulary" | "functions" => lexicon::check(value),
             "diagnostics" => diagnostics(value),
             "grammar" => grammar::check(value),
+            crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
+            crate::cli::CONVENTIONS_TERM => crate::cli::conventions(value),
             name => Err(format!("Unknown normative resource {name}")),
         };
         if let Err(error) = result {
@@ -59,7 +65,7 @@ fn diagnostic(entry: &Value) -> Result<(), String> {
     severity(entry)
 }
 
-fn argument_types(
+pub(crate) fn argument_types(
     entry: &Value,
     required: &std::collections::BTreeSet<&str>,
 ) -> Result<(), String> {
@@ -93,7 +99,7 @@ fn argument_types(
     Ok(())
 }
 
-fn placeholders(pattern: &str) -> Result<std::collections::BTreeSet<&str>, String> {
+pub(crate) fn placeholders(pattern: &str) -> Result<std::collections::BTreeSet<&str>, String> {
     let mut names = std::collections::BTreeSet::new();
     let mut remaining = pattern;
     while let Some(open) = remaining.find('{') {

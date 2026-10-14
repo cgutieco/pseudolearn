@@ -31,7 +31,7 @@ fn check_rule(specification: &Specification, block: &see_model::Block, errors: &
             }
         } else if !specification.blocks.iter().any(|candidate| {
             field(candidate, "id") == reference
-                && ["caso", "propiedad"].contains(&candidate.kind.as_str())
+                && ["caso", "propiedad", "medicion"].contains(&candidate.kind.as_str())
         }) {
             errors.push(format!("SEE-REFERENCE: unknown verification {reference}"));
         }

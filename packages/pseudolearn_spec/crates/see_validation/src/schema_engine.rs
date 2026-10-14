@@ -52,6 +52,7 @@ fn scalar(value: &Value, schema: &Value) -> Result<(), String> {
         Some("object") => value.is_object(),
         Some("array") => value.is_array(),
         Some("integer") => value.is_i64() || value.is_u64(),
+        Some("number") => value.is_number(),
         Some("null") => value.is_null(),
         Some("boolean") => value.is_boolean(),
         None => true,

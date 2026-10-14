@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+pub mod coverage;
+
 use see_model::{
     Corpus,
     contract::Manifest,
@@ -53,8 +55,13 @@ fn row(
                 && observation.rule == field(rule, "id")
         })
         .collect();
-    let measured = measurement(&observations);
-    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": observations.len(), "state": specification.metadata.estado})
+    let measurements = coverage::measurements(specification, rule);
+    let measured = if observations.is_empty() && !measurements.is_empty() {
+        "no aplicable"
+    } else {
+        measurement(&observations)
+    };
+    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": observations.len(), "measurements": measurements, "state": specification.metadata.estado})
 }
 
 pub fn regressions(rows: &[Value], conformance: &Conformance) -> Vec<String> {
@@ -109,18 +116,14 @@ pub fn feature(corpus: &Corpus, manifest: &Manifest) -> Result<Value, String> {
 
 fn measurement(observations: &[&see_model::evidence::Observation]) -> &'static str {
     if observations.is_empty() {
-        "sin evidencia"
-    } else if observations
-        .iter()
-        .any(|observation| observation.verdict == "incumple")
-    {
-        "incumple"
-    } else if observations
-        .iter()
-        .any(|observation| observation.verdict == "no aplicable")
-    {
-        "no aplicable"
-    } else {
-        "cumple"
+        return "sin evidencia";
     }
+    ["incumple", "pendiente", "no aplicable"]
+        .into_iter()
+        .find(|verdict| {
+            observations
+                .iter()
+                .any(|observation| observation.verdict == *verdict)
+        })
+        .unwrap_or("cumple")
 }

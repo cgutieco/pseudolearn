@@ -76,13 +76,22 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles rigor espera origen",
-            "programa programas esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
+            "programa programas programa_ri cli limites cancelacion esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
         ),
         "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),
         "propiedad" => ("id regla generador propiedad oraculo", "justificacion"),
         "lapida" => ("id justificacion", "reemplazada_por"),
         "pregunta" => ("id texto", ""),
+        "medicion" => (
+            "id metrica unidad suite comparador umbral provisional plataformas protocolo",
+            "",
+        ),
+        "instruccion" => (
+            "id nombre firma clases_de_valor semantica trampas efectos observacion",
+            "",
+        ),
+        "cobertura" => ("id regla", "instrucciones sin_ri"),
         "invariante" | "precondicion" | "resultado" => ("id texto verificacion", "justificacion"),
         _ => ("invalid", ""),
     }
@@ -143,6 +152,17 @@ fn serialized(specification: &Specification) -> Vec<String> {
 }
 
 fn check_program(block: &Block, errors: &mut Vec<String>) {
+    let operation_source = match field(block, "operacion") {
+        "ir" => Some("programa_ri"),
+        "cli" => Some("cli"),
+        _ => None,
+    };
+    if let Some(source) = operation_source {
+        if !block.fields.contains_key(source) {
+            errors.push(format!("SEE-SCHEMA: case {source} required"));
+        }
+        return;
+    }
     if !block
         .fields
         .get("programa")

@@ -1,0 +1,49 @@
+{
+  "revision": "8e3c7e4",
+  "command": "see diff 8e3c7e4",
+  "declared": {
+    "SEE.FORMAT": "ampliacion 0.2.0→0.3.0",
+    "SEE.IDENTITY": "ampliacion 0.1.0→0.2.0",
+    "SEE.VALIDATION": "ampliacion 0.2.0→0.3.0",
+    "SEE.ADAPTER.PROTOCOL": "ampliacion 0.1.0→0.2.0",
+    "SEE.CONFORMANCE.MATRIX": "ampliacion 0.1.0→0.2.0"
+  },
+  "proposed": [
+    {
+      "classes": [
+        "ampliacion_candidata"
+      ],
+      "id": "SEE.ADAPTER.PROTOCOL",
+      "review_required": true
+    },
+    {
+      "classes": [
+        "ampliacion_candidata"
+      ],
+      "id": "SEE.CONFORMANCE.MATRIX",
+      "review_required": true
+    },
+    {
+      "classes": [
+        "ampliacion_candidata"
+      ],
+      "id": "SEE.FORMAT",
+      "review_required": true
+    },
+    {
+      "classes": [
+        "requiere_revision"
+      ],
+      "id": "SEE.IDENTITY",
+      "review_required": true
+    },
+    {
+      "classes": [
+        "ampliacion_candidata"
+      ],
+      "id": "SEE.VALIDATION",
+      "review_required": true
+    }
+  ],
+  "editorial_only": 95
+}

@@ -23,6 +23,8 @@ Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro d
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
 `lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject reference [--only ID]`,
 `matrix`, `feature <nombre>`, `export [--check]`.
+`matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
+de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
 `diff` lee la revisión con Git, sin cambiar el checkout. `lock` conserva versiones históricas;
 una versión normativa ya anclada es inmutable. Código 0: éxito; 1: error o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
@@ -44,11 +46,11 @@ ajeno; el tooling ejecuta los verificadores compartidos por proceso.
 | see_oracles | Cálculo independiente de límites enteros | biblioteca estándar | sujetos |
 | see_graph | Dependencias e impacto | model, semver | procesos, CLI |
 | see_change | Hash canónico y clasificación | model, serde_json, sha2 | sujetos, CLI |
-| see_validation | Integridad del corpus | model, graph, change, semver, serde_json | procesos |
+| see_validation | Integridad del corpus: esquema, referencias, ciclo de vida, recursos, alfabeto de traza, convenciones de CLI, aperturas, mensajes, cobertura de RI y mediciones | model, graph, change, semver, serde_json | procesos |
 | see_translation | Reimpresión léxica | model | sujeto, parser |
-| see_conformance | Protocolo y comparación | model, translation, serde_json | internos de sujetos |
+| see_conformance | Protocolo, peticiones por operación y comparación | model, translation, serde_json | internos de sujetos |
 | see_export | Exportación de contratos | model, change, serde_json | sujetos |
-| see_report | Matriz y características | model, serde_json | ejecución de sujetos |
+| see_report | Matriz, cobertura de RI, estados y características | model, serde_json | ejecución de sujetos |
 | see_cli | Orquestación CLI | capas del producto, serde_json, serde-saphyr | otros miembros |
 | xtask | Puertas locales | biblioteca estándar | lógica del producto |
 | specifications | Contratos y recursos de casos | datos | implementación |
@@ -71,6 +73,28 @@ salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, 
 - Los casos admiten semilla explícita; la ausencia conserva 42. La comparación preserva resultados desfavorables y exenciones específicas de reglas con resolución declarada.
 - E-10 mide colisiones sobre programas locales con procedencia explícita. El estudio humano de E-14 requiere participantes y construcciones de la evolución del lenguaje; no se atribuyen resultados humanos a comprobaciones técnicas.
 
+- Problema: el corpus del motor necesita observar trazas, RI, CLI y mediciones sin crear otro formato.
+  Elección: `see/1` crece de forma compatible con los bloques `medicion` (prefijo M), `instruccion` (O) y
+  `cobertura` (V), y con las operaciones de caso `trace`, `ir` y `cli`. Las tablas que deciden la validez
+  (alfabeto `traceEvents`, `cliConventions` con códigos de salida y aperturas, catálogo `cliMessages`,
+  `diagnostics`, `vocabulary`) se leen de bloques `definicion`; ningún alfabeto vive en el código.
+  `instruccion` lleva `nombre` además de `firma` porque las coberturas citan instrucciones por nombre
+  estable y no por elemento. Se descarta un esquema `see/2`: ningún corpus anterior cambia de significado.
+- Problema: un sujeto sin observación no debe aparentar cumplir ni ocultar casos. Elección: cada
+  operación declara sus capacidades (`trace` exige `execute` y `observe`, `ir` exige `ir`, `cli` exige
+  `cli`). Sin `observe` un caso `trace` es `pendiente`; sin otra capacidad es `no aplicable`; un sujeto que
+  emite eventos sin haberlos pedido es error operativo. La matriz antepone incumple, pendiente y no
+  aplicable a cumple. Las reglas verificadas solo por mediciones se informan no aplicables con la
+  procedencia de cada medición: `see conform` no mide rendimiento. Se descarta tratar `pendiente` como
+  `no aplicable`, porque ocultaría trabajo exigible al motor.
+- Problema: la cobertura de la RI debe comprobarse sin interpretar la prosa de las reglas. Elección:
+  cuando el corpus contiene instrucciones, cada regla de `LANG` o `LIB` de clase `semantica`, `ejecucion` o
+  `ampliacion` tiene exactamente una `cobertura` con instrucciones existentes o un motivo `sin_ri`; las
+  trampas citadas existen en el catálogo de diagnósticos. Se descarta inferir instrucciones del texto.
+- Problema: deducir el vocabulario por la palabra de apertura exige que ninguna apertura sea ambigua.
+  Elección: `SEE-PROFILE-OPENERS` pliega caja, tildes, diéresis y `ñ` y compara cada lexema o alias de
+  apertura con todos los lexemas y alias del otro perfil. El pliegue es deliberadamente más agresivo que
+  la normalización de cada perfil: solo puede producir rechazos de más, nunca aceptar una ambigüedad.
 - Problema: prosa legible y datos verificables. Elección: Markdown con YAML y bloques tipados;
   serde-saphyr conserva la cadena segura usada en el monorepo. Se descarta DSL propio por coste.
 - Problema: versión mutable por edición silenciosa. Elección: SHA-256 del JSON canónico ordenado del
@@ -137,7 +161,13 @@ este README explica arquitectura y operación.
 cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see lock --check`, `see export --check` y conformidad reference.
 Los casos negativos prueban duplicados, regla huérfana, captura sin revisor, hash/version,
 ciclos y perfil faltante; otros prueban esquema, referencias, rango, estados y clasificación.
-Las pruebas de protocolo incluyen negociación inválida, JSON corrupto, EOF, timeout y capacidad ausente.
+Cada rechazo del motor y sus fronteras tiene fixture propio comprobado por su identificador:
+`trace-class` → SEE-TRACE-CLASS, `ir-expectation` → SEE-IR-EXPECTATION, `cli-exit` → SEE-CLI-EXIT,
+`limit-kind` → SEE-LIMIT-KIND, `measurement-protocol` → SEE-MEASUREMENT-PROTOCOL, `ir-coverage` →
+SEE-IR-COVERAGE, `ir-unknown` → SEE-IR-UNKNOWN, `profile-openers` → SEE-PROFILE-OPENERS,
+`message-parity` → SEE-MESSAGE-PARITY y `message-arguments` → SEE-MESSAGE-ARGUMENTS.
+Las pruebas de protocolo incluyen negociación inválida, JSON corrupto, EOF, timeout y capacidad ausente;
+el adaptador de prueba cubre además observación anunciada, eventos no anunciados, RI y CLI.
 Las pruebas de traducción incluyen cadenas, comentarios, ida/vuelta y colisión.
 Las dependencias internas declaran versión y ruta; no hay excepciones de auditoría. Los fallos esperados del piloto se conservan como evidencia,
 con exenciones justificadas; cualquier vínculo cumple que falle impide verificar.

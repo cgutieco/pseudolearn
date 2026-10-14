@@ -5,7 +5,7 @@
   "titulo": "Validación por capas",
   "dominio": "proceso",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -16,9 +16,9 @@
   "depende_de": [],
   "cambio": {
     "clase": "ampliacion",
-    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
-    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
-    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "impacto_usuarios": "Los autores reciben rechazos específicos para observación, RI, CLI, mediciones y cobertura.",
+    "impacto_implementaciones": "see aplica nuevas validaciones sobre bloques y casos opcionales; los corpus sin ellos no cambian.",
+    "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
     "revisado_por": "autoría automatizada; no revisión humana independiente"
   }
 }
@@ -62,5 +62,18 @@
     "estructural"
   ],
   "justificacion": "Pruebas felices e infelices en las capas responsables y verificación local completa."
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "La validación rechaza clases de evento ausentes del alfabeto declarado por ENG.TRACE.EVENTS y datos de evento no declarados (SEE-TRACE-CLASS); casos ir sin resultado esperado válido (SEE-IR-EXPECTATION); códigos de salida no declarados por TOOL.CLI.CONVENTIONS (SEE-CLI-EXIT); límite alcanzado sin tipo sentencias o tiempo, o tipo sin límite alcanzado (SEE-LIMIT-KIND); mediciones cuyo protocolo no es una regla de PERF.PROTOCOL (SEE-MEASUREMENT-PROTOCOL); reglas de LANG o LIB de clase semantica, ejecucion o ampliacion sin exactamente una cobertura (SEE-IR-COVERAGE); instrucciones o trampas citadas que no existen (SEE-IR-UNKNOWN); aperturas de nivel superior cuyo lexema o alias coincide con cualquier lexema o alias del otro perfil tras normalizar caja y acentos (SEE-PROFILE-OPENERS), y mensajes de la CLI sin par bilingüe o con argumentos distintos (SEE-MESSAGE-PARITY, SEE-MESSAGE-ARGUMENTS). Alfabetos, tablas y catálogos se leen de bloques definicion del corpus, nunca de listas del código.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Pruebas espejo de cada validación y un fixture negativo por identificador; verificación mecánica en cargo xtask verify."
 }
 ```

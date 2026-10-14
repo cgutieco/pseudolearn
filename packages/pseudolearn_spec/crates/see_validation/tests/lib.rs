@@ -18,18 +18,7 @@ fn valid_corpus_passes_and_empty_corpus_fails() -> Result<(), String> {
 #[test]
 fn each_invalid_fixture_is_rejected_for_its_declared_reason() -> Result<(), String> {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures");
-    let fixtures = [
-        ("duplicate", "SEE-DUPLICATE"),
-        ("orphan", "SEE-ORPHAN"),
-        ("captured", "SEE-CAPTURE"),
-        ("hash", "SEE-HASH"),
-        ("cycle", "SEE-CYCLE"),
-        ("missing-profile", "SEE-PROFILE"),
-        ("reference", "SEE-REFERENCE"),
-        ("range", "SEE-RANGE"),
-        ("unknown-field", "SEE-SCHEMA"),
-        ("invalid-force", "SEE-FORCE"),
-    ];
+    let fixtures = rejected_fixtures();
     for (name, rule) in fixtures {
         let folder = root.join(name);
         let corpus = see_format::read(&folder.join("specifications"))?;
@@ -49,4 +38,29 @@ fn each_invalid_fixture_is_rejected_for_its_declared_reason() -> Result<(), Stri
         );
     }
     Ok(())
+}
+
+fn rejected_fixtures() -> Vec<(&'static str, &'static str)> {
+    vec![
+        ("duplicate", "SEE-DUPLICATE"),
+        ("orphan", "SEE-ORPHAN"),
+        ("captured", "SEE-CAPTURE"),
+        ("hash", "SEE-HASH"),
+        ("cycle", "SEE-CYCLE"),
+        ("missing-profile", "SEE-PROFILE"),
+        ("reference", "SEE-REFERENCE"),
+        ("range", "SEE-RANGE"),
+        ("unknown-field", "SEE-SCHEMA"),
+        ("invalid-force", "SEE-FORCE"),
+        ("trace-class", "SEE-TRACE-CLASS"),
+        ("ir-expectation", "SEE-IR-EXPECTATION"),
+        ("cli-exit", "SEE-CLI-EXIT"),
+        ("limit-kind", "SEE-LIMIT-KIND"),
+        ("measurement-protocol", "SEE-MEASUREMENT-PROTOCOL"),
+        ("ir-coverage", "SEE-IR-COVERAGE"),
+        ("ir-unknown", "SEE-IR-UNKNOWN"),
+        ("profile-openers", "SEE-PROFILE-OPENERS"),
+        ("message-parity", "SEE-MESSAGE-PARITY"),
+        ("message-arguments", "SEE-MESSAGE-ARGUMENTS"),
+    ]
 }

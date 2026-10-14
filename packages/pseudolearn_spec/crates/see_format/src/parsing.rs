@@ -1,6 +1,6 @@
 use see_model::{Block, Metadata, Specification};
 
-const KINDS: [&str; 10] = [
+const KINDS: [&str; 13] = [
     "regla",
     "caso",
     "definicion",
@@ -11,6 +11,9 @@ const KINDS: [&str; 10] = [
     "resultado",
     "lapida",
     "pregunta",
+    "medicion",
+    "instruccion",
+    "cobertura",
 ];
 
 pub fn parse(path: &str, text: &str) -> Result<Specification, String> {

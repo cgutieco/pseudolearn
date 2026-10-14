@@ -1,11 +1,12 @@
 use crate::protocol::Session;
+use crate::requests::{self, Selection};
 use see_model::{
     Block, Corpus, Specification,
     contract::Vocabulary,
     evidence::{Evidence, Observation},
     field, strings,
 };
-use serde_json::{Value, json};
+use serde_json::Value;
 
 pub fn execute(
     corpus: &Corpus,
@@ -22,18 +23,16 @@ pub fn execute(
             observations.extend(execute_case(specification, case, vocabulary, session)?);
         }
     }
-    let subject = session
-        .hello
-        .get("subject")
-        .and_then(Value::as_str)
-        .ok_or("Missing subject")?
-        .to_owned();
-    let subject_version = session
-        .hello
-        .get("subject_version")
-        .and_then(Value::as_str)
-        .ok_or("Missing subject version")?
-        .to_owned();
+    let identity = |name: &str| {
+        session
+            .hello
+            .get(name)
+            .and_then(Value::as_str)
+            .map(str::to_owned)
+            .ok_or(format!("Missing {name}"))
+    };
+    let subject = identity("subject")?;
+    let subject_version = identity("subject_version")?;
     Ok(Evidence {
         protocol: "see-protocol/1".to_owned(),
         subject,
@@ -67,56 +66,32 @@ fn execute_case(
     Ok(observations)
 }
 
-fn request(
-    case: &Block,
-    profile: &str,
-    strictness: &str,
-    vocabulary: &Vocabulary,
-) -> Result<Value, String> {
-    let explicit = case
-        .fields
-        .get("programas")
-        .and_then(|programs| programs.get(profile))
-        .and_then(Value::as_str);
-    let base = field(case, "perfil_base");
-    let base = if base.is_empty() { "es" } else { base };
-    let program = match explicit {
-        Some(program) => program.to_owned(),
-        None => see_translation::translate(field(case, "programa"), base, profile, vocabulary)?,
-    };
-    let operation = field(case, "operacion");
-    let operation = if operation.is_empty() {
-        "execute"
-    } else {
-        operation
-    };
-    let strictness = match strictness {
-        "estricto" => "strict",
-        _ => "flexible",
-    };
-    Ok(
-        json!({"kind":operation, "program":program, "profile":profile, "strictness":strictness, "inputs":case.fields.get("entradas").cloned().unwrap_or(json!([])), "seed":case.fields.get("semilla").cloned().unwrap_or(json!(42)), "observe":"none", "limits":{"micro_steps":100_000}}),
-    )
+pub enum Support {
+    Available,
+    Pending,
+    Unavailable,
 }
 
-fn supported(session: &Session, request: &Value) -> bool {
-    [
-        ("capabilities", "kind"),
-        ("profiles", "profile"),
-        ("strictness", "strictness"),
-    ]
-    .iter()
-    .all(|(capability, requested)| {
+pub fn support(session: &Session, case: &Block, request: &Value) -> Support {
+    let announced = |capability: &str, value: Option<&Value>| {
         session
             .hello
             .get(capability)
             .and_then(Value::as_array)
-            .is_some_and(|values| {
-                request
-                    .get(requested)
-                    .is_some_and(|value| values.contains(value))
-            })
-    })
+            .is_some_and(|values| value.is_some_and(|value| values.contains(value)))
+    };
+    let profile = announced("profiles", request.get("profile"))
+        && announced("strictness", request.get("strictness"));
+    let capabilities = requests::required_capabilities(case);
+    let missing: Vec<_> = capabilities
+        .iter()
+        .filter(|capability| !announced("capabilities", Some(&Value::from(**capability))))
+        .collect();
+    match (profile, missing.as_slice()) {
+        (true, []) => Support::Available,
+        (true, [only]) if **only == "observe" => Support::Pending,
+        _ => Support::Unavailable,
+    }
 }
 
 struct Context<'session> {
@@ -131,7 +106,6 @@ fn observe(
     context: &mut Context<'_>,
 ) -> Result<Observation, String> {
     let (profile, strictness) = parameters;
-    let request = request(case, profile, strictness, context.vocabulary)?;
     let expected = case
         .fields
         .get("esperas")
@@ -140,18 +114,17 @@ fn observe(
         .ok_or("Missing expected observation")?
         .clone();
     let expected = resolved_expected(expected, profile, context.vocabulary)?;
-    let supported = supported(context.session, &request);
-    let actual = if supported {
-        context.session.request(&request)?
-    } else {
-        Value::Null
+    let selection = Selection {
+        profile,
+        strictness,
+        expected: &expected,
     };
-    let differences = if supported {
-        crate::comparison::compare(&expected, &actual)
-    } else {
-        vec!["Capability, profile or strictness unavailable".to_owned()]
+    let request = requests::build(case, &selection, context.vocabulary)?;
+    let (verdict, differences, actual) = match support(context.session, case, &request) {
+        Support::Available => measured(context.session, &request, &expected)?,
+        Support::Pending => pending("Observation capability unavailable"),
+        Support::Unavailable => unavailable(),
     };
-    let verdict = verdict(supported, &differences);
     Ok(Observation {
         specification: specification.metadata.id.clone(),
         rule: field(case, "regla").to_owned(),
@@ -165,14 +138,37 @@ fn observe(
     })
 }
 
-fn verdict(supported: bool, differences: &[String]) -> &'static str {
-    if !supported {
-        "no aplicable"
-    } else if differences.is_empty() {
+type Outcome = (&'static str, Vec<String>, Value);
+
+fn measured(session: &mut Session, request: &Value, expected: &Value) -> Result<Outcome, String> {
+    let actual = session.request(request)?;
+    let observing = request.get("observe").and_then(Value::as_str) == Some("events");
+    let emitted = actual
+        .get("events")
+        .and_then(Value::as_array)
+        .is_some_and(|events| !events.is_empty());
+    if emitted && !observing {
+        return Err("SEE-PROTOCOL: events without observe capability".to_owned());
+    }
+    let differences = crate::comparison::compare(expected, &actual);
+    let verdict = if differences.is_empty() {
         "cumple"
     } else {
         "incumple"
-    }
+    };
+    Ok((verdict, differences, actual))
+}
+
+fn pending(reason: &str) -> Outcome {
+    ("pendiente", vec![reason.to_owned()], Value::Null)
+}
+
+fn unavailable() -> Outcome {
+    (
+        "no aplicable",
+        vec!["Capability, profile or strictness unavailable".to_owned()],
+        Value::Null,
+    )
 }
 
 fn resolved_expected(
@@ -185,6 +181,21 @@ fn resolved_expected(
         *output = Value::String(see_translation::lexemes::resolve(
             text, profile, vocabulary,
         )?);
+    }
+    for event in expected
+        .get_mut("eventos")
+        .and_then(Value::as_array_mut)
+        .into_iter()
+        .flatten()
+    {
+        if let Some(text) = event.pointer_mut("/datos/texto") {
+            let resolved = see_translation::lexemes::resolve(
+                text.as_str().unwrap_or(""),
+                profile,
+                vocabulary,
+            )?;
+            *text = Value::String(resolved);
+        }
     }
     Ok(expected)
 }

@@ -103,8 +103,42 @@ fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         }
         "diagnosticos" => diagnostics(value, actual.get("diagnostics")),
         "diagnosticos_ordenados" => ordered_diagnostics(value, actual.get("diagnostics")),
-        "eventos" => actual.get("events") == Some(value),
+        "eventos" => events(value, actual.get("events")),
         "estado" => actual.get("states") == Some(value),
-        _ => false,
+        "estado_en" => actual.get("state_at") == value.get("estado"),
+        "limite" => termination_limit(value, actual),
+        _ => crate::tool_comparison::matches(name, value, actual),
     }
+}
+
+fn termination_limit(value: &Value, actual: &Value) -> bool {
+    let wire = match value.as_str() {
+        Some("sentencias") => "statements",
+        Some("tiempo") => "time",
+        _ => return false,
+    };
+    actual
+        .get("termination")
+        .and_then(|termination| termination.get("limit"))
+        .and_then(Value::as_str)
+        == Some(wire)
+}
+
+fn events(expected: &Value, actual: Option<&Value>) -> bool {
+    let (Some(expected), Some(actual)) = (expected.as_array(), actual.and_then(Value::as_array))
+    else {
+        return false;
+    };
+    expected.len() == actual.len()
+        && expected
+            .iter()
+            .zip(actual)
+            .all(|(expected, actual)| event_matches(expected, actual))
+}
+
+fn event_matches(expected: &Value, actual: &Value) -> bool {
+    let empty = Value::Object(serde_json::Map::new());
+    expected.get("clase") == actual.get("class")
+        && expected.get("linea") == actual.get("line")
+        && expected.get("datos").unwrap_or(&empty) == actual.get("data").unwrap_or(&empty)
 }

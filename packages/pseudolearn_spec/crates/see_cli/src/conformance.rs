@@ -58,8 +58,12 @@ pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> 
         }
     }
     let conformance = load_bindings(&arguments.root.join("../pseudolearn_core"))?;
-    serde_json::to_string_pretty(&see_report::matrix(corpus, &conformance, &evidence))
-        .map_err(|error| error.to_string())
+    let report = serde_json::json!({
+        "conformance": see_report::matrix(corpus, &conformance, &evidence),
+        "ir_coverage": see_report::coverage::table(corpus),
+        "states": see_report::coverage::states(corpus),
+    });
+    serde_json::to_string_pretty(&report).map_err(|error| error.to_string())
 }
 
 fn load_bindings(core: &std::path::Path) -> Result<Conformance, String> {

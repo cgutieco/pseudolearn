@@ -180,6 +180,57 @@
               "fields"
             ],
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "medicion"
+              },
+              "fields": {
+                "$ref": "#/$defs/medicion"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "instruccion"
+              },
+              "fields": {
+                "$ref": "#/$defs/instruccion"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "cobertura"
+              },
+              "fields": {
+                "$ref": "#/$defs/cobertura"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
           }
         ]
       }
@@ -494,6 +545,7 @@
                 "completed",
                 "failed",
                 "awaiting_input",
+                "cancelled",
                 "limit_reached"
               ]
             },
@@ -648,7 +700,25 @@
             "eventos": {
               "type": "array",
               "items": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "clase": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "linea": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "datos": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "clase",
+                  "linea"
+                ],
+                "additionalProperties": false
               }
             },
             "estado": {
@@ -784,6 +854,43 @@
                 ],
                 "additionalProperties": false
               }
+            },
+            "limite": {
+              "type": "string",
+              "enum": [
+                "sentencias",
+                "tiempo"
+              ]
+            },
+            "estado_en": {
+              "type": "object",
+              "properties": {
+                "evento": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "estado": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "evento",
+                "estado"
+              ],
+              "additionalProperties": false
+            },
+            "ri": {
+              "type": "object"
+            },
+            "codigo_salida": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "salida_error": {
+              "type": "string"
+            },
+            "json": {
+              "type": "object"
             }
           },
           "required": [],
@@ -803,6 +910,7 @@
                   "completed",
                   "failed",
                   "awaiting_input",
+                  "cancelled",
                   "limit_reached"
                 ]
               },
@@ -957,7 +1065,25 @@
               "eventos": {
                 "type": "array",
                 "items": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "clase": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "linea": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "datos": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "clase",
+                    "linea"
+                  ],
+                  "additionalProperties": false
                 }
               },
               "estado": {
@@ -1093,6 +1219,43 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "limite": {
+                "type": "string",
+                "enum": [
+                  "sentencias",
+                  "tiempo"
+                ]
+              },
+              "estado_en": {
+                "type": "object",
+                "properties": {
+                  "evento": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "estado": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "evento",
+                  "estado"
+                ],
+                "additionalProperties": false
+              },
+              "ri": {
+                "type": "object"
+              },
+              "codigo_salida": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "salida_error": {
+                "type": "string"
+              },
+              "json": {
+                "type": "object"
               }
             },
             "required": [],
@@ -1151,7 +1314,10 @@
           "type": "string",
           "enum": [
             "analyze",
-            "execute"
+            "execute",
+            "trace",
+            "ir",
+            "cli"
           ]
         },
         "produce": {
@@ -1170,6 +1336,62 @@
         },
         "semilla": {
           "type": "integer"
+        },
+        "programa_ri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cli": {
+          "type": "object",
+          "properties": {
+            "argumentos": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "entorno": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "entrada": {
+              "type": "string"
+            },
+            "archivos": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "argumentos"
+          ],
+          "additionalProperties": false
+        },
+        "limites": {
+          "type": "object",
+          "properties": {
+            "profundidad": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sentencias": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "celdas": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "cancelacion": {
+          "type": "integer",
+          "minimum": 0
         }
       },
       "required": [
@@ -1407,6 +1629,168 @@
         "id",
         "texto",
         "verificacion"
+      ],
+      "additionalProperties": false
+    },
+    "medicion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metrica": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unidad": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparador": {
+          "type": "string",
+          "enum": [
+            ">=",
+            "<="
+          ]
+        },
+        "umbral": {
+          "type": "number"
+        },
+        "provisional": {
+          "type": "boolean"
+        },
+        "plataformas": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "protocolo": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "metrica",
+        "unidad",
+        "suite",
+        "comparador",
+        "umbral",
+        "provisional",
+        "plataformas",
+        "protocolo"
+      ],
+      "additionalProperties": false
+    },
+    "instruccion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nombre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "firma": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clases_de_valor": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "escalar",
+              "referencia"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "semantica": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trampas": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "efectos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "lee_memoria",
+              "escribe_memoria",
+              "asigna",
+              "salida",
+              "entrada",
+              "azar",
+              "control",
+              "llamada"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "observacion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "nombre",
+        "firma",
+        "clases_de_valor",
+        "semantica",
+        "trampas",
+        "efectos",
+        "observacion"
+      ],
+      "additionalProperties": false
+    },
+    "cobertura": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regla": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instrucciones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "sin_ri": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "regla"
       ],
       "additionalProperties": false
     }

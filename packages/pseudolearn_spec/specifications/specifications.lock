@@ -1275,6 +1275,17 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "SEE.ADAPTER.PROTOCOL@0.2.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "SEE.CHANGE.CLASSIFICATION@0.1.0": {
       "edition": {},
       "elements": {
@@ -1305,6 +1316,17 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "SEE.CONFORMANCE.MATRIX@0.2.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "5004c01815186cb842255a7c8fe2a78311f7fa7500f8db0346d5321d048efcbb",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "SEE.FEATURE-MANIFEST@0.1.0": {
       "edition": {},
       "elements": {
@@ -1332,6 +1354,17 @@
       "hash": "b63961543ab0a6dfeffc0850e44745c44e152b6c4247c7db43d9ecc888398886",
       "state": "borrador",
       "version": "0.2.0"
+    },
+    "SEE.FORMAT@0.3.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f68395ee35bbb1ffb4730b112d56ab863c1af845e1a8ac6094e628e473510ba0",
+      "state": "borrador",
+      "version": "0.3.0"
     },
     "SEE.GENERATION@0.1.0": {
       "edition": {},
@@ -1370,6 +1403,15 @@
       "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
       "state": "borrador",
       "version": "0.1.0"
+    },
+    "SEE.IDENTITY@0.2.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "e26eff4755b8d2fbc1e81a78cbe3876dfed65bd1990663ab79689bcda3049ad9",
+      "state": "borrador",
+      "version": "0.2.0"
     },
     "SEE.IMPACT@0.1.0": {
       "edition": {},
@@ -1428,6 +1470,18 @@
       "hash": "d84863a8d0dbde17eb8975560318a8d8c0aaeb9c5c7aba90de467f932f61734c",
       "state": "experimental",
       "version": "0.2.0"
+    },
+    "SEE.VALIDATION@0.3.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "c5463d89c58786f19e87953d0c73aaa7cea436a28eeb73912c608d8c5cef6495",
+      "state": "experimental",
+      "version": "0.3.0"
     },
     "SEE.VERSIONING@0.1.0": {
       "edition": {},
@@ -2666,11 +2720,12 @@
       "edition": {},
       "elements": {
         "R1": "regla",
-        "R2": "regla"
+        "R2": "regla",
+        "R3": "regla"
       },
-      "hash": "0a75f507d0a579e11a1d99d65d61853c48e872d3e712fcfe674149a466af2ff5",
+      "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "SEE.CHANGE.CLASSIFICATION": {
       "edition": {},
@@ -2696,11 +2751,12 @@
       "edition": {},
       "elements": {
         "R1": "regla",
-        "R2": "regla"
+        "R2": "regla",
+        "R3": "regla"
       },
-      "hash": "7d77cc9d8c8155f219a9da2f16eeef7af465f261a77b3fabf80d51d199f54a75",
+      "hash": "5004c01815186cb842255a7c8fe2a78311f7fa7500f8db0346d5321d048efcbb",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "SEE.FEATURE-MANIFEST": {
       "edition": {},
@@ -2715,11 +2771,12 @@
       "edition": {},
       "elements": {
         "R1": "regla",
-        "R2": "regla"
+        "R2": "regla",
+        "R3": "regla"
       },
-      "hash": "b63961543ab0a6dfeffc0850e44745c44e152b6c4247c7db43d9ecc888398886",
+      "hash": "f68395ee35bbb1ffb4730b112d56ab863c1af845e1a8ac6094e628e473510ba0",
       "state": "borrador",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "SEE.GENERATION": {
       "edition": {},
@@ -2746,9 +2803,9 @@
       "elements": {
         "R1": "regla"
       },
-      "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
+      "hash": "e26eff4755b8d2fbc1e81a78cbe3876dfed65bd1990663ab79689bcda3049ad9",
       "state": "borrador",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "SEE.IMPACT": {
       "edition": {},
@@ -2792,11 +2849,12 @@
       "elements": {
         "R1": "regla",
         "R2": "regla",
-        "R3": "regla"
+        "R3": "regla",
+        "R4": "regla"
       },
-      "hash": "d84863a8d0dbde17eb8975560318a8d8c0aaeb9c5c7aba90de467f932f61734c",
+      "hash": "c5463d89c58786f19e87953d0c73aaa7cea436a28eeb73912c608d8c5cef6495",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "SEE.VERSIONING": {
       "edition": {},

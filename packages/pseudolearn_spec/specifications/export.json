@@ -19951,11 +19951,30 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La negociación admite además las capacidades observe, ir y cli. Un caso trace exige execute y observe: contra un sujeto sin observe su resultado es pendiente y nunca cumple. Un sujeto que devuelve eventos en una ejecución que no pidió observación produce error operativo. Las peticiones de ejecución transmiten límites de profundidad, sentencias y celdas, la cancelación en una entrada a sentencia y la consulta del estado en un índice de evento.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "0a75f507d0a579e11a1d99d65d61853c48e872d3e712fcfe674149a466af2ff5",
+      "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Los adaptadores existentes siguen siendo válidos; las capacidades nuevas son opcionales.",
+          "impacto_usuarios": "Los sujetos pueden anunciar observación, RI y CLI.",
+          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
+          "revisado_por": "autoría automatizada; no revisión humana independiente"
+        },
         "depende_de": [],
         "dominio": "proceso",
         "duenos": [
@@ -19974,7 +19993,7 @@
         ],
         "titulo": "Protocolo por proceso",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -20110,11 +20129,30 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La matriz distingue pendiente de no aplicable y antepone incumple, pendiente y no aplicable a cumple al resumir una regla. Una regla verificada solo por mediciones se informa como no aplicable con la procedencia de cada medición; see conform no ejecuta mediciones. see matrix publica la tabla regla → instrucciones de los bloques cobertura y el recuento de especificaciones por dominio y estado.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "7d77cc9d8c8155f219a9da2f16eeef7af465f261a77b3fabf80d51d199f54a75",
+      "hash": "5004c01815186cb842255a7c8fe2a78311f7fa7500f8db0346d5321d048efcbb",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "La salida de see matrix pasa a ser un objeto con conformidad, cobertura y estados.",
+          "impacto_usuarios": "La matriz distingue evidencia pendiente y publica la cobertura de la RI.",
+          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
+          "revisado_por": "autoría automatizada; no revisión humana independiente"
+        },
         "depende_de": [],
         "dominio": "proceso",
         "duenos": [
@@ -20133,7 +20171,7 @@
         ],
         "titulo": "Matriz de conformidad",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -20203,15 +20241,28 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "justificacion": "Pruebas de esquema y validación, fixtures negativos y verificación mecánica en cargo xtask verify.",
+            "texto": "Los bloques medicion, instruccion y cobertura son tipados. medicion declara métrica, unidad, suite, comparador, umbral, carácter provisional, plataformas y la regla de PERF.PROTOCOL que la rige. instruccion declara nombre, firma, clases de valor, semántica, trampas, efectos y observación. cobertura asocia una regla con instrucciones o con un motivo sin RI. Los casos admiten las operaciones trace, ir y cli con sus fuentes programa_ri y cli, límites del anfitrión y cancelación; las expectativas admiten la terminación cancelled, el tipo de límite alcanzado, eventos ordenados, el estado en un índice de evento, el resultado de RI, el código de salida, la salida de error y el JSON de máquina.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "b63961543ab0a6dfeffc0850e44745c44e152b6c4247c7db43d9ecc888398886",
+      "hash": "f68395ee35bbb1ffb4730b112d56ab863c1af845e1a8ac6094e628e473510ba0",
       "metadata": {
         "cambio": {
           "clase": "ampliacion",
-          "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
-          "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
-          "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+          "impacto_implementaciones": "see acepta campos y bloques opcionales nuevos; los corpus anteriores siguen siendo válidos.",
+          "impacto_usuarios": "Los autores pueden declarar observación, RI, CLI y mediciones con bloques y operaciones tipados.",
+          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
           "revisado_por": "autoría automatizada; no revisión humana independiente"
         },
         "depende_de": [],
@@ -20232,7 +20283,7 @@
         ],
         "titulo": "Formato de especificaciones",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {
@@ -20355,7 +20406,7 @@
             "fuerza": "DEBE",
             "id": "R1",
             "justificacion": "Revisión estructural manual de arranque contra el plan aprobado; no constituye aprobación independiente para estabilidad.",
-            "texto": "Los identificadores son segmentos ASCII mayúsculos separados por puntos, con elementos estables R, C, D, E, Q, I, P o S; las identidades retiradas conservan lápida y no se reutilizan.",
+            "texto": "Los identificadores son segmentos ASCII mayúsculos separados por puntos, con elementos estables R, C, D, E, Q, I, P, S, M (medición), O (instrucción) o V (cobertura); las identidades retiradas conservan lápida y no se reutilizan.",
             "verificacion": [
               "revision_humana"
             ]
@@ -20363,9 +20414,15 @@
           "kind": "regla"
         }
       ],
-      "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
+      "hash": "e26eff4755b8d2fbc1e81a78cbe3876dfed65bd1990663ab79689bcda3049ad9",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "see acepta los prefijos M, O y V; los elementos existentes no cambian.",
+          "impacto_usuarios": "Los elementos de medición, instrucción y cobertura tienen prefijo propio.",
+          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
+          "revisado_por": "autoría automatizada; no revisión humana independiente"
+        },
         "depende_de": [],
         "dominio": "proceso",
         "duenos": [
@@ -20384,7 +20441,7 @@
         ],
         "titulo": "Identidad persistente",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -20600,15 +20657,28 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "justificacion": "Pruebas espejo de cada validación y un fixture negativo por identificador; verificación mecánica en cargo xtask verify.",
+            "texto": "La validación rechaza clases de evento ausentes del alfabeto declarado por ENG.TRACE.EVENTS y datos de evento no declarados (SEE-TRACE-CLASS); casos ir sin resultado esperado válido (SEE-IR-EXPECTATION); códigos de salida no declarados por TOOL.CLI.CONVENTIONS (SEE-CLI-EXIT); límite alcanzado sin tipo sentencias o tiempo, o tipo sin límite alcanzado (SEE-LIMIT-KIND); mediciones cuyo protocolo no es una regla de PERF.PROTOCOL (SEE-MEASUREMENT-PROTOCOL); reglas de LANG o LIB de clase semantica, ejecucion o ampliacion sin exactamente una cobertura (SEE-IR-COVERAGE); instrucciones o trampas citadas que no existen (SEE-IR-UNKNOWN); aperturas de nivel superior cuyo lexema o alias coincide con cualquier lexema o alias del otro perfil tras normalizar caja y acentos (SEE-PROFILE-OPENERS), y mensajes de la CLI sin par bilingüe o con argumentos distintos (SEE-MESSAGE-PARITY, SEE-MESSAGE-ARGUMENTS). Alfabetos, tablas y catálogos se leen de bloques definicion del corpus, nunca de listas del código.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "d84863a8d0dbde17eb8975560318a8d8c0aaeb9c5c7aba90de467f932f61734c",
+      "hash": "c5463d89c58786f19e87953d0c73aaa7cea436a28eeb73912c608d8c5cef6495",
       "metadata": {
         "cambio": {
           "clase": "ampliacion",
-          "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
-          "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
-          "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+          "impacto_implementaciones": "see aplica nuevas validaciones sobre bloques y casos opcionales; los corpus sin ellos no cambian.",
+          "impacto_usuarios": "Los autores reciben rechazos específicos para observación, RI, CLI, mediciones y cobertura.",
+          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
           "revisado_por": "autoría automatizada; no revisión humana independiente"
         },
         "depende_de": [],
@@ -20629,7 +20699,7 @@
         ],
         "titulo": "Validación por capas",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {

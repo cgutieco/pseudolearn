@@ -44,7 +44,9 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
             .iter()
             .filter(|block| block.kind == "caso")
         {
-            errors.extend(programs(case, &vocabulary));
+            if !["ir", "cli"].contains(&field(case, "operacion")) {
+                errors.extend(programs(case, &vocabulary));
+            }
             errors.extend(see_translation::lexemes::validate(case, &vocabulary));
         }
     }

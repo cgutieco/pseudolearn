@@ -9,7 +9,11 @@ fn main() {
         if line.contains("hello") {
             if mode == "malformed" { println!("{{malformed"); return }
             if mode == "version" { println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/9\"}}"); return }
-            let capabilities = if mode == "unsupported" { "[]" } else { "[\"analyze\",\"execute\"]" };
+            let capabilities = match mode.as_str() {
+                "unsupported" => "[]",
+                "observe" => "[\"analyze\",\"execute\",\"observe\",\"ir\",\"cli\"]",
+                _ => "[\"analyze\",\"execute\"]",
+            };
             println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/1\",\"subject\":\"fixture\",\"subject_version\":\"1.0.0\",\"capabilities\":{capabilities},\"profiles\":[\"es\",\"en\"],\"strictness\":[\"strict\",\"flexible\"]}}");
         } else if line.contains("shutdown") {
             eprintln!("fixture stderr");
@@ -17,6 +21,16 @@ fn main() {
             break;
         } else if mode == "wrong-kind" {
             println!("{{\"kind\":\"unexpected\"}}");
+        } else if mode == "observe" || mode == "silent-events" {
+            let response = if line.contains("\"kind\":\"ir\"") {
+                "{\"kind\":\"ir\",\"ir\":{\"accepted\":false,\"violated_rule\":\"IR.WELL-FORMEDNESS#R2\",\"reprint\":\"module {}\\n\"}}".to_owned()
+            } else if line.contains("\"kind\":\"cli\"") {
+                "{\"kind\":\"cli\",\"exit_code\":2,\"output\":\"\",\"error_output\":\"uso\\n\"}".to_owned()
+            } else {
+                let state = if line.contains("\"state_at\":1") { ",\"state_at\":{\"marcos\":[]}" } else { "" };
+                format!("{{\"kind\":\"execute\",\"tree\":true,\"diagnostics\":[],\"output\":\"1\\n\",\"termination\":{{\"kind\":\"limit_reached\",\"limit\":\"statements\"}},\"events\":[{{\"class\":\"output\",\"line\":2,\"data\":{{\"texto\":\"1\\n\"}}}}]{state}}}")
+            };
+            println!("{response}");
         } else if mode == "seed" {
             let seed = if line.contains("\"seed\":7") { "7" } else { "42" };
             println!("{{\"kind\":\"execute\",\"tree\":true,\"diagnostics\":[],\"output\":\"{seed}\\n\",\"termination\":{{\"kind\":\"completed\"}}}}");

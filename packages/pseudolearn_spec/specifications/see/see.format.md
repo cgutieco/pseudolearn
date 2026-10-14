@@ -4,11 +4,11 @@ id: SEE.FORMAT
 titulo: Formato de especificaciones
 dominio: proceso
 estado: borrador
-version: 0.2.0
+version: 0.3.0
 duenos: [responsable-especificaciones]
 sujetos: [see]
 resumen: Formato de especificaciones.
-cambio: {"clase": "ampliacion", "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.", "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.", "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.", "revisado_por": "autoría automatizada; no revisión humana independiente"}
+cambio: {"clase": "ampliacion", "impacto_usuarios": "Los autores pueden declarar observación, RI, CLI y mediciones con bloques y operaciones tipados.", "impacto_implementaciones": "see acepta campos y bloques opcionales nuevos; los corpus anteriores siguen siendo válidos.", "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.", "revisado_por": "autoría automatizada; no revisión humana independiente"}
 ---
 
 # Formato de especificaciones
@@ -32,5 +32,18 @@ justificacion: Revisión estructural manual de arranque contra el plan aprobado;
     "estructural"
   ],
   "justificacion": "Pruebas de esquema, semilla y recursos; no se atribuye revisión humana."
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "Los bloques medicion, instruccion y cobertura son tipados. medicion declara métrica, unidad, suite, comparador, umbral, carácter provisional, plataformas y la regla de PERF.PROTOCOL que la rige. instruccion declara nombre, firma, clases de valor, semántica, trampas, efectos y observación. cobertura asocia una regla con instrucciones o con un motivo sin RI. Los casos admiten las operaciones trace, ir y cli con sus fuentes programa_ri y cli, límites del anfitrión y cancelación; las expectativas admiten la terminación cancelled, el tipo de límite alcanzado, eventos ordenados, el estado en un índice de evento, el resultado de RI, el código de salida, la salida de error y el JSON de máquina.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Pruebas de esquema y validación, fixtures negativos y verificación mecánica en cargo xtask verify."
 }
 ```
