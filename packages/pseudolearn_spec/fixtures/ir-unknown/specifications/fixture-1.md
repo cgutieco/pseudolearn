@@ -63,7 +63,7 @@
   "semantica": "Suma.",
   "trampas": [],
   "efectos": [],
-  "observacion": "ninguna"
+  "observacion": []
 }
 ```
 

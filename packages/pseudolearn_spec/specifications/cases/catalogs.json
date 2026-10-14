@@ -1,4 +1,391 @@
 {
+  "cliConventions": {
+    "aperturas": [
+      "algorithm",
+      "classKeyword",
+      "subroutine"
+    ],
+    "codigos_salida": {
+      "0": "éxito",
+      "1": "el programa tiene errores o falló",
+      "2": "uso incorrecto",
+      "3": "error operativo"
+    }
+  },
+  "cliMessages": {
+    "diagnosticError": {
+      "argumentos": [
+        "path",
+        "line",
+        "column",
+        "message",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}:{column}: error: {message} [{code}]",
+        "es": "{path}:{line}:{column}: error: {message} [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "column": "numero",
+        "line": "numero",
+        "message": "texto",
+        "path": "lexema"
+      }
+    },
+    "diagnosticInfo": {
+      "argumentos": [
+        "path",
+        "line",
+        "column",
+        "message",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}:{column}: info: {message} [{code}]",
+        "es": "{path}:{line}:{column}: información: {message} [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "column": "numero",
+        "line": "numero",
+        "message": "texto",
+        "path": "lexema"
+      }
+    },
+    "diagnosticWarning": {
+      "argumentos": [
+        "path",
+        "line",
+        "column",
+        "message",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}:{column}: warning: {message} [{code}]",
+        "es": "{path}:{line}:{column}: advertencia: {message} [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "column": "numero",
+        "line": "numero",
+        "message": "texto",
+        "path": "lexema"
+      }
+    },
+    "helpCommands": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "Commands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)",
+        "es": "Órdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)"
+      },
+      "tipos_argumentos": {}
+    },
+    "helpOptions": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "Options: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json",
+        "es": "Opciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json"
+      },
+      "tipos_argumentos": {}
+    },
+    "inputExhausted": {
+      "argumentos": [
+        "path"
+      ],
+      "mensajes": {
+        "en": "{path}: standard input ended while the program was waiting for a value",
+        "es": "{path}: la entrada estándar terminó mientras el programa esperaba un valor"
+      },
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "invalidOptionValue": {
+      "argumentos": [
+        "value",
+        "option"
+      ],
+      "mensajes": {
+        "en": "pseudo: invalid value '{value}' for {option}",
+        "es": "pseudo: valor no válido «{value}» para {option}"
+      },
+      "tipos_argumentos": {
+        "option": "lexema",
+        "value": "lexema"
+      }
+    },
+    "missingCommand": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "pseudo: missing command; use pseudo --help",
+        "es": "pseudo: falta la orden; use pseudo --ayuda"
+      },
+      "tipos_argumentos": {}
+    },
+    "missingInput": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "pseudo: missing input file",
+        "es": "pseudo: falta el archivo de entrada"
+      },
+      "tipos_argumentos": {}
+    },
+    "preferenceSaved": {
+      "argumentos": [
+        "language"
+      ],
+      "mensajes": {
+        "en": "pseudo: interface language saved: {language}",
+        "es": "pseudo: idioma de interfaz guardado: {language}"
+      },
+      "tipos_argumentos": {
+        "language": "lexema"
+      }
+    },
+    "traceCall": {
+      "argumentos": [
+        "path",
+        "line",
+        "name"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  calls {name}",
+        "es": "{path}:{line}  llama a {name}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "name": "lexema",
+        "path": "lexema"
+      }
+    },
+    "traceDecisionAffirmative": {
+      "argumentos": [
+        "path",
+        "line"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  decision  affirmative branch",
+        "es": "{path}:{line}  decisión  rama afirmativa"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceDecisionCase": {
+      "argumentos": [
+        "path",
+        "line",
+        "index"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  decision  case {index}",
+        "es": "{path}:{line}  decisión  caso {index}"
+      },
+      "tipos_argumentos": {
+        "index": "numero",
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceDecisionDefault": {
+      "argumentos": [
+        "path",
+        "line"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  decision  default branch",
+        "es": "{path}:{line}  decisión  rama por omisión"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceDecisionNegative": {
+      "argumentos": [
+        "path",
+        "line"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  decision  negative branch",
+        "es": "{path}:{line}  decisión  rama negativa"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceDecisionNone": {
+      "argumentos": [
+        "path",
+        "line"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  decision  no case",
+        "es": "{path}:{line}  decisión  ningún caso"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceFailure": {
+      "argumentos": [
+        "path",
+        "line",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  fails  {code}",
+        "es": "{path}:{line}  falla  {code}"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceInputReceived": {
+      "argumentos": [
+        "path",
+        "line",
+        "text"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  receives  {text}",
+        "es": "{path}:{line}  recibe  {text}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema",
+        "text": "lexema"
+      }
+    },
+    "traceInputRequested": {
+      "argumentos": [
+        "path",
+        "line"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  requests a value",
+        "es": "{path}:{line}  pide un valor"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
+    "traceOutput": {
+      "argumentos": [
+        "path",
+        "line",
+        "text"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  writes  {text}",
+        "es": "{path}:{line}  escribe  {text}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema",
+        "text": "lexema"
+      }
+    },
+    "traceReturn": {
+      "argumentos": [
+        "path",
+        "line",
+        "name"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  returns from {name}",
+        "es": "{path}:{line}  vuelve de {name}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "name": "lexema",
+        "path": "lexema"
+      }
+    },
+    "traceStatementEntered": {
+      "argumentos": [
+        "path",
+        "line",
+        "source"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  enters statement  {source}",
+        "es": "{path}:{line}  entra en sentencia  {source}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema",
+        "source": "lexema"
+      }
+    },
+    "traceStatementExited": {
+      "argumentos": [
+        "path",
+        "line",
+        "source"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}  exits statement  {source}",
+        "es": "{path}:{line}  sale de sentencia  {source}"
+      },
+      "tipos_argumentos": {
+        "line": "numero",
+        "path": "lexema",
+        "source": "lexema"
+      }
+    },
+    "unknownCommand": {
+      "argumentos": [
+        "command"
+      ],
+      "mensajes": {
+        "en": "pseudo: unknown command '{command}'",
+        "es": "pseudo: orden desconocida «{command}»"
+      },
+      "tipos_argumentos": {
+        "command": "lexema"
+      }
+    },
+    "unknownOption": {
+      "argumentos": [
+        "option"
+      ],
+      "mensajes": {
+        "en": "pseudo: unknown option '{option}'",
+        "es": "pseudo: opción desconocida «{option}»"
+      },
+      "tipos_argumentos": {
+        "option": "lexema"
+      }
+    },
+    "unreadableInput": {
+      "argumentos": [
+        "path"
+      ],
+      "mensajes": {
+        "en": "pseudo: cannot read {path}",
+        "es": "pseudo: no se puede leer {path}"
+      },
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "usageLine": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "Usage: pseudo <command> [options] <file>...",
+        "es": "Uso: pseudo <orden> [opciones] <archivo>..."
+      },
+      "tipos_argumentos": {}
+    }
+  },
   "diagnostics": {
     "argumentCountMismatch": {
       "argumentos": [
@@ -135,6 +522,24 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "cellLimitExceeded": {
+      "argumentos": [
+        "limit"
+      ],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "Memory limit reached: {limit} cells",
+        "es": "Se alcanzó el límite de memoria: {limit} celdas"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
     },
     "chainedArrayAccess": {
       "argumentos": [],
@@ -1612,6 +2017,24 @@
       },
       "tipos_argumentos": {}
     },
+    "statementBudgetExhausted": {
+      "argumentos": [
+        "limit"
+      ],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "Statement budget exhausted: {limit}",
+        "es": "Se agotó el presupuesto de sentencias: {limit}"
+      },
+      "politica": "D",
+      "severidad": {
+        "estricto": "info",
+        "flexible": "info"
+      },
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
     "stringPositionOutOfRange": {
       "argumentos": [
         "length",
@@ -2892,6 +3315,48 @@
       "withoutNewline",
       "write"
     ]
+  },
+  "traceEvents": {
+    "call": {
+      "datos": [
+        "nombre"
+      ]
+    },
+    "decision": {
+      "datos": [
+        "rama",
+        "indice"
+      ]
+    },
+    "failure": {
+      "datos": [
+        "codigo"
+      ]
+    },
+    "input_received": {
+      "datos": [
+        "texto"
+      ]
+    },
+    "input_requested": {
+      "datos": []
+    },
+    "output": {
+      "datos": [
+        "texto"
+      ]
+    },
+    "return": {
+      "datos": [
+        "nombre"
+      ]
+    },
+    "statement_entered": {
+      "datos": []
+    },
+    "statement_exited": {
+      "datos": []
+    }
   },
   "vocabulary": {
     "algorithm": {

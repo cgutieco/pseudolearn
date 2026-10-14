@@ -6,7 +6,10 @@ fn entry(spanish: &str, english: &str) -> serde_json::Value {
 
 #[test]
 fn accepts_bilingual_messages_with_the_same_typed_arguments() {
-    let catalog = json!({"missingFile":entry("No existe {ruta}.","Missing {ruta}.")});
+    let catalog = json!({
+        "missingFile": entry("No existe {ruta}.", "Missing {ruta}."),
+        "diagnostic": {"mensajes": {"es": "{message} [{code}]", "en": "{message} [{code}]"}, "argumentos": ["message", "code"], "tipos_argumentos": {"message": "texto", "code": "lexema"}}
+    });
     assert!(see_validation::messages::check(&catalog).is_empty());
 }
 

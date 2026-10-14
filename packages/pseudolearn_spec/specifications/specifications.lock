@@ -1,6 +1,99 @@
 {
   "formato": "see-lock/1",
   "history": {
+    "API.ANALYZE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "cfec2cb06859bc4758f349cb2ec3c074236be36762879200532d4038b2a0a4ba",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.ERRORS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "00dde3d0e740b8d89403acb5b0bb869af075b558a740971fcc076cf63c28f07e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.EXECUTE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "736f5efb2e544911efa9ba9691d34cea3d3218c10f221658f21ad238773da113",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.MODEL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "c278753e853465bf009aa8749a2d858a309006b9c89f27ea0d6044f8581060d9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.STATE.QUERY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "235369e5a26370986bf40e1b7e4c467a77a6c4437ab9828777a86ceea8f75a46",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.VERSIONING@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "c02174f7c6f10705957ba122029ff15195a30f4eba9a3e42c86c386e72e8866b",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.WIRE-FORMAT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "D1": "definicion",
+        "D2": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "06a26998eb2ed71a98920b2b9fe04039c6dd717c179c551eef9b2580c1cf63ea",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "DIAG.CATALOG@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -14,6 +107,20 @@
       "hash": "e15427d8beb884dbb2ab6372411dac443d2a0e3feeb4b2a6259e056421bdd9b8",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "DIAG.CATALOG@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "94779a7b53c6c05c8160d26b97ada990aa71537dcd4a46a71318e8dabc2817fa",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "DIAG.CLASSES@0.1.0": {
       "edition": {
@@ -96,6 +203,455 @@
         "R1": "regla"
       },
       "hash": "f951c0dccbb3b9c519fb121c240d927be1762ab679a06e46dbf4cfb496eb336c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.EXEC.EFFECT-ORDER@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f0fc4f1c895a21b5a716e30a52afbcb781d0de231485c8325e9a4969262915fd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.EXEC.MODEL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "705ff8f49f57b286694e6779c74f220857b1d547e9155e968e3570b84c0bd30e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.INPUT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "0361a7b13280c23b876362b62db2bb1aae38fa67a3fe5b04e3cb424bf96eb5d2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.LIMITS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla",
+        "R8": "regla"
+      },
+      "hash": "48e3f7fcdcf2bf1cc82fa6b7eac236d7b8908fd4420d10a5b48c5b9a5269e713",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.STATE.INCREMENTAL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "3e8ccc09ba9aa8b98f1c516ef5006204cb2a4ab62fe4a032eedbbbd0f50a488f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.STATE.SNAPSHOT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "D1": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla"
+      },
+      "hash": "fcd2c67a9e01c27d6738e2fed1ef91073535f8d5df54ab5d4f25950d18853e5f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.TRACE.EVENTS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla"
+      },
+      "hash": "73954f7cb64f055be4a097f93ba9eaee3d7b393aa3c66d546b899066175aa6dd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.TRACE.STEP@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "7a75b64034603d7a613e54ef8185ee2d2ab44f346fd5e49130fac05ea48be983",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.INSTRUCTIONS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "O1": "instruccion",
+        "O10": "instruccion",
+        "O11": "instruccion",
+        "O12": "instruccion",
+        "O13": "instruccion",
+        "O14": "instruccion",
+        "O15": "instruccion",
+        "O16": "instruccion",
+        "O17": "instruccion",
+        "O18": "instruccion",
+        "O19": "instruccion",
+        "O2": "instruccion",
+        "O20": "instruccion",
+        "O21": "instruccion",
+        "O22": "instruccion",
+        "O23": "instruccion",
+        "O24": "instruccion",
+        "O25": "instruccion",
+        "O26": "instruccion",
+        "O27": "instruccion",
+        "O28": "instruccion",
+        "O29": "instruccion",
+        "O3": "instruccion",
+        "O30": "instruccion",
+        "O31": "instruccion",
+        "O32": "instruccion",
+        "O33": "instruccion",
+        "O34": "instruccion",
+        "O35": "instruccion",
+        "O36": "instruccion",
+        "O37": "instruccion",
+        "O38": "instruccion",
+        "O39": "instruccion",
+        "O4": "instruccion",
+        "O40": "instruccion",
+        "O41": "instruccion",
+        "O42": "instruccion",
+        "O43": "instruccion",
+        "O44": "instruccion",
+        "O45": "instruccion",
+        "O46": "instruccion",
+        "O47": "instruccion",
+        "O48": "instruccion",
+        "O49": "instruccion",
+        "O5": "instruccion",
+        "O50": "instruccion",
+        "O51": "instruccion",
+        "O52": "instruccion",
+        "O53": "instruccion",
+        "O54": "instruccion",
+        "O55": "instruccion",
+        "O56": "instruccion",
+        "O57": "instruccion",
+        "O58": "instruccion",
+        "O59": "instruccion",
+        "O6": "instruccion",
+        "O60": "instruccion",
+        "O61": "instruccion",
+        "O62": "instruccion",
+        "O63": "instruccion",
+        "O64": "instruccion",
+        "O65": "instruccion",
+        "O66": "instruccion",
+        "O67": "instruccion",
+        "O68": "instruccion",
+        "O69": "instruccion",
+        "O7": "instruccion",
+        "O70": "instruccion",
+        "O71": "instruccion",
+        "O72": "instruccion",
+        "O73": "instruccion",
+        "O74": "instruccion",
+        "O8": "instruccion",
+        "O9": "instruccion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "V1": "cobertura",
+        "V10": "cobertura",
+        "V11": "cobertura",
+        "V12": "cobertura",
+        "V13": "cobertura",
+        "V14": "cobertura",
+        "V15": "cobertura",
+        "V16": "cobertura",
+        "V17": "cobertura",
+        "V18": "cobertura",
+        "V19": "cobertura",
+        "V2": "cobertura",
+        "V20": "cobertura",
+        "V21": "cobertura",
+        "V22": "cobertura",
+        "V23": "cobertura",
+        "V24": "cobertura",
+        "V25": "cobertura",
+        "V26": "cobertura",
+        "V27": "cobertura",
+        "V28": "cobertura",
+        "V29": "cobertura",
+        "V3": "cobertura",
+        "V30": "cobertura",
+        "V31": "cobertura",
+        "V32": "cobertura",
+        "V33": "cobertura",
+        "V34": "cobertura",
+        "V35": "cobertura",
+        "V36": "cobertura",
+        "V37": "cobertura",
+        "V38": "cobertura",
+        "V39": "cobertura",
+        "V4": "cobertura",
+        "V40": "cobertura",
+        "V41": "cobertura",
+        "V42": "cobertura",
+        "V43": "cobertura",
+        "V44": "cobertura",
+        "V45": "cobertura",
+        "V46": "cobertura",
+        "V47": "cobertura",
+        "V48": "cobertura",
+        "V49": "cobertura",
+        "V5": "cobertura",
+        "V50": "cobertura",
+        "V51": "cobertura",
+        "V52": "cobertura",
+        "V53": "cobertura",
+        "V54": "cobertura",
+        "V55": "cobertura",
+        "V56": "cobertura",
+        "V57": "cobertura",
+        "V58": "cobertura",
+        "V59": "cobertura",
+        "V6": "cobertura",
+        "V60": "cobertura",
+        "V61": "cobertura",
+        "V62": "cobertura",
+        "V63": "cobertura",
+        "V64": "cobertura",
+        "V65": "cobertura",
+        "V66": "cobertura",
+        "V67": "cobertura",
+        "V68": "cobertura",
+        "V69": "cobertura",
+        "V7": "cobertura",
+        "V70": "cobertura",
+        "V71": "cobertura",
+        "V72": "cobertura",
+        "V73": "cobertura",
+        "V74": "cobertura",
+        "V75": "cobertura",
+        "V76": "cobertura",
+        "V77": "cobertura",
+        "V78": "cobertura",
+        "V79": "cobertura",
+        "V8": "cobertura",
+        "V80": "cobertura",
+        "V81": "cobertura",
+        "V82": "cobertura",
+        "V83": "cobertura",
+        "V84": "cobertura",
+        "V85": "cobertura",
+        "V86": "cobertura",
+        "V87": "cobertura",
+        "V9": "cobertura"
+      },
+      "hash": "44cd64dd56e6fb9400d20911dd644e54944e9d245e12b9acb89a13d0ea057ad8",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.LOWERING@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "3deddefcfab149db368582d6b471da5485c1bcf71851682a626e4965b39c0414",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.MODEL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "1a7789bf4b2337a0ad70ef44a5eedfbf8459382615c513766e8f9f4ac5b2eee9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.OBSERVATION-POINTS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "36577e72463347dba81d2cfcb28779c71cc2660a3e58ed37c74e2ec74c82b4dd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.SOURCE-MAP@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "f6198c4598eada63ea7fbe836d2ca98a407c68cabe1e063fd784d87e2663d4c2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.TEXT-FORMAT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "985bb0ce1572e682694395652d74aa2381cfae82954dd58659fe7c8777b42ff2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.WELL-FORMEDNESS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla",
+        "R8": "regla",
+        "R9": "regla"
+      },
+      "hash": "797b289d63f0d54ea8eb487ff26a5a8ba3e90d1e54a3bcb536bfbfe690385d96",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -1265,6 +1821,172 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "MEM.IDENTITY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "0f1aa35b6cbc9dc289e608650e96a7c6c24c2878bf11be9efa659f712fba4f7c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "MEM.MANAGED.UNOBSERVABLE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "a6431d5c5bc59eb4a15ace4315bab58ca8f4fbf74d9f9d7cf030e6afe71d8ce8",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "MEM.VALUE.COPY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "d1f30b2fb4c509cba35d01e4c13a6ff7f5c4edcfb5a04436dd6d1880ab9f109a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.ARTIFACT.SIZE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "R1": "regla"
+      },
+      "hash": "27e614a82c6ee0d968c5fdf9dacb5fd6615a0d7f4b158fc34ee55eae920d90bd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.BASELINE.REFERENCE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "73fb5ac1b2136f929e22a46b58c01acd87db6c2d7b8655992ddfcd5766eaee01",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.FRONTEND.THROUGHPUT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "8af6adc05c81d81b83d914877b057c06c26c7b18514d9237fab6ce477ecfa04e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.PROTOCOL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla"
+      },
+      "hash": "e4ad95eb63b2be5757df60ef23a7e76f762b643b11e2d69079410ea6969d6558",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.SUITE.AWFY-CORE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla"
+      },
+      "hash": "ccd2ce947588e562206c25ba5e88785a7427f214dfb968cd8d178cb87d9c896d",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.VM.STEP-LATENCY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "R1": "regla"
+      },
+      "hash": "686255cdd4f530f37b8108b65bd00af9d01dc667b6f46966111a86b79791ebe2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.VM.THROUGHPUT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "511d10c78d7c4ac24d450a208e9d4541fe6b73e47fb4d05979ade36e39df802f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.HOST.INTERFACE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "c5936707440b9df36abec983355646f0ff6f5906646908c4e45bfdd96e081e9c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "SEE.ADAPTER.PROTOCOL@0.1.0": {
       "edition": {},
       "elements": {
@@ -1492,9 +2214,222 @@
       "hash": "f25ae9be0910d2b00cabc7d635cbd88a0227f7021cd1f8448494ba54ce9b66cb",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "TOOL.CLI.CHECK@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "20b97d4dad48bbb348fc15172d5936098bda438bc0bfa52b13bf84ada11e2f2e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.CONVENTIONS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C21": "caso",
+        "C22": "caso",
+        "C23": "caso",
+        "C24": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla"
+      },
+      "hash": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.IR@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla"
+      },
+      "hash": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.MESSAGES@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.RUN@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.SERVICE.LOSSLESS-TREE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "8dd5c797310b092ec80cb9962e4c64e9f95e72f484f78f26e28158a9358718f5",
+      "state": "experimental",
+      "version": "0.1.0"
     }
   },
   "specifications": {
+    "API.ANALYZE": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "cfec2cb06859bc4758f349cb2ec3c074236be36762879200532d4038b2a0a4ba",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.ERRORS": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "00dde3d0e740b8d89403acb5b0bb869af075b558a740971fcc076cf63c28f07e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.EXECUTE": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "736f5efb2e544911efa9ba9691d34cea3d3218c10f221658f21ad238773da113",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.MODEL": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "c278753e853465bf009aa8749a2d858a309006b9c89f27ea0d6044f8581060d9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.STATE.QUERY": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "235369e5a26370986bf40e1b7e4c467a77a6c4437ab9828777a86ceea8f75a46",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.VERSIONING": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "c02174f7c6f10705957ba122029ff15195a30f4eba9a3e42c86c386e72e8866b",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "API.WIRE-FORMAT": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "D1": "definicion",
+        "D2": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "06a26998eb2ed71a98920b2b9fe04039c6dd717c179c551eef9b2580c1cf63ea",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "DIAG.CATALOG": {
       "edition": {
         "introducida_en": "2026"
@@ -1505,9 +2440,9 @@
         "D1": "definicion",
         "R1": "regla"
       },
-      "hash": "e15427d8beb884dbb2ab6372411dac443d2a0e3feeb4b2a6259e056421bdd9b8",
+      "hash": "94779a7b53c6c05c8160d26b97ada990aa71537dcd4a46a71318e8dabc2817fa",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "DIAG.CLASSES": {
       "edition": {
@@ -1590,6 +2525,455 @@
         "R1": "regla"
       },
       "hash": "f951c0dccbb3b9c519fb121c240d927be1762ab679a06e46dbf4cfb496eb336c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.EXEC.EFFECT-ORDER": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f0fc4f1c895a21b5a716e30a52afbcb781d0de231485c8325e9a4969262915fd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.EXEC.MODEL": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "705ff8f49f57b286694e6779c74f220857b1d547e9155e968e3570b84c0bd30e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.INPUT": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "0361a7b13280c23b876362b62db2bb1aae38fa67a3fe5b04e3cb424bf96eb5d2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.LIMITS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla",
+        "R8": "regla"
+      },
+      "hash": "48e3f7fcdcf2bf1cc82fa6b7eac236d7b8908fd4420d10a5b48c5b9a5269e713",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.STATE.INCREMENTAL": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "3e8ccc09ba9aa8b98f1c516ef5006204cb2a4ab62fe4a032eedbbbd0f50a488f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.STATE.SNAPSHOT": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "D1": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla"
+      },
+      "hash": "fcd2c67a9e01c27d6738e2fed1ef91073535f8d5df54ab5d4f25950d18853e5f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.TRACE.EVENTS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla"
+      },
+      "hash": "73954f7cb64f055be4a097f93ba9eaee3d7b393aa3c66d546b899066175aa6dd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "ENG.TRACE.STEP": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "7a75b64034603d7a613e54ef8185ee2d2ab44f346fd5e49130fac05ea48be983",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.INSTRUCTIONS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "O1": "instruccion",
+        "O10": "instruccion",
+        "O11": "instruccion",
+        "O12": "instruccion",
+        "O13": "instruccion",
+        "O14": "instruccion",
+        "O15": "instruccion",
+        "O16": "instruccion",
+        "O17": "instruccion",
+        "O18": "instruccion",
+        "O19": "instruccion",
+        "O2": "instruccion",
+        "O20": "instruccion",
+        "O21": "instruccion",
+        "O22": "instruccion",
+        "O23": "instruccion",
+        "O24": "instruccion",
+        "O25": "instruccion",
+        "O26": "instruccion",
+        "O27": "instruccion",
+        "O28": "instruccion",
+        "O29": "instruccion",
+        "O3": "instruccion",
+        "O30": "instruccion",
+        "O31": "instruccion",
+        "O32": "instruccion",
+        "O33": "instruccion",
+        "O34": "instruccion",
+        "O35": "instruccion",
+        "O36": "instruccion",
+        "O37": "instruccion",
+        "O38": "instruccion",
+        "O39": "instruccion",
+        "O4": "instruccion",
+        "O40": "instruccion",
+        "O41": "instruccion",
+        "O42": "instruccion",
+        "O43": "instruccion",
+        "O44": "instruccion",
+        "O45": "instruccion",
+        "O46": "instruccion",
+        "O47": "instruccion",
+        "O48": "instruccion",
+        "O49": "instruccion",
+        "O5": "instruccion",
+        "O50": "instruccion",
+        "O51": "instruccion",
+        "O52": "instruccion",
+        "O53": "instruccion",
+        "O54": "instruccion",
+        "O55": "instruccion",
+        "O56": "instruccion",
+        "O57": "instruccion",
+        "O58": "instruccion",
+        "O59": "instruccion",
+        "O6": "instruccion",
+        "O60": "instruccion",
+        "O61": "instruccion",
+        "O62": "instruccion",
+        "O63": "instruccion",
+        "O64": "instruccion",
+        "O65": "instruccion",
+        "O66": "instruccion",
+        "O67": "instruccion",
+        "O68": "instruccion",
+        "O69": "instruccion",
+        "O7": "instruccion",
+        "O70": "instruccion",
+        "O71": "instruccion",
+        "O72": "instruccion",
+        "O73": "instruccion",
+        "O74": "instruccion",
+        "O8": "instruccion",
+        "O9": "instruccion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "V1": "cobertura",
+        "V10": "cobertura",
+        "V11": "cobertura",
+        "V12": "cobertura",
+        "V13": "cobertura",
+        "V14": "cobertura",
+        "V15": "cobertura",
+        "V16": "cobertura",
+        "V17": "cobertura",
+        "V18": "cobertura",
+        "V19": "cobertura",
+        "V2": "cobertura",
+        "V20": "cobertura",
+        "V21": "cobertura",
+        "V22": "cobertura",
+        "V23": "cobertura",
+        "V24": "cobertura",
+        "V25": "cobertura",
+        "V26": "cobertura",
+        "V27": "cobertura",
+        "V28": "cobertura",
+        "V29": "cobertura",
+        "V3": "cobertura",
+        "V30": "cobertura",
+        "V31": "cobertura",
+        "V32": "cobertura",
+        "V33": "cobertura",
+        "V34": "cobertura",
+        "V35": "cobertura",
+        "V36": "cobertura",
+        "V37": "cobertura",
+        "V38": "cobertura",
+        "V39": "cobertura",
+        "V4": "cobertura",
+        "V40": "cobertura",
+        "V41": "cobertura",
+        "V42": "cobertura",
+        "V43": "cobertura",
+        "V44": "cobertura",
+        "V45": "cobertura",
+        "V46": "cobertura",
+        "V47": "cobertura",
+        "V48": "cobertura",
+        "V49": "cobertura",
+        "V5": "cobertura",
+        "V50": "cobertura",
+        "V51": "cobertura",
+        "V52": "cobertura",
+        "V53": "cobertura",
+        "V54": "cobertura",
+        "V55": "cobertura",
+        "V56": "cobertura",
+        "V57": "cobertura",
+        "V58": "cobertura",
+        "V59": "cobertura",
+        "V6": "cobertura",
+        "V60": "cobertura",
+        "V61": "cobertura",
+        "V62": "cobertura",
+        "V63": "cobertura",
+        "V64": "cobertura",
+        "V65": "cobertura",
+        "V66": "cobertura",
+        "V67": "cobertura",
+        "V68": "cobertura",
+        "V69": "cobertura",
+        "V7": "cobertura",
+        "V70": "cobertura",
+        "V71": "cobertura",
+        "V72": "cobertura",
+        "V73": "cobertura",
+        "V74": "cobertura",
+        "V75": "cobertura",
+        "V76": "cobertura",
+        "V77": "cobertura",
+        "V78": "cobertura",
+        "V79": "cobertura",
+        "V8": "cobertura",
+        "V80": "cobertura",
+        "V81": "cobertura",
+        "V82": "cobertura",
+        "V83": "cobertura",
+        "V84": "cobertura",
+        "V85": "cobertura",
+        "V86": "cobertura",
+        "V87": "cobertura",
+        "V9": "cobertura"
+      },
+      "hash": "44cd64dd56e6fb9400d20911dd644e54944e9d245e12b9acb89a13d0ea057ad8",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.LOWERING": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "3deddefcfab149db368582d6b471da5485c1bcf71851682a626e4965b39c0414",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.MODEL": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "1a7789bf4b2337a0ad70ef44a5eedfbf8459382615c513766e8f9f4ac5b2eee9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.OBSERVATION-POINTS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "36577e72463347dba81d2cfcb28779c71cc2660a3e58ed37c74e2ec74c82b4dd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.SOURCE-MAP": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "f6198c4598eada63ea7fbe836d2ca98a407c68cabe1e063fd784d87e2663d4c2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.TEXT-FORMAT": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "985bb0ce1572e682694395652d74aa2381cfae82954dd58659fe7c8777b42ff2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "IR.WELL-FORMEDNESS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla",
+        "R8": "regla",
+        "R9": "regla"
+      },
+      "hash": "797b289d63f0d54ea8eb487ff26a5a8ba3e90d1e54a3bcb536bfbfe690385d96",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -2716,6 +4100,172 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "MEM.IDENTITY": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "0f1aa35b6cbc9dc289e608650e96a7c6c24c2878bf11be9efa659f712fba4f7c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "MEM.MANAGED.UNOBSERVABLE": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "a6431d5c5bc59eb4a15ace4315bab58ca8f4fbf74d9f9d7cf030e6afe71d8ce8",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "MEM.VALUE.COPY": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "d1f30b2fb4c509cba35d01e4c13a6ff7f5c4edcfb5a04436dd6d1880ab9f109a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.ARTIFACT.SIZE": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "R1": "regla"
+      },
+      "hash": "27e614a82c6ee0d968c5fdf9dacb5fd6615a0d7f4b158fc34ee55eae920d90bd",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.BASELINE.REFERENCE": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "73fb5ac1b2136f929e22a46b58c01acd87db6c2d7b8655992ddfcd5766eaee01",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.FRONTEND.THROUGHPUT": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "8af6adc05c81d81b83d914877b057c06c26c7b18514d9237fab6ce477ecfa04e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.PROTOCOL": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla"
+      },
+      "hash": "e4ad95eb63b2be5757df60ef23a7e76f762b643b11e2d69079410ea6969d6558",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.SUITE.AWFY-CORE": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla"
+      },
+      "hash": "ccd2ce947588e562206c25ba5e88785a7427f214dfb968cd8d178cb87d9c896d",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.VM.STEP-LATENCY": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "R1": "regla"
+      },
+      "hash": "686255cdd4f530f37b8108b65bd00af9d01dc667b6f46966111a86b79791ebe2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "PERF.VM.THROUGHPUT": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "511d10c78d7c4ac24d450a208e9d4541fe6b73e47fb4d05979ade36e39df802f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.HOST.INTERFACE": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "c5936707440b9df36abec983355646f0ff6f5906646908c4e45bfdd96e081e9c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "SEE.ADAPTER.PROTOCOL": {
       "edition": {},
       "elements": {
@@ -2863,6 +4413,126 @@
         "R2": "regla"
       },
       "hash": "f25ae9be0910d2b00cabc7d635cbd88a0227f7021cd1f8448494ba54ce9b66cb",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.CHECK": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "20b97d4dad48bbb348fc15172d5936098bda438bc0bfa52b13bf84ada11e2f2e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.CONVENTIONS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C21": "caso",
+        "C22": "caso",
+        "C23": "caso",
+        "C24": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla"
+      },
+      "hash": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.IR": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "R1": "regla"
+      },
+      "hash": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.MESSAGES": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.CLI.RUN": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "TOOL.SERVICE.LOSSLESS-TREE": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "8dd5c797310b092ec80cb9962e4c64e9f95e72f484f78f26e28158a9358718f5",
       "state": "experimental",
       "version": "0.1.0"
     }

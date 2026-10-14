@@ -54,13 +54,17 @@ fn rejects_unknown_classes_undeclared_payloads_and_missing_alphabet() -> Result<
 #[test]
 fn rejects_events_outside_trace_cases_and_unknown_instruction_observations() -> Result<(), String> {
     let execute = json!({"kind":"caso","fields":{"id":"C1","regla":"R1","operacion":"execute","espera":{"eventos":[]}}});
-    let instruction = |observation: &str| json!({"kind":"instruccion","fields":{"id":"O1","nombre":"out","observacion":observation}});
+    let instruction = |observation: serde_json::Value| json!({"kind":"instruccion","fields":{"id":"O1","nombre":"out","observacion":observation}});
     let corpus = contracts::corpus(
         "ENG.TRACE.EVENTS",
-        json!([alphabet(), execute, instruction("teleport")]),
+        json!([
+            alphabet(),
+            execute,
+            instruction(json!(["output", "teleport"]))
+        ]),
     )?;
     assert_eq!(see_validation::trace::check(&corpus).len(), 2);
-    for observation in ["ninguna", "output"] {
+    for observation in [json!([]), json!(["output"])] {
         let corpus = contracts::corpus(
             "IR.INSTRUCTIONS",
             json!([alphabet(), instruction(observation)]),

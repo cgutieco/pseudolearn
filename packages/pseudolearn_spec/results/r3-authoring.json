@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-10-14T21:01:10Z",
+  "finished_at": "2026-10-14T21:44:07Z",
+  "clock": "UTC wall clock",
+  "scope": "B1 y B2: extensiones de see y corpus de R3, incluidos implementación, comprobaciones de cordura contra reference y verificación",
+  "specifications": 39,
+  "rules": 129,
+  "cases": 172,
+  "properties": 30,
+  "measurements": 15,
+  "instructions": 74,
+  "coverage_entries": 87,
+  "raw_minutes": 43.0,
+  "raw_minutes_per_rule": 0.333,
+  "interpretation": "Cota bruta de autoría automatizada que incluye pausas, implementación de see y verificación; no mide tiempo humano ni se usa para inferirlo.",
+  "author": "Claude",
+  "human_minutes_measured": null
+}

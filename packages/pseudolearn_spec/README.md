@@ -93,7 +93,10 @@ salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, 
   trampas citadas existen en el catálogo de diagnósticos. Se descarta inferir instrucciones del texto.
 - Problema: deducir el vocabulario por la palabra de apertura exige que ninguna apertura sea ambigua.
   Elección: `SEE-PROFILE-OPENERS` pliega caja, tildes, diéresis y `ñ` y compara cada lexema o alias de
-  apertura con todos los lexemas y alias del otro perfil. El pliegue es deliberadamente más agresivo que
+  apertura con todos los lexemas y alias del otro perfil.
+- Problema: la prosa de la CLI cita mensajes ya presentados sin traducirlos dos veces. Elección: los
+  catálogos admiten el tipo de argumento `texto`, prosa ya presentada en el idioma de interfaz, además de
+  lexema, token, tipo, término y número. Se descarta reutilizar `lexema`, que significa texto del usuario. El pliegue es deliberadamente más agresivo que
   la normalización de cada perfil: solo puede producir rechazos de más, nunca aceptar una ambigüedad.
 - Problema: prosa legible y datos verificables. Elección: Markdown con YAML y bloques tipados;
   serde-saphyr conserva la cadena segura usada en el monorepo. Se descarta DSL propio por coste.

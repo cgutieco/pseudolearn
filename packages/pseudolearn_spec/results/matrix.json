@@ -5,7 +5,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.CATALOG@0.1.0#R1",
+    "rule": "DIAG.CATALOG@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -76,6 +76,136 @@
     "measurements": [],
     "reason": "REF-FLEXIBLE-INITIALIZATION: No emite la advertencia estática de lectura sin inicializar en flexible, aunque la política la declara. Resolución en R4; reference permanece congelado.",
     "rule": "DIAG.SEVERITY.POLICY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 20,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.MODEL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.MODEL@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.MODEL@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R4",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 24,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R4",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R5",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R6",
     "state": "experimental",
     "subject": "reference"
   },
@@ -976,6 +1106,143 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.MODEL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R4",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R4",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 sum"
+      },
+      {
+        "id": "M2",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 fibonacci"
+      },
+      {
+        "id": "M3",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 bubble"
+      },
+      {
+        "id": "M4",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 objects"
+      },
+      {
+        "id": "M5",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 sieve"
+      },
+      {
+        "id": "M6",
+        "protocol": "PERF.PROTOCOL#R6",
+        "provisional": false,
+        "suite": "E-01 permute"
+      }
+    ],
+    "reason": null,
+    "rule": "PERF.BASELINE.REFERENCE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.BASELINE.REFERENCE@0.1.0#R2",
     "state": "experimental",
     "subject": "reference"
   }

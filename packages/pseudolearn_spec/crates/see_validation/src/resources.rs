@@ -88,6 +88,7 @@ pub(crate) fn argument_types(
         "tipo",
         "lexema",
         "termino",
+        "texto",
         "tipo|lexema",
     ];
     if types

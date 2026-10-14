@@ -84,9 +84,10 @@ fn event_class(event: &Value, alphabet: Option<&serde_json::Map<String, Value>>)
 fn instruction_observation(
     instruction: &Block,
     alphabet: Option<&serde_json::Map<String, Value>>,
-) -> Option<String> {
-    let observation = field(instruction, "observacion");
-    let known = observation == "ninguna"
-        || alphabet.is_some_and(|alphabet| alphabet.contains_key(observation));
-    (!known).then(|| format!("SEE-TRACE-CLASS: unknown observation {observation}"))
+) -> Vec<String> {
+    see_model::strings(instruction.fields.get("observacion"))
+        .into_iter()
+        .filter(|observation| !alphabet.is_some_and(|alphabet| alphabet.contains_key(*observation)))
+        .map(|observation| format!("SEE-TRACE-CLASS: unknown observation {observation}"))
+        .collect()
 }

@@ -5,7 +5,7 @@
   "titulo": "Catálogo bilingüe de diagnósticos",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -27,7 +27,14 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ]
+  ],
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Dos fichas nuevas describen el agotamiento de celdas y del presupuesto de sentencias.",
+    "impacto_implementaciones": "Los motores Rust emiten cellLimitExceeded y statementBudgetExhausted según ENG.LIMITS; reference no los produce porque no implementa esos límites.",
+    "justificacion": "ENG.LIMITS distingue los recursos del programa del presupuesto del anfitrión y necesita un código propio para cada situación.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
+  }
 }
 ---
 
@@ -2525,6 +2532,42 @@
       "severidad": {
         "estricto": "warning",
         "flexible": "warning"
+      }
+    },
+    "cellLimitExceeded": {
+      "mensajes": {
+        "es": "Se alcanzó el límite de memoria: {limit} celdas",
+        "en": "Memory limit reached: {limit} cells"
+      },
+      "argumentos": [
+        "limit"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
+    "statementBudgetExhausted": {
+      "mensajes": {
+        "es": "Se agotó el presupuesto de sentencias: {limit}",
+        "en": "Statement budget exhausted: {limit}"
+      },
+      "argumentos": [
+        "limit"
+      ],
+      "politica": "D",
+      "severidad": {
+        "estricto": "info",
+        "flexible": "info"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {
+        "limit": "numero"
       }
     }
   }

@@ -95,7 +95,7 @@
   ],
   "vinculos": [
     {
-      "regla": "DIAG.CATALOG@0.1.0#R1",
+      "regla": "DIAG.CATALOG@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

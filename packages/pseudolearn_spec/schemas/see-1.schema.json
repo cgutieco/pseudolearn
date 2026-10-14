@@ -1747,8 +1747,12 @@
           "uniqueItems": true
         },
         "observacion": {
-          "type": "string",
-          "minLength": 1
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
         }
       },
       "required": [
