@@ -571,7 +571,7 @@ reintento fue aprobado y terminó correctamente.
 
 ## 7. Informe de ejecución R2 · 2026-10-14
 
-**Estado: implementación y verificaciones locales completas. Publicación pendiente de comprobación remota del HEAD.**
+**Estado: implementación y verificaciones locales completas. R2 permanece abierta por publicación bloqueada por la revisión automática de aprobación.**
 
 ### Implementación
 
@@ -613,3 +613,5 @@ reintento fue aprobado y terminó correctamente.
 No quedan tareas obligatorias de implementación o verificación local de R2. El estudio humano E-14 se difiere según autorización explícita, y los defectos del sujeto congelado se resuelven en R4; ambas cosas mantienen evidencia y condición de resolución. Las propiedades generativas se incorporan al sistema cuando un contrato las requiera, sin declarar ninguna propiedad no ejecutada como cumplida.
 
 Rama codex/implement-r2. La publicación usa push ordinario, sin coautoría ni atribución de IA. No se ejecuta GitHub Actions: R2 no requiere comprobación remota obligatoria y los workflows son manuales. R3 no se inicia.
+
+La implementación local está en el commit 9506885. La revisión automática rechazó dos intentos de push: primero por destino no verificado y después por exigir autorización explícita del contenido hacia un destino público. La consulta de solo lectura confirmó origin como https://github.com/cgutieco/pseudolearn, público y con permiso ADMIN. No se evitó el rechazo, no se publicó la rama ni se pudo comprobar igualdad de HEAD local/remoto. La condición para cerrar publicación es autorización explícita de la persona para enviar R2 a ese repositorio público y push confirmado; la fase permanece abierta hasta reunir esa evidencia.

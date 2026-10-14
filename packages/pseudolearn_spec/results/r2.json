@@ -22,5 +22,14 @@
   "checks": "local-green",
   "remote_ci": "not-required-not-run",
   "deferred": "E-14 human study after R9, explicitly authorized",
-  "engine_code": "none"
+  "engine_code": "none",
+  "publication": {
+    "state": "blocked-by-automatic-approval-review",
+    "branch": "codex/implement-r2",
+    "implementation_commit": "9506885",
+    "verified_destination": "https://github.com/cgutieco/pseudolearn",
+    "visibility": "public",
+    "viewer_permission": "ADMIN",
+    "required": "Explicit user authorization to publish this R2 payload to the public repository; successful ordinary push and matching local/remote HEAD."
+  }
 }
