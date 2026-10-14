@@ -35,6 +35,7 @@
 | 17  | [Conflictos, decisiones, riesgos y preguntas](17-riesgos-preguntas-y-decisiones.md)        | 8 conflictos reportados; 24 decisiones pendientes; 17 riesgos; 13 preguntas abiertas                   |
 | 18  | [Fuentes](18-fuentes.md)                                                                   | Fuentes primarias y secundarias con fecha, enlace, uso, límite y estado de verificación               |
 | A   | [Anexo A · Experimentos reproducibles](anexos/A-experimentos-reproducibles.md)             | Entorno, arnés, programas, mediciones y sondas sobre el sistema actual                                 |
+| P   | [Plan · Núcleo en Rust guiado por especificaciones](plan-nucleo-rust/README.md)            | **Propuesta de plan** (2026-10-13): ADR-001, granularidad, catálogo de ≈159 especificaciones, workspace Rust, conformidad, fases R0–R9 |
 
 ### Rutas de lectura
 
@@ -47,6 +48,8 @@
   [06](06-ejecucion-pedagogica-y-app.md) → [13](13-arquitecturas-candidatas.md) → [16](16-experimentos-y-benchmarks.md).
 - **Herramientas y ecosistema:** [07](07-herramientas-y-autocompletado.md) → [08](08-modulos-paquetes-y-monorepos.md).
 - **Planificación:** [15](15-evolucion-y-hoja-de-ruta.md) → [16](16-experimentos-y-benchmarks.md) → [17](17-riesgos-preguntas-y-decisiones.md).
+- **Reescritura del núcleo en Rust:** [plan](plan-nucleo-rust/README.md) → [ADR-001](plan-nucleo-rust/00-adr-001-nucleo-en-rust.md) →
+  [catálogo](plan-nucleo-rust/03-catalogo-de-especificaciones.md) → [fases](plan-nucleo-rust/07-fases.md).
 
 ---
 
