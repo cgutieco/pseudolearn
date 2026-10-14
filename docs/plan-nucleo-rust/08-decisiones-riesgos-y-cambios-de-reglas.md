@@ -55,10 +55,27 @@
 |------|--------------------------------------------------------------|-------------------------------|
 | D-13 | Palabras reservadas: vocabulario contextual, `Y`/`O`         | R2 (`LANG.LEXICAL.KEYWORD`)   |
 | D-14 | NFC y `ñ` en el perfil estricto                              | R2 (`LANG.SOURCE.ENCODING`, `LANG.LEXICAL.IDENTIFIER`) |
-| D-17 | Límites de recursos: ¿regla del lenguaje o del entorno?       | R3 (`ENG.LIMITS`)             |
-| D-21 | Idioma canónico de la CLI                                    | R3 (`TOOL.CLI.CONVENTIONS`)   |
-| D-07 | Nivel de rendimiento aceptado como «muy optimizado»          | Umbrales de R5 y R6           |
+| D-07 | Nivel de rendimiento aceptado como «muy optimizado»; R3 fija umbrales provisionales (D-R3-03) | Umbrales definitivos de R5 y R6 |
 | D-01 | Licencia                                                     | Política de `cargo-deny`; si algún crate se publica |
+
+D-17 y D-21 quedan resueltas por D-R3-01 y D-R3-02 (§1.5).
+
+### 1.5 Decisiones de R3
+
+Fuente: mensaje de autorización de R3 de la persona responsable del 2026-10-14, que ordena ejecutar
+R3 según el plan [09](09-plan-r3-motor-clepsidra.md) sin modificar ninguna recomendación; y, para
+D-R3-02, la conversación del 2026-10-14 que aprobó la frontera de idioma, incluida la regla de que el
+alias de una orden no decide el idioma de interfaz.
+
+| ID       | Decisión aprobada                                                                                     | Resuelve |
+|----------|-------------------------------------------------------------------------------------------------------|----------|
+| D-R3-01  | Los límites son recursos del entorno con unidades deterministas (marcos, entradas a sentencia, celdas) y mínimos garantizados de 1 000 marcos y 2²² celdas. Profundidad y celdas producen fallo del programa; sentencias y tiempo, `limit_reached`. Valores por omisión: app 1 000 marcos; CLI 100 000 marcos sin presupuesto de sentencias | D-17 |
+| D-R3-02  | Español canónico en órdenes y opciones, inglés como alias total; vocabulario autodeclarado por la palabra de apertura; idioma de interfaz por bandera > entorno > preferencias > sistema > español, nunca por el archivo ni por la forma de la orden | D-21 |
+| D-R3-03  | Umbrales provisionales: VM sin observar ≥ 10× la línea base (media geométrica AWFY-core), objetivo 30×, ninguna prueba < 5×; paso observado p95 ≤ 1 ms en el dispositivo modesto y ≤ 0,1 ms en M2; sobrecoste del gemelo rápido con observador en pausa ≤ 2 %; front-end ≥ 10⁶ líneas/s en M2; biblioteca móvil ≤ 3 MiB por ABI; Wasm ≤ 600 KiB con brotli | D-07 (provisional) |
+| D-R3-04  | E-02 usa Rust idiomático como sustituto de C, sin Go en la verificación local                          | Desviación de E-02 |
+| D-R3-05  | `API.EXECUTE` incluye la consulta en un instante pasado como capacidad negociada `seek`                 | — |
+| D-R3-06  | Se aprueban los cambios sobre la arquitectura de [04](04-arquitectura-del-workspace-rust.md): árbol postorden, código gemelo, línea temporal, runtime sin `unsafe` y `salsa` aplazado a R7 | Decisiones propuestas de 04 §3 |
+| D-R3-07  | Se elevan a objetivo la transferencia AOT → VM (R6), la frontera grabable en `RT.HOST.INTERFACE` desde R3 y LLVM como nivel de *release* tras E-NR1 | — |
 
 Quedan fuera del plan, para después de R9: D-08 (eliminación de código), D-12 (ámbitos de bloque),
 D-15, D-16, D-19 y D-24.
@@ -83,6 +100,12 @@ o Alta.
 | RN-09 | **Fricción entre las reglas del proyecto y las convenciones de Rust** (`T`, `'a`, `|x|`, `// SAFETY:`) | A | B | Aceptada a sabiendas; los lints corrigen pronto; la política de `unsafe` sustituye el comentario | Excepciones pedidas con frecuencia                          |
 | RN-10 | **Tamaño** de la biblioteca en móvil y del Wasm                                               | M | M | Sin Cranelift ni servicio pesado en móvil; `PERF.ARTIFACT.SIZE`; `opt-level = "z"` evaluado para Wasm               | Crecimiento por encima del presupuesto en R5                |
 | RN-11 | **Cranelift no alcanza** el nivel acordado                                                     | M | M | RI compatible con LLVM; E-NR1; LLVM como backend de «release» opcional                                              | Informe de R6                                               |
+| RC-01 | La tabla de páginas y la barrera de época cuestan demasiado en cargas de objetos                | M | A | E-02 V2/V1 decide antes de R5; alternativa: montón directo con `unsafe` acotado y tarjetas sucias                     | V2/V1 > 1,30 en una familia                                 |
+| RC-02 | Los gemelos rápido y sondeado divergen                                                         | B | A | Se generan desde la misma RI con una sola función parametrizada; conformidad diferencial interna obligatoria         | Un caso que difiere entre gemelos                           |
+| RC-03 | Memoria de puntos de control en ejecuciones largas                                            | M | M | Raleo exponencial y presupuesto configurable; `API.STATE.QUERY` declara el horizonte retenido                        | E-06 en R5                                                  |
+| RC-04 | El árbol postorden dificulta la identidad de nodo de R7                                       | M | M | El servicio de R7 deriva la identidad o construye su estructura incremental encima                                   | E-08 en R4                                                  |
+| RC-05 | LLVM asigna mal registros en un `match` de despacho grande                                     | M | M | Manejadores pequeños, estado en variables locales, superinstrucciones; alternativa: despacho por familias           | `PERF.VM.THROUGHPUT` al empezar R5                          |
+| RC-06 | Los bancos de tamaño fijo ocupan memoria en Wasm y móvil                                       | M | B | 2¹⁸ ranuras en Wasm y móvil, 2²⁰ en escritorio; el mínimo de 1 000 marcos se cumple en ambos                         | `PERF.ARTIFACT.SIZE`, RSS en E-06                           |
 | RN-12 | **El núcleo Dart deja de compilar** con versiones nuevas de Dart antes de R9                  | B | M | Fijar la versión del SDK para el sujeto `reference`; es solo un oráculo                                             | Avisos de obsolescencia del SDK                             |
 
 ---
