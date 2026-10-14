@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 2. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon. Externas: biblioteca estándar.
+Nivel 2. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Lexer por tabla de 256 clases de byte; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`.

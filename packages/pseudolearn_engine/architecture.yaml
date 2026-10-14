@@ -22,17 +22,17 @@ layers:
   - name: pseudolearn_diagnostics
     path: crates/pseudolearn_diagnostics
     may_import: [pseudolearn_source]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_lexicon
     path: crates/pseudolearn_lexicon
     may_import: [pseudolearn_source]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_syntax
     path: crates/pseudolearn_syntax
     may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_semantic
     path: crates/pseudolearn_semantic
@@ -42,7 +42,7 @@ layers:
   - name: pseudolearn_ir
     path: crates/pseudolearn_ir
     may_import: [pseudolearn_source, pseudolearn_abi]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_lowering
     path: crates/pseudolearn_lowering
@@ -52,7 +52,7 @@ layers:
   - name: pseudolearn_bytecode
     path: crates/pseudolearn_bytecode
     may_import: [pseudolearn_ir, pseudolearn_source]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_runtime
     path: crates/pseudolearn_runtime
@@ -67,7 +67,7 @@ layers:
   - name: pseudolearn_vm
     path: crates/pseudolearn_vm
     may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_timeline
     path: crates/pseudolearn_timeline

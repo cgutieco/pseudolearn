@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 4. Dependencias internas permitidas: pseudolearn_ir, pseudolearn_source. Externas: biblioteca estándar.
+Nivel 4. Dependencias internas permitidas: pseudolearn_ir, pseudolearn_source. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.

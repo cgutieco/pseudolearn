@@ -30,6 +30,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 | Pendiente | Dependencia | Fase |
 |---|---|---|
 | source → lexicon → lexer → parser → semantic nombres → semantic tipos → diagnostics presentación → api análisis → conformance → CLI comprobar | Corpus del lenguaje y fronteras completo | R4 |
+| Revisión de la representación de memoria antes de autorizar implementación | E-02 supera el umbral V2/V1 de 1,30; conservar resultados y medir alternativas | Previa a R5 |
 | ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | R5 |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |

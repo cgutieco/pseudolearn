@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 1. Dependencias internas permitidas: pseudolearn_source. Externas: biblioteca estándar.
+Nivel 1. Dependencias internas permitidas: pseudolearn_source. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Tablas generadas de vocabulario y funciones por perfil; **hash perfecto** generado en `build.rs`; normalización de caja y acentos por perfil; identidades de apertura de nivel superior para autodeclarar el vocabulario.

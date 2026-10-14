@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 6. Dependencias internas permitidas: pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics. Externas: biblioteca estándar.
+Nivel 6. Dependencias internas permitidas: pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Bancos escalar (`u64`) y de referencias (`u32`) de tamaño fijo potencia de dos (2²⁰ ranuras en escritorio, 2¹⁸ en móvil y Wasm), con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; una comprobación por llamada que es también la de profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.

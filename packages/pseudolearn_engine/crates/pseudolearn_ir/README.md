@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi. Externas: biblioteca estándar.
+Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: CFG SSA con parámetros de bloque; clases de valor; celdas; `observe` con masa de sentencia; regiones puras; verificador; formato textual con ida y vuelta; catálogo generado de la exportación de `IR.INSTRUCTIONS`.
