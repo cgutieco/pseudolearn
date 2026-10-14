@@ -14,6 +14,12 @@ pública/privada, polimorfismo, `Este`, `Super`, copia superficial), subprograma
 referencia; determinismo aritmético de 64 bits con `BigInt`; compilación verificada a nativo, JavaScript y WebAssembly;
 suite de 748 tests y verificadores mecánicos al 100 % en verde.
 
+
+**Sujeto `reference`, congelado.** ADR-001 establece la reescritura completa en Rust. Este paquete
+conserva compilación, API y tests como referencia hasta R9; los tests Dart no son el oráculo normativo
+del lenguaje. No recibe construcciones nuevas ni correcciones semánticas de los hallazgos de la
+reescritura. Se admiten mantenimiento de compatibilidad y verificación sin cambiar comportamiento.
+
 ---
 
 ## 1. Qué es y qué no es

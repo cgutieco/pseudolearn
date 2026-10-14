@@ -44,3 +44,11 @@ docs(readme): record why the i18n layer is custom instead of astro:i18n
 - El cuerpo explica el **porqué**. El qué ya está en el diff.
 - Si el cambio toca una decisión de arquitectura, el mismo commit actualiza el `README.md`
   (`DOC-README-TRUTH`). Nunca dejes una decisión viviendo solo en el mensaje del commit.
+
+## Miembros y publicación de fases
+
+Se admiten ámbitos de miembro: `rust-checks`, `benchmarks`, `core`, `spec`, `engine`, `cli`, `bridge`,
+y ámbitos transversales `rules`, `ci`, `docs`. Cuando exista una especificación afectada, nombrar su
+identificador en el cuerpo. No inventar identificadores del corpus antes de R1.
+Nunca añadir trailers `Co-authored-by` ni atribución de autoría a IA. La identidad del commit es la
+configurada por la persona. Al cerrar una fase, hacer push ordinario y comprobar el resultado remoto.

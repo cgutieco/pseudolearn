@@ -7,7 +7,7 @@ description: Estándar de calidad de código de PseudoLearn. Usar antes de dar p
 
 ## La regla que sostiene todas las demás
 
-**El código lleva casi ningún comentario porque el *por qué* está en el `README.md` del paquete.**
+**El código lleva cero comentarios porque el *por qué* está en el `README.md` del paquete.**
 
 Hay que entender la política completa o degenera. Quitar comentarios sin escribir la documentación no
 es limpieza, es pérdida de información. Las dos mitades van juntas:
@@ -21,7 +21,7 @@ README. Si sientes la necesidad de explicar qué hace una línea, el problema es
 ## Idioma
 
 - **Todo el código en inglés**: nombres de tipo, de variable, de función, de archivo, de test, más los
-  comentarios que sobrevivan y los mensajes de commit.
+  mensajes de commit.
 - **Toda la documentación en español**: `AGENTS.md`, los `README.md`, las skills, los documentos de
   `docs/`.
 - El léxico del pseudocódigo en español es **dato**, nunca identificadores de código. Un lexema en
@@ -44,15 +44,18 @@ README. Si sientes la necesidad de explicar qué hace una línea, el problema es
 - La cabecera de licencia o de autoría en cada archivo.
 - El comentario de documentación que solo repite la firma de la función.
 
-**Admisible, y solo esto:**
+**Cero comentarios (`QUALITY-NO-COMMENTS`).** El por qué local o arquitectónico vive en el README.
+Solo Python admite un docstring de responsabilidad por módulo, clase y función.
 
-- Un *por qué* local y no evidente: una decisión contraintuitiva, un orden de operaciones que importa,
-  un caso límite que parece un error y no lo es, un rendimiento que justifica una forma menos obvia.
-- Documentación pública en la frontera exportada del paquete, cuando explica el contrato y no la
-  implementación.
+## Rust
 
-Prueba antes de escribir un comentario: **si renombrando algo o extrayendo una función el comentario
-sobra, hazlo en vez de escribirlo.**
+Nombres semánticos de al menos tres caracteres salvo id/io/ir/vm/gc/os, sin abreviaturas ni relleno.
+Genéricos y tiempos de vida expresan su papel. Sin `#[doc]`, `#[allow]`, `#[expect]` ni pánicos
+alcanzables. Clippy rechaza unwrap/expect, macros de pánico, índices inseguros, aritmética implícita y
+conversiones con pérdida. Las excepciones de configuración se justifican en el README.
+`unsafe` solo en crates autorizados, en funciones de hasta diez líneas con invariante nombrado y fila
+correspondiente en el README. Tests de caja negra en `tests/` espejo y unidades en archivos hermanos.
+Verificar con `cargo xtask verify`.
 
 ## Defectos que se rechazan en revisión
 

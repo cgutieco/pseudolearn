@@ -247,9 +247,7 @@ Valores enforceados mecánicamente en este paquete:
     - Citar documentos o secciones (`QUALITY-NO-DOC-REFS`): Prohibido `// ver README`, `// según AGENTS.md`. Se describe
       la restricción técnica, nunca dónde está escrita.
     - Código comentado o TODOs sin responsable y condición de cierre.
-- **Admisible (`QUALITY-WHY-ONLY`):**
-    - Únicamente un *por qué* local, no evidente y contraintuitivo.
-    - Las justificaciones arquitectónicas pertenecen a este README, no al código.
+- **Cero comentarios (`QUALITY-NO-COMMENTS`):** el por qué local y arquitectónico vive en el README. Solo Python admite docstrings de responsabilidad.
 
 ### 5.4 Convenciones técnicas y anti-patrones prohibidos
 

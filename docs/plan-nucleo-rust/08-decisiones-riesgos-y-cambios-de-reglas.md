@@ -1,8 +1,8 @@
 # 08 · Decisiones, riesgos y cambios de reglas
 
-> **Estado:** propuesta. Este documento es la lista de lo que la persona responsable tiene que aprobar,
-> en R0 o en la fase que se indica. Nada de lo que aparece aquí como «cambio de regla» está aplicado
-> (`CONFLICT-REPORT`: se reporta, no se resuelve en silencio).
+> **Estado:** las decisiones asumidas y las propuestas asignadas a R0 están aprobadas por la persona
+> responsable el 2026-10-14. Los cambios de reglas de R0 se aplican en esta fase. Las decisiones y
+> modificaciones de otras fases conservan su dependencia y requieren autorización de esa fase.
 
 ---
 
@@ -19,7 +19,7 @@
 | —       | Código en inglés, documentación y especificaciones en español; nombres semánticos; cero comentarios        | `LANG-EN-CODE`, `LANG-ES-DOCS`, `QUALITY-NO-COMMENTS`; nueva `QUALITY-SEMANTIC-NAMES` |
 | —       | Se podan las funciones a medias y el código muerto: lo que no tiene especificación no se porta              | C-04 (perfiles institucionales: se retiran) |
 
-### 1.2 Asumidas de la investigación («el resto de la documentación es coherente»), a confirmar en R0
+### 1.2 Asumidas de la investigación («el resto de la documentación es coherente»), aprobadas en R0
 
 | ID   | Recomendación que el plan asume                                                       | Fase que la necesita |
 |------|----------------------------------------------------------------------------------------|----------------------|
@@ -87,7 +87,7 @@ o Alta.
 
 ---
 
-## 3. Cambios de reglas que el plan necesita (no aplicados)
+## 3. Cambios de reglas por fase
 
 ### 3.1 `AGENTS.md`
 
@@ -101,9 +101,7 @@ o Alta.
 | §8      | Skills nuevas y modificadas (§3.3)                                                                                       |
 | §9      | Quinta cadena de herramientas: `cargo` y `rustup` para `pseudolearn_spec`, `pseudolearn_engine`, `pseudolearn_rust_checks`, `pseudolearn_cli` y el puente de la app |
 
-**Conflicto que se reporta.** `AGENTS.md` §9 dice hoy «el monorepo sostiene cuatro cadenas de
-herramientas». El plan añade una quinta. Hasta que se apruebe el cambio de §9, la presencia de Rust
-contradice el texto vigente.
+**Resolución aprobada en R0.** `AGENTS.md` declara cinco cadenas; la quinta corresponde a Rust.
 
 ### 3.2 `README.md` raíz
 

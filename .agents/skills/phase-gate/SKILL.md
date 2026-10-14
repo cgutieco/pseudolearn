@@ -60,3 +60,15 @@ Si a mitad de la fase resulta que algo requeriría tocar material que está decl
 
 Lo mismo con los conflictos: si una instrucción de la conversación choca con las reglas del repositorio,
 o dos documentos se contradicen, se reporta. No se elige en silencio.
+
+## Seguimiento y publicación
+
+Las tareas y la casilla de fase en el plan se marcan solo con evidencia de cumplimiento.
+Resolver en la misma fase todas las observaciones pertinentes y posibles dentro del alcance.
+Solo diferir trabajo ajeno al alcance o dependiente de otra fase, indicando motivo, fase destinataria
+y condición de resolución. Nunca diferir un fallo obligatorio para declarar la fase terminada.
+
+Añadir al informe observaciones resueltas, pendientes justificados y evidencia de publicación.
+Hacer commits coherentes y push ordinario a la rama remota; verificar HEAD local/remoto y CI verde.
+Publicar también el informe y las casillas actualizadas. No usar force push ni trailers de coautoría
+o atribución de IA. Si publicación o CI están bloqueadas, la fase queda abierta.

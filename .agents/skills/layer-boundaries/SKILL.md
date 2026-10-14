@@ -58,3 +58,10 @@ comentario que la justifique.
 
 El test de arquitectura del paquete comprueba esto mecánicamente y falla el build. No es una convención
 de honor. Si tu cambio lo hace fallar, la respuesta no es ajustar el test.
+
+## Workspaces Rust
+
+Cada capa es un crate declarado en `architecture.yaml`: nombre, ruta, dependencias internas
+permitidas, dependencias externas permitidas y autorización de `unsafe`. Cargo impide ciclos;
+`rust-checks layers` contrasta los metadatos Cargo con el archivo de reglas. Los crates `xtask` se
+declaran como tooling, fuera de las capas del producto. No crear un workspace Cargo en la raíz.

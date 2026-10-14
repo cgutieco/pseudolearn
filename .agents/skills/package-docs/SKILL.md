@@ -7,7 +7,7 @@ description: Estándar y metodología para redactar y mantener el README.md de u
 
 ## Por qué existe esta skill
 
-El código de este proyecto lleva casi ningún comentario. Eso solo funciona si el *por qué* está escrito en otro sitio, y
+El código de este proyecto lleva cero comentarios. Eso solo funciona si el *por qué* está escrito en otro sitio, y
 ese sitio es el `README.md` del paquete o aplicación. Un componente sin README no es un componente con documentación
 pendiente: es un componente cuyo código ya perdió la mitad de su información (`DOC-README-TRUTH`).
 
@@ -112,7 +112,7 @@ obligatoria**:
     - *Prohibido (`QUALITY-NO-NOISE-COMMENTS`, `QUALITY-NO-DOC-REFS`):* Comentarios que repiten lo que el código hace,
       traducciones de identificadores al español, referencias a documentos (`// ver README`), código comentado, TODOs
       sin responsable.
-    - *Admisible (`QUALITY-WHY-ONLY`):* Únicamente un *por qué* local, no evidente y contraintuitivo.
+    - *Cero comentarios (`QUALITY-NO-COMMENTS`):* todo por qué vive en el README. Solo Python admite docstrings de responsabilidad.
 - **Convenciones técnicas y anti-patrones prohibidos:** Reglas de widgets (prohibición de widgets adaptativos como
   `Switch.adaptive`, prohibido `await` en capa de presentación, prohibido filtrar o derivar colecciones dentro del árbol
   de widgets).

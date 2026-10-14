@@ -39,14 +39,14 @@ vez de parafrasear la regla.
 
 | ID                          | Regla                                                                                                                                                                                                                                                                                   | Cómo se verifica                                                                                                                     |
 |-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `DOC-README-TRUTH`          | El `README.md` de cada paquete es la fuente de verdad técnica de ese paquete. Un cambio de arquitectura o de decisión de diseño actualiza el README **en el mismo cambio**, no después                                                                                                  | Revisión del cambio                                                                                                                  |
+| `DOC-README-TRUTH`          | El `README.md` de cada paquete es la fuente de verdad de arquitectura, operación y por qué de su implementación; el corpus es la fuente de verdad del comportamiento observable. Un cambio de arquitectura o de decisión de diseño actualiza el README **en el mismo cambio**, no después                                                                                                  | Revisión del cambio                                                                                                                  |
 | `DOC-NO-ORPHAN-DECISION`    | Ninguna decisión de diseño vive solo en el código o solo en un mensaje de commit                                                                                                                                                                                                        | Revisión del cambio                                                                                                                  |
 | `LANG-EN-CODE`              | Todo el código —identificadores, nombres de test, comentarios, mensajes de commit— en inglés                                                                                                                                                                                            | Revisión del cambio                                                                                                                  |
-| `LANG-ES-DOCS`              | `AGENTS.md`, los `README.md`, las skills y los documentos de `docs/` en español                                                                                                                                                                                                         | Revisión del cambio                                                                                                                  |
-| `QUALITY-NO-COMMENTS`       | Prohibido cualquier tipo de comentario en archivos de código. El código se explica con nombres, tipos y funciones pequeñas; el por qué vive en el `README.md`. En Python se admite un *docstring* por módulo, clase y función, que declara la responsabilidad y nunca la implementación | Script de límites del paquete (`tool/check_limits.dart`, `tool/check_limits.py`, `scripts/check-no-comments.mjs`) y su caso negativo |
+| `LANG-ES-DOCS`              | `AGENTS.md`, los `README.md`, las skills, el corpus de especificaciones y los documentos de `docs/` en español                                                                                                                                                                                                         | Revisión del cambio                                                                                                                  |
+| `QUALITY-NO-COMMENTS`       | Prohibido cualquier tipo de comentario en archivos de código. El código se explica con nombres, tipos y funciones pequeñas; el por qué vive en el `README.md`. En Python se admite un *docstring* por módulo, clase y función, que declara la responsabilidad y nunca la implementación | Script de límites del paquete (`tool/check_limits.dart`, `tool/check_limits.py`, `scripts/check-no-comments.mjs`, `rust-checks comments`) y su caso negativo |
 | `QUALITY-NO-NOISE-COMMENTS` | Prohibido el comentario que repite lo que el código ya dice. El código se explica con nombres y funciones pequeñas                                                                                                                                                                      | Revisión del cambio · skill `code-quality`                                                                                           |
 | `QUALITY-NO-DOC-REFS`       | Prohibido citar un documento o una sección desde el código (`// ver AGENTS.md §2`, `// según el README`). Se describe la restricción, nunca dónde está escrita                                                                                                                          | `grep` en revisión                                                                                                                   |
-| `QUALITY-WHY-ONLY`          | Un comentario solo es admisible para un *por qué* no evidente y local. Si el por qué es arquitectónico, va al README                                                                                                                                                                    | Revisión del cambio                                                                                                                  |
+| `QUALITY-WHY-ONLY`          | El por qué, incluso local, se documenta en el README; no habilita comentarios en código                                                                                                                                                                    | Revisión del cambio                                                                                                                  |
 | `LAYER-DIRECTION`           | Una capa solo importa de sí misma o de las capas que el archivo de reglas del paquete le permite. Cero excepciones                                                                                                                                                                      | Test de arquitectura del paquete                                                                                                     |
 | `LAYER-DECLARED`            | Toda carpeta de capa existe declarada en el archivo de reglas del paquete, y toda capa declarada tiene su carpeta                                                                                                                                                                       | Test de arquitectura del paquete                                                                                                     |
 | `SIZE-*`                    | Los límites de tamaño de archivo, función, parámetros, anidación y métodos públicos son los del archivo de reglas del paquete                                                                                                                                                           | Script de límites del paquete                                                                                                        |
@@ -57,6 +57,14 @@ vez de parafrasear la regla.
 | `PHASE-STOP`                | Al cerrar una fase se para y se espera confirmación explícita en un mensaje nuevo. Terminar de describir una fase no es luz verde para la siguiente                                                                                                                                     | Disciplina de trabajo · skill `phase-gate`                                                                                           |
 | `PHASE-GREEN`               | Ninguna fase se da por cerrada sin tests en verde y todos los verificadores del paquete en verde                                                                                                                                                                                        | skill `phase-gate`                                                                                                                   |
 | `CONFLICT-REPORT`           | Ante un conflicto entre fuentes, se reporta a la persona en vez de resolverlo por cuenta propia                                                                                                                                                                                         | Disciplina de trabajo                                                                                                                |
+| `SPEC-BEHAVIOR-TRUTH` | El comportamiento observable del núcleo vive en el corpus de especificaciones | Conformidad desde R1 |
+| `SPEC-FIRST` | Especificación → casos → tests → código; sin motor Rust antes del hito de R3 | Revisión y conformidad |
+| `SPEC-NO-ORPHAN-RULE` | Cada regla tiene casos o propiedades que la cubren | `see validate` desde R1 |
+| `SPEC-BINDING-AS-DATA` | Los vínculos regla–código viven en archivos de conformidad, nunca en código | Revisión |
+| `SPEC-CHANGE-CLASSIFIED` | Todo cambio de especificación declara su clasificación e impacto | `see validate` desde R1 |
+| `SPEC-INDEPENDENT-ORACLE` | Los resultados esperados se derivan de la regla; capturas requieren revisión | Revisión del corpus |
+| `QUALITY-SEMANTIC-NAMES` | En Rust nombres por papel, mínimo tres caracteres salvo id/io/ir/vm/gc/os; sin abreviaturas, relleno ni archivos utils/helpers/common/misc | `rust-checks names` |
+| `QUALITY-NO-PANIC` | En Rust sin unwrap/expect, panic/todo/unimplemented/unreachable, índices inseguros, aritmética implícita ni conversiones numéricas con pérdida | Clippy estricto |
 
 ---
 
@@ -66,8 +74,8 @@ De mayor a menor autoridad:
 
 1. Instrucción directa de la persona en la conversación.
 2. `AGENTS.md` (este documento).
-3. `README.md` del paquete en el que estás trabajando.
-4. La especificación del lenguaje del paquete (`docs/language-spec.md` en el núcleo).
+3. Corpus de especificaciones para comportamiento observable y `README.md` del paquete para arquitectura, operación y por qué; sus ámbitos son disjuntos. Si chocan se reporta una clasificación incorrecta.
+4. La especificación del lenguaje del paquete (`docs/language-spec.md` en el núcleo) mientras su contenido no esté migrado al corpus.
 5. Documentación de terceros consultada.
 
 Dos obligaciones que acompañan a esta lista:
@@ -102,6 +110,12 @@ La skill `code-quality` tiene la lista concreta de lo que se rechaza en revisió
 
 ---
 
+En Rust también se prohíben comentarios de documentación y `#[doc]`, `#[allow]` y `#[expect]`.
+No existe excepción de docstring para Rust. `unsafe` solo se permite en los crates declarados por
+`architecture.yaml`, dentro de funciones breves cuyo nombre expresa el invariante y que tienen una
+fila en la tabla «Invariantes de `unsafe`» de su README. El verificador exige correspondencia en ambos
+sentidos. Los demás crates declaran `#![forbid(unsafe_code)]`.
+
 ## 5. Testing como parte de la arquitectura
 
 - La carpeta de tests refleja la estructura del código, y el test vive junto al comportamiento que
@@ -117,6 +131,11 @@ La skill `code-quality` tiene la lista concreta de lo que se rechaza en revisió
   que cada uno lleva un caso negativo con una violación deliberada.
 
 ---
+
+En Rust, los tests de caja negra viven en `tests/` espejo de `src/`; los internos en archivos hermanos
+`<módulo>_tests.rs`, declarados con `#[cfg(test)]`, nunca en línea. Los casos del corpus no se duplican
+como tests de Rust. Los fixtures de violaciones deliberadas se excluyen del recorrido ordinario y se
+verifican como casos negativos.
 
 ## 6. Principios, como preguntas verificables
 
@@ -177,10 +196,18 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
 
 ## 9. Entorno
 
-- El monorepo sostiene cuatro cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
+- ADR-001: reescritura completa del núcleo en Rust; Dart queda congelado como sujeto `reference`
+  hasta R9. No se añaden construcciones del lenguaje durante la reescritura. Los hallazgos semánticos
+  se resuelven mediante especificaciones y Rust, no modificando el oráculo Dart.
+- Cada fase resuelve sus observaciones pertinentes, informa implementación, pruebas, verificadores y
+  pendientes justificados, y publica su rama con push ordinario comprobado. Sin coautoría ni atribución
+  de autoría de IA en commits. `PHASE-GREEN` incluye CI verde y `PHASE-STOP` exige autorización nueva.
+
+
+- El monorepo sostiene cinco cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
   para el núcleo y la app, `python3` con `fonttools` para el motor de marca, `deno` con la CLI de
   `supabase` para el backend (`apps/pseudolearn_backend`), y `node` con `pnpm` para el frontend web
-  (`apps/fe-pseudolearn`). Todas están en el `PATH`; los comandos se documentan sin rutas absolutas.
+  (`apps/fe-pseudolearn`). La quinta es `cargo` y `rustup` para los verificadores Rust, `pseudolearn_spec`, `pseudolearn_engine`, `pseudolearn_cli` y los puentes. Cada miembro Rust fija la misma versión exacta en `rust-toolchain.toml`; no hay workspace Cargo raíz. Todas están en el `PATH`; los comandos se documentan sin rutas absolutas.
 - `packages/` aloja lo reutilizable que no se despliega, en el lenguaje que a cada miembro le
   corresponda; `apps/` aloja lo que se despliega. El criterio es el papel del miembro, no su lenguaje (`README.md` de la
   raíz §3.1 y §4.5).
