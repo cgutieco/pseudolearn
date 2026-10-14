@@ -159,3 +159,18 @@ o Alta.
 La instrucción de la persona responsable del 2026-10-14 reserva GitHub Actions para despliegues
 productivos y comprobaciones puntuales manuales. D-23 no exige verificaciones automáticas en push/PR.
 E-01 tiene autorización explícita para usar runners remotos y completar su matriz de métricas.
+
+## Evidencia E-02 de R3
+
+La captura final local contiene 12.000 muestras. La representación requiere revisión antes de autorizar R5 (RC-01); no se rediseña durante R3.
+
+| Familia | V1/V0 [IC 95 %] | V2/V1 [IC 95 %] | V3/V2 [IC 95 %] | Revisar antes de R5 |
+|---|---|---|---|---|
+| arrays | 2.3099 [2.1023, 2.7506] | 4.0548 [3.2911, 5.5906] | 0.9946 [0.7455, 1.1965] | Sí |
+| numeric | 1.7158 [1.6864, 1.7382] | 2.0575 [1.9962, 2.1611] | 1.0045 [0.9735, 1.0266] | Sí |
+| objects | 1.1139 [1.0882, 1.1609] | 3.6046 [3.4272, 3.7087] | 1.1092 [1.0992, 1.1232] | Sí |
+| recursive | 2.7728 [2.7524, 2.8071] | 2.5893 [2.5514, 2.6174] | 1.1206 [1.1021, 1.1463] | Sí |
+
+
+La evidencia completa, incluidas las muestras iniciales con instrumentación insuficiente, se conserva en
+`packages/pseudolearn_benchmarks/results/e02/`. El informe declara qué mide el experimento y sus límites.

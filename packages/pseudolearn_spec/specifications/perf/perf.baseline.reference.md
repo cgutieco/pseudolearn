@@ -190,6 +190,7 @@
 
 ## Línea base AWFY-core (nativo, Apple M2)
 
+Los programas se analizan con el perfil español flexible, antes del intervalo medido.
 Los intervalos del 95 % se calculan sobre diez medias de proceso. El calentamiento y los candidatos
 de cambio permanecen en las muestras; no se afirma estacionariedad. La memoria es el máximo
 muestreado del proceso y la CPU su última lectura acumulada, sin atribución por programa.

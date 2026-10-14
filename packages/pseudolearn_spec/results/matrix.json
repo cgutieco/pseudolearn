@@ -1232,7 +1232,7 @@
       }
     ],
     "reason": null,
-    "rule": "PERF.BASELINE.REFERENCE@0.1.0#R1",
+    "rule": "PERF.BASELINE.REFERENCE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1242,7 +1242,17 @@
     "measured": "sin evidencia",
     "measurements": [],
     "reason": null,
-    "rule": "PERF.BASELINE.REFERENCE@0.1.0#R2",
+    "rule": "PERF.BASELINE.REFERENCE@0.2.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.BASELINE.REFERENCE@0.2.0#R3",
     "state": "experimental",
     "subject": "reference"
   }

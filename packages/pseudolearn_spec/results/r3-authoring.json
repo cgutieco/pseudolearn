@@ -14,5 +14,11 @@
   "raw_minutes_per_rule": 0.333,
   "interpretation": "Cota bruta de autoría automatizada que incluye pausas, implementación de see y verificación; no mide tiempo humano ni se usa para inferirlo.",
   "author": "Claude",
-  "human_minutes_measured": null
+  "human_minutes_measured": null,
+  "baseline_publication": {
+    "specification": "PERF.BASELINE.REFERENCE@0.2.0",
+    "added_rules": 1,
+    "final_r3_rules": 130,
+    "automated_timing": "La ventana B1–B2 de este archivo no incluye la recogida de mediciones y su publicación; no se infiere tiempo humano."
+  }
 }

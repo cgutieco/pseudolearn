@@ -1,0 +1,42 @@
+[
+  {
+    "process": 0,
+    "timeMetrics": "real 6.18\nuser 6.02\nsys 0.03\n             9437184  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 749  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 292  involuntary context switches\n        111593012795  instructions retired\n         20669401602  cycles elapsed\n             8552856  peak memory footprint\n"
+  },
+  {
+    "process": 1,
+    "timeMetrics": "real 6.06\nuser 5.99\nsys 0.03\n             9781248  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 769  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 945  involuntary context switches\n        109665868537  instructions retired\n         20304028259  cycles elapsed\n             8880512  peak memory footprint\n"
+  },
+  {
+    "process": 2,
+    "timeMetrics": "real 6.06\nuser 6.02\nsys 0.03\n             9584640  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 757  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 449  involuntary context switches\n        111967904815  instructions retired\n         20647492375  cycles elapsed\n             8700312  peak memory footprint\n"
+  },
+  {
+    "process": 3,
+    "timeMetrics": "real 6.06\nuser 6.02\nsys 0.03\n             9453568  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 749  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 586  involuntary context switches\n        111104848402  instructions retired\n         20452314683  cycles elapsed\n             8569240  peak memory footprint\n"
+  },
+  {
+    "process": 4,
+    "timeMetrics": "real 6.06\nuser 6.01\nsys 0.04\n             9945088  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 780  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1284  involuntary context switches\n        107469951926  instructions retired\n         20061685624  cycles elapsed\n             9077168  peak memory footprint\n"
+  },
+  {
+    "process": 5,
+    "timeMetrics": "real 6.06\nuser 6.02\nsys 0.03\n             9519104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 753  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 342  involuntary context switches\n        111501095414  instructions retired\n         20639816888  cycles elapsed\n             8634776  peak memory footprint\n"
+  },
+  {
+    "process": 6,
+    "timeMetrics": "real 6.06\nuser 6.01\nsys 0.03\n             9568256  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 757  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1175  involuntary context switches\n        110622751985  instructions retired\n         20442021297  cycles elapsed\n             8683928  peak memory footprint\n"
+  },
+  {
+    "process": 7,
+    "timeMetrics": "real 6.06\nuser 6.02\nsys 0.03\n             9519104  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 753  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 416  involuntary context switches\n        111391411389  instructions retired\n         20617642990  cycles elapsed\n             8634776  peak memory footprint\n"
+  },
+  {
+    "process": 8,
+    "timeMetrics": "real 6.12\nuser 6.00\nsys 0.03\n             9617408  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 759  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 607  involuntary context switches\n        110421522186  instructions retired\n         20496124931  cycles elapsed\n             8733080  peak memory footprint\n"
+  },
+  {
+    "process": 9,
+    "timeMetrics": "real 6.06\nuser 6.02\nsys 0.02\n             9682944  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 765  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 679  involuntary context switches\n        110512476915  instructions retired\n         20490102827  cycles elapsed\n             8798616  peak memory footprint\n"
+  }
+]

@@ -1,0 +1,975 @@
+[
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.ANALYZE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.ERRORS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.EXECUTE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.STATE.QUERY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.VERSIONING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "API.WIRE-FORMAT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.CATALOG",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.CLASSES",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.ENGINE.INTERNAL-FAULT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.MESSAGES",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.ORDERING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "DIAG.SEVERITY.POLICY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.EXEC.EFFECT-ORDER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.EXEC.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.INPUT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.LIMITS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.STATE.INCREMENTAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.STATE.SNAPSHOT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.TRACE.EVENTS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "ENG.TRACE.STEP",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.INSTRUCTIONS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.LOWERING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.OBSERVATION-POINTS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.SOURCE-MAP",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.TEXT-FORMAT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "IR.WELL-FORMEDNESS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.ARRAY.ACCESS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.ARRAY.DIMENSION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.CONSTRUCTOR",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.COPY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.DECLARATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.FIELDS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.INHERITANCE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.INSTANTIATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.MEMBER-ACCESS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.METHODS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.OUT-OF-SCOPE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.OVERRIDE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CLASS.SELF-AND-SUPER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CONTROL.FOR",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CONTROL.IF",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CONTROL.REPEAT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CONTROL.SWITCH",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.CONTROL.WHILE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.DECL.DESIGNATOR",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.DECL.UNINITIALIZED",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.DECL.UNUSED",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.DECL.VARIABLE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.EDITION.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.IO.INPUT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.IO.OUTPUT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.IO.VALUE-FORMAT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.CHARACTER-LITERAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.COMMENT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.ERRORS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.IDENTIFIER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.KEYWORD",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.NUMBER-LITERAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.OPERATOR-TOKEN",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.TEXT-LITERAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.LEXICAL.WHITESPACE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.ARITHMETIC",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.COMPARISON",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.CONCATENATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.DIVISION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.LOGICAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.POWER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.OPS.PRECEDENCE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.PROFILE.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.PROFILE.STRICTNESS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.PROFILE.TRANSLATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.PROFILE.VOCABULARY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.PROGRAM.STRUCTURE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SOURCE.ENCODING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SOURCE.POSITION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.STMT.ASSIGNMENT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.STMT.TERMINATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.BY-REFERENCE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.CALL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.DECLARATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.INTERACTIONS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.PARAMETERS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.RECURSION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.RETURN",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SUBPROGRAM.SCOPE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SYNTAX.GRAMMAR",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.SYNTAX.RECOVERY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.ARRAY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.BOOLEAN",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.CHARACTER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.CHECKING-LEVELS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.CLASS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.INFERENCE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.INTEGER",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.REAL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.RELATIONS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LANG.TYPES.TEXT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.CONVERSION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.COPY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.MATH",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.RANDOM",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.ROUNDING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.CORE.TEXT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "LIB.MODEL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "MEM.IDENTITY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "MEM.MANAGED.UNOBSERVABLE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "MEM.VALUE.COPY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.ARTIFACT.SIZE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "ampliacion_candidata"
+    ],
+    "id": "PERF.BASELINE.REFERENCE",
+    "review_required": true
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.FRONTEND.THROUGHPUT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.PROTOCOL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.SUITE.AWFY-CORE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.VM.STEP-LATENCY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "PERF.VM.THROUGHPUT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "RT.HOST.INTERFACE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.ADAPTER.PROTOCOL",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.CHANGE.CLASSIFICATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.CONFORMANCE.FILE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.CONFORMANCE.MATRIX",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.FEATURE-MANIFEST",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.FORMAT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.GENERATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.GRAPH",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.IDENTITY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.IMPACT",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.LIFECYCLE",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.LOCK",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.ORACLE.POLICY",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.VALIDATION",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "SEE.VERSIONING",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.CLI.CHECK",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.CLI.CONVENTIONS",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.CLI.IR",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.CLI.MESSAGES",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.CLI.RUN",
+    "review_required": false
+  },
+  {
+    "classes": [
+      "editorial"
+    ],
+    "id": "TOOL.SERVICE.LOSSLESS-TREE",
+    "review_required": false
+  }
+]

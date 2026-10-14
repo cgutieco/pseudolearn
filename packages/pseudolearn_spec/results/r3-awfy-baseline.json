@@ -1,0 +1,754 @@
+{
+  "capture": {
+    "commit": "53d0622d04ecaa3d49c2c8e2e57a39b901e1dc13",
+    "sourceHashes": {
+      "architecture.yaml": "93fc8c0d39ce4111eec98bba4182489e66c2de35",
+      "bin/awfy_worker.dart": "32cf97668a5bf545c3a019d35547b09d1758f1dd",
+      "bin/worker.dart": "4addfcaa78e30b2911be1da370270814e15fe935",
+      "lib/pseudolearn_benchmarks.dart": "070f9d44049dabf46e9153256fe14ad9d03921f8",
+      "lib/src/execution/analyze.dart": "f25c966f3ab46f641f1344a4988f8165dbd0e50b",
+      "lib/src/execution/counting_observer.dart": "c5f83266b6e319c41a0d1a2ef46a8d0e81ea32eb",
+      "lib/src/execution/measure.dart": "eafd30a756adfe6b2186629c188ddee1bb4832c2",
+      "lib/src/model/run_sample.dart": "aa3a066baded6d904e54bd65c8444db3bbab06bd",
+      "lib/src/model/workload.dart": "1e082666480d8d2c33ccc8a4ed863d579aab9149",
+      "lib/src/suite/annex_workloads.dart": "e8de1525407a1aa91bc705299131960264a1fb0a",
+      "lib/src/suite/awfy_workloads.dart": "7a5ab1732afe014cf6ae25e328e2143a78563026",
+      "lib/src/suite/corpus_workloads.dart": "8be1d530409f4d199bca5293b994791f31dff42d",
+      "pubspec.yaml": "574de0357d5bf7fa95b90f66d2bb5c2400762e23",
+      "tool/change_points.dart": "3a1323b3a3727276870fefc08e69a8e347662192",
+      "tool/check.dart": "4858f0b74dcbcfb182a8dd9eab33bd00fdee67da",
+      "tool/collect.dart": "2f6557f3c6a3f95fd81be402efd09b0f9a94fef7",
+      "tool/collect_awfy.dart": "dcf04699e97e68fc6406e2cdfbf3b3a1fefe5ece",
+      "tool/process_metrics.dart": "1ba5cefeb1831dcadcff062c80d0bbc5170090cc",
+      "tool/statistics.dart": "bee6824f1e0dad91c6f259ef6373a1a85c895bf2",
+      "tool/summarize.dart": "9d46ea0af3d0a29f6d5b40233ae89544e7a7a5f6"
+    },
+    "clockFrequency": 1000000000,
+    "timeUnit": "microseconds",
+    "dirty": false,
+    "dart": "Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700) on \"macos_arm64\"",
+    "node": "v22.23.3",
+    "os": "macos",
+    "osVersion": "Version 27.0.1 (Build 26A434)",
+    "cpuCount": 8,
+    "hardware": "hw.model: Mac14,3\nmachdep.cpu.brand_string: Apple M2\nhw.memsize: 17179869184",
+    "utc": "2026-10-14T22:20:56.430503Z",
+    "processesPerTarget": 10,
+    "iterationsPerWorkloadAndMode": 30,
+    "seed": 42
+  },
+  "samples": 6000,
+  "summary": {
+    "environment": {
+      "commit": "53d0622d04ecaa3d49c2c8e2e57a39b901e1dc13",
+      "sourceHashes": {
+        "architecture.yaml": "93fc8c0d39ce4111eec98bba4182489e66c2de35",
+        "bin/awfy_worker.dart": "32cf97668a5bf545c3a019d35547b09d1758f1dd",
+        "bin/worker.dart": "4addfcaa78e30b2911be1da370270814e15fe935",
+        "lib/pseudolearn_benchmarks.dart": "070f9d44049dabf46e9153256fe14ad9d03921f8",
+        "lib/src/execution/analyze.dart": "f25c966f3ab46f641f1344a4988f8165dbd0e50b",
+        "lib/src/execution/counting_observer.dart": "c5f83266b6e319c41a0d1a2ef46a8d0e81ea32eb",
+        "lib/src/execution/measure.dart": "eafd30a756adfe6b2186629c188ddee1bb4832c2",
+        "lib/src/model/run_sample.dart": "aa3a066baded6d904e54bd65c8444db3bbab06bd",
+        "lib/src/model/workload.dart": "1e082666480d8d2c33ccc8a4ed863d579aab9149",
+        "lib/src/suite/annex_workloads.dart": "e8de1525407a1aa91bc705299131960264a1fb0a",
+        "lib/src/suite/awfy_workloads.dart": "7a5ab1732afe014cf6ae25e328e2143a78563026",
+        "lib/src/suite/corpus_workloads.dart": "8be1d530409f4d199bca5293b994791f31dff42d",
+        "pubspec.yaml": "574de0357d5bf7fa95b90f66d2bb5c2400762e23",
+        "tool/change_points.dart": "3a1323b3a3727276870fefc08e69a8e347662192",
+        "tool/check.dart": "4858f0b74dcbcfb182a8dd9eab33bd00fdee67da",
+        "tool/collect.dart": "2f6557f3c6a3f95fd81be402efd09b0f9a94fef7",
+        "tool/collect_awfy.dart": "dcf04699e97e68fc6406e2cdfbf3b3a1fefe5ece",
+        "tool/process_metrics.dart": "1ba5cefeb1831dcadcff062c80d0bbc5170090cc",
+        "tool/statistics.dart": "bee6824f1e0dad91c6f259ef6373a1a85c895bf2",
+        "tool/summarize.dart": "9d46ea0af3d0a29f6d5b40233ae89544e7a7a5f6"
+      },
+      "clockFrequency": 1000000000,
+      "timeUnit": "microseconds",
+      "dirty": false,
+      "dart": "Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700) on \"macos_arm64\"",
+      "node": "v22.23.3",
+      "os": "macos",
+      "osVersion": "Version 27.0.1 (Build 26A434)",
+      "cpuCount": 8,
+      "hardware": "hw.model: Mac14,3\nmachdep.cpu.brand_string: Apple M2\nhw.memsize: 17179869184",
+      "utc": "2026-10-14T22:20:56.430503Z",
+      "processesPerTarget": 10,
+      "iterationsPerWorkloadAndMode": 30,
+      "seed": 42
+    },
+    "measurements": {
+      "native/sieve/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 11066.413333333334,
+        "confidence95": [
+          10953.390000000001,
+          11185.286666666667
+        ],
+        "nanosecondsPerStep": 86.13335408883354,
+        "microsecondsPerOperation": 5.533206666666667,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/sieve/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 15090.743333333336,
+        "confidence95": [
+          14929.233333333332,
+          15259.703333333333
+        ],
+        "nanosecondsPerStep": 117.45597239518474,
+        "microsecondsPerOperation": 7.545371666666668,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/permute/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 57075.829999999994,
+        "confidence95": [
+          56311.60666666667,
+          57891.78333333334
+        ],
+        "nanosecondsPerStep": 91.61405322285766,
+        "microsecondsPerOperation": 9512.638333333332,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/permute/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 168182.64,
+        "confidence95": [
+          166768.78000000003,
+          169627.91666666666
+        ],
+        "nanosecondsPerStep": 269.9547835243169,
+        "microsecondsPerOperation": 28030.440000000002,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/queens/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 11275.046666666665,
+        "confidence95": [
+          11182.323333333332,
+          11370.51
+        ],
+        "nanosecondsPerStep": 90.49211992798114,
+        "microsecondsPerOperation": 1610.7209523809522,
+        "stationarity": "change_points_detected",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ]
+        },
+        "samplesDiscarded": 0
+      },
+      "native/queens/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 27722.006666666664,
+        "confidence95": [
+          27441.379999999997,
+          28002.90333333334
+        ],
+        "nanosecondsPerStep": 222.493371964547,
+        "microsecondsPerOperation": 3960.2866666666664,
+        "stationarity": "change_points_detected",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [
+            6
+          ],
+          "9": [
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ]
+        },
+        "samplesDiscarded": 0
+      },
+      "native/towers/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 9752.093333333334,
+        "confidence95": [
+          9614.536666666665,
+          9931.023333333333
+        ],
+        "nanosecondsPerStep": 104.8307838942816,
+        "microsecondsPerOperation": 975.2093333333335,
+        "stationarity": "change_points_detected",
+        "changePointCandidatesByProcess": {
+          "0": [
+            17,
+            18,
+            19,
+            20
+          ],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/towers/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 46627.85666666667,
+        "confidence95": [
+          45717.663333333345,
+          47835.24333333333
+        ],
+        "nanosecondsPerStep": 501.22928468795794,
+        "microsecondsPerOperation": 4662.785666666667,
+        "stationarity": "change_points_detected",
+        "changePointCandidatesByProcess": {
+          "0": [
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "7": [],
+          "8": [
+            25
+          ],
+          "9": [
+            24,
+            25
+          ]
+        },
+        "samplesDiscarded": 0
+      },
+      "native/list/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 32396.153333333332,
+        "confidence95": [
+          31710.876666666667,
+          33104.03
+        ],
+        "nanosecondsPerStep": 85.31612411634217,
+        "microsecondsPerOperation": 2699.6794444444445,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/list/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 143025.99333333335,
+        "confidence95": [
+          139590.19,
+          147151.91999999998
+        ],
+        "nanosecondsPerStep": 376.6627251555317,
+        "microsecondsPerOperation": 11918.83277777778,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/storage/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 9206.293333333335,
+        "confidence95": [
+          9103.523333333334,
+          9315.516666666666
+        ],
+        "nanosecondsPerStep": 93.96190340106897,
+        "microsecondsPerOperation": 1534.3822222222225,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/storage/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 26237.916666666668,
+        "confidence95": [
+          25955.68,
+          26573.526666666665
+        ],
+        "nanosecondsPerStep": 267.7912273718518,
+        "microsecondsPerOperation": 4372.986111111111,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/bounce/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 41008.223333333335,
+        "confidence95": [
+          40505.08,
+          41603.816666666666
+        ],
+        "nanosecondsPerStep": 81.06025984157544,
+        "microsecondsPerOperation": 820.1644666666667,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/bounce/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 66637.2,
+        "confidence95": [
+          65373.11,
+          68020.50333333333
+        ],
+        "nanosecondsPerStep": 131.72062352490028,
+        "microsecondsPerOperation": 1332.744,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/mandelbrot/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 164687.05666666667,
+        "confidence95": [
+          162219.51333333334,
+          167311.96666666662
+        ],
+        "nanosecondsPerStep": 76.18866511624965,
+        "microsecondsPerOperation": 5489.568555555556,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/mandelbrot/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 272717.12,
+        "confidence95": [
+          268156.0366666667,
+          277622.17666666664
+        ],
+        "nanosecondsPerStep": 126.16628014187842,
+        "microsecondsPerOperation": 9090.570666666667,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/nbody/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 21293.676666666666,
+        "confidence95": [
+          21060.659999999996,
+          21568.29
+        ],
+        "nanosecondsPerStep": 91.44018837405706,
+        "microsecondsPerOperation": 212.93676666666667,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/nbody/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 30598.39666666666,
+        "confidence95": [
+          30265.746666666666,
+          31029.77
+        ],
+        "nanosecondsPerStep": 131.39690242052072,
+        "microsecondsPerOperation": 305.9839666666666,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/richards/false": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 170130.02666666667,
+        "confidence95": [
+          168102.85333333333,
+          172965.91999999998
+        ],
+        "nanosecondsPerStep": 88.38699432140623,
+        "microsecondsPerOperation": 170.13002666666668,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      },
+      "native/richards/true": {
+        "processes": 10,
+        "samples": 300,
+        "meanWallMicroseconds": 346444.2266666667,
+        "confidence95": [
+          343200.1533333334,
+          350629.1433333333
+        ],
+        "nanosecondsPerStep": 179.98682828085515,
+        "microsecondsPerOperation": 346.4442266666667,
+        "stationarity": "not_proven",
+        "changePointCandidatesByProcess": {
+          "0": [],
+          "1": [],
+          "2": [],
+          "3": [],
+          "4": [],
+          "5": [],
+          "6": [],
+          "7": [],
+          "8": [],
+          "9": []
+        },
+        "samplesDiscarded": 0
+      }
+    },
+    "observationRatios": {
+      "native/arrays": {
+        "geometricMeanRatio": 1.8310282889239322,
+        "confidence95": [
+          1.8261783535330813,
+          1.8365270771383133
+        ]
+      },
+      "native/recursive": {
+        "geometricMeanRatio": 2.9471389864466886,
+        "confidence95": [
+          2.907291258646027,
+          2.9790722420468967
+        ]
+      },
+      "native/objects": {
+        "geometricMeanRatio": 2.882177749478719,
+        "confidence95": [
+          2.8692634175039515,
+          2.8976831327269617
+        ]
+      },
+      "native/numeric": {
+        "geometricMeanRatio": 1.542488276276782,
+        "confidence95": [
+          1.5364715877902106,
+          1.5486535107260075
+        ]
+      }
+    },
+    "limitations": [
+      "Local frequency and external load are uncontrolled",
+      "All samples retained; stationarity is not proven",
+      "Stopwatch durations use microseconds; sub-resolution samples are retained"
+    ]
+  },
+  "process_metrics": [
+    {
+      "target": "native",
+      "process": 0,
+      "peakRssSampledBytes": 68026368,
+      "lastCpuSampleSeconds": 50.03,
+      "metricSamples": 868
+    },
+    {
+      "target": "native",
+      "process": 1,
+      "peakRssSampledBytes": 84606976,
+      "lastCpuSampleSeconds": 49.4,
+      "metricSamples": 856
+    },
+    {
+      "target": "native",
+      "process": 2,
+      "peakRssSampledBytes": 74301440,
+      "lastCpuSampleSeconds": 49.87,
+      "metricSamples": 863
+    },
+    {
+      "target": "native",
+      "process": 3,
+      "peakRssSampledBytes": 84770816,
+      "lastCpuSampleSeconds": 49.52,
+      "metricSamples": 858
+    },
+    {
+      "target": "native",
+      "process": 4,
+      "peakRssSampledBytes": 83509248,
+      "lastCpuSampleSeconds": 49.4,
+      "metricSamples": 854
+    },
+    {
+      "target": "native",
+      "process": 5,
+      "peakRssSampledBytes": 84312064,
+      "lastCpuSampleSeconds": 50.16,
+      "metricSamples": 866
+    },
+    {
+      "target": "native",
+      "process": 6,
+      "peakRssSampledBytes": 83902464,
+      "lastCpuSampleSeconds": 49.5,
+      "metricSamples": 855
+    },
+    {
+      "target": "native",
+      "process": 7,
+      "peakRssSampledBytes": 84803584,
+      "lastCpuSampleSeconds": 50.14,
+      "metricSamples": 865
+    },
+    {
+      "target": "native",
+      "process": 8,
+      "peakRssSampledBytes": 84262912,
+      "lastCpuSampleSeconds": 50.81,
+      "metricSamples": 879
+    },
+    {
+      "target": "native",
+      "process": 9,
+      "peakRssSampledBytes": 70336512,
+      "lastCpuSampleSeconds": 50.64,
+      "metricSamples": 880
+    }
+  ]
+}

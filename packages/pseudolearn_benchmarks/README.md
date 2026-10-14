@@ -38,7 +38,7 @@ No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del r
 
 Las reglas están en `architecture.yaml`; tests reflejan `lib/src` y `tool`.
 El cargador de corpus devuelve un fallo como valor ante exportación inválida y no copia programas.
-Cada proceso analiza las cargas antes de medir; cada repetición crea un intérprete nuevo.
+Cada proceso analiza las cargas con el perfil español flexible antes de medir; cada repetición crea un intérprete nuevo.
 La observación recibe instantáneas y cuenta eventos sin conservarlos. Se valida terminación y salida
 en ambas configuraciones antes de aceptar la muestra. Un fallo retorna un resultado, no escapa.
 El worker es secuencial, con semilla fija, sin I/O dentro del intervalo medido.
