@@ -44,7 +44,7 @@ final class ReferenceProtocol {
       'protocol': 'see-protocol/1',
       'subject': 'reference',
       'subject_version': subjectVersion,
-      'capabilities': ['analyze', 'execute'],
+      'capabilities': ['analyze', 'execute', 'observe'],
       'profiles': ['es', 'en'],
       'strictness': ['strict', 'flexible'],
     };

@@ -122,7 +122,7 @@ salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, 
 
 ### Hallazgos del sujeto reference
 
-Identidades permanentes de evidencia, independientes de la investigación transitoria. Los esperados son normativos; las exenciones solo afectan al sujeto congelado y se resuelven en R4. La matriz mide los casos declarados, no una demostración universal del contrato.
+Identidades permanentes de evidencia, independientes de la investigación transitoria. Los esperados son normativos; las exenciones solo afectan al sujeto congelado y se resuelven en la fase indicada: R4 para el análisis y R5 para la observación de la ejecución. La evidencia del primer contraste de R3 está en results/r3-first-reference.json y su clasificación en results/r3-findings.json. La matriz mide los casos declarados, no una demostración universal del contrato.
 
 | Hallazgo | Diferencia observable | Resolución |
 |---|---|---|
@@ -139,6 +139,10 @@ Identidades permanentes de evidencia, independientes de la investigación transi
 | REF-STRICT-INFERENCE | Emite inferredVariableType en estricto después del error de declaración; la inferencia informativa pertenece al modo flexible. | R4 |
 | REF-STRUCTURAL-RECOVERY | Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. | R4 |
 | REF-UNCLOSED-BLOCK-CASCADE | Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. | R4 |
+| REF-OUTPUT-FRAGMENTS | Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. | R5 |
+| REF-INPUT-REQUEST-EVENT | No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. | R5 |
+| REF-SWITCH-NO-BRANCH | Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. | R5 |
+| REF-RETURN-EXIT | La sentencia Retornar no produce statement_exited antes del evento return de su llamada. | R5 |
 | REF-UNICODE-CHARACTER | Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. | R4 |
 
 ## 5. Reglas de legibilidad, estilo y estructura de código

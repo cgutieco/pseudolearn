@@ -80,9 +80,9 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 20,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.MODEL@0.1.0#R1",
@@ -90,7 +90,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -100,9 +100,9 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.MODEL@0.1.0#R3",
@@ -110,7 +110,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 8,
     "measured": "cumple",
     "measurements": [],
@@ -120,7 +120,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 8,
     "measured": "cumple",
     "measurements": [],
@@ -130,7 +130,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -140,7 +140,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 8,
     "measured": "cumple",
     "measurements": [],
@@ -150,59 +150,59 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "exento",
     "cases": 4,
-    "measured": "pendiente",
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
+    "reason": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado.",
     "rule": "ENG.TRACE.EVENTS@0.1.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "exento",
     "cases": 8,
-    "measured": "pendiente",
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
+    "reason": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado.",
     "rule": "ENG.TRACE.EVENTS@0.1.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "exento",
     "cases": 4,
-    "measured": "pendiente",
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
+    "reason": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. Resolución en R5; reference permanece congelado.",
     "rule": "ENG.TRACE.EVENTS@0.1.0#R3",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "exento",
     "cases": 24,
-    "measured": "pendiente",
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
+    "reason": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-SWITCH-NO-BRANCH: Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. Resolución en R5; reference permanece congelado.",
     "rule": "ENG.TRACE.EVENTS@0.1.0#R4",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "exento",
     "cases": 8,
-    "measured": "pendiente",
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
+    "reason": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-RETURN-EXIT: La sentencia Retornar no produce statement_exited antes del evento return de su llamada. Resolución en R5; reference permanece congelado.",
     "rule": "ENG.TRACE.EVENTS@0.1.0#R5",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
-    "measured": "pendiente",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R6",
@@ -1110,9 +1110,9 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
-    "measured": "pendiente",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "MEM.IDENTITY@0.1.0#R1",
@@ -1130,7 +1130,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -1140,7 +1140,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -1150,7 +1150,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -1160,7 +1160,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -1170,7 +1170,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -1180,7 +1180,7 @@
     "subject": "reference"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],

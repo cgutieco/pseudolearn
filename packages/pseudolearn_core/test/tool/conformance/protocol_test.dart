@@ -32,7 +32,7 @@ void main() {
         protocol.handle({'kind': 'hello', 'protocol': 'see-protocol/1'});
     expect(hello['subject'], 'reference');
     expect(hello['subject_version'], '0.1.0');
-    expect(hello['capabilities'], ['analyze', 'execute']);
+    expect(hello['capabilities'], ['analyze', 'execute', 'observe']);
     expect(
         () => protocol.handle(request('unknown', '')), throwsFormatException);
     expect(() => protocol.handle(request('analyze', '', profile: 'unknown')),
@@ -101,7 +101,7 @@ void main() {
     invalid['limits'] = {'micro_steps': 0};
     expect(() => protocol.handle(invalid), throwsFormatException);
     invalid['limits'] = {'micro_steps': 10};
-    invalid['observe'] = 'events';
+    invalid['observe'] = 'everything';
     expect(() => protocol.handle(invalid), throwsFormatException);
   });
 }

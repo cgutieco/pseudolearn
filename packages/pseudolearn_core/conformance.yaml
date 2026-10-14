@@ -9,6 +9,9 @@
     "DIAG.MODEL",
     "DIAG.ORDERING",
     "DIAG.SEVERITY.POLICY",
+    "ENG.EXEC.MODEL",
+    "ENG.INPUT",
+    "ENG.TRACE.EVENTS",
     "LANG.ARRAY.ACCESS",
     "LANG.ARRAY.DIMENSION",
     "LANG.CLASS.CONSTRUCTOR",
@@ -86,7 +89,9 @@
     "LIB.CORE.RANDOM",
     "LIB.CORE.ROUNDING",
     "LIB.CORE.TEXT",
-    "LIB.MODEL"
+    "LIB.MODEL",
+    "MEM.IDENTITY",
+    "MEM.VALUE.COPY"
   ],
   "fases_cerradas": [
     "R0",
@@ -135,6 +140,76 @@
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-FLEXIBLE-INITIALIZATION: No emite la advertencia estática de lectura sin inicializar en flexible, aunque la política la declara. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-SWITCH-NO-BRANCH: Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-RETURN-EXIT: La sentencia Retornar no produce statement_exited antes del evento return de su llamada. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
     },
     {
       "regla": "LANG.ARRAY.ACCESS@0.1.0#R1",
@@ -604,6 +679,41 @@
     },
     {
       "regla": "LIB.MODEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

@@ -316,9 +316,21 @@ El procesamiento de un programa en `pseudolearn_core` sigue un ciclo estrictamen
 `tool/conformance/` separa protocolo, análisis, ejecución y serialización. El nombre del sujeto es
 `reference` y su versión se lee del `pubspec.yaml`. No se ejecutan fases semánticas sobre sintaxis con
 errores. El resultado de tipos ya incluye diagnósticos de resolución; el adaptador transmite esa lista una vez, sin deduplicarla. Un observador de la API pública conserva diagnósticos de ejecución, incluidos reintentos de entrada, sin alterar el motor. La respuesta conserva presencia real del árbol, multiplicidad, clase, severidad, tramos,
-tramos relacionados y argumentos de diagnósticos. `analyze` y `execute` son las capacidades anunciadas.
+tramos relacionados y argumentos de diagnósticos. `analyze`, `execute` y `observe` son las capacidades anunciadas.
 La ejecución admite entradas, semilla y un límite de micro-pasos propio del adaptador; devuelve
-`completed`, `failed`, `awaiting_input` o `limit_reached`. No anuncia observación de memoria o eventos.
+`completed`, `failed`, `awaiting_input`, `cancelled` o `limit_reached`. Un único observador de la API
+pública (`host_observer.dart`) consume en orden todos los eventos del intérprete, incluidos los que solo
+llegan al observador, como la entrada aceptada. Actúa como anfitrión: cuenta entradas a sentencia para
+aplicar la cancelación y el presupuesto de sentencias en la entrada exacta, sin entregar los efectos
+posteriores. Los límites de profundidad y de celdas no tienen equivalente público y se ignoran; el
+sujeto conserva su propio tope de recursión.
+Con `observe = events`, `trace_recorder.dart` traduce cada evento público al alfabeto de
+`ENG.TRACE.EVENTS` sin fusionarlos ni completarlos: la línea sale del mapa nodo → tramo que construye
+`source_lines.dart` recorriendo el árbol con `getChildNodes`. `state_view.dart` convierte la instantánea
+pública más reciente en la vista de `ENG.STATE.SNAPSHOT` para `state_at`, con la identidad de
+`ObjectInstance` como referencia. Las diferencias del sujeto (salida fragmentada, sin petición de
+entrada, rama negativa en Segun sin coincidencia y Retornar sin salida de sentencia) se conservan y se
+clasifican como hallazgos en `conformance.yaml`.
 `conformance.yaml` contiene vínculos y exenciones justificadas; los casos y oráculos viven en el corpus.
 **Descartado:** corregir el motor congelado o filtrar diagnósticos para hacer pasar el piloto.
 Los errores de petición se devuelven por JSON y no detienen la sesión; la salida estándar queda

@@ -3134,19 +3134,16 @@
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "limit_reached",
+          "limit": "statements"
         },
         "tree": true
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: limite",
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "limite": "sentencias",
         "salida": "1\n2\n",
@@ -3156,26 +3153,23 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "limit_reached",
+          "limit": "statements"
         },
         "tree": true
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: limite",
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "limite": "sentencias",
         "salida": "1\n2\n",
@@ -3185,26 +3179,23 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "limit_reached",
+          "limit": "statements"
         },
         "tree": true
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: limite",
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "limite": "sentencias",
         "salida": "1\n2\n",
@@ -3214,26 +3205,23 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "limit_reached",
+          "limit": "statements"
         },
         "tree": true
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: limite",
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "limite": "sentencias",
         "salida": "1\n2\n",
@@ -3243,25 +3231,22 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C5",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "1\n2\n",
         "terminacion": "cancelled"
@@ -3270,25 +3255,22 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C5",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "1\n2\n",
         "terminacion": "cancelled"
@@ -3297,25 +3279,22 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C5",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "1\n2\n",
         "terminacion": "cancelled"
@@ -3324,25 +3303,22 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "1\n2\n",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C5",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "1\n2\n",
         "terminacion": "cancelled"
@@ -3351,7 +3327,7 @@
       "rule": "R1",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -3454,18 +3430,15 @@
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C7",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "",
         "terminacion": "cancelled"
@@ -3474,25 +3447,22 @@
       "rule": "R3",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C7",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "",
         "terminacion": "cancelled"
@@ -3501,25 +3471,22 @@
       "rule": "R3",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C7",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "",
         "terminacion": "cancelled"
@@ -3528,25 +3495,22 @@
       "rule": "R3",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "diagnostics": [],
         "events": [],
         "kind": "execute",
-        "output": "1\n2\n3\n",
+        "output": "",
         "states": [],
         "termination": {
-          "kind": "completed"
+          "kind": "cancelled"
         },
         "tree": true
       },
       "case": "C7",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: terminacion"
-      ],
+      "differences": [],
       "expected": {
         "salida": "",
         "terminacion": "cancelled"
@@ -3555,7 +3519,7 @@
       "rule": "R3",
       "specification": "ENG.EXEC.MODEL",
       "strictness": "flexible",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -4542,10 +4506,45 @@
       "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4572,13 +4571,48 @@
       "rule": "R1",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4605,13 +4639,48 @@
       "rule": "R1",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4638,13 +4707,48 @@
       "rule": "R1",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4671,13 +4775,75 @@
       "rule": "R1",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "input_received",
+            "data": {
+              "texto": "4"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "4"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C2",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4731,13 +4897,75 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "input_received",
+            "data": {
+              "texto": "4"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "4"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C2",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4791,13 +5019,75 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "input_received",
+            "data": {
+              "texto": "4"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "4"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C2",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4851,13 +5141,75 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "input_received",
+            "data": {
+              "texto": "4"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "4"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C2",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -4911,14 +5263,74 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "divisionByZero",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 15,
+                "line": 4
+              },
+              "start": {
+                "column": 12,
+                "line": 4
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "failure",
+            "data": {
+              "codigo": "divisionByZero"
+            },
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "divisionByZero",
+          "kind": "failed"
+        },
+        "tree": true
+      },
       "case": "C3",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -4958,14 +5370,74 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "divisionByZero",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 15,
+                "line": 4
+              },
+              "start": {
+                "column": 12,
+                "line": 4
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "failure",
+            "data": {
+              "codigo": "divisionByZero"
+            },
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "divisionByZero",
+          "kind": "failed"
+        },
+        "tree": true
+      },
       "case": "C3",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5005,14 +5477,74 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "divisionByZero",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "failure",
+            "data": {
+              "codigo": "divisionByZero"
+            },
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "divisionByZero",
+          "kind": "failed"
+        },
+        "tree": true
+      },
       "case": "C3",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5052,14 +5584,74 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "divisionByZero",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "failure",
+            "data": {
+              "codigo": "divisionByZero"
+            },
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "divisionByZero",
+          "kind": "failed"
+        },
+        "tree": true
+      },
       "case": "C3",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5099,13 +5691,39 @@
       "rule": "R2",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "awaiting_input"
+        },
+        "tree": true
+      },
       "case": "C4",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5133,13 +5751,39 @@
       "rule": "R3",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "awaiting_input"
+        },
+        "tree": true
+      },
       "case": "C4",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5167,13 +5811,39 @@
       "rule": "R3",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "awaiting_input"
+        },
+        "tree": true
+      },
       "case": "C4",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5201,13 +5871,39 @@
       "rule": "R3",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "awaiting_input"
+        },
+        "tree": true
+      },
       "case": "C4",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5235,13 +5931,65 @@
       "rule": "R3",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C5",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5283,13 +6031,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C5",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5331,13 +6131,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C5",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5379,13 +6231,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C5",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5427,14 +6331,77 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C6",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5491,14 +6458,77 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C6",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5555,14 +6585,77 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C6",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5619,14 +6712,77 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C6",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5683,14 +6839,57 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C7",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5731,14 +6930,57 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C7",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5779,14 +7021,57 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C7",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5827,14 +7112,57 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C7",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -5875,13 +7203,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C8",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5923,13 +7303,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C8",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -5971,13 +7403,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C8",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6019,13 +7503,65 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "afirmativa"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C8",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6067,13 +7603,66 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "2"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C9",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6116,13 +7705,66 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "2"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C9",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6165,13 +7807,66 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "2"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C9",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6214,13 +7909,66 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "2"
+            },
+            "line": 4
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 4
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C9",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6263,13 +8011,41 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C10",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6296,13 +8072,41 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C10",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6329,13 +8133,41 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C10",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6362,13 +8194,41 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "decision",
+            "data": {
+              "rama": "negativa"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C10",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6395,13 +8255,72 @@
       "rule": "R4",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C11",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6450,13 +8369,72 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C11",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6505,13 +8483,72 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C11",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6560,13 +8597,72 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "1"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C11",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6615,13 +8711,67 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "5"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "5\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C12",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6670,13 +8820,67 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "5"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "5\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C12",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6725,13 +8929,67 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "5"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "5\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C12",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6780,13 +9038,67 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "call",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "return",
+            "data": {
+              "nombre": "f"
+            },
+            "line": 5
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "5"
+            },
+            "line": 2
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "\n"
+            },
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          }
+        ],
+        "kind": "execute",
+        "output": "5\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C12",
       "differences": [
-        "Observation capability unavailable"
+        "Mismatch: eventos"
       ],
       "expected": {
         "eventos": [
@@ -6835,14 +9147,50 @@
       "rule": "R5",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "incumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "Verdadero"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "Verdadero",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C13",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -6876,14 +9224,50 @@
       "rule": "R6",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "Verdadero"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "Verdadero",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C13",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -6917,14 +9301,50 @@
       "rule": "R6",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "true"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "true",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C13",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -6958,14 +9378,50 @@
       "rule": "R6",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 2
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 3
+          },
+          {
+            "class": "output",
+            "data": {
+              "texto": "true"
+            },
+            "line": 3
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 3
+          }
+        ],
+        "kind": "execute",
+        "output": "true",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C13",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "eventos": [
           {
@@ -6999,7 +9455,7 @@
       "rule": "R6",
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -49185,11 +51641,122 @@
       "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 5
+              },
+              "start": {
+                "column": 9,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 5
+              },
+              "start": {
+                "column": 12,
+                "line": 5
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 7
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 7
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "state_at": {
+          "marcos": [
+            {
+              "unidad": "P",
+              "variables": {
+                "a": {
+                  "ref": 1
+                },
+                "b": {
+                  "ref": 2
+                }
+              }
+            }
+          ],
+          "objetos": {
+            "1": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            },
+            "2": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            }
+          }
+        },
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "estado_en": {
           "estado": {
@@ -49234,14 +51801,125 @@
       "rule": "R1",
       "specification": "MEM.IDENTITY",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 5
+              },
+              "start": {
+                "column": 9,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 5
+              },
+              "start": {
+                "column": 12,
+                "line": 5
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 7
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 7
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "state_at": {
+          "marcos": [
+            {
+              "unidad": "P",
+              "variables": {
+                "a": {
+                  "ref": 1
+                },
+                "b": {
+                  "ref": 2
+                }
+              }
+            }
+          ],
+          "objetos": {
+            "1": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            },
+            "2": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            }
+          }
+        },
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "estado_en": {
           "estado": {
@@ -49286,14 +51964,125 @@
       "rule": "R1",
       "specification": "MEM.IDENTITY",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 5
+              },
+              "start": {
+                "column": 8,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 5
+              },
+              "start": {
+                "column": 11,
+                "line": 5
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 7
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 7
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "state_at": {
+          "marcos": [
+            {
+              "unidad": "P",
+              "variables": {
+                "a": {
+                  "ref": 1
+                },
+                "b": {
+                  "ref": 2
+                }
+              }
+            }
+          ],
+          "objetos": {
+            "1": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            },
+            "2": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            }
+          }
+        },
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "estado_en": {
           "estado": {
@@ -49338,14 +52127,125 @@
       "rule": "R1",
       "specification": "MEM.IDENTITY",
       "strictness": "estricto",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "actual": null,
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 5
+              },
+              "start": {
+                "column": 8,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 5
+              },
+              "start": {
+                "column": 11,
+                "line": 5
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 5
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 6
+          },
+          {
+            "class": "statement_entered",
+            "data": {},
+            "line": 7
+          },
+          {
+            "class": "statement_exited",
+            "data": {},
+            "line": 7
+          }
+        ],
+        "kind": "execute",
+        "output": "",
+        "state_at": {
+          "marcos": [
+            {
+              "unidad": "P",
+              "variables": {
+                "a": {
+                  "ref": 1
+                },
+                "b": {
+                  "ref": 2
+                }
+              }
+            }
+          ],
+          "objetos": {
+            "1": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            },
+            "2": {
+              "campos": {
+                "valor": {
+                  "sin_valor": true
+                }
+              },
+              "clase": "C"
+            }
+          }
+        },
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
       "case": "C1",
-      "differences": [
-        "Observation capability unavailable"
-      ],
+      "differences": [],
       "expected": {
         "estado_en": {
           "estado": {
@@ -49390,7 +52290,7 @@
       "rule": "R1",
       "specification": "MEM.IDENTITY",
       "strictness": "flexible",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
       "actual": {
