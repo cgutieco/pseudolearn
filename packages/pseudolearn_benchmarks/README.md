@@ -74,7 +74,8 @@ Tests de cargas, análisis inválido, programa vacío, entrada requerida, límit
 incorrecta. El recolector rechaza falta de muestras, objetivos fallidos y métricas ausentes.
 `tool/check.dart` verifica comentarios, capas y límites; cada regla tiene caso negativo.
 CI ejecuta tests y mediciones en macOS arm64, Linux x64 y Windows x64, sin umbral de tiempo.
-Pendiente declarado: evidencia de CI completa y análisis formal de estabilidad para R3.
+Pendiente operativo de R0: GitHub Actions bloquea nuevas ejecuciones por facturación/límite de gasto;
+falta confirmar CI completa y las mediciones remotas. El protocolo normativo se publica en R3.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

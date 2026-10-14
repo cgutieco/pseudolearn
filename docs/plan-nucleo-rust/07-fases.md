@@ -54,11 +54,11 @@ R0 Fundación
   - [x] Aplicar los cambios de reglas aprobados ([08](08-decisiones-riesgos-y-cambios-de-reglas.md) §3):
      `AGENTS.md` (§2, §3, §8, §9), `README.md` raíz (§1.3, §2, §3), skills.
   - [x] Instalar la cadena Rust y fijarla.
-  - [ ] Crear `packages/pseudolearn_rust_checks` con sus verificadores y un caso negativo por verificador.
-  - [ ] **CI** (D-23) que ejecute los verificadores de los cinco miembros actuales y de los nuevos.
+  - [x] Crear `packages/pseudolearn_rust_checks` con sus verificadores y un caso negativo por verificador.
+  - [x] **CI** (D-23) que ejecute los verificadores de los cinco miembros actuales y de los nuevos.
   - [x] Congelar `packages/pseudolearn_core`: se declara en su `README.md` como sujeto `reference`.
 - **Criterios de aceptación.**
-  - [ ] La CI falla ante una violación deliberada en cada verificador de `pseudolearn_rust_checks`
+  - [x] La CI falla ante una violación deliberada en cada verificador de `pseudolearn_rust_checks`
      (comentario, nombre corto, abreviatura, función larga, `unwrap`, dependencia no declarada,
      `unsafe` sin fila).
   - [ ] La CI ejecuta los verificadores de todos los miembros existentes en cada cambio.
@@ -341,3 +341,95 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 | R6   | E-NR1 (nuevo): Cranelift frente a LLVM        | ¿Alcanza Cranelift el nivel de D-07?                            | [08](08-decisiones-riesgos-y-cambios-de-reglas.md) §1 |
 | R7   | E-09, E-20                                    | Calidad del autocompletado; arranque y latencia                | [16](../16-experimentos-y-benchmarks.md) |
 | R8   | E-NR2 (nuevo): coste de observar a través de FFI | ¿Lotes de eventos y consulta por referencia bastan?          | [08](08-decisiones-riesgos-y-cambios-de-reglas.md) §1 |
+
+
+## 5. Informe de ejecución R0 · 2026-10-14
+
+**Estado: abierta por verificación remota bloqueada.** Implementación y evidencia local publicadas en
+`origin/feature/agregar-ruta-de-especificacion`. R1 no está autorizada ni iniciada.
+
+### Implementación
+
+- Seguimiento con casillas y contrato de cierre, observaciones y push sin coautoría.
+- ADR-001 y decisiones de R0 aprobadas; reglas y skills alineadas; núcleo Dart congelado como `reference`.
+- Rust 1.99.0 fijado, Clippy y rustfmt instalados, cargo-deny 0.20.2; workspace por crates para reglas,
+  fuentes, verificadores, CLI y tooling. Comandos `layers`, `comments`, `names`, `limits`, `unsafe`,
+  `attributes`, `all` y comprobación de versiones de cadena.
+- CI en cada push y PR para todos los miembros, con mediciones E-01 en tres sistemas operativos.
+- Arnés independiente con suma, Fibonacci, burbuja, objetos, Sieve y Permute; seis cargas por modo,
+  diez procesos por objetivo y treinta repeticiones. Datos locales: 10.800 muestras únicas,
+  30 procesos y 36 grupos. Resultados y entorno en `packages/pseudolearn_benchmarks/results/macos-local/`.
+
+### Pruebas
+
+| Miembro o suite | Resultado local |
+|---|---|
+| Núcleo Dart | 772 tests en verde |
+| App Flutter | 1.948 tests en verde |
+| Marca | 88 tests en verde |
+| Backend | 71 tests en verde |
+| Frontend, unidad y componentes | 198 tests en verde |
+| Frontend, e2e/accesibilidad/visual | 60 tests en verde |
+| Verificadores Rust | 39 tests en verde, incluidos casos negativos |
+| Arnés E-01 | 23 tests en verde |
+
+### Verificadores
+
+- Núcleo: análisis estricto y `check_limits.dart`, en verde.
+- App: análisis estricto, límites, contenido y sistema de diseño, en verde local.
+- Marca: comprobación de artefactos y límites, en verde.
+- Backend: formato, lint, tipos, arquitectura y tests, en verde.
+- Frontend: `check:all` y las tres suites Playwright, en verde.
+- Rust: `cargo xtask verify`, en verde; incluye formato, Clippy, tests, los seis verificadores,
+  anclaje de versiones y auditoría de avisos/licencias/duplicados/fuentes. Ningún aviso ignorado.
+- Arnés: formato, análisis estricto, límites, comentarios y capas, en verde.
+
+### Observaciones y resolución
+
+- La auditoría rechazó `unsafe-libyaml` sin mantenimiento. Se sustituyó su cadena por serde-saphyr 2;
+  se conservó la prohibición de avisos ignorados y de versiones duplicadas.
+- Las firmas heredadas de traits externos no se pueden renombrar: los nombres impuestos por el
+  contrato no son declaraciones propias. Sus bindings y genéricos sí se verifican.
+- Se añadieron pruebas para atributos condicionales, declaraciones, aliases y `unsafe` en traits y
+  bloques extranjeros para cerrar los huecos detectados durante la revisión.
+- Playwright no tenía Chromium instalado; se instaló. Cuatro referencias de inicio y versiones no
+  reflejaban el contenido actual: se inspeccionaron, actualizaron y verificaron sin ampliar tolerancia.
+- La primera CI ejecutó todos los miembros y verificó Rust, núcleo, marca, backend y web. Flutter
+  informó **1.772 tests pasados y 176 goldens fallidos** en macOS 26. El entorno local macOS 27 pasa
+  los 1.948. El workflow usa ahora `xcode-27`, con macOS 27.0.1, para conservar comparación exacta;
+  esta corrección queda **pendiente de confirmación remota**, sin cambiar los goldens de Flutter.
+- E-01 conserva todas las muestras: 13 de los 36 grupos locales tienen candidatos de puntos de
+  cambio. No se declara estabilidad demostrada ni se eliminan muestras. RSS es pico muestreado y CPU
+  la última lectura acumulada del proceso; los runners compartidos no controlan frecuencia ni carga.
+- La recolección local empezó antes de los commits de la implementación y registra `dirty: true`;
+  se conserva esa procedencia real. El recolector captura ahora procedencia antes de compilar, y el
+  resumen puede recalcularse sobre datos crudos sin cambiar mediciones.
+
+### Pendientes y publicación
+
+| Pendiente | Motivo | Fase | Condición de resolución |
+|---|---|---|---|
+| Confirmar CI completa y goldens en `xcode-27` | GitHub no inicia jobs por pagos fallidos o límite de gasto | R0 | Resolver Billing & plans y ejecutar el workflow publicado |
+| Completar evidencia E-01 Linux/Windows | Facturación bloqueada; la ejecución anterior conserva datos parciales y macOS completo | R0 | Completar los jobs pendientes y conservar sus artefactos |
+| Publicar el protocolo y `PERF.BASELINE.REFERENCE` | Requiere corpus y contratos de rendimiento | R3 | R2 completada y R3 autorizada |
+
+La segunda [ejecución de CI](https://github.com/cgutieco/pseudolearn/actions/runs/38518422512)
+terminó sin iniciar ningún job. La anotación de GitHub indica que los pagos recientes de la cuenta
+fallaron o que debe aumentarse el límite de gasto; remite a **Billing & plans**. No se modificó la
+facturación ni se relajaron verificadores. La casilla de fase y E-01 permanecen abiertas.
+
+La [primera ejecución](https://github.com/cgutieco/pseudolearn/actions/runs/38517204290) conserva el
+resultado del intento inicial. Los commits de implementación y correcciones están publicados por push
+ordinario en la rama indicada, sin trailers de coautoría ni atribución de autoría a IA. El cierre
+requiere también igualdad de HEAD local/remoto y CI verde tras publicar el informe definitivo.
+
+Se preservan también los artefactos de la CI cancelada en
+`packages/pseudolearn_benchmarks/results/ci-initial-cancelled/`, con un manifiesto de captura.
+macOS conserva los tres objetivos completos; Linux y Windows son parciales. El conjunto no
+completa la matriz de E-01:
+
+| Runner | Muestras | Procesos | Completo |
+|---|---:|---:|---|
+| macos-26 | 10800 | 30 | Sí |
+| ubuntu-24.04 | 6480 | 18 | No |
+| windows-2025 | 3960 | 11 | No |
