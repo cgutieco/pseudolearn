@@ -1,7 +1,7 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0, R1 y R2 completadas; R3–R9 pendientes de autorización individual. R3 tiene plan
-> ejecutable en [09](09-plan-r3-motor-clepsidra.md). Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0, R1, R2 y R3 completadas; R4–R9 pendientes de autorización individual. R3 tiene evidencia de cierre en §9 y plan
+> ejecutado en [09](09-plan-r3-motor-clepsidra.md). Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -137,33 +137,33 @@ R0 Fundación
 > aquí y un paso del plan 09 parecieran contradecirse, se reporta (`CONFLICT-REPORT`); el plan 09 detalla
 > esta sección, no la sustituye.
 
-- [ ] **Experimentos:** E-02 (ampliado con las variantes V0–V3, plan 09 §4.4 y B4).
+- [x] **Experimentos:** E-02 (ampliado con las variantes V0–V3, plan 09 §4.4 y B4).
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R2 (las especificaciones de `ENG` citan `LANG`).
 - **Contenido.**
-  - [ ] `ENG.*` (contrato de observación, D-18).
-  - [ ] `ENG.LIMITS` (D-17) como primera decisión de la fase.
-  - [ ] `MEM.*` (D-04).
-  - [ ] `IR.*`: el catálogo de instrucciones se escribe a partir de lo que exigen `LANG` y `LIB`.
-  - [ ] `API.*`.
-  - [ ] `RT.HOST.INTERFACE`.
-  - [ ] `TOOL.CLI.CONVENTIONS`, `TOOL.CLI.MESSAGES`, `TOOL.CLI.CHECK`, `TOOL.CLI.RUN`, `TOOL.CLI.IR`,
+  - [x] `ENG.*` (contrato de observación, D-18).
+  - [x] `ENG.LIMITS` (D-17) como primera decisión de la fase.
+  - [x] `MEM.*` (D-04).
+  - [x] `IR.*`: el catálogo de instrucciones se escribe a partir de lo que exigen `LANG` y `LIB`.
+  - [x] `API.*`.
+  - [x] `RT.HOST.INTERFACE`.
+  - [x] `TOOL.CLI.CONVENTIONS`, `TOOL.CLI.MESSAGES`, `TOOL.CLI.CHECK`, `TOOL.CLI.RUN`, `TOOL.CLI.IR`,
      `TOOL.SERVICE.LOSSLESS-TREE` (frontera de idioma, plan 09 §11).
-  - [ ] `PERF.PROTOCOL`, `PERF.BASELINE.REFERENCE`, `PERF.SUITE.AWFY-CORE`, `PERF.VM.*`,
+  - [x] `PERF.PROTOCOL`, `PERF.BASELINE.REFERENCE`, `PERF.SUITE.AWFY-CORE`, `PERF.VM.*`,
      `PERF.FRONTEND.THROUGHPUT`, `PERF.ARTIFACT.SIZE`, con umbrales provisionales (D-07).
-  - [ ] Primeros `README.md` de `pseudolearn_engine` y de cada crate de R4–R5, con la arquitectura
+  - [x] Primeros `README.md` de `pseudolearn_engine` y de cada crate de R4–R5, con la arquitectura
      Clepsidra (plan 09 §3, §5 y §12) y las decisiones de [04](04-arquitectura-del-workspace-rust.md) §3 que
      el plan 09 conserva. Los crates siguen vacíos: la regla «sin `README.md`
      no hay código» se cumple antes de la primera línea.
 - **Criterios de aceptación.**
-  - [ ] Las especificaciones de R3 en `experimental`. Las que `reference` puede ejecutar
+  - [x] Las especificaciones de R3 en `experimental`. Las que `reference` puede ejecutar
      (`ENG.EXEC.MODEL`, `ENG.TRACE.EVENTS`, `ENG.INPUT`) están contrastadas.
-  - [ ] El catálogo de `IR.INSTRUCTIONS` cubre cada operación que aparece en una regla de `LANG` o `LIB`.
+  - [x] El catálogo de `IR.INSTRUCTIONS` cubre cada operación que aparece en una regla de `LANG` o `LIB`.
      `see` lo comprueba con una tabla de cobertura `regla → instrucciones`.
-  - [ ] `PERF.BASELINE.REFERENCE` publicada con el protocolo.
-  - [ ] **Hito «núcleo especificado».** El corpus del alcance de la reescritura está en `experimental` o
+  - [x] `PERF.BASELINE.REFERENCE` publicada con el protocolo.
+  - [x] **Hito «núcleo especificado».** El corpus del alcance de la reescritura está en `experimental` o
      superior. Desde aquí se escribe código del motor.
 
 ### R4 · Front-end en Rust
@@ -630,3 +630,100 @@ Los dos rechazos automáticos anteriores quedan resueltos por la verificación d
 ## 8. Rama única de continuidad
 
 R1 y R2 se integran por fast-forward en feature/agregar-ruta-de-especificacion, conservando todos sus commits. La rama base es la única rama de trabajo y publicación para los cambios posteriores. La implementación y las verificaciones de R2 permanecen vigentes; no se modifica el código ni el corpus al integrar. La igualdad de HEAD local/remoto se comprueba después de publicar esta integración. R3 no se inicia.
+
+## 9. Informe de ejecución R3 · 2026-10-14
+
+**Implementación.** R3 completa sus bloques B0–B8. El corpus incorpora 39 especificaciones de motor,
+memoria, RI, API, anfitrión, herramientas y rendimiento, con 130 reglas finales, 172 casos,
+30 propiedades, 15 mediciones, 74 instrucciones y 87 entradas de cobertura regla → instrucciones.
+`PERF.BASELINE.REFERENCE` 0.2.0 publica la suite AWFY-core además de E-01; la clasificación, impacto,
+lock y exportación quedan vigentes. `see` soporta trace, ir, cli, mediciones, instrucciones,
+cobertura, cancelación, presupuesto y negociación observe, con rechazos negativos por ID.
+El adaptador reference observa la API pública; el núcleo Dart permanece congelado.
+
+El experimento Rust ceiling implementa los diez algoritmos en V0–V3 y valida sus 80 combinaciones
+(dos tamaños por cuatro variantes). El arnés Dart consume programas y controles de la exportación,
+sin copiarlos. La arquitectura Clepsidra, las quince capas de R4–R5 y la CLI tienen README
+autosustentables. Las reglas declarativas comprueban README y carpetas, dependencias y ausencia de
+fuentes prematuras. Se declaran las dependencias de generación de catálogos sin rowan ni salsa.
+No hay Cargo.toml ni fuentes Rust en el motor o en la CLI.
+
+**Pruebas.** 950 tests en verde: pseudolearn_spec 80; pseudolearn_rust_checks 41; ceiling 14;
+pseudolearn_core 789; pseudolearn_benchmarks 26. Las salidas reales y sus hashes están en
+`packages/pseudolearn_spec/results/r3-verification.json`. Frente a B0, los 930 casos que cumplían
+siguen cumpliendo: 1.156 observaciones actuales, 1.034 cumple y 122 divergencias conservadas y
+clasificadas; cero regresiones exigibles. La comparación por identidad completa se guarda en
+`results/r3-regressions.json` del miembro SEE.
+
+AWFY reference conserva 6.000 muestras (diez procesos, treinta iteraciones, diez programas, dos modos)
+en `packages/pseudolearn_benchmarks/results/macos-r3-awfy/`, con captura previa a compilación,
+hashes de fuentes, métricas de proceso y bootstrap del 95 %. E-02 conserva 12.000 muestras finales
+en `results/e02/` del mismo miembro; todas las muestras V3 tienen al menos un punto de control.
+El reloj de E-02 observa un mínimo de 41 ns. Los candidatos de cambio, la carga externa y la
+precisión limitada forman parte de los informes; no se afirma estacionariedad ni rendimiento de VM.
+
+**Verificadores.**
+
+| Puerta | Resultado |
+|---|---|
+| cargo fmt --all --check | Verde en los tres miembros Rust ejecutables |
+| Clippy estricto | Verde en los tres miembros Rust ejecutables |
+| cargo test --workspace | Verde: 80 + 41 + 14 tests |
+| rust-checks comments, names, limits, layers, unsafe y attributes | Todos verdes, con sus casos negativos |
+| rust-checks toolchain | Anclajes exactos coincidentes |
+| rust-checks layers del motor declarativo | Quince carpetas documentadas; sin fuentes o manifiestos |
+| cargo deny check | Advisories, bans, licenses y sources verdes; dos avisos de permisos de licencia sin uso en ceiling |
+| see validate | 139 especificaciones válidas |
+| see lock --check y see export --check | Vigentes |
+| see matrix | Sin huecos de cobertura de RI; evidencia r3-matrix.json |
+| see conform --subject reference | Sin regresiones exigibles; exenciones y resultados crudos conservados |
+| dart analyze y verificadores de límites/capas | Verdes en núcleo y arnés |
+| DOC-NO-TRANSIENT-REFS | Verde, incluidos sus casos negativos y las evidencias finales |
+
+Flutter no necesita una comprobación adicional: no cambia código ni recurso consumido por la app.
+La comprobación de conformidad tiene 124 especificaciones del alcance de la reescritura en
+experimental; los tres borradores SEE de arranque no pertenecen a ese alcance. Queda acreditado
+el hito «núcleo especificado», sin iniciar código del motor.
+
+**Observaciones resueltas.** La primera captura E-02 no tomaba puntos de control en Storage y Towers.
+Se conserva íntegra en `results/e02/initial/`; la corrección consulta el reloj en llamadas y exige
+un punto real por muestra V3, con test de regresión. Las capturas no se mezclan. Las trampas diferidas
+preservan el primer fallo e impiden efectos posteriores; las lecturas potencialmente fallidas respetan
+ese fallo previo. La barrera de época conserva las páginas compartidas inmutables y los puntos guardan
+la región activa de ambos bancos. Todas las salidas se contrastan con el corpus, no se capturan de
+una variante para convertirlas en esperado.
+
+Se conservan las decisiones observables: Escribir es atómico si una expresión falla
+(ENG.EXEC.EFFECT-ORDER#R2), el fallo de operador señala su símbolo (IR.SOURCE-MAP) e int.mod del
+mínimo entre −1 devuelve cero por la identidad de LANG.OPS.DIVISION. Los hallazgos reference de
+fragmentación de salida, petición de entrada, Segun sin rama y Retornar quedan exentos con
+resolución en R5. La autoría B1–B2 conserva su ventana original; la publicación de la línea base
+se declara aparte y no infiere tiempo humano.
+
+**Decisiones y pendientes justificados.** Las hipótesis de rendimiento permanecen provisionales.
+La representación V2 supera el umbral de revisión 1,30 en todas las familias:
+
+| Familia | V2/V1 | IC 95 % |
+|---|---|---|
+| arrays | 4.0548 | [3.2911, 5.5906] |
+| numeric | 2.0575 | [1.9962, 2.1611] |
+| objects | 3.6046 | [3.4272, 3.7087] |
+| recursive | 2.5893 | [2.5514, 2.6174] |
+
+RC-01 exige revisar la representación de memoria **antes de autorizar R5**, según el criterio
+aprobado de E-02. La hipótesis V3/V2 ≤ 1,10 tampoco queda confirmada de forma general: objetos y
+recursión la superan. R3 publica el resultado desfavorable y conserva el diseño; no lo ajusta para
+mejorar los números. Las alternativas se miden en esa revisión previa. Las prestaciones de VM,
+recolección completa, Unicode y front-end se verifican en sus fases; E-02 no las demuestra.
+No queda una tarea obligatoria abierta de R3. Los pendientes de implementación pertenecen a R4–R8,
+con sus dependencias y condiciones en el README del motor; los hallazgos reference mantienen sus
+resoluciones declaradas en R4 o R5.
+
+**Publicación.** Rama `feature/agregar-ruta-de-especificacion`. La implementación y evidencia se
+publican mediante push ordinario en `2df395d1682d1c2f73078f9495d2af8e29c2919a`; `git ls-remote` confirma igualdad
+con HEAD local. El informe y las casillas se publican en el commit posterior
+`docs(docs): close R3 with verified execution evidence`, seguido de una segunda comprobación de
+igualdad local/remoto. No se solicita ni ejecuta un workflow remoto manual: este cierre exige las
+verificaciones locales. No hay force push, ramas adicionales ni trailers de coautoría.
+
+**Parada.** R3 cerrada. R4 conserva sus casillas pendientes y necesita un mensaje nuevo de autorización.

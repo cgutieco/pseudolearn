@@ -1,7 +1,7 @@
 # 09 · Plan de R3 · Arquitectura «Clepsidra» del motor y especificación de sus fronteras
 
-> **Estado:** plan ejecutable de R3 ([07](07-fases.md)), pendiente de la autorización explícita de la
-> fase (`PHASE-STOP`). Completar este plan completa R3 (§0). Fecha: 2026-10-14. Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
+> **Estado:** R3 completada; informe y evidencia en [07](07-fases.md) §9.
+> Fecha de cierre: 2026-10-14. Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 >
 > R3 **no escribe código del motor** (`SPEC-FIRST`): produce el corpus `ENG`, `MEM`, `IR`, `API`,
 > `RT.HOST`, `TOOL.CLI` básico y `PERF`, las extensiones de `see` que ese corpus necesita, el
@@ -921,7 +921,7 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
   - intervalos de confianza al 95 %;
   - límites de precisión del reloj;
   - publicación de todos los resultados, incluidos los desfavorables.
-- [ ] `PERF.BASELINE.REFERENCE`: B5.
+- [x] `PERF.BASELINE.REFERENCE`: B5.
 - [x] `PERF.SUITE.AWFY-CORE`: los diez programas de §4.4 en PseudoLearn, en los dos perfiles, con salida
   esperada derivada del algoritmo.
 - [x] `PERF.VM.THROUGHPUT`, `PERF.VM.STEP-LATENCY`, `PERF.FRONTEND.THROUGHPUT` y `PERF.ARTIFACT.SIZE`:
@@ -959,13 +959,13 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
 
 ### B4 · E-02 ampliado
 
-- [ ] **B4.1 Miembro.**
+- [x] **B4.1 Miembro.**
   - Workspace Rust anidado `packages/pseudolearn_benchmarks/ceiling`, con `README.md` (skill
     `package-docs`), `rust-toolchain.toml` con la misma versión exacta, `architecture.yaml`,
     `deny.toml`, `clippy.toml` y `xtask` encadenado a `pseudolearn_rust_checks`, como en
     `pseudolearn_spec`.
   - El `README.md` raíz y el de `pseudolearn_benchmarks` lo declaran.
-- [ ] **B4.2 Núcleos.**
+- [x] **B4.2 Núcleos.**
   - Diez núcleos (Sieve, Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards)
     en cuatro variantes (§4.4).
   - Cada variante produce la misma salida que el programa PseudoLearn de `PERF.SUITE.AWFY-CORE`, y un
@@ -973,30 +973,30 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
   - Las variantes V2 y V3 implementan **dentro del núcleo de prueba** asas de 32 bits, tabla de páginas
     de 4 096 palabras con barrera de época, dos bancos y trampas diferidas.
   - No exponen biblioteca reutilizable: no son el motor.
-- [ ] **B4.3 Medición.**
+- [x] **B4.3 Medición.**
   - Protocolo `PERF.PROTOCOL` en local (Apple M2).
   - Evidencia en `results/e02/` con manifiesto de captura y procedencia.
-- [ ] **B4.4 Informe.**
+- [x] **B4.4 Informe.**
   - Cocientes V1/V0, V2/V1 y V3/V2 por núcleo y por familia, con intervalos.
   - Aplicar el criterio de §4.4: si V2/V1 > 1,30 en una familia, se informa como **condición previa a
     autorizar R5** y se mantiene el resultado. No se ajusta el diseño a mano durante R3.
-- [ ] **B4.5 Verificación.** `cargo xtask verify` en verde en `ceiling`.
+- [x] **B4.5 Verificación.** `cargo xtask verify` en verde en `ceiling`.
 
 ### B5 · Línea base publicada
 
-- [ ] **B5.1** `PERF.BASELINE.REFERENCE` con los datos de E-01 ya conservados (local, `ci-r0-complete`)
+- [x] **B5.1** `PERF.BASELINE.REFERENCE` con los datos de E-01 ya conservados (local, `ci-r0-complete`)
   y sus limitaciones: resolución del reloj de JavaScript y grupos con candidatos de cambio.
-- [ ] **B5.2**
+- [x] **B5.2**
   - Medir los diez programas de `PERF.SUITE.AWFY-CORE` en `reference` con el arnés de
     `pseudolearn_benchmarks`, en los dos modos (con y sin observación).
   - Evidencia en `results/macos-r3-awfy/`.
   - Es la base de la puerta ≥ 10× de R5.
-- [ ] **B5.3** El arnés supera su verificación (`dart test` y sus verificadores) si se le añadieron
+- [x] **B5.3** El arnés supera su verificación (`dart test` y sus verificadores) si se le añadieron
   cargas.
 
 ### B6 · `README.md` y reglas del motor
 
-- [ ] **B6.1** `packages/pseudolearn_engine/README.md` con las ocho secciones de `package-docs`:
+- [x] **B6.1** `packages/pseudolearn_engine/README.md` con las ocho secciones de `package-docs`:
   - la **filosofía** de §12.1 y la arquitectura completa de §3;
   - el flujo de datos;
   - decisiones con sus alternativas rechazadas (§4 y §5.1);
@@ -1004,15 +1004,15 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
   - verificación prevista (`cargo xtask verify`, `see conform --subject engine`);
   - pendientes declarados por fase.
   - Autosustentable: no cita este plan ni `docs/` (`DOC-NO-TRANSIENT-REFS`).
-- [ ] **B6.2** `packages/pseudolearn_engine/architecture.yaml` con la forma de §5.2: niveles, `may_depend_on`,
+- [x] **B6.2** `packages/pseudolearn_engine/architecture.yaml` con la forma de §5.2: niveles, `may_depend_on`,
   `unsafe_allowed: [pseudolearn_wasm]`, dependencias externas sin `rowan` ni `salsa`, límites, nombres,
   fuentes generadas y salidas deterministas.
-- [ ] **B6.3** Un `README.md` por crate, en `packages/pseudolearn_engine/crates/<crate>/README.md`, con
+- [x] **B6.3** Un `README.md` por crate, en `packages/pseudolearn_engine/crates/<crate>/README.md`, con
   el contenido que fija §12.2: source, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode,
   abi, runtime, library, vm, timeline, api y conformance.
-- [ ] **B6.4** `apps/pseudolearn_cli/README.md` con la frontera de idioma de §11 y las órdenes de
+- [x] **B6.4** `apps/pseudolearn_cli/README.md` con la frontera de idioma de §11 y las órdenes de
   `TOOL.CLI.*`.
-- [ ] **B6.5** Verificador de capas.
+- [x] **B6.5** Verificador de capas.
   - Ejecutar `rust-checks layers` sobre `packages/pseudolearn_engine`.
   - Si exige manifiestos, se añade a `pseudolearn_rust_checks` un modo declarativo: comprueba que cada
     crate declarado tiene su carpeta con `README.md` y que no existe ninguna carpeta no declarada. Lleva
@@ -1021,23 +1021,23 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
 
 ### B7 · Documentos del plan y raíz
 
-- [ ] **B7.1** [03](03-catalogo-de-especificaciones.md):
+- [x] **B7.1** [03](03-catalogo-de-especificaciones.md):
   - fila de `TOOL.CLI.MESSAGES` en §2.10;
   - totales de §1;
   - nuevos códigos de diagnóstico citados donde corresponda.
-- [ ] **B7.2** [04](04-arquitectura-del-workspace-rust.md):
+- [x] **B7.2** [04](04-arquitectura-del-workspace-rust.md):
   - tabla de crates y niveles de §5.2;
   - decisiones de §5.1;
   - `architecture.yaml` de §4;
   - CLI con órdenes en español (§7 de 04).
-- [ ] **B7.3** [08](08-decisiones-riesgos-y-cambios-de-reglas.md): coherente con B0.2.
-- [ ] **B7.4** `README.md` raíz: mapa de miembros con `ceiling`, y `packages/pseudolearn_engine` como
+- [x] **B7.3** [08](08-decisiones-riesgos-y-cambios-de-reglas.md): coherente con B0.2.
+- [x] **B7.4** `README.md` raíz: mapa de miembros con `ceiling`, y `packages/pseudolearn_engine` como
   miembro documentado sin código.
-- [ ] **B7.5** Puerta `DOC-NO-TRANSIENT-REFS` en verde: ningún archivo fuera de `docs/` cita `docs/`.
+- [x] **B7.5** Puerta `DOC-NO-TRANSIENT-REFS` en verde: ningún archivo fuera de `docs/` cita `docs/`.
 
 ### B8 · Cierre (`phase-gate`)
 
-- [ ] **B8.1** Verificación completa, cada una con su salida real:
+- [x] **B8.1** Verificación completa, cada una con su salida real:
 
   | Comprobación                                                         | Miembro                          |
   |----------------------------------------------------------------------|----------------------------------|
@@ -1049,20 +1049,20 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
   | `flutter test` y verificadores de la app, solo si cambió un recurso que consume | `apps/pseudolearn_app`  |
   | `DOC-NO-TRANSIENT-REFS`                                              | Raíz                             |
 
-- [ ] **B8.2** Comparar con B0.3: ningún test ni observación que antes cumplía ha dejado de cumplir.
-- [ ] **B8.3** Hito «núcleo especificado»: todo el corpus del alcance de la reescritura está en
+- [x] **B8.2** Comparar con B0.3: ningún test ni observación que antes cumplía ha dejado de cumplir.
+- [x] **B8.3** Hito «núcleo especificado»: todo el corpus del alcance de la reescritura está en
   `experimental` o superior, comprobado con `see matrix`. Las especificaciones de R6 a R8 no forman
   parte del hito.
-- [ ] **B8.4** Commits coherentes por bloque, con la skill `commit-message`, en inglés y sin coautoría.
-- [ ] **B8.5** Push ordinario a `origin/feature/agregar-ruta-de-especificacion` e igualdad de HEAD local
+- [x] **B8.4** Commits coherentes por bloque, con la skill `commit-message`, en inglés y sin coautoría.
+- [x] **B8.5** Push ordinario a `origin/feature/agregar-ruta-de-especificacion` e igualdad de HEAD local
   y remoto comprobada con `git ls-remote`. Si el entorno pide confirmación para publicar, se pide a la
   persona responsable; nunca se fuerza.
-- [ ] **B8.6** En [07](07-fases.md):
+- [x] **B8.6** En [07](07-fases.md):
   - marcar las casillas de R3, incluidas E-02 y «Fase terminada»;
   - escribir «§9 · Informe de ejecución R3» con la plantilla del §3 de 07;
   - marcar las casillas de este documento;
   - publicar el informe con un push ordinario y comprobar de nuevo la igualdad.
-- [ ] **B8.7** Parar. No se inicia R4 sin un mensaje nuevo (`PHASE-STOP`).
+- [x] **B8.7** Parar. No se inicia R4 sin un mensaje nuevo (`PHASE-STOP`).
 
 ---
 
@@ -1367,50 +1367,26 @@ El `README.md` del workspace lista el orden que R4 y R5 seguirán. No se autoriz
 
 ---
 
-## 13. Estado de ejecución y traspaso (2026-10-14)
+## 13. Estado de ejecución y cierre (2026-10-14)
 
-R3 está **en curso**, no cerrada. Las casillas marcadas de §6 tienen evidencia; las casillas de 07 no se
-marcan hasta B8.6.
+R3 está completa. Los bloques B0–B8 tienen evidencia, las casillas de 07 están marcadas y el informe
+completo está en 07 §9. El motor y la CLI siguen documentados sin código; R4 no está iniciada.
 
-**Hecho y confirmado en commits locales** (rama `feature/agregar-ruta-de-especificacion`, sin push):
+| Evidencia | Resultado |
+|---|---|
+| results/r3-verification.json de pseudolearn_spec | 950 tests y verificadores verdes |
+| results/r3-regressions.json | Las 930 observaciones que cumplían siguen cumpliendo |
+| results/r3-matrix.json | 124 especificaciones del alcance en experimental, cobertura de RI completa |
+| results/r3-e02.json y pseudolearn_benchmarks/results/e02 | 12.000 muestras finales; captura inicial conservada; un punto real mínimo por muestra V3 |
+| results/r3-awfy-baseline.json y pseudolearn_benchmarks/results/macos-r3-awfy | 6.000 muestras de reference; ambas configuraciones |
+| results/r3-baseline-diff.json y r3-baseline-impact.json | Clasificación e impacto de PERF.BASELINE.REFERENCE 0.2.0 |
 
-- `93eed3e` B0: decisiones D-R3-01…07 y riesgos RC-01…06 en 08; línea de partida en
-  `packages/pseudolearn_spec/results/r3-baseline.json` (54 + 39 tests Rust, 782 Dart, 1 016 observaciones).
-- `84e6dc1` B1: extensiones de `see` (bloques `medicion`, `instruccion`, `cobertura`; operaciones
-  `trace`, `ir`, `cli`; `cancelled` y `limite`; rechazos SEE-TRACE-CLASS, SEE-IR-EXPECTATION, SEE-CLI-EXIT,
-  SEE-LIMIT-KIND, SEE-MEASUREMENT-PROTOCOL, SEE-IR-COVERAGE, SEE-IR-UNKNOWN, SEE-PROFILE-OPENERS,
-  SEE-MESSAGE-PARITY y SEE-MESSAGE-ARGUMENTS con fixture negativo cada uno; capacidad `observe` y veredicto
-  `pendiente`; contratos SEE versionados, evidencia en `results/r3-see-diff.json`).
-- `0758cec` B2: 39 especificaciones experimentales (129 reglas, 172 casos, 74 instrucciones, 87 coberturas),
-  `DIAG.CATALOG` 0.2.0 con `cellLimitExceeded` y `statementBudgetExhausted`, manifiesto `engine-r3.yaml`,
-  lock y exportación vigentes, tiempo en `results/r3-authoring.json`. `cargo xtask verify` en verde (80 tests).
-- `7dd4f7a` B3: adaptador `reference` con `observe`, cancelación y presupuesto de sentencias del lado del
-  anfitrión (789 tests Dart en verde); evidencia en `results/r3-first-reference.json`; hallazgos
-  REF-OUTPUT-FRAGMENTS, REF-INPUT-REQUEST-EVENT, REF-SWITCH-NO-BRANCH y REF-RETURN-EXIT exentos con
-  resolución en R5 (`results/r3-findings.json`, README de `pseudolearn_spec`, `conformance.yaml` del núcleo).
+E-02 supera V2/V1 = 1,30 en todas las familias. RC-01 exige revisar la representación antes de
+R5; el resultado se conserva sin rediseñar el motor en R3. La primera instrumentación omitía
+puntos en Storage y Towers; se conserva su captura, se corrige y se prueba ese fallo. No se mezclan
+muestras de ambas capturas. Los límites de interpretación y las hipótesis no confirmadas están
+publicados en el informe de E-02.
 
-**Observaciones a llevar al informe:** `ENG.EXEC.EFFECT-ORDER#R2` decide que `Escribir` no produce salida
-parcial si una expresión falla (reference sí la produce; no es sujeto de ese contrato).
-`IR.SOURCE-MAP` fija el tramo de una trampa de operador en el símbolo del operador, como reference.
-`int.mod` define mínimo módulo −1 = 0 desde la identidad de `LANG.OPS.DIVISION`.
-
-**En curso, sin commit — B4 (E-02):** `packages/pseudolearn_benchmarks/ceiling/` existe en el árbol de
-trabajo y **no compila todavía**. Hecho: configuración del workspace (`Cargo.toml`, `architecture.yaml`,
-`rust-toolchain.toml`, `clippy.toml`, `deny.toml`, alias xtask), rasgos `Arithmetic`/`Heap`/`Calls`
-(`machine.rs`), máquina directa V1 (`direct.rs`), máquina Clepsidra V2/V3 (`clepsydra.rs`,
-`clepsydra_memory.rs`, `paged_heap.rs`, `timeline.rs`), los diez núcleos V0 en `idiomatic/` (con Clippy
-limpio) y en `checked/`: sieve, permute, queens, towers, list, storage, bounce y mandelbrot.
-Falta: `checked/nbody.rs`, `checked/richards.rs` y `checked/richards_tasks.rs` (diseño: objetos Paquete
-{1 enlace, 7 palabras}, Tarea {6 enlaces, 9 palabras con `kind`}, Area {9 enlaces, 2 palabras}; cada
-método de PseudoLearn es `enter`/`leave`); volver a declarar `pub mod checked; pub mod variant;` en
-`lib.rs` y escribir `variant.rs` (enum Kernel × Variant V0–V3, máquina reutilizada con `reset()`);
-`ceiling_statistics` (bootstrap 95 % por medias de proceso, cocientes emparejados, media geométrica,
-puntos de cambio como en el arnés E-01); `ceiling_runner` (`ceiling run` y `ceiling collect`, salidas
-esperadas leídas de `specifications/export.json` del caso `PERF.SUITE.AWFY-CORE` con etiquetas
-`verificacion`/`medicion`); tests espejo; `xtask`; README de `ceiling` y declaración en los README raíz y
-de benchmarks; medición en `results/e02/` e informe B4.4.
-
-**Pendiente después:** B5 (añadir al arnés Dart los diez programas generados desde la exportación, con
-entradas; medir en `results/macos-r3-awfy/`; ampliar `PERF.BASELINE.REFERENCE` a 0.2.0), B6 (README del
-motor, `architecture.yaml`, README por crate, README de la CLI, modo declarativo de `rust-checks layers`),
-B7, B8 y push. Las herramientas de autoría usadas en B2 no se versionan: el corpus es la fuente.
+Publicación ordinaria de implementación y evidencia: `2df395d1682d1c2f73078f9495d2af8e29c2919a`, con igualdad de HEAD
+local/remoto comprobada. El commit de cierre publica este estado y el informe de 07; se confirma
+otra vez su igualdad remota. Se para en R3 (`PHASE-STOP`).
