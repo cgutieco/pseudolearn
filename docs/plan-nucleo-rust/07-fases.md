@@ -1,6 +1,6 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0 completada; R1–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0 y R1 completadas; R2–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -70,36 +70,36 @@ R0 Fundación
 
 ### R1 · Sistema de especificaciones
 
-- [ ] **Experimentos:** E-15.
+- [x] **Experimentos:** E-15.
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R0.
 - **Contenido.**
-  - [ ] `SEE.FORMAT`, `SEE.IDENTITY` y `SEE.LIFECYCLE` en `borrador`, revisadas a mano
+  - [x] `SEE.FORMAT`, `SEE.IDENTITY` y `SEE.LIFECYCLE` en `borrador`, revisadas a mano
      ([02](02-modelo-de-especificaciones.md) §7).
-  - [ ] `packages/pseudolearn_spec` con `see` en su producto mínimo:
+  - [x] `packages/pseudolearn_spec` con `see` en su producto mínimo:
      - `new`, `validate`, `graph`, `lock`, `diff`, `impact`;
      - `conform` con `analyze` y `execute`;
      - `matrix`, `export`.
-  - [ ] El resto de `SEE.*` hasta `experimental`.
-  - [ ] Adaptador `reference` en Dart.
-  - [ ] **Piloto (E-15):** tres especificaciones completas, con casos y contrastadas con `reference`:
+  - [x] El resto de `SEE.*` hasta `experimental`.
+  - [x] Adaptador `reference` en Dart.
+  - [x] **Piloto (E-15):** tres especificaciones completas, con casos y contrastadas con `reference`:
      `LANG.TYPES.INTEGER`, `LANG.CONTROL.FOR` y `LANG.SYNTAX.RECOVERY`.
 - **Criterios de aceptación.**
-  - [ ] `see validate` rechaza, con un caso negativo en `fixtures/` cada uno:
+  - [x] `see validate` rechaza, con un caso negativo en `fixtures/` cada uno:
      - identificador duplicado;
      - regla huérfana;
      - valor `capturado` sin revisor;
      - hash que no coincide con la versión;
      - ciclo de dependencias;
      - caso de `LANG` sin el segundo perfil ni exclusión.
-  - [ ] `see conform --subject reference` ejecuta los casos piloto en los dos perfiles y produce la matriz.
-  - [ ] El piloto detecta H-05, H-06 y H-37 sin buscarlos expresamente. Si no los detecta, se escribe un
+  - [x] `see conform --subject reference` ejecuta los casos piloto en los dos perfiles y produce la matriz.
+  - [x] El piloto detecta H-05, H-06 y H-37 sin buscarlos expresamente. Si no los detecta, se escribe un
      informe con el porqué y se ajusta el formato antes de R2.
-  - [ ] Se mide el coste de autoría (minutos por regla) del piloto. Es el dato que decide si el ritmo de R2
+  - [x] Se mide el coste de autoría (minutos por regla) del piloto. Es el dato que decide si el ritmo de R2
      es viable (R-05).
-  - [ ] `cargo xtask verify` en verde en `pseudolearn_spec`.
+  - [x] `cargo xtask verify` en verde en `pseudolearn_spec`.
 
 ### R2 · Especificación del lenguaje vigente
 
@@ -456,3 +456,115 @@ completa la matriz de E-01:
 | macos-26 | 10800 | 30 | Sí |
 | ubuntu-24.04 | 6480 | 18 | No |
 | windows-2025 | 3960 | 11 | No |
+
+
+## 6. Informe de ejecución R1 · 2026-10-14
+
+**Estado: R1 completada, con verificaciones locales en verde e implementación publicada.**
+La rama es `origin/codex/implement-r1`; R2 requiere un mensaje nuevo y aprobación de E-15.
+
+### Implementación
+
+- `packages/pseudolearn_spec`: workspace de once capas de producto y xtask; Rust exacto y reglas
+  compartidas sin excepciones. Esquema JSON `see/1`, lector Markdown/YAML, escritura canónica,
+  referencias, ciclo de vida, versión, clasificación declarada, grafo e impacto transitivo.
+- CLI: `new`, `validate`, `graph`, `lock`, `diff`, `impact`, `conform`, `matrix`, `export` y `feature`.
+  Lock conserva historia y SHA-256 normativo; diff consulta revisiones Git sin modificar el checkout;
+  los artefactos generados tienen comprobación de vigencia.
+- Corpus: los tres contratos de arranque `SEE.FORMAT`, `SEE.IDENTITY` y `SEE.LIFECYCLE` en borrador,
+  revisados estructuralmente a mano contra el plan. No se atribuye revisión humana independiente ni
+  estabilidad. Los otros doce contratos SEE están en experimental, con vínculos a sus pruebas.
+- Adaptador Dart en `tool/`, con responsabilidades separadas y uso exclusivo de API pública.
+  Negocia `analyze` y `execute`, serializa diagnósticos completos y presencia real del árbol,
+  recibe entradas/semilla y limita micro-pasos. Las peticiones inválidas son respuestas JSON;
+  el ejecutor trata EOF, JSON inválido, versión incompatible y bloqueo como errores operativos.
+- Piloto: tres especificaciones experimentales, diez reglas y veintidós casos. Programas explícitos
+  en ambos perfiles; los rigores se declaran por caso. Vocabulario independiente de piloto,
+  traducción que preserva literales/comentarios y marcadores de salida comprobados.
+- README raíz y del núcleo actualizados; workflow de comprobación manual preparado para instalar
+  Dart antes de verificar todos los miembros Rust. No se escribe motor Rust ni se modifica `lib/`
+  del sujeto congelado.
+
+### Pruebas
+
+| Comando o suite | Resultado |
+|---|---|
+| `cargo xtask verify` en `pseudolearn_spec` | Verde, 40 tests Rust |
+| `dart test --reporter expanded` en el núcleo | 778 tests, incluidos los seis nuevos del adaptador y compilación JS/Wasm |
+| `dart analyze --fatal-infos --fatal-warnings` en el núcleo | Sin incidencias |
+| `dart run tool/check_limits.dart` en el núcleo | Verde |
+| `see conform --subject reference` | 82 observaciones, 72 cumplen y 10 divergen con exención justificada |
+
+Las pruebas Rust incluyen programas vacíos, esquemas incompletos, Unicode, literales y comentarios,
+identificadores con prefijos/sufijos parecidos a palabras reservadas, grafos profundos sin recursión,
+bordes enteros, salida exacta, multiplicidad de diagnósticos, tramos, EOF y timeout. La CLI tiene
+pruebas de creación sin sobrescritura, artefactos desactualizados y diff desde un miembro anidado
+en un repositorio Git. Los casos del corpus no se duplican como tests del motor Dart.
+
+### Verificadores
+
+| Puerta | Evidencia |
+|---|---|
+| Formato Rust y Clippy estricto | Verdes, sin atributos de excepción |
+| `rust-checks layers` | Capas, miembros y dependencias declarados |
+| `rust-checks comments` | Sin comentarios de código |
+| `rust-checks names` | Nombres conformes |
+| `rust-checks limits` | Todos los límites en verde |
+| `rust-checks unsafe` | Ningún crate autorizado ni uso de unsafe |
+| `rust-checks attributes` | Sin doc, allow ni expect |
+| `rust-checks toolchain` | Versiones exactas de los miembros coherentes |
+| `cargo deny check` | Avisos, prohibiciones, licencias y fuentes en verde; sin avisos ignorados |
+| `see validate` | 18 especificaciones válidas |
+| `see lock --check` | Anclaje generado vigente |
+| `see export --check` | Exportación generada vigente |
+| Regresión de conformidad | Ningún vínculo cumple exigible falla |
+
+Cada uno de los seis rechazos obligatorios tiene fixture y comprobación del ID del error:
+`duplicate` → `SEE-DUPLICATE`, `orphan` → `SEE-ORPHAN`, `captured` → `SEE-CAPTURE`,
+`hash` → `SEE-HASH`, `cycle` → `SEE-CYCLE`, `missing-profile` → `SEE-PROFILE`.
+Además se comprueban referencias inexistentes, rangos incompatibles, campos desconocidos y fuerza
+normativa inválida. Los fixtures quedan fuera del recorrido ordinario del corpus.
+
+### Observaciones y resolución
+
+- La comparación genérica detecta **H-37**: cuatro observaciones sin la advertencia de modificación
+  del control; **H-06**: dos observaciones con `expectedExpression` duplicado; **H-05**: cuatro
+  observaciones con árbol nulo para texto vacío. `conformance.yaml` los declara exentos con hallazgo
+  y resolución en R4. La matriz conserva `incumple` medido junto a `exento`; no oculta el defecto.
+- E-15 no se presenta como experimento ciego: los ejemplos del plan describían esos hallazgos antes
+  de la autoría. El ejecutor carece de ramas especiales para encontrarlos. Su detección deriva de
+  expectativas independientes y comparación ordinaria de observables.
+- La primera ejecución mezclaba rango de valores con aceptación del literal del extremo negativo.
+  Se conservaron sus resultados en `results/first-reference.json` y se reformularon tres casos con
+  `-9223372036854775807 - 1`, aislando la aritmética del reconocimiento léxico. No se cambió el sujeto
+  ni se adaptó el resultado esperado a una captura. Un caso de recuperación observa solo el árbol;
+  la unicidad de diagnósticos pertenece a otra regla.
+- El formato permite observar árboles y programas explícitos por perfil, además de diagnósticos,
+  salida y terminación. Esto evita que la representación del adaptador borre H-05 o que la longitud
+  de un lexema obligue a inventar tramos idénticos entre perfiles.
+- E-15 registra **2,003 minutos brutos por regla** de autoría automatizada: ventana UTC de 09:24:36
+  a 09:44:37,880638 (Lima), diez reglas. Incluye pausas de implementación y verificación; es una cota
+  bruta del coste automatizado, no tiempo humano aislado. La procedencia y fórmula están en
+  `packages/pseudolearn_spec/results/e15.json`. La viabilidad de autoría humana no se infiere de ese dato.
+- El clasificador distingue editorial, cambio de esperado y retirada en pruebas controladas; los
+  cambios de texto se remiten a revisión. No se mide ni afirma una tasa estadística de falsos positivos.
+- Las pruebas encontraron traducción parcial de un identificador; se corrige consumiendo tokens
+  completos. La auditoría rechazó dependencias internas sin versión; se fijan sin relajar políticas.
+  El análisis Dart encontró tres avisos de llaves; se corrigen y se repite la verificación completa.
+
+### Pendientes y publicación
+
+No quedan tareas obligatorias de implementación de R1. La generación y reducción de propiedades N3
+corresponden a la segunda iteración del sistema al incorporar propiedades en R2/R3; el vocabulario
+completo se migra en R2; sujetos Rust y observación del motor pertenecen a sus fases autorizadas.
+No hay aprobación de E-15 para empezar R2 ni se inicia esa fase.
+
+La implementación está publicada en `origin/codex/implement-r1`, commit
+`2edd2aecfab3758757844c85ba5f1b29937357dd`. `git ls-remote` confirmó ese mismo HEAD remoto después de
+un push ordinario. Este informe y las casillas de cierre se publican en la misma rama; la igualdad
+local/remoto se comprueba de nuevo al terminar. No hay force push ni trailers de coautoría.
+
+No se ejecuta GitHub Actions: R1 exige verificación local y no pide comprobación remota obligatoria.
+El workflow permanece manual. La primera revisión automática del push rechazó el destino por no
+verificado; la consulta de solo lectura confirmó el repositorio público y permisos ADMIN, y el
+reintento fue aprobado y terminó correctamente.

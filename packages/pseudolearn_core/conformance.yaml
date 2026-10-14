@@ -7,7 +7,8 @@
     "LANG.SYNTAX.RECOVERY"
   ],
   "fases_cerradas": [
-    "R0"
+    "R0",
+    "R1"
   ],
   "vinculos": [
     {
