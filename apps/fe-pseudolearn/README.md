@@ -123,7 +123,7 @@ Las capturas de referencia dependen del sistema operativo. Las de `-darwin` sirv
 sembrar las de CI hay que generarlas una vez dentro del contenedor de Playwright:
 
 ```bash
-docker run --rm -v "$PWD":/w -w /w mcr.microsoft.com/playwright:v1.63.0-noble pnpm test:visual --update-snapshots
+docker run --rm -v "$PWD":/w -w /w mcr.microsoft.com/playwright:v1.64.0-noble pnpm test:visual --update-snapshots
 ```
 
 ---
@@ -401,7 +401,7 @@ condicionan el día a día:
 
 ## 7. Verificación
 
-Pirámide de cinco niveles, que se ejecuta de forma local (no hay pipeline de CI en GitHub):
+Pirámide de cinco niveles, que se ejecuta en local y en GitHub Actions con cada push y PR:
 
 | Nivel             | Herramienta               | Alcance                                                                      |
 | ----------------- | ------------------------- | ---------------------------------------------------------------------------- |
@@ -431,3 +431,7 @@ humana queda para lo que ninguna regla puede juzgar.
 - **Estructura FSD**: se tomó la separación en capas y la disciplina de envoltorios finos de un
   proyecto hermano. Se **rechazó** su patrón de reglas incrustadas en el script de verificación, a
   favor de `architecture.yaml` como fuente única.
+
+La CI de verificación usa macOS y Chromium de la versión de Playwright del lockfile; compara las
+referencias Darwin versionadas. Las referencias se regeneran únicamente tras inspección del cambio
+y validación de e2e y accesibilidad, sin ampliar la tolerancia de comparación.

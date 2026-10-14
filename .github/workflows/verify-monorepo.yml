@@ -1,0 +1,125 @@
+name: Verify Monorepo
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: dart pub get
+        working-directory: packages/pseudolearn_core
+      - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart
+        working-directory: packages/pseudolearn_core
+  app:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_content.dart && dart run tool/check_design_system.dart
+        working-directory: apps/pseudolearn_app
+  brand:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install fonttools
+      - run: python3 -m pseudolearn_brand check && python3 tool/check_limits.py && python3 -m unittest discover -s test -t .
+        working-directory: packages/pseudolearn_brand
+  backend:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.0
+      - run: deno task verify
+        working-directory: apps/pseudolearn_backend
+  web:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.8.1'
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: apps/fe-pseudolearn/.nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/fe-pseudolearn/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: apps/fe-pseudolearn
+      - run: pnpm check:all
+        working-directory: apps/fe-pseudolearn
+      - run: pnpm exec playwright install chromium
+        working-directory: apps/fe-pseudolearn
+      - run: pnpm exec playwright test
+        working-directory: apps/fe-pseudolearn
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: browser-failures
+          path: apps/fe-pseudolearn/test-results
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup show
+        working-directory: packages/pseudolearn_rust_checks
+      - run: cargo install cargo-deny --version 0.20.2 --locked
+      - run: |
+          (cd packages/pseudolearn_rust_checks && cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain ../..)
+          while IFS= read -r toolchain; do
+            member=$(dirname "$toolchain")
+            (cd "$member" && cargo xtask verify)
+          done < <(git ls-files '*rust-toolchain.toml')
+  benchmarks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/pseudolearn_benchmarks
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: packages/pseudolearn_benchmarks/node-version
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed lib bin tool test
+      - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart
+      - run: dart run tool/collect.dart --output results/ci
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: reference-baseline-${{ matrix.os }}
+          path: packages/pseudolearn_benchmarks/results/ci
+          if-no-files-found: error

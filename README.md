@@ -13,11 +13,10 @@ en su propio `README.md`: `packages/pseudolearn_core/README.md` para el motor de
 `apps/pseudolearn_app/README.md` para el cliente Flutter, `apps/pseudolearn_backend/README.md` para el
 backend de Supabase y `apps/fe-pseudolearn/README.md` para el sitio web y landing en Astro.
 
-**Estado:** Monorepo de cinco miembros activos —dos paquetes bajo `packages/` y tres desplegables bajo
-`apps/`— con una única arista de dependencia en tiempo de compilación, de la app hacia el núcleo por ruta
-relativa, una relación de generación de `pseudolearn_brand` hacia sus consumidores (la app Flutter y `fe-pseudolearn`) y una relación de
-invocación HTTP de la app hacia el backend; sin tooling de orquestación multi-proyecto (`melos` u otro)
-instalado.
+**Estado:** siete miembros activos, con cinco cadenas de herramientas. El núcleo Dart es el sujeto
+`reference` congelado de ADR-001; la fundación Rust y el arnés E-01 son miembros reutilizables.
+GitHub Actions verifica todos los miembros en cada push y PR, sin filtros por rutas. Los flujos de
+publicación conservan sus disparadores propios. No hay orquestador de monorepo ni workspace Cargo raíz.
 
 ---
 
@@ -43,7 +42,7 @@ tener que descubrirlo por ensayo y error.
 2. **Reglas transversales del monorepo (`AGENTS.md`):** Contrato de reglas con ID estable, orden de
    precedencia ante conflictos entre fuentes, y catálogo de skills disponibles para quien trabaje en
    cualquier paquete.
-3. **Gestión de dependencias entre proyectos:** La única arista de dependencia en tiempo de
+3. **Gestión de dependencias entre proyectos:** Las aristas de dependencia en tiempo de
    compilación del grafo interno —`apps/pseudolearn_app` hacia `packages/pseudolearn_core` por `path:`
    en `pubspec.yaml`— y su dirección obligatoria, más la relación de generación de
    `packages/pseudolearn_brand` hacia los artefactos que sus consumidores versionan (§3.2).
@@ -66,14 +65,7 @@ tener que descubrirlo por ensayo y error.
   orquestación multi-paquete instalada. Cada paquete se prepara, compila y prueba con sus propios
   comandos nativos de su propia cadena de herramientas desde su propio directorio; el número de
   miembros del monorepo no justifica la complejidad operativa de un orquestador dedicado, que además
-  tendría que abarcar cuatro cadenas de herramientas distintas.
-- **CI/CD centralizado que ejecute los verificadores de cada paquete:** No hay integración continua que
-  corra `flutter test`, `dart analyze` ni los scripts de `tool/` en cada cambio. La verificación mecánica
-  de cada miembro se ejecuta localmente con los comandos declarados en su propio `README.md` y reunidos
-  en §2.5. Los flujos de `.github/workflows/` son de publicación —`push-production-macos.yml` construye, firma, empaqueta
-  y sube el `.pkg` a App Store Connect, `push-production-ios.yml` firma y sube el `.ipa` y deja la versión lista para revisión, `push-production-windows-store.yml` empaqueta el `.msix` para Microsoft Store, y `push-production-windows-r2.yml` construye, empaqueta el instalador con Inno Setup y
-  distribuye los binarios a Cloudflare R2 con disparo manual—, no de verificación continua
-  (`apps/pseudolearn_app/README.md` §2.6).
+  tendría que abarcar cinco cadenas de herramientas distintas.
 - **`pubspec.yaml` de raíz:** La raíz no es un paquete Dart ni Flutter y no declara dependencias propias.
   Cada miembro del monorepo resuelve las suyas de forma independiente.
 
@@ -94,7 +86,7 @@ tener que descubrirlo por ensayo y error.
 | Pendiente                             | De quién depende                                                                                                                                   | Estado actual |
 |:--------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------|:--------------|
 | Orquestador de comandos multi-paquete | Decisión de adoptar `melos` u otra herramienta si el número de miembros del monorepo crece                                                         | Abierto       |
-| Integración continua (CI)             | Elección de proveedor y definición de pipeline que ejecute los verificadores de cada paquete en cada cambio                                        | Abierto       |
+| Retiro del núcleo Dart | Paridad comprobada del motor Rust y sus consumidores | R9 |
 | Verificador del par `(app, núcleo)`   | Implementación del script que rechaza una versión sin entrada de publicación y un núcleo anclado que no coincide con el `pubspec.yaml` real (§4.4) | Abierto       |
 
 ---
@@ -107,6 +99,8 @@ tener que descubrirlo por ensayo y error.
   (requerido únicamente por `apps/pseudolearn_app`, que la fija en su `pubspec.yaml`); Python `>=3.9` con `fonttools` (requerido
   únicamente por `packages/pseudolearn_brand`); Deno `>=2.9` y la CLI de Supabase (requeridos
   únicamente por `apps/pseudolearn_backend`).
+- **Rust:** versión exacta en `packages/pseudolearn_rust_checks/rust-toolchain.toml`, con `rustup`, Cargo, rustfmt, Clippy y cargo-deny 0.20.2. Los miembros Rust fijan la misma versión.
+- **Web y mediciones:** Node y pnpm según sus archivos de versión; el arnés E-01 usa Dart 3.13.4 y Node fijado.
 - **Plataformas soportadas:** Las declaradas por cada miembro en su propio `README.md`; la raíz no
   impone restricción de plataforma adicional.
 - **Variables de entorno y flags requeridos:** Ninguna a nivel de raíz.
@@ -127,6 +121,16 @@ python3 -m pip install fonttools
 
 # Backend de Supabase
 (cd apps/pseudolearn_backend && deno install)
+
+# Web
+(cd apps/fe-pseudolearn && pnpm install --frozen-lockfile)
+
+# Verificadores Rust
+(cd packages/pseudolearn_rust_checks && rustup show && cargo fetch)
+cargo install cargo-deny --version 0.20.2 --locked
+
+# Arnés de rendimiento
+(cd packages/pseudolearn_benchmarks && dart pub get)
 ```
 
 ### 2.3 Ejecución en desarrollo
@@ -156,7 +160,13 @@ Verificación mecánica completa del monorepo, paquete por paquete:
 (cd apps/pseudolearn_backend && deno task verify)
 
 # Frontend web: formato, lint, tipos, arquitectura, verificadores propios y tests
-(cd apps/fe-pseudolearn && pnpm check:all)
+(cd apps/fe-pseudolearn && pnpm check:all && pnpm exec playwright test)
+
+# Miembros Rust
+(cd packages/pseudolearn_rust_checks && cargo xtask verify)
+
+# Arnés E-01
+(cd packages/pseudolearn_benchmarks && dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart)
 ```
 
 La lista exhaustiva de verificadores, con qué detecta cada uno y dónde vive su regla, está en la sección
@@ -193,8 +203,8 @@ concreto».** El porqué de esa redacción está en §4.5.
 
 ### 3.2 Diagrama de capas y dirección de dependencias
 
-La única arista de dependencia entre miembros del monorepo es unidireccional: la aplicación depende del
-núcleo, nunca al revés (`LAYER-DIRECTION`).
+Las dependencias de compilación hacia el núcleo Dart son unidireccionales: la app y el arnés
+dependen del núcleo, nunca al revés (`LAYER-DIRECTION`).
 
 Hay dos relaciones, y son de naturaleza distinta. Una es de compilación: la app no compila sin el
 núcleo. La otra es de generación: el motor de marca escribe artefactos que su consumidor versiona, y no
@@ -244,6 +254,14 @@ declara como destino, y verifica que lo que hay ahí siga siendo lo que él prod
 la marca hacia sus consumidores, nunca al revés; que las fuentes tipográficas vivan dentro del paquete en
 vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages/pseudolearn_brand/README.md` §4.2).
 
+El arnés `packages/pseudolearn_benchmarks` depende únicamente de la API pública del núcleo Dart.
+`packages/pseudolearn_rust_checks` no depende de otro miembro: verifica workspaces mediante procesos.
+Los miembros de ADR-001 se incorporan en su fase, no como esqueletos anticipados: `pseudolearn_spec`
+(R1), `pseudolearn_engine` y `apps/pseudolearn_cli` (R4), puentes de app y Wasm (R8).
+Su grafo aprobado es CLI → motor, app → puente → motor y `see` → sujetos por proceso; el motor
+consume una exportación del corpus como datos, sin depender de `see` como crate. Cranelift es el
+backend nativo inicial y LLVM se evalúa por medición. El lenguaje permanece congelado hasta R9.
+
 ### 3.3 Catálogo de carpetas, responsabilidades e invariantes
 
 | Directorio                    | Responsabilidad única                                                                                                  | Puede importar (`may_import`)                                                                                                        | Prohibido importar (`forbidden_imports`)                                    |
@@ -253,6 +271,8 @@ vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages
 | `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                        | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
 | `apps/pseudolearn_backend/`   | Backend de Supabase: Edge Functions con secretos de servidor y migraciones del esquema de Postgres                     | API web de Deno; capas internas según su propio `architecture.json`                                                                  | Imports remotos (`npm:`, `jsr:`, `https:`); cualquier símbolo de otro miembro |
 | `apps/fe-pseudolearn/`        | Frontend web (landing y descargas en Astro): interfaz pública, internacionalización y contacto                         | Paquetes de su `package.json` propio; capas internas según su propio `architecture.yaml`                                             | Cualquier símbolo de `packages/` o de otras `apps/`                         |
+| `packages/pseudolearn_rust_checks/` | Verificadores Rust | Dependencias declaradas en sus reglas | Otros miembros del monorepo |
+| `packages/pseudolearn_benchmarks/` | Mediciones de reference | API pública de pseudolearn_core | Internals del núcleo y apps |
 | `CHANGELOG.json` (raíz)       | Registro de publicaciones del producto: una entrada por versión del par `(app, núcleo)` con fecha y cambios bilingües (§4.4) | — (datos)                                                                                                                            | —                                                                           |
 | `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                        | —                                                                           |
 | `AGENTS.md` (raíz)            | Reglas transversales de todos los paquetes: contrato de reglas, precedencia, skills                                    | — (documento)                                                                                                                        | Arquitectura específica de un paquete concreto                              |
@@ -281,10 +301,10 @@ propio `README.md`.
 
 ### 4.1 Monorepo de git puro sin orquestador multi-paquete
 
-- **Problema:** Con cinco miembros escritos en cuatro cadenas de herramientas y una única arista de
+- **Problema:** Con siete miembros escritos en cinco cadenas de herramientas y pocas aristas de
   dependencia en tiempo de compilación entre ellos, cualquier herramienta de orquestación multi-paquete (`melos`, `nx`,
   workspaces) añade una capa de configuración, un archivo de reglas propio y una curva de
-  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las cuatro cadenas.
+  aprendizaje sin resolver un problema que hoy existe; y ninguna de ellas abarca las cinco cadenas.
 - **Elección:** Git puro como mecanismo de agrupación. Cada paquete se prepara, compila, prueba y
   despliega desde su propio directorio con los comandos nativos de su cadena (`pub`/`flutter`, `python3`,
   `deno`/`supabase`, `node`/`pnpm`). La única coordinación de compilación entre miembros es la dependencia por ruta
@@ -340,7 +360,7 @@ propio `README.md`.
       y la gramática que acepta. Es interno; nadie fuera del repositorio lo consume.
     - `apps/pseudolearn_app` lleva la **versión de producto**: la de la tienda, la que publica el sitio
       público (en su propio repositorio) y la que se pide al reportar un fallo.
-      La regla de propagación va en una sola dirección, la misma que la única arista del grafo interno:
+      La regla de propagación va en una sola dirección, la misma que la dependencia de producto app → núcleo:
 
   | Cambio en el núcleo | Obliga en la app                                              |
       |:--------------------|:--------------------------------------------------------------|
@@ -452,6 +472,14 @@ técnica prioriza densidad y precisión sobre estilo editorial (`AGENTS.md`, ski
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
+`.github/workflows/verify-monorepo.yml` ejecuta todos los miembros en cada push y PR. No despliega.
+Cada miembro conserva sus comandos nativos y verificadores negativos. Los nuevos miembros Rust se
+descubren por `rust-toolchain.toml` versionado y ejecutan `cargo xtask verify`; CI rechaza anclajes
+distintos. El arnés E-01 corre en macOS arm64, Linux x64 y Windows x64 y conserva artefactos crudos.
+La web ejecuta también Playwright en macOS para usar referencias visuales Darwin verificadas.
+La conformidad del corpus se incorpora desde R1, cuando exista `see`; no se simula en R0.
+
+
 ### 7.1 Matriz de verificadores mecánicos
 
 | Verificador                  | Comando                                                                       | Qué detecta                                                                                                                                       | Dónde vive la regla                               |
@@ -516,5 +544,5 @@ registradas en la sección 4.1.
   la sección 4.5.
 - **Qué se rechazó deliberadamente y por qué:** El tooling de orquestación multi-paquete que
   habitualmente acompaña esa convención (`melos` y equivalentes), por las razones técnicas registradas
-  en la sección 4.1: no abarca las cuatro cadenas de herramientas del monorepo, y sobre la parte que sí
+  en la sección 4.1: no abarca las cinco cadenas de herramientas del monorepo, y sobre la parte que sí
   abarca no resuelve un problema que hoy exista.
