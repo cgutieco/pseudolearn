@@ -17,6 +17,8 @@ Rust se fija en el archivo de cadena del workspace. No se publica.
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: separar contratos de infraestructura. Elección: crate independiente para checks.
+El módulo declarative valida capas documentadas sin manifiestos, rechazando fuentes prematuras y
+dependencias inexistentes; sus pruebas incluyen carpeta huérfana y README ausente.
 Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código

@@ -36,6 +36,13 @@ La capa source carga reglas y fuentes, checks reúne violaciones, command las pr
 La ejecución es síncrona; el recorrido ordena rutas y diagnósticos para ser reproducible.
 Los miembros Cargo, incluidas dependencias por target y desarrollo, se contrastan con reglas mediante
 `cargo metadata --no-deps --format-version 1`. Los crates tooling también tienen lista cerrada.
+Con `declarative: true`, `layers` comprueba carpetas y README sin ejecutar Cargo: cada capa declarada
+existe, no hay carpeta de crate sin declarar, todas las dependencias internas tienen dueño y no existe
+ningún Cargo.toml ni fuente Rust. El modo es explícito; un manifiesto perdido de un miembro ejecutable
+sigue siendo un error. Las políticas opcionales unsafe_allowed, generated_sources y
+deterministic_output_crates documentan las restricciones del miembro antes de construir sus crates.
+Problema: especificar arquitectura antes del motor. Elección: validación declarativa con rechazo
+SPEC-FIRST para código prematuro. Se descarta crear crates vacíos para satisfacer Cargo.
 Las dependencias internas siguen `may_import`; las externas siguen `external_dependencies`.
 
 ## 4. Decisiones de diseño y fundamentos técnicos

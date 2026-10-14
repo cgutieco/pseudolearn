@@ -171,6 +171,7 @@ Verificación mecánica completa del monorepo, paquete por paquete:
 
 # Sistema de especificaciones
 (cd packages/pseudolearn_spec && cargo xtask verify)
+(cd packages/pseudolearn_benchmarks/ceiling && cargo xtask verify)
 
 # Arnés E-01
 (cd packages/pseudolearn_benchmarks && dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart)
@@ -269,7 +270,9 @@ el workflow manual instala Dart antes de recorrer los miembros Rust porque la co
 El arnés `packages/pseudolearn_benchmarks` depende únicamente de la API pública del núcleo Dart.
 `packages/pseudolearn_rust_checks` no depende de otro miembro: verifica workspaces mediante procesos.
 Los miembros siguientes de ADR-001 se incorporan en su fase, no como esqueletos anticipados:
-`pseudolearn_engine` y `apps/pseudolearn_cli` (R4), puentes de app y Wasm (R8).
+`pseudolearn_engine` y `apps/pseudolearn_cli` tienen sus contratos documentados sin código;
+la implementación empieza en R4. El workspace anidado `packages/pseudolearn_benchmarks/ceiling`
+implementa E-02 en Rust y conserva las mediciones junto al arnés Dart. Puentes de app y Wasm pertenecen a R8.
 Su grafo aprobado es CLI → motor, app → puente → motor y `see` → sujetos por proceso; el motor
 consume una exportación del corpus como datos, sin depender de `see` como crate. Cranelift es el
 backend nativo inicial y LLVM se evalúa por medición. El lenguaje permanece congelado hasta R9.
@@ -285,6 +288,9 @@ backend nativo inicial y LLVM se evalúa por medición. El lenguaje permanece co
 | `apps/fe-pseudolearn/`        | Frontend web (landing y descargas en Astro): interfaz pública, internacionalización y contacto                         | Paquetes de su `package.json` propio; capas internas según su propio `architecture.yaml`                                             | Cualquier símbolo de `packages/` o de otras `apps/`                         |
 | `packages/pseudolearn_spec/` | Corpus y herramienta SEE: validación, grafo, versiones y conformidad | Capas Rust declaradas; sujetos por proceso | Internals de sujetos; motor Rust |
 | `packages/pseudolearn_rust_checks/` | Verificadores Rust | Dependencias declaradas en sus reglas | Otros miembros del monorepo |
+| `packages/pseudolearn_engine/` | Arquitectura declarativa del motor, sin fuentes ni Cargo | Reglas de capas y corpus | Código antes de R4 |
+| `apps/pseudolearn_cli/` | Contrato documentado del binario pseudo | API pública del motor | Implementación antes de R4 |
+| `packages/pseudolearn_benchmarks/ceiling/` | Experimento Rust E-02 V0–V3 | Corpus como datos, verificadores por proceso | Código del motor |
 | `packages/pseudolearn_benchmarks/` | Mediciones de reference | API pública de pseudolearn_core | Internals del núcleo y apps |
 | `CHANGELOG.json` (raíz)       | Registro de publicaciones del producto: una entrada por versión del par `(app, núcleo)` con fecha y cambios bilingües (§4.4) | — (datos)                                                                                                                            | —                                                                           |
 | `.agents/skills/`             | Skills operativas del monorepo, fuente única enlazada también desde `.claude/skills`                                   | — (contenido Markdown, sin código ejecutable)                                                                                        | —                                                                           |

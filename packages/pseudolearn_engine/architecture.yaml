@@ -1,0 +1,98 @@
+package: pseudolearn_engine
+declarative: true
+unsafe_allowed: [pseudolearn_wasm]
+generated_sources:
+  - crates/pseudolearn_diagnostics/generated
+  - crates/pseudolearn_lexicon/generated
+  - crates/pseudolearn_syntax/generated
+  - crates/pseudolearn_bytecode/generated
+  - crates/pseudolearn_vm/generated
+deterministic_output_crates: [pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_api]
+layers:
+  - name: pseudolearn_source
+    path: crates/pseudolearn_source
+    may_import: []
+    external_dependencies: [unicode-normalization, unicode-ident]
+    unsafe_allowed: false
+  - name: pseudolearn_abi
+    path: crates/pseudolearn_abi
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_diagnostics
+    path: crates/pseudolearn_diagnostics
+    may_import: [pseudolearn_source]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_lexicon
+    path: crates/pseudolearn_lexicon
+    may_import: [pseudolearn_source]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_syntax
+    path: crates/pseudolearn_syntax
+    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_semantic
+    path: crates/pseudolearn_semantic
+    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_ir
+    path: crates/pseudolearn_ir
+    may_import: [pseudolearn_source, pseudolearn_abi]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_lowering
+    path: crates/pseudolearn_lowering
+    may_import: [pseudolearn_semantic, pseudolearn_ir, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_bytecode
+    path: crates/pseudolearn_bytecode
+    may_import: [pseudolearn_ir, pseudolearn_source]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_runtime
+    path: crates/pseudolearn_runtime
+    may_import: [pseudolearn_abi, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_library
+    path: crates/pseudolearn_library
+    may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_vm
+    path: crates/pseudolearn_vm
+    may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_timeline
+    path: crates/pseudolearn_timeline
+    may_import: [pseudolearn_vm, pseudolearn_runtime, pseudolearn_bytecode, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_api
+    path: crates/pseudolearn_api
+    may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_conformance
+    path: crates/pseudolearn_conformance
+    may_import: [pseudolearn_api]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

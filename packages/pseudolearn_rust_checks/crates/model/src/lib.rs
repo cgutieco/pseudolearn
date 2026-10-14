@@ -6,6 +6,14 @@ use serde::{Deserialize, Serialize};
 #[serde(deny_unknown_fields)]
 pub struct Architecture {
     pub package: String,
+    #[serde(default)]
+    pub declarative: bool,
+    #[serde(default)]
+    pub unsafe_allowed: Vec<String>,
+    #[serde(default)]
+    pub generated_sources: Vec<String>,
+    #[serde(default)]
+    pub deterministic_output_crates: Vec<String>,
     pub layers: Vec<Layer>,
     pub limits: Limits,
     pub names: Names,

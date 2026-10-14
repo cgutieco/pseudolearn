@@ -30,10 +30,10 @@ Columnas:
 | `IR`    | Representación intermedia                                        | 7                | R3    | R5       |
 | `API`   | Superficie pública del núcleo                                    | 7                | R3    | R4–R5    |
 | `RT`    | Interfaz con el anfitrión, fallos en código compilado, ABI        | 5                | R3/R6 | R5–R6    |
-| `TOOL`  | CLI, servicio de lenguaje, formateo, traducción, LSP             | 16               | R3/R7 | R4–R7    |
+| `TOOL`  | CLI, servicio de lenguaje, formateo, traducción, LSP             | 17               | R3/R7 | R4–R7    |
 | `APP`   | Comportamientos de la app sobre el puente                        | 4                | R8    | R8       |
 | `PERF`  | Protocolo, suites y umbrales                                     | 8                | R3/R6 | R5–R8    |
-| **Total** |                                                                | **≈159**         |       |          |
+| **Total** |                                                                | **160**         |       |          |
 
 La cifra es mayor que las 40–60 de [11](../11-especificaciones-ejecutables-diseno.md) §5.2, porque
 aquella contaba solo la migración de `language-spec.md`. Las de `LANG` salen de ahí; el resto cubre
@@ -270,12 +270,13 @@ el motor, sus fronteras y sus herramientas.
 | ID                             | Título                                                       | Origen          | Sujetos  | Esp. | Impl. |
 |--------------------------------|--------------------------------------------------------------|-----------------|----------|------|-------|
 | `TOOL.CLI.CONVENTIONS`         | Idioma canónico de la CLI, alias, códigos de salida, salida para máquinas (`--json`) | D-21 | cli | R3 | R4 |
-| `TOOL.CLI.CHECK`               | `pseudo check`: diagnósticos de un archivo o directorio       | docs/07 §7      | cli      | R3   | R4    |
-| `TOOL.CLI.RUN`                 | `pseudo run`: ejecuta en la VM                               | docs/07 §7      | cli      | R3   | R5    |
-| `TOOL.CLI.BUILD`               | `pseudo build`: compila a binario nativo                     | docs/07 §7      | cli      | R6   | R6    |
-| `TOOL.CLI.FORMAT`              | `pseudo format`                                              | docs/07 §7      | cli      | R7   | R7    |
-| `TOOL.CLI.TRANSLATE`           | `pseudo translate --to en`                                   | docs/07 §7      | cli      | R7   | R7    |
-| `TOOL.CLI.IR`                  | `pseudo ir`: imprime la RI en formato textual (diagnóstico de herramientas) | nueva | cli   | R3   | R5    |
+| `TOOL.CLI.MESSAGES` | Catálogo bilingüe de ayuda, errores y narración, independiente del vocabulario | D-R3-02 | cli | R3 | R4–R5 |
+| `TOOL.CLI.CHECK`               | `pseudo comprobar` (`check`): diagnósticos de un archivo o directorio       | docs/07 §7      | cli      | R3   | R4    |
+| `TOOL.CLI.RUN`                 | `pseudo ejecutar` (`run`): ejecuta en la VM                               | docs/07 §7      | cli      | R3   | R5    |
+| `TOOL.CLI.BUILD`               | `pseudo compilar` (`build`): compila a binario nativo                     | docs/07 §7      | cli      | R6   | R6    |
+| `TOOL.CLI.FORMAT`              | `pseudo formatear` (`format`)                                              | docs/07 §7      | cli      | R7   | R7    |
+| `TOOL.CLI.TRANSLATE`           | `pseudo traducir --to en` (`translate`)                                   | docs/07 §7      | cli      | R7   | R7    |
+| `TOOL.CLI.IR`                  | `pseudo ri` (`ir`): imprime la RI en formato textual (diagnóstico de herramientas) | nueva | cli   | R3   | R5    |
 | `TOOL.SERVICE.LOSSLESS-TREE`   | Árbol sin pérdida: reimprimir da exactamente el texto        | docs/07 §3.1, H-19 | service | R3 | R4    |
 | `TOOL.SERVICE.NODE-IDENTITY`   | Identidad estable de nodo entre ediciones                    | H-20            | service  | R7   | R7    |
 | `TOOL.SERVICE.INCREMENTAL`     | Reanálisis incremental y latencias                           | H-21, E-08      | service  | R7   | R7    |
@@ -388,3 +389,6 @@ Las únicas excepciones son las que la reescritura necesita para no portar defec
 - `LANG.SOURCE.ENCODING` con NFC (D-14), que es compatible;
 - `ENG.LIMITS` (D-17). Es un cambio de significado, que exigiría una edición nueva; se resuelve como la
   primera decisión de R3.
+
+Los códigos `cellLimitExceeded` y `statementBudgetExhausted` pertenecen a DIAG.CATALOG: profundidad y
+celdas son fallos del programa; sentencias y tiempo agotan el presupuesto del anfitrión (ENG.LIMITS).

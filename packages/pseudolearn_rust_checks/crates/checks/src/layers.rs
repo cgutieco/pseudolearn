@@ -2,6 +2,9 @@ use pseudolearn_check_model::{Architecture, Layer, Violation, violation};
 use std::path::Path;
 
 pub fn check(root: &Path, rules: &Architecture) -> Result<Vec<Violation>, String> {
+    if rules.declarative {
+        return crate::declarative::check(root, rules);
+    }
     let output = std::process::Command::new("cargo")
         .current_dir(root)
         .args(["metadata", "--no-deps", "--format-version", "1"])

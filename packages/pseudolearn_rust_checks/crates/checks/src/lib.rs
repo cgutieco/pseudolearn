@@ -2,6 +2,7 @@
 
 pub mod attributes;
 pub mod comments;
+pub mod declarative;
 pub mod layers;
 pub mod limits;
 pub mod names;
