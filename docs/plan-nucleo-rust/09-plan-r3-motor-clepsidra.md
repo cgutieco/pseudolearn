@@ -632,21 +632,21 @@ sigue la skill `language-spec-authoring` y el formato `see/1`.
 
 ### B0 · Preparación
 
-- [ ] **B0.1 Estado del repositorio.**
+- [x] **B0.1 Estado del repositorio.**
   - `git branch --show-current` devuelve `feature/agregar-ruta-de-especificacion`.
   - El árbol está limpio y HEAD local coincide con el remoto (`git ls-remote`).
-- [ ] **B0.2 Decisiones.**
+- [x] **B0.2 Decisiones.**
   - En [08](08-decisiones-riesgos-y-cambios-de-reglas.md) se añade §1.5 «Decisiones de R3», con D-R3-01 a
     D-R3-07, la fecha y la fuente: el mensaje de autorización y la conversación del 2026-10-14 para
     D-R3-02.
   - D-17 y D-21 salen de §1.4 (abiertas) y quedan resueltas.
   - Los riesgos RC-01 a RC-06 de §8 se añaden a 08 §2.
-- [ ] **B0.3 Línea de partida.**
+- [x] **B0.3 Línea de partida.**
   - Se ejecutan `cargo xtask verify` en `pseudolearn_spec` y en `pseudolearn_rust_checks`, y `dart test`
     en `pseudolearn_core`.
   - Se anotan las cantidades de tests y de observaciones de conformidad: son la referencia contra la que
     se comprueban las regresiones.
-- [ ] **B0.4 Inicio de autoría.** Se registra la marca de tiempo en `results/r3-authoring-start.json`,
+- [x] **B0.4 Inicio de autoría.** Se registra la marca de tiempo en `results/r3-authoring-start.json`,
   con el mismo formato que `authoring-start.json`, para medir minutos por regla como en E-15.
 
 ### B1 · Extensiones de `see`
@@ -664,7 +664,7 @@ recorrido:
 
 Todas son ampliaciones compatibles de `see/1` y de `see-protocol/1`: no cambian la versión mayor.
 
-- [ ] **B1.1 Operación `trace`.**
+- [x] **B1.1 Operación `trace`.**
   - Casos con `"operacion": "trace"` y `espera.eventos`: una lista ordenada de
     `{ "clase", "linea", "datos" }`. `clase` pertenece al alfabeto de `ENG.TRACE.EVENTS`; `datos`
     depende de la clase (rama, texto, nombre llamado…).
@@ -673,27 +673,27 @@ Todas son ampliaciones compatibles de `see/1` y de `see-protocol/1`: no cambian 
   - La comparación es por secuencia exacta.
   - Rechazo: `SEE-TRACE-CLASS` si una clase no existe en el alfabeto. El alfabeto se lee de un bloque
     `definicion` de `ENG.TRACE.EVENTS`, nunca de una lista escrita en el código.
-- [ ] **B1.2 Operación `ir`.**
+- [x] **B1.2 Operación `ir`.**
   - Casos con `programa_ri`: texto en el formato de `IR.TEXT-FORMAT`.
   - `espera.ri` es uno de: `{ "aceptada": true }`, `{ "aceptada": false, "regla": "IR.WELL-FORMEDNESS#Rn" }`
     o `{ "reimpresion": "<texto exacto>" }`.
   - Rechazo: `SEE-IR-EXPECTATION` si falta el resultado esperado.
-- [ ] **B1.3 Operación `cli`.**
+- [x] **B1.3 Operación `cli`.**
   - Casos con `{ "argumentos": [...], "entorno": {...}, "entrada": "...", "archivos": {...} }`.
   - `espera` contiene `codigo_salida`, `salida`, `salida_error` y, opcionalmente, `json`.
   - Rechazo: `SEE-CLI-EXIT` si `codigo_salida` no está en la tabla de códigos de
     `TOOL.CLI.CONVENTIONS`. La tabla se lee de un bloque `definicion`.
-- [ ] **B1.4 Terminación `cancelled` y campo `limite`.**
+- [x] **B1.4 Terminación `cancelled` y campo `limite`.**
   - El enum de `terminacion` añade `cancelled`.
   - `espera.limite` (`sentencias` o `tiempo`) es obligatorio con `limit_reached`.
   - Rechazo: `SEE-LIMIT-KIND`.
-- [ ] **B1.5 Bloque `medicion`.**
+- [x] **B1.5 Bloque `medicion`.**
   - Nuevo bloque tipado:
     `{ "id", "metrica", "unidad", "suite", "comparador", "umbral", "provisional", "plataformas", "protocolo" }`.
   - Una regla puede listar mediciones en `verificacion`, y cuentan para `SEE-ORPHAN`.
   - Rechazo: `SEE-MEASUREMENT-PROTOCOL` si `protocolo` no apunta a una regla de `PERF.PROTOCOL`.
   - `see conform` no ejecuta mediciones: las informa como `no_aplicable` con su procedencia.
-- [ ] **B1.6 Bloques `instruccion` y `cobertura` y validación `SEE-IR-COVERAGE`.**
+- [x] **B1.6 Bloques `instruccion` y `cobertura` y validación `SEE-IR-COVERAGE`.**
   - `instruccion`: `{ "id", "firma", "clases_de_valor", "semantica", "trampas", "efectos", "observacion" }`.
   - `cobertura`: `{ "regla": "LANG.X#Rn", "instrucciones": [...] }` o
     `{ "regla": ..., "sin_ri": "<motivo>" }`, para reglas que solo afectan al análisis estático.
@@ -701,25 +701,25 @@ Todas son ampliaciones compatibles de `see/1` y de `see-protocol/1`: no cambian 
     una entrada `cobertura`, y cada instrucción citada debe existir.
   - Rechazos: `SEE-IR-COVERAGE` (regla sin cobertura) y `SEE-IR-UNKNOWN` (instrucción inexistente).
   - `see matrix` publica la tabla `regla → instrucciones`.
-- [ ] **B1.7 Validación `SEE-PROFILE-OPENERS`.**
+- [x] **B1.7 Validación `SEE-PROFILE-OPENERS`.**
   - `TOOL.CLI.CONVENTIONS` declara en un bloque `definicion` las identidades de apertura de nivel
     superior: `algorithm`, `classKeyword` y la apertura de subprograma.
   - La validación normaliza caja y acentos según cada perfil y rechaza cualquier lexema o alias de
     apertura que coincida con un lexema, de cualquier identidad, del otro perfil.
-- [ ] **B1.8 Paridad de `TOOL.CLI.MESSAGES`.**
+- [x] **B1.8 Paridad de `TOOL.CLI.MESSAGES`.**
   - Se reutiliza el mecanismo de `DIAG.MESSAGES` (plantilla por idioma y argumentos tipados).
   - Rechazos: `SEE-MESSAGE-PARITY` (plantilla sin su par) y `SEE-MESSAGE-ARGUMENTS` (argumentos
     distintos entre idiomas).
   - `see export` incluye el catálogo.
-- [ ] **B1.9 Capacidad `observe` del protocolo.**
+- [x] **B1.9 Capacidad `observe` del protocolo.**
   - La negociación de `see-protocol/1` admite `observe`.
   - Un caso `trace` contra un sujeto sin la capacidad queda `pendiente`, nunca `cumple`.
   - Un sujeto que responde eventos sin anunciarla produce un error operativo.
   - Hay tests de protocolo con negociación, EOF, JSON corrupto y tiempo agotado.
-- [ ] **B1.10 Contratos SEE.** Se versionan con clasificación e impacto (`see diff`, `see impact`):
+- [x] **B1.10 Contratos SEE.** Se versionan con clasificación e impacto (`see diff`, `see impact`):
   `SEE.FORMAT` (en borrador), `SEE.VALIDATION`, `SEE.ADAPTER.PROTOCOL` y `SEE.CONFORMANCE.MATRIX`.
   También `see lock`.
-- [ ] **B1.11 Verificación.** `cargo xtask verify` en verde en `pseudolearn_spec`, con todos los
+- [x] **B1.11 Verificación.** `cargo xtask verify` en verde en `pseudolearn_spec`, con todos los
   *fixtures* negativos nuevos rechazados por su identificador.
 
 ### B2 · Corpus de R3
@@ -737,7 +737,7 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
 
 #### B2.1 `ENG.LIMITS` (primera especificación de la fase)
 
-- [ ] Intenciones normativas:
+- [x] Intenciones normativas:
   1. Los límites son recursos del entorno que el anfitrión configura. No cambian el resultado de un
      programa que no los alcanza. No requieren edición nueva, porque `LANG.SUBPROGRAM.RECURSION` y
      `LANG.ARRAY.DIMENSION` ya delegan la cuantificación.
@@ -761,43 +761,43 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
   7. Ningún límite agota la pila del anfitrión ni produce `DIAG.ENGINE.INTERNAL-FAULT`.
   8. Valores por omisión, informativos y de clase `PUEDE`: app con 1 000 marcos; CLI con 100 000 marcos
      y sin presupuesto de sentencias.
-- [ ] Los códigos nuevos entran en `DIAG.CATALOG` con ficha bilingüe y clasificación de cambio (skill
+- [x] Los códigos nuevos entran en `DIAG.CATALOG` con ficha bilingüe y clasificación de cambio (skill
   `diagnostics-authoring`).
-- [ ] Hay casos de borde: exactamente en el límite, uno por encima, recursión mutua y arreglo cuyo tamaño
+- [x] Hay casos de borde: exactamente en el límite, uno por encima, recursión mutua y arreglo cuyo tamaño
   supera las celdas.
 
 #### B2.2 `MEM`
 
-- [ ] `MEM.IDENTITY`:
+- [x] `MEM.IDENTITY`:
   - la identidad observable de un objeto o arreglo es su **ordinal de asignación** dentro de la
     ejecución, empezando en 1;
   - no depende de la recolección;
   - dos nombres que comparten objeto muestran la misma identidad;
   - los ciclos son válidos.
-- [ ] `MEM.VALUE.COPY`:
+- [x] `MEM.VALUE.COPY`:
   - los primitivos y las cadenas se copian al asignar y al pasar por valor;
   - arreglos y objetos se comparten por referencia;
   - `CopiaSuperficial` copia un nivel;
   - el parámetro por referencia es un alias de la celda: dos parámetros por referencia a la misma
     variable observan cada escritura.
-- [ ] `MEM.MANAGED.UNOBSERVABLE`:
+- [x] `MEM.MANAGED.UNOBSERVABLE`:
   - ningún programa observa cuándo se recupera memoria;
   - propiedad: la misma salida, terminación y traza con recolección forzada en cada asignación y sin
     ella. Es la propiedad `Q1`, que la ejecuta `engine` en R5.
 
 #### B2.3 Modelo de ejecución
 
-- [ ] `ENG.EXEC.MODEL`:
+- [x] `ENG.EXEC.MODEL`:
   - cinco terminaciones: `completed`, `failed`, `awaiting_input`, `cancelled` y `limit_reached`;
   - la ejecución es determinista para el mismo programa, perfil, rigor, semilla, configuración de
     límites y entradas;
   - la cancelación surte efecto en una entrada a sentencia y no deja efectos parciales.
-- [ ] `ENG.EXEC.EFFECT-ORDER`:
+- [x] `ENG.EXEC.EFFECT-ORDER`:
   - efectos observables: salida, petición de entrada, fallo y terminación;
   - se informa la **primera trampa en orden de programa**, con su tramo, y ningún efecto posterior es
     visible;
   - el orden de las subexpresiones sin efectos no es observable.
-- [ ] `ENG.INPUT`:
+- [x] `ENG.INPUT`:
   - `Leer` suspende con `awaiting_input` y reanuda con el valor entregado;
   - la entrada puede darse por lotes;
   - la secuencia de valores entregados, con el evento en que se entregó cada uno, determina la ejecución
@@ -806,33 +806,33 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
 
 #### B2.4 Traza
 
-- [ ] `ENG.TRACE.EVENTS`:
+- [x] `ENG.TRACE.EVENTS`:
   - alfabeto cerrado, en un bloque `definicion`: entrada a sentencia, salida de sentencia, decisión,
     llamada, retorno, salida de datos, petición de entrada, entrada recibida y fallo;
   - cada evento lleva el nodo fuente (línea y tramo) y sus datos;
   - el orden de los eventos es total.
-- [ ] `ENG.TRACE.STEP`:
+- [x] `ENG.TRACE.STEP`:
   - un paso observable es el intervalo entre dos eventos consecutivos;
   - los lotes de eventos conservan el orden y no pierden eventos;
   - avanzar «hasta una condición» se define sobre eventos.
 
 #### B2.5 Estado
 
-- [ ] `ENG.STATE.SNAPSHOT`:
+- [x] `ENG.STATE.SNAPSHOT`:
   - máquina nocional con la pila de marcos (subprograma, receptor, parámetros y su alias por
     referencia) y las variables con estado «sin valor»;
   - arreglos con dimensiones y celdas (resuelve H-10);
   - grafo de objetos alcanzables con identidad (`MEM.IDENTITY`);
   - valores representados con `LANG.IO.VALUE-FORMAT`;
   - una vista es inmutable.
-- [ ] `ENG.STATE.INCREMENTAL`:
+- [x] `ENG.STATE.INCREMENTAL`:
   - cada evento puede llevar el cambio de estado;
   - el estado reconstruido acumulando cambios es igual al completo en todo evento (propiedad);
   - la consulta del estado en un evento pasado da el mismo resultado que haberlo observado en su momento.
 
 #### B2.6 Anfitrión
 
-- [ ] `RT.HOST.INTERFACE`:
+- [x] `RT.HOST.INTERFACE`:
   - capacidades inyectadas: salida, entrada y semilla;
   - no hay reloj, entorno, archivos ni azar implícitos;
   - **toda capacidad presente o futura es grabable**: su resultado se puede guardar y reproducir para
@@ -846,113 +846,113 @@ Treinta y nueve especificaciones nuevas en `experimental`, en `specifications/en
 
 #### B2.7 RI
 
-- [ ] `IR.MODEL`:
+- [x] `IR.MODEL`:
   - módulo, funciones, bloques con parámetros, valores SSA, tipos y las clases de valor `escalar` y
     `referencia`;
   - celdas para el paso por referencia.
-- [ ] `IR.INSTRUCTIONS`:
+- [x] `IR.INSTRUCTIONS`:
   - un bloque `instruccion` por instrucción;
   - trampas con la semántica de primera trampa (B2.3);
   - regiones puras: la semántica permite comprobar las trampas al final de una región sin efectos;
   - un bloque `cobertura` por regla de `LANG` y `LIB` (B1.6).
   - El catálogo se escribe **desde las reglas**: se recorre cada regla de ejecución de `LANG` y `LIB` y
     se pregunta qué operación exige.
-- [ ] `IR.WELL-FORMEDNESS`: dominancia, tipos y clases de valor por operando, terminador por bloque,
+- [x] `IR.WELL-FORMEDNESS`: dominancia, tipos y clases de valor por operando, terminador por bloque,
   aridad de los parámetros de bloque y masa de sentencia coherente con las instrucciones `observe`.
-- [ ] `IR.TEXT-FORMAT`: gramática del texto de la RI e ida y vuelta exacta; casos `ir` de reimpresión.
-- [ ] `IR.SOURCE-MAP`: cada instrucción con trampa u observación lleva su nodo fuente; un fallo informa
+- [x] `IR.TEXT-FORMAT`: gramática del texto de la RI e ida y vuelta exacta; casos `ir` de reimpresión.
+- [x] `IR.SOURCE-MAP`: cada instrucción con trampa u observación lleva su nodo fuente; un fallo informa
   el tramo de ese nodo.
-- [ ] `IR.OBSERVATION-POINTS`:
+- [x] `IR.OBSERVATION-POINTS`:
   - qué instrucciones producen qué eventos;
   - **masa de sentencia** por bloque;
   - regla «como si»: el código que no observa solo conserva los efectos externos.
-- [ ] `IR.LOWERING`: ejecutar la RI de `p` equivale a ejecutar `p` en todos los observables de
+- [x] `IR.LOWERING`: ejecutar la RI de `p` equivale a ejecutar `p` en todos los observables de
   `ENG.EXEC.*` y `ENG.TRACE.*`. Las propiedades las ejecuta `engine` en R5.
 
 #### B2.8 API
 
-- [ ] `API.MODEL`: documento, análisis y ejecución son recursos con identificador y ciclo de vida.
-- [ ] `API.ERRORS`: todo resultado es un valor, con un tipo de error por familia; ningún pánico cruza la
+- [x] `API.MODEL`: documento, análisis y ejecución son recursos con identificador y ciclo de vida.
+- [x] `API.ERRORS`: todo resultado es un valor, con un tipo de error por familia; ningún pánico cruza la
   frontera, y `DIAG.ENGINE.INTERNAL-FAULT` es la última barrera.
-- [ ] `API.VERSIONING`: versión de la API, ediciones soportadas y negociación de capacidades: `observe`,
+- [x] `API.VERSIONING`: versión de la API, ediciones soportadas y negociación de capacidades: `observe`,
   `seek` (si se aprueba D-R3-05) e `idioma de interfaz`.
-- [ ] `API.WIRE-FORMAT`:
+- [x] `API.WIRE-FORMAT`:
   - un esquema con dos codificaciones: JSON canónico, con claves ordenadas, y binario columnar para
     lotes de eventos;
   - ida y vuelta entre ambas;
   - claves independientes del idioma de interfaz.
-- [ ] `API.ANALYZE`: texto + perfil + rigor → diagnósticos ordenados (`DIAG.ORDERING`) y esquema.
-- [ ] `API.EXECUTE`:
+- [x] `API.ANALYZE`: texto + perfil + rigor → diagnósticos ordenados (`DIAG.ORDERING`) y esquema.
+- [x] `API.EXECUTE`:
   - iniciar con semilla, límites y entradas;
   - avanzar por lotes o hasta una condición;
   - entregar entrada y cancelar;
   - si se aprueba D-R3-05, posicionarse en un evento pasado.
-- [ ] `API.STATE.QUERY`:
+- [x] `API.STATE.QUERY`:
   - consulta por referencia de marcos, variables, objeto por identidad y arreglo paginado;
   - **en un instante**, es decir, por índice de evento;
   - horizonte retenido declarado por la ejecución (RC-03).
-- [ ] La presentación en el idioma de interfaz es un parámetro del borde: el núcleo devuelve códigos y
+- [x] La presentación en el idioma de interfaz es un parámetro del borde: el núcleo devuelve códigos y
   argumentos tipados (§11.3).
 
 #### B2.9 Herramientas
 
-- [ ] `TOOL.CLI.CONVENTIONS`:
+- [x] `TOOL.CLI.CONVENTIONS`:
   - toda §11: órdenes canónicas en español con alias en inglés siempre aceptados, y opciones;
   - vocabulario autodeclarado con las identidades de apertura (B1.7) y `--vocabulario`;
   - cadena de resolución del idioma de interfaz, en la que no entran el alias ni el archivo;
   - códigos de salida en un bloque `definicion`: 0 éxito, 1 el programa tiene errores o falló,
     2 uso incorrecto, 3 error operativo;
   - `--json` con `API.WIRE-FORMAT`.
-- [ ] `TOOL.CLI.MESSAGES`: catálogo bilingüe de toda la prosa de la CLI (ayuda, errores de uso,
+- [x] `TOOL.CLI.MESSAGES`: catálogo bilingüe de toda la prosa de la CLI (ayuda, errores de uso,
   progreso y narración de `--traza`), con paridad `es`/`en` (B1.8).
-- [ ] `TOOL.CLI.CHECK`: `pseudo comprobar` sobre archivos y directorios; diagnósticos y códigos de
+- [x] `TOOL.CLI.CHECK`: `pseudo comprobar` sobre archivos y directorios; diagnósticos y códigos de
   salida; casos `cli`.
-- [ ] `TOOL.CLI.RUN`: `pseudo ejecutar` con entrada estándar, `--semilla`, límites, `--traza` en el
+- [x] `TOOL.CLI.RUN`: `pseudo ejecutar` con entrada estándar, `--semilla`, límites, `--traza` en el
   idioma de interfaz, salida del programa sin traducir y casos `cli` en los dos idiomas de interfaz.
-- [ ] `TOOL.CLI.IR`: `pseudo ri` imprime la RI en `IR.TEXT-FORMAT`.
-- [ ] `TOOL.SERVICE.LOSSLESS-TREE`: reimprimir el árbol da exactamente el texto, con comentarios,
+- [x] `TOOL.CLI.IR`: `pseudo ri` imprime la RI en `IR.TEXT-FORMAT`.
+- [x] `TOOL.SERVICE.LOSSLESS-TREE`: reimprimir el árbol da exactamente el texto, con comentarios,
   trivia, BOM y errores incluidos. Propiedad sobre todo el corpus.
 
 #### B2.10 Rendimiento
 
-- [ ] `PERF.PROTOCOL`: el protocolo de E-01 pasa a ser normativo:
+- [x] `PERF.PROTOCOL`: el protocolo de E-01 pasa a ser normativo:
   - procesos por objetivo, iteraciones por proceso, semilla y procedencia capturada antes de compilar;
   - detección de puntos de cambio sin descartar muestras;
   - intervalos de confianza al 95 %;
   - límites de precisión del reloj;
   - publicación de todos los resultados, incluidos los desfavorables.
 - [ ] `PERF.BASELINE.REFERENCE`: B5.
-- [ ] `PERF.SUITE.AWFY-CORE`: los diez programas de §4.4 en PseudoLearn, en los dos perfiles, con salida
+- [x] `PERF.SUITE.AWFY-CORE`: los diez programas de §4.4 en PseudoLearn, en los dos perfiles, con salida
   esperada derivada del algoritmo.
-- [ ] `PERF.VM.THROUGHPUT`, `PERF.VM.STEP-LATENCY`, `PERF.FRONTEND.THROUGHPUT` y `PERF.ARTIFACT.SIZE`:
+- [x] `PERF.VM.THROUGHPUT`, `PERF.VM.STEP-LATENCY`, `PERF.FRONTEND.THROUGHPUT` y `PERF.ARTIFACT.SIZE`:
   bloques `medicion` con los umbrales provisionales de D-R3-03, marcados `provisional: true`.
 
 #### B2.11 Cierre del corpus
 
-- [ ] Manifiesto `specifications/features/engine-r3.yaml` con las treinta y nueve especificaciones.
-- [ ] `see validate`, `see lock` y `see export` regenerados y vigentes.
-- [ ] La matriz publica la cobertura `regla → instrucciones` sin huecos.
-- [ ] El tiempo de autoría se cierra en `results/r3-authoring.json`, con minutos por regla, sin inferir
+- [x] Manifiesto `specifications/features/engine-r3.yaml` con las treinta y nueve especificaciones.
+- [x] `see validate`, `see lock` y `see export` regenerados y vigentes.
+- [x] La matriz publica la cobertura `regla → instrucciones` sin huecos.
+- [x] El tiempo de autoría se cierra en `results/r3-authoring.json`, con minutos por regla, sin inferir
   tiempo humano.
 
 ### B3 · Contraste con `reference`
 
-- [ ] **B3.1 Adaptador.**
+- [x] **B3.1 Adaptador.**
   - En `packages/pseudolearn_core/tool/conformance/` se añade la capacidad `observe`.
   - El adaptador traduce los eventos públicos del intérprete al alfabeto de `ENG.TRACE.EVENTS` y no usa
     nada de `lib/` fuera de la API pública.
   - Tests del adaptador con camino feliz e infeliz.
-- [ ] **B3.2 Primera ejecución.**
+- [x] **B3.2 Primera ejecución.**
   - `see conform --subject reference` sobre `ENG.EXEC.MODEL`, `ENG.TRACE.EVENTS`, `ENG.INPUT`,
     `MEM.IDENTITY` y `MEM.VALUE.COPY`.
   - Resultado crudo en `results/r3-first-reference.json`.
-- [ ] **B3.3 Clasificación.** Cada divergencia termina como:
+- [x] **B3.3 Clasificación.** Cada divergencia termina como:
   - especificación corregida, solo si el caso estaba mal derivado de la regla;
   - `exento` con hallazgo nuevo en la tabla del `README.md` de `pseudolearn_spec`, en
     `results/r3-findings.json` y en `conformance.yaml`;
   - o decisión registrada en 08.
   - Divergencias esperables: arreglos ausentes, identidad no ordinal y unidades de micro-paso.
-- [ ] **B3.4 Verificación.**
+- [x] **B3.4 Verificación.**
   - `see conform` sin regresiones exigibles.
   - `dart test`, `dart analyze --fatal-infos --fatal-warnings` y `dart run tool/check_limits.dart` en
     verde en el núcleo.
@@ -1364,3 +1364,53 @@ El `README.md` del workspace lista el orden que R4 y R5 seguirán. No se autoriz
   6. `api` de ejecución, después `pseudo ejecutar` y `pseudo ri`.
 - **Medición en cada etapa** contra `PERF.BASELINE.REFERENCE`: si un paso degrada una métrica de
   `PERF.*` respecto del anterior, se informa en el mismo cambio.
+
+---
+
+## 13. Estado de ejecución y traspaso (2026-10-14)
+
+R3 está **en curso**, no cerrada. Las casillas marcadas de §6 tienen evidencia; las casillas de 07 no se
+marcan hasta B8.6.
+
+**Hecho y confirmado en commits locales** (rama `feature/agregar-ruta-de-especificacion`, sin push):
+
+- `93eed3e` B0: decisiones D-R3-01…07 y riesgos RC-01…06 en 08; línea de partida en
+  `packages/pseudolearn_spec/results/r3-baseline.json` (54 + 39 tests Rust, 782 Dart, 1 016 observaciones).
+- `84e6dc1` B1: extensiones de `see` (bloques `medicion`, `instruccion`, `cobertura`; operaciones
+  `trace`, `ir`, `cli`; `cancelled` y `limite`; rechazos SEE-TRACE-CLASS, SEE-IR-EXPECTATION, SEE-CLI-EXIT,
+  SEE-LIMIT-KIND, SEE-MEASUREMENT-PROTOCOL, SEE-IR-COVERAGE, SEE-IR-UNKNOWN, SEE-PROFILE-OPENERS,
+  SEE-MESSAGE-PARITY y SEE-MESSAGE-ARGUMENTS con fixture negativo cada uno; capacidad `observe` y veredicto
+  `pendiente`; contratos SEE versionados, evidencia en `results/r3-see-diff.json`).
+- `0758cec` B2: 39 especificaciones experimentales (129 reglas, 172 casos, 74 instrucciones, 87 coberturas),
+  `DIAG.CATALOG` 0.2.0 con `cellLimitExceeded` y `statementBudgetExhausted`, manifiesto `engine-r3.yaml`,
+  lock y exportación vigentes, tiempo en `results/r3-authoring.json`. `cargo xtask verify` en verde (80 tests).
+- `7dd4f7a` B3: adaptador `reference` con `observe`, cancelación y presupuesto de sentencias del lado del
+  anfitrión (789 tests Dart en verde); evidencia en `results/r3-first-reference.json`; hallazgos
+  REF-OUTPUT-FRAGMENTS, REF-INPUT-REQUEST-EVENT, REF-SWITCH-NO-BRANCH y REF-RETURN-EXIT exentos con
+  resolución en R5 (`results/r3-findings.json`, README de `pseudolearn_spec`, `conformance.yaml` del núcleo).
+
+**Observaciones a llevar al informe:** `ENG.EXEC.EFFECT-ORDER#R2` decide que `Escribir` no produce salida
+parcial si una expresión falla (reference sí la produce; no es sujeto de ese contrato).
+`IR.SOURCE-MAP` fija el tramo de una trampa de operador en el símbolo del operador, como reference.
+`int.mod` define mínimo módulo −1 = 0 desde la identidad de `LANG.OPS.DIVISION`.
+
+**En curso, sin commit — B4 (E-02):** `packages/pseudolearn_benchmarks/ceiling/` existe en el árbol de
+trabajo y **no compila todavía**. Hecho: configuración del workspace (`Cargo.toml`, `architecture.yaml`,
+`rust-toolchain.toml`, `clippy.toml`, `deny.toml`, alias xtask), rasgos `Arithmetic`/`Heap`/`Calls`
+(`machine.rs`), máquina directa V1 (`direct.rs`), máquina Clepsidra V2/V3 (`clepsydra.rs`,
+`clepsydra_memory.rs`, `paged_heap.rs`, `timeline.rs`), los diez núcleos V0 en `idiomatic/` (con Clippy
+limpio) y en `checked/`: sieve, permute, queens, towers, list, storage, bounce y mandelbrot.
+Falta: `checked/nbody.rs`, `checked/richards.rs` y `checked/richards_tasks.rs` (diseño: objetos Paquete
+{1 enlace, 7 palabras}, Tarea {6 enlaces, 9 palabras con `kind`}, Area {9 enlaces, 2 palabras}; cada
+método de PseudoLearn es `enter`/`leave`); volver a declarar `pub mod checked; pub mod variant;` en
+`lib.rs` y escribir `variant.rs` (enum Kernel × Variant V0–V3, máquina reutilizada con `reset()`);
+`ceiling_statistics` (bootstrap 95 % por medias de proceso, cocientes emparejados, media geométrica,
+puntos de cambio como en el arnés E-01); `ceiling_runner` (`ceiling run` y `ceiling collect`, salidas
+esperadas leídas de `specifications/export.json` del caso `PERF.SUITE.AWFY-CORE` con etiquetas
+`verificacion`/`medicion`); tests espejo; `xtask`; README de `ceiling` y declaración en los README raíz y
+de benchmarks; medición en `results/e02/` e informe B4.4.
+
+**Pendiente después:** B5 (añadir al arnés Dart los diez programas generados desde la exportación, con
+entradas; medir en `results/macos-r3-awfy/`; ampliar `PERF.BASELINE.REFERENCE` a 0.2.0), B6 (README del
+motor, `architecture.yaml`, README por crate, README de la CLI, modo declarativo de `rust-checks layers`),
+B7, B8 y push. Las herramientas de autoría usadas en B2 no se versionan: el corpus es la fuente.
