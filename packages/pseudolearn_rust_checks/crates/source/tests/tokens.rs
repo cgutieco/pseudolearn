@@ -19,3 +19,15 @@ fn rejects_line_block_and_documentation_comments() {
 fn accepts_empty_source() {
     assert!(pseudolearn_check_source::tokens::comment_lines("").is_empty());
 }
+
+#[test]
+fn unsafe_words_inside_strings_and_raw_identifiers_are_not_keywords() {
+    assert!(
+        pseudolearn_check_source::tokens::word_lines("let r#unsafe = \"unsafe\";", "unsafe")
+            .is_empty()
+    );
+    assert_eq!(
+        pseudolearn_check_source::tokens::word_lines("unsafe trait Boundary {}", "unsafe"),
+        vec![1]
+    );
+}

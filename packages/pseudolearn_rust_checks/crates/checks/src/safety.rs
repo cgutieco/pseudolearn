@@ -130,6 +130,20 @@ pub fn check(
         maximum: rules.limits.unsafe_function_lines,
     };
     visitor.visit_file(&source.syntax);
+    if !layer.unsafe_allowed {
+        visitor.violations.extend(
+            pseudolearn_check_source::tokens::word_lines(&source.text, "unsafe")
+                .into_iter()
+                .map(|line| {
+                    violation(
+                        &source.relative,
+                        line,
+                        "QUALITY-UNSAFE-INVARIANT",
+                        "Unsafe token is forbidden in this crate",
+                    )
+                }),
+        );
+    }
     Ok(visitor.violations)
 }
 

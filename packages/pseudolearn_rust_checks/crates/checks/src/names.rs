@@ -50,6 +50,31 @@ fn split_components(name: &str) -> Vec<String> {
 }
 
 impl<'syntax> Visit<'syntax> for NameVisitor<'_> {
+    fn visit_item_mod(&mut self, declaration: &'syntax syn::ItemMod) {
+        self.inspect(&declaration.ident);
+        syn::visit::visit_item_mod(self, declaration);
+    }
+
+    fn visit_item_trait(&mut self, declaration: &'syntax syn::ItemTrait) {
+        self.inspect(&declaration.ident);
+        syn::visit::visit_item_trait(self, declaration);
+    }
+
+    fn visit_item_static(&mut self, declaration: &'syntax syn::ItemStatic) {
+        self.inspect(&declaration.ident);
+        syn::visit::visit_item_static(self, declaration);
+    }
+
+    fn visit_variant(&mut self, declaration: &'syntax syn::Variant) {
+        self.inspect(&declaration.ident);
+        syn::visit::visit_variant(self, declaration);
+    }
+
+    fn visit_use_rename(&mut self, declaration: &'syntax syn::UseRename) {
+        self.inspect(&declaration.rename);
+        syn::visit::visit_use_rename(self, declaration);
+    }
+
     fn visit_item_impl(&mut self, implementation: &'syntax syn::ItemImpl) {
         let previous = self.in_trait_implementation;
         self.in_trait_implementation = implementation.trait_.is_some();

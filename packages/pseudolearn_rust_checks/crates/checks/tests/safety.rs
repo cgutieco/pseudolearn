@@ -69,3 +69,24 @@ fn rejects_orphan_invariant_row() -> Result<(), Box<dyn std::error::Error>> {
     );
     Ok(())
 }
+
+#[test]
+fn rejects_unsafe_trait_and_foreign_declarations_in_forbidden_crates()
+-> Result<(), Box<dyn std::error::Error>> {
+    let fixture = fixture::Fixture::create()?;
+    for text in [
+        "unsafe trait ExternalContract {}",
+        "unsafe extern \"C\" { fn invoke(); }",
+    ] {
+        std::fs::write(fixture.root.join("subject/src/lib.rs"), text)?;
+        assert!(
+            !pseudolearn_checks::safety::check(
+                &fixture.source()?,
+                &fixture.rules()?,
+                &fixture.root
+            )?
+            .is_empty()
+        );
+    }
+    Ok(())
+}

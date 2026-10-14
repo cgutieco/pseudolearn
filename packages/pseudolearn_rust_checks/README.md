@@ -66,7 +66,7 @@ El código inglés no lleva comentarios, atributos doc, allow ni expect. `#![for
 protege cada crate de R0. Límites y listas de nombres están únicamente en `architecture.yaml`.
 Los tests se excluyen de tamaño, no de comentarios, nombres o atributos. Se inspeccionan `src`,
 `tests`, ejemplos y build scripts; no se inspeccionan target, .git ni fixtures negativos.
-Los genéricos, bindings y tiempos de vida se verifican como declaraciones; rutas de terceros y
+Las declaraciones, aliases de imports, genéricos, bindings y tiempos de vida se verifican como declaraciones; rutas de terceros y
 palabras de Rust no son nombres propios. Las firmas heredadas de traits externos no son nombres
 propios renombrables: se verifican sus bindings y genéricos, no el nombre impuesto por el contrato. Los componentes camelCase y snake_case se normalizan.
 
@@ -92,7 +92,7 @@ conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos ver
 | toolchain | Miembros con versiones divergentes |
 
 Entradas vacías, Rust inválido y reglas inválidas tienen tests explícitos. No se aprueba una fase
-con un verificador fallando. Pendiente operativo: registrar evidencia de CI y mediciones de R0.
+con un verificador fallando. La evidencia de aceptación vive en el informe de R0. No hay pendientes de implementación del verificador.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

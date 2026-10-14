@@ -12,29 +12,26 @@ struct LimitVisitor<'source> {
 
 impl LimitVisitor<'_> {
     fn inspect_function(&mut self, signature: &syn::Signature, body: &syn::Block) {
-        self.inspect_size(body.span(), self.rules.function_lines, "SIZE-FUNCTION");
+        let length = body
+            .span()
+            .end()
+            .line
+            .saturating_sub(signature.span().start().line)
+            .saturating_add(1);
+        if length > self.rules.function_lines {
+            self.violations.push(violation(
+                &self.source.relative,
+                signature.span().start().line,
+                "SIZE-FUNCTION",
+                &format!("Measured {length}, maximum {}", self.rules.function_lines),
+            ));
+        }
         if signature.inputs.len() > self.rules.positional_parameters {
             self.violations.push(violation(
                 &self.source.relative,
                 signature.span().start().line,
                 "SIZE-PARAMETERS",
                 "Too many function parameters",
-            ));
-        }
-    }
-
-    fn inspect_size(&mut self, span: proc_macro2::Span, threshold: usize, rule: &str) {
-        let length = span
-            .end()
-            .line
-            .saturating_sub(span.start().line)
-            .saturating_add(1);
-        if length > threshold {
-            self.violations.push(violation(
-                &self.source.relative,
-                span.start().line,
-                rule,
-                &format!("Measured {length}, maximum {threshold}"),
             ));
         }
     }

@@ -37,3 +37,21 @@ fn rejects_short_lifetimes_generics_and_camel_case_abbreviations()
     }
     Ok(())
 }
+
+#[test]
+fn rejects_short_module_trait_static_variant_and_import_alias_names()
+-> Result<(), Box<dyn std::error::Error>> {
+    let rules = support::rules()?;
+    for text in [
+        "mod x {}",
+        "trait T {}",
+        "static x: u8 = 1;",
+        "enum Outcome { X }",
+        "use std::path::Path as T;",
+    ] {
+        assert!(
+            !pseudolearn_checks::names::check(&support::source(text)?, &rules.names).is_empty()
+        );
+    }
+    Ok(())
+}
