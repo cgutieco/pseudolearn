@@ -137,6 +137,8 @@ cargo install cargo-deny --version 0.20.2 --locked
 
 ### 2.3 Ejecución en desarrollo
 
+La rama única de trabajo y publicación es `feature/agregar-ruta-de-especificacion`. Todos los cambios posteriores se realizan en ella y se publican con push ordinario a origin; no se crean ramas de trabajo adicionales (`GIT-SINGLE-BRANCH`). Las fases mantienen su autorización individual.
+
 No aplica a la raíz. Ver `apps/pseudolearn_app/README.md` §2.3 para ejecutar el cliente, y
 `packages/pseudolearn_core/README.md` §2.3 para ejecutar el script de integración del motor.
 

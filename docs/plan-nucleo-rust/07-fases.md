@@ -617,3 +617,7 @@ Rama codex/implement-r2. La publicación usa push ordinario, sin coautoría ni a
 La implementación está en el commit 9506885; el informe de verificación local se publicó en e7dc881c83441eb426d212e08ae54aaa33b59c70. La persona autorizó explícitamente publicar el contenido de R2 en su repositorio público. El push ordinario a origin/codex/implement-r2 terminó correctamente y git ls-remote confirmó ese mismo HEAD remoto. El cierre documental se publica en la misma rama y la igualdad de HEAD se comprueba después del push final.
 
 Los dos rechazos automáticos anteriores quedan resueltos por la verificación del destino y la autorización explícita; no se evitó ningún rechazo ni se utilizó force push. No quedan pendientes obligatorios de R2. R3 requiere un mensaje nuevo de autorización.
+
+## 8. Rama única de continuidad
+
+R1 y R2 se integran por fast-forward en feature/agregar-ruta-de-especificacion, conservando todos sus commits. La rama base es la única rama de trabajo y publicación para los cambios posteriores. La implementación y las verificaciones de R2 permanecen vigentes; no se modifica el código ni el corpus al integrar. La igualdad de HEAD local/remoto se comprueba después de publicar esta integración. R3 no se inicia.

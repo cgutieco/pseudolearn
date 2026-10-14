@@ -25,13 +25,14 @@
   "engine_code": "none",
   "publication": {
     "state": "published",
-    "branch": "codex/implement-r2",
+    "branch": "feature/agregar-ruta-de-especificacion",
     "implementation_commit": "9506885",
     "verified_published_checkpoint": "e7dc881c83441eb426d212e08ae54aaa33b59c70",
     "destination": "https://github.com/cgutieco/pseudolearn",
     "visibility": "public",
     "authorization": "explicit user approval to publish R2 in this public repository",
     "checkpoint_head_equality": true,
-    "method": "ordinary push; final completion commit published on the same branch and HEAD checked after push"
+    "method": "ordinary push; final completion commit published on the same branch and HEAD checked after push",
+    "continuation": "All R1 and R2 commits integrated by fast-forward; all subsequent changes use this single branch."
   }
 }
