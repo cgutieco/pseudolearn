@@ -1,0 +1,19 @@
+package: pseudolearn_benchmarks
+source_root: lib/src
+layers:
+  - name: model
+    path: model
+    may_import: []
+  - name: suite
+    path: suite
+    may_import: [model]
+  - name: execution
+    path: execution
+    may_import: [model]
+external_dependencies: [pseudolearn_core]
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
