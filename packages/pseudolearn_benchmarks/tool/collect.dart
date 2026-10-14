@@ -84,10 +84,12 @@ application.invokeMain();
 Future<Map<String, Object>> collectProcess(
   String target,
   int invocation,
-  List<Map<String, dynamic>> records,
-) async {
+  List<Map<String, dynamic>> records, {
+  String worker = 'worker',
+  int expectedRows = 360,
+}) async {
   final executable = target == 'native'
-      ? 'build/worker${Platform.isWindows ? '.exe' : ''}'
+      ? 'build/$worker${Platform.isWindows ? '.exe' : ''}'
       : 'node';
   final arguments = switch (target) {
     'js' => ['build/worker.js'],
@@ -120,7 +122,7 @@ Future<Map<String, Object>> collectProcess(
       .convert(await output)
       .map((line) => jsonDecode(line) as Map<String, dynamic>)
       .toList();
-  if (rows.length != 360 ||
+  if (rows.length != expectedRows ||
       samples == 0 ||
       rows.any((row) => row.containsKey('error'))) {
     throw StateError('Incomplete measurement: $target');
@@ -145,6 +147,9 @@ Future<String> checked(String executable, List<String> arguments) async {
 
 Future<Map<String, Object>> environment() async => {
   'commit': await checked('git', ['rev-parse', 'HEAD']),
+  'sourceHashes': await sourceHashes(),
+  'clockFrequency': Stopwatch().frequency,
+  'timeUnit': 'microseconds',
   'dirty': (await checked('git', [
     'status',
     '--porcelain',
@@ -186,4 +191,23 @@ Future<String> hardware() async {
     'Get-CimInstance Win32_Processor | Select-Object Name; '
         'Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory',
   ]);
+}
+
+Future<Map<String, String>> sourceHashes() async {
+  final listing = await checked('git', [
+    'ls-files',
+    '--cached',
+    '--others',
+    '--exclude-standard',
+    '--',
+    'lib',
+    'bin',
+    'tool',
+    'pubspec.yaml',
+    'architecture.yaml',
+  ]);
+  return {
+    for (final path in const LineSplitter().convert(listing))
+      path: await checked('git', ['hash-object', '--', path]),
+  };
 }

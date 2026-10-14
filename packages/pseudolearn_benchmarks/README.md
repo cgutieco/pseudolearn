@@ -3,10 +3,11 @@
 ## 1. Qué es y qué no es
 
 Arnés E-01 de la API pública del núcleo Dart congelado como `reference`. Mide ejecución y coste de
-observación sin modificar semántica. No es una especificación ni un umbral obligatorio de velocidad.
+observación sin modificar semántica. El corpus define los contratos y los umbrales; el arnés publica la evidencia.
 Carga suma, Fibonacci, burbuja, objetos del anexo, Sieve y Permute de Are We Fast Yet.
-Se excluyen Bounce/List/Mandelbrot/NBody/Queens/Storage/Towers y CD/DeltaBlue/Havlak/Json/Richards:
-la portación y validación de sus estructuras y bibliotecas no están disponibles en esta suite.
+La suite AWFY-core lee los diez programas, entradas y controles de la exportación del corpus: Sieve,
+Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards.
+Se excluyen CD, DeltaBlue, Havlak y Json, fuera del subconjunto vigente.
 La suite usa tamaños reducidos declarados para permitir repeticiones, no reproduce los tiempos del anexo.
 
 ## 2. Guía operativa y ciclo de vida
@@ -18,6 +19,11 @@ Compila ejecutable nativo, JavaScript optimizado y Wasm en `build/`; ejecuta Nod
 Resultados crudos y resumen en la ruta indicada. Recalcular estadísticas sin repetir mediciones:
 `dart run tool/summarize.dart results/local`. CI conserva artefactos por sistema operativo;
 `results/` contiene solamente evidencias seleccionadas y no es salida del build del motor.
+La línea base AWFY nativa se recoge con `dart run tool/collect_awfy.dart`; evidencia en
+`results/macos-r3-awfy/`. `dart run bin/awfy_worker.dart --verify` comprueba todas las cargas.
+El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
+Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
+`results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.
 No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del recolector.
 
 ## 3. Arquitectura y modelo del sistema
@@ -31,6 +37,7 @@ No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del r
 | tool | Compilar, recolectar y verificar | API del paquete, SDK, analyzer, yaml | modificar el núcleo |
 
 Las reglas están en `architecture.yaml`; tests reflejan `lib/src` y `tool`.
+El cargador de corpus devuelve un fallo como valor ante exportación inválida y no copia programas.
 Cada proceso analiza las cargas antes de medir; cada repetición crea un intérprete nuevo.
 La observación recibe instantáneas y cuenta eventos sin conservarlos. Se valida terminación y salida
 en ambas configuraciones antes de aceptar la muestra. Un fallo retorna un resultado, no escapa.
@@ -58,6 +65,10 @@ El worker es secuencial, con semilla fija, sin I/O dentro del intervalo medido.
 - **Problema:** runners compartidos no fijan frecuencia ni carga externa. **Elección:** publicar
   hardware, versiones y limitaciones. **Descartado:** comparar máquinas diferentes como mismo hardware.
 
+Problema: duplicar programas permite medir otra carga. Elección: el arnés AWFY lee la exportación del
+corpus y sus controles; se descarta mantener una segunda copia. El arnés histórico E-01 conserva sus
+cargas para reproducir la evidencia original.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios, imports relativos internos y API pública exportada por un único punto.
@@ -67,7 +78,7 @@ El verificador usa AST de Dart y sus tokens para evitar falsos comentarios dentr
 ## 6. Decisiones de producto que condicionan el código
 
 El núcleo se congela como `reference`; E-01 mide defectos existentes sin repararlos en Dart.
-`PERF.BASELINE.REFERENCE` y el protocolo normativo pertenecen a R3. E-01 publica evidencia inicial
+`PERF.BASELINE.REFERENCE`, `PERF.SUITE.AWFY-CORE` y `PERF.PROTOCOL` definen la línea base y su protocolo. E-01 publica evidencia inicial
 con sus amenazas a la validez; no afirma rendimiento del futuro motor Rust.
 
 ## 7. Verificación, testing y aseguramiento de calidad
@@ -79,14 +90,15 @@ El workflow manual autorizado ejecuta tests y mediciones en macOS arm64, Linux x
 sin umbral de tiempo. `collect_metrics=false` permite verificar las mismas fuentes sin repetir una
 medición ya conservada; la verificación habitual se ejecuta en local.
 Evidencia de R0: `results/ci-r0-complete/` conserva 32.400 muestras, 90 procesos y 108 grupos
-validados en macOS, Linux y Windows. Los datos parciales se conservan por separado. No hay pendientes
-operativos de R0; el protocolo normativo se publica en R3.
+validados en macOS, Linux y Windows. Los datos parciales se conservan por separado. La suite AWFY verifica entradas suministradas, rechaza entradas ausentes y compara salidas en ambos modos.
+Los tests del cargador rechazan corpus inválido o incompleto. No hay pendientes operativos del arnés.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
 El anexo aporta las cuatro cargas básicas y la API de micro-pasos; no se adoptan sus tiempos como
 línea base estadística. Are We Fast Yet aporta Sieve y Permute: se portan sus algoritmos y sus
-resultados de control (669 y 8660). Se descartan las cargas sin portación validada en esta suite.
+resultados de control (669 y 8660). La suite completa usa adaptaciones normativas de PERF.SUITE.AWFY-CORE; se rechazan cargas sin representación en el lenguaje vigente.
+ceiling conserva cuatro variantes de cada algoritmo y usa su propio README y architecture.yaml.
 La metodología conserva repeticiones independientes y resultados desfavorables del protocolo E-01.
 
 ### Aviso de licencia de las cargas derivadas de Are We Fast Yet
@@ -111,6 +123,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-La procedencia se captura antes de compilar y medir; dirty se refiere solo a fuentes y configuración
+El recolector guarda revisión, hashes de cada fuente y configuración antes de compilar y medir; dirty se refiere solo a fuentes y configuración
 del arnés, no a sus salidas. El resumen puede recalcularse sobre los mismos datos crudos sin cambiar
 las mediciones, conservando su entorno original.
