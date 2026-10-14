@@ -15,7 +15,8 @@ Flutter 3.47.5 aporta Dart 3.13.4; Node se fija en `node-version` para JS y Wasm
 Preparación: `dart pub get`. Verificación: `dart test`, `dart analyze --fatal-infos --fatal-warnings`
 y `dart run tool/check.dart`. Ejecución: `dart run tool/collect.dart --output results/local`.
 Compila ejecutable nativo, JavaScript optimizado y Wasm en `build/`; ejecuta Node con soporte Wasm GC.
-Resultados crudos y resumen en la ruta indicada. CI conserva artefactos por sistema operativo;
+Resultados crudos y resumen en la ruta indicada. Recalcular estadísticas sin repetir mediciones:
+`dart run tool/summarize.dart results/local`. CI conserva artefactos por sistema operativo;
 `results/` contiene solamente evidencias seleccionadas y no es salida del build del motor.
 No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del recolector.
 
@@ -103,3 +104,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+La procedencia se captura antes de compilar y medir; dirty se refiere solo a fuentes y configuración
+del arnés, no a sus salidas. El resumen puede recalcularse sobre los mismos datos crudos sin cambiar
+las mediciones, conservando su entorno original.

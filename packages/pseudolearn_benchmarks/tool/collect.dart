@@ -7,9 +7,16 @@ import 'statistics.dart';
 
 Future<void> main(List<String> arguments) async {
   try {
+    if (arguments.isNotEmpty &&
+        (arguments.length != 2 || arguments.first != '--output')) {
+      throw const FormatException(
+        'Usage: dart run tool/collect.dart [--output directory]',
+      );
+    }
     final output = arguments.length == 2 && arguments.first == '--output'
         ? arguments.last
         : 'results/local';
+    final provenance = await environment();
     await Directory(output).create(recursive: true);
     await compileTargets();
     final records = <Map<String, dynamic>>[];
@@ -25,7 +32,7 @@ Future<void> main(List<String> arguments) async {
       }
     }
     final summary = {
-      'environment': await environment(),
+      'environment': provenance,
       'measurements': summarize(records),
       'observationRatios': observationRatios(records),
       'limitations': [
@@ -138,7 +145,18 @@ Future<String> checked(String executable, List<String> arguments) async {
 
 Future<Map<String, Object>> environment() async => {
   'commit': await checked('git', ['rev-parse', 'HEAD']),
-  'dirty': (await checked('git', ['status', '--porcelain'])).isNotEmpty,
+  'dirty': (await checked('git', [
+    'status',
+    '--porcelain',
+    '--untracked-files=no',
+    '--',
+    'lib',
+    'bin',
+    'tool',
+    'pubspec.yaml',
+    'node-version',
+    'architecture.yaml',
+  ])).isNotEmpty,
   'dart': await checked('dart', ['--version']),
   'node': await checked('node', ['--version']),
   'os': Platform.operatingSystem,

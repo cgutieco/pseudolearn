@@ -24,4 +24,9 @@ void main() {
     )!;
     expect(measureUnobserved(program, ''), isA<RunFailure>());
   });
+  test('returns an expected failure for runtime arithmetic faults', () {
+    final program = analyze('Proceso Fault\nEscribir 1 div 0\nFinProceso')!;
+    expect(measureUnobserved(program, ''), isA<RunFailure>());
+    expect(measureObserved(program, ''), isA<RunFailure>());
+  });
 }
