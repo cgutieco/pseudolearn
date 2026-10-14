@@ -1,6 +1,6 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0 aprobada para implementación; R1–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0 completada; R1–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -45,7 +45,7 @@ R0 Fundación
 
 ### R0 · Fundación
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Objetivo.** Dejar el monorepo listo para un miembro Rust, sin escribir aún ni una especificación ni
   el motor.
@@ -62,10 +62,10 @@ R0 Fundación
   - [x] La CI falla ante una violación deliberada en cada verificador de `pseudolearn_rust_checks`
      (comentario, nombre corto, abreviatura, función larga, `unwrap`, dependencia no declarada,
      `unsafe` sin fila).
-  - [ ] Los verificadores de todos los miembros se ejecutan en local; la comprobación remota manual
+  - [x] Los verificadores de todos los miembros se ejecutan en local; la comprobación remota manual
     permite confirmar resultados y obtener métricas en otros sistemas.
   - [x] `AGENTS.md` y el `README.md` raíz reflejan la quinta cadena y ADR-001.
-- [ ] **Experimentos.** E-01: línea base de rendimiento del núcleo Dart (`PERF.BASELINE.REFERENCE` se
+- [x] **Experimentos.** E-01: línea base de rendimiento del núcleo Dart (`PERF.BASELINE.REFERENCE` se
   escribe en R3, pero los datos se toman aquí).
 
 ### R1 · Sistema de especificaciones
@@ -349,7 +349,7 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 
 ## 5. Informe de ejecución R0 · 2026-10-14
 
-**Estado: abierta por verificación remota bloqueada.** Implementación y evidencia local publicadas en
+**Estado: R0 completada, con verificación local y comprobación remota puntual en verde.** Implementación y evidencia local publicadas en
 `origin/feature/agregar-ruta-de-especificacion`. R1 no está autorizada ni iniciada.
 
 ### Implementación
@@ -364,6 +364,10 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 - Arnés independiente con suma, Fibonacci, burbuja, objetos, Sieve y Permute; seis cargas por modo,
   diez procesos por objetivo y treinta repeticiones. Datos locales: 10.800 muestras únicas,
   30 procesos y 36 grupos. Resultados y entorno en `packages/pseudolearn_benchmarks/results/macos-local/`.
+- E-01 remota completa: 32.400 muestras únicas, 90 procesos y 108 grupos entre macOS, Linux y
+  Windows. Se validaron procedencia limpia, intervalos, métricas de proceso y paridad de micro-pasos
+  en las seis cargas, los dos modos y los tres objetivos. Evidencia en
+  `packages/pseudolearn_benchmarks/results/ci-r0-complete/`, incluido su manifiesto de captura.
 
 ### Pruebas
 
@@ -402,7 +406,8 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 - La primera CI ejecutó todos los miembros y verificó Rust, núcleo, marca, backend y web. Flutter
   informó **1.772 tests pasados y 176 goldens fallidos** en macOS 26. El entorno local macOS 27 pasa
   los 1.948. El workflow usa ahora `xcode-27`, con macOS 27.0.1, para conservar comparación exacta;
-  esta corrección queda **pendiente de confirmación remota**, sin cambiar los goldens de Flutter.
+  la corrección está confirmada por el reintento remoto: suite y verificadores de Flutter en verde,
+  sin cambiar los goldens de Flutter.
 - E-01 conserva todas las muestras: 13 de los 36 grupos locales tienen candidatos de puntos de
   cambio. No se declara estabilidad demostrada ni se eliminan muestras. RSS es pico muestreado y CPU
   la última lectura acumulada del proceso; los runners compartidos no controlan frecuencia ni carga.
@@ -412,21 +417,34 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 
 ### Pendientes y publicación
 
-| Pendiente | Motivo | Fase | Condición de resolución |
-|---|---|---|---|
-| Confirmar CI completa y goldens en `xcode-27` | GitHub no inicia jobs por pagos fallidos o límite de gasto | R0 | Resolver Billing & plans y ejecutar el workflow publicado |
-| Completar evidencia E-01 Linux/Windows | Facturación bloqueada; la ejecución anterior conserva datos parciales y macOS completo | R0 | Completar los jobs pendientes y conservar sus artefactos |
-| Publicar el protocolo y `PERF.BASELINE.REFERENCE` | Requiere corpus y contratos de rendimiento | R3 | R2 completada y R3 autorizada |
+No quedan pendientes obligatorios de R0. El protocolo normativo y `PERF.BASELINE.REFERENCE`
+pertenecen a R3, después de completar R2 y autorizar R3. Los datos iniciales necesarios están conservados.
 
-La segunda [ejecución de CI](https://github.com/cgutieco/pseudolearn/actions/runs/38518422512)
-terminó sin iniciar ningún job. La anotación de GitHub indica que los pagos recientes de la cuenta
-fallaron o que debe aumentarse el límite de gasto; remite a **Billing & plans**. No se modificó la
-facturación ni se relajaron verificadores. La casilla de fase y E-01 permanecen abiertas.
+El [reintento completo, intento 2](https://github.com/cgutieco/pseudolearn/actions/runs/38519149526/attempts/2)
+terminó en verde: nueve jobs, incluidos los tres sistemas de medición. La persona hizo público el
+repositorio y autorizó esta comprobación puntual. Los goldens de Flutter pasan en macOS 27 sin cambios
+ni tolerancia adicional. La verificación habitual es local; el workflow remoto solo se dispara a mano.
 
-La [primera ejecución](https://github.com/cgutieco/pseudolearn/actions/runs/38517204290) conserva el
-resultado del intento inicial. Los commits de implementación y correcciones están publicados por push
-ordinario en la rama indicada, sin trailers de coautoría ni atribución de autoría a IA. El cierre
-requiere también igualdad de HEAD local/remoto y CI verde tras publicar el informe definitivo.
+Las ejecuciones anteriores quedaron bloqueadas por facturación; ese bloqueo ya no impidió el
+reintento. Se conservan los datos parciales anteriores para no borrar resultados desfavorables.
+No se modificó la facturación ni se relajaron verificadores.
+
+El reloj de JavaScript produjo duraciones en múltiplos de 1.000 microsegundos en los tres runners;
+una muestra de objetos sin observador en macOS figura como cero, con 2.039 micro-pasos ejecutados.
+Se conserva el valor real como duración inferior a la resolución observada, sin atribuir coste cero
+al programa ni reemplazarlo por una duración inventada. Los intervalos por grupo siguen siendo
+positivos. Esta limitación de precisión acompaña los datos para el protocolo de R3.
+
+| Runner | Muestras únicas | Procesos | Grupos | Grupos con candidatos de cambio |
+|---|---:|---:|---:|---:|
+| macos-26 | 10.800 | 30 | 36 | 31 |
+| ubuntu-24.04 | 10.800 | 30 | 36 | 15 |
+| windows-2025 | 10.800 | 30 | 36 | 27 |
+
+Todas las muestras se conservan, incluidas las inestables; no se declara estabilidad demostrada.
+La publicación usa push ordinario a `origin/feature/agregar-ruta-de-especificacion`, sin coautoría de
+IA. El informe final incluye comprobación manual del commit publicado sin repetir E-01, porque las
+fuentes del arnés y del núcleo coinciden con el commit medido. R1 no se inicia.
 
 Se preservan también los artefactos de la CI cancelada en
 `packages/pseudolearn_benchmarks/results/ci-initial-cancelled/`, con un manifiesto de captura.

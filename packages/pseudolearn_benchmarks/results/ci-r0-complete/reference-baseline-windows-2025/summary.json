@@ -1,0 +1,1905 @@
+{
+  "environment": {
+    "commit": "c6a2cafeb3815858bddb8529d4dd93673b4e199f",
+    "dirty": false,
+    "dart": "Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700) on \"windows_x64\"",
+    "node": "v22.23.3",
+    "os": "windows",
+    "osVersion": "\"Windows Server 2025 Datacenter\" 10.0 (Build 26100)",
+    "cpuCount": 4,
+    "hardware": "Name                                           \r\n----                                           \r\nAMD EPYC 7763 64-Core Processor",
+    "utc": "2026-10-14T13:18:24.572839Z",
+    "processesPerTarget": 10,
+    "iterationsPerWorkloadAndMode": 30,
+    "seed": 42
+  },
+  "measurements": {
+    "native/sum/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 2633.746666666667,
+      "confidence95": [
+        2552.1000000000004,
+        2735.6366666666668
+      ],
+      "nanosecondsPerStep": 262.8489687292083,
+      "microsecondsPerOperation": 2.6337466666666667,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [
+          5,
+          6,
+          7,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "4": [],
+        "5": [
+          5
+        ],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/sum/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 3386.9066666666668,
+      "confidence95": [
+        3280.036666666667,
+        3483.2066666666665
+      ],
+      "nanosecondsPerStep": 338.01463739188296,
+      "microsecondsPerOperation": 3.386906666666667,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/fibonacci/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 1745.0,
+      "confidence95": [
+        1700.823333333333,
+        1792.3066666666666
+      ],
+      "nanosecondsPerStep": 227.3615635179153,
+      "microsecondsPerOperation": 3.752688172043011,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/fibonacci/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4986.223333333333,
+      "confidence95": [
+        4829.703333333333,
+        5159.32
+      ],
+      "nanosecondsPerStep": 649.6707926167209,
+      "microsecondsPerOperation": 10.723060931899642,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [
+          23,
+          25
+        ],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/bubble/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4528.636666666666,
+      "confidence95": [
+        4421.383333333333,
+        4621.873333333334
+      ],
+      "nanosecondsPerStep": 223.228504296676,
+      "microsecondsPerOperation": 10.410659003831416,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [
+          19
+        ],
+        "2": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "3": [
+          16,
+          18,
+          19
+        ],
+        "4": [
+          16,
+          17,
+          18
+        ],
+        "5": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "6": [],
+        "7": [],
+        "8": [
+          13,
+          14,
+          16
+        ],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/bubble/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 5688.210000000001,
+      "confidence95": [
+        5544.216666666667,
+        5786.253333333332
+      ],
+      "nanosecondsPerStep": 280.3869473061567,
+      "microsecondsPerOperation": 13.076344827586208,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "1": [],
+        "2": [
+          5,
+          7,
+          9,
+          11,
+          22,
+          23,
+          24,
+          25
+        ],
+        "3": [
+          14,
+          15
+        ],
+        "4": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "5": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "6": [
+          16,
+          17
+        ],
+        "7": [],
+        "8": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "9": [
+          16,
+          17
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "native/objects/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 573.6,
+      "confidence95": [
+        528.9666666666666,
+        608.3900000000001
+      ],
+      "nanosecondsPerStep": 281.31436978911233,
+      "microsecondsPerOperation": 5.736000000000001,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          6,
+          7
+        ],
+        "1": [
+          7,
+          24,
+          25
+        ],
+        "2": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "3": [
+          5,
+          6,
+          7,
+          25
+        ],
+        "4": [
+          11,
+          12,
+          13,
+          24,
+          25
+        ],
+        "5": [],
+        "6": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "7": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "8": [
+          7,
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/objects/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 691.46,
+      "confidence95": [
+        625.6999999999999,
+        747.2099999999998
+      ],
+      "nanosecondsPerStep": 339.11721432074546,
+      "microsecondsPerOperation": 6.9146,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          25
+        ],
+        "1": [
+          24,
+          25
+        ],
+        "2": [],
+        "3": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          24,
+          25
+        ],
+        "4": [
+          24,
+          25
+        ],
+        "5": [],
+        "6": [
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "7": [
+          18,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "8": [
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "native/sieve/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 66075.21333333333,
+      "confidence95": [
+        64823.753333333334,
+        67484.43000000001
+      ],
+      "nanosecondsPerStep": 198.1051920432377,
+      "microsecondsPerOperation": 13.215042666666667,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/sieve/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 86903.10666666666,
+      "confidence95": [
+        85057.77,
+        89419.7
+      ],
+      "nanosecondsPerStep": 260.55090504972975,
+      "microsecondsPerOperation": 17.38062133333333,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "native/permute/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 127402.33,
+      "confidence95": [
+        123692.30666666667,
+        132569.61
+      ],
+      "nanosecondsPerStep": 204.51059615193222,
+      "microsecondsPerOperation": 14.711585450346421,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [
+          5
+        ],
+        "2": [],
+        "3": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "4": [],
+        "5": [],
+        "6": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "7": [],
+        "8": [
+          9,
+          10
+        ],
+        "9": [
+          8,
+          9,
+          14
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "native/permute/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 407570.91,
+      "confidence95": [
+        396505.18999999994,
+        424350.5833333333
+      ],
+      "nanosecondsPerStep": 654.2468240438421,
+      "microsecondsPerOperation": 47.063615473441104,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [
+          23,
+          24,
+          25
+        ],
+        "2": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "3": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "4": [],
+        "5": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          13
+        ],
+        "6": [
+          11,
+          12,
+          14,
+          15,
+          17,
+          18
+        ],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/sum/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 14850.0,
+      "confidence95": [
+        13706.666666666668,
+        16323.333333333334
+      ],
+      "nanosecondsPerStep": 1482.0359281437127,
+      "microsecondsPerOperation": 14.85,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/sum/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 14803.333333333334,
+      "confidence95": [
+        13883.333333333332,
+        15953.333333333332
+      ],
+      "nanosecondsPerStep": 1477.3785761809715,
+      "microsecondsPerOperation": 14.803333333333335,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/fibonacci/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 11200.0,
+      "confidence95": [
+        10396.666666666666,
+        12323.333333333332
+      ],
+      "nanosecondsPerStep": 1459.2833876221498,
+      "microsecondsPerOperation": 24.086021505376344,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [
+          12,
+          13,
+          24,
+          25
+        ],
+        "3": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [
+          10,
+          19,
+          20,
+          21,
+          22
+        ],
+        "9": [
+          15,
+          19,
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "js/fibonacci/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 13620.0,
+      "confidence95": [
+        12673.333333333332,
+        15053.333333333332
+      ],
+      "nanosecondsPerStep": 1774.5928338762214,
+      "microsecondsPerOperation": 29.29032258064516,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          22
+        ],
+        "4": [],
+        "5": [],
+        "6": [
+          25
+        ],
+        "7": [
+          9,
+          10
+        ],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/bubble/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 26000.0,
+      "confidence95": [
+        23136.666666666668,
+        28873.333333333332
+      ],
+      "nanosecondsPerStep": 1281.6089121112043,
+      "microsecondsPerOperation": 59.770114942528735,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/bubble/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 26513.333333333332,
+      "confidence95": [
+        24076.666666666668,
+        29000.0
+      ],
+      "nanosecondsPerStep": 1306.9124726836562,
+      "microsecondsPerOperation": 60.95019157088122,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [
+          24,
+          25
+        ],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/objects/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4410.0,
+      "confidence95": [
+        3930.0,
+        4903.333333333334
+      ],
+      "nanosecondsPerStep": 2162.8249141736146,
+      "microsecondsPerOperation": 44.1,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          12,
+          14,
+          16,
+          21,
+          22,
+          23
+        ],
+        "1": [
+          11,
+          12,
+          13
+        ],
+        "2": [
+          16,
+          17,
+          18
+        ],
+        "3": [
+          16,
+          17,
+          18,
+          25
+        ],
+        "4": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "5": [],
+        "6": [
+          5,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "7": [],
+        "8": [],
+        "9": [
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "js/objects/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4766.666666666666,
+      "confidence95": [
+        3950.0,
+        5566.666666666666
+      ],
+      "nanosecondsPerStep": 2337.7472617296057,
+      "microsecondsPerOperation": 47.66666666666666,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "3": [
+          15,
+          16,
+          17,
+          22
+        ],
+        "4": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "5": [],
+        "6": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/sieve/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 373153.3333333333,
+      "confidence95": [
+        352113.3333333333,
+        396280.00000000006
+      ],
+      "nanosecondsPerStep": 1118.7797818926092,
+      "microsecondsPerOperation": 74.63066666666666,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "1": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "2": [
+          18,
+          20
+        ],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/sieve/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 413476.6666666666,
+      "confidence95": [
+        389933.3333333333,
+        438526.6666666666
+      ],
+      "nanosecondsPerStep": 1239.676276823691,
+      "microsecondsPerOperation": 82.69533333333332,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "1": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "js/permute/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 727486.6666666666,
+      "confidence95": [
+        692806.6666666666,
+        767256.6666666667
+      ],
+      "nanosecondsPerStep": 1167.786585163568,
+      "microsecondsPerOperation": 84.00538876058506,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          21
+        ],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "9": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "js/permute/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 1006550.0,
+      "confidence95": [
+        961950.0,
+        1058576.6666666667
+      ],
+      "nanosecondsPerStep": 1615.7486331429525,
+      "microsecondsPerOperation": 116.22979214780601,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          19
+        ],
+        "1": [],
+        "2": [
+          18
+        ],
+        "3": [],
+        "4": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [
+          14,
+          15,
+          16
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/sum/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4197.103333333333,
+      "confidence95": [
+        3752.9800000000005,
+        4705.303333333332
+      ],
+      "nanosecondsPerStep": 418.87258815701915,
+      "microsecondsPerOperation": 4.197103333333333,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/sum/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4348.109999999999,
+      "confidence95": [
+        3974.1933333333327,
+        4752.07
+      ],
+      "nanosecondsPerStep": 433.943113772455,
+      "microsecondsPerOperation": 4.348109999999998,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          13
+        ],
+        "1": [
+          5
+        ],
+        "2": [],
+        "3": [
+          5,
+          10,
+          11,
+          12,
+          13
+        ],
+        "4": [
+          5,
+          6
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/fibonacci/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 2197.92,
+      "confidence95": [
+        2032.7833333333335,
+        2360.37
+      ],
+      "nanosecondsPerStep": 286.3739413680782,
+      "microsecondsPerOperation": 4.726709677419355,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          18,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "1": [
+          8,
+          14,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "2": [],
+        "3": [],
+        "4": [
+          17,
+          18,
+          19
+        ],
+        "5": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "6": [
+          20,
+          21
+        ],
+        "7": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          25
+        ],
+        "8": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/fibonacci/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 4236.49,
+      "confidence95": [
+        3908.46,
+        4569.843333333333
+      ],
+      "nanosecondsPerStep": 551.985667752443,
+      "microsecondsPerOperation": 9.110731182795698,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          22,
+          23,
+          24,
+          25
+        ],
+        "1": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "2": [],
+        "3": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          23,
+          24
+        ],
+        "4": [],
+        "5": [
+          22,
+          23,
+          24,
+          25
+        ],
+        "6": [
+          20
+        ],
+        "7": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "8": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": [
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/bubble/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 6006.7733333333335,
+      "confidence95": [
+        5375.893333333333,
+        6639.286666666667
+      ],
+      "nanosecondsPerStep": 296.08977834738175,
+      "microsecondsPerOperation": 13.808674329501915,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          16,
+          18
+        ],
+        "1": [
+          12
+        ],
+        "2": [],
+        "3": [],
+        "4": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [
+          11,
+          12,
+          13,
+          14,
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": [
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          24,
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/bubble/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 6927.38,
+      "confidence95": [
+        6155.340000000001,
+        7739.746666666666
+      ],
+      "nanosecondsPerStep": 341.4689209838813,
+      "microsecondsPerOperation": 15.925011494252875,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "1": [
+          10,
+          12,
+          13,
+          20,
+          21,
+          22
+        ],
+        "2": [],
+        "3": [],
+        "4": [
+          5,
+          8,
+          9,
+          10,
+          11
+        ],
+        "5": [],
+        "6": [],
+        "7": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "8": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          22,
+          23,
+          24,
+          25
+        ],
+        "9": [
+          10,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/objects/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 703.35,
+      "confidence95": [
+        650.1266666666667,
+        760.4533333333331
+      ],
+      "nanosecondsPerStep": 344.94850416871014,
+      "microsecondsPerOperation": 7.0335,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [
+          6,
+          7,
+          8,
+          9,
+          12,
+          13,
+          14,
+          15,
+          19
+        ],
+        "7": [],
+        "8": [],
+        "9": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/objects/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 830.4300000000001,
+      "confidence95": [
+        758.9133333333332,
+        908.9066666666668
+      ],
+      "nanosecondsPerStep": 407.2731731240805,
+      "microsecondsPerOperation": 8.304300000000001,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [
+          25
+        ],
+        "2": [],
+        "3": [],
+        "4": [
+          5,
+          6,
+          25
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/sieve/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 87229.46666666666,
+      "confidence95": [
+        80707.98666666666,
+        94059.89333333334
+      ],
+      "nanosecondsPerStep": 261.52939013080044,
+      "microsecondsPerOperation": 17.44589333333333,
+      "stationarity": "not_proven",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/sieve/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 108553.66666666667,
+      "confidence95": [
+        99891.24333333335,
+        117532.17666666667
+      ],
+      "nanosecondsPerStep": 325.4631184239982,
+      "microsecondsPerOperation": 21.710733333333334,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [
+          10
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [
+          5,
+          6
+        ],
+        "9": [
+          23,
+          24
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/permute/false": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 151223.9166666667,
+      "confidence95": [
+        139925.37666666665,
+        163113.28333333335
+      ],
+      "nanosecondsPerStep": 242.74982529699514,
+      "microsecondsPerOperation": 17.46234603541186,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [
+          24,
+          25
+        ],
+        "1": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          15,
+          16,
+          17,
+          18,
+          23,
+          24,
+          25
+        ],
+        "6": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          23,
+          24,
+          25
+        ],
+        "7": [],
+        "8": [],
+        "9": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "samplesDiscarded": 0
+    },
+    "wasm/permute/true": {
+      "processes": 10,
+      "samples": 300,
+      "meanWallMicroseconds": 391171.73000000004,
+      "confidence95": [
+        367098.86,
+        415782.8533333333
+      ],
+      "nanosecondsPerStep": 627.9222970261429,
+      "microsecondsPerOperation": 45.169945727482684,
+      "stationarity": "change_points_detected",
+      "changePointCandidatesByProcess": {
+        "0": [],
+        "1": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "2": [],
+        "3": [
+          25
+        ],
+        "4": [],
+        "5": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          20,
+          21,
+          22,
+          23
+        ],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": []
+      },
+      "samplesDiscarded": 0
+    }
+  },
+  "observationRatios": {
+    "native/numeric": {
+      "geometricMeanRatio": 1.2862481855497596,
+      "confidence95": [
+        1.245122901472911,
+        1.3216781641611663
+      ]
+    },
+    "native/recursive": {
+      "geometricMeanRatio": 3.0229195342935395,
+      "confidence95": [
+        2.9811723950969657,
+        3.063300651040297
+      ]
+    },
+    "native/arrays": {
+      "geometricMeanRatio": 1.285140320706441,
+      "confidence95": [
+        1.2714580594000153,
+        1.2981002381085054
+      ]
+    },
+    "native/objects": {
+      "geometricMeanRatio": 1.2009674713496925,
+      "confidence95": [
+        1.1763363898949983,
+        1.227264830405687
+      ]
+    },
+    "js/numeric": {
+      "geometricMeanRatio": 1.0003068832156878,
+      "confidence95": [
+        0.9749816598820983,
+        1.0257925423296845
+      ]
+    },
+    "js/recursive": {
+      "geometricMeanRatio": 1.29747525081654,
+      "confidence95": [
+        1.2817092577048599,
+        1.315610300060249
+      ]
+    },
+    "js/arrays": {
+      "geometricMeanRatio": 1.0656254442488924,
+      "confidence95": [
+        1.047099369586796,
+        1.0858425258608986
+      ]
+    },
+    "js/objects": {
+      "geometricMeanRatio": 1.058747775457765,
+      "confidence95": [
+        0.9732949471669083,
+        1.164177687719818
+      ]
+    },
+    "wasm/numeric": {
+      "geometricMeanRatio": 1.0424171897763905,
+      "confidence95": [
+        0.9760009935658228,
+        1.0971042439197016
+      ]
+    },
+    "wasm/recursive": {
+      "geometricMeanRatio": 2.235592988664053,
+      "confidence95": [
+        2.1918879524351658,
+        2.2823889103535153
+      ]
+    },
+    "wasm/arrays": {
+      "geometricMeanRatio": 1.1960641577674613,
+      "confidence95": [
+        1.1777513839801914,
+        1.215424509656149
+      ]
+    },
+    "wasm/objects": {
+      "geometricMeanRatio": 1.1778248309141097,
+      "confidence95": [
+        1.1554031557190014,
+        1.20102101443365
+      ]
+    }
+  },
+  "limitations": [
+    "Shared runners and local machines do not control frequency or unrelated load",
+    "RSS is sampled, CPU is the last accumulated process reading",
+    "Stationarity is not proven; all samples including drift are retained"
+  ]
+}

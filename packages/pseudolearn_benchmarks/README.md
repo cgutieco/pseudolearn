@@ -45,7 +45,9 @@ El worker es secuencial, con semilla fija, sin I/O dentro del intervalo medido.
   treinta iteraciones por carga y modo. Conservar todas; detectar candidatos de puntos de cambio con segmentos de al menos cinco muestras,
   diferencia relativa superior al 5 % y diferencia superior a 3,3 errores estándar. No se declara
   estado estable demostrado; se conservan candidatos y datos completos para el protocolo de R3.
-  **Descartado:** borrar calentamientos o muestras desfavorables.
+  **Descartado:** borrar calentamientos o muestras desfavorables. JavaScript produce duraciones
+  observadas en múltiplos de 1 ms; un cero se conserva como dato inferior a esa resolución, no como
+  ejecución de coste nulo. Los intervalos se calculan con todas las muestras.
 - **Problema:** memoria y CPU no tienen API web portátil. **Elección:** muestreo del proceso anfitrión
   con `ps` en Unix y `Get-Process` en Windows. RSS máxima muestreada es cota inferior del pico;
   CPU es la última lectura acumulada, incluyendo arranque. La memoria no se atribuye a cada carga.
@@ -76,8 +78,9 @@ incorrecta. El recolector rechaza falta de muestras, objetivos fallidos y métri
 El workflow manual autorizado ejecuta tests y mediciones en macOS arm64, Linux x64 y Windows x64,
 sin umbral de tiempo. `collect_metrics=false` permite verificar las mismas fuentes sin repetir una
 medición ya conservada; la verificación habitual se ejecuta en local.
-Pendiente operativo de R0: GitHub Actions bloquea nuevas ejecuciones por facturación/límite de gasto;
-falta confirmar CI completa y las mediciones remotas. El protocolo normativo se publica en R3.
+Evidencia de R0: `results/ci-r0-complete/` conserva 32.400 muestras, 90 procesos y 108 grupos
+validados en macOS, Linux y Windows. Los datos parciales se conservan por separado. No hay pendientes
+operativos de R0; el protocolo normativo se publica en R3.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
