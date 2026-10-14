@@ -1,0 +1,16 @@
+[package]
+name = "pseudolearn_check_command"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+pseudolearn_checks = { path = "../checks", version = "=0.1.0" }
+pseudolearn_check_model = { path = "../model", version = "=0.1.0" }
+
+[[bin]]
+name = "rust-checks"
+path = "src/main.rs"

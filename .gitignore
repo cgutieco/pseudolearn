@@ -30,3 +30,7 @@ packages/pseudolearn_brand/out/
 # Python
 __pycache__/
 *.pyc
+
+# Rust
+target/
+packages/*/Cargo.lock
