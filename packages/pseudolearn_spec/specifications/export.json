@@ -28768,11 +28768,30 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "justificacion": "El arnés consume la exportación de PERF.SUITE.AWFY-CORE, valida la terminación y salida de los diez programas y conserva 6000 muestras en sus dos modos.",
+            "texto": "La línea base de la suite AWFY-core conserva diez procesos independientes y treinta iteraciones por programa y modo, con los tamaños de medición normativos y salida validada. Los tiempos se miden en el mismo Apple M2 local que E-02, con ejecutable nativo de Dart. El conjunto results/macos-r3-awfy de pseudolearn_benchmarks publica captura previa a compilación, hashes de fuentes, muestras crudas, métricas de proceso y resumen recalculable; no se mezcla con E-01 ni con otros equipos.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "73fb5ac1b2136f929e22a46b58c01acd87db6c2d7b8655992ddfcd5766eaee01",
+      "hash": "5c260fbae725a047ace56c62e93a0b86164f8d9bf5c0e7a41bfd4f4078681150",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "La puerta de rendimiento de la VM compara los mismos tamaños con esta serie nativa local, además de conservar E-01.",
+          "impacto_usuarios": "Publica la línea base de los diez programas AWFY-core en ambos modos sin cambiar su comportamiento.",
+          "justificacion": "La comparación por suite necesita una medición de reference para cada uno de los diez programas normativos.",
+          "revisado_por": "autoría automatizada; no revisión humana independiente"
+        },
         "depende_de": [
           {
             "id": "PERF.PROTOCOL",
@@ -28802,7 +28821,7 @@
         ],
         "titulo": "Línea base del núcleo de referencia",
         "titulo_en": "Reference baseline",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {

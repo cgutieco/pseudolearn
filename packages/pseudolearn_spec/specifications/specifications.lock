@@ -1892,6 +1892,23 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "PERF.BASELINE.REFERENCE@0.2.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "5c260fbae725a047ace56c62e93a0b86164f8d9bf5c0e7a41bfd4f4078681150",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "PERF.FRONTEND.THROUGHPUT@0.1.0": {
       "edition": {},
       "elements": {
@@ -4165,11 +4182,12 @@
         "M5": "medicion",
         "M6": "medicion",
         "R1": "regla",
-        "R2": "regla"
+        "R2": "regla",
+        "R3": "regla"
       },
-      "hash": "73fb5ac1b2136f929e22a46b58c01acd87db6c2d7b8655992ddfcd5766eaee01",
+      "hash": "5c260fbae725a047ace56c62e93a0b86164f8d9bf5c0e7a41bfd4f4078681150",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "PERF.FRONTEND.THROUGHPUT": {
       "edition": {},
