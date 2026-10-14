@@ -78,6 +78,7 @@ impl Calls for ClepsydraMachine {
                 *slot = link.0;
             }
         }
+        self.tick();
         Ok(())
     }
 

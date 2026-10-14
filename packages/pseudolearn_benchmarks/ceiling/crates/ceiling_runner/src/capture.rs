@@ -28,6 +28,7 @@ pub fn provenance() -> Result<Value, String> {
         "processes": 10, "iterations": 30, "seed": 42,
         "minimumSampleMilliseconds": 5,
         "clock": "std::time::Instant, batched to at least 5 ms",
+        "minimumObservedClockNanoseconds": clock_resolution(),
         "limitations": ["External load and CPU frequency uncontrolled", "No samples discarded",
             "Kernel ceiling experiment is not VM performance", "Memory and CPU belong to process, not kernel"]
     }))
@@ -68,4 +69,15 @@ fn source_hashes() -> Result<Value, String> {
         ),
     );
     Ok(Value::Object(hashes))
+}
+
+fn clock_resolution() -> u128 {
+    (0..10000)
+        .filter_map(|_| {
+            let start = std::time::Instant::now();
+            let elapsed = start.elapsed().as_nanos();
+            (elapsed > 0).then_some(elapsed)
+        })
+        .min()
+        .unwrap_or(0)
 }

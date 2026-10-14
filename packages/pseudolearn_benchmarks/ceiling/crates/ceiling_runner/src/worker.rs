@@ -28,13 +28,16 @@ pub fn measure(workload: &Workload, variant: u8) -> Result<(f64, u32, u64), Stri
     let mut experiment = Experiment::new(variant).map_err(|error| format!("{error:?}"))?;
     let mut elapsed = Duration::ZERO;
     let mut repetitions = 0_u32;
-    while elapsed < Duration::from_millis(5) {
+    while elapsed < Duration::from_millis(5) || (variant == 3 && experiment.checkpoints() == 0) {
         let start = Instant::now();
         let output = experiment
             .run(&workload.name, std::hint::black_box(workload.size))
             .map_err(|error| format!("{} V{variant}: {error:?}", workload.name))?;
         elapsed = elapsed.saturating_add(start.elapsed());
         validate(&output, &workload.expected)?;
+        if elapsed > Duration::from_secs(1) && variant == 3 && experiment.checkpoints() == 0 {
+            return Err("V3 failed to record a checkpoint".to_owned());
+        }
         repetitions = repetitions.checked_add(1).ok_or("Repetition overflow")?;
     }
     let nanoseconds = elapsed.as_secs_f64() * 1_000_000_000.0 / f64::from(repetitions);

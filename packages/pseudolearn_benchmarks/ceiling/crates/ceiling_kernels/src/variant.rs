@@ -4,19 +4,6 @@ use crate::machine::{Machine, Outcome};
 use crate::timeline::Timeline;
 use std::time::Duration;
 
-pub const KERNELS: [&str; 10] = [
-    "sieve",
-    "permute",
-    "queens",
-    "towers",
-    "list",
-    "storage",
-    "bounce",
-    "mandelbrot",
-    "nbody",
-    "richards",
-];
-
 pub enum Experiment {
     Idiomatic,
     Direct(DirectMachine),

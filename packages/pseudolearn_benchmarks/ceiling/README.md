@@ -6,7 +6,7 @@ Arnés desechable E-02 del techo semántico de diez algoritmos AWFY-core. Compar
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto de rust-toolchain.toml, rustfmt, Clippy y cargo-deny. Desde esta carpeta: `cargo xtask verify`; `cargo run --release -p ceiling_runner -- collect`. El recolector captura procedencia antes de compilar el trabajador release. Resultados en ../results/e02. Sin despliegue ni secretos.
+Rust exacto de rust-toolchain.toml, rustfmt, Clippy y cargo-deny. Desde esta carpeta: `cargo xtask verify`; `cargo run --release -p ceiling_runner -- collect`. El recolector captura procedencia antes de compilar el trabajador release. Resultados en ../results/e02. Recolección local en macOS Apple M2; los núcleos y sus verificadores no dependen de ese hardware. Sin despliegue ni secretos.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -24,6 +24,8 @@ Las dependencias y límites viven en architecture.yaml. Una máquina nueva por m
 Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Los bancos se reservan antes de cronometrar; cada repetición reinicia el estado lógico y su montón.
 El intervalo medido incluye el núcleo y su salida en memoria; la comparación y toda I/O ocurren fuera.
 Se acumulan repeticiones completas hasta 5 ms para superar la resolución del reloj.
+V3 exige además al menos un punto real por muestra; sin él tras un segundo devuelve error.
+El reloj se consulta tras 4096 pasos o llamadas; la resolución mínima observada se publica en la captura.
 V3 guarda páginas, porción activa de ambos bancos, profundidad y ordinal; retiene hasta 64 puntos.
 El código nativo experimental no serializa una continuación de la CPU ni implementa reproducción de la VM.
 Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.

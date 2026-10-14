@@ -14,3 +14,16 @@ fn invalid_kernel_does_not_produce_a_measurement() {
     };
     assert!(super::measure(&workload, 1).is_err());
 }
+
+#[test]
+fn recursive_v3_sample_records_a_real_checkpoint() -> Result<(), String> {
+    for name in ["storage", "towers"] {
+        let workload = crate::corpus::load("medicion")?
+            .into_iter()
+            .find(|workload| workload.name == name)
+            .ok_or("Missing workload")?;
+        let (_, _, checkpoints) = super::measure(&workload, 3)?;
+        assert!(checkpoints > 0);
+    }
+    Ok(())
+}
