@@ -1,6 +1,7 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0, R1 y R2 completadas; R3–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0, R1 y R2 completadas; R3–R9 pendientes de autorización individual. R3 tiene plan
+> ejecutable en [09](09-plan-r3-motor-clepsidra.md). Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -129,7 +130,14 @@ R0 Fundación
 
 ### R3 · Especificación del motor y sus fronteras
 
-- [ ] **Experimentos:** E-02.
+> **Plan ejecutable:** [09 · Plan de R3 · Arquitectura «Clepsidra»](09-plan-r3-motor-clepsidra.md).
+> R3 se ejecuta siguiendo sus pasos B0–B8 en una sola iteración. Esta fase se completa cuando todas las
+> casillas del plan 09 están marcadas con evidencia y su cierre B8 está en verde; solo entonces, en el
+> paso B8.6, se marcan las casillas de esta sección y se escribe el informe de R3. Si una casilla de
+> aquí y un paso del plan 09 parecieran contradecirse, se reporta (`CONFLICT-REPORT`); el plan 09 detalla
+> esta sección, no la sustituye.
+
+- [ ] **Experimentos:** E-02 (ampliado con las variantes V0–V3, plan 09 §4.4 y B4).
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
@@ -141,12 +149,13 @@ R0 Fundación
   - [ ] `IR.*`: el catálogo de instrucciones se escribe a partir de lo que exigen `LANG` y `LIB`.
   - [ ] `API.*`.
   - [ ] `RT.HOST.INTERFACE`.
-  - [ ] `TOOL.CLI.CONVENTIONS`, `TOOL.CLI.CHECK`, `TOOL.CLI.RUN`, `TOOL.CLI.IR`,
-     `TOOL.SERVICE.LOSSLESS-TREE`.
+  - [ ] `TOOL.CLI.CONVENTIONS`, `TOOL.CLI.MESSAGES`, `TOOL.CLI.CHECK`, `TOOL.CLI.RUN`, `TOOL.CLI.IR`,
+     `TOOL.SERVICE.LOSSLESS-TREE` (frontera de idioma, plan 09 §11).
   - [ ] `PERF.PROTOCOL`, `PERF.BASELINE.REFERENCE`, `PERF.SUITE.AWFY-CORE`, `PERF.VM.*`,
      `PERF.FRONTEND.THROUGHPUT`, `PERF.ARTIFACT.SIZE`, con umbrales provisionales (D-07).
-  - [ ] Primeros `README.md` de `pseudolearn_engine` y de cada crate de R4–R5, con las decisiones de
-     [04](04-arquitectura-del-workspace-rust.md) §3. Los crates siguen vacíos: la regla «sin `README.md`
+  - [ ] Primeros `README.md` de `pseudolearn_engine` y de cada crate de R4–R5, con la arquitectura
+     Clepsidra (plan 09 §3, §5 y §12) y las decisiones de [04](04-arquitectura-del-workspace-rust.md) §3 que
+     el plan 09 conserva. Los crates siguen vacíos: la regla «sin `README.md`
      no hay código» se cumple antes de la primera línea.
 - **Criterios de aceptación.**
   - [ ] Las especificaciones de R3 en `experimental`. Las que `reference` puede ejecutar
