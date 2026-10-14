@@ -24,12 +24,14 @@
   "deferred": "E-14 human study after R9, explicitly authorized",
   "engine_code": "none",
   "publication": {
-    "state": "blocked-by-automatic-approval-review",
+    "state": "published",
     "branch": "codex/implement-r2",
     "implementation_commit": "9506885",
-    "verified_destination": "https://github.com/cgutieco/pseudolearn",
+    "verified_published_checkpoint": "e7dc881c83441eb426d212e08ae54aaa33b59c70",
+    "destination": "https://github.com/cgutieco/pseudolearn",
     "visibility": "public",
-    "viewer_permission": "ADMIN",
-    "required": "Explicit user authorization to publish this R2 payload to the public repository; successful ordinary push and matching local/remote HEAD."
+    "authorization": "explicit user approval to publish R2 in this public repository",
+    "checkpoint_head_equality": true,
+    "method": "ordinary push; final completion commit published on the same branch and HEAD checked after push"
   }
 }

@@ -17,7 +17,8 @@
   ],
   "fases_cerradas": [
     "R0",
-    "R1"
+    "R1",
+    "R2"
   ],
   "vinculos": [
     {

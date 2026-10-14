@@ -1,6 +1,6 @@
 # 07 · Fases de implementación
 
-> **Estado:** R0 y R1 completadas; R2 verificada localmente, pendiente de publicación; R3–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
+> **Estado:** R0, R1 y R2 completadas; R3–R9 pendientes de autorización individual. Ninguna fase empieza sin un mensaje explícito de la persona responsable
 > (`PHASE-STOP`), y ninguna se cierra sin sus verificadores en verde (`PHASE-GREEN`, skill
 > `phase-gate`). No hay fechas: el repositorio no da información para estimarlas con honestidad
 > ([15](../15-evolucion-y-hoja-de-ruta.md) §3).
@@ -105,7 +105,7 @@ R0 Fundación
 
 - [x] **Experimentos:** E-10 local y comprobaciones técnicas bilingües terminadas; estudio humano E-14 diferido por autorización explícita a la evolución posterior a R9.
 
-- [ ] **Fase terminada:** verificaciones locales completas; push pendiente de confirmación.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores locales verdes y push confirmado.
 
 - **Depende de.** R1 y E-15 aprobado.
 - **Contenido.**
@@ -571,7 +571,7 @@ reintento fue aprobado y terminó correctamente.
 
 ## 7. Informe de ejecución R2 · 2026-10-14
 
-**Estado: implementación y verificaciones locales completas. R2 permanece abierta por publicación bloqueada por la revisión automática de aprobación.**
+**Estado: R2 completada, con verificaciones locales en verde y publicación autorizada y confirmada.**
 
 ### Implementación
 
@@ -614,4 +614,6 @@ No quedan tareas obligatorias de implementación o verificación local de R2. El
 
 Rama codex/implement-r2. La publicación usa push ordinario, sin coautoría ni atribución de IA. No se ejecuta GitHub Actions: R2 no requiere comprobación remota obligatoria y los workflows son manuales. R3 no se inicia.
 
-La implementación local está en el commit 9506885. La revisión automática rechazó dos intentos de push: primero por destino no verificado y después por exigir autorización explícita del contenido hacia un destino público. La consulta de solo lectura confirmó origin como https://github.com/cgutieco/pseudolearn, público y con permiso ADMIN. No se evitó el rechazo, no se publicó la rama ni se pudo comprobar igualdad de HEAD local/remoto. La condición para cerrar publicación es autorización explícita de la persona para enviar R2 a ese repositorio público y push confirmado; la fase permanece abierta hasta reunir esa evidencia.
+La implementación está en el commit 9506885; el informe de verificación local se publicó en e7dc881c83441eb426d212e08ae54aaa33b59c70. La persona autorizó explícitamente publicar el contenido de R2 en su repositorio público. El push ordinario a origin/codex/implement-r2 terminó correctamente y git ls-remote confirmó ese mismo HEAD remoto. El cierre documental se publica en la misma rama y la igualdad de HEAD se comprueba después del push final.
+
+Los dos rechazos automáticos anteriores quedan resueltos por la verificación del destino y la autorización explícita; no se evitó ningún rechazo ni se utilizó force push. No quedan pendientes obligatorios de R2. R3 requiere un mensaje nuevo de autorización.
