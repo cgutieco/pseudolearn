@@ -401,7 +401,7 @@ condicionan el día a día:
 
 ## 7. Verificación
 
-Pirámide de cinco niveles, que se ejecuta en local y en GitHub Actions con cada push y PR:
+Pirámide de cinco niveles, que se ejecuta en local y, cuando se autoriza una comprobación puntual, en GitHub Actions manualmente:
 
 | Nivel             | Herramienta               | Alcance                                                                      |
 | ----------------- | ------------------------- | ---------------------------------------------------------------------------- |

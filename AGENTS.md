@@ -201,7 +201,9 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
   se resuelven mediante especificaciones y Rust, no modificando el oráculo Dart.
 - Cada fase resuelve sus observaciones pertinentes, informa implementación, pruebas, verificadores y
   pendientes justificados, y publica su rama con push ordinario comprobado. Sin coautoría ni atribución
-  de autoría de IA en commits. `PHASE-GREEN` incluye CI verde y `PHASE-STOP` exige autorización nueva.
+  de autoría de IA en commits. `PHASE-GREEN` exige verificaciones locales en verde; también la comprobación remota cuando la fase
+  la pide y la persona la autoriza. `PHASE-STOP` exige autorización nueva. GitHub Actions se reserva
+  para despliegues productivos y comprobaciones puntuales manuales; no verifica cada push o PR.
 
 
 - El monorepo sostiene cinco cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`

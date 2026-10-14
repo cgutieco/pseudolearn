@@ -69,6 +69,8 @@ Solo diferir trabajo ajeno al alcance o dependiente de otra fase, indicando moti
 y condición de resolución. Nunca diferir un fallo obligatorio para declarar la fase terminada.
 
 Añadir al informe observaciones resueltas, pendientes justificados y evidencia de publicación.
-Hacer commits coherentes y push ordinario a la rama remota; verificar HEAD local/remoto y CI verde.
+Hacer commits coherentes y push ordinario a la rama remota; verificar HEAD local/remoto y pruebas
+locales en verde. Exigir también la comprobación remota cuando la fase la requiere y la persona la
+autoriza: los workflows de verificación son manuales y puntuales, no se disparan con cada push o PR.
 Publicar también el informe y las casillas actualizadas. No usar force push ni trailers de coautoría
-o atribución de IA. Si publicación o CI están bloqueadas, la fase queda abierta.
+o atribución de IA. Si la publicación o una comprobación remota obligatoria están bloqueadas, la fase queda abierta.

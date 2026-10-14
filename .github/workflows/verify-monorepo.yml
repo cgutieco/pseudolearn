@@ -1,9 +1,12 @@
 name: Verify Monorepo
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
+    inputs:
+      collect_metrics:
+        description: Medir E-01 en macOS, Linux y Windows
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -117,8 +120,9 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib bin tool test
       - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart
       - run: dart run tool/collect.dart --output results/ci
+        if: inputs.collect_metrics
       - uses: actions/upload-artifact@v6
-        if: always()
+        if: always() && inputs.collect_metrics
         with:
           name: reference-baseline-${{ matrix.os }}
           path: packages/pseudolearn_benchmarks/results/ci

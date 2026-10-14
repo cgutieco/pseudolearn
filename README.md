@@ -15,7 +15,8 @@ backend de Supabase y `apps/fe-pseudolearn/README.md` para el sitio web y landin
 
 **Estado:** siete miembros activos, con cinco cadenas de herramientas. El núcleo Dart es el sujeto
 `reference` congelado de ADR-001; la fundación Rust y el arnés E-01 son miembros reutilizables.
-GitHub Actions verifica todos los miembros en cada push y PR, sin filtros por rutas. Los flujos de
+La verificación habitual es local. GitHub Actions permite comprobaciones puntuales manuales
+de todos los miembros y métricas multiplataforma. Los flujos de
 publicación conservan sus disparadores propios. No hay orquestador de monorepo ni workspace Cargo raíz.
 
 ---
@@ -472,7 +473,10 @@ técnica prioriza densidad y precisión sobre estilo editorial (`AGENTS.md`, ski
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-`.github/workflows/verify-monorepo.yml` ejecuta todos los miembros en cada push y PR. No despliega.
+`.github/workflows/verify-monorepo.yml` ejecuta todos los miembros solo mediante `workflow_dispatch`.
+La persona autoriza la comprobación puntual; los pushes y PR no la disparan. El parámetro
+`collect_metrics` permite recoger E-01 o ejecutar únicamente verificaciones cuando ya existe evidencia
+de métricas para las mismas fuentes. La verificación habitual usa los comandos locales de cada miembro.
 Cada miembro conserva sus comandos nativos y verificadores negativos. Los nuevos miembros Rust se
 descubren por `rust-toolchain.toml` versionado y ejecutan `cargo xtask verify`; CI rechaza anclajes
 distintos. El arnés E-01 corre en macOS arm64, Linux x64 y Windows x64 y conserva artefactos crudos.

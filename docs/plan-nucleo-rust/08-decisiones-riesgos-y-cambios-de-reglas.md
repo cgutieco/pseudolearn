@@ -30,7 +30,7 @@
 | D-18 | Se especifica el contrato de observación                                              | R3 (`ENG.*`)         |
 | D-20 | Identificadores de especificación en inglés ASCII; títulos en español                  | R1                   |
 | D-22 | Los hallazgos se resuelven como casos. Con la reescritura se resuelven **en Rust**; en `reference` quedan como `exento` | R2 |
-| D-23 | CI que ejecuta todos los verificadores y la conformidad                                | R0                   |
+| D-23 | Verificación local de todos los miembros; comprobaciones remotas puntuales manuales y autorizadas                                | R0                   |
 
 ### 1.3 Nuevas, propuestas por este plan
 
@@ -132,3 +132,7 @@ o Alta.
 - `docs/README.md`: enlace a este plan (hecho en el mismo cambio que crea el plan).
 - `docs/14` y `docs/17`: **no se reescriben**. Son investigación con fecha. La resolución de D-05,
   D-06 y D-10 queda en este plan y, al aprobarse, en `AGENTS.md` y en el `README.md` raíz.
+
+La instrucción de la persona responsable del 2026-10-14 reserva GitHub Actions para despliegues
+productivos y comprobaciones puntuales manuales. D-23 no exige verificaciones automáticas en push/PR.
+E-01 tiene autorización explícita para usar runners remotos y completar su matriz de métricas.

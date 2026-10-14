@@ -1999,7 +1999,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   Flutter localmente a la 3.47.5 (motor del 16 de septiembre) fallaron 176 de ellos con diferencias de entre el 0,03 % y
   el 1,7 % de píxeles, todas en el suavizado de bordes de texto, iconos y esquinas: ningún elemento se movió ni cambió de
   color. La restricción `>=3.24.0` admitía cualquier versión, y los workflows instalaban la última de `stable` en cada
-  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. La CI ejecuta `flutter test` en cada push y PR.
+  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. El workflow manual de comprobaciones puntuales ejecuta `flutter test`.
 - **Elección:**
     - `environment.flutter` en `pubspec.yaml` declara la versión exacta (`3.47.5`). Es la única fuente: `flutter pub get`
       rechaza otra versión en local, y `push-production-macos.yml` y `push-production-windows-r2.yml` la leen con `flutter-version-file`

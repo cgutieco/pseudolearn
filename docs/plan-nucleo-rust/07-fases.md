@@ -55,13 +55,15 @@ R0 Fundación
      `AGENTS.md` (§2, §3, §8, §9), `README.md` raíz (§1.3, §2, §3), skills.
   - [x] Instalar la cadena Rust y fijarla.
   - [x] Crear `packages/pseudolearn_rust_checks` con sus verificadores y un caso negativo por verificador.
-  - [x] **CI** (D-23) que ejecute los verificadores de los cinco miembros actuales y de los nuevos.
+  - [x] **Comprobación remota manual** (D-23) que ejecute los verificadores de los cinco miembros
+    actuales y de los nuevos cuando la persona autorice una comprobación puntual.
   - [x] Congelar `packages/pseudolearn_core`: se declara en su `README.md` como sujeto `reference`.
 - **Criterios de aceptación.**
   - [x] La CI falla ante una violación deliberada en cada verificador de `pseudolearn_rust_checks`
      (comentario, nombre corto, abreviatura, función larga, `unwrap`, dependencia no declarada,
      `unsafe` sin fila).
-  - [ ] La CI ejecuta los verificadores de todos los miembros existentes en cada cambio.
+  - [ ] Los verificadores de todos los miembros se ejecutan en local; la comprobación remota manual
+    permite confirmar resultados y obtener métricas en otros sistemas.
   - [x] `AGENTS.md` y el `README.md` raíz reflejan la quinta cadena y ADR-001.
 - [ ] **Experimentos.** E-01: línea base de rendimiento del núcleo Dart (`PERF.BASELINE.REFERENCE` se
   escribe en R3, pero los datos se toman aquí).
@@ -315,7 +317,9 @@ para cerrar la fase (`PHASE-GREEN`).
 
 Al terminar cada fase se hacen commits coherentes y push ordinario a su rama remota, sin force push,
 sin trailers `Co-authored-by` ni atribución de autoría a IA. Se verifica la igualdad de HEAD local y
-remoto, y el resultado verde de CI. La publicación inicial permite ejecutar CI; el informe y las
+remoto y las verificaciones locales en verde. Cuando una fase requiere una comprobación remota
+autorizada, también se exige su resultado verde. Los workflows de comprobación son manuales;
+publicar un commit no los dispara. El informe y las
 casillas definitivas se publican después de reunir la evidencia. No se avanza a otra fase sin un
 mensaje nuevo de autorización (`PHASE-STOP`).
 
@@ -355,7 +359,8 @@ mensaje nuevo de autorización (`PHASE-STOP`).
 - Rust 1.99.0 fijado, Clippy y rustfmt instalados, cargo-deny 0.20.2; workspace por crates para reglas,
   fuentes, verificadores, CLI y tooling. Comandos `layers`, `comments`, `names`, `limits`, `unsafe`,
   `attributes`, `all` y comprobación de versiones de cadena.
-- CI en cada push y PR para todos los miembros, con mediciones E-01 en tres sistemas operativos.
+- Workflow manual para comprobaciones puntuales de todos los miembros y mediciones E-01 en tres
+  sistemas operativos; verificación local como flujo habitual.
 - Arnés independiente con suma, Fibonacci, burbuja, objetos, Sieve y Permute; seis cargas por modo,
   diez procesos por objetivo y treinta repeticiones. Datos locales: 10.800 muestras únicas,
   30 procesos y 36 grupos. Resultados y entorno en `packages/pseudolearn_benchmarks/results/macos-local/`.

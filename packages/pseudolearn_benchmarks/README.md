@@ -73,7 +73,9 @@ con sus amenazas a la validez; no afirma rendimiento del futuro motor Rust.
 Tests de cargas, análisis inválido, programa vacío, entrada requerida, límite de pasos y salida
 incorrecta. El recolector rechaza falta de muestras, objetivos fallidos y métricas ausentes.
 `tool/check.dart` verifica comentarios, capas y límites; cada regla tiene caso negativo.
-CI ejecuta tests y mediciones en macOS arm64, Linux x64 y Windows x64, sin umbral de tiempo.
+El workflow manual autorizado ejecuta tests y mediciones en macOS arm64, Linux x64 y Windows x64,
+sin umbral de tiempo. `collect_metrics=false` permite verificar las mismas fuentes sin repetir una
+medición ya conservada; la verificación habitual se ejecuta en local.
 Pendiente operativo de R0: GitHub Actions bloquea nuevas ejecuciones por facturación/límite de gasto;
 falta confirmar CI completa y las mediciones remotas. El protocolo normativo se publica en R3.
 
