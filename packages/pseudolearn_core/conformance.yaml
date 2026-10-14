@@ -1,0 +1,67 @@
+{
+  "sujeto": "reference",
+  "paquete": "packages/pseudolearn_core",
+  "activadas": [
+    "LANG.TYPES.INTEGER",
+    "LANG.CONTROL.FOR",
+    "LANG.SYNTAX.RECOVERY"
+  ],
+  "fases_cerradas": [
+    "R0"
+  ],
+  "vinculos": [
+    {
+      "regla": "LANG.CONTROL.FOR@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-37: reference congelado no emite controlVariableModified; resolución en el motor Rust R4."
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-06: reference duplica expectedExpression al recuperar; resolución en el parser Rust R4."
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-05: reference devuelve árbol nulo para texto vacío; resolución en el parser Rust R4."
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    }
+  ]
+}

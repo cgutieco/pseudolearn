@@ -1,0 +1,14 @@
+{
+  "caracteristica": "pilot",
+  "titulo": "Piloto R1",
+  "estado_agregado": "generado",
+  "edicion": "2026",
+  "especificaciones": [
+    "LANG.TYPES.INTEGER",
+    "LANG.CONTROL.FOR",
+    "LANG.SYNTAX.RECOVERY"
+  ],
+  "criterio_de_terminado": [
+    "Casos contrastados en reference con divergencias clasificadas"
+  ]
+}

@@ -1,0 +1,75 @@
+package: pseudolearn_spec
+layers:
+  - name: see_model
+    path: crates/see_model
+    may_import: []
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: see_format
+    path: crates/see_format
+    may_import: [see_model]
+    external_dependencies: [serde-saphyr, serde_json]
+    unsafe_allowed: false
+  - name: see_oracles
+    path: crates/see_oracles
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: see_graph
+    path: crates/see_graph
+    may_import: [see_model, see_format]
+    external_dependencies: [semver]
+    unsafe_allowed: false
+  - name: see_change
+    path: crates/see_change
+    may_import: [see_model, see_format]
+    external_dependencies: [serde_json, sha2]
+    unsafe_allowed: false
+  - name: see_validation
+    path: crates/see_validation
+    may_import: [see_model, see_graph, see_change, see_format]
+    external_dependencies: [semver, serde_json]
+    unsafe_allowed: false
+  - name: see_translation
+    path: crates/see_translation
+    may_import: [see_model]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: see_conformance
+    path: crates/see_conformance
+    may_import: [see_model, see_translation, see_format]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: see_export
+    path: crates/see_export
+    may_import: [see_model, see_change, see_format]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: see_report
+    path: crates/see_report
+    may_import: [see_model, see_format]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: see_cli
+    path: crates/see_cli
+    may_import: [see_model, see_format, see_graph, see_change, see_validation, see_conformance, see_report, see_export, see_translation]
+    external_dependencies: [serde_json, serde-saphyr, serde]
+    unsafe_allowed: false
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

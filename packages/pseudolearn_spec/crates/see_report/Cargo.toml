@@ -1,0 +1,15 @@
+[package]
+name = "see_report"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+see_model = { version = "0.1.0", path = "../see_model" }
+serde_json = "1"
+
+[dev-dependencies]
+see_format = { version = "0.1.0", path = "../see_format" }

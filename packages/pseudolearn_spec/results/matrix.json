@@ -1,0 +1,92 @@
+[
+  {
+    "binding": "cumple",
+    "cases": 6,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.1.0#R4",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "incumple",
+    "reason": "H-37: reference congelado no emite controlVariableModified; resolución en el motor Rust R4.",
+    "rule": "LANG.CONTROL.FOR@0.1.0#R5",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "exento",
+    "cases": 6,
+    "measured": "incumple",
+    "reason": "H-06: reference duplica expectedExpression al recuperar; resolución en el parser Rust R4.",
+    "rule": "LANG.SYNTAX.RECOVERY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "exento",
+    "cases": 10,
+    "measured": "incumple",
+    "reason": "H-05: reference devuelve árbol nulo para texto vacío; resolución en el parser Rust R4.",
+    "rule": "LANG.SYNTAX.RECOVERY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.1.0#R1",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.1.0#R2",
+    "state": "experimental",
+    "subject": "reference"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.1.0#R3",
+    "state": "experimental",
+    "subject": "reference"
+  }
+]

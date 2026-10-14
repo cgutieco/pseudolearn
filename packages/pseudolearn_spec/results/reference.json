@@ -1,0 +1,2477 @@
+{
+  "corpus_hashes": {
+    "LANG.CONTROL.FOR": "df6c380a7379b079f1b584c70f8cd68a7214cb372ff53f646ae8e496afa81f87",
+    "LANG.SYNTAX.RECOVERY": "09a9cdffe24472d1df91ab31669bb36f76c44cb88825b1e79c524d8470cebb53",
+    "LANG.TYPES.INTEGER": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018"
+  },
+  "observations": [
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "zeroStepInCountedLoop",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 39,
+                "line": 3
+              },
+              "start": {
+                "column": 38,
+                "line": 3
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "zeroStepInCountedLoop",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "zeroStepInCountedLoop",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "zeroStepInCountedLoop"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "zeroStepInCountedLoop",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 39,
+                "line": 3
+              },
+              "start": {
+                "column": 38,
+                "line": 3
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "zeroStepInCountedLoop",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "zeroStepInCountedLoop",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "zeroStepInCountedLoop"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "zeroStepInCountedLoop",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 31,
+                "line": 3
+              },
+              "start": {
+                "column": 30,
+                "line": 3
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "zeroStepInCountedLoop",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "zeroStepInCountedLoop",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "zeroStepInCountedLoop"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "zeroStepInCountedLoop",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 31,
+                "line": 3
+              },
+              "start": {
+                "column": 30,
+                "line": 3
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "zeroStepInCountedLoop",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "zeroStepInCountedLoop",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "zeroStepInCountedLoop"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123 / 4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123 / 4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123 / 4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123 / 4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123 / 4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123 / 4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "123 / 4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "123 / 4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10 6 2 /-2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10 6 2 /-2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10 6 2 /-2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10 6 2 /-2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10 6 2 /-2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10 6 2 /-2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "10 6 2 /-2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "10 6 2 /-2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "3\n4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "3\n4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "3\n4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "3\n4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "3\n4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "3\n4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "3\n4\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "3\n4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "controlVariableModified",
+            "severidad": "advertencia"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "controlVariableModified",
+            "severidad": "advertencia"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "controlVariableModified",
+            "severidad": "advertencia"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "controlVariableModified",
+            "severidad": "advertencia"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 15,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 15,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "expectedExpression",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 12,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 12,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [
+        "Mismatch: diagnosticos"
+      ],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "expectedExpression",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedAlgorithmStart",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 1
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": false
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: arbol"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "expectedAlgorithmStart",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedAlgorithmStart",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 1
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": false
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: arbol"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "expectedAlgorithmStart",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedAlgorithmStart",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 1
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": false
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: arbol"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "expectedAlgorithmStart",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedAlgorithmStart",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 1
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": false
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: arbol"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "expectedAlgorithmStart",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": []
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 14,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 14,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "arbol": "presente"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {},
+            "class": "syntax",
+            "code": "expectedExpression",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 1,
+                "line": 3
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "arbol": "presente"
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-9223372036854775808\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-9223372036854775808\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-9223372036854775808\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-9223372036854775808\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-9223372036854775808\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-9223372036854775808\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-9223372036854775808\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-9223372036854775808\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 33,
+                "line": 2
+              },
+              "start": {
+                "column": 32,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 33,
+                "line": 2
+              },
+              "start": {
+                "column": 32,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 30,
+                "line": 2
+              },
+              "start": {
+                "column": 29,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 30,
+                "line": 2
+              },
+              "start": {
+                "column": 29,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 40,
+                "line": 2
+              },
+              "start": {
+                "column": 39,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 40,
+                "line": 2
+              },
+              "start": {
+                "column": 39,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 37,
+                "line": 2
+              },
+              "start": {
+                "column": 36,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "integerOverflow",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 37,
+                "line": 2
+              },
+              "start": {
+                "column": 36,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "integerOverflow",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [
+          {
+            "codigo": "integerOverflow",
+            "severidad": "error"
+          }
+        ],
+        "fallo": {
+          "codigo": "integerOverflow"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "9223372036854775807\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "9223372036854775807\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "2\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "-1\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "diagnosticos": [],
+        "salida": "-1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "LANG.TYPES.INTEGER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    }
+  ],
+  "protocol": "see-protocol/1",
+  "stderr": "",
+  "subject": "reference",
+  "subject_version": "0.1.0"
+}

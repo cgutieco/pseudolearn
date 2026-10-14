@@ -1,0 +1,425 @@
+{
+  "formato": "see-lock/1",
+  "history": {
+    "LANG.CONTROL.FOR@0.1.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "E1": "error",
+        "E2": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla"
+      },
+      "hash": "df6c380a7379b079f1b584c70f8cd68a7214cb372ff53f646ae8e496afa81f87",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "LANG.SYNTAX.RECOVERY@0.1.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "09a9cdffe24472d1df91ab31669bb36f76c44cb88825b1e79c524d8470cebb53",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "LANG.TYPES.INTEGER@0.1.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "E1": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.ADAPTER.PROTOCOL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "0a75f507d0a579e11a1d99d65d61853c48e872d3e712fcfe674149a466af2ff5",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CHANGE.CLASSIFICATION@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "b3b1086746cefe7037add5f6708852cdc1654aa68d14a899aaaaca1c07f6e759",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CONFORMANCE.FILE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "44baa545d711593bf49da750bd352654e909a9246c8ad4641e945f8d859b9723",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CONFORMANCE.MATRIX@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "7d77cc9d8c8155f219a9da2f16eeef7af465f261a77b3fabf80d51d199f54a75",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.FEATURE-MANIFEST@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "05191550461f789506817f348e682c4ee52ee56d691e4444945a840a940734e2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.FORMAT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "16380f5fbb13a422405b8aa0c410d34a3a39193bb4f4df71fc376ce38edadd7c",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.GENERATION@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "8281de63cbb97f29ff7d60c04e2c1d3eb139b18945efea0d86397e1a900170ef",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.GRAPH@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "d2ac8c08f0ce1a1ca7dfb82c555ff3ba8de5f3f753a7c30d70aca208df5e0378",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.IDENTITY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.IMPACT@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "31cb8c25a12cfeb30e616c00d6cb1466f1fff1bdeb99c8bb1f2701eecaf2baa1",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.LIFECYCLE@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "9c3bba76dc95332810430496a6b0d6c4092e2c8fae439d05262e2c379a3a9152",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.LOCK@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "f0186e00f0b8bdc675b128833f7358b3c3d58d4ecc69524845d4c35f04cea44a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.ORACLE.POLICY@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "a7dfd59b5a5e7b17c424d7eeaa3a63d649d680dae0e2215d8923d075c27de7ce",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.VALIDATION@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "3f00b10d21cb72cf51e0a33da1bd332ca18709c58323a851c6d84fa59da7014f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.VERSIONING@0.1.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "f25ae9be0910d2b00cabc7d635cbd88a0227f7021cd1f8448494ba54ce9b66cb",
+      "state": "experimental",
+      "version": "0.1.0"
+    }
+  },
+  "specifications": {
+    "LANG.CONTROL.FOR": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "E1": "error",
+        "E2": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla"
+      },
+      "hash": "df6c380a7379b079f1b584c70f8cd68a7214cb372ff53f646ae8e496afa81f87",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "LANG.SYNTAX.RECOVERY": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "09a9cdffe24472d1df91ab31669bb36f76c44cb88825b1e79c524d8470cebb53",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "LANG.TYPES.INTEGER": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "E1": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.ADAPTER.PROTOCOL": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "0a75f507d0a579e11a1d99d65d61853c48e872d3e712fcfe674149a466af2ff5",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CHANGE.CLASSIFICATION": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "b3b1086746cefe7037add5f6708852cdc1654aa68d14a899aaaaca1c07f6e759",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CONFORMANCE.FILE": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "44baa545d711593bf49da750bd352654e909a9246c8ad4641e945f8d859b9723",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.CONFORMANCE.MATRIX": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "7d77cc9d8c8155f219a9da2f16eeef7af465f261a77b3fabf80d51d199f54a75",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.FEATURE-MANIFEST": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "05191550461f789506817f348e682c4ee52ee56d691e4444945a840a940734e2",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.FORMAT": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "16380f5fbb13a422405b8aa0c410d34a3a39193bb4f4df71fc376ce38edadd7c",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.GENERATION": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "8281de63cbb97f29ff7d60c04e2c1d3eb139b18945efea0d86397e1a900170ef",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.GRAPH": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "d2ac8c08f0ce1a1ca7dfb82c555ff3ba8de5f3f753a7c30d70aca208df5e0378",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.IDENTITY": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.IMPACT": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "31cb8c25a12cfeb30e616c00d6cb1466f1fff1bdeb99c8bb1f2701eecaf2baa1",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.LIFECYCLE": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "9c3bba76dc95332810430496a6b0d6c4092e2c8fae439d05262e2c379a3a9152",
+      "state": "borrador",
+      "version": "0.1.0"
+    },
+    "SEE.LOCK": {
+      "edition": {},
+      "elements": {
+        "R1": "regla"
+      },
+      "hash": "f0186e00f0b8bdc675b128833f7358b3c3d58d4ecc69524845d4c35f04cea44a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.ORACLE.POLICY": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "a7dfd59b5a5e7b17c424d7eeaa3a63d649d680dae0e2215d8923d075c27de7ce",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.VALIDATION": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "3f00b10d21cb72cf51e0a33da1bd332ca18709c58323a851c6d84fa59da7014f",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "SEE.VERSIONING": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "f25ae9be0910d2b00cabc7d635cbd88a0227f7021cd1f8448494ba54ce9b66cb",
+      "state": "experimental",
+      "version": "0.1.0"
+    }
+  }
+}

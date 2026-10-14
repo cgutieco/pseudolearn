@@ -88,6 +88,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: dart pub get
+        working-directory: packages/pseudolearn_core
       - run: rustup show
         working-directory: packages/pseudolearn_rust_checks
       - run: cargo install cargo-deny --version 0.20.2 --locked

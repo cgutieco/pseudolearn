@@ -1,0 +1,1726 @@
+{
+  "areas": {
+    "LANG.CONTROL": [
+      "LANG.CONTROL.FOR"
+    ],
+    "LANG.SYNTAX": [
+      "LANG.SYNTAX.RECOVERY"
+    ],
+    "LANG.TYPES": [
+      "LANG.TYPES.INTEGER"
+    ],
+    "SEE.ADAPTER": [
+      "SEE.ADAPTER.PROTOCOL"
+    ],
+    "SEE.CHANGE": [
+      "SEE.CHANGE.CLASSIFICATION"
+    ],
+    "SEE.CONFORMANCE": [
+      "SEE.CONFORMANCE.FILE",
+      "SEE.CONFORMANCE.MATRIX"
+    ],
+    "SEE.FEATURE-MANIFEST": [
+      "SEE.FEATURE-MANIFEST"
+    ],
+    "SEE.FORMAT": [
+      "SEE.FORMAT"
+    ],
+    "SEE.GENERATION": [
+      "SEE.GENERATION"
+    ],
+    "SEE.GRAPH": [
+      "SEE.GRAPH"
+    ],
+    "SEE.IDENTITY": [
+      "SEE.IDENTITY"
+    ],
+    "SEE.IMPACT": [
+      "SEE.IMPACT"
+    ],
+    "SEE.LIFECYCLE": [
+      "SEE.LIFECYCLE"
+    ],
+    "SEE.LOCK": [
+      "SEE.LOCK"
+    ],
+    "SEE.ORACLE": [
+      "SEE.ORACLE.POLICY"
+    ],
+    "SEE.VALIDATION": [
+      "SEE.VALIDATION"
+    ],
+    "SEE.VERSIONING": [
+      "SEE.VERSIONING"
+    ]
+  },
+  "format": "see-export/1",
+  "specifications": [
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Inicial, final y paso se evalúan una sola vez antes de la primera prueba, en ese orden; el paso omitido vale uno en rigor flexible.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Paso cero impide ejecutar el cuerpo y termina con zeroStepInCountedLoop.",
+            "verificacion": [
+              "C3",
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "La prueba precede al cuerpo y es inclusiva; la dirección depende solo del signo del paso.",
+            "verificacion": [
+              "C4",
+              "C5",
+              "C6",
+              "C7"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Al salir se conserva el primer valor de control que no supera la prueba.",
+            "verificacion": [
+              "C5",
+              "C6",
+              "C7"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R5",
+            "texto": "Modificar la variable de control en el cuerpo emite controlVariableModified como advertencia en ambos rigores.",
+            "verificacion": [
+              "C8",
+              "C9"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "ejecucion",
+            "codigo": "zeroStepInCountedLoop",
+            "id": "E1",
+            "severidad": "A",
+            "situacion": "paso cero"
+          },
+          "kind": "error"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "codigo": "controlVariableModified",
+            "id": "E2",
+            "severidad": "C",
+            "situacion": "modificación del control"
+          },
+          "kind": "error"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "123\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C1",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter, bound as integer;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter, bound Como Entero;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "123\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C2",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 do\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [
+                {
+                  "codigo": "zeroStepInCountedLoop",
+                  "severidad": "error"
+                }
+              ],
+              "fallo": {
+                "codigo": "zeroStepInCountedLoop"
+              },
+              "salida": ""
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C3",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "produce": [
+              "E1"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 0 do\n    write counter;\n  endFor\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 0 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "123 / 4\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E1"
+            ],
+            "id": "C4",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    write counter without newline;\n  endFor\n  write \" / \", counter;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \" / \", counter;\nFinAlgoritmo\n"
+            },
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "10\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C5",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 10 to 0 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 10 Hasta 0 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n"
+            },
+            "regla": "R4",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "10 6 2 /-2\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C6",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 10 to 0 step -4 do\n    write counter, \" \" without newline;\n  endFor\n  write \"/\", counter;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 10 Hasta 0 Con Paso -4 Hacer\n    Escribir counter, \" \" Sin Saltar;\n  FinPara\n  Escribir \"/\", counter;\nFinAlgoritmo\n"
+            },
+            "regla": "R4",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "3\n4\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C7",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 3 to 3 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 3 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n"
+            },
+            "regla": "R4",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [
+                {
+                  "codigo": "controlVariableModified",
+                  "severidad": "advertencia"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C8",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "produce": [
+              "E2"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    counter <- counter + 1;\n  endFor\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    counter <- counter + 1;\n  FinPara\nFinAlgoritmo\n"
+            },
+            "regla": "R5",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E2"
+            ],
+            "id": "C9",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    write counter;\n  endFor\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n"
+            },
+            "regla": "R5",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "df6c380a7379b079f1b584c70f8cd68a7214cb372ff53f646ae8e496afa81f87",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.TYPES.INTEGER",
+            "tipo": "usa",
+            "version": "^0.1"
+          }
+        ],
+        "dominio": "lenguaje",
+        "duenos": [
+          "responsable-lenguaje"
+        ],
+        "edicion": {
+          "introducida_en": "2026"
+        },
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "LANG.CONTROL.FOR",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Bucle contado.",
+        "revisado_por": [],
+        "sujetos": [
+          "reference"
+        ],
+        "titulo": "Bucle contado",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Una sentencia malformada produce como máximo un diagnóstico sintáctico principal; no se duplica al sincronizar.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "El análisis devuelve un árbol también para el texto vacío o inválido.",
+            "verificacion": [
+              "C3",
+              "C4",
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [
+                {
+                  "codigo": "expectedExpression",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C1",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write 1 +\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir 1 +\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C2",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": [
+                {
+                  "codigo": "expectedAlgorithmStart",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C3",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "",
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C4",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nendAlgorithm\n",
+              "es": "Algoritmo P\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C5",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n write 1 +\nendAlgorithm\n",
+              "es": "Algoritmo P\n Escribir 1 +\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "09a9cdffe24472d1df91ab31669bb36f76c44cb88825b1e79c524d8470cebb53",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "lenguaje",
+        "duenos": [
+          "responsable-lenguaje"
+        ],
+        "edicion": {
+          "introducida_en": "2026"
+        },
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "LANG.SYNTAX.RECOVERY",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Recuperación sintáctica.",
+        "revisado_por": [],
+        "sujetos": [
+          "reference"
+        ],
+        "titulo": "Recuperación sintáctica",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "id": "D1",
+            "termino": "rango del entero",
+            "texto": "Intervalo cerrado [-9223372036854775808, 9223372036854775807]."
+          },
+          "kind": "definicion"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "referencias": [
+              "D1"
+            ],
+            "texto": "Los valores enteros pertenecen al intervalo de D1; los extremos y cero se imprimen en decimal exacto.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "referencias": [
+              "D1"
+            ],
+            "texto": "Una suma que sale del intervalo de D1 termina con integerOverflow sin producir valor ni salida.",
+            "verificacion": [
+              "C4",
+              "C5",
+              "C6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "referencias": [
+              "D1"
+            ],
+            "texto": "La suma de enteros dentro de D1 produce el resultado matemático exacto.",
+            "verificacion": [
+              "C7",
+              "C8"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "ejecucion",
+            "codigo": "integerOverflow",
+            "id": "E1",
+            "severidad": "A",
+            "situacion": "suma fuera de rango"
+          },
+          "kind": "error"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "0\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E1"
+            ],
+            "id": "C1",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define value as integer;\n  value <- 0;\n  write value;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- 0;\n  Escribir value;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "9223372036854775807\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E1"
+            ],
+            "id": "C2",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define value as integer;\n  value <- 9223372036854775807;\n  write value;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- 9223372036854775807;\n  Escribir value;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "-9223372036854775808\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E1"
+            ],
+            "id": "C3",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  define value as integer;\n  value <- -9223372036854775807 - 1;\n  write value;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- -9223372036854775807 - 1;\n  Escribir value;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [
+                {
+                  "codigo": "integerOverflow",
+                  "severidad": "error"
+                }
+              ],
+              "fallo": {
+                "codigo": "integerOverflow"
+              },
+              "salida": ""
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C4",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "produce": [
+              "E1"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write 9223372036854775807 + 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir 9223372036854775807 + 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [
+                {
+                  "codigo": "integerOverflow",
+                  "severidad": "error"
+                }
+              ],
+              "fallo": {
+                "codigo": "integerOverflow"
+              },
+              "salida": ""
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C5",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "produce": [
+              "E1"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write (-9223372036854775807 - 1) + (-1);\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir (-9223372036854775807 - 1) + (-1);\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "9223372036854775807\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "evita": [
+              "E1"
+            ],
+            "id": "C6",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write 9223372036854775807 + 0;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir 9223372036854775807 + 0;\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "2\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C7",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write -3 + 5;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir -3 + 5;\nFinAlgoritmo\n"
+            },
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "diagnosticos": [],
+              "salida": "-1\n",
+              "terminacion": "completed"
+            },
+            "etiquetas": [
+              "limite"
+            ],
+            "id": "C8",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\n  write (-9223372036854775807 - 1) + 9223372036854775807;\nendAlgorithm\n",
+              "es": "Algoritmo P\n  Escribir (-9223372036854775807 - 1) + 9223372036854775807;\nFinAlgoritmo\n"
+            },
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "lenguaje",
+        "duenos": [
+          "responsable-lenguaje"
+        ],
+        "edicion": {
+          "introducida_en": "2026"
+        },
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "LANG.TYPES.INTEGER",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Tipo entero.",
+        "revisado_por": [],
+        "sujetos": [
+          "reference"
+        ],
+        "titulo": "Tipo entero",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Una sesión negocia see-protocol/1 y anuncia sujeto, versión, capacidades, perfiles y rigores; cada petición tiene una respuesta JSON por línea del mismo kind.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "EOF, JSON inválido, versión incompatible y bloqueo producen error operativo; capacidad ausente produce no aplicable.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "0a75f507d0a579e11a1d99d65d61853c48e872d3e712fcfe674149a466af2ff5",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.ADAPTER.PROTOCOL",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Protocolo por proceso.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Protocolo por proceso",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "El hash SHA-256 del contenido normativo canónico excluye prosa y presentación; un cambio normativo sin cambiar versión se rechaza.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Diff propone editorial, ampliación, retirada, verificación añadida, restricción o significado; los cambios semánticos requieren confirmación declarada.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "b3b1086746cefe7037add5f6708852cdc1654aa68d14a899aaaaca1c07f6e759",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.CHANGE.CLASSIFICATION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Clasificación preliminar.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Clasificación preliminar",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Los vínculos viven como datos por sujeto y resuelven especificación, versión y regla.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Pendiente declara fase de resolución abierta; exento declara justificación; estable exige vínculos en cada sujeto.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "44baa545d711593bf49da750bd352654e909a9246c8ad4641e945f8d859b9723",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.CONFORMANCE.FILE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Vínculos de conformidad.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Vínculos de conformidad",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La matriz presenta regla por sujeto, estado declarado y resultado medido, sin convertir exento en cumple.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Un vínculo cumple exigible que falla bloquea verificación; borrador y propuesta conservan resultados sin imponer cumplimiento.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "7d77cc9d8c8155f219a9da2f16eeef7af465f261a77b3fabf80d51d199f54a75",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.CONFORMANCE.MATRIX",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Matriz de conformidad.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Matriz de conformidad",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Un manifiesto enlaza contratos existentes sin reglas ni versión propia; su estado se agrega desde las especificaciones.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "05191550461f789506817f348e682c4ee52ee56d691e4444945a840a940734e2",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.FEATURE-MANIFEST",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Manifiesto de característica.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Manifiesto de característica",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Revisión estructural manual de arranque contra el plan aprobado; no constituye aprobación independiente para estabilidad.",
+            "texto": "El formato see/1 contiene metadatos YAML completos y bloques tipados regla, caso, definicion, error, propiedad, invariante, precondicion y resultado; rechaza campos desconocidos.",
+            "verificacion": [
+              "revision_humana"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "16380f5fbb13a422405b8aa0c410d34a3a39193bb4f4df71fc376ce38edadd7c",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "borrador",
+        "formato": "see/1",
+        "id": "SEE.FORMAT",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Formato de especificaciones.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Formato de especificaciones",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La exportación JSON contiene contratos, hashes e índices de áreas; --check rechaza una copia desactualizada.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "8281de63cbb97f29ff7d60c04e2c1d3eb139b18945efea0d86397e1a900170ef",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.GENERATION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Exportación para consumidores.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Exportación para consumidores",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Las dependencias existen, satisfacen rangos semánticos y forman un grafo acíclico.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "El grafo conserva identificador, rango y tipo en texto o DOT.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "d2ac8c08f0ce1a1ca7dfb82c555ff3ba8de5f3f753a7c30d70aca208df5e0378",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.GRAPH",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Grafo de dependencias.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Grafo de dependencias",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Revisión estructural manual de arranque contra el plan aprobado; no constituye aprobación independiente para estabilidad.",
+            "texto": "Los identificadores son segmentos ASCII mayúsculos separados por puntos, con elementos estables R, C, D, E, Q, I, P o S; las identidades retiradas conservan lápida y no se reutilizan.",
+            "verificacion": [
+              "revision_humana"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "c63fd63cbd9050da5bba9bbc67171e83bc63f702d067286c8089513d82819cd8",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "borrador",
+        "formato": "see/1",
+        "id": "SEE.IDENTITY",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Identidad persistente.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Identidad persistente",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Impacto incluye la especificación consultada y todos sus dependientes transitivos, sin duplicados; un identificador desconocido es error.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "31cb8c25a12cfeb30e616c00d6cb1466f1fff1bdeb99c8bb1f2701eecaf2baa1",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.IMPACT",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Impacto transitivo.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Impacto transitivo",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Revisión estructural manual de arranque contra el plan aprobado; no constituye aprobación independiente para estabilidad.",
+            "texto": "Los estados siguen borrador, propuesta, experimental, estable, obsoleta y retirada; rechazada es terminal. La estabilidad exige revisión independiente y evidencia en los sujetos declarados.",
+            "verificacion": [
+              "revision_humana"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "9c3bba76dc95332810430496a6b0d6c4092e2c8fae439d05262e2c379a3a9152",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "borrador",
+        "formato": "see/1",
+        "id": "SEE.LIFECYCLE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Ciclo de vida.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Ciclo de vida",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Lock conserva versión exacta y hash canónico por especificación e historial de identidades; --check rechaza anclajes desactualizados.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "f0186e00f0b8bdc675b128833f7358b3c3d58d4ecc69524845d4c35f04cea44a",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.LOCK",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Anclaje de especificaciones.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Anclaje de especificaciones",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Cada caso declara origen; capturado exige revisor independiente de la captura.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La comparación preserva salida exacta, terminación y multiconjunto completo de diagnósticos, incluidos los tramos declarados; no normaliza fallos del sujeto.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "a7dfd59b5a5e7b17c424d7eeaa3a63d649d680dae0e2215d8923d075c27de7ce",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.ORACLE.POLICY",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Independencia del oráculo.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Independencia del oráculo",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "La validación rechaza esquema inválido, duplicados, referencias no resueltas, reglas huérfanas, capturas sin revisor, hashes mutados y perfiles incompletos.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Los errores de lectura y configuración impiden afirmar que un corpus valida.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "3f00b10d21cb72cf51e0a33da1bd332ca18709c58323a851c6d84fa59da7014f",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.VALIDATION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Validación por capas.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Validación por capas",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Cada cambio de versión declara clase, impacto sobre usuarios, impacto sobre implementaciones, justificación y revisor; las versiones aumentan.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
+            "texto": "Editorial y verificación añadida incrementan revisión; aclaración, ampliación y deprecación incrementan menor; restricción, significado y retirada incrementan mayor.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
+        }
+      ],
+      "hash": "f25ae9be0910d2b00cabc7d635cbd88a0227f7021cd1f8448494ba54ce9b66cb",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [],
+        "dominio": "proceso",
+        "duenos": [
+          "responsable-especificaciones"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "SEE.VERSIONING",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Versionado de contratos.",
+        "revisado_por": [],
+        "sujetos": [
+          "see"
+        ],
+        "titulo": "Versionado de contratos",
+        "titulo_en": null,
+        "version": "0.1.0"
+      }
+    }
+  ]
+}

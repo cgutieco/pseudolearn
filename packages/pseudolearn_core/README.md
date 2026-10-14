@@ -19,6 +19,7 @@ suite de 748 tests y verificadores mecánicos al 100 % en verde.
 conserva compilación, API y tests como referencia hasta R9; los tests Dart no son el oráculo normativo
 del lenguaje. No recibe construcciones nuevas ni correcciones semánticas de los hallazgos de la
 reescritura. Se admiten mantenimiento de compatibilidad y verificación sin cambiar comportamiento.
+El adaptador de conformidad de R1 vive en `tool/` y usa exclusivamente la API pública.
 
 ---
 
@@ -312,6 +313,22 @@ El procesamiento de un programa en `pseudolearn_core` sigue un ciclo estrictamen
 ---
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+### Adaptador `reference` de conformidad
+
+**Problema:** SEE necesita contrastar contratos sin depender del lenguaje ni de los internos del sujeto.
+**Elección:** `dart run tool/conformance_adapter.dart` negocia `see-protocol/1` y atiende JSON por línea;
+`tool/conformance/` separa protocolo, análisis, ejecución y serialización. El nombre del sujeto es
+`reference` y su versión se lee del `pubspec.yaml`. No se ejecutan fases semánticas sobre sintaxis con
+errores. La respuesta conserva presencia real del árbol, multiplicidad, clase, severidad, tramos,
+tramos relacionados y argumentos de diagnósticos. `analyze` y `execute` son las capacidades anunciadas.
+La ejecución admite entradas, semilla y un límite de micro-pasos propio del adaptador; devuelve
+`completed`, `failed`, `awaiting_input` o `limit_reached`. No anuncia observación de memoria o eventos.
+`conformance.yaml` contiene vínculos y exenciones justificadas; los casos y oráculos viven en el corpus.
+**Descartado:** corregir el motor congelado o filtrar diagnósticos para hacer pasar el piloto.
+Los errores de petición se devuelven por JSON y no detienen la sesión; la salida estándar queda
+reservada al protocolo. `tool/` puede importar E/S del SDK y la entrada pública del núcleo;
+`test/tool/conformance/` prueba ese límite sin introducir imports en `lib/`.
 
 ### 4.1 Verificación de capas: test propio sobre el analizador de Dart
 

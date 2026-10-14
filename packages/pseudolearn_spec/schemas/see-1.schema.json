@@ -1,0 +1,1152 @@
+{
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "regla"
+              },
+              "fields": {
+                "$ref": "#/$defs/regla"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "caso"
+              },
+              "fields": {
+                "$ref": "#/$defs/caso"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "definicion"
+              },
+              "fields": {
+                "$ref": "#/$defs/definicion"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "error"
+              },
+              "fields": {
+                "$ref": "#/$defs/error"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "propiedad"
+              },
+              "fields": {
+                "$ref": "#/$defs/propiedad"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "lapida"
+              },
+              "fields": {
+                "$ref": "#/$defs/lapida"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "pregunta"
+              },
+              "fields": {
+                "$ref": "#/$defs/pregunta"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "invariante"
+              },
+              "fields": {
+                "$ref": "#/$defs/invariante"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "precondicion"
+              },
+              "fields": {
+                "$ref": "#/$defs/precondicion"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "resultado"
+              },
+              "fields": {
+                "$ref": "#/$defs/resultado"
+              }
+            },
+            "required": [
+              "kind",
+              "fields"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "path",
+    "metadata",
+    "blocks"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pseudolearn:see:1",
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "formato": {
+          "type": "string",
+          "const": "see/1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titulo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "titulo_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dominio": {
+          "type": "string",
+          "enum": [
+            "lenguaje",
+            "ri",
+            "motor",
+            "memoria",
+            "biblioteca",
+            "herramienta",
+            "app",
+            "rendimiento",
+            "proceso"
+          ]
+        },
+        "estado": {
+          "type": "string",
+          "enum": [
+            "borrador",
+            "propuesta",
+            "experimental",
+            "estable",
+            "obsoleta",
+            "retirada",
+            "rechazada"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duenos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "sujetos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "resumen": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edicion": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "depende_de": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tipo": {
+                "type": "string",
+                "enum": [
+                  "usa",
+                  "refina",
+                  "restringe",
+                  "requiere",
+                  "verifica",
+                  "reemplaza"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "tipo"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reemplaza": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reemplazada_por": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cambio": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "clase": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "impacto_usuarios": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "impacto_implementaciones": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "justificacion": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "revisado_por": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "clase",
+                "impacto_usuarios",
+                "impacto_implementaciones",
+                "justificacion",
+                "revisado_por"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revisado_por": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "formato",
+        "id",
+        "titulo",
+        "dominio",
+        "estado",
+        "version",
+        "duenos",
+        "sujetos",
+        "resumen"
+      ],
+      "additionalProperties": false
+    },
+    "regla": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fuerza": {
+          "type": "string",
+          "enum": [
+            "DEBE",
+            "NO DEBE",
+            "DEBERÍA",
+            "NO DEBERÍA",
+            "PUEDE"
+          ]
+        },
+        "clase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificacion": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "referencias": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "fuerza",
+        "clase",
+        "texto",
+        "verificacion"
+      ],
+      "additionalProperties": false
+    },
+    "caso": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regla": {
+          "type": "string",
+          "minLength": 1
+        },
+        "perfiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "es",
+              "en"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "rigor": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "espera": {
+          "type": "object",
+          "properties": {
+            "salida": {
+              "type": "string"
+            },
+            "terminacion": {
+              "type": "string",
+              "enum": [
+                "completed",
+                "failed",
+                "awaiting_input",
+                "limit_reached"
+              ]
+            },
+            "fallo": {
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "codigo"
+              ],
+              "additionalProperties": false
+            },
+            "diagnosticos": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "codigo": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "severidad": {
+                    "type": "string",
+                    "enum": [
+                      "error",
+                      "advertencia",
+                      "warning",
+                      "info",
+                      "hint"
+                    ]
+                  },
+                  "clase": {
+                    "type": "string"
+                  },
+                  "tramo": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "object",
+                        "properties": {
+                          "line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "column": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "line",
+                          "column"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "end": {
+                        "type": "object",
+                        "properties": {
+                          "line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "column": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        },
+                        "required": [
+                          "line",
+                          "column"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "relacionados": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "end": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "argumentos": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "codigo",
+                  "severidad"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "arbol": {
+              "type": "string",
+              "enum": [
+                "presente",
+                "ausente"
+              ]
+            },
+            "eventos": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "estado": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "esperas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "salida": {
+                "type": "string"
+              },
+              "terminacion": {
+                "type": "string",
+                "enum": [
+                  "completed",
+                  "failed",
+                  "awaiting_input",
+                  "limit_reached"
+                ]
+              },
+              "fallo": {
+                "type": "object",
+                "properties": {
+                  "codigo": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "codigo"
+                ],
+                "additionalProperties": false
+              },
+              "diagnosticos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "codigo": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "severidad": {
+                      "type": "string",
+                      "enum": [
+                        "error",
+                        "advertencia",
+                        "warning",
+                        "info",
+                        "hint"
+                      ]
+                    },
+                    "clase": {
+                      "type": "string"
+                    },
+                    "tramo": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "end": {
+                          "type": "object",
+                          "properties": {
+                            "line": {
+                              "type": "integer",
+                              "minimum": 1
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": 1
+                            }
+                          },
+                          "required": [
+                            "line",
+                            "column"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "relacionados": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "start": {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "end": {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "start",
+                          "end"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "argumentos": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "codigo",
+                    "severidad"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "arbol": {
+                "type": "string",
+                "enum": [
+                  "presente",
+                  "ausente"
+                ]
+              },
+              "eventos": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "estado": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        "origen": {
+          "type": "string",
+          "enum": [
+            "escrito",
+            "derivado",
+            "capturado"
+          ]
+        },
+        "programa": {
+          "type": "string"
+        },
+        "programas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "entradas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "etiquetas": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "revisado_por": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exclusiones": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "perfil_base": {
+          "type": "string",
+          "enum": [
+            "es",
+            "en"
+          ]
+        },
+        "operacion": {
+          "type": "string",
+          "enum": [
+            "analyze",
+            "execute"
+          ]
+        },
+        "produce": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evita": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "regla",
+        "perfiles",
+        "rigor",
+        "espera",
+        "origen"
+      ],
+      "additionalProperties": false
+    },
+    "definicion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "termino": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "termino",
+        "texto"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "situacion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "codigo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severidad": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "situacion",
+        "clase",
+        "codigo",
+        "severidad"
+      ],
+      "additionalProperties": false
+    },
+    "propiedad": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regla": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generador": {
+          "type": "object"
+        },
+        "propiedad": {
+          "type": "string",
+          "minLength": 1
+        },
+        "oraculo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "regla",
+        "generador",
+        "propiedad",
+        "oraculo"
+      ],
+      "additionalProperties": false
+    },
+    "lapida": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reemplazada_por": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "justificacion"
+      ],
+      "additionalProperties": false
+    },
+    "pregunta": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "texto"
+      ],
+      "additionalProperties": false
+    },
+    "invariante": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificacion": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "texto",
+        "verificacion"
+      ],
+      "additionalProperties": false
+    },
+    "precondicion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificacion": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "texto",
+        "verificacion"
+      ],
+      "additionalProperties": false
+    },
+    "resultado": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificacion": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "justificacion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "texto",
+        "verificacion"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

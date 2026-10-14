@@ -1,0 +1,26 @@
+use std::io::{BufRead, Write};
+
+fn main() {
+    let mode = std::env::args().nth(1).unwrap_or_default();
+    if mode == "eof" { return }
+    if mode == "timeout" { std::thread::sleep(std::time::Duration::from_secs(5)); return }
+    for line in std::io::stdin().lock().lines() {
+        let Ok(line) = line else { break };
+        if line.contains("hello") {
+            if mode == "malformed" { println!("{{malformed"); return }
+            if mode == "version" { println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/9\"}}"); return }
+            let capabilities = if mode == "unsupported" { "[]" } else { "[\"analyze\",\"execute\"]" };
+            println!("{{\"kind\":\"hello\",\"protocol\":\"see-protocol/1\",\"subject\":\"fixture\",\"subject_version\":\"1.0.0\",\"capabilities\":{capabilities},\"profiles\":[\"es\",\"en\"],\"strictness\":[\"strict\",\"flexible\"]}}");
+        } else if line.contains("shutdown") {
+            eprintln!("fixture stderr");
+            println!("{{\"kind\":\"shutdown\"}}");
+            break;
+        } else if mode == "wrong-kind" {
+            println!("{{\"kind\":\"unexpected\"}}");
+        } else {
+            let kind = if line.contains("analyze") { "analyze" } else { "execute" };
+            println!("{{\"kind\":\"{kind}\",\"tree\":true,\"diagnostics\":[],\"output\":\"1\\n\",\"termination\":{{\"kind\":\"completed\"}}}}");
+        }
+        let _flushed = std::io::stdout().flush();
+    }
+}

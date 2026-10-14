@@ -1,0 +1,58 @@
+{
+  "algorithm": {
+    "es": "Algoritmo",
+    "en": "algorithm"
+  },
+  "endAlgorithm": {
+    "es": "FinAlgoritmo",
+    "en": "endAlgorithm"
+  },
+  "declare": {
+    "es": "Definir",
+    "en": "define"
+  },
+  "typeConnector": {
+    "es": "Como",
+    "en": "as"
+  },
+  "integerType": {
+    "es": "Entero",
+    "en": "integer"
+  },
+  "write": {
+    "es": "Escribir",
+    "en": "write"
+  },
+  "forKeyword": {
+    "es": "Para",
+    "en": "for"
+  },
+  "to": {
+    "es": "Hasta",
+    "en": "to"
+  },
+  "step": {
+    "es": "Con Paso",
+    "en": "step"
+  },
+  "doKeyword": {
+    "es": "Hacer",
+    "en": "do"
+  },
+  "endFor": {
+    "es": "FinPara",
+    "en": "endFor"
+  },
+  "withoutNewline": {
+    "es": "Sin Saltar",
+    "en": "without newline"
+  },
+  "booleanTrue": {
+    "es": "Verdadero",
+    "en": "true"
+  },
+  "booleanFalse": {
+    "es": "Falso",
+    "en": "false"
+  }
+}

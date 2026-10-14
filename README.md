@@ -13,8 +13,9 @@ en su propio `README.md`: `packages/pseudolearn_core/README.md` para el motor de
 `apps/pseudolearn_app/README.md` para el cliente Flutter, `apps/pseudolearn_backend/README.md` para el
 backend de Supabase y `apps/fe-pseudolearn/README.md` para el sitio web y landing en Astro.
 
-**Estado:** siete miembros activos, con cinco cadenas de herramientas. El núcleo Dart es el sujeto
+**Estado:** ocho miembros activos, con cinco cadenas de herramientas. El núcleo Dart es el sujeto
 `reference` congelado de ADR-001; la fundación Rust y el arnés E-01 son miembros reutilizables.
+El sistema SEE de R1 valida y contrasta el corpus con el sujeto Dart por proceso.
 La verificación habitual es local. GitHub Actions permite comprobaciones puntuales manuales
 de todos los miembros y métricas multiplataforma. Los flujos de
 publicación conservan sus disparadores propios. No hay orquestador de monorepo ni workspace Cargo raíz.
@@ -166,6 +167,9 @@ Verificación mecánica completa del monorepo, paquete por paquete:
 # Miembros Rust
 (cd packages/pseudolearn_rust_checks && cargo xtask verify)
 
+# Sistema de especificaciones
+(cd packages/pseudolearn_spec && cargo xtask verify)
+
 # Arnés E-01
 (cd packages/pseudolearn_benchmarks && dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart)
 ```
@@ -255,10 +259,15 @@ declara como destino, y verifica que lo que hay ahí siga siendo lo que él prod
 la marca hacia sus consumidores, nunca al revés; que las fuentes tipográficas vivan dentro del paquete en
 vez de leerse de la app es exactamente lo que sostiene esa dirección (`packages/pseudolearn_brand/README.md` §4.2).
 
+El sistema `packages/pseudolearn_spec` implementa SEE en Rust. Su corpus versionado contiene
+contratos y casos; su adaptador `reference` reside en `tool/` del núcleo. La frontera es un proceso
+JSONL, sin dependencia Cargo/Dart entre miembros. El miembro genera anclaje, exportación y matriz;
+el workflow manual instala Dart antes de recorrer los miembros Rust porque la conformidad lo necesita.
+
 El arnés `packages/pseudolearn_benchmarks` depende únicamente de la API pública del núcleo Dart.
 `packages/pseudolearn_rust_checks` no depende de otro miembro: verifica workspaces mediante procesos.
-Los miembros de ADR-001 se incorporan en su fase, no como esqueletos anticipados: `pseudolearn_spec`
-(R1), `pseudolearn_engine` y `apps/pseudolearn_cli` (R4), puentes de app y Wasm (R8).
+Los miembros siguientes de ADR-001 se incorporan en su fase, no como esqueletos anticipados:
+`pseudolearn_engine` y `apps/pseudolearn_cli` (R4), puentes de app y Wasm (R8).
 Su grafo aprobado es CLI → motor, app → puente → motor y `see` → sujetos por proceso; el motor
 consume una exportación del corpus como datos, sin depender de `see` como crate. Cranelift es el
 backend nativo inicial y LLVM se evalúa por medición. El lenguaje permanece congelado hasta R9.
@@ -272,6 +281,7 @@ backend nativo inicial y LLVM se evalúa por medición. El lenguaje permanece co
 | `packages/pseudolearn_brand/` | Motor de la identidad visual: geometría paramétrica de la marca y emisión de cada artefacto que un consumidor necesita | Librería estándar de Python y `fontTools`; capas internas según su propio `architecture.json`                                        | Cualquier símbolo de `packages/` o `apps/`; no participa en ningún build    |
 | `apps/pseudolearn_backend/`   | Backend de Supabase: Edge Functions con secretos de servidor y migraciones del esquema de Postgres                     | API web de Deno; capas internas según su propio `architecture.json`                                                                  | Imports remotos (`npm:`, `jsr:`, `https:`); cualquier símbolo de otro miembro |
 | `apps/fe-pseudolearn/`        | Frontend web (landing y descargas en Astro): interfaz pública, internacionalización y contacto                         | Paquetes de su `package.json` propio; capas internas según su propio `architecture.yaml`                                             | Cualquier símbolo de `packages/` o de otras `apps/`                         |
+| `packages/pseudolearn_spec/` | Corpus y herramienta SEE: validación, grafo, versiones y conformidad | Capas Rust declaradas; sujetos por proceso | Internals de sujetos; motor Rust |
 | `packages/pseudolearn_rust_checks/` | Verificadores Rust | Dependencias declaradas en sus reglas | Otros miembros del monorepo |
 | `packages/pseudolearn_benchmarks/` | Mediciones de reference | API pública de pseudolearn_core | Internals del núcleo y apps |
 | `CHANGELOG.json` (raíz)       | Registro de publicaciones del producto: una entrada por versión del par `(app, núcleo)` con fecha y cambios bilingües (§4.4) | — (datos)                                                                                                                            | —                                                                           |
