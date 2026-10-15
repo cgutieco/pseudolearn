@@ -23,7 +23,21 @@ pub fn check(root: &Path, rules: &Architecture) -> Result<Vec<Violation>, String
     for package in packages {
         inspect_package(package, rules, root, &mut violations)?;
     }
+    inspect_cargo_layers(rules, root, packages, &mut violations)?;
+    Ok(violations)
+}
+
+fn inspect_cargo_layers(
+    rules: &Architecture,
+    root: &Path,
+    packages: &[serde_json::Value],
+    violations: &mut Vec<Violation>,
+) -> Result<(), String> {
     for layer in &rules.layers {
+        if layer.pending {
+            inspect_pending_layer(layer, root, packages, violations)?;
+            continue;
+        }
         if !packages.iter().any(|package| {
             package.get("name").and_then(|name| name.as_str()) == Some(layer.name.as_str())
         }) {
@@ -35,7 +49,7 @@ pub fn check(root: &Path, rules: &Architecture) -> Result<Vec<Violation>, String
             ));
         }
     }
-    Ok(violations)
+    Ok(())
 }
 
 fn inspect_package(
@@ -57,6 +71,25 @@ fn inspect_package(
         ));
         return Ok(());
     };
+    if layer.pending {
+        violations.push(violation(
+            &layer.path,
+            1,
+            "SPEC-FIRST",
+            "Pending crate declared in Cargo",
+        ));
+        return Ok(());
+    }
+    inspect_manifest(package, layer, root, violations)?;
+    inspect_dependencies(package, layer, rules, violations)
+}
+
+fn inspect_manifest(
+    package: &serde_json::Value,
+    layer: &Layer,
+    root: &Path,
+    violations: &mut Vec<Violation>,
+) -> Result<(), String> {
     let manifest = package
         .get("manifest_path")
         .and_then(|path| path.as_str())
@@ -74,7 +107,7 @@ fn inspect_package(
             "Crate path differs from rule",
         ));
     }
-    inspect_dependencies(package, layer, rules, violations)
+    Ok(())
 }
 
 fn inspect_dependencies(
@@ -88,30 +121,100 @@ fn inspect_dependencies(
         .and_then(|value| value.as_array())
         .ok_or("Missing dependencies")?;
     for dependency in dependencies {
-        let name = dependency
-            .get("name")
-            .and_then(|value| value.as_str())
-            .ok_or("Missing dependency name")?;
-        let internal = rules.layers.iter().any(|candidate| candidate.name == name);
-        let permitted = if internal {
-            &layer.may_import
-        } else {
-            &layer.external_dependencies
-        };
-        if !permitted.iter().any(|allowed| allowed == name) {
+        inspect_dependency(dependency, layer, rules, violations)?;
+    }
+    Ok(())
+}
+
+fn inspect_dependency(
+    dependency: &serde_json::Value,
+    layer: &Layer,
+    rules: &Architecture,
+    violations: &mut Vec<Violation>,
+) -> Result<(), String> {
+    let name = dependency
+        .get("name")
+        .and_then(|value| value.as_str())
+        .ok_or("Missing dependency name")?;
+    let internal = rules.layers.iter().any(|candidate| candidate.name == name);
+    let permitted = if internal {
+        &layer.may_import
+    } else {
+        &layer.external_dependencies
+    };
+    if !permitted.iter().any(|allowed| allowed == name) {
+        violations.push(violation(
+            &layer.path,
+            1,
+            "LAYER-DIRECTION",
+            &format!("Undeclared dependency: {name}"),
+        ));
+    }
+    if !internal
+        && !layer
+            .permitted_path_dependencies
+            .iter()
+            .any(|allowed| allowed == name)
+        && dependency.get("path").is_some_and(|path| !path.is_null())
+    {
+        violations.push(violation(
+            &layer.path,
+            1,
+            "LAYER-DIRECTION",
+            "External path dependency is forbidden",
+        ));
+    }
+    Ok(())
+}
+
+fn inspect_pending_layer(
+    layer: &Layer,
+    root: &Path,
+    packages: &[serde_json::Value],
+    violations: &mut Vec<Violation>,
+) -> Result<(), String> {
+    if !root.join(&layer.path).join("README.md").is_file() {
+        violations.push(violation(
+            &layer.path,
+            1,
+            "LAYER-DECLARED",
+            "Missing crate README",
+        ));
+    }
+    if packages.iter().any(|package| {
+        package.get("name").and_then(|name| name.as_str()) == Some(layer.name.as_str())
+    }) {
+        violations.push(violation(
+            &layer.path,
+            1,
+            "SPEC-FIRST",
+            "Pending crate declared in Cargo",
+        ));
+    }
+    reject_pending_sources(root, &root.join(&layer.path), violations)
+}
+
+fn reject_pending_sources(
+    root: &Path,
+    directory: &Path,
+    violations: &mut Vec<Violation>,
+) -> Result<(), String> {
+    if !directory.is_dir() {
+        return Ok(());
+    }
+    for entry in std::fs::read_dir(directory).map_err(|error| error.to_string())? {
+        let path = entry.map_err(|error| error.to_string())?.path();
+        if path.is_dir() {
+            reject_pending_sources(root, &path, violations)?;
+        } else if path.file_name().is_some_and(|name| name == "Cargo.toml")
+            || path.extension().is_some_and(|extension| extension == "rs")
+        {
+            let relative = path.strip_prefix(root).map_err(|error| error.to_string())?;
             violations.push(violation(
-                &layer.path,
+                &relative.to_string_lossy(),
                 1,
-                "LAYER-DIRECTION",
-                &format!("Undeclared dependency: {name}"),
-            ));
-        }
-        if !internal && dependency.get("path").is_some_and(|path| !path.is_null()) {
-            violations.push(violation(
-                &layer.path,
-                1,
-                "LAYER-DIRECTION",
-                "External path dependency is forbidden",
+                "SPEC-FIRST",
+                "Code in pending layer",
             ));
         }
     }

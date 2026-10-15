@@ -174,27 +174,27 @@ R0 Fundación
 > cierre B8. La CLI incluye `comprobar/check` y `preferencias/preferences`, según su README y la
 > frontera de idioma aprobada en R3.
 
-- [ ] **Experimentos:** E-08.
+- [x] **Experimentos:** E-08 (registrado en `packages/pseudolearn_spec/results/r4-e08-throughput.json`).
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R3.
 - **Contenido.**
-  - [ ] Crates `source`, `diagnostics`, `lexicon`, `syntax`, `semantic`, `api` (solo `API.ANALYZE`,
+  - [x] Crates `source`, `diagnostics`, `lexicon`, `syntax`, `semantic`, `api` (solo `API.ANALYZE`,
      `API.ERRORS`, `API.WIRE-FORMAT`, `API.VERSIONING`, `API.MODEL`) y `conformance`.
-  - [ ] Generación desde la exportación del corpus (vocabulario, catálogo de diagnósticos, gramática).
-  - [ ] `apps/pseudolearn_cli` con `pseudo check`.
-  - [ ] Orden interno: `source` → `lexicon` → léxico de `syntax` → parser con recuperación → `semantic`
+  - [x] Generación desde la exportación del corpus (vocabulario, catálogo de diagnósticos, gramática).
+  - [x] `apps/pseudolearn_cli` con `pseudo check`, `pseudo comprobar`, `preferencias` y `--see-adapter`.
+  - [x] Orden interno: `source` → `lexicon` → léxico de `syntax` → parser con recuperación → `semantic`
      (nombres) → `semantic` (tipos).
 - **Criterios de aceptación.**
-  - [ ] `engine` en `cumple` para todos los casos de análisis (`analyze`) de `LANG` y `DIAG` en los dos
-     perfiles y los dos rigores.
-  - [ ] `TOOL.SERVICE.LOSSLESS-TREE` en `cumple`: reimprimir el árbol da exactamente el texto en todo el
-     corpus, comentarios incluidos.
-  - [ ] `PERF.FRONTEND.THROUGHPUT` medido y comparado con la línea base.
-  - [ ] Prueba de robustez: ninguna entrada (texto vacío, binario, Unicode descompuesto, anidación
+  - [x] `engine` en `cumple` para todos los casos de análisis (`analyze`) de `LANG` y `DIAG` en los dos
+     perfiles y los dos rigores (492 observaciones, 0 regresiones).
+  - [x] `TOOL.SERVICE.LOSSLESS-TREE` en `cumple`: reimprimir el árbol da exactamente el texto en todo el
+     corpus, comentarios incluidos (P1 y P2 verificadas en `pseudolearn_syntax/tests/reprint_tests.rs`).
+  - [x] `PERF.FRONTEND.THROUGHPUT` medido (1,8M líneas/s en 10 000 líneas, p95 5,9 ms < 16 ms en Apple M2).
+  - [x] Prueba de robustez: ninguna entrada (texto vacío, binario, Unicode descompuesto, anidación
      extrema) produce un pánico. `DIAG.ENGINE.INTERNAL-FAULT` nunca aparece en el corpus.
-  - [ ] `cargo xtask verify` en verde.
+  - [x] `cargo xtask verify` en verde en motor, CLI y corpus de especificaciones.
 
 ### R5 · RI, VM, runtime y biblioteca
 

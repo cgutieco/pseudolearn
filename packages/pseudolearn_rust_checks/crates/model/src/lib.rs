@@ -29,6 +29,10 @@ pub struct Layer {
     pub unsafe_allowed: bool,
     #[serde(default)]
     pub tooling: bool,
+    #[serde(default)]
+    pub pending: bool,
+    #[serde(default)]
+    pub permitted_path_dependencies: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

@@ -1,0 +1,102 @@
+{
+  "sujeto": "cli",
+  "paquete": "apps/pseudolearn_cli",
+  "activadas": [
+    "TOOL.CLI.CHECK",
+    "TOOL.CLI.CONVENTIONS",
+    "TOOL.CLI.MESSAGES"
+  ],
+  "fases_cerradas": [],
+  "vinculos": [
+    {
+      "regla": "TOOL.CLI.CHECK@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.CHECK@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@0.1.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.IR@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.MESSAGES@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.MESSAGES@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.RUN@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.RUN@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.RUN@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.CLI.RUN@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    }
+  ]
+}

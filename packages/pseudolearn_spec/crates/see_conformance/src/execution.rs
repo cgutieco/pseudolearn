@@ -12,6 +12,7 @@ pub fn execute(
     corpus: &Corpus,
     vocabulary: &Vocabulary,
     session: &mut Session,
+    operation_filter: Option<&str>,
 ) -> Result<Evidence, String> {
     let mut observations = Vec::new();
     for specification in corpus {
@@ -20,6 +21,11 @@ pub fn execute(
             .iter()
             .filter(|block| block.kind == "caso")
         {
+            if let Some(target) = operation_filter
+                && requests::operation(case) != target
+            {
+                continue;
+            }
             observations.extend(execute_case(specification, case, vocabulary, session)?);
         }
     }

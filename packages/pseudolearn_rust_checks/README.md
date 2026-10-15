@@ -44,6 +44,7 @@ deterministic_output_crates documentan las restricciones del miembro antes de co
 Problema: especificar arquitectura antes del motor. Elección: validación declarativa con rechazo
 SPEC-FIRST para código prematuro. Se descarta crear crates vacíos para satisfacer Cargo.
 Las dependencias internas siguen `may_import`; las externas siguen `external_dependencies`.
+Las capas con `pending: true` permiten fases intermedias: el verificador exige su carpeta y `README.md`, y rechaza cualquier `Cargo.toml` o fuente Rust prematuro sin exigir que Cargo las compile.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 

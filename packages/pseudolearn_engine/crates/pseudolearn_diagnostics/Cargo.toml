@@ -1,0 +1,15 @@
+[package]
+name = "pseudolearn_diagnostics"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+serde_json = "1"
+
+[build-dependencies]
+serde_json = "1"

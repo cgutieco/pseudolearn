@@ -5,12 +5,13 @@
   "titulo": "Recuperación sintáctica",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference"
+    "reference",
+    "engine"
   ],
   "resumen": "Recuperación sintáctica.",
   "depende_de": [],
@@ -19,9 +20,9 @@
   },
   "cambio": {
     "clase": "ampliacion",
-    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
-    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
-    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
+    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
+    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
+    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
     "revisado_por": "autoría automatizada; no revisión humana independiente"
   }
 }

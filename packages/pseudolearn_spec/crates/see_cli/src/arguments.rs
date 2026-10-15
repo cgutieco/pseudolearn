@@ -8,6 +8,36 @@ pub struct Arguments {
     pub root: PathBuf,
 }
 
+const ALLOWED_OPTIONS: &[&str] = &[
+    "root",
+    "domain",
+    "focus",
+    "subject",
+    "only",
+    "check",
+    "dot",
+    "operation",
+];
+
+fn parse_option(
+    name: &str,
+    words: &mut impl Iterator<Item = String>,
+    options: &mut BTreeMap<String, String>,
+) -> Result<(), String> {
+    if !ALLOWED_OPTIONS.contains(&name) {
+        return Err(format!("Unknown option --{name}"));
+    }
+    let value = if ["check", "dot"].contains(&name) {
+        "true".to_owned()
+    } else {
+        words.next().ok_or(format!("Missing value for --{name}"))?
+    };
+    if options.insert(name.to_owned(), value).is_some() {
+        return Err(format!("Duplicate option --{name}"));
+    }
+    Ok(())
+}
+
 pub fn parse(arguments: Vec<String>) -> Result<Arguments, String> {
     let mut words = arguments.into_iter();
     let command = words
@@ -17,17 +47,7 @@ pub fn parse(arguments: Vec<String>) -> Result<Arguments, String> {
     let mut positional = Vec::new();
     while let Some(word) = words.next() {
         if let Some(name) = word.strip_prefix("--") {
-            if !["root", "domain", "focus", "subject", "only", "check", "dot"].contains(&name) {
-                return Err(format!("Unknown option --{name}"));
-            }
-            let value = if ["check", "dot"].contains(&name) {
-                "true".to_owned()
-            } else {
-                words.next().ok_or(format!("Missing value for --{name}"))?
-            };
-            if options.insert(name.to_owned(), value).is_some() {
-                return Err(format!("Duplicate option --{name}"));
-            }
+            parse_option(name, &mut words, &mut options)?;
         } else {
             positional.push(word);
         }

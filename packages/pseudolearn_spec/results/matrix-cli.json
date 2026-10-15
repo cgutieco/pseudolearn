@@ -1,0 +1,162 @@
+[
+  {
+    "binding": "pendiente",
+    "cases": 5,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CHECK@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CHECK@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 3,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 8,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R4",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R5",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R6",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R7",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.IR@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.MESSAGES@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.MESSAGES@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 4,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.RUN@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 3,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.RUN@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.RUN@0.1.0#R3",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.RUN@0.1.0#R4",
+    "state": "experimental",
+    "subject": "cli"
+  }
+]

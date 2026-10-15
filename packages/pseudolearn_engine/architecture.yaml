@@ -1,5 +1,5 @@
 package: pseudolearn_engine
-declarative: true
+declarative: false
 unsafe_allowed: [pseudolearn_wasm]
 generated_sources:
   - crates/pseudolearn_diagnostics/generated
@@ -19,6 +19,7 @@ layers:
     may_import: []
     external_dependencies: []
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_diagnostics
     path: crates/pseudolearn_diagnostics
     may_import: [pseudolearn_source]
@@ -44,36 +45,43 @@ layers:
     may_import: [pseudolearn_source, pseudolearn_abi]
     external_dependencies: [serde_json]
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_lowering
     path: crates/pseudolearn_lowering
     may_import: [pseudolearn_semantic, pseudolearn_ir, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_bytecode
     path: crates/pseudolearn_bytecode
     may_import: [pseudolearn_ir, pseudolearn_source]
     external_dependencies: [serde_json]
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_runtime
     path: crates/pseudolearn_runtime
     may_import: [pseudolearn_abi, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_library
     path: crates/pseudolearn_library
     may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_vm
     path: crates/pseudolearn_vm
     may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics]
     external_dependencies: [serde_json]
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_timeline
     path: crates/pseudolearn_timeline
     may_import: [pseudolearn_vm, pseudolearn_runtime, pseudolearn_bytecode, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+    pending: true
   - name: pseudolearn_api
     path: crates/pseudolearn_api
     may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline]
@@ -84,6 +92,12 @@ layers:
     may_import: [pseudolearn_api]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
 limits:
   file_lines: 300
   function_lines: 40

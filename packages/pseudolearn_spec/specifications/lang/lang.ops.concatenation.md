@@ -5,12 +5,13 @@
   "titulo": "Concatenación",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference"
+    "reference",
+    "engine"
   ],
   "resumen": "Concatenación.",
   "edicion": {
@@ -27,7 +28,14 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ]
+  ],
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
+    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
+    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
+  }
 }
 ---
 

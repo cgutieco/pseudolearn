@@ -5,7 +5,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.CATALOG@0.2.0#R1",
+    "rule": "DIAG.CATALOG@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -15,7 +15,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.CLASSES@0.1.0#R1",
+    "rule": "DIAG.CLASSES@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -25,7 +25,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado.",
-    "rule": "DIAG.CLASSES@0.1.0#R2",
+    "rule": "DIAG.CLASSES@0.2.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -35,7 +35,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.ENGINE.INTERNAL-FAULT@0.1.0#R1",
+    "rule": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -45,7 +45,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.MESSAGES@0.1.0#R1",
+    "rule": "DIAG.MESSAGES@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -55,7 +55,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.MODEL@0.1.0#R1",
+    "rule": "DIAG.MODEL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -65,7 +65,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.ORDERING@0.1.0#R1",
+    "rule": "DIAG.ORDERING@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -75,7 +75,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-FLEXIBLE-INITIALIZATION: No emite la advertencia estática de lectura sin inicializar en flexible, aunque la política la declara. Resolución en R4; reference permanece congelado.",
-    "rule": "DIAG.SEVERITY.POLICY@0.1.0#R1",
+    "rule": "DIAG.SEVERITY.POLICY@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -215,7 +215,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.ARRAY.ACCESS@0.1.0#R1",
+    "rule": "LANG.ARRAY.ACCESS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -225,7 +225,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.ARRAY.DIMENSION@0.1.0#R1",
+    "rule": "LANG.ARRAY.DIMENSION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -235,7 +235,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.CONSTRUCTOR@0.1.0#R1",
+    "rule": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -245,7 +245,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.COPY@0.1.0#R1",
+    "rule": "LANG.CLASS.COPY@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -255,7 +255,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.DECLARATION@0.1.0#R1",
+    "rule": "LANG.CLASS.DECLARATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -265,7 +265,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.FIELDS@0.1.0#R1",
+    "rule": "LANG.CLASS.FIELDS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -275,7 +275,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.INHERITANCE@0.1.0#R1",
+    "rule": "LANG.CLASS.INHERITANCE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -285,7 +285,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.INSTANTIATION@0.1.0#R1",
+    "rule": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -295,7 +295,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.MEMBER-ACCESS@0.1.0#R1",
+    "rule": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -305,7 +305,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.METHODS@0.1.0#R1",
+    "rule": "LANG.CLASS.METHODS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -315,7 +315,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.1.0#R1",
+    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -325,7 +325,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.OVERRIDE@0.1.0#R1",
+    "rule": "LANG.CLASS.OVERRIDE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -335,7 +335,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.SELF-AND-SUPER@0.1.0#R1",
+    "rule": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -345,7 +345,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.2.0#R1",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -355,7 +355,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.2.0#R2",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -365,7 +365,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.2.0#R3",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R3",
     "state": "experimental",
     "subject": "reference"
   },
@@ -375,7 +375,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.2.0#R4",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R4",
     "state": "experimental",
     "subject": "reference"
   },
@@ -385,7 +385,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-37: No emite controlVariableModified sobre la modificación directa del control de un bucle. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CONTROL.FOR@0.2.0#R5",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R5",
     "state": "experimental",
     "subject": "reference"
   },
@@ -395,7 +395,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.2.0#R6",
+    "rule": "LANG.CONTROL.FOR@0.3.0#R6",
     "state": "experimental",
     "subject": "reference"
   },
@@ -405,7 +405,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.IF@0.1.0#R1",
+    "rule": "LANG.CONTROL.IF@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -415,7 +415,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.REPEAT@0.1.0#R1",
+    "rule": "LANG.CONTROL.REPEAT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -425,7 +425,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.SWITCH@0.1.0#R1",
+    "rule": "LANG.CONTROL.SWITCH@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -435,7 +435,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.WHILE@0.1.0#R1",
+    "rule": "LANG.CONTROL.WHILE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -445,7 +445,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.DECL.DESIGNATOR@0.1.0#R1",
+    "rule": "LANG.DECL.DESIGNATOR@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -455,7 +455,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.DECL.UNINITIALIZED@0.1.0#R1",
+    "rule": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -465,7 +465,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.DECL.UNUSED@0.1.0#R1",
+    "rule": "LANG.DECL.UNUSED@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -475,7 +475,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STATEMENT-CASCADE: Tras rechazar un inicializador en declaración agrega missingStatementTerminator sobre la misma sentencia. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.DECL.VARIABLE@0.1.0#R1",
+    "rule": "LANG.DECL.VARIABLE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -485,7 +485,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.EDITION.MODEL@0.1.0#R1",
+    "rule": "LANG.EDITION.MODEL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -495,7 +495,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.IO.INPUT@0.1.0#R1",
+    "rule": "LANG.IO.INPUT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -505,7 +505,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.IO.OUTPUT@0.1.0#R1",
+    "rule": "LANG.IO.OUTPUT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -515,7 +515,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.IO.VALUE-FORMAT@0.1.0#R1",
+    "rule": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -525,7 +525,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.1.0#R1",
+    "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -535,7 +535,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.COMMENT@0.1.0#R1",
+    "rule": "LANG.LEXICAL.COMMENT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -545,7 +545,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.ERRORS@0.1.0#R1",
+    "rule": "LANG.LEXICAL.ERRORS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -555,7 +555,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.IDENTIFIER@0.1.0#R1",
+    "rule": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -565,7 +565,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.KEYWORD@0.1.0#R1",
+    "rule": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -575,7 +575,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.1.0#R1",
+    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -585,7 +585,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.1.0#R1",
+    "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -595,7 +595,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.TEXT-LITERAL@0.1.0#R1",
+    "rule": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -615,7 +615,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.ARITHMETIC@0.1.0#R1",
+    "rule": "LANG.OPS.ARITHMETIC@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -625,7 +625,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.COMPARISON@0.1.0#R1",
+    "rule": "LANG.OPS.COMPARISON@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -635,7 +635,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.CONCATENATION@0.1.0#R1",
+    "rule": "LANG.OPS.CONCATENATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -645,7 +645,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.DIVISION@0.1.0#R1",
+    "rule": "LANG.OPS.DIVISION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -655,7 +655,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.LOGICAL@0.1.0#R1",
+    "rule": "LANG.OPS.LOGICAL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -675,7 +675,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.PRECEDENCE@0.1.0#R1",
+    "rule": "LANG.OPS.PRECEDENCE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -685,7 +685,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.PROFILE.MODEL@0.1.0#R1",
+    "rule": "LANG.PROFILE.MODEL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -695,7 +695,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.PROFILE.STRICTNESS@0.1.0#R1",
+    "rule": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -705,7 +705,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.PROFILE.TRANSLATION@0.1.0#R1",
+    "rule": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -715,7 +715,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.PROFILE.VOCABULARY@0.1.0#R1",
+    "rule": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -725,7 +725,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.PROGRAM.STRUCTURE@0.1.0#R1",
+    "rule": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -735,7 +735,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SOURCE.ENCODING@0.1.0#R1",
+    "rule": "LANG.SOURCE.ENCODING@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -745,7 +745,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-SOURCE-NFC: No reconoce como el mismo nombre la grafía compuesta y la descompuesta por ausencia de NFC. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SOURCE.ENCODING@0.1.0#R2",
+    "rule": "LANG.SOURCE.ENCODING@0.2.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -755,7 +755,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SOURCE.POSITION@0.1.0#R1",
+    "rule": "LANG.SOURCE.POSITION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -765,7 +765,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.STMT.ASSIGNMENT@0.1.0#R1",
+    "rule": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -775,7 +775,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.STMT.TERMINATION@0.1.0#R1",
+    "rule": "LANG.STMT.TERMINATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -785,7 +785,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -795,7 +795,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.CALL@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -805,7 +805,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.DECLARATION@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -815,7 +815,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -825,7 +825,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SUBPROGRAM.PARAMETERS@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -845,7 +845,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.RETURN@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -855,7 +855,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-INVALID-SYMBOL-CASCADE: Informa inicialización sobre un identificador cuya resolución ya falló por ausencia de declaración. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SUBPROGRAM.SCOPE@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -865,7 +865,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SYNTAX.GRAMMAR@0.1.0#R1",
+    "rule": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -875,7 +875,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-06: La recuperación emite expectedExpression duplicado para una sentencia malformada. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SYNTAX.RECOVERY@0.2.0#R1",
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -885,7 +885,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-05: Devuelve árbol nulo ante texto vacío aunque debe conservar estructura recuperable. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SYNTAX.RECOVERY@0.2.0#R2",
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -895,7 +895,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SYNTAX.RECOVERY@0.2.0#R3",
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
     "state": "experimental",
     "subject": "reference"
   },
@@ -905,7 +905,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.SYNTAX.RECOVERY@0.2.0#R4",
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
     "state": "experimental",
     "subject": "reference"
   },
@@ -915,7 +915,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SYNTAX.RECOVERY@0.2.0#R5",
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
     "state": "experimental",
     "subject": "reference"
   },
@@ -925,7 +925,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.ARRAY@0.1.0#R1",
+    "rule": "LANG.TYPES.ARRAY@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -935,7 +935,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.BOOLEAN@0.1.0#R1",
+    "rule": "LANG.TYPES.BOOLEAN@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -955,7 +955,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.CHECKING-LEVELS@0.1.0#R1",
+    "rule": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -965,7 +965,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.CLASS@0.1.0#R1",
+    "rule": "LANG.TYPES.CLASS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -975,7 +975,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRICT-INFERENCE: Emite inferredVariableType en estricto después del error de declaración; la inferencia informativa pertenece al modo flexible. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.TYPES.INFERENCE@0.1.0#R1",
+    "rule": "LANG.TYPES.INFERENCE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1025,7 +1025,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.RELATIONS@0.1.0#R1",
+    "rule": "LANG.TYPES.RELATIONS@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1045,7 +1045,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.CONVERSION@0.1.0#R1",
+    "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1055,7 +1055,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.COPY@0.1.0#R1",
+    "rule": "LIB.CORE.COPY@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1065,7 +1065,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.MATH@0.1.0#R1",
+    "rule": "LIB.CORE.MATH@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1075,7 +1075,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.RANDOM@0.1.0#R1",
+    "rule": "LIB.CORE.RANDOM@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1085,7 +1085,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.ROUNDING@0.1.0#R1",
+    "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1105,7 +1105,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.MODEL@0.1.0#R1",
+    "rule": "LIB.MODEL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },

@@ -19,6 +19,7 @@ fn executes_bilingual_cases_and_marks_unsupported_operations_inapplicable() -> R
             &vec![specification.clone()],
             &Default::default(),
             &mut session,
+            None,
         )?;
         assert_eq!(evidence.observations.len(), 2);
         assert!(
@@ -51,6 +52,7 @@ fn forwards_explicit_seed_and_preserves_default_seed() -> Result<(), String> {
             &vec![specification],
             &Default::default(),
             &mut session,
+            None,
         )?;
         assert!(
             evidence
@@ -78,6 +80,7 @@ fn verdicts(mode: &str, specification: see_model::Specification) -> Result<Vec<S
         &vec![specification],
         &Default::default(),
         &mut session,
+        None,
     )?;
     Ok(evidence
         .observations

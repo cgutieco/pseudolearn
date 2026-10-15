@@ -1,0 +1,625 @@
+{
+  "sujeto": "engine",
+  "paquete": "packages/pseudolearn_engine",
+  "activadas": [
+    "API.ANALYZE",
+    "DIAG.CATALOG",
+    "DIAG.CLASSES",
+    "DIAG.ENGINE.INTERNAL-FAULT",
+    "DIAG.MESSAGES",
+    "DIAG.MODEL",
+    "DIAG.ORDERING",
+    "DIAG.SEVERITY.POLICY",
+    "LANG.ARRAY.ACCESS",
+    "LANG.ARRAY.DIMENSION",
+    "LANG.CLASS.CONSTRUCTOR",
+    "LANG.CLASS.COPY",
+    "LANG.CLASS.DECLARATION",
+    "LANG.CLASS.FIELDS",
+    "LANG.CLASS.INHERITANCE",
+    "LANG.CLASS.INSTANTIATION",
+    "LANG.CLASS.MEMBER-ACCESS",
+    "LANG.CLASS.METHODS",
+    "LANG.CLASS.OUT-OF-SCOPE",
+    "LANG.CLASS.OVERRIDE",
+    "LANG.CLASS.SELF-AND-SUPER",
+    "LANG.CONTROL.FOR",
+    "LANG.CONTROL.IF",
+    "LANG.CONTROL.REPEAT",
+    "LANG.CONTROL.SWITCH",
+    "LANG.CONTROL.WHILE",
+    "LANG.DECL.DESIGNATOR",
+    "LANG.DECL.UNINITIALIZED",
+    "LANG.DECL.UNUSED",
+    "LANG.DECL.VARIABLE",
+    "LANG.EDITION.MODEL",
+    "LANG.IO.INPUT",
+    "LANG.IO.OUTPUT",
+    "LANG.IO.VALUE-FORMAT",
+    "LANG.LEXICAL.CHARACTER-LITERAL",
+    "LANG.LEXICAL.COMMENT",
+    "LANG.LEXICAL.ERRORS",
+    "LANG.LEXICAL.IDENTIFIER",
+    "LANG.LEXICAL.KEYWORD",
+    "LANG.LEXICAL.NUMBER-LITERAL",
+    "LANG.LEXICAL.OPERATOR-TOKEN",
+    "LANG.LEXICAL.TEXT-LITERAL",
+    "LANG.OPS.ARITHMETIC",
+    "LANG.OPS.COMPARISON",
+    "LANG.OPS.CONCATENATION",
+    "LANG.OPS.DIVISION",
+    "LANG.OPS.LOGICAL",
+    "LANG.OPS.PRECEDENCE",
+    "LANG.PROFILE.MODEL",
+    "LANG.PROFILE.STRICTNESS",
+    "LANG.PROFILE.TRANSLATION",
+    "LANG.PROFILE.VOCABULARY",
+    "LANG.PROGRAM.STRUCTURE",
+    "LANG.SOURCE.ENCODING",
+    "LANG.SOURCE.POSITION",
+    "LANG.STMT.ASSIGNMENT",
+    "LANG.STMT.TERMINATION",
+    "LANG.SUBPROGRAM.BY-REFERENCE",
+    "LANG.SUBPROGRAM.CALL",
+    "LANG.SUBPROGRAM.DECLARATION",
+    "LANG.SUBPROGRAM.INTERACTIONS",
+    "LANG.SUBPROGRAM.PARAMETERS",
+    "LANG.SUBPROGRAM.RETURN",
+    "LANG.SUBPROGRAM.SCOPE",
+    "LANG.SYNTAX.GRAMMAR",
+    "LANG.SYNTAX.RECOVERY",
+    "LANG.TYPES.ARRAY",
+    "LANG.TYPES.BOOLEAN",
+    "LANG.TYPES.CHECKING-LEVELS",
+    "LANG.TYPES.CLASS",
+    "LANG.TYPES.INFERENCE",
+    "LANG.TYPES.RELATIONS",
+    "LIB.CORE.CONVERSION",
+    "LIB.CORE.COPY",
+    "LIB.CORE.MATH",
+    "LIB.CORE.RANDOM",
+    "LIB.CORE.ROUNDING",
+    "LIB.MODEL",
+    "TOOL.SERVICE.LOSSLESS-TREE"
+  ],
+  "fases_cerradas": [],
+  "vinculos": [
+    {
+      "regla": "API.ANALYZE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.ANALYZE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "DIAG.CATALOG@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.CLASSES@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.CLASSES@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.MESSAGES@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.ORDERING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "DIAG.SEVERITY.POLICY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.ARRAY.ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.ARRAY.DIMENSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.FIELDS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.INHERITANCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.METHODS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.OVERRIDE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.IF@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.REPEAT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.SWITCH@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.CONTROL.WHILE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.DESIGNATOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.DECL.UNUSED@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.DECL.VARIABLE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.EDITION.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.IO.INPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.IO.OUTPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.COMMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.OPS.ARITHMETIC@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.COMPARISON@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.OPS.CONCATENATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.OPS.DIVISION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.OPS.LOGICAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.PRECEDENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.PROFILE.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SOURCE.POSITION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.STMT.TERMINATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.ARRAY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.BOOLEAN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.CLASS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.INFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.CONVERSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.MATH@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.RANDOM@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.ROUNDING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
+      "verificacion": "codigo",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
+      "verificacion": "codigo",
+      "estado": "cumple"
+    }
+  ]
+}

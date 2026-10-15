@@ -29,7 +29,6 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| source → lexicon → lexer → parser → semantic nombres → semantic tipos → diagnostics presentación → api análisis → conformance → CLI comprobar | Corpus del lenguaje y fronteras completo | R4 |
 | Revisión de la representación de memoria antes de autorizar implementación | E-02 supera el umbral V2/V1 de 1,30; conservar resultados y medir alternativas | Previa a R5 |
 | ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | R5 |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
@@ -38,14 +37,14 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El miembro contiene documentación y reglas declarativas; no contiene Cargo.toml, fuentes Rust ni binarios. No se puede compilar, ejecutar o distribuir todavía.
-Verificación disponible desde la raíz:
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
-La implementación usa la misma versión exacta de Rust que los miembros existentes, rustfmt, Clippy y cargo-deny.
-macOS, Windows y Linux para CLI; iOS, Android y Wasm para incrustación.
-Comandos de aceptación al implementar: `cargo xtask verify`, `cargo build --release` y, desde pseudolearn_spec,
-`cargo run -p see_cli --bin see -- conform --subject engine`.
-No hay secretos ni despliegue propio: los consumidores distribuyen sus artefactos.
+El workspace contiene las capas de análisis estático implementadas en Rust: `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_lexicon`, `pseudolearn_syntax`, `pseudolearn_semantic`, `pseudolearn_api` y `pseudolearn_conformance`.
+Comandos de compilación y verificación:
+- Verificación completa del motor: `cargo xtask verify`.
+- Compilación optimizada: `cargo build --release`.
+- Pruebas unitarias y de integración: `cargo test --workspace`.
+- Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`.
+- Mediciones E-08 registradas en `packages/pseudolearn_spec/results/r4-e08-throughput.json`.
+Plataformas soportadas: macOS (arm64/x86_64), Linux y Windows. No hay secretos ni despliegue propio: los consumidores distribuyen sus artefactos.
 
 ## 3. Arquitectura y modelo del sistema
 

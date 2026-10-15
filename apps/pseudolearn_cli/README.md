@@ -7,16 +7,20 @@ Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración e
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| comprobar/check y preferencias/preferences | API de análisis | R4 |
 | ejecutar/run y ri/ir | API de ejecución | R5 |
 | compilar/build | Backend nativo | R6 |
 | formatear/format, traducir/translate, lsp | Servicio de lenguaje | R7 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del motor y dependencias por ruta. No hay build, ejecutable ni despliegue disponible.
-Al implementar: cargo xtask verify y cargo build --release; salida target/release/pseudo.
-Distribución nativa en macOS, Linux y Windows. Sin secretos. La conformidad de CLI se ejecuta mediante see.
+Binario de línea de comandos implementado en Rust.
+Comandos de compilación y verificación:
+- Verificación completa del miembro: `cargo xtask verify`.
+- Compilación de producción: `cargo build --release` (salida en `target/release/pseudo`).
+- Pruebas unitarias y funcionales: `cargo test`.
+- Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.
+- Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`.
+Distribución nativa en macOS, Linux y Windows. Sin secretos.
 
 ## 3. Arquitectura y modelo del sistema
 

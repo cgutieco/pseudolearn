@@ -1,0 +1,1122 @@
+{
+  "corpus_hashes": {
+    "TOOL.CLI.CHECK": "20b97d4dad48bbb348fc15172d5936098bda438bc0bfa52b13bf84ada11e2f2e",
+    "TOOL.CLI.CONVENTIONS": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+    "TOOL.CLI.IR": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
+    "TOOL.CLI.MESSAGES": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+    "TOOL.CLI.RUN": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988"
+  },
+  "observations": [
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "p.pseudo:2:10: error: Undeclared variable: total [undeclaredVariable]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "src/b.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "src/b.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:2:9: advertencia: Variable declarada y nunca usada: x [variableDeclaredNeverUsed]\n"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "p.pseudo:2:9: advertencia: Variable declarada y nunca usada: x [variableDeclaredNeverUsed]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta el archivo de entrada\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta el archivo de entrada\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: no se puede leer falta.pseudo\n",
+        "exit_code": 3,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 3,
+        "salida": "",
+        "salida_error": "pseudo: no se puede leer falta.pseudo\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:2:10: advertencia: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "p.pseudo:2:10: advertencia: Variable no declarada: total [undeclaredVariable]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CHECK",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: orden desconocida «volar»\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: orden desconocida «volar»\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta el archivo de entrada\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta el archivo de entrada\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta el archivo de entrada\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta el archivo de entrada\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta la orden; use pseudo --ayuda\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta la orden; use pseudo --ayuda\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --rigor (--strictness), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: opción desconocida «--volumen»\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: opción desconocida «--volumen»\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: valor no válido «medio» para --rigor\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: valor no válido «medio» para --rigor\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:2:7: error: Undeclared variable: total [undeclaredVariable]\n"
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "p.pseudo:2:7: error: Variable no declarada: total [undeclaredVariable]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "p.pseudo:4:10: error: Declaración duplicada del subprograma {lexeme} [duplicateSubroutine]\n"
+      },
+      "case": "C10",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C11",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "vacio.pseudo:1:1: error: Se esperaba el inicio del algoritmo [expectedAlgorithmStart]\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C12",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: unknown command 'volar'\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C13",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: unknown command 'volar'\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C14",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: unknown command 'volar'\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: orden desconocida «volar»\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C15",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: orden desconocida «volar»\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C16",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: unknown command 'volar'\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C17",
+      "differences": [
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: orden desconocida «volar»\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: unknown command 'volar'\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C18",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: unknown command 'volar'\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n"
+      },
+      "case": "C19",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: no se puede leer falta.pseudo\n",
+        "exit_code": 3,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C20",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 3,
+        "salida": "",
+        "salida_error": "pseudo: no se puede leer falta.pseudo\n"
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": {
+          "files": [
+            {
+              "diagnostics": [],
+              "path": "p.pseudo"
+            }
+          ]
+        },
+        "kind": "cli",
+        "output": "{\"files\":[{\"diagnostics\":[],\"path\":\"p.pseudo\"}]}\n"
+      },
+      "case": "C21",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "json": {
+          "files": [
+            {
+              "diagnostics": [],
+              "path": "p.pseudo"
+            }
+          ]
+        },
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": {
+          "files": [
+            {
+              "diagnostics": [],
+              "path": "p.pseudo"
+            }
+          ]
+        },
+        "kind": "cli",
+        "output": "{\"files\":[{\"diagnostics\":[],\"path\":\"p.pseudo\"}]}\n"
+      },
+      "case": "C22",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "json": {
+          "files": [
+            {
+              "diagnostics": [],
+              "path": "p.pseudo"
+            }
+          ]
+        },
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "pseudo: idioma de interfaz guardado: en\n"
+      },
+      "case": "C23",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "pseudo: idioma de interfaz guardado: en\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R7",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: valor no válido «fr» para language\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C24",
+      "differences": [
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: valor no válido «fr» para idioma\n"
+      },
+      "profile": "es",
+      "rule": "R7",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: orden desconocida «ri»\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C1",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.IR",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: orden desconocida «ir»\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.IR",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --strictness (--rigor), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.MESSAGES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: cannot read falta.pseudo\n",
+        "exit_code": 3,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 3,
+        "salida": "",
+        "salida_error": "pseudo: cannot read falta.pseudo\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.MESSAGES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Verdadero\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.MESSAGES",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C1",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "1\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "1\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "42\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C5",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "p.pseudo:4:10: error: División por cero [divisionByZero]\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C6",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "p.pseudo: la entrada estándar terminó mientras el programa esperaba un valor\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C7",
+      "differences": [
+        "Mismatch: codigo_salida",
+        "Mismatch: salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "1\n2\n",
+        "salida_error": "p.pseudo:4:1: información: Se agotó el presupuesto de sentencias: 2 [statementBudgetExhausted]\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C8",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "5415695640260286\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "fin\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C10",
+      "differences": [
+        "Mismatch: salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "1\n",
+        "salida_error": "p.pseudo:2  entra en sentencia  Escribir 1;\np.pseudo:2  escribe  1\\n\np.pseudo:2  sale de sentencia  Escribir 1;\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C11",
+      "differences": [
+        "Mismatch: salida",
+        "Mismatch: salida_error"
+      ],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "1\n",
+        "salida_error": "p.pseudo:2  enters statement  Escribir 1;\np.pseudo:2  writes  1\\n\np.pseudo:2  exits statement  Escribir 1;\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    }
+  ],
+  "protocol": "see-protocol/1",
+  "stderr": "",
+  "subject": "cli",
+  "subject_version": "0.1.0"
+}

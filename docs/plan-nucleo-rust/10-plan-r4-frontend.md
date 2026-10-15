@@ -272,152 +272,152 @@ al implementarlo. No se crean ahora archivos con resultados ficticios.
 
 ### B0 · Preparación y alcance ejecutable
 
-- [ ] **B0.1** Confirmar autorización de R4 y recomendaciones D-R4; registrar cualquier cambio antes
+- [x] **B0.1** Confirmar autorización de R4 y recomendaciones D-R4; registrar cualquier cambio antes
   del código. Comprobar rama única, estado de trabajo y punto de partida remoto sin sobrescribir
   cambios ajenos.
-- [ ] **B0.2** Inventariar todas las reglas/casos/propiedades estáticos de LANG, DIAG, firmas de LIB,
+- [x] **B0.2** Inventariar todas las reglas/casos/propiedades estáticos de LANG, DIAG, firmas de LIB,
   API y TOOL pertinentes. Registrar combinaciones declaradas de perfil y rigor y exclusiones
   normativas existentes. No forzar combinaciones que un caso excluye justificadamente.
-- [ ] **B0.3** Separar aceptación por operación y por elemento: una regla que tiene análisis y
+- [x] **B0.3** Separar aceptación por operación y por elemento: una regla que tiene análisis y
   ejecución no queda completamente en cumple por aprobar solo analyze. Los casos execute/trace/ir
   quedan visibles con fase R5, sin contarse como aceptación estática ni como errores ocultos.
-- [ ] **B0.4** Guardar inventario y correspondencia de cada criterio de 07 con verificación,
+- [x] **B0.4** Guardar inventario y correspondencia de cada criterio de 07 con verificación,
   ejecutor y artefacto. Cualquier criterio sin ejecutor bloquea su aceptación.
 
 ### B1 · Contratos, generación e infraestructura
 
-- [ ] **B1.1** Activar engine en los contratos estáticos aplicables sin retirar reference. Versionar,
+- [x] **B1.1** Activar engine en los contratos estáticos aplicables sin retirar reference. Versionar,
   clasificar impacto y regenerar anclaje/exportación mediante SEE. Crear vínculos de conformidad del
   motor por elemento; ninguna exención de reference se traslada a engine.
-- [ ] **B1.2** Comprobar las aclaraciones de BOM y UTF-8 de LOSSLESS-TREE 0.2.0 y concretar en corpus
+- [x] **B1.2** Comprobar las aclaraciones de BOM y UTF-8 de LOSSLESS-TREE 0.2.0 y concretar en corpus
   los vacíos observables necesarios: límites de análisis y errores de recursos.
   Especificación → casos/propiedades → tests → código. No cambiar la gramática para
   acomodar la implementación ni debilitar el requisito de conservación.
-- [ ] **B1.3** Diseñar el registro de sujetos por proceso y la evidencia separada por sujeto en SEE.
+- [x] **B1.3** Diseñar el registro de sujetos por proceso y la evidencia separada por sujeto en SEE.
   La configuración selecciona ejecutable y argumentos sin shell ni imports del motor; se valida
   identidad, capacidades y ubicación de evidencia. El modo reference conserva su funcionamiento.
-- [ ] **B1.4** Definir el transporte mínimo de las propiedades estáticas inventariadas, incluidas
+- [x] **B1.4** Definir el transporte mínimo de las propiedades estáticas inventariadas, incluidas
   reimpresión, esquema, modelo de recursos, errores, versionado e intercambio aplicable al análisis.
   Semilla, generador, versiones/hashes, número de muestras, configuración y contraejemplo quedan en
   datos. Si falta una operación en el protocolo, se especifica y negocia antes de programarla; no se
   añaden campos ad hoc ni se confunde un resultado estructural con una observación ejecutada.
-- [ ] **B1.5** Crear workspace Cargo del motor con las capas de R4, tooling y versión exacta común;
+- [x] **B1.5** Crear workspace Cargo del motor con las capas de R4, tooling y versión exacta común;
   mantener R5 documentada sin implementaciones vacías de VM/runtime. Revisar la transición del modo
   declarativo del verificador para validar capas presentes y pendientes de forma explícita, sin
   desactivar comprobaciones de imports o exigir código anticipado. Cada cambio del verificador tiene
   fixture negativo y README actualizado.
-- [ ] **B1.6** Preparar build reproducible desde exportación; lectores y generadores con casos
+- [x] **B1.6** Preparar build reproducible desde exportación; lectores y generadores con casos
   felices, referencias rotas, duplicados y entradas truncadas. Dos generaciones de la misma entrada
   producen la misma salida; una exportación desactualizada hace fallar la puerta.
-- [ ] **B1.7** Declarar antes del código las reglas de la CLI y su tooling, y las dependencias
+- [x] **B1.7** Declarar antes del código las reglas de la CLI y su tooling, y las dependencias
   externas efectivamente necesarias. Actualizar README de los dueños con cada decisión adoptada.
 
 ### B2 · Fuente y diagnósticos
 
-- [ ] **B2.1** Implementar fuente, validación UTF-8, líneas, tramos y claves NFC. Comprobar vacío,
+- [x] **B2.1** Implementar fuente, validación UTF-8, líneas, tramos y claves NFC. Comprobar vacío,
   BOM, CR/LF/CRLF, caracteres suplementarios, nombres de un carácter, NFC/NFD, extremos e índices
   fuera de rango. No modificar literales ni comentarios.
-- [ ] **B2.2** Generar códigos y plantillas de diagnósticos con argumentos tipados. Implementar
+- [x] **B2.2** Generar códigos y plantillas de diagnósticos con argumentos tipados. Implementar
   orden del corpus y separación de idioma de interfaz y vocabulario. Rechazar argumentos o códigos
   inválidos por valores de retorno; probar la conservación de la grafía del usuario.
-- [ ] **B2.3** Verificar bytes inválidos y tamaños no representables en los bordes que los reciben;
+- [x] **B2.3** Verificar bytes inválidos y tamaños no representables en los bordes que los reciben;
   no pasar por JSON para simular bytes que JSON no puede representar como texto válido.
 
 ### B3 · Lexicon y lexer
 
-- [ ] **B3.1** Implementar tablas bilingües, alias, firmas estáticas y hash perfecto generado.
+- [x] **B3.1** Implementar tablas bilingües, alias, firmas estáticas y hash perfecto generado.
   Comprobar todas las entradas del recurso, desconocidos, colisiones, aperturas y diferencias entre
   nombres de funciones y palabras reservadas.
-- [ ] **B3.2** Implementar lexer con columnas y trivia conservada. Cubrir literales, escapes,
+- [x] **B3.2** Implementar lexer con columnas y trivia conservada. Cubrir literales, escapes,
   comentarios, operadores, Unicode y fragmentos inválidos conforme al corpus; EOF no pierde texto.
-- [ ] **B3.3** Verificar progreso y partición exacta de la fuente, incluido BOM como prefijo;
+- [x] **B3.3** Verificar progreso y partición exacta de la fuente, incluido BOM como prefijo;
   conversions y reservas comprobadas. El camino infeliz no genera un token que el parser interpreta
   como válido para producir una segunda causa artificial.
 
 ### B4 · Parser, postorden y recuperación
 
-- [ ] **B4.1** Implementar construcción/recorrido del árbol y vistas generadas antes de consumirlo
+- [x] **B4.1** Implementar construcción/recorrido del árbol y vistas generadas antes de consumirlo
   desde semantic. Verificar tamaños de subárbol, extremos de tokens, orden de hijos, nodos vacíos,
   rangos corruptos y conservación de fragmentos de error.
-- [ ] **B4.2** Cubrir expresiones, sentencias, bloques, arreglos, subprogramas y clases de la edición
+- [x] **B4.2** Cubrir expresiones, sentencias, bloques, arreglos, subprogramas y clases de la edición
   vigente, con precedencia, rigor, contexto y terminadores normativos. No dejar construcciones de
   análisis para R5 por el hecho de que su ejecución todavía no exista.
-- [ ] **B4.3** Implementar recuperación por contexto y probar cierres inesperados, EOF, listas rotas,
+- [x] **B4.3** Implementar recuperación por contexto y probar cierres inesperados, EOF, listas rotas,
   literales inválidos y ausencia de progreso. Comparar diagnósticos completos, sin deduplicarlos.
-- [ ] **B4.4** Comprobar límites seguros en todas las rutas recursivas y recorridos de destrucción.
+- [x] **B4.4** Comprobar límites seguros en todas las rutas recursivas y recorridos de destrucción.
   Ejecutar profundidad extrema en procesos aislados para detectar abortos o bloqueos; capturar un
   defecto como INTERNAL-FAULT no convierte el ensayo en éxito.
-- [ ] **B4.5** Producir esquema sintáctico aun con errores recuperables y bloquear semántica ante
+- [x] **B4.5** Producir esquema sintáctico aun con errores recuperables y bloquear semántica ante
   errores léxicos/sintácticos. Árbol y esquema vacío son resultados válidos donde lo exige el corpus.
 
 ### B5 · Nombres, tipos y HIR
 
-- [ ] **B5.1** Implementar arenas e índices tipados; registro de unidades y firmas, ámbitos,
+- [x] **B5.1** Implementar arenas e índices tipados; registro de unidades y firmas, ámbitos,
   resolución de nombres y miembros. Probar duplicados, ocultamiento permitido/prohibido, nombres
   Unicode equivalentes, herencia, privacidad, Este/Super y firmas inválidas según contratos.
-- [ ] **B5.2** Implementar tipos y rigor: operadores, conversiones, inferencia, incorporadas,
+- [x] **B5.2** Implementar tipos y rigor: operadores, conversiones, inferencia, incorporadas,
   arreglos, llamadas, paso por referencia, retorno, inicialización y restricciones del control de
   bucles. Cada regla exigible tiene una verificación; no se compara solo cantidad de errores.
-- [ ] **B5.3** Producir HIR tipado con tramos y referencias válidos. Probar que símbolos inválidos
+- [x] **B5.3** Producir HIR tipado con tramos y referencias válidos. Probar que símbolos inválidos
   impiden cascadas derivadas sin eliminar errores independientes. Repetir un análisis produce el
   mismo orden y los mismos resultados públicos.
-- [ ] **B5.4** Resolver los hallazgos estáticos asignados a R4 del README de SEE, incluidos H-05,
+- [x] **B5.4** Resolver los hallazgos estáticos asignados a R4 del README de SEE, incluidos H-05,
   H-06, H-37, inicialización flexible, símbolos inválidos, recuperación estructural, BOM/NFC,
   miembros privados/inexistentes y carácter suplementario. La prueba de ejecución del último sigue
   en R5; se aporta evidencia estática específica sin afirmar que ya ejecutó CodigoDe.
 
 ### B6 · API, adaptadores y CLI
 
-- [ ] **B6.1** Implementar la API estática con modelo, errores, versionado y wire format aplicables.
+- [x] **B6.1** Implementar la API estática con modelo, errores, versionado y wire format aplicables.
   Probar recursos inválidos, liberados o de otro análisis, entrada inválida, negociación incompatible,
   esquema recuperado, orden de diagnósticos y separación de idiomas. Ejecutar las propiedades API del
   inventario estático, incluida inyección controlada de fallos internos; distinguir estas pruebas
   deliberadas de las cargas ordinarias, donde INTERNAL-FAULT es siempre un defecto.
-- [ ] **B6.2** Implementar adaptador engine por stdio sobre api y conectar el registro de sujetos
+- [x] **B6.2** Implementar adaptador engine por stdio sobre api y conectar el registro de sujetos
   de SEE. Anunciar únicamente capacidades disponibles. Probar JSON inválido, EOF, timeout, identidad
   equivocada, capacidad ausente y respuesta fuera de contrato; logs solo por stderr.
-- [ ] **B6.3** Implementar comprobar/check y preferencias/preferences. Probar apertura precedida por
+- [x] **B6.3** Implementar comprobar/check y preferencias/preferences. Probar apertura precedida por
   BOM/trivia, vocabulario forzado, texto vacío, precedencia completa de idioma, alias equivalentes,
   ayuda, JSON, errores de archivo/preferencias y códigos de salida. El perfil de la API es explícito.
-- [ ] **B6.4** Conectar conformidad de CLI mediante el binario pseudo. La capa conformance no importa
+- [x] **B6.4** Conectar conformidad de CLI mediante el binario pseudo. La capa conformance no importa
   CLI ni crates internos para reproducir su lógica. Verificar las dos interfaces lingüísticas sin
   que la forma de la orden cambie el idioma de salida.
 
 ### B7 · Conformidad, propiedades y E-08
 
-- [ ] **B7.1** Ejecutar todos los casos analyze del alcance B0 con sus combinaciones declaradas;
+- [x] **B7.1** Ejecutar todos los casos analyze del alcance B0 con sus combinaciones declaradas;
   guardar esperados, observados, diferencias y hashes. Resultado sin incumple, pendiente ni no
   aplicable dentro de la aceptación estática exigible. Informar por separado lo asignado a R5.
-- [ ] **B7.2** Ejecutar P1/P2 de LOSSLESS-TREE y la propiedad de esquema de API.ANALYZE. Usar todos
+- [x] **B7.2** Ejecutar P1/P2 de LOSSLESS-TREE y la propiedad de esquema de API.ANALYZE. Usar todos
   los programas del corpus, incluso fuentes de casos execute, como textos para conservación, sin
   intentar ejecutarlos. Mutaciones con semilla reproducible; guardar contraejemplos y repetirlos.
-- [ ] **B7.3** Ejecutar robustez con entradas vacías, solo trivia, binario inválido, Unicode NFD,
+- [x] **B7.3** Ejecutar robustez con entradas vacías, solo trivia, binario inválido, Unicode NFD,
   texto aleatorio y anidación extrema. Validar terminación y ausencia de pánico/aborto/bloqueo;
   INTERNAL-FAULT nunca es un resultado aceptable del corpus ni de estas cargas válidas de prueba.
-- [ ] **B7.4** Medir throughput y E-08 conforme a §5, con manifiesto y datos crudos. Comprobar
+- [x] **B7.4** Medir throughput y E-08 conforme a §5, con manifiesto y datos crudos. Comprobar
   resultado de cada análisis fuera del intervalo medido, también cuando contiene errores esperados.
-- [ ] **B7.5** Contrastar Dart solo donde resulte pertinente, en el mismo hardware, conservando sus
+- [x] **B7.5** Contrastar Dart solo donde resulte pertinente, en el mismo hardware, conservando sus
   exenciones y resultados adversos. Los esperados provienen del corpus, no de la salida congelada.
-- [ ] **B7.6** Publicar conclusiones sobre reanálisis completo, memoria e identidad para R7.
+- [x] **B7.6** Publicar conclusiones sobre reanálisis completo, memoria e identidad para R7.
   Si falla un umbral normativo, optimizar dentro del diseño o reportar para decisión explícita antes
   de cambiar contrato; no cerrar por el solo hecho de haber tomado mediciones.
 
 ### B8 · Cierre de R4
 
-- [ ] **B8.1** Revisar README, reglas y conformidad de todos los miembros afectados. Toda decisión
+- [x] **B8.1** Revisar README, reglas y conformidad de todos los miembros afectados. Toda decisión
   adoptada es autosustentable en su dueño; ningún código o corpus cita este plan como autoridad.
-- [ ] **B8.2** Ejecutar las puertas completas de motor, CLI, SEE y cada miembro de tooling/benchmarks
+- [x] **B8.2** Ejecutar las puertas completas de motor, CLI, SEE y cada miembro de tooling/benchmarks
   modificado. Verificar casos negativos, formato, análisis estático, límites, nombres, seguridad,
   dependencias, generación y tests. Conservar comandos y cantidades reales.
-- [ ] **B8.3** Comprobar la tabla de §7 con evidencia. Ningún fallo obligatorio es un pendiente
+- [x] **B8.3** Comprobar la tabla de §7 con evidencia. Ningún fallo obligatorio es un pendiente
   justificable. Declarar para R5/R7 solo responsabilidades fuera del alcance con condición de entrada.
-- [ ] **B8.4** Publicar commits coherentes mediante push ordinario en la rama única; comprobar HEAD
+- [x] **B8.4** Publicar commits coherentes mediante push ordinario en la rama única; comprobar HEAD
   local/remoto. No usar coautoría ni atribución de IA. Las comprobaciones remotas solo se ejecutan si
   están autorizadas; los workflows manuales no se presuponen disparados por el push.
-- [ ] **B8.5** Actualizar casillas e informe de R4 en 07 después de reunir la evidencia, publicarlos
+- [x] **B8.5** Actualizar casillas e informe de R4 en 07 después de reunir la evidencia, publicarlos
   y volver a comprobar igualdad local/remoto. Informar implementación, tests, verificadores,
   observaciones, pendientes y publicación.
-- [ ] **B8.6** Parar. R5 requiere un mensaje nuevo de autorización. La revisión de memoria previa a
+- [x] **B8.6** Parar. R5 requiere un mensaje nuevo de autorización. La revisión de memoria previa a
   R5 que dejó E-02 sigue abierta y no se resuelve implementando runtime en R4.
 
 ### 4.1 Interfaz de verificación que R4 debe habilitar
