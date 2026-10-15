@@ -2,58 +2,50 @@
 
 ## 1. Qué es y qué no es
 
-Ejecuta bytecode verificado emitiendo eventos observables. Contrato documentado, sin implementación ni manifiesto Cargo.
-
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+Ejecuta bytecode verificado mediante bancos de registros. Diseño aprobado; implementación pendiente en R5.
+No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R5 |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
+Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
+actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 6. Dependencias internas permitidas: pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Nivel 7. Importa bytecode, runtime, library y diagnostics; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Estructuras y algoritmos: Bancos escalar (`u64`) y de referencias (`u32`) de tamaño fijo potencia de dos (2²⁰ ranuras en escritorio, 2¹⁸ en móvil y Wasm), con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; una comprobación por llamada que es también la de profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
+Despacho generado con pc, bases, combustible, eventos, marca de agua y máscaras en locales. Bancos Vec<u64> y Vec<u32> de longitud potencia de dos, ventanas solapadas y acceso por máscara. Crecen por duplicación al llamar; profundidad del lenguaje se comprueba aparte. Trampas inmediatas Result con construcción fría del diagnóstico.
 
-Invariantes: Ningún acceso puede salir de un banco; el gemelo rápido no contiene ninguna instrucción de observación.
-
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+Invariantes: Ningún acceso sale de su banco. El rápido nunca observa. Ningún límite agota la pila del anfitrión. La profundidad no depende de una capacidad fija elegida por plataforma.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: ejecuta bytecode verificado emitiendo eventos observables respetando los observables del corpus.
-Elección: Bancos escalar (`u64`) y de referencias (`u32`) de tamaño fijo potencia de dos (2²⁰ ranuras en escritorio, 2¹⁸ en móvil y Wasm), con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; una comprobación por llamada que es también la de profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
-Alternativas descartadas y fundamento: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
+La VM sale hacia su llamador con Exit::Service y no importa timeline ni API. Se carga el mínimo de presupuesto, distancia al punto y cuanto de sondeo. Los ciclos sin sentencias tienen contador de sondeo propio. Solo el servicio consulta cancelación y tiempo. Se cambia de gemelo en entradas de bloque y retornos por identidad independiente. El sondeado emite lotes en columnas y un búfer de cambios, sin objeto por evento. Se rechazan bancos fijos que alterarían límites y banderas de trampa escritas en cada operación.
+
+La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
+de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
+Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
+funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
+Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: `ENG.EXEC.*`, `ENG.TRACE.*`, `ENG.LIMITS`, `ENG.INPUT`.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+ENG.EXEC.*, ENG.TRACE.*, ENG.INPUT y ENG.LIMITS. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
+literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
+Trazadora numérica y recursiva antes del runtime completo; gemelos y cambios arbitrarios; límites exactos, cancelación de bucle vacío, entrada inválida, ausencia y robustez generada. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
+Lua inspira ventanas, JVM verificación y Self cambio de código; se preserva Rust seguro y se mide el despacho antes de optimizar.

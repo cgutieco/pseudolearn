@@ -8,7 +8,7 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Ninguno en el contrato de análisis implementado | — | — |
+| Consumir el HIR desde lowering y ampliar propiedades de ejecución | RI verificada | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar.
+Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar; serde_json solo en pruebas del HIR contra el corpus.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`) en columnas; resolución de nombres y después de tipos; HIR tipado con la clase de valor de cada expresión; resolución de jerarquía y ranuras virtuales en mundo cerrado.
@@ -45,8 +45,24 @@ El nombre de una variable pertenece al algoritmo, subprograma o método; los blo
 comparten ese ámbito, como exige `LANG.SUBPROGRAM.SCOPE`. El flujo de asignación sí se separa por
 rama y combina con intersección al salir de una condición. Una resolución inválida conserva la causa
 y evita diagnósticos derivados. Los campos se resuelven desde el tipo del receptor y su clase propietaria.
-La emisión del HIR se habilita solo sin errores; las advertencias no la bloquean.
+La auditoría consume además fuentes regenerables de see_generators en ambos vocabularios y rigores,
+sin importar el sistema de especificaciones como crate. La emisión del HIR se habilita solo sin errores; las advertencias no la bloquean.
 Alternativas descartadas: resolución global, copiar lexemas de tipos y volver a interpretar el texto en lowering.
+
+Cada repetición de inferencia restaura los símbolos locales originales y vuelve a crear los implícitos;
+solo conserva los tipos inferidos de parámetros. Así los diagnósticos de declaración e inferencia no
+desaparecen en la segunda pasada y una ampliación posterior no cambia lecturas anteriores.
+
+Antes de publicar el HIR se resuelven las referencias locales que se emitieron antes de terminar la
+inferencia. Los tipos ya conocidos de lecturas anteriores se conservan, incluso si la variable se amplía
+más tarde. Una lectura flexible cuya variable nunca adquiere un tipo produce `Uninitialized` con tipo
+interno `Never`: siempre falla antes de producir un valor. Never no es un tipo del lenguaje ni una
+construcción nueva; expresa una evaluación sin continuación normal. Se rechazan asignar un tipo
+primitivo arbitrario o publicar Unknown como si la inferencia hubiera terminado.
+
+Los emisores completan los argumentos tipados del catálogo: aridad numérica, tipos inferidos,
+compatibilidad de asignación y clase propietaria de miembros privados. Los tipos primitivos usan
+identidades del léxico; los nombres de clases son datos del usuario y no se confunden con esas identidades.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

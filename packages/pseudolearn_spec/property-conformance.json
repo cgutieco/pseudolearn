@@ -1,0 +1,189 @@
+{
+  "format": "see-properties/1",
+  "entries": [
+    {
+      "reference": "API.ANALYZE@0.1.0#P1",
+      "executor": "analysis_schema",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.ERRORS@0.1.0#P1",
+      "executor": "usage_errors",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.ERRORS@0.1.0#P2",
+      "executor": "internal_fault_containment",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.EXECUTE@0.2.0#P1",
+      "executor": "execution_controls",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.MODEL@0.1.0#P1",
+      "executor": "resource_lifecycle",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.MODEL@0.1.0#P2",
+      "executor": "interface_language",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.STATE.QUERY@0.1.0#P1",
+      "executor": "state_query",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.VERSIONING@0.1.0#P1",
+      "executor": "version_negotiation",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.VERSIONING@0.1.0#P2",
+      "executor": "capability_negotiation",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "API.WIRE-FORMAT@0.1.0#P1",
+      "executor": "wire_roundtrip",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.EXEC.EFFECT-ORDER@0.1.0#P1",
+      "executor": "first_trap",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.EXEC.MODEL@0.2.0#P1",
+      "executor": "determinism",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.INPUT@0.1.0#P1",
+      "executor": "input_batching",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P1",
+      "executor": "delta_minimality",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P2",
+      "executor": "delta_reconstruction",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P3",
+      "executor": "past_state_isolation",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.STATE.SNAPSHOT@0.1.0#P1",
+      "executor": "snapshot_isolation",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.TRACE.STEP@0.1.0#P1",
+      "executor": "step_partition",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "ENG.TRACE.STEP@0.1.0#P2",
+      "executor": "step_depth",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "IR.INSTRUCTIONS@0.1.0#P1",
+      "executor": "fused_first_trap",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "IR.LOWERING@0.1.0#P1",
+      "executor": "lowering_validity",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "IR.LOWERING@0.1.0#P2",
+      "executor": "lowering_execution",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "IR.LOWERING@0.1.0#P3",
+      "executor": "statement_mass",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "IR.OBSERVATION-POINTS@0.1.0#P1",
+      "executor": "observation_correspondence",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "MEM.IDENTITY@0.1.0#P1",
+      "executor": "identity_stability",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "MEM.MANAGED.UNOBSERVABLE@0.1.0#P1",
+      "executor": "gc_transparency",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "RT.HOST.INTERFACE@0.1.0#P1",
+      "executor": "host_recording",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "TOOL.CLI.IR@0.1.0#P1",
+      "executor": "cli_ir_roundtrip",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#P1",
+      "executor": "lossless_reprint",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#P2",
+      "executor": "lossless_recovery",
+      "seed": 42,
+      "samples": 100
+    }
+  ],
+  "subjects": [
+    "engine",
+    "cli"
+  ]
+}

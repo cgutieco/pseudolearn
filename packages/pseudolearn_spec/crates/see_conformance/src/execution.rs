@@ -29,20 +29,13 @@ pub fn execute(
             observations.extend(execute_case(specification, case, vocabulary, session)?);
         }
     }
-    let identity = |name: &str| {
-        session
-            .hello
-            .get(name)
-            .and_then(Value::as_str)
-            .map(str::to_owned)
-            .ok_or(format!("Missing {name}"))
-    };
-    let subject = identity("subject")?;
-    let subject_version = identity("subject_version")?;
+    let subject = identity(session, "subject")?;
+    let subject_version = identity(session, "subject_version")?;
     Ok(Evidence {
         protocol: "see-protocol/1".to_owned(),
         subject,
         subject_version,
+        properties: Vec::new(),
         corpus_hashes: Default::default(),
         observations,
         stderr: session.finish()?,
@@ -177,7 +170,7 @@ fn unavailable() -> Outcome {
     )
 }
 
-fn resolved_expected(
+pub(crate) fn resolved_expected(
     mut expected: Value,
     profile: &str,
     vocabulary: &Vocabulary,
@@ -204,4 +197,13 @@ fn resolved_expected(
         }
     }
     Ok(expected)
+}
+
+fn identity(session: &Session, name: &str) -> Result<String, String> {
+    session
+        .hello
+        .get(name)
+        .and_then(Value::as_str)
+        .map(str::to_owned)
+        .ok_or_else(|| format!("Missing {name}"))
 }

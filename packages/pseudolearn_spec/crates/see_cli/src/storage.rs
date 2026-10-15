@@ -25,6 +25,7 @@ pub fn valid(root: &Path) -> Result<Corpus, String> {
     let mut errors = see_validation::validate(&corpus, &lock(root)?)?;
     errors.extend(crate::resources::check(root, &corpus)?);
     errors.extend(crate::bindings::check(root, &corpus)?);
+    errors.extend(crate::property_registry::check(root, &corpus)?);
     if !errors.is_empty() {
         return Err(errors.join("\n"));
     }

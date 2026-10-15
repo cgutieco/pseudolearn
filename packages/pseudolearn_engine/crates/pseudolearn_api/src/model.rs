@@ -27,7 +27,7 @@ pub struct ApiDiagnostic {
     pub severity: String,
     pub message: String,
     pub span: ApiSpan,
-    pub arguments: BTreeMap<String, String>,
+    pub arguments: BTreeMap<String, serde_json::Value>,
     pub related: Vec<ApiSpan>,
 }
 

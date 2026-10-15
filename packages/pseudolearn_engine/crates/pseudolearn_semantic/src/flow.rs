@@ -6,19 +6,16 @@ use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
     let registry_diagnostics = session.diagnostics.len();
+    let bindings = crate::flow_bindings::FlowBindings::capture(session);
     for _ in 0..=session.module.functions.len() {
         session.diagnostics.truncate(registry_diagnostics);
+        bindings.restore(session);
         session.module.expressions = crate::expression_model::ExpressionColumns::default();
         session.module.statements = crate::statement_model::StatementColumns::default();
         session.reads.clear();
         session.writes.clear();
         session.called.clear();
         session.signature_changed = false;
-        for (index, local) in session.module.locals.iter().enumerate() {
-            if let Some(initialized) = session.initialized.get_mut(index) {
-                *initialized = local.parameter;
-            }
-        }
         for index in 0..session.module.functions.len() {
             function(session, index);
         }

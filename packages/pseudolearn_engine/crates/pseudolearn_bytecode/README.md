@@ -2,58 +2,50 @@
 
 ## 1. Qué es y qué no es
 
-Traduce la RI verificada a bytecode gemelo con asignación bicameral de registros. Contrato documentado, sin implementación ni manifiesto Cargo.
-
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+Traduce la RI verificada a bytecode gemelo. Diseño aprobado; implementación pendiente en R5.
+No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R5 |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
+Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
+actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 4. Dependencias internas permitidas: pseudolearn_ir, pseudolearn_source. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Nivel 5. Importa ir y source; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Estructuras y algoritmos: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
+Instrucciones de ocho bytes con opcode u8 y hasta tres operandos u16; constantes por función y texto por módulo. Ranuras de origen por variable y temporales por exploración lineal, separados en escalar y referencia. Salida de SSA con copias paralelas y temporal para ciclos. Código acolchado a potencia de dos con Unreachable.
 
-Invariantes: Los dos gemelos comparten el mapa de registros; todo operando es menor que el tamaño de su ventana; todo salto está dentro de la función.
-
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+Invariantes: Los gemelos comparten el mapa de registros. Cada operando cabe en su ventana; cada salto pertenece a su función; cada punto seguro tiene mapas y cada punto de retorno existe en ambos gemelos.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros respetando los observables del corpus.
-Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
-Alternativas descartadas y fundamento: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
+Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo. Mapas nocionales de raíces, definición y variable→ranura distinguen el estado del programa de temporales muertos. Superinstrucciones se seleccionan por perfil y se validan fuera de muestra. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
+
+La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
+de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
+Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
+funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
+Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: Ninguno observable; lo cubre la conformidad diferencial entre gemelos.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+No introduce observables; conserva los de la RI y habilita ENG.EXEC y ENG.TRACE. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
+literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
+Negativos del verificador, ciclos de copias paralelas, diferencial entre gemelos, cambio arbitrario de gemelo y validación de superinstrucciones fuera de muestra. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
+Lua inspira registros, JVM verificación y Self cambio de código. Ertl y Gregg inspiran superinstrucciones por perfil; se rechaza elegirlas por intuición o solo por entrenamiento.

@@ -7,7 +7,7 @@
     "DIAG.MODEL": "ed31520fbf14a5fac2c31089a272f2a1b7eeb9c1567c9fc8d9544f1020075667",
     "DIAG.ORDERING": "89b8ddd34f11f508d2acdc04c9a4ea32967256f16a68e0a4e94d169d5afcaa99",
     "DIAG.SEVERITY.POLICY": "0ac4149c1b225ac1787f5d4825d9ed30f06326812b2109f3ffccc1a71599a0fe",
-    "ENG.EXEC.MODEL": "705ff8f49f57b286694e6779c74f220857b1d547e9155e968e3570b84c0bd30e",
+    "ENG.EXEC.MODEL": "c81a9522f733a7445cd0e0976fc22c6ff059d0303428c7a41a40b0896839494a",
     "ENG.INPUT": "0361a7b13280c23b876362b62db2bb1aae38fa67a3fe5b04e3cb424bf96eb5d2",
     "ENG.TRACE.EVENTS": "73954f7cb64f055be4a097f93ba9eaee3d7b393aa3c66d546b899066175aa6dd",
     "LANG.ARRAY.ACCESS": "ea15bb13ac980d700d924ed5997e197f5b21db925069d38b2c9c7cfadaed7f2c",
@@ -23,7 +23,7 @@
     "LANG.CLASS.OUT-OF-SCOPE": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
     "LANG.CLASS.OVERRIDE": "d5558277813c7df3c67586c1060ca3336f0a3958ae798ba12f9f4b60fbb7c6f1",
     "LANG.CLASS.SELF-AND-SUPER": "f6af8c0cb84b61edde118308a820541027fa79a1888f6fe66c8158dfcfc75533",
-    "LANG.CONTROL.FOR": "0bca8d3456e632576b06ad512c84fac69e2042b76fdc7ecc68371153559b7575",
+    "LANG.CONTROL.FOR": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
     "LANG.CONTROL.IF": "0d02888e3588a75c1fd34f7d126e035d36b685ce5fcf9a42f792991d80888c71",
     "LANG.CONTROL.REPEAT": "ee4807aa7499e87415bed203ab4b654d0bf7e0ea69a3846c2bd62bf29b73d293",
     "LANG.CONTROL.SWITCH": "ea577ad32a8f4200f744189d9ee37661ad19ef5b0cfc4f4e0874b3a95dcaf78a",
@@ -35,7 +35,7 @@
     "LANG.EDITION.MODEL": "a8b631e436795df4d5fa24577c30902f4ea6e780d0b7a5f54ff3655741ed7742",
     "LANG.IO.INPUT": "7284485ee1eea79366340e632ebdcae0e16afa799b8618d2161cb7651ecbe44d",
     "LANG.IO.OUTPUT": "9d44249e4803a63d81bc563a49e398fcf3354f3592d1d7d7bca2a52791baef38",
-    "LANG.IO.VALUE-FORMAT": "4a62122dea13727649ff83334b9e344ab97c593acdd078f77cdd45e0f26c25ff",
+    "LANG.IO.VALUE-FORMAT": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
     "LANG.LEXICAL.CHARACTER-LITERAL": "20a4e097567de762136e06a2981ca6026860707aa1f2057aacc2e6187f7e5260",
     "LANG.LEXICAL.COMMENT": "10fc128f874b9dac3dc22cc3b32a176a56bcb83521a0e80a3e423984b2d3c2f8",
     "LANG.LEXICAL.ERRORS": "a8d9f04fb9e803592315289738983681da8871c6a5a74f6b991b6095e93dd582",
@@ -44,13 +44,13 @@
     "LANG.LEXICAL.NUMBER-LITERAL": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
     "LANG.LEXICAL.OPERATOR-TOKEN": "addeb5ddbfd6d28ad99f385b32500081d4be2cf75967ca4591801c2be48f4597",
     "LANG.LEXICAL.TEXT-LITERAL": "1fa39b1756120048b406192f4ff9e364ae735b7a3eaa72f35ee3912c9ea01a0c",
-    "LANG.LEXICAL.WHITESPACE": "37d3351a1e8cd2a61b1e920f2f454300dbc9aa8b4725846ac2492c3e97e4a32e",
+    "LANG.LEXICAL.WHITESPACE": "80ea6234b8d209bb24ccb231d3d4c132d639fbab2207fd578257ec5ec3fc37e4",
     "LANG.OPS.ARITHMETIC": "b79a0e318e0f8cae774428ae4aa745000431834d4a49c65bc66619f9d796cc42",
     "LANG.OPS.COMPARISON": "6dfdd6a0c723efbaff4dcf0ba3ac45bf9d81b01b95bf0443c2a58d9296167eb4",
     "LANG.OPS.CONCATENATION": "a6ae27121e6db96fc83d132a972c348b7bade2b78970ce910080e72a162c0af6",
     "LANG.OPS.DIVISION": "eca709b2a0f7d7b34b8e3c318e84d5338029d07cc39951bda5098eb71e652048",
     "LANG.OPS.LOGICAL": "2d18594e209ade1f06e63d704fde86507b4986d48bd89fb5921d14ba9a9cc0ad",
-    "LANG.OPS.POWER": "82490569981868ef727d433866f43c8367fec61c78a8d6ac8246a6ac21416f5a",
+    "LANG.OPS.POWER": "1bcc5dbba45d3462c45b351ea1e1fca3130a2c4474acb72b8a21a7d566d9bc02",
     "LANG.OPS.PRECEDENCE": "830c69a61946f48907f0210bb40882aa4bf1d4cdebd7f771041b7ab6145296a3",
     "LANG.PROFILE.MODEL": "f27b3cc87c9640707c2920b73d853257416b7fdaa0eebf009a4e63b52031a936",
     "LANG.PROFILE.STRICTNESS": "f3e7c05fdaa1dac254cc9c6771e060f4844c772f6743dc31ce9baa54301d0384",
@@ -66,27 +66,27 @@
     "LANG.SUBPROGRAM.DECLARATION": "60d47a6d59bb2d53429743326a98a84a8976cd4fcb48b1a3971902570798f75f",
     "LANG.SUBPROGRAM.INTERACTIONS": "32632a79801a62dc639d564790afc4d986840e28c5e3d4e7d1546f06e1dd3e21",
     "LANG.SUBPROGRAM.PARAMETERS": "8740c3005ec1a31aa4c946d9bb135dc5db61581447d12c8349eb057d6095eeaa",
-    "LANG.SUBPROGRAM.RECURSION": "67d9bf54a680feb62d89de4619dd70874bae8d0a223ff44e2cc39a6c378bd580",
+    "LANG.SUBPROGRAM.RECURSION": "e4ee42e2b43a1c12650abaadbf81c6b5143ef79be22b467876b6cd5b5cb5069a",
     "LANG.SUBPROGRAM.RETURN": "b0b58255905ba0f12a1b4e526f53fa9ac924080280a240246bce67d6ff913c1f",
     "LANG.SUBPROGRAM.SCOPE": "486e074de4798a2919a7c7c6db8c8465df9296041fd2f8b7e44da1ede630437b",
     "LANG.SYNTAX.GRAMMAR": "e4e135d79a117af94a7382446fd6a363183ece456490488e6e92c77c34d931e8",
     "LANG.SYNTAX.RECOVERY": "be573106fd9705a500d8c1d8b83f6db4cdb551c5190a1f22854f797377400bd5",
     "LANG.TYPES.ARRAY": "16cb8b9851cf185ddd8c5f38643a012cb1ea35e2b5e182a95ff6ffafe51fb56c",
     "LANG.TYPES.BOOLEAN": "b2eea0686b3d39226efbaef3b24e17fdb02f36c57aa28cf85590d20846e30e36",
-    "LANG.TYPES.CHARACTER": "6984c842d9daae1f5cc7c8bd0aedcd826a9b3c5772d450faaee7bb01ae7f1476",
+    "LANG.TYPES.CHARACTER": "560ef8f42f50f84bae1bacfaba5f8e3c588c5fac80c038c1af8f17c61f41617a",
     "LANG.TYPES.CHECKING-LEVELS": "3e14ff4828389f3f66235662156836115849f5cd448769f6e442dda0f969c3c6",
     "LANG.TYPES.CLASS": "46aa45f14b256fd65148167f3b08c57c51974007f994780cd4bf635117931d5e",
     "LANG.TYPES.INFERENCE": "fa48b26b99ba098abeffaad2387d0b23a330a9e2170c7bab54c1f7a1d6382e16",
-    "LANG.TYPES.INTEGER": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
-    "LANG.TYPES.REAL": "acdae68d82fa42053df41b3878778fdbf840e23ef868c7fafb5aa4b7a59e6dde",
+    "LANG.TYPES.INTEGER": "ed53f807008b4299bab7e3b4d76432a4e9ca9fa8fc2a0b1df8a2c41dd7b5fcc9",
+    "LANG.TYPES.REAL": "dc55da0182ad393438c9d12539222ddfc05b0249073eff2a1268a01c08e9c6bd",
     "LANG.TYPES.RELATIONS": "f7ec05cd60d70395a816f6bbd18741a4ef2bcf552730ca54dec5a4f973cb6f6f",
-    "LANG.TYPES.TEXT": "48261090715aaa1b5685778ee37be82ac32f4a6861787250043b99c7e4106f70",
+    "LANG.TYPES.TEXT": "42f821027c130e4282193f4bf160ac1c50f53e11f9f38f68b3cf54986afad7a1",
     "LIB.CORE.CONVERSION": "eb199f2a97b8a5ecfdffda053ef559955ce3bcd4d0b7d04f87f5bc1cf9304f83",
     "LIB.CORE.COPY": "80167c8db10638e4ea15037c5952bbfeabe9fd98ea09fc9559f1010c01ceaa90",
-    "LIB.CORE.MATH": "d7da999ecdd7a1a02e9e9eb4fcbc687d71bab9e7e98361a6f46f2026721462fc",
+    "LIB.CORE.MATH": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
     "LIB.CORE.RANDOM": "c4a73e2af0b8f32c2a6fa263119b16f3a3b7ab945387123de06f3bb82b109585",
     "LIB.CORE.ROUNDING": "fe692f7b341d9c96e69044576b69039a66b4333edd92832e277b5ef943b3a545",
-    "LIB.CORE.TEXT": "1d3e2d916545330405575b1dc5d6d455014f14908c2be8f9b54bd65c5e1a94d9",
+    "LIB.CORE.TEXT": "8b1d0471a69a6b1661d90c8963c1f570b87e7d73ec8c50e201fc56b4d172075f",
     "LIB.MODEL": "37e9336411089aa58db87950fa77444dc9172ae3dd1f6e5b8841365f1dc49030",
     "MEM.IDENTITY": "0f1aa35b6cbc9dc289e608650e96a7c6c24c2878bf11be9efa659f712fba4f7c",
     "MEM.VALUE.COPY": "d1f30b2fb4c509cba35d01e4c13a6ff7f5c4edcfb5a04436dd6d1880ab9f109a",
@@ -3622,6 +3622,114 @@
         "diagnostics": [],
         "events": [],
         "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "limit_reached",
+          "limit": "micro_steps"
+        },
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: terminacion"
+      ],
+      "expected": {
+        "salida": "",
+        "terminacion": "cancelled"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "limit_reached",
+          "limit": "micro_steps"
+        },
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: terminacion"
+      ],
+      "expected": {
+        "salida": "",
+        "terminacion": "cancelled"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "limit_reached",
+          "limit": "micro_steps"
+        },
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: terminacion"
+      ],
+      "expected": {
+        "salida": "",
+        "terminacion": "cancelled"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "kind": "limit_reached",
+          "limit": "micro_steps"
+        },
+        "tree": true
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: terminacion"
+      ],
+      "expected": {
+        "salida": "",
+        "terminacion": "cancelled"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
         "output": "antes\n",
         "states": [],
         "termination": {
@@ -20937,6 +21045,110 @@
     },
     {
       "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0000001:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:0.0000001:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.IO.VALUE-FORMAT",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0000001:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:0.0000001:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.IO.VALUE-FORMAT",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0000001:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:0.0000001:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.IO.VALUE-FORMAT",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0000001:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:0.0000001:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.IO.VALUE-FORMAT",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
         "diagnostics": [
           {
             "arguments": {
@@ -27381,6 +27593,278 @@
       "expected": {
         "fallo": {
           "codigo": "integerOverflow"
+        }
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:1.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:1.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:1.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:1.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:1.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:1.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:1.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:1.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "nonFiniteRealResult",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 18,
+                "line": 2
+              },
+              "start": {
+                "column": 17,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "nonFiniteRealResult",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "fallo": {
+          "codigo": "nonFiniteRealResult"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "nonFiniteRealResult",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 18,
+                "line": 2
+              },
+              "start": {
+                "column": 17,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "nonFiniteRealResult",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "fallo": {
+          "codigo": "nonFiniteRealResult"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "nonFiniteRealResult",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 15,
+                "line": 2
+              },
+              "start": {
+                "column": 14,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "nonFiniteRealResult",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "fallo": {
+          "codigo": "nonFiniteRealResult"
+        }
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.OPS.POWER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {},
+            "class": "runtime",
+            "code": "nonFiniteRealResult",
+            "related": [],
+            "severity": "error",
+            "span": {
+              "end": {
+                "column": 15,
+                "line": 2
+              },
+              "start": {
+                "column": 14,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "events": [],
+        "kind": "execute",
+        "output": "",
+        "states": [],
+        "termination": {
+          "code": "nonFiniteRealResult",
+          "kind": "failed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "fallo": {
+          "codigo": "nonFiniteRealResult"
         }
       },
       "profile": "en",
@@ -47545,6 +48029,110 @@
         "diagnostics": [],
         "events": [],
         "kind": "execute",
+        "output": "0.30000000000000004:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.REAL",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.TYPES.REAL",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.REAL",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "0.30000000000000004:0.0\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [
+        "Mismatch: salida"
+      ],
+      "expected": {
+        "salida": "0.30000000000000004:-0.0\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.TYPES.REAL",
+      "strictness": "flexible",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
         "output": "2.0\n",
         "states": [],
         "termination": {
@@ -49613,6 +50201,102 @@
             "severidad": "error"
           }
         ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "events": [],
+        "kind": "execute",
+        "output": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "states": [],
+        "termination": {
+          "kind": "completed"
+        },
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "salida": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+        "terminacion": "completed"
       },
       "profile": "en",
       "rule": "R1",

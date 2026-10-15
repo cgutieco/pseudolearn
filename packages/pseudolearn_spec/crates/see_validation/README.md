@@ -27,6 +27,10 @@ y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fue
 El recurso `unsupportedConstructs` valida aperturas, cierres, diagnóstico y forma de apertura.
 Son datos no reservados; el parser solo reconoce su posición estructural.
 
+La conformidad de propiedades se valida contra su esquema propio y el corpus: referencia exacta a una
+propiedad vigente, unicidad, semilla u64 y muestras positivas. Los contraejemplos no se convierten en
+casos esperados. Una propiedad sin ejecutor no se declara cumplida.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
@@ -42,3 +46,6 @@ El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+
+El esquema admite `cancelacion_prueba` como ordinal entero no negativo de un sondeo.
+El campo no se interpreta como un presupuesto de sentencias y se rechazan tipos y signos inválidos.

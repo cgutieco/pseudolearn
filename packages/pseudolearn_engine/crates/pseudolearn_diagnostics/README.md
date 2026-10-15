@@ -39,6 +39,11 @@ las clases cerradas lexical, syntax, semantic, runtime e internal y genera las d
 El modelo conserva códigos, tramos y argumentos; la selección de rigor consulta la tabla generada.
 Se rechaza inferir clase por un prefijo del código o tratar una clase desconocida como fallo interno.
 
+Los argumentos conservan su clase: lexema, token, tipo, término o número. El catálogo genera la ficha
+de argumentos requeridos; el borde valida que no falten claves ni se sustituyan números por cadenas.
+Los tokens y tipos primitivos se resuelven con el vocabulario del programa antes de presentar prosa.
+La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentro de un lexema del usuario.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

@@ -43,5 +43,7 @@ pub struct Evidence {
     pub subject_version: String,
     pub corpus_hashes: std::collections::BTreeMap<String, String>,
     pub observations: Vec<Observation>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub properties: Vec<crate::properties::PropertyRun>,
     pub stderr: String,
 }

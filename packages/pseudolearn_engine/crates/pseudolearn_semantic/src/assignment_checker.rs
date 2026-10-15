@@ -26,6 +26,7 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
         && !crate::type_resolution::assignable(session, &expected, &actual)
     {
         session.report(DiagnosticCode::IncompatibleTypesInAssignment, node);
+        crate::diagnostic_arguments::assignment_types(session, &expected, &actual);
     }
     value = crate::expression_checker::widen(session, value, &expected);
     Some(HirStatement::Assign {
@@ -92,6 +93,9 @@ fn infer_assignment(
     };
     let actual = session.expression_type(value);
     let expected = session.module.types.get(declaration.type_id);
+    if matches!(actual, Type::Unknown | Type::Error) {
+        return;
+    }
     if session.inferred.contains(&local) {
         let type_id = session.module.types.intern(actual.clone());
         let code = match (&expected, &actual) {
@@ -104,6 +108,9 @@ fn infer_assignment(
         };
         if let Some(code) = code {
             session.named_report(code, node, &declaration.name);
+            if code == DiagnosticCode::InferredVariableType {
+                crate::diagnostic_arguments::inferred_type(session, &actual);
+            }
             if code == DiagnosticCode::TypeConflictOnInferredVariable {
                 return;
             }

@@ -105,7 +105,8 @@ fn classify_implicit(
 ) {
     if session.options.strict || purpose != ExpressionPurpose::Destination {
         session.invalid.insert(identifier);
-    } else {
+    }
+    if !session.options.strict {
         session.inferred.insert(identifier);
     }
 }

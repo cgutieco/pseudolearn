@@ -49,7 +49,7 @@ fn check_argument(
         return;
     }
     if !crate::type_resolution::assignable(session, &expected, &actual) {
-        session.report(DiagnosticCode::IncompatibleArgumentType, node);
+        session.named_report(DiagnosticCode::IncompatibleArgumentType, node, &local.name);
         return;
     }
     *argument = crate::expression_checker::widen(session, *argument, &expected);
@@ -85,11 +85,17 @@ fn check_reference(
 pub(crate) fn arity(session: &mut AnalysisSession<'_>, counts: (usize, usize), node: usize) {
     session.report(DiagnosticCode::ArgumentCountMismatch, node);
     if let Some(diagnostic) = session.diagnostics.last_mut() {
-        diagnostic
-            .arguments
-            .insert("expected".to_owned(), counts.0.to_string());
-        diagnostic
-            .arguments
-            .insert("found".to_owned(), counts.1.to_string());
+        diagnostic.arguments.insert(
+            "expected".to_owned(),
+            pseudolearn_diagnostics::DiagnosticArgument::Number(
+                u64::try_from(counts.0).unwrap_or(u64::MAX).into(),
+            ),
+        );
+        diagnostic.arguments.insert(
+            "found".to_owned(),
+            pseudolearn_diagnostics::DiagnosticArgument::Number(
+                u64::try_from(counts.1).unwrap_or(u64::MAX).into(),
+            ),
+        );
     }
 }

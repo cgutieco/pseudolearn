@@ -3,6 +3,12 @@
   "paquete": "packages/pseudolearn_engine",
   "activadas": [
     "API.ANALYZE",
+    "API.ERRORS",
+    "API.EXECUTE",
+    "API.MODEL",
+    "API.STATE.QUERY",
+    "API.VERSIONING",
+    "API.WIRE-FORMAT",
     "DIAG.CATALOG",
     "DIAG.CLASSES",
     "DIAG.ENGINE.INTERNAL-FAULT",
@@ -10,6 +16,21 @@
     "DIAG.MODEL",
     "DIAG.ORDERING",
     "DIAG.SEVERITY.POLICY",
+    "ENG.EXEC.EFFECT-ORDER",
+    "ENG.EXEC.MODEL",
+    "ENG.INPUT",
+    "ENG.LIMITS",
+    "ENG.STATE.INCREMENTAL",
+    "ENG.STATE.SNAPSHOT",
+    "ENG.TRACE.EVENTS",
+    "ENG.TRACE.STEP",
+    "IR.INSTRUCTIONS",
+    "IR.LOWERING",
+    "IR.MODEL",
+    "IR.OBSERVATION-POINTS",
+    "IR.SOURCE-MAP",
+    "IR.TEXT-FORMAT",
+    "IR.WELL-FORMEDNESS",
     "LANG.ARRAY.ACCESS",
     "LANG.ARRAY.DIMENSION",
     "LANG.CLASS.CONSTRUCTOR",
@@ -44,11 +65,13 @@
     "LANG.LEXICAL.NUMBER-LITERAL",
     "LANG.LEXICAL.OPERATOR-TOKEN",
     "LANG.LEXICAL.TEXT-LITERAL",
+    "LANG.LEXICAL.WHITESPACE",
     "LANG.OPS.ARITHMETIC",
     "LANG.OPS.COMPARISON",
     "LANG.OPS.CONCATENATION",
     "LANG.OPS.DIVISION",
     "LANG.OPS.LOGICAL",
+    "LANG.OPS.POWER",
     "LANG.OPS.PRECEDENCE",
     "LANG.PROFILE.MODEL",
     "LANG.PROFILE.STRICTNESS",
@@ -64,22 +87,35 @@
     "LANG.SUBPROGRAM.DECLARATION",
     "LANG.SUBPROGRAM.INTERACTIONS",
     "LANG.SUBPROGRAM.PARAMETERS",
+    "LANG.SUBPROGRAM.RECURSION",
     "LANG.SUBPROGRAM.RETURN",
     "LANG.SUBPROGRAM.SCOPE",
+    "LANG.SYNTAX.ANALYSIS-LIMITS",
     "LANG.SYNTAX.GRAMMAR",
     "LANG.SYNTAX.RECOVERY",
     "LANG.TYPES.ARRAY",
     "LANG.TYPES.BOOLEAN",
+    "LANG.TYPES.CHARACTER",
     "LANG.TYPES.CHECKING-LEVELS",
     "LANG.TYPES.CLASS",
     "LANG.TYPES.INFERENCE",
+    "LANG.TYPES.INTEGER",
+    "LANG.TYPES.REAL",
     "LANG.TYPES.RELATIONS",
+    "LANG.TYPES.TEXT",
     "LIB.CORE.CONVERSION",
     "LIB.CORE.COPY",
     "LIB.CORE.MATH",
     "LIB.CORE.RANDOM",
     "LIB.CORE.ROUNDING",
+    "LIB.CORE.TEXT",
     "LIB.MODEL",
+    "MEM.IDENTITY",
+    "MEM.MANAGED.UNOBSERVABLE",
+    "MEM.VALUE.COPY",
+    "PERF.VM.STEP-LATENCY",
+    "PERF.VM.THROUGHPUT",
+    "RT.HOST.INTERFACE",
     "TOOL.SERVICE.LOSSLESS-TREE"
   ],
   "fases_cerradas": [],
@@ -218,37 +254,37 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R1",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R2",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R3",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R4",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R5",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R5",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R6",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R6",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
@@ -318,7 +354,7 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
+      "regla": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
@@ -588,7 +624,7 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "LIB.CORE.MATH@0.2.0#R1",
+      "regla": "LIB.CORE.MATH@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
@@ -620,6 +656,660 @@
       "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
       "verificacion": "codigo",
       "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.REAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.CHARACTER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.OPS.POWER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "PERF.VM.STEP-LATENCY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "PERF.VM.STEP-LATENCY@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.SNAPSHOT@0.1.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.INCREMENTAL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.INCREMENTAL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.STATE.INCREMENTAL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.STEP@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.STEP@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.STEP@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.TRACE.STEP@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.SOURCE-MAP@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.SOURCE-MAP@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.TEXT-FORMAT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.TEXT-FORMAT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.TEXT-FORMAT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.LOWERING@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.LOWERING@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "IR.LOWERING@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.EXECUTE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.EXECUTE@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.EXECUTE@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.EXECUTE@0.2.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.WIRE-FORMAT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.WIRE-FORMAT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.ERRORS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.ERRORS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.MODEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.MODEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.VERSIONING@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.VERSIONING@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.STATE.QUERY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.STATE.QUERY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "API.STATE.QUERY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "PERF.VM.THROUGHPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "PERF.VM.THROUGHPUT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R5"
     }
   ]
 }

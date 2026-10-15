@@ -42,6 +42,22 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "API.EXECUTE@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "cb30dbc1a4571a85329dfecaa5c378c5a94fc5d63b938c27eaf4400908872509",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "API.MODEL@0.1.0": {
       "edition": {},
       "elements": {
@@ -369,6 +385,28 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "ENG.EXEC.MODEL@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "c81a9522f733a7445cd0e0976fc22c6ff059d0303428c7a41a40b0896839494a",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "ENG.INPUT@0.1.0": {
       "edition": {},
       "elements": {
@@ -421,6 +459,41 @@
       "hash": "48e3f7fcdcf2bf1cc82fa6b7eac236d7b8908fd4420d10a5b48c5b9a5269e713",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "ENG.LIMITS@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla",
+        "R8": "regla"
+      },
+      "hash": "8e07bc6c23d9b6fb2d5b32fe45852b3f6992cab3986a7877c88530f6a2e10829",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "ENG.STATE.INCREMENTAL@0.1.0": {
       "edition": {},
@@ -1237,6 +1310,37 @@
       "state": "experimental",
       "version": "0.3.0"
     },
+    "LANG.CONTROL.FOR@0.3.1": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "E1": "error",
+        "E2": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla"
+      },
+      "hash": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
+      "state": "experimental",
+      "version": "0.3.1"
+    },
     "LANG.CONTROL.IF@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -1575,6 +1679,21 @@
       "state": "experimental",
       "version": "0.2.0"
     },
+    "LANG.IO.VALUE-FORMAT@0.3.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla"
+      },
+      "hash": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
+      "state": "experimental",
+      "version": "0.3.0"
+    },
     "LANG.LEXICAL.CHARACTER-LITERAL@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -1831,6 +1950,20 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "LANG.LEXICAL.WHITESPACE@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "R1": "regla"
+      },
+      "hash": "80ea6234b8d209bb24ccb231d3d4c132d639fbab2207fd578257ec5ec3fc37e4",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "LANG.OPS.ARITHMETIC@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -1984,6 +2117,22 @@
       "hash": "82490569981868ef727d433866f43c8367fec61c78a8d6ac8246a6ac21416f5a",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "LANG.OPS.POWER@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla"
+      },
+      "hash": "1bcc5dbba45d3462c45b351ea1e1fca3130a2c4474acb72b8a21a7d566d9bc02",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "LANG.OPS.PRECEDENCE@0.1.0": {
       "edition": {
@@ -2417,6 +2566,20 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "LANG.SUBPROGRAM.RECURSION@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "R1": "regla"
+      },
+      "hash": "e4ee42e2b43a1c12650abaadbf81c6b5143ef79be22b467876b6cd5b5cb5069a",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "LANG.SUBPROGRAM.RETURN@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -2494,6 +2657,26 @@
       "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "bfecbbbfedf25e07ef53f3b92a07e01e4a0d6650f97f230c84d46a4c2d6e265a",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "LANG.SYNTAX.GRAMMAR@0.1.0": {
       "edition": {
@@ -2655,6 +2838,19 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "LANG.TYPES.CHARACTER@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "R1": "regla"
+      },
+      "hash": "560ef8f42f50f84bae1bacfaba5f8e3c588c5fac80c038c1af8f17c61f41617a",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "LANG.TYPES.CHECKING-LEVELS@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -2760,6 +2956,29 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "LANG.TYPES.INTEGER@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "E1": "error",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "ed53f807008b4299bab7e3b4d76432a4e9ca9fa8fc2a0b1df8a2c41dd7b5fcc9",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "LANG.TYPES.REAL@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -2772,6 +2991,20 @@
       "hash": "acdae68d82fa42053df41b3878778fdbf840e23ef868c7fafb5aa4b7a59e6dde",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "LANG.TYPES.REAL@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "R1": "regla"
+      },
+      "hash": "dc55da0182ad393438c9d12539222ddfc05b0249073eff2a1268a01c08e9c6bd",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "LANG.TYPES.RELATIONS@0.1.0": {
       "edition": {
@@ -2811,6 +3044,19 @@
       "hash": "48261090715aaa1b5685778ee37be82ac32f4a6861787250043b99c7e4106f70",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "LANG.TYPES.TEXT@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "R1": "regla"
+      },
+      "hash": "42f821027c130e4282193f4bf160ac1c50f53e11f9f38f68b3cf54986afad7a1",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "LIB.CORE.CONVERSION@0.1.0": {
       "edition": {
@@ -2898,6 +3144,22 @@
       "state": "experimental",
       "version": "0.2.0"
     },
+    "LIB.CORE.MATH@0.3.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla"
+      },
+      "hash": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
+      "state": "experimental",
+      "version": "0.3.0"
+    },
     "LIB.CORE.RANDOM@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -2968,6 +3230,21 @@
       "hash": "1d3e2d916545330405575b1dc5d6d455014f14908c2be8f9b54bd65c5e1a94d9",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "LIB.CORE.TEXT@0.2.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "R1": "regla"
+      },
+      "hash": "8b1d0471a69a6b1661d90c8963c1f570b87e7d73ec8c50e201fc56b4d172075f",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "LIB.MODEL@0.1.0": {
       "edition": {
@@ -3152,6 +3429,19 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "PERF.VM.STEP-LATENCY@0.2.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "400a4c136e8caf7c2bcd0a42967fd9d8a4c3426e7fc3d0b157a63d127b54fb91",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "PERF.VM.THROUGHPUT@0.1.0": {
       "edition": {},
       "elements": {
@@ -3202,6 +3492,17 @@
       "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
       "state": "experimental",
       "version": "0.2.0"
+    },
+    "SEE.ADAPTER.PROTOCOL@0.3.0": {
+      "edition": {},
+      "elements": {
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "d61ac077ba1ae214e1f63d1fa3f85a57367a0c4de8740fe8b3b64b48e3434a41",
+      "state": "experimental",
+      "version": "0.3.0"
     },
     "SEE.CHANGE.CLASSIFICATION@0.1.0": {
       "edition": {},
@@ -3581,9 +3882,9 @@
         "R3": "regla",
         "R4": "regla"
       },
-      "hash": "736f5efb2e544911efa9ba9691d34cea3d3218c10f221658f21ad238773da113",
+      "hash": "cb30dbc1a4571a85329dfecaa5c378c5a94fc5d63b938c27eaf4400908872509",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "API.MODEL": {
       "edition": {},
@@ -3762,15 +4063,16 @@
         "C6": "caso",
         "C7": "caso",
         "C8": "caso",
+        "C9": "caso",
         "D1": "definicion",
         "P1": "propiedad",
         "R1": "regla",
         "R2": "regla",
         "R3": "regla"
       },
-      "hash": "705ff8f49f57b286694e6779c74f220857b1d547e9155e968e3570b84c0bd30e",
+      "hash": "c81a9522f733a7445cd0e0976fc22c6ff059d0303428c7a41a40b0896839494a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "ENG.INPUT": {
       "edition": {},
@@ -3803,6 +4105,8 @@
         "C14": "caso",
         "C15": "caso",
         "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
         "C2": "caso",
         "C3": "caso",
         "C4": "caso",
@@ -3821,9 +4125,9 @@
         "R7": "regla",
         "R8": "regla"
       },
-      "hash": "48e3f7fcdcf2bf1cc82fa6b7eac236d7b8908fd4420d10a5b48c5b9a5269e713",
+      "hash": "8e07bc6c23d9b6fb2d5b32fe45852b3f6992cab3986a7877c88530f6a2e10829",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "ENG.STATE.INCREMENTAL": {
       "edition": {},
@@ -4389,9 +4693,9 @@
         "R5": "regla",
         "R6": "regla"
       },
-      "hash": "0bca8d3456e632576b06ad512c84fac69e2042b76fdc7ecc68371153559b7575",
+      "hash": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
       "state": "experimental",
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     "LANG.CONTROL.IF": {
       "edition": {
@@ -4556,11 +4860,12 @@
         "C1": "caso",
         "C2": "caso",
         "C3": "caso",
+        "C4": "caso",
         "R1": "regla"
       },
-      "hash": "4a62122dea13727649ff83334b9e344ab97c593acdd078f77cdd45e0f26c25ff",
+      "hash": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "LANG.LEXICAL.CHARACTER-LITERAL": {
       "edition": {
@@ -4686,9 +4991,9 @@
         "C3": "caso",
         "R1": "regla"
       },
-      "hash": "37d3351a1e8cd2a61b1e920f2f454300dbc9aa8b4725846ac2492c3e97e4a32e",
+      "hash": "80ea6234b8d209bb24ccb231d3d4c132d639fbab2207fd578257ec5ec3fc37e4",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.OPS.ARITHMETIC": {
       "edition": {
@@ -4768,11 +5073,13 @@
         "C1": "caso",
         "C2": "caso",
         "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
         "R1": "regla"
       },
-      "hash": "82490569981868ef727d433866f43c8367fec61c78a8d6ac8246a6ac21416f5a",
+      "hash": "1bcc5dbba45d3462c45b351ea1e1fca3130a2c4474acb72b8a21a7d566d9bc02",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.OPS.PRECEDENCE": {
       "edition": {
@@ -4993,9 +5300,9 @@
         "C3": "caso",
         "R1": "regla"
       },
-      "hash": "67d9bf54a680feb62d89de4619dd70874bae8d0a223ff44e2cc39a6c378bd580",
+      "hash": "e4ee42e2b43a1c12650abaadbf81c6b5143ef79be22b467876b6cd5b5cb5069a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.RETURN": {
       "edition": {
@@ -5042,9 +5349,9 @@
         "D1": "definicion",
         "R1": "regla"
       },
-      "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+      "hash": "bfecbbbfedf25e07ef53f3b92a07e01e4a0d6650f97f230c84d46a4c2d6e265a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.SYNTAX.GRAMMAR": {
       "edition": {
@@ -5120,9 +5427,9 @@
         "C2": "caso",
         "R1": "regla"
       },
-      "hash": "6984c842d9daae1f5cc7c8bd0aedcd826a9b3c5772d450faaee7bb01ae7f1476",
+      "hash": "560ef8f42f50f84bae1bacfaba5f8e3c588c5fac80c038c1af8f17c61f41617a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.TYPES.CHECKING-LEVELS": {
       "edition": {
@@ -5184,9 +5491,9 @@
         "R2": "regla",
         "R3": "regla"
       },
-      "hash": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
+      "hash": "ed53f807008b4299bab7e3b4d76432a4e9ca9fa8fc2a0b1df8a2c41dd7b5fcc9",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.TYPES.REAL": {
       "edition": {
@@ -5195,11 +5502,12 @@
       "elements": {
         "C1": "caso",
         "C2": "caso",
+        "C3": "caso",
         "R1": "regla"
       },
-      "hash": "acdae68d82fa42053df41b3878778fdbf840e23ef868c7fafb5aa4b7a59e6dde",
+      "hash": "dc55da0182ad393438c9d12539222ddfc05b0249073eff2a1268a01c08e9c6bd",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LANG.TYPES.RELATIONS": {
       "edition": {
@@ -5223,9 +5531,9 @@
         "C2": "caso",
         "R1": "regla"
       },
-      "hash": "48261090715aaa1b5685778ee37be82ac32f4a6861787250043b99c7e4106f70",
+      "hash": "42f821027c130e4282193f4bf160ac1c50f53e11f9f38f68b3cf54986afad7a1",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LIB.CORE.CONVERSION": {
       "edition": {
@@ -5264,11 +5572,12 @@
         "C2": "caso",
         "C3": "caso",
         "C4": "caso",
+        "C5": "caso",
         "R1": "regla"
       },
-      "hash": "d7da999ecdd7a1a02e9e9eb4fcbc687d71bab9e7e98361a6f46f2026721462fc",
+      "hash": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "LIB.CORE.RANDOM": {
       "edition": {
@@ -5309,9 +5618,9 @@
         "C4": "caso",
         "R1": "regla"
       },
-      "hash": "1d3e2d916545330405575b1dc5d6d455014f14908c2be8f9b54bd65c5e1a94d9",
+      "hash": "8b1d0471a69a6b1661d90c8963c1f570b87e7d73ec8c50e201fc56b4d172075f",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "LIB.MODEL": {
       "edition": {
@@ -5459,11 +5768,13 @@
       "elements": {
         "M1": "medicion",
         "M2": "medicion",
-        "R1": "regla"
+        "M3": "medicion",
+        "R1": "regla",
+        "R2": "regla"
       },
-      "hash": "686255cdd4f530f37b8108b65bd00af9d01dc667b6f46966111a86b79791ebe2",
+      "hash": "400a4c136e8caf7c2bcd0a42967fd9d8a4c3426e7fc3d0b157a63d127b54fb91",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "PERF.VM.THROUGHPUT": {
       "edition": {},
@@ -5502,9 +5813,9 @@
         "R2": "regla",
         "R3": "regla"
       },
-      "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
+      "hash": "d61ac077ba1ae214e1f63d1fa3f85a57367a0c4de8740fe8b3b64b48e3434a41",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "SEE.CHANGE.CLASSIFICATION": {
       "edition": {},

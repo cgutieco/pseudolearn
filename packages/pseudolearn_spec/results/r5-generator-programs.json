@@ -1,0 +1,1802 @@
+[
+  {
+    "elements": 13,
+    "initial": 9,
+    "input": "43",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 0,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": 9,
+    "input": "43",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 0,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": -10,
+    "input": "5",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[10] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 9 Con Paso 1 Hacer\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 1,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": -10,
+    "input": "5",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[10] as integer;\ntotal <- 0;\nfor index <- 0 to 9 step 1 do\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 1,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -1,
+    "input": "42",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 2,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -1,
+    "input": "42",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 2,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 3,
+    "input": "59",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 3,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 3,
+    "input": "59",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 3,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 8,
+    "input": "93",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 4,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 8,
+    "input": "93",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 4,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 6,
+    "input": "100",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[16] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 15 Con Paso 1 Hacer\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 5,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 6,
+    "input": "100",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[16] as integer;\ntotal <- 0;\nfor index <- 0 to 15 step 1 do\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 5,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": 10,
+    "input": "45",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[14] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 13 Con Paso 1 Hacer\nvalues[index] <- 10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 6,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": 10,
+    "input": "45",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[14] as integer;\ntotal <- 0;\nfor index <- 0 to 13 step 1 do\nvalues[index] <- 10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 6,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": 3,
+    "input": "4",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[10] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 9 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 7,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": 3,
+    "input": "4",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[10] as integer;\ntotal <- 0;\nfor index <- 0 to 9 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 7,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -5,
+    "input": "66",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 8,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -5,
+    "input": "66",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 8,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -5,
+    "input": "89",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 9,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -5,
+    "input": "89",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 9,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 3,
+    "input": "70",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 10,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 3,
+    "input": "70",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 10,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -2,
+    "input": "75",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 11,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -2,
+    "input": "75",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 11,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -6,
+    "input": "8",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 12,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -6,
+    "input": "8",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 12,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": 4,
+    "input": "38",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[10] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 9 Con Paso 1 Hacer\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 13,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": 4,
+    "input": "38",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[10] as integer;\ntotal <- 0;\nfor index <- 0 to 9 step 1 do\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 13,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -5,
+    "input": "33",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[3] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 2 Con Paso 1 Hacer\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 14,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -5,
+    "input": "33",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[3] as integer;\ntotal <- 0;\nfor index <- 0 to 2 step 1 do\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 14,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 7,
+    "input": "49",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 15,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 7,
+    "input": "49",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 15,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 8,
+    "input": "80",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 16,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 8,
+    "input": "80",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 16,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 8,
+    "input": "94",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 17,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 8,
+    "input": "94",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 17,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -4,
+    "input": "65",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 18,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -4,
+    "input": "65",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 18,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -4,
+    "input": "8",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 19,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -4,
+    "input": "8",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 19,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -6,
+    "input": "43",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 20,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -6,
+    "input": "43",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 20,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 2,
+    "input": "49",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 21,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 2,
+    "input": "49",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 21,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -6,
+    "input": "26",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 22,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -6,
+    "input": "26",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 22,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": 7,
+    "input": "90",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[14] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 13 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 23,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": 7,
+    "input": "90",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[14] as integer;\ntotal <- 0;\nfor index <- 0 to 13 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 23,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 2,
+    "input": "24",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 24,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 2,
+    "input": "24",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 24,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -9,
+    "input": "20",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 25,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -9,
+    "input": "20",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 25,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": 0,
+    "input": "100",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[3] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 2 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 26,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": 0,
+    "input": "100",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[3] as integer;\ntotal <- 0;\nfor index <- 0 to 2 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 26,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": -9,
+    "input": "20",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[2] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 1 Con Paso 1 Hacer\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 27,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": -9,
+    "input": "20",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[2] as integer;\ntotal <- 0;\nfor index <- 0 to 1 step 1 do\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 27,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 5,
+    "input": "87",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[16] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 15 Con Paso 1 Hacer\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 28,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 5,
+    "input": "87",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[16] as integer;\ntotal <- 0;\nfor index <- 0 to 15 step 1 do\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 28,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": -3,
+    "input": "0",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[9] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 8 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 29,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": -3,
+    "input": "0",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[9] as integer;\ntotal <- 0;\nfor index <- 0 to 8 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 29,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 9,
+    "input": "64",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 30,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 9,
+    "input": "64",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 30,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -2,
+    "input": "11",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[3] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 2 Con Paso 1 Hacer\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 31,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -2,
+    "input": "11",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[3] as integer;\ntotal <- 0;\nfor index <- 0 to 2 step 1 do\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 31,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 0,
+    "input": "73",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[2] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 1 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 32,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 0,
+    "input": "73",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[2] as integer;\ntotal <- 0;\nfor index <- 0 to 1 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 32,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 3,
+    "input": "16",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 33,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 3,
+    "input": "16",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 33,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": -3,
+    "input": "20",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 34,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": -3,
+    "input": "20",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 34,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -8,
+    "input": "69",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[14] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 13 Con Paso 1 Hacer\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 35,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -8,
+    "input": "69",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[14] as integer;\ntotal <- 0;\nfor index <- 0 to 13 step 1 do\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 35,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -5,
+    "input": "68",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 36,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -5,
+    "input": "68",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 36,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 0,
+    "input": "53",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[9] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 8 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 37,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 0,
+    "input": "53",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[9] as integer;\ntotal <- 0;\nfor index <- 0 to 8 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 37,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -6,
+    "input": "54",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 38,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -6,
+    "input": "54",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 38,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 3,
+    "input": "82",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[2] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 1 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 39,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 3,
+    "input": "82",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[2] as integer;\ntotal <- 0;\nfor index <- 0 to 1 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 39,
+    "seed": 42
+  },
+  {
+    "elements": 8,
+    "initial": 7,
+    "input": "9",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[8] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 7 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 40,
+    "seed": 42
+  },
+  {
+    "elements": 8,
+    "initial": 7,
+    "input": "9",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[8] as integer;\ntotal <- 0;\nfor index <- 0 to 7 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 40,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 0,
+    "input": "39",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 41,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 0,
+    "input": "39",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 41,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -6,
+    "input": "15",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 42,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -6,
+    "input": "15",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 42,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 4,
+    "input": "36",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 43,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 4,
+    "input": "36",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 43,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 1,
+    "input": "66",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 44,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 1,
+    "input": "66",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 44,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -7,
+    "input": "91",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 45,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -7,
+    "input": "91",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 45,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 9,
+    "input": "30",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[7] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 6 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 46,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 9,
+    "input": "30",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[7] as integer;\ntotal <- 0;\nfor index <- 0 to 6 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 46,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 0,
+    "input": "88",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 47,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 0,
+    "input": "88",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 47,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": -8,
+    "input": "68",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[7] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 6 Con Paso 1 Hacer\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 48,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": -8,
+    "input": "68",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[7] as integer;\ntotal <- 0;\nfor index <- 0 to 6 step 1 do\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 48,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 8,
+    "input": "25",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 49,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 8,
+    "input": "25",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 49,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -2,
+    "input": "75",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 50,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -2,
+    "input": "75",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 50,
+    "seed": 42
+  },
+  {
+    "elements": 8,
+    "initial": -9,
+    "input": "14",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[8] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 7 Con Paso 1 Hacer\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 51,
+    "seed": 42
+  },
+  {
+    "elements": 8,
+    "initial": -9,
+    "input": "14",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[8] as integer;\ntotal <- 0;\nfor index <- 0 to 7 step 1 do\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 51,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 6,
+    "input": "25",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 52,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 6,
+    "input": "25",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 52,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 6,
+    "input": "26",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[16] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 15 Con Paso 1 Hacer\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 53,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 6,
+    "input": "26",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[16] as integer;\ntotal <- 0;\nfor index <- 0 to 15 step 1 do\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 53,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 8,
+    "input": "1",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[16] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 15 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 54,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": 8,
+    "input": "1",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[16] as integer;\ntotal <- 0;\nfor index <- 0 to 15 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 54,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 9,
+    "input": "35",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 55,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 9,
+    "input": "35",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 55,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": 2,
+    "input": "1",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 56,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": 2,
+    "input": "1",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 56,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": -3,
+    "input": "92",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 57,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": -3,
+    "input": "92",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 57,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -9,
+    "input": "33",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 58,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -9,
+    "input": "33",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 58,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 5,
+    "input": "26",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 59,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 5,
+    "input": "26",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 59,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -10,
+    "input": "22",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 60,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -10,
+    "input": "22",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 60,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -9,
+    "input": "63",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 61,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -9,
+    "input": "63",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- -9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 61,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 0,
+    "input": "0",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 62,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 0,
+    "input": "0",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 62,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -2,
+    "input": "42",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[3] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 2 Con Paso 1 Hacer\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 63,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": -2,
+    "input": "42",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[3] as integer;\ntotal <- 0;\nfor index <- 0 to 2 step 1 do\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 63,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -10,
+    "input": "31",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 64,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -10,
+    "input": "31",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 64,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 0,
+    "input": "5",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[9] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 8 Con Paso 1 Hacer\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 65,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 0,
+    "input": "5",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[9] as integer;\ntotal <- 0;\nfor index <- 0 to 8 step 1 do\nvalues[index] <- 0 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 0;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 65,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 7,
+    "input": "95",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 66,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 7,
+    "input": "95",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 66,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -5,
+    "input": "46",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 67,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -5,
+    "input": "46",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 67,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": -8,
+    "input": "43",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 68,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": -8,
+    "input": "43",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 68,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -6,
+    "input": "88",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 69,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": -6,
+    "input": "88",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- -6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 69,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": -3,
+    "input": "52",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[16] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 15 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 70,
+    "seed": 42
+  },
+  {
+    "elements": 16,
+    "initial": -3,
+    "input": "52",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[16] as integer;\ntotal <- 0;\nfor index <- 0 to 15 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 70,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -1,
+    "input": "93",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[14] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 13 Con Paso 1 Hacer\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 71,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -1,
+    "input": "93",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[14] as integer;\ntotal <- 0;\nfor index <- 0 to 13 step 1 do\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 71,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 1,
+    "input": "98",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[9] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 8 Con Paso 1 Hacer\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 72,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 1,
+    "input": "98",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[9] as integer;\ntotal <- 0;\nfor index <- 0 to 8 step 1 do\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 72,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 4,
+    "input": "17",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[7] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 6 Con Paso 1 Hacer\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 73,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 4,
+    "input": "17",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[7] as integer;\ntotal <- 0;\nfor index <- 0 to 6 step 1 do\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 73,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -1,
+    "input": "97",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 74,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -1,
+    "input": "97",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 74,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 3,
+    "input": "45",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 75,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 3,
+    "input": "45",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 75,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -8,
+    "input": "98",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 76,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": -8,
+    "input": "98",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- -8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 76,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -3,
+    "input": "45",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 77,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -3,
+    "input": "45",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 77,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 2,
+    "input": "93",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[12] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 11 Con Paso 1 Hacer\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 78,
+    "seed": 42
+  },
+  {
+    "elements": 12,
+    "initial": 2,
+    "input": "93",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[12] as integer;\ntotal <- 0;\nfor index <- 0 to 11 step 1 do\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 78,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 9,
+    "input": "55",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 79,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 9,
+    "input": "55",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 79,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -4,
+    "input": "49",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 80,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": -4,
+    "input": "49",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- -4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 80,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": -3,
+    "input": "36",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[10] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 9 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 81,
+    "seed": 42
+  },
+  {
+    "elements": 10,
+    "initial": -3,
+    "input": "36",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[10] as integer;\ntotal <- 0;\nfor index <- 0 to 9 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 81,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": 2,
+    "input": "63",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[3] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 2 Con Paso 1 Hacer\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 82,
+    "seed": 42
+  },
+  {
+    "elements": 3,
+    "initial": 2,
+    "input": "63",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[3] as integer;\ntotal <- 0;\nfor index <- 0 to 2 step 1 do\nvalues[index] <- 2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 82,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 4,
+    "input": "56",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[2] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 1 Con Paso 1 Hacer\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 83,
+    "seed": 42
+  },
+  {
+    "elements": 2,
+    "initial": 4,
+    "input": "56",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[2] as integer;\ntotal <- 0;\nfor index <- 0 to 1 step 1 do\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 83,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -1,
+    "input": "61",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 84,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": -1,
+    "input": "61",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- -1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 84,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 5,
+    "input": "24",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[9] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 8 Con Paso 1 Hacer\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 85,
+    "seed": 42
+  },
+  {
+    "elements": 9,
+    "initial": 5,
+    "input": "24",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[9] as integer;\ntotal <- 0;\nfor index <- 0 to 8 step 1 do\nvalues[index] <- 5 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 5;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 85,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 7,
+    "input": "2",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta -1 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 86,
+    "seed": 42
+  },
+  {
+    "elements": 0,
+    "initial": 7,
+    "input": "2",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to -1 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 86,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 1,
+    "input": "36",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[6] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 5 Con Paso 1 Hacer\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 87,
+    "seed": 42
+  },
+  {
+    "elements": 6,
+    "initial": 1,
+    "input": "36",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[6] as integer;\ntotal <- 0;\nfor index <- 0 to 5 step 1 do\nvalues[index] <- 1 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 1;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 87,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -10,
+    "input": "71",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 88,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": -10,
+    "input": "71",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 88,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 8,
+    "input": "9",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 89,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": 8,
+    "input": "9",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- 8 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 8;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 89,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": 7,
+    "input": "3",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 90,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": 7,
+    "input": "3",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 90,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 7,
+    "input": "73",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[7] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 6 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 91,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 7,
+    "input": "73",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[7] as integer;\ntotal <- 0;\nfor index <- 0 to 6 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 91,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 4,
+    "input": "32",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[7] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 6 Con Paso 1 Hacer\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 92,
+    "seed": 42
+  },
+  {
+    "elements": 7,
+    "initial": 4,
+    "input": "32",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[7] as integer;\ntotal <- 0;\nfor index <- 0 to 6 step 1 do\nvalues[index] <- 4 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 4;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 92,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -2,
+    "input": "49",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[14] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 13 Con Paso 1 Hacer\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 93,
+    "seed": 42
+  },
+  {
+    "elements": 14,
+    "initial": -2,
+    "input": "49",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[14] as integer;\ntotal <- 0;\nfor index <- 0 to 13 step 1 do\nvalues[index] <- -2 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -2;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 93,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 6,
+    "input": "69",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[5] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 4 Con Paso 1 Hacer\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 94,
+    "seed": 42
+  },
+  {
+    "elements": 5,
+    "initial": 6,
+    "input": "69",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[5] as integer;\ntotal <- 0;\nfor index <- 0 to 4 step 1 do\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 94,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 9,
+    "input": "18",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[4] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 3 Con Paso 1 Hacer\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 95,
+    "seed": 42
+  },
+  {
+    "elements": 4,
+    "initial": 9,
+    "input": "18",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[4] as integer;\ntotal <- 0;\nfor index <- 0 to 3 step 1 do\nvalues[index] <- 9 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 9;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 95,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 6,
+    "input": "54",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[11] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 10 Con Paso 1 Hacer\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 96,
+    "seed": 42
+  },
+  {
+    "elements": 11,
+    "initial": 6,
+    "input": "54",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[11] as integer;\ntotal <- 0;\nfor index <- 0 to 10 step 1 do\nvalues[index] <- 6 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 6;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 96,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": 7,
+    "input": "58",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[13] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 12 Con Paso 1 Hacer\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 97,
+    "seed": 42
+  },
+  {
+    "elements": 13,
+    "initial": 7,
+    "input": "58",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[13] as integer;\ntotal <- 0;\nfor index <- 0 to 12 step 1 do\nvalues[index] <- 7 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- 7;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 97,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -10,
+    "input": "94",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[15] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 14 Con Paso 1 Hacer\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 98,
+    "seed": 42
+  },
+  {
+    "elements": 15,
+    "initial": -10,
+    "input": "94",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[15] as integer;\ntotal <- 0;\nfor index <- 0 to 14 step 1 do\nvalues[index] <- -10 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -10;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 98,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -3,
+    "input": "27",
+    "profile": "es",
+    "program": "Clase SampleCell\nPublico Definir link Como SampleCell;\nPublico Definir number Como Entero;\nFinClase\nSubProceso Increment(counter Como Entero Por Referencia)\ncounter <- counter + 1;\nFinSubProceso\nProceso Generated\nDefinir index, total Como Entero;\nDefinir label Como Cadena;\nDefinir left, right, replica Como SampleCell;\nDimension values[1] Como Entero;\ntotal <- 0;\nPara index <- 0 Hasta 0 Con Paso 1 Hacer\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nFinPara\nIncrement(total);\nleft <- Nuevo SampleCell();\nright <- Nuevo SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- Copiar(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nLeer total;\nEscribir label, \":\", replica.number, \":\", total;\nFinProceso\n",
+    "sample": 99,
+    "seed": 42
+  },
+  {
+    "elements": 1,
+    "initial": -3,
+    "input": "27",
+    "profile": "en",
+    "program": "class SampleCell\npublic define link as SampleCell;\npublic define number as integer;\nendClass\nsubroutine Increment(counter as integer by reference)\ncounter <- counter + 1;\nendSubroutine\nalgorithm Generated\ndefine index, total as integer;\ndefine label as string;\ndefine left, right, replica as SampleCell;\ndimension values[1] as integer;\ntotal <- 0;\nfor index <- 0 to 0 step 1 do\nvalues[index] <- -3 + index;\ntotal <- total + values[index];\nendFor\nIncrement(total);\nleft <- new SampleCell();\nright <- new SampleCell();\nleft.link <- right;\nright.link <- left;\nleft.number <- total;\nright.number <- -3;\nreplica <- copy(left);\nlabel <- \"sample\";\nlabel <- label + \"!\";\nread total;\nwrite label, \":\", replica.number, \":\", total;\nendAlgorithm\n",
+    "sample": 99,
+    "seed": 42
+  }
+]

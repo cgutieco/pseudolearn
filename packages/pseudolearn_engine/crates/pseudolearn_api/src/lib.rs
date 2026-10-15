@@ -1,4 +1,5 @@
 pub mod analyze;
+mod argument_conversion;
 mod diagnostic_conversion;
 pub mod errors;
 pub mod model;

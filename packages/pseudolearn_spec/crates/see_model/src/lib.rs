@@ -2,6 +2,7 @@
 
 pub mod contract;
 pub mod evidence;
+pub mod properties;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;

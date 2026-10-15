@@ -10,6 +10,7 @@ pub mod measurement;
 pub mod messages;
 pub mod migration;
 pub mod openers;
+pub mod property_registry;
 pub mod references;
 pub mod resources;
 pub mod schema;

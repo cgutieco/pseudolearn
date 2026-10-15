@@ -19,5 +19,21 @@
       }
     ],
     "reason": "La representación decimal positiva excede i64 y basta integerLiteralOutOfRange. El signo separado no crea una segunda causa de error."
+  },
+  {
+    "specification": "LANG.SYNTAX.ANALYSIS-LIMITS",
+    "cases": [
+      "C2",
+      "C4",
+      "C6",
+      "C8"
+    ],
+    "before": {
+      "limit": "256"
+    },
+    "after": {
+      "limit": 256
+    },
+    "reason": "DIAG.MODEL exige argumentos tipados y DIAG.CATALOG declara limit como numero. El esperado anterior convertía incorrectamente el número a texto; el motor debe corregirse, no usarse como oráculo."
   }
 ]

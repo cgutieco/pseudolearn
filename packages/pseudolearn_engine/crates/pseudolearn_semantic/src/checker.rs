@@ -17,6 +17,7 @@ pub fn analyze(
     crate::hierarchy::check(&mut session);
     crate::flow::bodies(&mut session);
     crate::usage::unused(&mut session);
+    crate::hir_finalization::finalize(&mut session.module);
     let valid = !session
         .diagnostics
         .iter()

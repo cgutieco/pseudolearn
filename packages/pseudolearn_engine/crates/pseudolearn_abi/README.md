@@ -2,58 +2,50 @@
 
 ## 1. Qué es y qué no es
 
-Declara la disposición compartida de los valores de ejecución. Contrato documentado, sin implementación ni manifiesto Cargo.
-
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+Declara la disposición compartida de los valores de ejecución. Diseño aprobado; implementación pendiente en R5.
+No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R5 lo común, R6 el resto |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
+Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
+actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 0. Dependencias internas permitidas: ninguna capa interna. Externas: biblioteca estándar.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Nivel 0. Sin imports internos ni dependencias externas. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Estructuras y algoritmos: Disposición de valores, cabeceras de objeto (clase o tipo de arreglo, ordinal), prefijo de referencias, tamaño de página y forma del marco bicameral, como constantes y tipos compartidos.
+Palabra u64; Handle(u32) con cero reservado; cabeceras de dos palabras; ordinal u64 para objetos y arreglos. Objetos con máscara de enteros solo cuando necesitan definición, campos heredados antes que propios y mapa estático de desplazamientos de referencias. Arreglos con longitud, cota densa, dimensiones, mapa de definición y celdas por filas. Cadenas con puntos de código, desplazamiento y longitud en la arena, y asa de migas. Marco con función, identificador de retorno y bases de los dos bancos.
 
-Invariantes: Una sola definición para VM, runtime y codegen.
-
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+Invariantes: Una sola disposición para runtime, VM, línea temporal y futuros consumidores nativos. NaN representa real ausente, 2 lógico ausente, 0xFFFFFFFF carácter ausente y asa cero referencia ausente.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: declara la disposición compartida de los valores de ejecución respetando los observables del corpus.
-Elección: Disposición de valores, cabeceras de objeto (clase o tipo de arreglo, ordinal), prefijo de referencias, tamaño de página y forma del marco bicameral, como constantes y tipos compartidos.
-Alternativas descartadas y fundamento: V8 y JVM inspiran referencias comprimidas. La disposición canónica permite banco de referencias como pila sombra; se rechazan marcos distintos por motor.
+El prefijo contiguo de referencias no compone con herencia sin mover campos heredados. El mapa por clase conserva desplazamientos y solo se consulta al recolectar. Se rechazan punteros, páginas persistentes y disposiciones diferentes por motor.
+
+La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
+de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
+Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
+funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
+Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: `RT.ABI` (R6).
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+Base compartida de RT.ABI; el ABI externo de R6 queda fuera del alcance actual. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
+literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
+Tamaños y desplazamientos; centinelas fuera del dominio válido; marcos y cabeceras con cero y máximos. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-V8 y JVM inspiran referencias comprimidas. La disposición canónica permite banco de referencias como pila sombra; se rechazan marcos distintos por motor.
+V8 y JVM inspiran referencias comprimidas; SableVM inspira separar clases de valor. Se rechaza disposición bidireccional por impedir recorrido lineal del montón.

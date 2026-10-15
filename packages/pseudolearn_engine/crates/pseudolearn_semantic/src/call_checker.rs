@@ -152,6 +152,11 @@ fn method_target(session: &mut AnalysisSession<'_>, invocation: &MethodCall) -> 
             name_node,
             &invocation.name,
         );
+        if let Some(owner) =
+            crate::hierarchy::function(session, function).and_then(|function| function.owner)
+        {
+            crate::diagnostic_arguments::class_name(session, owner);
+        }
     }
     MethodTarget::Declared(function)
 }

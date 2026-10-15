@@ -5,7 +5,7 @@
   "titulo": "Límites de recursos del motor",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -36,7 +36,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Engine resource limits"
+  "titulo_en": "Engine resource limits",
+  "cambio": {
+    "clase": "aclaracion",
+    "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
+  }
 }
 ---
 
@@ -46,7 +53,7 @@
 {
   "id": "D1",
   "termino": "unidades de recurso",
-  "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas."
+  "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas. Las raíces del conteo son las variables en ámbito de cada marco activo, incluidos parámetros y receptor, y los valores intermedios ya evaluados de la sentencia en curso. Una misma cadena creada en ejecución cuenta una sola vez mientras sea alcanzable aunque tenga varios alias; dos cadenas creadas por separado cuentan por separado aunque compartan bytes. Los temporales muertos no son raíces."
 }
 ```
 
@@ -127,7 +134,9 @@
     "C6",
     "C7",
     "C8",
-    "C9"
+    "C9",
+    "C17",
+    "C18"
   ]
 }
 ```
@@ -384,7 +393,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Agotar la profundidad o las celdas es un fallo del programa: la terminación es failed con recursionDepthExceeded o cellLimitExceeded. Agotar el presupuesto de sentencias o la guarda de tiempo es limit_reached, con el tipo de límite sentencias o tiempo; el presupuesto de sentencias emite además statementBudgetExhausted y la guarda de tiempo no emite diagnóstico.",
+  "texto": "Agotar la profundidad o las celdas es un fallo del programa: la terminación es failed con recursionDepthExceeded o cellLimitExceeded. Agotar el presupuesto de sentencias o la guarda de tiempo es limit_reached, con el tipo de límite sentencias o tiempo; el presupuesto de sentencias emite además statementBudgetExhausted y la guarda de tiempo no emite diagnóstico. La guarda de tiempo se sondea en entradas a sentencia y evaluaciones de condición o prueba de bucle, incluidas las de bucles sin sentencias, sin efectos parciales del punto que la agota.",
   "verificacion": [
     "C12",
     "C13"
@@ -607,3 +616,61 @@
 ## Alcance
 
 Este contrato cuantifica los recursos que LANG.SUBPROGRAM.RECURSION y LANG.ARRAY.DIMENSION delegan en el motor. Los casos fijan límites pequeños de forma explícita para observar los bordes: exactamente en el límite y uno por encima.
+
+```caso
+{
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir first, second Como Cadena;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine first, second as string;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
+  },
+  "espera": {
+    "salida": "abc:ab\n",
+    "terminacion": "completed"
+  },
+  "limites": {
+    "celdas": 4
+  },
+  "id": "C17"
+}
+```
+
+```caso
+{
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nDefinir first, second Como Cadena;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine first, second as string;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n"
+  },
+  "espera": {
+    "salida": "",
+    "fallo": {
+      "codigo": "cellLimitExceeded"
+    }
+  },
+  "limites": {
+    "celdas": 3
+  },
+  "id": "C18"
+}
+```

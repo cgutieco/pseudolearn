@@ -21,7 +21,7 @@
     "LANG.CLASS.OUT-OF-SCOPE": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
     "LANG.CLASS.OVERRIDE": "d5558277813c7df3c67586c1060ca3336f0a3958ae798ba12f9f4b60fbb7c6f1",
     "LANG.CLASS.SELF-AND-SUPER": "f6af8c0cb84b61edde118308a820541027fa79a1888f6fe66c8158dfcfc75533",
-    "LANG.CONTROL.FOR": "0bca8d3456e632576b06ad512c84fac69e2042b76fdc7ecc68371153559b7575",
+    "LANG.CONTROL.FOR": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
     "LANG.CONTROL.IF": "0d02888e3588a75c1fd34f7d126e035d36b685ce5fcf9a42f792991d80888c71",
     "LANG.CONTROL.REPEAT": "ee4807aa7499e87415bed203ab4b654d0bf7e0ea69a3846c2bd62bf29b73d293",
     "LANG.CONTROL.SWITCH": "ea577ad32a8f4200f744189d9ee37661ad19ef5b0cfc4f4e0874b3a95dcaf78a",
@@ -33,7 +33,7 @@
     "LANG.EDITION.MODEL": "a8b631e436795df4d5fa24577c30902f4ea6e780d0b7a5f54ff3655741ed7742",
     "LANG.IO.INPUT": "7284485ee1eea79366340e632ebdcae0e16afa799b8618d2161cb7651ecbe44d",
     "LANG.IO.OUTPUT": "9d44249e4803a63d81bc563a49e398fcf3354f3592d1d7d7bca2a52791baef38",
-    "LANG.IO.VALUE-FORMAT": "4a62122dea13727649ff83334b9e344ab97c593acdd078f77cdd45e0f26c25ff",
+    "LANG.IO.VALUE-FORMAT": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
     "LANG.LEXICAL.CHARACTER-LITERAL": "20a4e097567de762136e06a2981ca6026860707aa1f2057aacc2e6187f7e5260",
     "LANG.LEXICAL.COMMENT": "10fc128f874b9dac3dc22cc3b32a176a56bcb83521a0e80a3e423984b2d3c2f8",
     "LANG.LEXICAL.ERRORS": "a8d9f04fb9e803592315289738983681da8871c6a5a74f6b991b6095e93dd582",
@@ -64,7 +64,7 @@
     "LANG.SUBPROGRAM.PARAMETERS": "8740c3005ec1a31aa4c946d9bb135dc5db61581447d12c8349eb057d6095eeaa",
     "LANG.SUBPROGRAM.RETURN": "b0b58255905ba0f12a1b4e526f53fa9ac924080280a240246bce67d6ff913c1f",
     "LANG.SUBPROGRAM.SCOPE": "486e074de4798a2919a7c7c6db8c8465df9296041fd2f8b7e44da1ede630437b",
-    "LANG.SYNTAX.ANALYSIS-LIMITS": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+    "LANG.SYNTAX.ANALYSIS-LIMITS": "bfecbbbfedf25e07ef53f3b92a07e01e4a0d6650f97f230c84d46a4c2d6e265a",
     "LANG.SYNTAX.GRAMMAR": "e4e135d79a117af94a7382446fd6a363183ece456490488e6e92c77c34d931e8",
     "LANG.SYNTAX.RECOVERY": "be573106fd9705a500d8c1d8b83f6db4cdb551c5190a1f22854f797377400bd5",
     "LANG.TYPES.ARRAY": "16cb8b9851cf185ddd8c5f38643a012cb1ea35e2b5e182a95ff6ffafe51fb56c",
@@ -75,7 +75,7 @@
     "LANG.TYPES.RELATIONS": "f7ec05cd60d70395a816f6bbd18741a4ef2bcf552730ca54dec5a4f973cb6f6f",
     "LIB.CORE.CONVERSION": "eb199f2a97b8a5ecfdffda053ef559955ce3bcd4d0b7d04f87f5bc1cf9304f83",
     "LIB.CORE.COPY": "80167c8db10638e4ea15037c5952bbfeabe9fd98ea09fc9559f1010c01ceaa90",
-    "LIB.CORE.MATH": "d7da999ecdd7a1a02e9e9eb4fcbc687d71bab9e7e98361a6f46f2026721462fc",
+    "LIB.CORE.MATH": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
     "LIB.CORE.RANDOM": "c4a73e2af0b8f32c2a6fa263119b16f3a3b7ab945387123de06f3bb82b109585",
     "LIB.CORE.ROUNDING": "fe692f7b341d9c96e69044576b69039a66b4333edd92832e277b5ef943b3a545",
     "LIB.MODEL": "37e9336411089aa58db87950fa77444dc9172ae3dd1f6e5b8841365f1dc49030"
@@ -957,10 +957,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -1015,10 +1017,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -1073,10 +1077,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -1131,10 +1137,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -1905,10 +1913,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -1963,10 +1973,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2021,10 +2033,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2079,10 +2093,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2137,10 +2153,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2195,10 +2213,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2253,10 +2273,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -2311,10 +2333,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -3617,10 +3641,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -3675,10 +3701,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -3733,10 +3761,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -3791,10 +3821,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -4601,10 +4633,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Copiar"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Copiar",
             "related": [],
             "severity": "error",
             "span": {
@@ -4659,10 +4693,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Copiar"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Copiar",
             "related": [],
             "severity": "error",
             "span": {
@@ -4717,10 +4753,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "copy"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter copy",
             "related": [],
             "severity": "error",
             "span": {
@@ -4775,10 +4813,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "copy"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter copy",
             "related": [],
             "severity": "error",
             "span": {
@@ -5298,11 +5338,12 @@
         "diagnostics": [
           {
             "arguments": {
+              "className": "C",
               "lexeme": "value"
             },
             "class": "syntax",
             "code": "privateMemberAccess",
-            "message": "No se puede acceder al miembro privado value de la clase {className}",
+            "message": "No se puede acceder al miembro privado value de la clase C",
             "related": [],
             "severity": "error",
             "span": {
@@ -5372,11 +5413,12 @@
         "diagnostics": [
           {
             "arguments": {
+              "className": "C",
               "lexeme": "value"
             },
             "class": "syntax",
             "code": "privateMemberAccess",
-            "message": "No se puede acceder al miembro privado value de la clase {className}",
+            "message": "No se puede acceder al miembro privado value de la clase C",
             "related": [],
             "severity": "error",
             "span": {
@@ -5446,11 +5488,12 @@
         "diagnostics": [
           {
             "arguments": {
+              "className": "C",
               "lexeme": "value"
             },
             "class": "syntax",
             "code": "privateMemberAccess",
-            "message": "Cannot access private member value of class {className}",
+            "message": "Cannot access private member value of class C",
             "related": [],
             "severity": "error",
             "span": {
@@ -5520,11 +5563,12 @@
         "diagnostics": [
           {
             "arguments": {
+              "className": "C",
               "lexeme": "value"
             },
             "class": "syntax",
             "code": "privateMemberAccess",
-            "message": "Cannot access private member value of class {className}",
+            "message": "Cannot access private member value of class C",
             "related": [],
             "severity": "error",
             "span": {
@@ -5593,10 +5637,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "A"
+            },
             "class": "semantic",
             "code": "circularInheritance",
-            "message": "Herencia circular detectada en la clase {lexeme}",
+            "message": "Herencia circular detectada en la clase A",
             "related": [],
             "severity": "error",
             "span": {
@@ -5679,10 +5725,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "A"
+            },
             "class": "semantic",
             "code": "circularInheritance",
-            "message": "Herencia circular detectada en la clase {lexeme}",
+            "message": "Herencia circular detectada en la clase A",
             "related": [],
             "severity": "error",
             "span": {
@@ -5765,10 +5813,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "A"
+            },
             "class": "semantic",
             "code": "circularInheritance",
-            "message": "Circular inheritance detected in class {lexeme}",
+            "message": "Circular inheritance detected in class A",
             "related": [],
             "severity": "error",
             "span": {
@@ -5851,10 +5901,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "A"
+            },
             "class": "semantic",
             "code": "circularInheritance",
-            "message": "Circular inheritance detected in class {lexeme}",
+            "message": "Circular inheritance detected in class A",
             "related": [],
             "severity": "error",
             "span": {
@@ -6226,8 +6278,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -6301,8 +6353,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -6376,8 +6428,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -6451,8 +6503,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -9507,10 +9559,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "1"
+            },
             "class": "syntax",
             "code": "duplicateSwitchCaseLabel",
-            "message": "Etiqueta duplicada en el selector múltiple: {lexeme}",
+            "message": "Etiqueta duplicada en el selector múltiple: 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -9565,10 +9619,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "1"
+            },
             "class": "syntax",
             "code": "duplicateSwitchCaseLabel",
-            "message": "Etiqueta duplicada en el selector múltiple: {lexeme}",
+            "message": "Etiqueta duplicada en el selector múltiple: 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -9623,10 +9679,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "1"
+            },
             "class": "syntax",
             "code": "duplicateSwitchCaseLabel",
-            "message": "Duplicate label in switch statement: {lexeme}",
+            "message": "Duplicate label in switch statement: 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -9681,10 +9739,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "1"
+            },
             "class": "syntax",
             "code": "duplicateSwitchCaseLabel",
-            "message": "Duplicate label in switch statement: {lexeme}",
+            "message": "Duplicate label in switch statement: 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -12563,9 +12623,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "Un arreglo no puede usarse como valor escalar en una expresión o asignación",
@@ -12623,9 +12681,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "Un arreglo no puede usarse como valor escalar en una expresión o asignación",
@@ -12683,9 +12739,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "An array cannot be used as a scalar value in an expression or assignment",
@@ -12743,9 +12797,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "An array cannot be used as a scalar value in an expression or assignment",
@@ -12803,10 +12855,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "CodigoDe"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro CodigoDe",
             "related": [],
             "severity": "error",
             "span": {
@@ -12861,10 +12915,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "CodigoDe"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro CodigoDe",
             "related": [],
             "severity": "error",
             "span": {
@@ -12919,10 +12975,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "charCode"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter charCode",
             "related": [],
             "severity": "error",
             "span": {
@@ -12977,10 +13035,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "charCode"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter charCode",
             "related": [],
             "severity": "error",
             "span": {
@@ -14267,10 +14327,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -14325,10 +14388,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -14383,10 +14449,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -14441,10 +14510,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -15575,10 +15647,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "-"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador -",
             "related": [],
             "severity": "error",
             "span": {
@@ -15633,10 +15707,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "-"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador -",
             "related": [],
             "severity": "error",
             "span": {
@@ -15691,10 +15767,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "-"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator -",
             "related": [],
             "severity": "error",
             "span": {
@@ -15749,10 +15827,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "-"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator -",
             "related": [],
             "severity": "error",
             "span": {
@@ -16735,10 +16815,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Y"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador Y",
             "related": [],
             "severity": "error",
             "span": {
@@ -16793,10 +16875,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Y"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador Y",
             "related": [],
             "severity": "error",
             "span": {
@@ -16851,10 +16935,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "and"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator and",
             "related": [],
             "severity": "error",
             "span": {
@@ -16909,10 +16995,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "and"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator and",
             "related": [],
             "severity": "error",
             "span": {
@@ -17199,10 +17287,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -17257,10 +17347,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -17315,10 +17407,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -17373,10 +17467,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -17547,10 +17643,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17605,10 +17704,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17663,10 +17765,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17721,10 +17826,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17779,10 +17887,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17837,10 +17948,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Mientras",
+              "token": "Mientras"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "«{lexeme}» es una palabra reservada de este perfil, equivalente a {token}. Elegí otro nombre.",
+            "message": "«Mientras» es una palabra reservada de este perfil, equivalente a Mientras. Elegí otro nombre.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17895,10 +18009,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -17953,10 +18070,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "while",
+              "token": "while"
+            },
             "class": "syntax",
             "code": "reservedLexemeUsedAsName",
-            "message": "\"{lexeme}\" is a reserved word in this profile, equivalent to {token}. Choose another name.",
+            "message": "\"while\" is a reserved word in this profile, equivalent to while. Choose another name.",
             "related": [],
             "severity": "error",
             "span": {
@@ -20007,10 +20127,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "Entero",
+              "found": "Cadena"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Tipo incompatible en la asignación: no se puede asignar {found} a {expected}",
+            "message": "Tipo incompatible en la asignación: no se puede asignar Cadena a Entero",
             "related": [],
             "severity": "error",
             "span": {
@@ -20065,10 +20188,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "Entero",
+              "found": "Cadena"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Tipo incompatible en la asignación: no se puede asignar {found} a {expected}",
+            "message": "Tipo incompatible en la asignación: no se puede asignar Cadena a Entero",
             "related": [],
             "severity": "error",
             "span": {
@@ -20123,10 +20249,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "integer",
+              "found": "string"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Incompatible types in assignment: cannot assign {found} to {expected}",
+            "message": "Incompatible types in assignment: cannot assign string to integer",
             "related": [],
             "severity": "error",
             "span": {
@@ -20181,10 +20310,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "integer",
+              "found": "string"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Incompatible types in assignment: cannot assign {found} to {expected}",
+            "message": "Incompatible types in assignment: cannot assign string to integer",
             "related": [],
             "severity": "error",
             "span": {
@@ -20644,8 +20776,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -20719,8 +20851,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -20794,8 +20926,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -20869,8 +21001,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -20943,10 +21075,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "semantic",
             "code": "callAsExpressionWithoutReturnType",
-            "message": "El subprograma {lexeme} no devuelve ningún valor y no puede usarse dentro de una expresión",
+            "message": "El subprograma f no devuelve ningún valor y no puede usarse dentro de una expresión",
             "related": [],
             "severity": "error",
             "span": {
@@ -21015,10 +21149,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "semantic",
             "code": "callAsExpressionWithoutReturnType",
-            "message": "El subprograma {lexeme} no devuelve ningún valor y no puede usarse dentro de una expresión",
+            "message": "El subprograma f no devuelve ningún valor y no puede usarse dentro de una expresión",
             "related": [],
             "severity": "error",
             "span": {
@@ -21087,10 +21223,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "semantic",
             "code": "callAsExpressionWithoutReturnType",
-            "message": "Subroutine {lexeme} does not return a value and cannot be used in an expression",
+            "message": "Subroutine f does not return a value and cannot be used in an expression",
             "related": [],
             "severity": "error",
             "span": {
@@ -21159,10 +21297,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "semantic",
             "code": "callAsExpressionWithoutReturnType",
-            "message": "Subroutine {lexeme} does not return a value and cannot be used in an expression",
+            "message": "Subroutine f does not return a value and cannot be used in an expression",
             "related": [],
             "severity": "error",
             "span": {
@@ -21608,8 +21748,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -21683,8 +21823,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -21758,8 +21898,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -21833,8 +21973,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -23008,7 +23148,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23053,7 +23193,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23072,7 +23212,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23117,7 +23257,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23136,7 +23276,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23181,7 +23321,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23200,7 +23340,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23245,7 +23385,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23400,7 +23540,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23445,7 +23585,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23464,7 +23604,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23509,7 +23649,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23528,7 +23668,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23573,7 +23713,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23592,7 +23732,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23637,7 +23777,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23792,7 +23932,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23837,7 +23977,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23856,7 +23996,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23901,7 +24041,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23920,7 +24060,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -23965,7 +24105,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -23984,7 +24124,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -24029,7 +24169,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -24184,7 +24324,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -24229,7 +24369,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -24248,7 +24388,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -24293,7 +24433,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -24312,7 +24452,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -24357,7 +24497,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -24376,7 +24516,7 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": "256"
+              "limit": 256
             },
             "class": "syntax",
             "code": "analysisNestingLimitExceeded",
@@ -24421,7 +24561,7 @@
         "diagnosticos": [
           {
             "argumentos": {
-              "limit": "256"
+              "limit": 256
             },
             "clase": "syntax",
             "codigo": "analysisNestingLimitExceeded",
@@ -35261,9 +35401,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "Un arreglo no puede usarse como valor escalar en una expresión o asignación",
@@ -35321,9 +35459,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "Un arreglo no puede usarse como valor escalar en una expresión o asignación",
@@ -35381,9 +35517,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "An array cannot be used as a scalar value in an expression or assignment",
@@ -35441,9 +35575,7 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {
-              "lexeme": "a"
-            },
+            "arguments": {},
             "class": "semantic",
             "code": "arrayCannotBeUsedAsValue",
             "message": "An array cannot be used as a scalar value in an expression or assignment",
@@ -35501,10 +35633,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35559,10 +35693,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35617,10 +35753,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35675,10 +35813,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35733,10 +35873,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35791,10 +35933,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Tipos incompatibles para el operador {lexeme}",
+            "message": "Tipos incompatibles para el operador +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35849,10 +35993,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -35907,10 +36053,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "+"
+            },
             "class": "semantic",
             "code": "incompatibleOperandTypes",
-            "message": "Incompatible types for operator {lexeme}",
+            "message": "Incompatible types for operator +",
             "related": [],
             "severity": "error",
             "span": {
@@ -36530,11 +36678,12 @@
           },
           {
             "arguments": {
-              "lexeme": "value"
+              "lexeme": "value",
+              "type": "Entero"
             },
             "class": "semantic",
             "code": "inferredVariableType",
-            "message": "Tipo inferido para value: {type}",
+            "message": "Tipo inferido para value: Entero",
             "related": [],
             "severity": "info",
             "span": {
@@ -36638,11 +36787,12 @@
           },
           {
             "arguments": {
-              "lexeme": "value"
+              "lexeme": "value",
+              "type": "integer"
             },
             "class": "semantic",
             "code": "inferredVariableType",
-            "message": "Inferred type for value: {type}",
+            "message": "Inferred type for value: integer",
             "related": [],
             "severity": "info",
             "span": {
@@ -36725,10 +36875,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "Entero",
+              "found": "Real"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Tipo incompatible en la asignación: no se puede asignar {found} a {expected}",
+            "message": "Tipo incompatible en la asignación: no se puede asignar Real a Entero",
             "related": [],
             "severity": "error",
             "span": {
@@ -36783,10 +36936,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "Entero",
+              "found": "Real"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Tipo incompatible en la asignación: no se puede asignar {found} a {expected}",
+            "message": "Tipo incompatible en la asignación: no se puede asignar Real a Entero",
             "related": [],
             "severity": "error",
             "span": {
@@ -36841,10 +36997,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "integer",
+              "found": "real"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Incompatible types in assignment: cannot assign {found} to {expected}",
+            "message": "Incompatible types in assignment: cannot assign real to integer",
             "related": [],
             "severity": "error",
             "span": {
@@ -36899,10 +37058,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "expected": "integer",
+              "found": "real"
+            },
             "class": "semantic",
             "code": "incompatibleTypesInAssignment",
-            "message": "Incompatible types in assignment: cannot assign {found} to {expected}",
+            "message": "Incompatible types in assignment: cannot assign real to integer",
             "related": [],
             "severity": "error",
             "span": {
@@ -36957,10 +37119,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "AEntero"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro AEntero",
             "related": [],
             "severity": "error",
             "span": {
@@ -37015,10 +37179,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "AEntero"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro AEntero",
             "related": [],
             "severity": "error",
             "span": {
@@ -37073,10 +37239,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "toInteger"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter toInteger",
             "related": [],
             "severity": "error",
             "span": {
@@ -37131,10 +37299,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "toInteger"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter toInteger",
             "related": [],
             "severity": "error",
             "span": {
@@ -37189,10 +37359,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Copiar"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Copiar",
             "related": [],
             "severity": "error",
             "span": {
@@ -37247,10 +37419,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Copiar"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Copiar",
             "related": [],
             "severity": "error",
             "span": {
@@ -37305,10 +37479,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "copy"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter copy",
             "related": [],
             "severity": "error",
             "span": {
@@ -37363,10 +37539,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "copy"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter copy",
             "related": [],
             "severity": "error",
             "span": {
@@ -37421,10 +37599,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "rc"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro rc",
             "related": [],
             "severity": "error",
             "span": {
@@ -37479,10 +37659,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "rc"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro rc",
             "related": [],
             "severity": "error",
             "span": {
@@ -37537,10 +37719,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "sqrt"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter sqrt",
             "related": [],
             "severity": "error",
             "span": {
@@ -37595,10 +37779,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "sqrt"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter sqrt",
             "related": [],
             "severity": "error",
             "span": {
@@ -37654,8 +37840,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -37715,8 +37901,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -37776,8 +37962,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -37837,8 +38023,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "0",
-              "found": "1"
+              "expected": 0,
+              "found": 1
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -37897,10 +38083,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "redon"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro redon",
             "related": [],
             "severity": "error",
             "span": {
@@ -37955,10 +38143,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "redon"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro redon",
             "related": [],
             "severity": "error",
             "span": {
@@ -38013,10 +38203,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "round"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter round",
             "related": [],
             "severity": "error",
             "span": {
@@ -38071,10 +38263,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "round"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter round",
             "related": [],
             "severity": "error",
             "span": {
@@ -38129,10 +38323,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Longitud"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Longitud",
             "related": [],
             "severity": "error",
             "span": {
@@ -38187,10 +38383,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "Longitud"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Tipo de argumento incompatible para el parámetro {lexeme}",
+            "message": "Tipo de argumento incompatible para el parámetro Longitud",
             "related": [],
             "severity": "error",
             "span": {
@@ -38245,10 +38443,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "length"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter length",
             "related": [],
             "severity": "error",
             "span": {
@@ -38303,10 +38503,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "length"
+            },
             "class": "semantic",
             "code": "incompatibleArgumentType",
-            "message": "Incompatible argument type for parameter {lexeme}",
+            "message": "Incompatible argument type for parameter length",
             "related": [],
             "severity": "error",
             "span": {
@@ -38362,8 +38564,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -38423,8 +38625,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -38484,8 +38686,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",
@@ -38545,8 +38747,8 @@
         "diagnostics": [
           {
             "arguments": {
-              "expected": "1",
-              "found": "0"
+              "expected": 1,
+              "found": 0
             },
             "class": "semantic",
             "code": "argumentCountMismatch",

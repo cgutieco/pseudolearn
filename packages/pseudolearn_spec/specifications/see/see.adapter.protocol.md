@@ -5,7 +5,7 @@
   "titulo": "Protocolo por proceso",
   "dominio": "proceso",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -15,11 +15,11 @@
   "resumen": "Protocolo por proceso.",
   "depende_de": [],
   "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Los sujetos pueden anunciar observación, RI y CLI.",
-    "impacto_implementaciones": "Los adaptadores existentes siguen siendo válidos; las capacidades nuevas son opcionales.",
-    "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
+    "clase": "aclaracion",
+    "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---
@@ -57,7 +57,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La negociación admite además las capacidades observe, ir y cli. Un caso trace exige execute y observe: contra un sujeto sin observe su resultado es pendiente y nunca cumple. Un sujeto que devuelve eventos en una ejecución que no pidió observación produce error operativo. Las peticiones de ejecución transmiten límites de profundidad, sentencias y celdas, la cancelación en una entrada a sentencia y la consulta del estado en un índice de evento.",
+  "texto": "La negociación admite además las capacidades observe, ir y cli. Un caso trace exige execute y observe: contra un sujeto sin observe su resultado es pendiente y nunca cumple. Un sujeto que devuelve eventos en una ejecución que no pidió observación produce error operativo. Las peticiones de ejecución transmiten límites de profundidad, sentencias y celdas, la cancelación en una entrada a sentencia y la consulta del estado en un índice de evento. Las capacidades opcionales seek y gc_stress se negocian independientemente de observe. seek permite consultar un evento pasado sin alterar la continuación presente; gc_stress solicita recolección forzada en cada asignación para contrastar observables. cancel_at_poll identifica el sondeo de cancelación contando entradas a sentencia y evaluaciones de condición o prueba de bucle desde cero. Ningún adaptador anuncia una capacidad que no implementa.",
   "verificacion": [
     "estructural"
   ],

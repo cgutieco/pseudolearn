@@ -38,6 +38,9 @@ Problema: las firmas copiadas divergen del catálogo. Elección: `build.rs` gene
 de cada incorporada desde `LIB.MODEL`, además de los lexemas y alias. Los prefijos de palabras compuestas
 se generan para evitar construir cadenas candidatas en cada identificador. Se rechaza la tabla de firmas manual.
 
+El catálogo genera también la consulta inversa de identidad y perfil a lexema canónico. Se usa al
+presentar argumentos tipados de diagnóstico; no se mantiene un segundo diccionario de nombres de tipo.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
@@ -64,5 +67,5 @@ El hash perfecto generado reconoce palabras sin búsquedas con asignaciones. Se 
 
 Problema medido: el plegado asignaba dos cadenas por cada identificador ASCII. Elección: hash perfecto
 generado sin colisiones, consulta y comparación de caja ASCII sin reservar; NFC y plegado español solo
-para entradas Unicode. El inglés conserva acentos. El prefijo compuesto se consulta sin reservar.
+para entradas Unicode. El inglés conserva acentos. La detección de apertura prueba cada perfil con su propio plegado. El prefijo compuesto se consulta sin reservar.
 Se descarta normalizar literales o identificadores del usuario como palabras reservadas.

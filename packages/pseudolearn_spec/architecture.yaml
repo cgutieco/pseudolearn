@@ -13,7 +13,7 @@ layers:
   - name: see_oracles
     path: crates/see_oracles
     may_import: []
-    external_dependencies: []
+    external_dependencies: [num-bigint, num-rational, num-traits, num-integer]
     unsafe_allowed: false
   - name: see_graph
     path: crates/see_graph
@@ -35,9 +35,14 @@ layers:
     may_import: [see_model]
     external_dependencies: []
     unsafe_allowed: false
+  - name: see_generators
+    path: crates/see_generators
+    may_import: [see_model, see_translation]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
   - name: see_conformance
     path: crates/see_conformance
-    may_import: [see_model, see_translation, see_format]
+    may_import: [see_model, see_translation, see_format, see_generators, see_oracles]
     external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: see_export

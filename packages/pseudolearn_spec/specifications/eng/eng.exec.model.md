@@ -5,7 +5,7 @@
   "titulo": "Modelo de ejecución",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -26,7 +26,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution model"
+  "titulo_en": "Execution model",
+  "cambio": {
+    "clase": "aclaracion",
+    "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
+  }
 }
 ---
 
@@ -236,10 +243,11 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El anfitrión puede cancelar una ejecución. La cancelación surte efecto en una entrada a sentencia: esa sentencia no ejecuta ningún efecto, los efectos de las sentencias anteriores se conservan y la terminación es cancelled, sin diagnóstico. Una cancelación posterior al final no altera una ejecución terminada.",
+  "texto": "La cancelación surte efecto en la siguiente entrada a sentencia o evaluación de condición o prueba de bucle. El punto cancelado no produce efectos parciales; se conservan los efectos anteriores y la terminación es cancelled sin diagnóstico. Una cancelación posterior al final no altera una ejecución terminada.",
   "verificacion": [
     "C7",
-    "C8"
+    "C8",
+    "C9"
   ]
 }
 ```
@@ -295,3 +303,29 @@
 ## Cancelación en los casos
 
 El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno, en la que surte efecto la cancelación que pide el anfitrión.
+
+```caso
+{
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "programas": {
+    "es": "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n",
+    "en": "algorithm P\nwhile true do\nendWhile\nendAlgorithm\n"
+  },
+  "espera": {
+    "salida": "",
+    "terminacion": "cancelled"
+  },
+  "cancelacion_prueba": 2,
+  "id": "C9"
+}
+```

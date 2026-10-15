@@ -5,17 +5,25 @@
   "titulo": "Tipo entero",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference"
+    "reference",
+    "engine"
   ],
   "resumen": "Tipo entero.",
   "depende_de": [],
   "edicion": {
     "introducida_en": "2026"
+  },
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---

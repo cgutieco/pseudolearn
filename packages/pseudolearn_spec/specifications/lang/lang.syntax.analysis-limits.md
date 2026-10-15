@@ -5,7 +5,7 @@
   "titulo": "Límite portable de anidación del análisis",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -29,11 +29,11 @@
     }
   ],
   "cambio": {
-    "clase": "restriccion",
-    "impacto_usuarios": "Hace explícito el límite de recursos del análisis; ninguna construcción nueva.",
-    "impacto_implementaciones": "Contar construcciones anidadas antes de descender y emitir el diagnóstico propio sin cascadas.",
-    "justificacion": "Garantizar rechazo total y portable antes de agotar la pila.",
-    "revisado_por": "autorización de la fase R5; autoría automatizada"
+    "clase": "aclaracion",
+    "impacto_usuarios": "Los diagnósticos conservan el mismo código y el límite numérico.",
+    "impacto_implementaciones": "El argumento limit se serializa como número, no como cadena.",
+    "justificacion": "Corregir la derivación de los casos según el argumento tipado numero del catálogo y DIAG.MODEL.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---
@@ -56,7 +56,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "sintactica",
-  "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
+  "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit numérico y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
   "verificacion": [
     "C1",
     "C2",
@@ -121,7 +121,7 @@
         "clase": "syntax",
         "severidad": "error",
         "argumentos": {
-          "limit": "256"
+          "limit": 256
         }
       }
     ]
@@ -188,7 +188,7 @@
         "clase": "syntax",
         "severidad": "error",
         "argumentos": {
-          "limit": "256"
+          "limit": 256
         }
       }
     ]
@@ -255,7 +255,7 @@
         "clase": "syntax",
         "severidad": "error",
         "argumentos": {
-          "limit": "256"
+          "limit": 256
         }
       }
     ]
@@ -322,7 +322,7 @@
         "clase": "syntax",
         "severidad": "error",
         "argumentos": {
-          "limit": "256"
+          "limit": 256
         }
       }
     ]

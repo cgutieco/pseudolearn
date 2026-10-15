@@ -85,7 +85,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "ENG.EXEC.MODEL@0.1.0#R1",
+    "rule": "ENG.EXEC.MODEL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -95,17 +95,17 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "ENG.EXEC.MODEL@0.1.0#R2",
+    "rule": "ENG.EXEC.MODEL@0.2.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "cumple",
-    "cases": 8,
-    "measured": "cumple",
+    "binding": "exento",
+    "cases": 12,
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
-    "rule": "ENG.EXEC.MODEL@0.1.0#R3",
+    "reason": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5.",
+    "rule": "ENG.EXEC.MODEL@0.2.0#R3",
     "state": "experimental",
     "subject": "reference"
   },
@@ -345,7 +345,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R1",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -355,7 +355,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R2",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -365,7 +365,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R3",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R3",
     "state": "experimental",
     "subject": "reference"
   },
@@ -375,7 +375,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R4",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R4",
     "state": "experimental",
     "subject": "reference"
   },
@@ -385,7 +385,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-37: No emite controlVariableModified sobre la modificación directa del control de un bucle. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CONTROL.FOR@0.3.0#R5",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R5",
     "state": "experimental",
     "subject": "reference"
   },
@@ -395,7 +395,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R6",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R6",
     "state": "experimental",
     "subject": "reference"
   },
@@ -510,12 +510,12 @@
     "subject": "reference"
   },
   {
-    "binding": "cumple",
-    "cases": 12,
-    "measured": "cumple",
+    "binding": "exento",
+    "cases": 16,
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
-    "rule": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
+    "reason": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5.",
+    "rule": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -605,7 +605,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.WHITESPACE@0.1.0#R1",
+    "rule": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -661,11 +661,11 @@
   },
   {
     "binding": "cumple",
-    "cases": 12,
+    "cases": 20,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.OPS.POWER@0.1.0#R1",
+    "rule": "LANG.OPS.POWER@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -835,7 +835,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SUBPROGRAM.RECURSION@0.1.0#R1",
+    "rule": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -945,7 +945,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.TYPES.CHARACTER@0.1.0#R1",
+    "rule": "LANG.TYPES.CHARACTER@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -985,7 +985,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.INTEGER@0.1.0#R1",
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -995,7 +995,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.INTEGER@0.1.0#R2",
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R2",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1005,17 +1005,17 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.INTEGER@0.1.0#R3",
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R3",
     "state": "experimental",
     "subject": "reference"
   },
   {
-    "binding": "cumple",
-    "cases": 8,
-    "measured": "cumple",
+    "binding": "exento",
+    "cases": 12,
+    "measured": "incumple",
     "measurements": [],
-    "reason": null,
-    "rule": "LANG.TYPES.REAL@0.1.0#R1",
+    "reason": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5.",
+    "rule": "LANG.TYPES.REAL@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1035,7 +1035,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.TYPES.TEXT@0.1.0#R1",
+    "rule": "LANG.TYPES.TEXT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1061,11 +1061,11 @@
   },
   {
     "binding": "cumple",
-    "cases": 16,
+    "cases": 20,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.MATH@0.2.0#R1",
+    "rule": "LIB.CORE.MATH@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -1095,7 +1095,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado.",
-    "rule": "LIB.CORE.TEXT@0.1.0#R1",
+    "rule": "LIB.CORE.TEXT@0.2.0#R1",
     "state": "experimental",
     "subject": "reference"
   },

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export y budget. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. El adaptador ejecutable es reference.
+Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export y budget. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. Los adaptadores ejecutables son reference, engine y cli.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -20,6 +20,15 @@ Export comprueba además los recursos derivados; la correspondencia educativa se
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
+
+Cuando el corpus contiene propiedades, `validate` exige `property-conformance.json` y contrasta el
+esquema, el modelo tipado y sus referencias. Así retirar o desactualizar un vínculo es visible antes de ejecutar.
+
+`conform --subject engine --operation properties` ejecuta los vínculos de propiedades del sujeto.
+`--property <ID@versión#P>` selecciona uno; `--seed`, `--samples` y `--sample` reproducen una muestra.
+La selección explícita de muestra omite el recorrido exhaustivo del corpus. El artefacto separado
+`results/properties-<sujeto>.json` conserva evidencia sin sustituir resultados de casos. Un vínculo
+pendiente o fallido devuelve código distinto de cero después de guardar su evidencia.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

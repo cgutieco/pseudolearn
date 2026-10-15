@@ -2,58 +2,50 @@
 
 ## 1. Qué es y qué no es
 
-Reconstruye el estado observable de cualquier instante mediante puntos de control. Contrato documentado, sin implementación ni manifiesto Cargo.
-
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+Conserva una línea temporal consultable de la ejecución. Diseño aprobado; implementación pendiente en R5.
+No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R5 |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
+Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
+actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 7. Dependencias internas permitidas: pseudolearn_vm, pseudolearn_runtime, pseudolearn_bytecode, pseudolearn_diagnostics. Externas: biblioteca estándar.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Nivel 8. Importa vm, runtime, bytecode y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Estructuras y algoritmos: Cinta de entradas; puntos de control (copia de la tabla de páginas, región activa de los bancos, registros de la VM, estado del azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas; deltas desde las páginas copiadas.
+Sombra del montón y segmentos de deshacer por bloques de 64 palabras, longitud de la arena de texto y segmentos de bancos desde la marca de agua. Puntos con pila, azar, salida, entradas, evento, sentencias, identidad y contadores de recolección. Vistas propias, deltas por evento y tabla ordinal→asa de exposición.
 
-Invariantes: El estado reconstruido es igual al observado en su momento; el horizonte retenido se declara.
-
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+Invariantes: Restaurar un punto reproduce sus bits. Consultar el pasado no altera la continuación presente. El horizonte retenido se declara y las vistas entregadas son inmutables.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: reconstruye el estado observable de cualquier instante mediante puntos de control respetando los observables del corpus.
-Elección: Cinta de entradas; puntos de control (copia de la tabla de páginas, región activa de los bancos, registros de la VM, estado del azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas; deltas desde las páginas copiadas.
-Alternativas descartadas y fundamento: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento y tope fijo de pasos.
+El siguiente punto se programa a max(Q_min, κ·S) en masa de sentencia, con parámetros calibrados por coste y presupuesto. No se usa reloj para decidir puntos. Raleo exponencial fusiona segmentos conservando la imagen más antigua por bloque. Una VM independiente restaura sombra y segmentos, avanza rápido por masa de evento y cambia al sondeado en el bloque objetivo; densifica cerca del evento consultado. La salida se suprime y las entradas se releen de la cinta. La compactación de texto fuerza copia en el siguiente punto. Se rechaza barrera por escritura y copiar un estado completo por evento.
+
+La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
+de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
+Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
+funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
+Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: `ENG.STATE.*`, `API.STATE.QUERY` (por instante).
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+ENG.STATE.*, API.STATE.QUERY, API.EXECUTE#R4 y PERF.VM.*. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
+literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
+Restauración bit a bit, consultas repetidas al pasado, deltas reconstruidos, horizonte exacto y mediciones con estado grande y escrituras escasas. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento y tope fijo de pasos.
+Young y Daly inspiran programar por coste, rechazando reloj como unidad. La comparación incremental de HPC inspira la sombra; se rechazan hashes con falsos negativos y protección de páginas del sistema. rr inspira grabar no determinismo, sin grabar el proceso completo.

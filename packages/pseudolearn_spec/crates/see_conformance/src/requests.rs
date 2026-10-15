@@ -86,8 +86,16 @@ fn execution(
         json!(if observed { "events" } else { "none" }),
     );
     fields.insert("limits".to_owned(), limits(case));
+    observation_options(case, selection, fields);
+    Ok(())
+}
+
+fn observation_options(case: &Block, selection: &Selection<'_>, fields: &mut Map<String, Value>) {
     if let Some(statement) = case.fields.get("cancelacion") {
         fields.insert("cancel_at_statement".to_owned(), statement.clone());
+    }
+    if let Some(poll) = case.fields.get("cancelacion_prueba") {
+        fields.insert("cancel_at_poll".to_owned(), poll.clone());
     }
     if let Some(event) = selection
         .expected
@@ -96,7 +104,6 @@ fn execution(
     {
         fields.insert("state_at".to_owned(), event.clone());
     }
-    Ok(())
 }
 
 fn limits(case: &Block) -> Value {

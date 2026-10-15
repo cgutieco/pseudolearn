@@ -142,19 +142,20 @@
       "justificacion": "REF-FLEXIBLE-INITIALIZATION: No emite la advertencia estática de lectura sin inicializar en flexible, aunque la política la declara. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "ENG.EXEC.MODEL@0.1.0#R1",
+      "regla": "ENG.EXEC.MODEL@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.EXEC.MODEL@0.1.0#R2",
+      "regla": "ENG.EXEC.MODEL@0.2.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.EXEC.MODEL@0.1.0#R3",
+      "regla": "ENG.EXEC.MODEL@0.2.0#R3",
       "verificacion": "ejecutor",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
     },
     {
       "regla": "ENG.INPUT@0.1.0#R1",
@@ -283,33 +284,33 @@
       "justificacion": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R1",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R2",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R3",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R4",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R5",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R5",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "H-37: No emite controlVariableModified sobre la modificación directa del control de un bucle. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.CONTROL.FOR@0.3.0#R6",
+      "regla": "LANG.CONTROL.FOR@0.3.1#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -371,9 +372,10 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
+      "regla": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
     },
     {
       "regla": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
@@ -418,7 +420,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.LEXICAL.WHITESPACE@0.1.0#R1",
+      "regla": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -448,7 +450,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.OPS.POWER@0.1.0#R1",
+      "regla": "LANG.OPS.POWER@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -536,7 +538,7 @@
       "justificacion": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.SUBPROGRAM.RECURSION@0.1.0#R1",
+      "regla": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -595,7 +597,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.TYPES.CHARACTER@0.1.0#R1",
+      "regla": "LANG.TYPES.CHARACTER@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
@@ -617,24 +619,25 @@
       "justificacion": "REF-STRICT-INFERENCE: Emite inferredVariableType en estricto después del error de declaración; la inferencia informativa pertenece al modo flexible. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.TYPES.INTEGER@0.1.0#R1",
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.TYPES.INTEGER@0.1.0#R2",
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.TYPES.INTEGER@0.1.0#R3",
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.TYPES.REAL@0.1.0#R1",
+      "regla": "LANG.TYPES.REAL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
     },
     {
       "regla": "LANG.TYPES.RELATIONS@0.2.0#R1",
@@ -642,7 +645,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.TYPES.TEXT@0.1.0#R1",
+      "regla": "LANG.TYPES.TEXT@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -657,7 +660,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LIB.CORE.MATH@0.2.0#R1",
+      "regla": "LIB.CORE.MATH@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -672,7 +675,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LIB.CORE.TEXT@0.1.0#R1",
+      "regla": "LIB.CORE.TEXT@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."

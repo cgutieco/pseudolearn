@@ -4945,7 +4945,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R3",
-            "texto": "Entregar entrada reanuda una ejecución que espera; cancelar la termina en la siguiente entrada a sentencia con cancelled.",
+            "texto": "Entregar entrada reanuda una ejecución que espera; cancelar la termina en la siguiente entrada a sentencia o evaluación de condición o prueba de bucle con cancelled, sin efectos parciales del punto cancelado.",
             "verificacion": [
               "C3"
             ]
@@ -5003,9 +5003,15 @@
           "kind": "propiedad"
         }
       ],
-      "hash": "736f5efb2e544911efa9ba9691d34cea3d3218c10f221658f21ad238773da113",
+      "hash": "cb30dbc1a4571a85329dfecaa5c378c5a94fc5d63b938c27eaf4400908872509",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "La API conserva los puntos de cancelación del modelo de ejecución.",
+          "impacto_usuarios": "La cancelación puede detener también una condición de un bucle vacío, sin efectos parciales.",
+          "justificacion": "Evitar que la frontera API contradiga el modelo de ejecución y deje sin cancelar un bucle vacío.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "API.ANALYZE",
@@ -5045,7 +5051,7 @@
         ],
         "titulo": "Ejecución",
         "titulo_en": "Execution",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -9481,10 +9487,11 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R3",
-            "texto": "El anfitrión puede cancelar una ejecución. La cancelación surte efecto en una entrada a sentencia: esa sentencia no ejecuta ningún efecto, los efectos de las sentencias anteriores se conservan y la terminación es cancelled, sin diagnóstico. Una cancelación posterior al final no altera una ejecución terminada.",
+            "texto": "La cancelación surte efecto en la siguiente entrada a sentencia o evaluación de condición o prueba de bucle. El punto cancelado no produce efectos parciales; se conservan los efectos anteriores y la terminación es cancelled sin diagnóstico. Una cancelación posterior al final no altera una ejecución terminada.",
             "verificacion": [
               "C7",
-              "C8"
+              "C8",
+              "C9"
             ]
           },
           "kind": "regla"
@@ -9536,11 +9543,43 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "cancelacion_prueba": 2,
+            "espera": {
+              "salida": "",
+              "terminacion": "cancelled"
+            },
+            "id": "C9",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwhile true do\nendWhile\nendAlgorithm\n",
+              "es": "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n"
+            },
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "705ff8f49f57b286694e6779c74f220857b1d547e9155e968e3570b84c0bd30e",
+      "hash": "c81a9522f733a7445cd0e0976fc22c6ff059d0303428c7a41a40b0896839494a",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.PROGRAM.STRUCTURE",
@@ -9571,7 +9610,7 @@
         ],
         "titulo": "Modelo de ejecución",
         "titulo_en": "Execution model",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -9881,7 +9920,7 @@
           "fields": {
             "id": "D1",
             "termino": "unidades de recurso",
-            "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas."
+            "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas. Las raíces del conteo son las variables en ámbito de cada marco activo, incluidos parámetros y receptor, y los valores intermedios ya evaluados de la sentencia en curso. Una misma cadena creada en ejecución cuenta una sola vez mientras sea alcanzable aunque tenga varios alias; dos cadenas creadas por separado cuentan por separado aunque compartan bytes. Los temporales muertos no son raíces."
           },
           "kind": "definicion"
         },
@@ -9962,7 +10001,9 @@
               "C6",
               "C7",
               "C8",
-              "C9"
+              "C9",
+              "C17",
+              "C18"
             ]
           },
           "kind": "regla"
@@ -10219,7 +10260,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R4",
-            "texto": "Agotar la profundidad o las celdas es un fallo del programa: la terminación es failed con recursionDepthExceeded o cellLimitExceeded. Agotar el presupuesto de sentencias o la guarda de tiempo es limit_reached, con el tipo de límite sentencias o tiempo; el presupuesto de sentencias emite además statementBudgetExhausted y la guarda de tiempo no emite diagnóstico.",
+            "texto": "Agotar la profundidad o las celdas es un fallo del programa: la terminación es failed con recursionDepthExceeded o cellLimitExceeded. Agotar el presupuesto de sentencias o la guarda de tiempo es limit_reached, con el tipo de límite sentencias o tiempo; el presupuesto de sentencias emite además statementBudgetExhausted y la guarda de tiempo no emite diagnóstico. La guarda de tiempo se sondea en entradas a sentencia y evaluaciones de condición o prueba de bucle, incluidas las de bucles sin sentencias, sin efectos parciales del punto que la agota.",
             "verificacion": [
               "C12",
               "C13"
@@ -10438,11 +10479,75 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "abc:ab\n",
+              "terminacion": "completed"
+            },
+            "id": "C17",
+            "limites": {
+              "celdas": 4
+            },
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\ndefine first, second as string;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n",
+              "es": "Algoritmo P\nDefinir first, second Como Cadena;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "cellLimitExceeded"
+              },
+              "salida": ""
+            },
+            "id": "C18",
+            "limites": {
+              "celdas": 3
+            },
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\ndefine first, second as string;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nwrite first, \":\", second;\nendAlgorithm\n",
+              "es": "Algoritmo P\nDefinir first, second Como Cadena;\nfirst <- \"a\" + \"b\";\nsecond <- first;\nfirst <- first + \"c\";\nEscribir first, \":\", second;\nFinAlgoritmo\n"
+            },
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "48e3f7fcdcf2bf1cc82fa6b7eac236d7b8908fd4420d10a5b48c5b9a5269e713",
+      "hash": "8e07bc6c23d9b6fb2d5b32fe45852b3f6992cab3986a7877c88530f6a2e10829",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "ENG.EXEC.MODEL",
@@ -10483,7 +10588,7 @@
         ],
         "titulo": "Límites de recursos del motor",
         "titulo_en": "Engine resource limits",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -17889,20 +17994,20 @@
           "kind": "caso"
         }
       ],
-      "hash": "0bca8d3456e632576b06ad512c84fac69e2042b76fdc7ecc68371153559b7575",
+      "hash": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "verificacion_anadida",
+          "impacto_implementaciones": "Admite el contrato entero actualizado que activa el sujeto Rust.",
+          "impacto_usuarios": "Sin cambios en el bucle contado ni sus programas.",
+          "justificacion": "La activación de un sujeto no modifica el dominio entero usado por Para.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
         },
         "depende_de": [
           {
             "id": "LANG.TYPES.INTEGER",
             "tipo": "usa",
-            "version": "^0.1"
+            "version": ">=0.1.0, <1.0.0"
           }
         ],
         "dominio": "lenguaje",
@@ -17925,7 +18030,7 @@
         ],
         "titulo": "Bucle contado",
         "titulo_en": null,
-        "version": "0.3.0"
+        "version": "0.3.1"
       }
     },
     {
@@ -19494,11 +19599,12 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Enteros se imprimen en decimal exacto sin agrupación. Reales finitos usan notación posicional, sin exponente y con al menos un decimal. Lógicos usan lexema canónico activo. Carácter y cadena se emiten sin comillas. ATexto devuelve exactamente la misma representación. Objetos y arreglos no tienen conversión implícita.",
+            "texto": "Enteros se imprimen en decimal exacto sin agrupación. Reales finitos usan notación posicional, sin exponente y con al menos un decimal. Lógicos usan lexema canónico activo. Carácter y cadena se emiten sin comillas. ATexto devuelve exactamente la misma representación. Objetos y arreglos no tienen conversión implícita. Para un real se elige la secuencia decimal de menor cantidad de cifras significativas que, leída con redondeo al más cercano y empates al par, identifica el mismo binario64; entre secuencias mínimas se elige la más cercana al valor y, en empate, la de última cifra par. Se desarrolla en notación posicional y se añade .0 si no hay fracción. El cero negativo se conserva como -0.0.",
             "verificacion": [
               "C1",
               "C2",
-              "C3"
+              "C3",
+              "C4"
             ]
           },
           "kind": "regla"
@@ -19582,16 +19688,41 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "0.30000000000000004:0.0000001:-0.0\n",
+              "terminacion": "completed"
+            },
+            "id": "C4",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite 0.1 + 0.2, \":\", 1.0 / 10000000.0, \":\", -0.0;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir 0.1 + 0.2, \":\", 1.0 / 10000000.0, \":\", -0.0;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "4a62122dea13727649ff83334b9e344ab97c593acdd078f77cdd45e0f26c25ff",
+      "hash": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
         },
         "depende_de": [
           {
@@ -19620,7 +19751,7 @@
         ],
         "titulo": "Formato de valores",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {
@@ -20868,9 +20999,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "37d3351a1e8cd2a61b1e920f2f454300dbc9aa8b4725846ac2492c3e97e4a32e",
+      "hash": "80ea6234b8d209bb24ccb231d3d4c132d639fbab2207fd578257ec5ec3fc37e4",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.SOURCE.ENCODING",
@@ -20893,11 +21030,12 @@
         "resumen": "Separación léxica.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Separación léxica",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -21611,11 +21749,13 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "La potencia asocia a derecha. Dos enteros exigen exponente no negativo y producen entero comprobado; exponente negativo produce negativeIntegerExponent. Con operando real se produce real finito. La potencia cero devuelve uno, incluido cero elevado a cero; desbordamiento y resultados no finitos tienen diagnósticos.",
+            "texto": "La potencia asocia a derecha. Dos enteros exigen exponente no negativo y producen entero comprobado; exponente negativo produce negativeIntegerExponent. Con operando real se produce real finito. La potencia cero devuelve uno, incluido cero elevado a cero; desbordamiento y resultados no finitos tienen diagnósticos. La potencia real se redondea al binario64 más cercano al valor matemático exacto, con empates al significando par, independientemente del anfitrión.",
             "verificacion": [
               "C1",
               "C2",
-              "C3"
+              "C3",
+              "C4",
+              "C5"
             ]
           },
           "kind": "regla"
@@ -21696,11 +21836,68 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "1.4142135623730951:1.0\n",
+              "terminacion": "completed"
+            },
+            "id": "C4",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite 2.0 ^ 0.5, \":\", 0.0 ^ 0.0;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir 2.0 ^ 0.5, \":\", 0.0 ^ 0.0;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "nonFiniteRealResult"
+              }
+            },
+            "id": "C5",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite (-2.0) ^ 0.5;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir (-2.0) ^ 0.5;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "82490569981868ef727d433866f43c8367fec61c78a8d6ac8246a6ac21416f5a",
+      "hash": "1bcc5dbba45d3462c45b351ea1e1fca3130a2c4474acb72b8a21a7d566d9bc02",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.TYPES.INTEGER",
@@ -21728,11 +21925,12 @@
         "resumen": "Potencia.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Potencia",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -24723,9 +24921,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "67d9bf54a680feb62d89de4619dd70874bae8d0a223ff44e2cc39a6c378bd580",
+      "hash": "e4ee42e2b43a1c12650abaadbf81c6b5143ef79be22b467876b6cd5b5cb5069a",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.SUBPROGRAM.CALL",
@@ -24748,11 +24952,12 @@
         "resumen": "Recursión.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Recursión",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -25076,7 +25281,7 @@
             "clase": "sintactica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
+            "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit numérico y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
             "verificacion": [
               "C1",
               "C2",
@@ -25126,7 +25331,7 @@
               "diagnosticos": [
                 {
                   "argumentos": {
-                    "limit": "256"
+                    "limit": 256
                   },
                   "clase": "syntax",
                   "codigo": "analysisNestingLimitExceeded",
@@ -25193,7 +25398,7 @@
               "diagnosticos": [
                 {
                   "argumentos": {
-                    "limit": "256"
+                    "limit": 256
                   },
                   "clase": "syntax",
                   "codigo": "analysisNestingLimitExceeded",
@@ -25260,7 +25465,7 @@
               "diagnosticos": [
                 {
                   "argumentos": {
-                    "limit": "256"
+                    "limit": 256
                   },
                   "clase": "syntax",
                   "codigo": "analysisNestingLimitExceeded",
@@ -25327,7 +25532,7 @@
               "diagnosticos": [
                 {
                   "argumentos": {
-                    "limit": "256"
+                    "limit": 256
                   },
                   "clase": "syntax",
                   "codigo": "analysisNestingLimitExceeded",
@@ -25359,14 +25564,14 @@
           "kind": "caso"
         }
       ],
-      "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+      "hash": "bfecbbbfedf25e07ef53f3b92a07e01e4a0d6650f97f230c84d46a4c2d6e265a",
       "metadata": {
         "cambio": {
-          "clase": "restriccion",
-          "impacto_implementaciones": "Contar construcciones anidadas antes de descender y emitir el diagnóstico propio sin cascadas.",
-          "impacto_usuarios": "Hace explícito el límite de recursos del análisis; ninguna construcción nueva.",
-          "justificacion": "Garantizar rechazo total y portable antes de agotar la pila.",
-          "revisado_por": "autorización de la fase R5; autoría automatizada"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "El argumento limit se serializa como número, no como cadena.",
+          "impacto_usuarios": "Los diagnósticos conservan el mismo código y el límite numérico.",
+          "justificacion": "Corregir la derivación de los casos según el argumento tipado numero del catálogo y DIAG.MODEL.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
         },
         "depende_de": [
           {
@@ -25399,7 +25604,7 @@
         ],
         "titulo": "Límite portable de anidación del análisis",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -26747,9 +26952,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "6984c842d9daae1f5cc7c8bd0aedcd826a9b3c5772d450faaee7bb01ae7f1476",
+      "hash": "560ef8f42f50f84bae1bacfaba5f8e3c588c5fac80c038c1af8f17c61f41617a",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.LEXICAL.CHARACTER-LITERAL",
@@ -26772,11 +26983,12 @@
         "resumen": "Tipo carácter.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Tipo carácter",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -27507,9 +27719,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "8f3066328945be9cfc484c6fb8014e1feaab263fc158f31eaf6566880b16c018",
+      "hash": "ed53f807008b4299bab7e3b4d76432a4e9ca9fa8fc2a0b1df8a2c41dd7b5fcc9",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [],
         "dominio": "lenguaje",
         "duenos": [
@@ -27526,11 +27744,12 @@
         "resumen": "Tipo entero.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Tipo entero",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -27540,10 +27759,11 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Real es IEEE 754 binario64 finito. Operaciones reales redondean a ese formato; infinitos y NaN producen nonFiniteRealResult. Los dos rigores e idiomas usan el mismo dominio. La salida usa notación posicional y al menos un decimal, sin exponente.",
+            "texto": "Real es IEEE 754 binario64 finito. Operaciones reales redondean a ese formato; infinitos y NaN producen nonFiniteRealResult. Los dos rigores e idiomas usan el mismo dominio. La salida usa notación posicional y al menos un decimal, sin exponente. El redondeo es al valor representable más cercano, con empates al significando par, incluidas las funciones matemáticas y la potencia real. Los subnormales y los ceros con signo pertenecen al dominio finito.",
             "verificacion": [
               "C1",
-              "C2"
+              "C2",
+              "C3"
             ]
           },
           "kind": "regla"
@@ -27598,11 +27818,42 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "0.30000000000000004:-0.0\n",
+              "terminacion": "completed"
+            },
+            "id": "C3",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite 0.1 + 0.2, \":\", -0.0;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir 0.1 + 0.2, \":\", -0.0;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "acdae68d82fa42053df41b3878778fdbf840e23ef868c7fafb5aa4b7a59e6dde",
+      "hash": "dc55da0182ad393438c9d12539222ddfc05b0249073eff2a1268a01c08e9c6bd",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.LEXICAL.NUMBER-LITERAL",
@@ -27625,11 +27876,12 @@
         "resumen": "Tipo real.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Tipo real",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -27814,9 +28066,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "48261090715aaa1b5685778ee37be82ac32f4a6861787250043b99c7e4106f70",
+      "hash": "42f821027c130e4282193f4bf160ac1c50f53e11f9f38f68b3cf54986afad7a1",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LANG.LEXICAL.TEXT-LITERAL",
@@ -27839,11 +28097,12 @@
         "resumen": "Tipo cadena.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Tipo cadena",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -28137,12 +28396,13 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "rc, abs, ln, exp, sen, cos y atan aceptan un número y devuelven real finito. rc es raíz cuadrada no negativa, ln logaritmo natural, exp exponencial base e; funciones trigonométricas usan radianes. Dominio inválido, infinito o NaN produce nonFiniteRealResult. Se aplica ampliación entero a real; nunca se consulta entorno.",
+            "texto": "rc, abs, ln, exp, sen, cos y atan aceptan un número y devuelven real finito. rc es raíz cuadrada no negativa, ln logaritmo natural, exp exponencial base e; funciones trigonométricas usan radianes. Dominio inválido, infinito o NaN produce nonFiniteRealResult. Se aplica ampliación entero a real; nunca se consulta entorno. El resultado de cada función es el binario64 más cercano al valor matemático exacto, con empates al significando par; esta regla incluye subnormales y ceros con signo y es independiente de la biblioteca matemática del anfitrión.",
             "verificacion": [
               "C1",
               "C2",
               "C3",
-              "C4"
+              "C4",
+              "C5"
             ]
           },
           "kind": "regla"
@@ -28253,16 +28513,41 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "1.4142135623730951:0.6931471805599453:2.718281828459045:0.8414709848078965:0.5403023058681398:0.7853981633974483\n",
+              "terminacion": "completed"
+            },
+            "id": "C5",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite sqrt(2.0), \":\", ln(2.0), \":\", exp(1.0), \":\", sin(1.0), \":\", cos(1.0), \":\", atan(1.0);\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir rc(2.0), \":\", ln(2.0), \":\", exp(1.0), \":\", sen(1.0), \":\", cos(1.0), \":\", atan(1.0);\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "d7da999ecdd7a1a02e9e9eb4fcbc687d71bab9e7e98361a6f46f2026721462fc",
+      "hash": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
         },
         "depende_de": [
           {
@@ -28291,7 +28576,7 @@
         ],
         "titulo": "Funciones matemáticas",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {
@@ -28690,9 +28975,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "1d3e2d916545330405575b1dc5d6d455014f14908c2be8f9b54bd65c5e1a94d9",
+      "hash": "8b1d0471a69a6b1661d90c8963c1f570b87e7d73ec8c50e201fc56b4d172075f",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "LIB.MODEL",
@@ -28720,11 +29011,12 @@
         "resumen": "Funciones de texto y carácter.",
         "revisado_por": [],
         "sujetos": [
-          "reference"
+          "reference",
+          "engine"
         ],
         "titulo": "Funciones de texto y carácter",
         "titulo_en": null,
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -30792,11 +31084,45 @@
             "unidad": "ms"
           },
           "kind": "medicion"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "El percentil 95 de posicionarse en un evento elegido al azar de AWFY-core y consultar su estado es como máximo 50 ms en Apple M2. La posición consultada pertenece al horizonte retenido; la operación no altera la continuación presente.",
+            "verificacion": [
+              "M3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M3",
+            "metrica": "latencia_retroceso_consulta_p95",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 50,
+            "unidad": "ms"
+          },
+          "kind": "medicion"
         }
       ],
-      "hash": "686255cdd4f530f37b8108b65bd00af9d01dc667b6f46966111a86b79791ebe2",
+      "hash": "400a4c136e8caf7c2bcd0a42967fd9d8a4c3426e7fc3d0b157a63d127b54fb91",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
+        },
         "depende_de": [
           {
             "id": "PERF.PROTOCOL",
@@ -30821,7 +31147,7 @@
         ],
         "titulo": "Latencia de paso observado",
         "titulo_en": "Observed step latency",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -31171,7 +31497,7 @@
             "fuerza": "DEBE",
             "id": "R3",
             "justificacion": "Pruebas de la capa responsable y fixtures negativos del miembro; verificación mecánica en cargo xtask verify.",
-            "texto": "La negociación admite además las capacidades observe, ir y cli. Un caso trace exige execute y observe: contra un sujeto sin observe su resultado es pendiente y nunca cumple. Un sujeto que devuelve eventos en una ejecución que no pidió observación produce error operativo. Las peticiones de ejecución transmiten límites de profundidad, sentencias y celdas, la cancelación en una entrada a sentencia y la consulta del estado en un índice de evento.",
+            "texto": "La negociación admite además las capacidades observe, ir y cli. Un caso trace exige execute y observe: contra un sujeto sin observe su resultado es pendiente y nunca cumple. Un sujeto que devuelve eventos en una ejecución que no pidió observación produce error operativo. Las peticiones de ejecución transmiten límites de profundidad, sentencias y celdas, la cancelación en una entrada a sentencia y la consulta del estado en un índice de evento. Las capacidades opcionales seek y gc_stress se negocian independientemente de observe. seek permite consultar un evento pasado sin alterar la continuación presente; gc_stress solicita recolección forzada en cada asignación para contrastar observables. cancel_at_poll identifica el sondeo de cancelación contando entradas a sentencia y evaluaciones de condición o prueba de bucle desde cero. Ningún adaptador anuncia una capacidad que no implementa.",
             "verificacion": [
               "estructural"
             ]
@@ -31179,14 +31505,14 @@
           "kind": "regla"
         }
       ],
-      "hash": "17d4ca6cfc547b54b6a3b4061a3329ff02b8015988e7e892e489a0466a4f7a9a",
+      "hash": "d61ac077ba1ae214e1f63d1fa3f85a57367a0c4de8740fe8b3b64b48e3434a41",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Los adaptadores existentes siguen siendo válidos; las capacidades nuevas son opcionales.",
-          "impacto_usuarios": "Los sujetos pueden anunciar observación, RI y CLI.",
-          "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+          "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+          "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+          "revisado_por": "autorización de la fase R5 en la conversación"
         },
         "depende_de": [],
         "dominio": "proceso",
@@ -31206,7 +31532,7 @@
         ],
         "titulo": "Protocolo por proceso",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {

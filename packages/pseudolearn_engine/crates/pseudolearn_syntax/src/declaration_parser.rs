@@ -20,6 +20,7 @@ pub(crate) fn name(state: &mut ParserState<'_>, missing: DiagnosticCode) -> Resu
     };
     let span = state.span();
     state.report(code, span);
+    reserved_arguments(state, code);
     Err(())
 }
 
@@ -100,4 +101,35 @@ fn reject_initializer(state: &mut ParserState<'_>) -> Result<(), ()> {
         return Err(());
     }
     Ok(())
+}
+
+fn reserved_arguments(state: &mut ParserState<'_>, code: DiagnosticCode) {
+    if code != DiagnosticCode::ReservedLexemeUsedAsName {
+        return;
+    }
+    let token = state.token();
+    let keyword = match state.kind() {
+        TokenKind::Keyword(keyword) => keyword,
+        TokenKind::BooleanLiteral(true) => KeywordKind::BooleanTrue,
+        _ => KeywordKind::BooleanFalse,
+    };
+    let text = usize::try_from(token)
+        .ok()
+        .and_then(|token| state.tokens.text(state.source, token))
+        .unwrap_or("")
+        .to_owned();
+    if let Some(diagnostic) = state
+        .diagnostics
+        .last_mut()
+        .filter(|diagnostic| diagnostic.code == code)
+    {
+        diagnostic.arguments.insert(
+            "lexeme".to_owned(),
+            pseudolearn_diagnostics::DiagnosticArgument::Lexeme(text),
+        );
+        diagnostic.arguments.insert(
+            "token".to_owned(),
+            pseudolearn_diagnostics::DiagnosticArgument::Token(keyword.as_str().to_owned()),
+        );
+    }
 }

@@ -106,7 +106,16 @@ impl ParserState<'_> {
             ));
             return;
         }
-        self.diagnostics.push(Diagnostic::new(code, span));
+        let mut diagnostic = Diagnostic::new(code, span);
+        if code.argument_kind("lexeme").is_some() {
+            let lexeme = usize::try_from(span.start)
+                .ok()
+                .zip(usize::try_from(span.ending).ok())
+                .and_then(|(start, ending)| self.source.get(start..ending))
+                .unwrap_or("");
+            diagnostic = diagnostic.with_argument("lexeme", lexeme);
+        }
+        self.diagnostics.push(diagnostic);
     }
 
     pub(crate) fn require(&mut self, kind: TokenKind, code: DiagnosticCode) -> Result<(), ()> {
@@ -124,10 +133,15 @@ impl ParserState<'_> {
         if self.depth >= ANALYSIS_NESTING_LIMIT {
             let span = self.span();
             self.report(DiagnosticCode::AnalysisNestingLimitExceeded, span);
-            if let Some(diagnostic) = self.diagnostics.last_mut() {
-                diagnostic
-                    .arguments
-                    .insert("limit".to_owned(), ANALYSIS_NESTING_LIMIT.to_string());
+            if let Some(diagnostic) = self.diagnostics.last_mut().filter(|diagnostic| {
+                diagnostic.code == DiagnosticCode::AnalysisNestingLimitExceeded
+            }) {
+                diagnostic.arguments.insert(
+                    "limit".to_owned(),
+                    pseudolearn_diagnostics::DiagnosticArgument::Number(
+                        ANALYSIS_NESTING_LIMIT.into(),
+                    ),
+                );
             }
             self.halted = true;
             self.cursor = self.tokens.token_count().saturating_sub(1);

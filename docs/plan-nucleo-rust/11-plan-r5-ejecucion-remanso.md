@@ -1257,9 +1257,16 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
   (identificadores de un carácter, programa vacío, clases sin miembros, herencia profunda, ciclos). Se retira
   `Type::from_name`. Test por construcción de la gramática: todo programa válido produce HIR y todo nodo HIR
   tiene tipo y tramo.
+  - [x] Reescritura por pasadas, retirada de `Type::from_name` y HIR con índices tipados.
+  - [x] Auditoría de tipos, tramos y argumentos de diagnóstico en el corpus y 400 combinaciones generadas.
+  - [x] Repetición de inferencia sin perder vínculos ni diagnósticos; finalización de lecturas sin valor.
+  - [ ] Completar/revisar la cobertura exigida por construcción y por diagnóstico antes de cerrar BF.4.
 - [ ] **BF.5 API y CLI.** `API.ANALYZE` sobre el nuevo HIR y esquema; mensajes de la CLI generados desde
   `TOOL.CLI.MESSAGES` (se retiran los literales de `messages.rs`); casos `cli` de `comprobar`, `preferencias`,
   convenciones y mensajes en `cumple` en los dos idiomas de interfaz.
+  - [x] API de análisis sobre el esquema y mensajes de CLI generados desde el corpus.
+  - [x] Verificadores completos de motor y CLI tras corregir los argumentos tipados de diagnósticos.
+  - [ ] Cerrar la conformidad de todos los mensajes; el caso que invoca ejecución depende de B7.
 - [x] **BF.6 Rendimiento y E-08.** Perfil del análisis completo; optimización guiada por el perfil; E-08 repetido
   con `PERF.PROTOCOL` completo (diez procesos, treinta iteraciones, datos crudos, intervalos, procedencia) en
   `packages/pseudolearn_benchmarks/results/e08r/` y `results/r5-frontend-e08.json`. Criterios: ≥ 10⁶ líneas/s
@@ -1281,26 +1288,32 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 - [x] **B1.3 Decisión de RC-01.** Informe con cocientes por núcleo y familia e intervalos; aplicación de los
   criterios de §2.5 y, si hace falta, del protocolo de iteración de §7.1. RC-01 queda **resuelto** en 08 con la
   evidencia, o la fase se para.
-- [ ] **B1.4 Contratos.** Cambios clasificados de §6.4 aprobados en D-R5-06, D-R5-08, D-R5-09, D-R5-10 y
+- [x] **B1.4 Contratos.** Cambios clasificados de §6.4 aprobados en D-R5-06, D-R5-08, D-R5-09, D-R5-10 y
   D-R5-15: `see new`/edición, casos derivados de la regla en `es` y `en` y en los dos rigores, `see diff`,
   `see impact`, `see lock`, `see export` y `see validate` en verde. Sujetos `engine` y `cli` activados por
   elemento en los contratos de ejecución; ninguna exención de `reference` se hereda.
 - [ ] **B1.5 Extensiones de SEE** (en `packages/pseudolearn_spec`, cada una con esquema, modelo, formato,
   capa, tests espejo, *fixture* negativo con su identificador y README):
-  - selección por operación `execute`, `trace`, `ir` y `cli` para los sujetos `engine` y `cli`;
-  - negociación de `observe`, `seek` y `gc_stress` en `see-protocol/1` (ampliación compatible);
-  - ejecutores de las propiedades de R5 con semilla, número de muestras, contraejemplo y repetición:
+  - [x] Selección por operación `execute`, `trace`, `ir` y `cli` para los sujetos `engine` y `cli`;
+  - [ ] Negociación de `observe`, `seek` y `gc_stress` en `see-protocol/1` (ampliación compatible);
+  - [ ] Ejecutores de las propiedades de R5 con semilla, número de muestras, contraejemplo y repetición:
     `ENG.EXEC.MODEL#P1`, `ENG.EXEC.EFFECT-ORDER#P1`, `ENG.INPUT#P1`, `ENG.TRACE.STEP#P1–P2`,
     `ENG.STATE.SNAPSHOT#P1`, `ENG.STATE.INCREMENTAL#P1–P3`, `MEM.IDENTITY#P1`,
     `MEM.MANAGED.UNOBSERVABLE#P1`, `IR.LOWERING#P1–P3`, `IR.OBSERVATION-POINTS#P1`, `API.EXECUTE#P1`,
     `API.STATE.QUERY#P1`, `API.WIRE-FORMAT#P1`, `API.VERSIONING#P1–P2`, `RT.HOST.INTERFACE#P1`,
     `TOOL.CLI.IR#P1`;
-  - **generador de programas bien tipados** con semilla (D-R5-11), por gramática de un subconjunto con
+  - [x] **Generador de programas bien tipados** con semilla (D-R5-11), por gramática de un subconjunto con
     arreglos, objetos, ciclos de referencias, llamadas, paso por referencia, texto y entrada; produce el
     programa en los dos vocabularios desde la exportación;
-  - oráculos independientes en `see_oracles`: aritmética de 128 bits para la primera trampa, aritmética
+  - [ ] Oráculos independientes en `see_oracles`: aritmética de 128 bits para la primera trampa, aritmética
     racional para el redondeo correcto y conteo nocional de celdas para programas generados.
-- [ ] **B1.6 Documentación antes del código.** README del workspace (principios 8–10, flujo de datos,
+    - [x] Oráculo entero i128 con primera trampa y origen; contador de celdas con alias y ciclos.
+    - [x] Oráculo racional y redondeo por cociente/resto, con pruebas de empates y subnormales.
+    - [ ] Ampliar la validación matemática y contrastar la biblioteca en 10⁶ argumentos por función (B7).
+  - [x] Registro de treinta propiedades, esquema, modelos, validación de integridad y negativos.
+  - [x] Armazón de semillas, contraejemplos, reproducción y selección desde la CLI de SEE.
+  - [ ] Terminar todos los algoritmos y el transporte de pruebas, y validar el conjunto actual.
+- [x] **B1.6 Documentación antes del código.** README del workspace (principios 8–10, flujo de datos,
   decisiones de §6.2 con alternativas descartadas y genealogía de §5.4) y README de `abi`, `ir`, `lowering`,
   `bytecode`, `runtime`, `library`, `vm`, `timeline`, `api` y CLI con el contenido de §12; `architecture.yaml`
   con los cambios de §6.3 y la capa de herramienta del trabajador de medición. `rust-checks layers` en verde.
@@ -1568,12 +1581,21 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 
 ---
 
-## 14. Estado
+## 14. Estado y relevo — 2026-10-15
 
-R5 autorizada el 2026-10-15. B0 y E-02R ejecutados; RC-01 resuelto con la evidencia de B1.1–B1.3.
-El análisis supera 524 observaciones sin divergencias y E-08 cumple el protocolo con 8.400 muestras.
-BF continúa con las invariantes del HIR; las órdenes de ejecución y RI de la CLI siguen pendientes.
-El análisis supera 524 observaciones sin divergencias y E-08 cumple el protocolo con 8.400 muestras.
-BF continúa con las invariantes del HIR; las órdenes de ejecución y RI de la CLI siguen pendientes.
-La deuda de R4 pertenece a BF y R4 sigue cerrada. Las demás casillas se conservan pendientes
-hasta ejecutar su verificación. La fase permanece abierta.
+R5 está autorizada y **permanece abierta**. La persona solicita detener esta sesión y entregar el trabajo
+para continuar con otra IA. No se inicia R6 ni R7. B2–B8 no están implementados.
+
+B0 y E-02R están publicados; RC-01 está resuelto. BF tiene análisis conforme (524 observaciones sin
+divergencias), recuperación, generación de vistas, HIR tipado y medición E-08. B1.4 y B1.6 están
+completos. BF.4, BF.5 y BF.8 quedan abiertos para su cierre conjunto; B1.5 tiene trabajo parcial.
+
+**Atención al estado del árbol:** las últimas ampliaciones de propiedades de SEE están a medio escribir.
+El `cargo check --workspace` actual falla con E0583 porque `property_steps.rs` no existe y ya está
+declarado desde `see_conformance/src/lib.rs`. Las verificaciones verdes anteriores no certifican ese
+último lote. No se debe marcar B1.5, B1.7 ni la fase como terminados.
+
+El inventario de archivos, evidencia, fallos conocidos, decisiones pendientes y orden de continuación
+está en [12 · Relevo de R5](12-relevo-r5.md). Leerlo antes de editar; los cambios posteriores al último
+commit están en el árbol local, incluidos archivos sin seguimiento. No descartarlos ni restaurar HEAD
+sobre ellos.

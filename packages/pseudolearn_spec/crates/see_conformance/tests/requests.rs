@@ -86,3 +86,20 @@ fn rejects_programs_that_cannot_be_reprinted() -> Result<(), String> {
     assert!(unclosed.is_err());
     Ok(())
 }
+
+#[test]
+fn transmits_loop_poll_cancellation_independently_of_statement_cancellation() -> Result<(), String>
+{
+    let built = request(
+        json!({"operacion": "execute", "cancelacion_prueba": 0}),
+        json!({}),
+    )?;
+    assert_eq!(built.get("cancel_at_poll"), Some(&json!(0)));
+    assert!(built.get("cancel_at_statement").is_none());
+    assert!(
+        request(json!({"operacion": "execute"}), json!({}))?
+            .get("cancel_at_poll")
+            .is_none()
+    );
+    Ok(())
+}

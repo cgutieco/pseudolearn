@@ -43,11 +43,12 @@ ajeno; el tooling ejecuta los verificadores compartidos por proceso.
 |---|---|---|---|
 | see_model | Entidades de contratos | serde, serde_json | capas superiores, sujetos |
 | see_format | Lectura de Markdown y YAML | model, serde-saphyr, serde_json | validación, procesos |
-| see_oracles | Cálculo independiente de límites enteros | biblioteca estándar | sujetos |
+| see_oracles | Oráculos independientes enteros, racionales y de celdas | biblioteca estándar, num-bigint, num-rational, num-integer, num-traits | sujetos |
 | see_graph | Dependencias e impacto | model, semver | procesos, CLI |
 | see_change | Hash canónico y clasificación | model, serde_json, sha2 | sujetos, CLI |
 | see_validation | Integridad del corpus: esquema, referencias, ciclo de vida, recursos, alfabeto de traza, convenciones de CLI, aperturas, mensajes, cobertura de RI y mediciones | model, graph, change, semver, serde_json | procesos |
 | see_translation | Reimpresión léxica | model | sujeto, parser |
+| see_generators | Programas bien tipados por semilla e índice | model, translation | sujetos, oráculos |
 | see_conformance | Protocolo, peticiones por operación y comparación | model, translation, serde_json | internos de sujetos |
 | see_export | Exportación de contratos | model, change, serde_json | sujetos |
 | see_report | Matriz, cobertura de RI, estados y características | model, serde_json | ejecución de sujetos |
@@ -139,6 +140,8 @@ Identidades permanentes de evidencia, independientes de la investigación transi
 | REF-STRICT-INFERENCE | Emite inferredVariableType en estricto después del error de declaración; la inferencia informativa pertenece al modo flexible. | R4 |
 | REF-STRUCTURAL-RECOVERY | Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. | R4 |
 | REF-UNCLOSED-BLOCK-CASCADE | Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. | R4 |
+| REF-EMPTY-LOOP-CANCELLATION | No atiende cancelación durante la evaluación de condiciones de bucles vacíos; termina por el presupuesto de micro pasos del adaptador. | R5 |
+| REF-NEGATIVE-ZERO | Presenta el real negativo cero como 0.0 y pierde su signo. | R5 |
 | REF-OUTPUT-FRAGMENTS | Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. | R5 |
 | REF-INPUT-REQUEST-EVENT | No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. | R5 |
 | REF-SWITCH-NO-BRANCH | Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. | R5 |
@@ -149,6 +152,11 @@ Problema: el límite portable de análisis debe llegar a los consumidores como d
 Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo representable en u32.
 La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
 y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
+
+La conformidad de propiedades usa `property-conformance.json`: identidad versionada, algoritmo,
+semilla y cantidad de muestras. Incluye las treinta propiedades del motor y la CLI, también las de
+API y reimpresión heredadas; omitir una propiedad del sujeto es un error de vínculo. El archivo de datos conserva los vínculos regla–código y la validación
+rechaza duplicados, referencias retiradas y cantidades cero. Registrar un vínculo no es evidencia de ejecución.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -191,3 +199,8 @@ metadatos y xtask; serde aporta contratos de datos; semver rangos; SHA-256 ancla
 Se toma el modelo de versión semántica para cambios declarados; se rechaza equiparar cambio
 textual con clasificación semántica definitiva. No se consultan fuentes externas para decidir
 comportamiento del lenguaje.
+
+Las aclaraciones de ejecución fijan redondeo binario64 al más cercano con empates al par, formato mínimo
+de ida y vuelta, raíces nocionales que incluyen temporales vivos y sondeos de cancelación en condiciones.
+Los esperados matemáticos añadidos se justifican por intervalos racionales en
+`results/r5-rounding-case-oracle.json`; ninguna captura del sujeto define esos resultados.

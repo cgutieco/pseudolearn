@@ -107,17 +107,28 @@ impl AnalysisSession<'_> {
         } else {
             "flexible"
         };
-        let diagnostic =
+        let mut diagnostic =
             Diagnostic::new(code, self.span(index)).with_severity(code.severity(rigor));
+        if code.argument_kind("lexeme").is_some() {
+            diagnostic = diagnostic.with_argument(
+                "lexeme",
+                &crate::diagnostic_arguments::lexeme(self, code, index),
+            );
+        }
         self.diagnostics.push(diagnostic);
     }
 
     pub(crate) fn named_report(&mut self, code: DiagnosticCode, index: usize, name: &str) {
         self.report(code, index);
-        if let Some(diagnostic) = self.diagnostics.last_mut() {
-            diagnostic
-                .arguments
-                .insert("lexeme".to_owned(), name.to_owned());
+        if let Some(diagnostic) = self
+            .diagnostics
+            .last_mut()
+            .filter(|diagnostic| diagnostic.code.argument_kind("lexeme").is_some())
+        {
+            diagnostic.arguments.insert(
+                "lexeme".to_owned(),
+                pseudolearn_diagnostics::DiagnosticArgument::Lexeme(name.to_owned()),
+            );
         }
     }
 

@@ -88,6 +88,7 @@ fn evidence() -> Evidence {
         protocol: "see-protocol/1".to_owned(),
         subject: "reference".to_owned(),
         subject_version: "0.1.0".to_owned(),
+        properties: Vec::new(),
         corpus_hashes: Default::default(),
         observations: vec![],
         stderr: String::new(),

@@ -36,6 +36,7 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_keywords(vocabulary));
     code.push_str(&generate_builtins(functions));
     code.push_str(&function_metadata::signatures(functions)?);
+    code.push_str(&function_metadata::canonical_words(vocabulary)?);
     code.push_str(&function_metadata::compound_prefixes(vocabulary));
     code.push_str(&generate_openers(vocabulary));
 

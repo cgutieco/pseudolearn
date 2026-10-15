@@ -39,7 +39,7 @@ layers:
   - name: pseudolearn_semantic
     path: crates/pseudolearn_semantic
     may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax]
-    external_dependencies: []
+    external_dependencies: [serde_json]
     unsafe_allowed: false
   - name: pseudolearn_ir
     path: crates/pseudolearn_ir

@@ -42,6 +42,7 @@ pub enum UnaryOperator {
 pub enum HirExpression {
     Literal(Literal),
     Local(LocalId),
+    Uninitialized(LocalId),
     Field {
         receiver: ExpressionId,
         field: FieldId,

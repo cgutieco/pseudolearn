@@ -59,3 +59,27 @@ fn accepts_signed_seed_boundaries_and_rejects_non_integer_seeds() -> Result<(), 
     }
     Ok(())
 }
+
+#[test]
+fn validates_loop_poll_cancellation_ordinal() -> Result<(), String> {
+    for (ordinal, valid) in [
+        (serde_json::json!(0), true),
+        (serde_json::json!(u64::MAX), true),
+        (serde_json::json!(-1), false),
+        (serde_json::json!(1.5), false),
+        (serde_json::json!("2"), false),
+    ] {
+        let mut specification = support::specification()?;
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("Missing case")?
+            .fields
+            .insert("cancelacion_prueba".to_owned(), ordinal);
+        assert_eq!(
+            see_validation::schema::check(&specification).is_empty(),
+            valid
+        );
+    }
+    Ok(())
+}

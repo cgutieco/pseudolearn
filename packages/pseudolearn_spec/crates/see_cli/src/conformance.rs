@@ -8,6 +8,9 @@ use std::process::Command;
 use std::time::Duration;
 
 pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> {
+    if arguments.options.get("operation").map(String::as_str) == Some("properties") {
+        return crate::property_execution::execute(arguments, corpus);
+    }
     let subject = arguments
         .options
         .get("subject")
@@ -168,7 +171,7 @@ fn save(
     ))
 }
 
-fn subject_configuration(
+pub(crate) fn subject_configuration(
     arguments: &Arguments,
     corpus: &Corpus,
     subject: &str,

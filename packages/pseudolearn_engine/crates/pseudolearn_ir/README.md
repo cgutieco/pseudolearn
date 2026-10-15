@@ -2,58 +2,50 @@
 
 ## 1. Qué es y qué no es
 
-Define la representación intermedia verificada. Contrato documentado, sin implementación ni manifiesto Cargo.
-
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+Define la representación intermedia verificada. Diseño aprobado; implementación pendiente en R5.
+No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R5 |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
+Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
+actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Nivel 3. Importa source y abi; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Estructuras y algoritmos: CFG SSA con parámetros de bloque; clases de valor; celdas; `observe` con masa de sentencia; regiones puras; verificador; formato textual con ida y vuelta; catálogo generado de la exportación de `IR.INSTRUCTIONS`.
+Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. Operation, firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R9 con dominadores iterativos de Cooper–Harvey–Kennedy.
 
-Invariantes: Toda RI que sale de `lowering` pasa el verificador; ninguna instrucción sin nodo fuente si puede atrapar u observar.
-
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+Invariantes: Toda RI traducida pasa el verificador y toda instrucción que puede atrapar u observar conserva tramo. Se informa la primera violación en orden textual.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: define la representación intermedia verificada respetando los observables del corpus.
-Elección: CFG SSA con parámetros de bloque; clases de valor; celdas; `observe` con masa de sentencia; regiones puras; verificador; formato textual con ida y vuelta; catálogo generado de la exportación de `IR.INSTRUCTIONS`.
-Alternativas descartadas y fundamento: SSA con parámetros de bloque permite compartir semántica con Cranelift. Las banderas pegajosas de IEEE 754 inspiran acumulación de trampas; se rechaza perder la primera trampa o hacer visible un efecto posterior.
+La tabla de orígenes vincula valores SSA con variables declaradas para observación y no pertenece al formato textual normativo. La pureza se deriva del catálogo de efectos; no se materializan regiones que duplicarían información. Se rechazan catálogos manuales y comprobaciones tardías por instrucción.
+
+La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
+de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
+Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
+funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
+Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: `IR.*`.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+IR.MODEL, IR.INSTRUCTIONS, IR.WELL-FORMEDNESS, IR.TEXT-FORMAT, IR.SOURCE-MAP e IR.OBSERVATION-POINTS. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
+literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
+Un negativo por R1–R9, casos ir, ida y vuelta canónica, generación determinista y mutación de textos sin pánicos. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-SSA con parámetros de bloque permite compartir semántica con Cranelift. Las banderas pegajosas de IEEE 754 inspiran acumulación de trampas; se rechaza perder la primera trampa o hacer visible un efecto posterior.
+SSA con parámetros de bloque permite compartir semántica con futuros consumidores nativos. El verificador concentra las obligaciones antes de ejecutar.

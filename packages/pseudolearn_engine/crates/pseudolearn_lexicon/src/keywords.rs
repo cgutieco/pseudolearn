@@ -1,4 +1,4 @@
-use crate::profile::{Profile, fold_text};
+use crate::profile::Profile;
 
 include!(concat!(env!("OUT_DIR"), "/generated_lexicon.rs"));
 
@@ -19,7 +19,9 @@ pub fn find_builtin(word: &str, profile: Profile) -> Option<BuiltinKind> {
 }
 
 pub fn detect_opener(word: &str) -> Option<Profile> {
-    let folded_word = fold_text(word);
-    let profile_name = detect_profile_from_opener(&folded_word)?;
-    Profile::from_name(profile_name)
+    [Profile::Spanish, Profile::English]
+        .into_iter()
+        .find(|profile| {
+            detect_profile_from_opener(&profile.fold_word(word)) == Some(profile.as_str())
+        })
 }

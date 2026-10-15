@@ -5,7 +5,7 @@
   "titulo": "Latencia de paso observado",
   "dominio": "rendimiento",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -20,7 +20,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Observed step latency"
+  "titulo_en": "Observed step latency",
+  "cambio": {
+    "clase": "aclaracion",
+    "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
+    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
+    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
+  }
 }
 ---
 
@@ -63,6 +70,34 @@
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
   "umbral": 0.1,
+  "provisional": true,
+  "plataformas": [
+    "macos-arm64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El percentil 95 de posicionarse en un evento elegido al azar de AWFY-core y consultar su estado es como máximo 50 ms en Apple M2. La posición consultada pertenece al horizonte retenido; la operación no altera la continuación presente.",
+  "verificacion": [
+    "M3"
+  ]
+}
+```
+
+```medicion
+{
+  "id": "M3",
+  "metrica": "latencia_retroceso_consulta_p95",
+  "unidad": "ms",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 50,
   "provisional": true,
   "plataformas": [
     "macos-arm64"

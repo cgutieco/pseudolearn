@@ -120,6 +120,7 @@ fn resolve_field(
     };
     if field.private && session.owner() != Some(field.owner) {
         session.named_report(DiagnosticCode::PrivateMemberAccess, node, name);
+        crate::diagnostic_arguments::class_name(session, field.owner);
     }
     Some(field)
 }

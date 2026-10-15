@@ -38,7 +38,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 | ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | R5 |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
-| wasm: bancos de 2¹⁸ ranuras; puentes generados | API completa | R8 |
+| wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -115,7 +115,7 @@ Alternativas descartadas: Carbon y Zig inspiran tokens en columnas y postorden; 
 
 ### semantic
 
-Problema: produce un hir tipado desde la resolución estática. Elección: Arenas con índices tipados (`SymbolId`, `TypeId`, `ScopeId`) en columnas; resolución de nombres y después de tipos; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado.
+Problema: produce un hir tipado desde la resolución estática. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado.
 Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.
 
 ### ir
@@ -152,6 +152,17 @@ Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg insp
 
 Problema: reconstruye el estado observable de cualquier instante mediante puntos de control. Elección: Cinta de entradas; puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos por marca de agua, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas; deltas desde el búfer de escrituras del gemelo sondeado.
 Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento y tope fijo de pasos.
+
+### matemática y memoria observables
+
+Problema: el último bit de una trascendente y el signo de cero cambian la salida. Elección: redondeo
+correcto mediante aproximación acotada y reevaluación adaptativa, oráculo racional independiente y
+formato mínimo de ida y vuelta. Ziv, CRlibm y CORE-MATH inspiran el método; se rechaza libm del anfitrión.
+El texto comparte apéndice conservando prefijos; Go y CPython inspiran apéndice sin conteo de referencias.
+Las migas conservan UTF-8. El mapa por clase compone con herencia sin mover campos heredados.
+Young y Daly inspiran densidad de puntos derivada del coste; HPC inspira comparación exacta con sombra.
+Se rechazan reloj para programar puntos, hashes con falsos negativos y protección de páginas del SO.
+Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 
 ### api
 

@@ -4,6 +4,15 @@ use pseudolearn_source::{SourceText, Span};
 use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind};
 
 pub(crate) fn convert(diagnostic: &Diagnostic, source: &SourceText, locale: &str) -> ApiDiagnostic {
+    let checked = if pseudolearn_diagnostics::validate_arguments(diagnostic) {
+        std::borrow::Cow::Borrowed(diagnostic)
+    } else {
+        std::borrow::Cow::Owned(Diagnostic::new(
+            DiagnosticCode::InternalFault,
+            diagnostic.span,
+        ))
+    };
+    let diagnostic = crate::argument_conversion::resolve(&checked, locale);
     let severity = match diagnostic.severity {
         DiagnosticSeverity::Error => "error",
         DiagnosticSeverity::Warning => "warning",
@@ -13,9 +22,9 @@ pub(crate) fn convert(diagnostic: &Diagnostic, source: &SourceText, locale: &str
         code: diagnostic.code.as_str().to_owned(),
         class: diagnostic.class.as_str().to_owned(),
         severity: severity.to_owned(),
-        message: render(diagnostic, locale),
+        message: render(&diagnostic, locale),
         span: span(diagnostic.span, source),
-        arguments: diagnostic.arguments.clone(),
+        arguments: crate::argument_conversion::wire(&diagnostic),
         related: diagnostic
             .related
             .iter()
@@ -29,7 +38,10 @@ pub fn render_diagnostic(diagnostic: &ApiDiagnostic, locale: &str) -> String {
         return diagnostic.message.clone();
     };
     let mut model = Diagnostic::new(code, Span::empty());
-    model.arguments.clone_from(&diagnostic.arguments);
+    let Some(arguments) = crate::argument_conversion::decode(diagnostic, code) else {
+        return diagnostic.message.clone();
+    };
+    model.arguments = arguments;
     render(&model, locale)
 }
 

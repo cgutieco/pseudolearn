@@ -235,7 +235,7 @@
     "measured": "sin evidencia",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R1",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R1",
     "state": "experimental",
     "subject": "engine"
   },
@@ -245,7 +245,7 @@
     "measured": "sin evidencia",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R2",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R2",
     "state": "experimental",
     "subject": "engine"
   },
@@ -255,7 +255,7 @@
     "measured": "sin evidencia",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R3",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R3",
     "state": "experimental",
     "subject": "engine"
   },
@@ -265,7 +265,7 @@
     "measured": "sin evidencia",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R4",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R4",
     "state": "experimental",
     "subject": "engine"
   },
@@ -275,7 +275,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R5",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R5",
     "state": "experimental",
     "subject": "engine"
   },
@@ -285,7 +285,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CONTROL.FOR@0.3.0#R6",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R6",
     "state": "experimental",
     "subject": "engine"
   },
@@ -405,7 +405,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
+    "rule": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
@@ -720,12 +720,12 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "pendiente",
     "cases": 32,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.SYNTAX.ANALYSIS-LIMITS@0.1.0#R1",
+    "rule": "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
@@ -875,7 +875,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LIB.CORE.MATH@0.2.0#R1",
+    "rule": "LIB.CORE.MATH@0.3.0#R1",
     "state": "experimental",
     "subject": "engine"
   },

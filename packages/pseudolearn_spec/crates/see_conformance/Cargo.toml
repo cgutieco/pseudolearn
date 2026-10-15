@@ -12,5 +12,8 @@ see_model = { version = "0.1.0", path = "../see_model" }
 see_translation = { version = "0.1.0", path = "../see_translation" }
 serde_json = "1"
 
+see_generators = { version = "0.1.0", path = "../see_generators" }
+see_oracles = { version = "0.1.0", path = "../see_oracles" }
+
 [dev-dependencies]
 see_format = { version = "0.1.0", path = "../see_format" }

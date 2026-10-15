@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Define Metadata, Block, Specification, Anchor, Manifest, Conformance y Evidence como datos serializables. La frontera pública no ejecuta sujetos ni interpreta programas.
+Define Metadata, Block, Specification, Anchor, Manifest, Conformance, PropertyRun y Evidence como datos serializables. La frontera pública no ejecuta sujetos ni interpreta programas.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -16,6 +16,15 @@ Imports internos permitidos: ninguno. Prohibidas las capas superiores y los suje
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
+
+La evidencia de propiedades conserva semilla, número de muestras solicitadas y completadas, veredicto y
+el primer contraejemplo con programa, perfil, rigor, esperado, observado y comando de reproducción.
+Un registro vacío o con capacidad ausente no equivale a cumplimiento. El campo `properties` es opcional
+al leer evidencia histórica y se omite al escribir una lista vacía para conservar compatibilidad JSON.
+
+`PropertyRegistry` contiene el vínculo entre una propiedad versionada y un algoritmo de contraste,
+con semilla y cantidad. El vínculo vive en `property-conformance.json`, nunca en el código de un ejecutor.
+Los algoritmos se identifican por responsabilidad; una entrada no declara que la propiedad se haya ejecutado.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

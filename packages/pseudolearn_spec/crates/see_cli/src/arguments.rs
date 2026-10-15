@@ -17,6 +17,10 @@ const ALLOWED_OPTIONS: &[&str] = &[
     "check",
     "dot",
     "operation",
+    "property",
+    "seed",
+    "samples",
+    "sample",
 ];
 
 fn parse_option(

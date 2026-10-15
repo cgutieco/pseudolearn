@@ -4,8 +4,8 @@ use pseudolearn_source::Span;
 #[test]
 fn renders_bilingual_template_with_arguments() {
     let diagnostic = Diagnostic::new(DiagnosticCode::ArgumentCountMismatch, Span::new(0, 5))
-        .with_argument("expected", "2")
-        .with_argument("found", "1");
+        .with_number("expected", 2_u32)
+        .with_number("found", 1_u32);
     let spanish = render(&diagnostic, "es");
     assert!(spanish.contains("esperaban 2"));
     assert!(spanish.contains("encontraron 1"));

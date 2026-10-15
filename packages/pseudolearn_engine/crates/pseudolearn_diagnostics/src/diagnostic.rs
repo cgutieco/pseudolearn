@@ -1,3 +1,4 @@
+use crate::arguments::{ArgumentKind, DiagnosticArgument, DiagnosticType, TypeName};
 use crate::code::DiagnosticCode;
 use pseudolearn_source::Span;
 use std::collections::BTreeMap;
@@ -49,7 +50,7 @@ pub struct Diagnostic {
     pub severity: DiagnosticSeverity,
     pub span: Span,
     pub related: Vec<Span>,
-    pub arguments: BTreeMap<String, String>,
+    pub arguments: BTreeMap<String, DiagnosticArgument>,
 }
 
 impl Diagnostic {
@@ -70,7 +71,22 @@ impl Diagnostic {
     }
 
     pub fn with_argument(mut self, key: &str, value: &str) -> Self {
-        self.arguments.insert(key.to_owned(), value.to_owned());
+        let argument = match self.code.argument_kind(key) {
+            Some(ArgumentKind::Token) => DiagnosticArgument::Token(value.to_owned()),
+            Some(ArgumentKind::Type) => DiagnosticArgument::Type(DiagnosticType {
+                name: TypeName::Named(value.to_owned()),
+                rank: 0,
+            }),
+            Some(ArgumentKind::Term) => DiagnosticArgument::Term(value.to_owned()),
+            _ => DiagnosticArgument::Lexeme(value.to_owned()),
+        };
+        self.arguments.insert(key.to_owned(), argument);
+        self
+    }
+
+    pub fn with_number(mut self, key: &str, value: impl Into<serde_json::Number>) -> Self {
+        self.arguments
+            .insert(key.to_owned(), DiagnosticArgument::Number(value.into()));
         self
     }
 

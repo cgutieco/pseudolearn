@@ -5,7 +5,7 @@
   "titulo": "Ejecución",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -35,7 +35,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution"
+  "titulo_en": "Execution",
+  "cambio": {
+    "clase": "aclaracion",
+    "impacto_usuarios": "La cancelación puede detener también una condición de un bucle vacío, sin efectos parciales.",
+    "impacto_implementaciones": "La API conserva los puntos de cancelación del modelo de ejecución.",
+    "justificacion": "Evitar que la frontera API contradiga el modelo de ejecución y deje sin cancelar un bucle vacío.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
+  }
 }
 ---
 
@@ -151,7 +158,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Entregar entrada reanuda una ejecución que espera; cancelar la termina en la siguiente entrada a sentencia con cancelled.",
+  "texto": "Entregar entrada reanuda una ejecución que espera; cancelar la termina en la siguiente entrada a sentencia o evaluación de condición o prueba de bucle con cancelled, sin efectos parciales del punto cancelado.",
   "verificacion": [
     "C3"
   ]

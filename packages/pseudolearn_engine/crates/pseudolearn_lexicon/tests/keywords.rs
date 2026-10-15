@@ -1,4 +1,4 @@
-use pseudolearn_lexicon::{Profile, find_builtin, find_keyword};
+use pseudolearn_lexicon::{Profile, detect_opener, find_builtin, find_keyword};
 
 #[test]
 fn resolves_every_generated_form_and_rejects_near_misses() -> Result<(), String> {
@@ -51,5 +51,7 @@ fn resolves_every_generated_form_and_rejects_near_misses() -> Result<(), String>
 fn preserves_english_accents_and_normalizes_spanish_nfd() {
     assert!(find_keyword("cla\u{301}se", Profile::Spanish).is_some());
     assert!(find_keyword("cláss", Profile::English).is_none());
+    assert_eq!(detect_opener("cláss"), None);
+    assert_eq!(detect_opener("cla\u{301}se"), Some(Profile::Spanish));
     assert!(find_keyword("", Profile::Spanish).is_none());
 }

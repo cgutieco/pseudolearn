@@ -9,6 +9,7 @@ pub enum Type {
     Character,
     String,
     Unit,
+    Never,
     Array { element: TypeId, rank: u32 },
     Object(ClassId),
     Unknown,
@@ -50,7 +51,7 @@ impl TypeInterner {
     pub fn value_class(&self, identifier: TypeId) -> ValueClass {
         match self.get(identifier) {
             Type::String | Type::Array { .. } | Type::Object(_) => ValueClass::Reference,
-            Type::Unit => ValueClass::Unit,
+            Type::Unit | Type::Never => ValueClass::Unit,
             _ => ValueClass::Scalar,
         }
     }

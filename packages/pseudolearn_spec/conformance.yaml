@@ -22,12 +22,12 @@
   ],
   "vinculos": [
     {
-      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R1",
+      "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R1",
       "verificacion": "crates/see_conformance/tests/protocol.rs",
       "estado": "cumple"
     },
     {
-      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R2",
+      "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R2",
       "verificacion": "crates/see_conformance/tests/protocol.rs",
       "estado": "cumple"
     },
@@ -152,7 +152,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.ADAPTER.PROTOCOL@0.2.0#R3",
+      "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R3",
       "verificacion": "crates/see_conformance/tests/execution.rs",
       "estado": "cumple"
     },

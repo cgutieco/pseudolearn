@@ -5,7 +5,7 @@
   "titulo": "Bucle contado",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -17,7 +17,7 @@
   "depende_de": [
     {
       "id": "LANG.TYPES.INTEGER",
-      "version": "^0.1",
+      "version": ">=0.1.0, <1.0.0",
       "tipo": "usa"
     }
   ],
@@ -25,11 +25,11 @@
     "introducida_en": "2026"
   },
   "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Sin cambios en el bucle contado ni sus programas.",
+    "impacto_implementaciones": "Admite el contrato entero actualizado que activa el sujeto Rust.",
+    "justificacion": "La activación de un sujeto no modifica el dominio entero usado por Para.",
+    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---

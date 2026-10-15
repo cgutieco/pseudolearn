@@ -1,5 +1,15 @@
 #![forbid(unsafe_code)]
 
+pub mod cells;
+mod dyadic;
+pub mod integer_expression;
+pub mod interval;
+pub mod mathematics;
+mod rational;
+pub mod rounding;
+mod series;
+mod transcendentals;
+
 pub fn integer_sum(left: i64, right: i64) -> Result<i64, String> {
     let mathematical = i128::from(left)
         .checked_add(i128::from(right))

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Binario pseudo para comprobar, ejecutar e inspeccionar programas. Contrato documentado sin código ni manifiesto.
+Binario pseudo para comprobar, ejecutar e inspeccionar programas. Análisis y preferencias implementados; ejecución e inspección pendientes de sus capas.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
 | Pendiente | Dependencia | Fase |
@@ -43,6 +43,12 @@ Opciones: --rigor/--strictness, --traza/--trace, --json. La ayuda muestra forma 
 La sustitución de argumentos recorre la plantilla una sola vez, preservando llaves en lexemas del usuario.
 Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
 La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
+
+La extensión de ejecutar/run usará únicamente la API pública con entrada estándar, semilla, límites
+de profundidad, sentencias y celdas. La traza se narra con las plantillas trace* del catálogo generado;
+la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
+de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
+verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

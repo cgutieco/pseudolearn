@@ -1,3 +1,5 @@
+#[path = "codegen/arguments.rs"]
+mod arguments;
 #[path = "codegen/policy.rs"]
 mod policy;
 use std::path::Path;
@@ -30,6 +32,7 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_from_name_methods(diagnostics));
     code.push_str(&generate_template_methods(diagnostics));
     code.push_str(&policy::generate(diagnostics)?);
+    code.push_str(&arguments::generate(diagnostics)?);
 
     std::fs::write(destination, code)?;
     Ok(())

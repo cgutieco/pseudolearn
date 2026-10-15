@@ -41,6 +41,19 @@ errores léxicos o sintácticos. El idioma de presentación se resuelve al rende
 mediante su código y argumentos, sin modificar códigos, tramos ni salida del programa.
 Se rechaza que la CLI tenga que reconstruir posiciones o traducir un mensaje ya presentado.
 
+La extensión de ejecución pendiente usa recursos con identificador para iniciar, avanzar, entregar
+entrada, cancelar y posicionarse. Las consultas se refieren a un instante y al horizonte retenido;
+la reproducción no altera la continuación presente. JSON canónico y binario columnar comparten datos.
+Solo se anuncian capacidades implementadas. El borde convierte defectos imposibles a internalFault,
+pero las pruebas exigen ausencia de pánicos, no solamente captura. Los recursos inválidos o liberados
+producen errores de uso. La API importa todas las capas públicas permitidas y no expone sus estructuras
+mutables. Los tests cubren negociación, recursos, fronteras, lotes, entrada y consultas repetidas.
+
+Los argumentos conservan su clase: lexema, token, tipo, término o número. El catálogo genera la ficha
+de argumentos requeridos; el borde valida que no falten claves ni se sustituyan números por cadenas.
+Los tokens y tipos primitivos se resuelven con el vocabulario del programa antes de presentar prosa.
+La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentro de un lexema del usuario.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

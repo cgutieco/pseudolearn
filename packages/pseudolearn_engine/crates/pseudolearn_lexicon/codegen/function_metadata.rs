@@ -53,3 +53,21 @@ pub fn compound_prefixes(vocabulary: &serde_json::Map<String, serde_json::Value>
     generated.push_str(" }\n");
     generated
 }
+
+pub fn canonical_words(
+    vocabulary: &serde_json::Map<String, serde_json::Value>,
+) -> Result<String, String> {
+    let mut generated = String::from("static CANONICAL_WORDS: &[(&str, &str, &str)] = &[\n");
+    for (name, entry) in vocabulary {
+        for profile in ["en", "es"] {
+            let word = entry
+                .get("lexemas")
+                .and_then(|lexemes| lexemes.get(profile))
+                .and_then(serde_json::Value::as_str)
+                .ok_or("Missing canonical lexeme")?;
+            generated.push_str(&format!("({name:?}, {profile:?}, {word:?}),\n"));
+        }
+    }
+    generated.push_str("];\npub fn keyword_lexeme(identity: &str, profile: &str) -> Option<&'static str> { CANONICAL_WORDS.binary_search_by(|entry| (entry.0, entry.1).cmp(&(identity, profile))).ok().and_then(|index| CANONICAL_WORDS.get(index)).map(|entry| entry.2) }\n");
+    Ok(generated)
+}

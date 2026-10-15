@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "see-properties/1",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "see-properties/1"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "minLength": 1
+          },
+          "executor": {
+            "enum": [
+              "execution_controls",
+              "state_query",
+              "version_negotiation",
+              "capability_negotiation",
+              "wire_roundtrip",
+              "first_trap",
+              "determinism",
+              "input_batching",
+              "delta_reconstruction",
+              "delta_minimality",
+              "past_state_isolation",
+              "snapshot_isolation",
+              "step_partition",
+              "step_depth",
+              "lowering_validity",
+              "lowering_execution",
+              "statement_mass",
+              "observation_correspondence",
+              "identity_stability",
+              "gc_transparency",
+              "host_recording",
+              "cli_ir_roundtrip",
+              "analysis_schema",
+              "usage_errors",
+              "internal_fault_containment",
+              "resource_lifecycle",
+              "interface_language",
+              "fused_first_trap",
+              "lossless_reprint",
+              "lossless_recovery"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "samples": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "reference",
+          "executor",
+          "seed",
+          "samples"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "format",
+    "entries",
+    "subjects"
+  ],
+  "additionalProperties": false
+}

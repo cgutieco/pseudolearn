@@ -199,10 +199,22 @@ R0 Fundación
 ### R5 · RI, VM, runtime y biblioteca
 
 > **Plan detallado:** [11 · Plan de R5 · «Remanso»](11-plan-r5-ejecucion-remanso.md).
-> Propuesta para revisión; R5 sigue pendiente de autorización explícita. Por decisión D-R5-01, la deuda
+> R5 autorizada el 2026-10-15; implementación en curso y relevo solicitado por la persona. Por decisión D-R5-01, la deuda
 > encontrada en la evidencia de R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. Los
 > bloques B0–B8 y BF detallan esta fase sin sustituir sus criterios. Las casillas se marcan solo con evidencia
-> del cierre B8.
+> del cierre B8. El avance parcial de preparación se registra a continuación, sin declarar la fase cerrada.
+
+- **Preparación y avance parcial verificado** (detalle y límites en [12 · Relevo de R5](12-relevo-r5.md)):
+  - [x] B0: línea base, inventario de deuda y correspondencia de verificadores.
+  - [x] E-02R: 27.000 muestras, criterios aprobados y RC-01 resuelto.
+  - [x] Frente de análisis reescrito: 524 observaciones sin divergencias, recuperación y vistas generadas.
+  - [x] E-08: protocolo completo, 8.400 muestras y umbrales de análisis cumplidos en la captura.
+  - [x] B1.4: contratos clasificados, casos, activación, impacto, anclaje y exportación.
+  - [x] B1.6: diseño autosustentable de los crates y reglas de capas documentados antes del backend.
+  - [x] Generador bilingüe y oráculos independientes enteros, de celdas y racionales con pruebas.
+  - [ ] Terminar las extensiones de propiedades de SEE y repetir sus puertas; el árbol actual tiene
+    un módulo de propiedades incompleto que impide compilar SEE.
+  - [ ] Cerrar BF/B1 y construir B2–B8. No hay todavía backend de ejecución Rust.
 
 - [ ] **Experimentos:** E-06, E-12, E-16 y E-17.
 
