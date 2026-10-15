@@ -198,6 +198,12 @@ R0 Fundación
 
 ### R5 · RI, VM, runtime y biblioteca
 
+> **Plan detallado:** [11 · Plan de R5 · «Remanso»](11-plan-r5-ejecucion-remanso.md).
+> Propuesta para revisión; R5 sigue pendiente de autorización explícita. Por decisión D-R5-01, la deuda
+> encontrada en la evidencia de R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. Los
+> bloques B0–B8 y BF detallan esta fase sin sustituir sus criterios. Las casillas se marcan solo con evidencia
+> del cierre B8.
+
 - [ ] **Experimentos:** E-06, E-12, E-16 y E-17.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
