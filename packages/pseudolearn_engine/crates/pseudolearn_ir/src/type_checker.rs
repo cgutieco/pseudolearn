@@ -9,6 +9,7 @@ use crate::type_checker_control::check_control_and_io;
 use crate::type_checker_helpers::{
     TypeError, expect_one_typed, expect_predicate_and_two_typed, expect_two_typed,
 };
+use crate::type_checker_intrinsics::check_intrinsics;
 use crate::type_checker_values::check_value_operations;
 use crate::types::IrType;
 
@@ -28,6 +29,9 @@ pub fn check_instruction_types(
         return Ok(Some(result));
     }
     if let Some(result) = check_reals_and_bools(operation, operands, &get_type)? {
+        return Ok(Some(result));
+    }
+    if let Some(result) = check_intrinsics(operation, operands, &get_type)? {
         return Ok(Some(result));
     }
     if let Some(result) = check_texts(operation, operands, &get_type)? {

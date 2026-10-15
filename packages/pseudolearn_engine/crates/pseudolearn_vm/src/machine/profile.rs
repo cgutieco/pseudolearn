@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 
 use pseudolearn_bytecode::Opcode;
 
-use crate::{DispatchKind, dispatch_kind};
+use crate::load::LoadedFunction;
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct OpcodeProfile {
@@ -14,20 +14,29 @@ pub struct OpcodeProfile {
 }
 
 pub(crate) trait OpcodeObserver {
-    fn record(&mut self, opcode: Opcode);
+    fn record(&mut self, function: &LoadedFunction, position: usize);
 }
 
 pub(crate) struct NoOpcodeObserver;
 
 impl OpcodeObserver for NoOpcodeObserver {
-    fn record(&mut self, _opcode: Opcode) {}
+    #[inline(always)]
+    fn record(&mut self, _function: &LoadedFunction, _position: usize) {}
 }
 
 impl OpcodeObserver for OpcodeProfile {
-    fn record(&mut self, opcode: Opcode) {
-        if dispatch_kind(opcode) == DispatchKind::Observation {
+    fn record(&mut self, function: &LoadedFunction, position: usize) {
+        let Some(origin) = function.origins.get(position) else {
             return;
+        };
+        for opcode in [origin.first, origin.second].into_iter().flatten() {
+            self.count(opcode);
         }
+    }
+}
+
+impl OpcodeProfile {
+    fn count(&mut self, opcode: Opcode) {
         let name = format!("{opcode:?}");
         let count = self.opcode_counts.entry(name.clone()).or_default();
         *count = count.saturating_add(1);

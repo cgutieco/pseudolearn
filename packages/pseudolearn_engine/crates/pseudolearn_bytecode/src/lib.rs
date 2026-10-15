@@ -6,6 +6,7 @@ mod compile;
 mod error;
 mod model;
 mod verify;
+mod verify_padding;
 mod verify_superinstructions;
 
 pub use compile::{

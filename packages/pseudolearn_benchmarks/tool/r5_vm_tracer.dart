@@ -421,8 +421,11 @@ Future<Map<String, String>> _sourceHashes() async {
     ':(top)packages/pseudolearn_core/lib',
     ':(top)packages/pseudolearn_core/pubspec.yaml',
   ], workingDirectory: repositoryRoot);
+  final present = const LineSplitter()
+      .convert(listing)
+      .where((path) => File('$repositoryRoot/$path').existsSync());
   return {
-    for (final path in const LineSplitter().convert(listing))
+    for (final path in present)
       path: await checked('git', [
         'hash-object',
         '--',

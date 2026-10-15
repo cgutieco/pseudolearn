@@ -65,10 +65,22 @@ layers:
     may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+  - name: pseudolearn_math_probe
+    path: crates/pseudolearn_math_probe
+    may_import: [pseudolearn_library]
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_vm_dispatch
+    path: crates/pseudolearn_vm_dispatch
+    may_import: []
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+    tooling: true
   - name: pseudolearn_vm
     path: crates/pseudolearn_vm
-    may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics]
-    external_dependencies: [serde_json]
+    may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_vm_dispatch]
+    external_dependencies: []
     unsafe_allowed: false
   - name: pseudolearn_vm_tracer
     path: crates/pseudolearn_vm_tracer

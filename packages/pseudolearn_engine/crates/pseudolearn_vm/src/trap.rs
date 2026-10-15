@@ -2,6 +2,8 @@
 
 use pseudolearn_bytecode::SourceSpan;
 
+pub(crate) type Fault = &'static str;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct VmTrap {
     pub code: &'static str,

@@ -2,25 +2,30 @@
 
 use crate::ArithmeticError;
 
+#[inline]
 pub fn int_add(left: i64, right: i64) -> Result<i64, ArithmeticError> {
     left.checked_add(right)
         .ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_subtract(left: i64, right: i64) -> Result<i64, ArithmeticError> {
     left.checked_sub(right)
         .ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_multiply(left: i64, right: i64) -> Result<i64, ArithmeticError> {
     left.checked_mul(right)
         .ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_negate(value: i64) -> Result<i64, ArithmeticError> {
     value.checked_neg().ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_divide(left: i64, right: i64) -> Result<i64, ArithmeticError> {
     if right == 0 {
         return Err(ArithmeticError::DivisionByZero);
@@ -29,6 +34,7 @@ pub fn int_divide(left: i64, right: i64) -> Result<i64, ArithmeticError> {
         .ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_modulo(left: i64, right: i64) -> Result<i64, ArithmeticError> {
     if right == 0 {
         return Err(ArithmeticError::DivisionByZero);
@@ -40,6 +46,7 @@ pub fn int_modulo(left: i64, right: i64) -> Result<i64, ArithmeticError> {
         .ok_or(ArithmeticError::IntegerOverflow)
 }
 
+#[inline]
 pub fn int_power(base: i64, exponent: i64) -> Result<i64, ArithmeticError> {
     if exponent < 0 {
         return Err(ArithmeticError::NegativeExponent);
@@ -59,22 +66,27 @@ pub fn int_power(base: i64, exponent: i64) -> Result<i64, ArithmeticError> {
     Ok(product)
 }
 
+#[inline]
 pub fn real_add(left: f64, right: f64) -> Result<f64, ArithmeticError> {
     finite(left + right)
 }
 
+#[inline]
 pub fn real_subtract(left: f64, right: f64) -> Result<f64, ArithmeticError> {
     finite(left - right)
 }
 
+#[inline]
 pub fn real_multiply(left: f64, right: f64) -> Result<f64, ArithmeticError> {
     finite(left * right)
 }
 
+#[inline]
 pub fn real_divide(left: f64, right: f64) -> Result<f64, ArithmeticError> {
     finite(left / right)
 }
 
+#[inline]
 fn finite(value: f64) -> Result<f64, ArithmeticError> {
     if value.is_finite() {
         Ok(value)

@@ -19,7 +19,8 @@ Capa `tooling` del motor. Importa API solo para bajar el texto fuente a RI, byte
 para ejecutar. No usa el trabajador de medición de API ni importa la implementación Dart `reference`.
 El arnés conserva en un solo archivo las cargas que ejecutan ambos motores.
 
-El worker compila antes de leer el reloj, valida la terminación de cada resultado después del intervalo
+El worker compila la carga a bytecode y la convierte en la forma de despacho de la VM (`load`) antes de
+leer el reloj; dentro del intervalo solo ejecuta `run_loaded`. Valida la terminación de cada resultado después del intervalo
 y emite muestras estructuradas a stdout. No realiza E/S dentro del intervalo medido.
 Los perfiles dinámicos se guardan por carga. `r5-vm-superinstructions.json` selecciona comparación-
 salto a partir de Mandelbrot y Fibonacci; el bucle entero queda reservado para validar esa selección.
@@ -31,7 +32,10 @@ con los diez procesos de `reference`, mientras cada iteración construye una má
 del propio programa detecta resultados incorrectos al fallar la terminación. Se descarta ejecutar la
 API pública, porque mediría análisis, adaptación o protocolo junto con la VM.
 
-La compilación de la carga y una ejecución de validación ocurren antes de iniciar las muestras. El
+La compilación de la carga, su carga en forma de despacho y una ejecución de validación ocurren antes de
+iniciar las muestras. La medición vigente se hace sin PGO: el binario no depende de un perfil ni de
+`llvm-tools`. Las mediciones anteriores de la escalera de rendimiento y el perfil PGO se conservan como
+historial de la decisión. El
 worker solo conserva tiempos positivos y resultados completados; los resultados fallidos hacen fallar
 el proceso recolector.
 

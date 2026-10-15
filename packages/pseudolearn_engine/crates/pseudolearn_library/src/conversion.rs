@@ -6,6 +6,7 @@ const FRACTION_MASK: u64 = (1_u64 << 52) - 1;
 const SIGN_MASK: u64 = 1_u64 << 63;
 const EXPONENT_MASK: u64 = 0x7ff;
 
+#[inline]
 pub fn integer_to_real(value: i64) -> f64 {
     let magnitude = value.unsigned_abs();
     if magnitude == 0 {
@@ -24,6 +25,7 @@ pub fn integer_to_real(value: i64) -> f64 {
     f64::from_bits(bits)
 }
 
+#[inline]
 pub fn real_to_integer(value: f64) -> Result<i64, ArithmeticError> {
     let bits = value.to_bits();
     let exponent_field = (bits >> 52) & EXPONENT_MASK;

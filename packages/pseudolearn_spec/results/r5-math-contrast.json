@@ -1,0 +1,47 @@
+{
+  "allMatch": true,
+  "contract": "LIB.CORE.MATH#R1, LANG.OPS.POWER, LANG.TYPES.REAL",
+  "countPerFunction": 2000,
+  "functions": {
+    "atan": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 0
+    },
+    "cos": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 0
+    },
+    "exp": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 55
+    },
+    "ln": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 23
+    },
+    "pow": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 152
+    },
+    "sin": {
+      "checked": 2000,
+      "mismatchSample": [],
+      "mismatches": 0,
+      "nonFiniteExpected": 0
+    }
+  },
+  "oracle": "see_oracles rational enclosure with exact dyadic powers",
+  "revision": "439a22f93e458737d0f64dab0a5a8e037b248733",
+  "seed": 20261015,
+  "subject": "pseudolearn_library through pseudolearn_math_probe"
+}

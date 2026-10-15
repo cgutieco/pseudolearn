@@ -2,6 +2,7 @@
 
 pub mod cells;
 mod dyadic;
+mod exact_power;
 pub mod integer_expression;
 pub mod interval;
 pub mod mathematics;

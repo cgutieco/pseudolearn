@@ -3,6 +3,7 @@
 use crate::conversion::{integer_magnitude, parts, signed_magnitude};
 use pseudolearn_runtime::ArithmeticError;
 
+#[inline]
 pub fn truncate_real(value: f64) -> Result<i64, ArithmeticError> {
     let (negative, exponent, mantissa) = parts(value)?;
     if exponent > 63 {
@@ -12,6 +13,7 @@ pub fn truncate_real(value: f64) -> Result<i64, ArithmeticError> {
     signed_magnitude(magnitude, negative)
 }
 
+#[inline]
 pub fn round_real(value: f64) -> Result<i64, ArithmeticError> {
     let (negative, exponent, mantissa) = parts(value)?;
     if exponent < -1 {

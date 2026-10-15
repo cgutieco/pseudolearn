@@ -5,6 +5,7 @@ use crate::model::{
     BasicBlock, BytecodeFunction, BytecodeModule, BytecodeOperand, CodeVariant, Instruction,
     Register,
 };
+use crate::verify_padding::{used_length, verify_padding};
 use crate::verify_superinstructions::verify_superinstructions;
 
 pub fn verify_bytecode(module: &BytecodeModule) -> Result<(), BytecodeError> {
@@ -41,6 +42,7 @@ fn verify_variant(
     variant: &CodeVariant,
     probed: bool,
 ) -> Result<(), BytecodeError> {
+    verify_padding(variant)?;
     verify_superinstructions(variant)?;
     for block in &variant.blocks {
         verify_block(function_context.function, variant, block)?;
@@ -89,7 +91,7 @@ fn verify_block(
     block: &BasicBlock,
 ) -> Result<(), BytecodeError> {
     let start = usize::try_from(block.start_pc).map_err(|_| BytecodeError::InvalidModule)?;
-    if start >= variant.instructions.len() {
+    if start >= used_length(variant)? {
         return Err(BytecodeError::Verification(VerificationRule::FunctionJump));
     }
     for register in &block.parameters {
@@ -221,7 +223,7 @@ fn verify_return_points(
         }
         let continuation = usize::try_from(continuation_pc)
             .map_err(|_| BytecodeError::Verification(VerificationRule::ReturnPoint))?;
-        if continuation > variant.instructions.len() {
+        if continuation > used_length(variant)? {
             return Err(BytecodeError::Verification(VerificationRule::ReturnPoint));
         }
     }

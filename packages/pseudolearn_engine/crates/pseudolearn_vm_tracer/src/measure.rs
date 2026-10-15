@@ -6,7 +6,7 @@ use pseudolearn_api::compile_source_to_ir;
 use pseudolearn_bytecode::{
     SuperInstruction, VerifiedBytecode, compile_text, compile_text_with_superinstructions,
 };
-use pseudolearn_vm::{Fuel, RunExit, RunResult, run, run_profiled};
+use pseudolearn_vm::{Fuel, RunExit, RunResult, load, run_loaded, run_profiled};
 
 use crate::Workload;
 
@@ -40,11 +40,13 @@ pub fn measure_workload(
     workload: &Workload,
     bytecode: &VerifiedBytecode,
 ) -> Result<Vec<MeasuredSample>, String> {
-    validate_result(workload, run(bytecode, Fuel::unlimited()))?;
+    let loaded = load(bytecode)
+        .map_err(|trap| format!("workload failed to load: {} at {:?}", trap.code, trap.span))?;
+    validate_result(workload, run_loaded(&loaded, Fuel::unlimited()))?;
     let mut samples = Vec::with_capacity(30);
     for iteration in 0..ITERATIONS_PER_PROCESS {
         let started = Instant::now();
-        let result = run(bytecode, Fuel::unlimited());
+        let result = run_loaded(&loaded, Fuel::unlimited());
         let nanoseconds = u64::try_from(started.elapsed().as_nanos())
             .map_err(|_| "sample duration exceeds the supported range".to_owned())?;
         validate_result(workload, result)?;

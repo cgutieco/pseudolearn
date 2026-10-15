@@ -1309,7 +1309,7 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
     racional para el redondeo correcto y conteo nocional de celdas para programas generados.
     - [x] Oráculo entero i128 con primera trampa y origen; contador de celdas con alias y ciclos.
     - [x] Oráculo racional y redondeo por cociente/resto, con pruebas de empates y subnormales.
-    - [x] Validación matemática base completa; el contraste masivo de biblioteca (10⁶ argumentos) se programa para el cierre de B7.
+    - [x] Validación matemática base completa; el contraste masivo de biblioteca (10⁶ argumentos) se ejecutó en B3.4.
   - [x] Registro de treinta propiedades, esquema, modelos, validación de integridad y negativos.
   - [x] Armazón de semillas, contraejemplos, reproducción y selección desde la CLI de SEE.
   - [x] Algoritmos y transporte de propiedades validados con suite de pruebas.
@@ -1340,13 +1340,13 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 
 ### B3 · Bytecode rápido, VM no observada y trazadora de rendimiento
 
-- [ ] **B3.1 `bytecode`: gemelo rápido.** Ranuras de origen y temporales, salida de SSA, descriptores de bloque,
+- [x] **B3.1 `bytecode`: gemelo rápido.** Ranuras de origen y temporales, salida de SSA, descriptores de bloque,
   cargos fusionados en saltos, puntos de retorno, depósitos de constantes, acolchado y verificador con
   *fixtures* negativos (operando fuera de ventana, salto fuera de función, clase equivocada, punto de retorno
   ausente).
-- [ ] **B3.2 `vm`: núcleo.** Despacho generado en `build.rs`; bancos crecientes; aritmética entera, real, lógica
+- [x] **B3.2 `vm`: núcleo.** Despacho generado en `build.rs`; bancos crecientes; aritmética entera, real, lógica
   y de caracteres con trampas inmediatas; control; salida de servicio por combustible.
-- [ ] **B3.3 Trazadora de rendimiento interna.** Herramienta de capa `tooling`; compila cada carga antes del
+- [x] **B3.3 Trazadora de rendimiento interna.** Herramienta de capa `tooling`; compila cada carga antes del
   intervalo medido y llama directamente a la VM. No reutiliza `pseudolearn_bench_worker` ni adelanta
   `API.EXECUTE`. Un único conjunto emparejado de Mandelbrot, bucle entero y recursión entera usa los mismos
   programas e inputs en VM y `reference`. Aplica `PERF.PROTOCOL`: diez procesos, treinta iteraciones por
@@ -1355,40 +1355,43 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
   `packages/pseudolearn_benchmarks/results/r5-vm-tracer/` y resumen en
   `packages/pseudolearn_spec/results/r5-vm-tracer.json`. Criterio: media geométrica de aceleración proyectada
   ≥ 30×. Si falla, aplica RR-01 en orden y repite la medición antes de continuar.
-- [ ] **B3.4 Runtime aritmético y biblioteca matemática.** Aritmética comprobada (incluido `int.mod` del mínimo
+- [x] **B3.4 Runtime aritmético y biblioteca matemática.** Aritmética comprobada (incluido `int.mod` del mínimo
   entre −1), conversiones, `trunc`/`redon`, potencia entera y real, y las seis funciones con redondeo correcto
   (T23) validadas contra el oráculo en 10⁶ argumentos por función. Casos `execute` de `LANG.OPS.*`,
-  `LANG.TYPES.INTEGER`, `LANG.TYPES.REAL` y `LIB.CORE.MATH`/`ROUNDING` en `cumple`.
+  `LANG.TYPES.INTEGER`, `LANG.TYPES.REAL` y `LIB.CORE.MATH`/`ROUNDING` en `cumple`: **diferido a B7.3 por
+  decisión del 2026-10-15** (requiere el adaptador `API.EXECUTE` de B7.1 y el formato de reales de B4.2;
+  B3.3 prohíbe adelantarlos). B3.4 se cierra con tests directos de VM y biblioteca y el contraste masivo.
 
-#### Estado de B3 al 2026-10-15
+#### Cierre de B3 · 2026-10-15
 
-- **B3.1 parcial:** el compilador genera gemelos desde RI verificada, mapa de registros por clase, depósitos
-  de constantes, bloques, cargos de salto y puntos de retorno compartidos por identidad. El verificador tiene
-  negativos para ventana, destino, clase y retorno; la superinstrucción `compareBranch` se seleccionó con
-  perfiles de entrenamiento y se validó en el bucle entero reservado. Falta el acolchado del código a
-  potencia de dos.
-- **B3.2 parcial:** la VM ejecuta el subconjunto escalar y recursivo usado por la trazadora, con control,
-  combustible, sondeo para retrocesos vacíos, trampas con tramo, salida entera y bancos escalar/referencia.
-  No cubre todavía todas las operaciones, las referencias de usuario, el texto, los arreglos, la entrada ni
-  los objetos. `API.EXECUTE` y el protocolo público no se modificaron.
-- **B3.3:** la trazadora interna ya aplica el protocolo completo y valida las tres cargas en ambos motores;
-  conserva procedencia con hashes capturados antes de compilar, 10 procesos × 30 iteraciones, crudos en
-  `packages/pseudolearn_benchmarks/results/r5-vm-tracer/` y resumen en
-  `packages/pseudolearn_spec/results/r5-vm-tracer.json`. La repetición sin PGO con la procedencia completa
-  dio **11,4822×**. Tras entrenar PGO con Mandelbrot y Fibonacci y dejar el bucle entero fuera de muestra,
-  subió a **16,6015×**.
-  Sigue por debajo del umbral de 30×. La selección, el perfil PGO y sus datos de entrenamiento están en
-  `packages/pseudolearn_benchmarks/results/r5-vm-tracer/rr01-pgo-profile/`.
-- **B3.4 parcial:** están implementados la aritmética primitiva comprobada, `int.mod` para `i64::MIN % -1`,
-  potencia entera, conversiones, truncamiento, redondeo, valor absoluto y raíz cuadrada correctamente
-  redondeada. Faltan potencia real, `ln`, `exp`, `sin`, `cos`, `atan` y el contraste SEE independiente de
-  10⁶ argumentos por cada función matemática.
-- Las operaciones `execute` del corpus aún no se contrastaron: el adaptador público mantiene `API.EXECUTE`
-  pendiente según el alcance de este bloque. Las pruebas actuales cubren el bytecode y la VM directamente.
-- RR-01 se aplicó en orden hasta su último peldaño, PGO, con `llvm-profdata` de LLVM 23.1.1 compatible con
-  rustc 1.99.0. La escalera queda agotada: la aceleración final no alcanza 30×. Por el contrato de §0.2 y
-  `CONFLICT-REPORT`, B3 se mantiene abierto y el trabajo se detiene aquí hasta decidir una técnica fuera de
-  RR-01 o revisar explícitamente el criterio; no se continúa a B4 ni se cierra B3.
+- **Causa raíz del bloqueo anterior.** La VM no tenía forma de despacho: interpretaba el modelo estructural
+  del bytecode (búsqueda de función y de superinstrucción en un `BTreeMap` por paso, operandos en vectores
+  de enums, predicados comparados como cadenas, descriptor de bloque buscado y clonado en cada salto,
+  tipo consultado en cada escritura y cuatro vectores asignados por llamada). Los peldaños 1, 2 y 4 de RR-01
+  se habían aplicado sobre esa representación; por eso ni PGO pasó de 16,6×. La escalera no estaba agotada
+  y no hizo falta una técnica fuera de RR-01 ni revisar el criterio.
+- **B3.1.** Cada variante se acolcha con `unreachable` hasta potencia de dos y registra `used_length`; el
+  verificador rechaza longitud no potencia de dos, cola distinta de `unreachable`, longitud usada vacía o
+  excesiva y bloques en la cola (`VerificationRule::Padding`, siete tests).
+- **B3.2.** `load` construye una vez por carga la forma de despacho: `enum Op` con registros e inmediatos
+  en la operación, predicados resueltos, formas registro/inmediato, comparación-salto fusionada según el
+  perfil, aristas con masa y sondeo, copias de parámetros secuenciadas, tabla de continuaciones y bits de
+  definición solo en parámetros enteros consultados. El `enum`, la selección y el `match` del paso se
+  generan con `pseudolearn_vm_dispatch` desde `crates/pseudolearn_vm/data/dispatch_forms.json` y la
+  exportación de `IR.INSTRUCTIONS`, que además exige forma para toda instrucción escalar. Pilas escalar, de
+  bits, de referencias y de control únicas, crecientes por duplicación; las familias de B4 y B5 cargan como
+  `Unsupported`. Se corrigió la inferencia de tipos de la RI para `math.*`, `char.code` y `char.from_code`,
+  y la raíz negativa atrapa con `nonFiniteRealResult` como exige `LIB.CORE.MATH#R1`.
+- **B3.3.** Sin PGO (D-R5-16): media geométrica **76,7×** (Mandelbrot 85,9×, bucle entero 104,4×,
+  Fibonacci 50,4×), crudos en `results/r5-vm-tracer/rr01-dispatch-form/` y en la raíz de esa carpeta. Las
+  carpetas `rr01-step-*` y `rr01-pgo-profile/` quedan como historial.
+- **B3.4.** `ln`, `exp`, `sen`, `cos`, `atan` y potencia real con redondeo correcto en Rust seguro, sin
+  dependencias: aritmética de intervalos de coma fija con redondeo hacia fuera, reducción exacta de
+  argumento (también para `sen(f64::MAX)`), escalada de Ziv de 128 a 16 384 bits y detección previa de
+  potencias exactas y puntos medios. El contraste usa `see math-arguments`, `pseudolearn_math_probe` y
+  `see math-check`; resumen en `packages/pseudolearn_spec/results/r5-math-contrast.json`. El oráculo se
+  amplió con potencias diádicas exactas porque no terminaba en puntos medios. Esto adelanta el contraste
+  masivo que B1.5 programaba para el cierre de B7.
 
 ### B4 · Runtime, biblioteca, arreglos, subprogramas, objetos y recolector
 
@@ -1451,7 +1454,9 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 - [ ] **B7.2 CLI.** `pseudo ejecutar`/`run` con entrada estándar, `--semilla`, `--profundidad`, `--sentencias`,
   `--celdas`, `--traza` y `--json`; códigos de salida; todos los casos `cli` de `TOOL.CLI.RUN` en los dos idiomas
   de interfaz, sin que la forma de la orden cambie el idioma.
-- [ ] **B7.3 Conformidad completa.** Adaptador con `execute`, `observe`, `ir` y `gc_stress`.
+- [ ] **B7.3 Conformidad completa.** Adaptador con `execute`, `observe`, `ir` y `gc_stress`. Incluye los casos
+  `execute` de `LANG.OPS.*`, `LANG.TYPES.INTEGER`, `LANG.TYPES.REAL` y `LIB.CORE.MATH`/`ROUNDING` diferidos
+  desde B3.4.
   `see conform --subject engine` en `LANG`, `DIAG`, `LIB`, `ENG`, `MEM`, `IR` y `API`, y `--subject cli` en
   `TOOL.CLI.*`: **cero** `incumple`, `pendiente` o `no_aplicable` en el alcance exigible. Matriz en
   `results/r5-matrix.json`.
@@ -1636,3 +1641,6 @@ El inventario de archivos, evidencia, fallos conocidos, decisiones pendientes y 
 está en [12 · Relevo de R5](12-relevo-r5.md). Leerlo antes de editar; los cambios posteriores al último
 commit están en el árbol local, incluidos archivos sin seguimiento. No descartarlos ni restaurar HEAD
 sobre ellos.
+
+**Actualización 2026-10-15 (B3).** B3 queda cerrado con evidencia: ver «Cierre de B3» en §8. El siguiente
+bloque es B4.

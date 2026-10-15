@@ -7,6 +7,8 @@ pub enum LibraryError {
     Arithmetic(ArithmeticError),
     NegativeSquareRoot,
     NonFiniteInput,
+    NonFiniteResult,
+    PrecisionExhausted,
 }
 
 impl From<ArithmeticError> for LibraryError {

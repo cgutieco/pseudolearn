@@ -6,6 +6,9 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
     if arguments.command == "new" {
         return create(&arguments);
     }
+    if let Some(result) = crate::math_contrast::dispatch(&arguments) {
+        return result;
+    }
     let corpus = storage::valid(&arguments.root)?;
     match arguments.command.as_str() {
         "validate" => Ok(format!("Validated {} specifications", corpus.len())),

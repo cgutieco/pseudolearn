@@ -1,265 +1,159 @@
 #![forbid(unsafe_code)]
 
-use pseudolearn_bytecode::{
-    BasicBlock, BytecodeFunction, Instruction, Register, SourceSpan, VerifiedBytecode,
-};
+mod calls;
+mod control;
+mod output;
+mod profile;
+mod registers;
+mod traps;
 
-use crate::frame::Frame;
+use pseudolearn_bytecode::{Register, VerifiedBytecode};
+
+use crate::dispatch::step;
+use crate::load::{LoadedFunction, LoadedProgram, load};
 use crate::{Fuel, RunExit, RunResult, RuntimeValue, ServiceReason, VmTrap};
 
-mod execute;
-mod lookup;
-mod profile;
-
-pub use execute::run;
-pub use execute::run_profiled;
 pub use profile::OpcodeProfile;
-pub(super) use profile::{NoOpcodeObserver, OpcodeObserver};
+use profile::{NoOpcodeObserver, OpcodeObserver};
 
-struct Machine<'program> {
-    program: &'program VerifiedBytecode,
-    frames: Vec<Frame>,
+const INITIAL_BANK_WORDS: usize = 64;
+
+pub(crate) enum Flow {
+    Continue,
+    Completed(Option<RuntimeValue>),
+    Service(ServiceReason),
+}
+
+#[derive(Clone, Copy)]
+struct Cursor {
+    program_counter: usize,
+    scalar_base: usize,
+    reference_base: usize,
+}
+
+#[derive(Clone, Copy)]
+struct ControlFrame<'program> {
+    function: &'program LoadedFunction,
+    return_point: usize,
+    destination: Option<Register>,
+    scalar_base: usize,
+    reference_base: usize,
+}
+
+pub(crate) struct Machine<'program> {
+    program: &'program LoadedProgram,
+    current: &'program LoadedFunction,
+    cursor: Cursor,
+    scalars: Vec<u64>,
+    defined: Vec<bool>,
+    references: Vec<u32>,
+    frames: Vec<ControlFrame<'program>>,
     remaining: Fuel,
-    consumed_statements: u64,
-    consumed_probes: u64,
     output: String,
 }
 
-struct BlockTransfer<'block> {
-    program_counter: u32,
-    target: &'block BasicBlock,
-    arguments: &'block [Register],
-    span: Option<SourceSpan>,
+pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
+    match load(program) {
+        Ok(loaded) => run_loaded(&loaded, fuel),
+        Err(trap) => trapped(trap),
+    }
 }
 
-struct Invocation<'arguments> {
-    target_index: u16,
-    arguments: &'arguments [Register],
-    destination: Option<Register>,
-    return_point: Option<u32>,
-    span: Option<SourceSpan>,
+pub fn run_loaded(program: &LoadedProgram, fuel: Fuel) -> RunResult {
+    execute_with(program, fuel, &mut NoOpcodeObserver)
 }
 
-struct CompareBranch<'code> {
-    compare_pc: u32,
-    compare: &'code Instruction,
-    branch_pc: u32,
-    branch: &'code Instruction,
+pub fn run_profiled(program: &VerifiedBytecode, fuel: Fuel) -> (RunResult, OpcodeProfile) {
+    let mut profile = OpcodeProfile::default();
+    let result = match load(program) {
+        Ok(loaded) => execute_with(&loaded, fuel, &mut profile),
+        Err(trap) => trapped(trap),
+    };
+    (result, profile)
 }
 
-enum StepOutcome {
-    Continue,
-    Exit(RunExit),
+fn trapped(trap: VmTrap) -> RunResult {
+    RunResult {
+        exit: RunExit::Trap(trap),
+        output: String::new(),
+        consumed_statements: 0,
+        consumed_probes: 0,
+    }
+}
+
+fn execute_with<Observer: OpcodeObserver>(
+    program: &LoadedProgram,
+    fuel: Fuel,
+    observer: &mut Observer,
+) -> RunResult {
+    match Machine::start(program, fuel) {
+        Ok(mut machine) => {
+            let exit = machine
+                .enter_entry()
+                .unwrap_or_else(|| machine.execute(observer));
+            machine.finish(exit, fuel)
+        }
+        Err(trap) => trapped(trap),
+    }
 }
 
 impl<'program> Machine<'program> {
-    fn start(program: &'program VerifiedBytecode, fuel: Fuel) -> Result<Self, VmTrap> {
-        let module = program.module();
-        let entry_index = lookup::entry_index(module)?;
-        let function = lookup::function_at(module, entry_index)?;
-        let frame = Frame::new(entry_index, function, None, None)?;
-        Ok(Self {
-            program,
-            frames: vec![frame],
-            remaining: fuel,
-            consumed_statements: 0,
-            consumed_probes: 0,
-            output: String::new(),
-        })
-    }
-
-    fn execute<Observer: OpcodeObserver>(mut self, observer: &mut Observer) -> RunResult {
-        loop {
-            match self.charge_block() {
-                Ok(Some(reason)) => return self.finish(RunExit::Service(reason)),
-                Err(trap) => return self.finish(RunExit::Trap(trap)),
-                Ok(None) => {}
-            }
-            match self.execute_step(observer) {
-                Ok(StepOutcome::Continue) => {}
-                Ok(StepOutcome::Exit(exit)) => return self.finish(exit),
-                Err(trap) => return self.finish(RunExit::Trap(trap)),
-            }
-        }
-    }
-
-    fn execute_step<Observer: OpcodeObserver>(
-        &mut self,
-        observer: &mut Observer,
-    ) -> Result<StepOutcome, VmTrap> {
-        let frame = self
-            .frames
-            .last()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", None))?;
-        let function_index = frame.function_index;
-        let program_counter = frame.program_counter;
-        let instruction = lookup::fetch_instruction(self.program, function_index, program_counter)?;
-        observer.record(instruction.opcode);
-        let branch_pc = self
-            .program
-            .module()
+    fn start(program: &'program LoadedProgram, fuel: Fuel) -> Result<Self, VmTrap> {
+        let current = program
             .functions
-            .get(usize::from(function_index))
-            .and_then(|function| function.fast.superinstructions.get(&program_counter))
-            .copied();
-        match branch_pc {
-            Some(branch_pc) => self.execute_superinstruction(observer, instruction, branch_pc),
-            None => self.step_instruction(program_counter, instruction),
+            .get(program.entry)
+            .ok_or_else(|| VmTrap::new("missingEntryPoint", None))?;
+        let mut machine = Self {
+            program,
+            current,
+            cursor: Cursor {
+                program_counter: 0,
+                scalar_base: 0,
+                reference_base: 0,
+            },
+            scalars: Vec::new(),
+            defined: Vec::new(),
+            references: Vec::new(),
+            frames: Vec::new(),
+            remaining: fuel,
+            output: String::new(),
+        };
+        let scalar_end = current.scalar_window.max(INITIAL_BANK_WORDS);
+        let reference_end = current.reference_window.max(INITIAL_BANK_WORDS);
+        machine
+            .ensure_capacity(scalar_end, reference_end)
+            .map_err(|fault| VmTrap::new(fault, None))?;
+        Ok(machine)
+    }
+
+    fn enter_entry(&mut self) -> Option<RunExit> {
+        match self.charge_entry(self.current.entry_mass) {
+            Flow::Service(reason) => Some(RunExit::Service(reason)),
+            Flow::Continue | Flow::Completed(_) => None,
         }
     }
 
-    fn execute_superinstruction<Observer: OpcodeObserver>(
-        &mut self,
-        observer: &mut Observer,
-        instruction: &Instruction,
-        branch_pc: u32,
-    ) -> Result<StepOutcome, VmTrap> {
-        let frame = self
-            .frames
-            .last()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", None))?;
-        let function_index = frame.function_index;
-        let program_counter = frame.program_counter;
-        let branch = lookup::fetch_instruction(self.program, function_index, branch_pc)?;
-        observer.record(branch.opcode);
-        self.step_compare_branch(CompareBranch {
-            compare_pc: program_counter,
-            compare: instruction,
-            branch_pc,
-            branch,
-        })
-    }
-
-    fn current_function(&self) -> Result<&BytecodeFunction, VmTrap> {
-        let frame = self
-            .frames
-            .last()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", None))?;
-        lookup::function_at(self.program.module(), frame.function_index)
-    }
-
-    fn read_register(&self, register: Register) -> Result<RuntimeValue, VmTrap> {
-        self.frames
-            .last()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", None))?
-            .read(register)
-    }
-
-    fn write_destination(
-        &mut self,
-        destination: Option<Register>,
-        value: RuntimeValue,
-        span: Option<SourceSpan>,
-    ) -> Result<(), VmTrap> {
-        let register = destination.ok_or_else(|| VmTrap::new("invalidBytecode", span))?;
-        self.frames
-            .last_mut()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", span))?
-            .write(register, value)
-            .map_err(|_| VmTrap::new("invalidBytecode", span))
-    }
-
-    fn transfer_to_block(
-        &mut self,
-        transfer: BlockTransfer<'_>,
-    ) -> Result<Option<ServiceReason>, VmTrap> {
-        if transfer.target.parameters.len() != transfer.arguments.len() {
-            return Err(VmTrap::new("invalidBytecode", transfer.span));
-        }
-        if lookup::is_empty_backedge(transfer.program_counter, transfer.target) {
-            if self.remaining.probes == 0 {
-                return Ok(Some(ServiceReason::Probe));
+    fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
+        loop {
+            let function = self.current;
+            let position = self.cursor.program_counter;
+            observer.record(function, position);
+            self.cursor.program_counter = position.wrapping_add(1);
+            match step(self, function.operation(position)) {
+                Ok(Flow::Continue) => {}
+                Ok(Flow::Completed(value)) => return RunExit::Completed(value),
+                Ok(Flow::Service(reason)) => return RunExit::Service(reason),
+                Err(fault) => return RunExit::Trap(VmTrap::new(fault, function.span(position))),
             }
-            self.remaining.probes = self.remaining.probes.saturating_sub(1);
-            self.consumed_probes = self.consumed_probes.saturating_add(1);
         }
-        let frame = self
-            .frames
-            .last_mut()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", transfer.span))?;
-        frame.copy_parallel(transfer.arguments, &transfer.target.parameters)?;
-        frame.program_counter = transfer.target.start_pc;
-        frame.pending_block_mass = transfer.target.mass;
-        frame.needs_block_charge = true;
-        Ok(None)
     }
 
-    fn invoke(&mut self, invocation: Invocation<'_>) -> Result<(), VmTrap> {
-        let target = lookup::function_at(self.program.module(), invocation.target_index)?;
-        if target.parameters.len() != invocation.arguments.len() {
-            return Err(VmTrap::new("invalidBytecode", invocation.span));
-        }
-        let values = invocation
-            .arguments
-            .iter()
-            .map(|register| self.read_register(*register))
-            .collect::<Result<Vec<_>, _>>()?;
-        let mut callee = Frame::new(
-            invocation.target_index,
-            target,
-            invocation.destination,
-            invocation.return_point,
-        )?;
-        for (parameter, value) in target.parameters.iter().zip(values) {
-            callee.write(*parameter, value)?;
-        }
-        self.frames.push(callee);
-        Ok(())
-    }
-
-    fn return_from_function(
-        &mut self,
-        value: Option<RuntimeValue>,
-        span: Option<SourceSpan>,
-    ) -> Result<Option<RunExit>, VmTrap> {
-        let callee = self
-            .frames
-            .pop()
-            .ok_or_else(|| VmTrap::new("invalidBytecode", span))?;
-        let Some(caller) = self.frames.last_mut() else {
-            return Ok(Some(RunExit::Completed(value)));
-        };
-        let point_id = callee
-            .return_point
-            .ok_or_else(|| VmTrap::new("invalidBytecode", span))?;
-        let caller_function = lookup::function_at(self.program.module(), caller.function_index)?;
-        let continuation_matches = caller_function.return_points.iter().any(|point| {
-            point.identifier == point_id && point.fast_continuation_pc == caller.program_counter
-        });
-        if !continuation_matches {
-            return Err(VmTrap::new("invalidBytecode", span));
-        }
-        if let (Some(destination), Some(result)) = (callee.return_destination, value) {
-            caller.write(destination, result)?;
-        }
-        Ok(None)
-    }
-
-    fn charge_block(&mut self) -> Result<Option<ServiceReason>, VmTrap> {
-        let Some(frame) = self.frames.last() else {
-            return Err(VmTrap::new("invalidBytecode", None));
-        };
-        if !frame.needs_block_charge {
-            return Ok(None);
-        }
-        let mass = u64::from(frame.pending_block_mass);
-        if mass > self.remaining.statements {
-            return Ok(Some(ServiceReason::Statements));
-        }
-        self.remaining.statements = self.remaining.statements.saturating_sub(mass);
-        self.consumed_statements = self.consumed_statements.saturating_add(mass);
-        if let Some(frame) = self.frames.last_mut() {
-            frame.needs_block_charge = false;
-        }
-        Ok(None)
-    }
-
-    fn finish(self, exit: RunExit) -> RunResult {
+    fn finish(self, exit: RunExit, initial: Fuel) -> RunResult {
         RunResult {
             exit,
             output: self.output,
-            consumed_statements: self.consumed_statements,
-            consumed_probes: self.consumed_probes,
+            consumed_statements: initial.statements.saturating_sub(self.remaining.statements),
+            consumed_probes: initial.probes.saturating_sub(self.remaining.probes),
         }
     }
 }

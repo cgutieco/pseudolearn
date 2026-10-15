@@ -8,13 +8,12 @@ No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Acolchado del código a potencia de dos y comprobación de límites de PC resultantes | Formato de bytecode y verificador | B3.1 |
+| Superinstrucciones adicionales seleccionadas con el perfil del corpus y AWFY-core | Gemelo sondeado y corpus `execute` | B5.5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Usa la versión exacta de rust-toolchain.toml del miembro. El crate ya está activo en el workspace;
-el acolchado a potencia de dos mantiene B3.1 abierto. Comprobación: `cargo xtask verify` y
-`rust-checks layers` del miembro. No se despliega por separado.
+Usa la versión exacta de rust-toolchain.toml del miembro. El crate está activo en el workspace.
+Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -26,7 +25,11 @@ asignan en orden estable y se separan por clase de valor. La salida SSA transpor
 como copias paralelas; los gemelos rápido y sondeado comparten registros, constantes, descriptores y puntos
 de retorno.
 
-Invariantes: Los gemelos comparten el mapa de registros, depósitos de constantes y descriptores de bloque. Cada operando cabe en su ventana; cada salto pertenece a su función; cada superinstrucción contiene un par compatible del mismo bloque; cada punto de retorno existe en ambos gemelos con PC propio.
+Cada variante termina acolchada con `unreachable` hasta la siguiente potencia de dos y registra en
+`used_length` cuántas instrucciones son código real. El consumidor indexa con `pc & (longitud − 1)`: un pc
+que se saliera del código cae en una instrucción que atrapa, nunca fuera del vector.
+
+Invariantes: Los gemelos comparten el mapa de registros, depósitos de constantes y descriptores de bloque. Cada operando cabe en su ventana; cada salto pertenece a su función; cada superinstrucción contiene un par compatible del mismo bloque; cada punto de retorno existe en ambos gemelos con PC propio. La longitud de cada variante es potencia de dos, la cola solo contiene `unreachable` sin operandos y ningún bloque, salto, continuación ni superinstrucción apunta a la cola.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -34,7 +37,9 @@ Una única generación parametrizada produce Fast y Probed. El rápido omite obs
 Los literales escalares usados por operaciones aritméticas, comparaciones y escritura pasan como
 operandos constantes directos; se mantienen registros solo cuando una transferencia de bloque,
 llamada o instrucción sin forma inmediata necesita el valor.
-Fast elimina marcadores de observación antes del despacho; Probed los conserva. Las tablas de retorno
+Fast elimina marcadores de observación antes del despacho; Probed los conserva.
+El acolchado se descartó como relleno con copias del código o con saltos al inicio: una instrucción que
+atrapa conserva la semántica ante un defecto y el verificador la reconoce sin análisis de flujo. Las tablas de retorno
 comparten identidad y mantienen sus contadores de programa por gemelo.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
@@ -53,7 +58,8 @@ literales y los efectos del programa se preservan; idioma de interfaz y vocabula
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Negativos del verificador, ciclos de copias paralelas, diferencial entre gemelos, cambio arbitrario de gemelo y validación de superinstrucciones fuera de muestra. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
+Negativos del verificador (incluidos longitud no potencia de dos, cola con otra instrucción, longitud
+usada vacía o mayor que el código y bloque que empieza en la cola), ciclos de copias paralelas, diferencial entre gemelos, cambio arbitrario de gemelo y validación de superinstrucciones fuera de muestra. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
 con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual

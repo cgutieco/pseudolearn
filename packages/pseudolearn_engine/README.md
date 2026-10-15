@@ -78,12 +78,14 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
 | 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
 | 4 | pseudolearn_runtime | Proporciona aritmética primitiva comprobada; el montón es posterior | abi, diagnostics |
-| 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos | runtime, diagnostics |
-| 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics |
+| 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
+| 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
 | tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
+| tooling | pseudolearn_vm_dispatch | Genera la forma de despacho de la VM desde la tabla de formas y `IR.INSTRUCTIONS` | ninguna |
+| tooling | pseudolearn_math_probe | Evalúa la biblioteca matemática sobre los argumentos del contraste de SEE | library |
 
 
 texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor.

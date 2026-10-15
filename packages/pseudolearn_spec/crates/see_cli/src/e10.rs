@@ -50,7 +50,7 @@ fn source_files(directory: &Path) -> Result<Vec<std::path::PathBuf>, String> {
     Ok(sources)
 }
 
-fn revision(root: &Path) -> Result<String, String> {
+pub fn revision(root: &Path) -> Result<String, String> {
     let output = std::process::Command::new("git")
         .current_dir(root)
         .args(["rev-parse", "HEAD"])

@@ -52,6 +52,10 @@ pub fn power(base: f64, exponent: f64) -> Result<f64, String> {
     if base.is_negative() && !exponent.is_integer() {
         return Err("ORACLE-DOMAIN".to_owned());
     }
+    if let Some(exact) = crate::exact_power::dyadic_power(&base.abs(), &exponent)? {
+        let negative = base.is_negative() && exponent.is_integer() && exponent.to_integer().bit(0);
+        return Ok(if negative { -exact } else { exact });
+    }
     if let Some(integer) = exponent.to_integer().to_i32()
         && exponent.is_integer()
         && integer.unsigned_abs() <= 4096

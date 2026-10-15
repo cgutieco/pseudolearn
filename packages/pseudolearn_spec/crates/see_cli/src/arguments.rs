@@ -21,6 +21,9 @@ const ALLOWED_OPTIONS: &[&str] = &[
     "seed",
     "samples",
     "sample",
+    "output",
+    "input",
+    "count",
 ];
 
 fn parse_option(
@@ -46,7 +49,7 @@ pub fn parse(arguments: Vec<String>) -> Result<Arguments, String> {
     let mut words = arguments.into_iter();
     let command = words
         .next()
-        .ok_or("Usage: see <new|validate|graph|lock|diff|impact|conform|matrix|feature|export>")?;
+        .ok_or("Usage: see <new|validate|graph|lock|diff|impact|conform|matrix|feature|export|math-arguments|math-check>")?;
     let mut options = BTreeMap::new();
     let mut positional = Vec::new();
     while let Some(word) = words.next() {

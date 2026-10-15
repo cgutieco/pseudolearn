@@ -70,6 +70,7 @@ pub struct BasicBlock {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct CodeVariant {
     pub instructions: Vec<Instruction>,
+    pub used_length: u32,
     pub blocks: Vec<BasicBlock>,
     pub superinstructions: BTreeMap<u32, u32>,
 }

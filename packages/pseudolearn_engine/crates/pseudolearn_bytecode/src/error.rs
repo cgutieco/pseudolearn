@@ -7,6 +7,7 @@ pub enum VerificationRule {
     ValueClass,
     ReturnPoint,
     SuperInstruction,
+    Padding,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

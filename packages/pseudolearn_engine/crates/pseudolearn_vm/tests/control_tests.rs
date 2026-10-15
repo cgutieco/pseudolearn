@@ -66,3 +66,48 @@ fn empty_backedges_use_independent_probe_fuel() {
         assert_eq!(result.consumed_probes, 0);
     }
 }
+
+#[test]
+fn statement_fuel_stops_exactly_at_the_exhausting_block() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @1:1-1:3\n  jump b1()\nb1() mass 2:\n  stmt.enter @2:1-2:3\n  stmt.enter @3:1-3:3\n  return\n}\n";
+    let verified = compile_source(source_text);
+    assert!(verified.is_some());
+    if let Some(verified) = verified {
+        let short = run(
+            &verified,
+            Fuel {
+                statements: 2,
+                probes: 0,
+            },
+        );
+        assert_eq!(short.exit, RunExit::Service(ServiceReason::Statements));
+        assert_eq!(short.consumed_statements, 1);
+        let exact = run(
+            &verified,
+            Fuel {
+                statements: 3,
+                probes: 0,
+            },
+        );
+        assert_eq!(exact.exit, RunExit::Completed(None));
+        assert_eq!(exact.consumed_statements, 3);
+    }
+}
+
+#[test]
+fn empty_loop_consumes_every_probe_before_service() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  jump b1()\nb1() mass 0:\n  jump b1()\n}\n";
+    let verified = compile_source(source_text);
+    assert!(verified.is_some());
+    if let Some(verified) = verified {
+        let result = run(
+            &verified,
+            Fuel {
+                statements: 0,
+                probes: 5,
+            },
+        );
+        assert_eq!(result.exit, RunExit::Service(ServiceReason::Probe));
+        assert_eq!(result.consumed_probes, 5);
+    }
+}

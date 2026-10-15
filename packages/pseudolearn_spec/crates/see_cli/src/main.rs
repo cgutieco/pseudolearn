@@ -6,6 +6,8 @@ mod commands;
 mod conformance;
 mod e10;
 mod history;
+mod math_contrast;
+mod math_verdicts;
 mod property_execution;
 mod property_registry;
 mod property_selection;

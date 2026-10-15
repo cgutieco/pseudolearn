@@ -73,3 +73,15 @@ fn real_edges_cover_subnormal_parity_overflow_and_sign() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn exact_dyadic_powers_terminate_on_rounding_midpoints() -> Result<(), String> {
+    use see_oracles::mathematics::power;
+    assert_eq!(power(4.0, -537.5)?.to_bits(), 0);
+    assert_eq!(power(9.0, 1.5)?, 27.0);
+    assert_eq!(power(16.0, 0.25)?, 2.0);
+    let root = 208_065.0_f64;
+    let midpoint = power(root * root, 1.5)?;
+    assert_eq!(midpoint, 9_007_351_116_674_625.0);
+    Ok(())
+}

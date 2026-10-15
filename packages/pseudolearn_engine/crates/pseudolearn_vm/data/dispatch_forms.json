@@ -1,0 +1,681 @@
+{
+  "categories": [
+    {
+      "kind": "Scalar",
+      "prefixes": [
+        "int.",
+        "real.",
+        "math.",
+        "bool.",
+        "char."
+      ]
+    },
+    {
+      "kind": "Constant",
+      "prefixes": [
+        "const."
+      ]
+    },
+    {
+      "kind": "ValueState",
+      "prefixes": [
+        "value."
+      ]
+    },
+    {
+      "kind": "Observation",
+      "prefixes": [
+        "stmt.",
+        "decide."
+      ]
+    },
+    {
+      "kind": "Output",
+      "prefixes": [
+        "out."
+      ]
+    },
+    {
+      "kind": "Control",
+      "names": [
+        "jump",
+        "branch",
+        "call",
+        "return",
+        "trap.missing_return",
+        "unreachable",
+        "loop.check_step"
+      ]
+    }
+  ],
+  "shapes": {
+    "1": [
+      {
+        "suffix": "Register",
+        "slots": [
+          {
+            "name": "source",
+            "register": true
+          }
+        ]
+      },
+      {
+        "suffix": "Immediate",
+        "slots": [
+          {
+            "name": "source",
+            "register": false
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "suffix": "RegisterRegister",
+        "slots": [
+          {
+            "name": "left",
+            "register": true
+          },
+          {
+            "name": "right",
+            "register": true
+          }
+        ]
+      },
+      {
+        "suffix": "RegisterImmediate",
+        "slots": [
+          {
+            "name": "left",
+            "register": true
+          },
+          {
+            "name": "right",
+            "register": false
+          }
+        ]
+      },
+      {
+        "suffix": "ImmediateRegister",
+        "slots": [
+          {
+            "name": "left",
+            "register": false
+          },
+          {
+            "name": "right",
+            "register": true
+          }
+        ]
+      },
+      {
+        "suffix": "ImmediateImmediate",
+        "slots": [
+          {
+            "name": "left",
+            "register": false
+          },
+          {
+            "name": "right",
+            "register": false
+          }
+        ]
+      }
+    ]
+  },
+  "operations": [
+    {
+      "form": "IntAdd",
+      "opcode": "int.add",
+      "arity": 2,
+      "evaluate": "integer_add"
+    },
+    {
+      "form": "IntSub",
+      "opcode": "int.sub",
+      "arity": 2,
+      "evaluate": "integer_sub"
+    },
+    {
+      "form": "IntMul",
+      "opcode": "int.mul",
+      "arity": 2,
+      "evaluate": "integer_mul"
+    },
+    {
+      "form": "IntDiv",
+      "opcode": "int.div",
+      "arity": 2,
+      "evaluate": "integer_div"
+    },
+    {
+      "form": "IntMod",
+      "opcode": "int.mod",
+      "arity": 2,
+      "evaluate": "integer_mod"
+    },
+    {
+      "form": "IntPow",
+      "opcode": "int.pow",
+      "arity": 2,
+      "evaluate": "integer_pow"
+    },
+    {
+      "form": "IntNeg",
+      "opcode": "int.neg",
+      "arity": 1,
+      "evaluate": "integer_neg"
+    },
+    {
+      "form": "IntToReal",
+      "opcode": "int.to_real",
+      "arity": 1,
+      "evaluate": "integer_to_real_word"
+    },
+    {
+      "form": "IntEqual",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_eq",
+      "predicate": "eq",
+      "fusable": true
+    },
+    {
+      "form": "IntNotEqual",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_ne",
+      "predicate": "ne",
+      "fusable": true
+    },
+    {
+      "form": "IntLess",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_lt",
+      "predicate": "lt",
+      "fusable": true
+    },
+    {
+      "form": "IntLessOrEqual",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_le",
+      "predicate": "le",
+      "fusable": true
+    },
+    {
+      "form": "IntGreater",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_gt",
+      "predicate": "gt",
+      "fusable": true
+    },
+    {
+      "form": "IntGreaterOrEqual",
+      "opcode": "int.cmp",
+      "arity": 2,
+      "evaluate": "integer_ge",
+      "predicate": "ge",
+      "fusable": true
+    },
+    {
+      "form": "RealAdd",
+      "opcode": "real.add",
+      "arity": 2,
+      "evaluate": "real_add_word"
+    },
+    {
+      "form": "RealSub",
+      "opcode": "real.sub",
+      "arity": 2,
+      "evaluate": "real_sub"
+    },
+    {
+      "form": "RealMul",
+      "opcode": "real.mul",
+      "arity": 2,
+      "evaluate": "real_mul"
+    },
+    {
+      "form": "RealDiv",
+      "opcode": "real.div",
+      "arity": 2,
+      "evaluate": "real_div"
+    },
+    {
+      "form": "RealPow",
+      "opcode": "real.pow",
+      "arity": 2,
+      "evaluate": "real_pow"
+    },
+    {
+      "form": "RealNeg",
+      "opcode": "real.neg",
+      "arity": 1,
+      "evaluate": "real_neg"
+    },
+    {
+      "form": "RealTrunc",
+      "opcode": "real.trunc",
+      "arity": 1,
+      "evaluate": "real_trunc"
+    },
+    {
+      "form": "RealRound",
+      "opcode": "real.round",
+      "arity": 1,
+      "evaluate": "real_round"
+    },
+    {
+      "form": "RealEqual",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_eq",
+      "predicate": "eq",
+      "fusable": true
+    },
+    {
+      "form": "RealNotEqual",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_ne",
+      "predicate": "ne",
+      "fusable": true
+    },
+    {
+      "form": "RealLess",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_lt",
+      "predicate": "lt",
+      "fusable": true
+    },
+    {
+      "form": "RealLessOrEqual",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_le",
+      "predicate": "le",
+      "fusable": true
+    },
+    {
+      "form": "RealGreater",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_gt",
+      "predicate": "gt",
+      "fusable": true
+    },
+    {
+      "form": "RealGreaterOrEqual",
+      "opcode": "real.cmp",
+      "arity": 2,
+      "evaluate": "real_ge",
+      "predicate": "ge",
+      "fusable": true
+    },
+    {
+      "form": "MathSqrt",
+      "opcode": "math.sqrt",
+      "arity": 1,
+      "evaluate": "math_sqrt"
+    },
+    {
+      "form": "MathAbs",
+      "opcode": "math.abs",
+      "arity": 1,
+      "evaluate": "math_abs"
+    },
+    {
+      "form": "MathLn",
+      "opcode": "math.ln",
+      "arity": 1,
+      "evaluate": "math_ln"
+    },
+    {
+      "form": "MathExp",
+      "opcode": "math.exp",
+      "arity": 1,
+      "evaluate": "math_exp"
+    },
+    {
+      "form": "MathSin",
+      "opcode": "math.sin",
+      "arity": 1,
+      "evaluate": "math_sin"
+    },
+    {
+      "form": "MathCos",
+      "opcode": "math.cos",
+      "arity": 1,
+      "evaluate": "math_cos"
+    },
+    {
+      "form": "MathAtan",
+      "opcode": "math.atan",
+      "arity": 1,
+      "evaluate": "math_atan"
+    },
+    {
+      "form": "BoolNot",
+      "opcode": "bool.not",
+      "arity": 1,
+      "evaluate": "boolean_not"
+    },
+    {
+      "form": "BoolEqual",
+      "opcode": "bool.cmp",
+      "arity": 2,
+      "evaluate": "boolean_eq",
+      "predicate": "eq",
+      "fusable": true
+    },
+    {
+      "form": "BoolNotEqual",
+      "opcode": "bool.cmp",
+      "arity": 2,
+      "evaluate": "boolean_ne",
+      "predicate": "ne",
+      "fusable": true
+    },
+    {
+      "form": "CharEqual",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_eq",
+      "predicate": "eq",
+      "fusable": true
+    },
+    {
+      "form": "CharNotEqual",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_ne",
+      "predicate": "ne",
+      "fusable": true
+    },
+    {
+      "form": "CharLess",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_lt",
+      "predicate": "lt",
+      "fusable": true
+    },
+    {
+      "form": "CharLessOrEqual",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_le",
+      "predicate": "le",
+      "fusable": true
+    },
+    {
+      "form": "CharGreater",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_gt",
+      "predicate": "gt",
+      "fusable": true
+    },
+    {
+      "form": "CharGreaterOrEqual",
+      "opcode": "char.cmp",
+      "arity": 2,
+      "evaluate": "character_ge",
+      "predicate": "ge",
+      "fusable": true
+    },
+    {
+      "form": "CharCode",
+      "opcode": "char.code",
+      "arity": 1,
+      "evaluate": "character_code"
+    },
+    {
+      "form": "CharFromCode",
+      "opcode": "char.from_code",
+      "arity": 1,
+      "evaluate": "character_from_code"
+    }
+  ],
+  "special": [
+    {
+      "form": "LoadWord",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "word",
+          "type": "u64"
+        }
+      ],
+      "handler": "load_word"
+    },
+    {
+      "form": "MarkUndefined",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "word",
+          "type": "u64"
+        }
+      ],
+      "handler": "mark_undefined"
+    },
+    {
+      "form": "MarkUndefinedReference",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "mark_undefined_reference"
+    },
+    {
+      "form": "MoveScalar",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "move_scalar"
+    },
+    {
+      "form": "RequireDefinedInteger",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "require_defined_integer"
+    },
+    {
+      "form": "RequireSentinel",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "source",
+          "type": "u16"
+        },
+        {
+          "name": "sentinel",
+          "type": "Sentinel"
+        }
+      ],
+      "handler": "require_sentinel"
+    },
+    {
+      "form": "RequireReference",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "require_reference"
+    },
+    {
+      "form": "RequireFailed",
+      "fields": [],
+      "handler": "require_failed"
+    },
+    {
+      "form": "Jump",
+      "fields": [
+        {
+          "name": "edge",
+          "type": "u32"
+        }
+      ],
+      "handler": "jump"
+    },
+    {
+      "form": "Branch",
+      "fields": [
+        {
+          "name": "condition",
+          "type": "u16"
+        },
+        {
+          "name": "then_edge",
+          "type": "u32"
+        },
+        {
+          "name": "else_edge",
+          "type": "u32"
+        }
+      ],
+      "handler": "branch"
+    },
+    {
+      "form": "Call",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "call"
+    },
+    {
+      "form": "ReturnScalar",
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "return_scalar"
+    },
+    {
+      "form": "ReturnReference",
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "return_reference"
+    },
+    {
+      "form": "ReturnUnit",
+      "fields": [],
+      "handler": "return_unit"
+    },
+    {
+      "form": "CheckStepRegister",
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "check_step_register"
+    },
+    {
+      "form": "CheckStepImmediate",
+      "fields": [
+        {
+          "name": "word",
+          "type": "u64"
+        }
+      ],
+      "handler": "check_step"
+    },
+    {
+      "form": "WriteIntegerRegister",
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        },
+        {
+          "name": "newline",
+          "type": "bool"
+        }
+      ],
+      "handler": "write_integer_register"
+    },
+    {
+      "form": "WriteIntegerImmediate",
+      "fields": [
+        {
+          "name": "word",
+          "type": "u64"
+        },
+        {
+          "name": "newline",
+          "type": "bool"
+        }
+      ],
+      "handler": "write_integer"
+    },
+    {
+      "form": "MissingReturn",
+      "fields": [],
+      "handler": "missing_return"
+    },
+    {
+      "form": "Unreachable",
+      "fields": [],
+      "handler": "unreachable"
+    },
+    {
+      "form": "Observe",
+      "fields": [],
+      "handler": "observe"
+    },
+    {
+      "form": "Unsupported",
+      "fields": [],
+      "handler": "unsupported"
+    }
+  ]
+}

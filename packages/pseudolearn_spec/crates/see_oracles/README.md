@@ -23,7 +23,9 @@ a derecho. El módulo `cells` marca identidades mediante una pila y un conjunto 
 cuentan una vez, los ciclos terminan y el coste se deriva de campos, elementos o puntos de código.
 Se rechazan aritmética i64 idéntica al sujeto, recursión del anfitrión y contar bytes físicos como celdas.
 
-El oráculo matemático usa series racionales con cotas explícitas del resto, reducción de argumento y refinamiento hasta que ambos extremos del intervalo redondean al mismo binario64. La representación del argumento se deriva de sus bits; no usa resultados trascendentales del anfitrión ni código del sujeto. Las dependencias solo implementan aritmética exacta: no deciden la función matemática ni su redondeo. Se rechaza reutilizar el algoritmo doble-doble de la biblioteca de ejecución porque correlacionaría sus errores con el oráculo.
+El oráculo matemático usa series racionales con cotas explícitas del resto, reducción de argumento y refinamiento hasta que ambos extremos del intervalo redondean al mismo binario64. La representación del argumento se deriva de sus bits; no usa resultados trascendentales del anfitrión ni código del sujeto. Las dependencias solo implementan aritmética exacta: no deciden la función matemática ni su redondeo. Se rechaza reutilizar el algoritmo de la biblioteca de ejecución porque correlacionaría sus errores con el oráculo.
+
+El refinamiento no termina si el valor exacto es un punto medio entre binarios64, y la potencia puede serlo (`9^1,5` con base cuadrada de 54 bits al cubo, `4^-537,5 = 2^-1075`). Antes de refinar, `exact_power.rs` comprueba si el exponente es `m/2^k` y la base racional tiene raíz `2^k`-ésima exacta en numerador y denominador; si la tiene y `|m|` cabe en un presupuesto de bits, eleva la raíz exactamente y redondea el racional con el mismo redondeo por cociente y resto. Fuera de esos casos el resultado no es racional o no es un punto medio, y el refinamiento decide. Se descarta acotar la precisión del refinamiento, que convertiría un punto medio en un error del oráculo en lugar de en su resultado.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

@@ -5,6 +5,7 @@ use std::collections::{BTreeMap, BTreeSet};
 mod compile_constants;
 mod compile_instructions;
 mod compile_operands;
+mod compile_padding;
 
 use pseudolearn_ir::identities::InstructionId;
 use pseudolearn_ir::{Function, IrType, Module, ValueClass, ValueId, verify_module};
@@ -244,6 +245,7 @@ fn compile_variant(
     if fast && selected.contains(&SuperInstruction::CompareBranch) {
         compile_instructions::select_compare_branches(&mut variant)?;
     }
+    compile_padding::pad_variant(&mut variant)?;
     Ok(variant)
 }
 

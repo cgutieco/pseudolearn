@@ -28,14 +28,18 @@ ejecuta diez procesos del trabajador público y conserva treinta rondas de 28 co
 por proceso y p95 sobre las 300 latencias; no elimina muestras ni relaja umbrales.
 La comparación temprana de R5 se recoge con `dart run tool/r5_vm_tracer.dart`. Las tres cargas
 emparejadas viven en `tool/data/r5-vm-workloads.json`; el worker Rust compila RI verificada a bytecode
-antes del cronómetro y ejecuta la VM directamente. Cada worker de `reference` analiza el mismo texto
+y lo carga en la forma de despacho de la VM antes del cronómetro, y dentro del intervalo solo ejecuta. Cada worker de `reference` analiza el mismo texto
 antes del cronómetro y crea un intérprete nuevo por iteración. Los crudos se guardan en
 `results/r5-vm-tracer/` y el resumen en `packages/pseudolearn_spec/results/r5-vm-tracer.json`.
 Los perfiles de Mandelbrot y Fibonacci eligen comparación-salto; el bucle entero queda reservado para
 la validación fuera de muestra. Los perfiles y el archivo de selección forman parte de la procedencia.
 La captura incluye hashes del motor, del código Dart `reference`, de ambos manifiestos y de la versión
-exacta de Rust antes de compilar. La repetición PGO de RR-01 conserva el perfil fusionado y los datos de
-entrenamiento en `results/r5-vm-tracer/rr01-pgo-profile/`.
+exacta de Rust antes de compilar; los archivos borrados del árbol de trabajo se omiten de los hashes
+porque ya no forman parte de lo medido. La medición vigente (`rr01-dispatch-form/`, copiada en la raíz de
+`results/r5-vm-tracer/`) se hace sin PGO y da una media geométrica de 76,7× (Mandelbrot 85,9×, bucle
+entero 104,4×, Fibonacci 50,4×) frente al umbral de 30×. Las carpetas `rr01-step-*` y
+`rr01-pgo-profile/` son el historial de la escalera aplicada sobre la representación anterior de la VM,
+que no superó 16,6× ni con PGO; se conservan como fundamento de la decisión y no son evidencia vigente.
 El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
 Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
 `results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.

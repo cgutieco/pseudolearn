@@ -25,6 +25,16 @@ una violación deliberada: la lógica de contraste no depende del transporte. Un
 pendiente con cero muestras completadas. Nunca equivale a cumplimiento. El primer desacuerdo conserva
 petición, esperado, observado y comando de repetición; un fallo operativo se propaga como tal.
 
+El contraste matemático de `LIB.CORE.MATH` vive en `math_sampling.rs`, `math_arguments.rs`,
+`math_power_arguments.rs` y `math_contrast.rs`. Un muestreador SplitMix64 con semilla genera, por
+función, argumentos aleatorios por bits, por magnitud logarítmica y uniformes en el rango útil, junto con
+bordes (ceros con signo, subnormales, `f64::MAX`, umbrales de desbordamiento de `exp`), cercanía a uno en
+`ln` y `atan`, cercanía a múltiplos de π/2 en seno y coseno, y en la potencia bases negativas con
+exponente entero, raíces perfectas con exponentes `k/2` y `k/4` y bases cercanas a uno con exponentes
+grandes. El esperado sale siempre de `see_oracles`; un dominio inválido o un resultado infinito se
+reduce a `nonFiniteRealResult`, que es lo único observable. Se descarta una malla regular, que no
+alcanza los argumentos difíciles, y muestrear con la biblioteca del anfitrión.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
