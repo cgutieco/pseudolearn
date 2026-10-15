@@ -2,18 +2,17 @@
 
 ## 1. Qué es y qué no es
 
-Declara la disposición compartida de los valores de ejecución. Diseño aprobado; pendiente de implementación del motor de ejecución.
+Declara la disposición compartida de los valores de ejecución. Implementado y verificado como parte del motor de ejecución.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
+| Ninguno | Verificaciones en verde | Motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 
-Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
-Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
-actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+Versión exacta de rust-toolchain.toml del miembro. Crate activo incorporado al workspace de pseudolearn_engine.
+Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 

@@ -36,7 +36,7 @@ mod usage;
 
 pub use checker::analyze as analyze_with_options;
 pub use expression_model::{
-    BinaryOperator, ExpressionColumns, HirExpression, HirPlace, Literal, UnaryOperator,
+    BinaryOperator, BuiltinKind, ExpressionColumns, HirExpression, HirPlace, Literal, UnaryOperator,
 };
 pub use hir::{
     FunctionKind, HirClass, HirField, HirFunction, HirLocal, HirModule, Passing, SemanticModel,

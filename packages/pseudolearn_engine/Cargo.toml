@@ -1,10 +1,13 @@
 [workspace]
 members = [
     "crates/pseudolearn_source",
+    "crates/pseudolearn_abi",
     "crates/pseudolearn_diagnostics",
     "crates/pseudolearn_lexicon",
     "crates/pseudolearn_syntax",
     "crates/pseudolearn_semantic",
+    "crates/pseudolearn_ir",
+    "crates/pseudolearn_lowering",
     "crates/pseudolearn_api",
     "crates/pseudolearn_conformance",
     "crates/pseudolearn_bench_worker",

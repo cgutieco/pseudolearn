@@ -1,6 +1,6 @@
 use pseudolearn_api::{
-    AnalyzeRequest, ENGINE_VERSION, PROTOCOL_VERSION, SUBJECT_NAME, execute_analyze,
-    supported_capabilities, supported_profiles, supported_strictness,
+    AnalyzeRequest, ENGINE_VERSION, IrRequest, PROTOCOL_VERSION, SUBJECT_NAME, execute_analyze,
+    execute_ir, supported_capabilities, supported_profiles, supported_strictness,
 };
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
@@ -29,6 +29,7 @@ fn main() {
                 break;
             }
             "analyze" => respond_analyze(&parsed),
+            "ir" => respond_ir(&parsed),
             _ => respond_unsupported(),
         }
     }
@@ -77,6 +78,42 @@ fn respond_analyze(request_value: &Value) {
         strictness,
     };
     let response = execute_analyze(&request);
+    let serialized = match serde_json::to_value(&response) {
+        Ok(value) => value,
+        Err(_) => return,
+    };
+    send_response(&serialized);
+}
+
+fn respond_ir(request_value: &Value) {
+    let program_ir = request_value
+        .get("program_ir")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_owned();
+    let program = request_value
+        .get("program")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_owned();
+    let profile = request_value
+        .get("profile")
+        .and_then(Value::as_str)
+        .unwrap_or("es")
+        .to_owned();
+    let strictness = request_value
+        .get("strictness")
+        .and_then(Value::as_str)
+        .unwrap_or("strict")
+        .to_owned();
+
+    let request = IrRequest {
+        program_ir,
+        program,
+        profile,
+        strictness,
+    };
+    let response = execute_ir(&request);
     let serialized = match serde_json::to_value(&response) {
         Ok(value) => value,
         Err(_) => return,

@@ -730,17 +730,14 @@
     },
     {
       "actual": {
-        "error_output": "pseudo: orden desconocida «ri»\n",
-        "exit_code": 2,
+        "error_output": "",
+        "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:11\n  %0 = const.i64 1 @2:10-2:11\n  out.write %0, newline @2:1-2:11\n  stmt.exit @2:1-2:11\n  return @3:1-3:13\n}\n"
       },
       "case": "C1",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida_error": ""
@@ -749,21 +746,18 @@
       "rule": "R1",
       "specification": "TOOL.CLI.IR",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
-        "error_output": "pseudo: orden desconocida «ir»\n",
-        "exit_code": 2,
+        "error_output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+        "exit_code": 1,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C2",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "",
@@ -773,7 +767,7 @@
       "rule": "R1",
       "specification": "TOOL.CLI.IR",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {

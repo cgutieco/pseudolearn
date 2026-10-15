@@ -2,13 +2,18 @@ pub mod analyze;
 mod argument_conversion;
 mod diagnostic_conversion;
 pub mod errors;
+pub mod ir_execution;
 pub mod model;
 pub mod versioning;
 pub mod wire;
 
 pub use analyze::{detect_vocabulary_profile, execute_analyze, line_and_column};
 pub use errors::ApiError;
-pub use model::{AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiPosition, ApiSpan, ApiUnit};
+pub use ir_execution::{compile_source_to_ir, execute_ir};
+pub use model::{
+    AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiPosition, ApiSpan, ApiUnit, IrOutcome,
+    IrRequest, IrResponse,
+};
 pub use versioning::{
     ENGINE_VERSION, PROTOCOL_VERSION, SUBJECT_NAME, supported_capabilities, supported_profiles,
     supported_strictness,

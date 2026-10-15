@@ -20,7 +20,6 @@ layers:
     may_import: []
     external_dependencies: []
     unsafe_allowed: false
-    pending: true
   - name: pseudolearn_diagnostics
     path: crates/pseudolearn_diagnostics
     may_import: [pseudolearn_source]
@@ -46,13 +45,11 @@ layers:
     may_import: [pseudolearn_source, pseudolearn_abi]
     external_dependencies: [serde_json]
     unsafe_allowed: false
-    pending: true
   - name: pseudolearn_lowering
     path: crates/pseudolearn_lowering
-    may_import: [pseudolearn_semantic, pseudolearn_ir, pseudolearn_diagnostics]
+    may_import: [pseudolearn_source, pseudolearn_semantic, pseudolearn_ir, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
-    pending: true
   - name: pseudolearn_bytecode
     path: crates/pseudolearn_bytecode
     may_import: [pseudolearn_ir, pseudolearn_source]

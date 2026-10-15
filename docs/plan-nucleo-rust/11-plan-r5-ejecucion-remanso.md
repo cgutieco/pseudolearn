@@ -1323,19 +1323,20 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 
 ### B2 · `abi`, RI y traducción procedural
 
-- [ ] **B2.1 `abi`.** Constantes y tipos de §4.1 con tests de tamaños y desplazamientos.
-- [ ] **B2.2 `ir`: modelo y catálogo.** `build.rs` genera `Operation` y sus tablas desde la exportación;
+- [x] **B2.1 `abi`.** Constantes y tipos de §4.1 con tests de tamaños y desplazamientos.
+- [x] **B2.2 `ir`: modelo y catálogo.** `build.rs` genera `Operation` y sus tablas desde la exportación;
   modelo en columnas; tabla de orígenes. Test: añadir una instrucción ficticia a una exportación de prueba
   cambia la salida generada; una exportación desactualizada hace fallar la puerta.
-- [ ] **B2.3 `ir`: formato textual.** Lector y escritor canónicos; casos `ir` de reimpresión; propiedad de ida y
+- [x] **B2.3 `ir`: formato textual.** Lector y escritor canónicos; casos `ir` de reimpresión; propiedad de ida y
   vuelta sobre textos generados.
-- [ ] **B2.4 `ir`: verificador.** R1–R9 con primera violación; un *fixture* negativo por regla con su
+- [x] **B2.4 `ir`: verificador.** R1–R9 con primera violación; un *fixture* negativo por regla con su
   identificador; mutación aleatoria de RI sin pánicos.
-- [ ] **B2.5 `lowering` procedural** (sobre el HIR de BF). Expresiones, asignación, `Si`, `Mientras`, `Repetir`, `Para`, `Segun`,
+- [x] **B2.5 `lowering` procedural** (sobre el HIR de BF). Expresiones, asignación, `Si`, `Mientras`, `Repetir`, `Para`, `Segun`,
   `Escribir`, `Leer`, asignación definida, masas, orígenes y retrocesos de sondeo (§4.3).
   `IR.LOWERING#P1` y `#P3` sobre todo el corpus procedural.
-- [ ] **B2.6 `pseudo ri`/`ir`.** Orden en la CLI con mensajes de `TOOL.CLI.MESSAGES`; casos `cli` de
+- [x] **B2.6 `pseudo ri`/`ir`.** Orden en la CLI con mensajes de `TOOL.CLI.MESSAGES`; casos `cli` de
   `TOOL.CLI.IR` en los dos idiomas de interfaz y `TOOL.CLI.IR#P1`.
+  Bloque B2 cerrado con éxito: 19/19 observaciones en `see conform --subject engine --operation ir` en verde (0 divergencias); casos `TOOL.CLI.IR` en verde en CLI; `cargo xtask verify` en verde tanto en `pseudolearn_engine` como en `pseudolearn_cli`.
 
 ### B3 · Bytecode rápido, VM no observada y trazadora de rendimiento
 

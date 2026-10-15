@@ -24,11 +24,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "pseudolearn_abi"
+version = "0.1.0"
+
+[[package]]
 name = "pseudolearn_api"
 version = "0.1.0"
 dependencies = [
  "pseudolearn_diagnostics",
+ "pseudolearn_ir",
  "pseudolearn_lexicon",
+ "pseudolearn_lowering",
  "pseudolearn_semantic",
  "pseudolearn_source",
  "pseudolearn_syntax",
@@ -54,11 +60,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "pseudolearn_ir"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_abi",
+ "pseudolearn_source",
+ "serde_json",
+]
+
+[[package]]
 name = "pseudolearn_lexicon"
 version = "0.1.0"
 dependencies = [
  "pseudolearn_source",
  "serde_json",
+]
+
+[[package]]
+name = "pseudolearn_lowering"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_diagnostics",
+ "pseudolearn_ir",
+ "pseudolearn_semantic",
+ "pseudolearn_source",
 ]
 
 [[package]]

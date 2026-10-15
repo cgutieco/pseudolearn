@@ -92,7 +92,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.IR@0.1.0#R1",

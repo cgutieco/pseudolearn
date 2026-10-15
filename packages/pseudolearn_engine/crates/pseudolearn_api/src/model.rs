@@ -56,3 +56,52 @@ pub struct ApiUnit {
     pub name: String,
     pub span: ApiSpan,
 }
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct IrRequest {
+    #[serde(default)]
+    pub program_ir: String,
+    #[serde(default)]
+    pub program: String,
+    pub profile: String,
+    pub strictness: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct IrOutcome {
+    pub accepted: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub violated_rule: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reprint: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct IrResponse {
+    pub kind: String,
+    pub ir: IrOutcome,
+}
+
+impl IrResponse {
+    pub fn accepted(reprint: String) -> Self {
+        Self {
+            kind: "ir".to_owned(),
+            ir: IrOutcome {
+                accepted: true,
+                violated_rule: None,
+                reprint: Some(reprint),
+            },
+        }
+    }
+
+    pub fn rejected(violated_rule: String) -> Self {
+        Self {
+            kind: "ir".to_owned(),
+            ir: IrOutcome {
+                accepted: false,
+                violated_rule: Some(violated_rule),
+                reprint: None,
+            },
+        }
+    }
+}

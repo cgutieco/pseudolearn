@@ -3,12 +3,14 @@
 mod adapter;
 mod check_command;
 mod error;
+mod ir_command;
 mod messages;
 mod options;
 mod preferences_command;
 
 use check_command::execute_check;
 use error::CliError;
+use ir_command::execute_ir;
 use messages::{help_text, missing_command, missing_input, unknown_command};
 use options::parse_cli_options;
 use preferences_command::execute_preferences;
@@ -55,6 +57,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         "preferencias" | "preferences" => {
             execute_preferences(&options, &options.positional_arguments)
         }
+        "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
         "ejecutar" | "run" => {
             if options.positional_arguments.is_empty() {
                 return Err(CliError::Usage(

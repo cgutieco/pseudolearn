@@ -1,6 +1,6 @@
 use crate::identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, TypeId};
 use crate::types::ValueClass;
-use pseudolearn_lexicon::BuiltinKind;
+pub use pseudolearn_lexicon::BuiltinKind;
 use pseudolearn_source::Span;
 
 #[derive(Clone, Debug, PartialEq)]
