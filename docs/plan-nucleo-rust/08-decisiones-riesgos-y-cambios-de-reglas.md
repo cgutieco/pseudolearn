@@ -82,6 +82,34 @@ D-15, D-16, D-19 y D-24.
 
 ---
 
+### 1.6 Decisiones de R5
+
+Aprobadas el 2026-10-15 por el mensaje «Implementa R5 de 07-fases.md en una sola iteración».
+La autorización confirma las recomendaciones del plan ejecutable y exige elegir sin consultas adicionales.
+
+| ID | Decisión | Elección aprobada y fundamento | Alternativa descartada o de reserva |
+|---|---|---|---|
+| D-R5-01 | ¿Cómo se trata la deuda de R4 (§6.1)? | **Decidida el 2026-10-15 por la persona responsable:** R4 se mantiene cerrada; la deuda se resuelve como tareas de R5 (bloque BF, §4.10), reescribiendo el front-end donde conviene, con evidencia `r5-frontend-*.json` y un apartado propio en el informe de R5 | Reabrir R4 (descartada por la persona responsable) |
+| D-R5-02 | ¿Se sustituye el montón paginado por el montón plano (T11)? | **Sí.** Explica la mayor parte de RC-01; simplifica R6 | Conservar páginas con trampas inmediatas: 2,07× en la ablación |
+| D-R5-03 | ¿Puntos de control diferenciales sin barrera y programados por coste (T20–T21)? | **Sí,** con ε = 1 % objetivo y 2 % de puerta (`PERF.VM.THROUGHPUT#R2`); tarjetas como peldaño medido | Barrera de época o de tarjetas en todo el gemelo rápido: 1,5–1,8× en nativo |
+| D-R5-04 | ¿Trampas inmediatas en la VM y diferidas solo en superinstrucciones puras (T14)? | **Sí.** La bandera en memoria cuesta 10–50 % en la ablación | Regiones puras materializadas en la RI y comprobación diferida general |
+| D-R5-05 | ¿Representación de ausencia de T12? | **Sí:** centinelas por tipo y definición solo para enteros, con cota densa y máscara | Etiqueta de definición por valor (contradice «sin etiquetas») o bitmap para todo tipo |
+| D-R5-06 | ¿Aclaración de las raíces y del conteo de cadenas en `ENG.LIMITS#D1`? | **Sí,** como corrección clasificada sin cambio de comportamiento para programas que no alcanzan el límite | Contar lo que quede en registros: no determinista entre motores |
+| D-R5-07 | ¿Bancos crecientes (T18)? | **Sí,** sujeto a la trazadora de B3.3 | Bancos fijos por plataforma: profundidad dependiente de la plataforma |
+| D-R5-08 | ¿Funciones trascendentes y potencia real con redondeo correcto (T23)? | **Sí.** Es la única definición independiente de la plataforma y derivable por un oráculo independiente. Implementación propia en Rust seguro, sin dependencia nueva | Fijar en el contrato el algoritmo de una `libm` pura en Rust (por ejemplo, el *crate* `libm`) con valores capturados y revisados: determinista, pero el contrato dependería de una implementación |
+| D-R5-09 | ¿Cancelación y guarda de tiempo también en evaluaciones de condición y pruebas de bucle? | **Sí.** Sin ello un bucle sin sentencias no se puede detener | Dejar el contrato como está: viola el propósito de `ENG.EXEC.MODEL#R3` |
+| D-R5-10 | ¿Formato de reales con dígitos mínimos de ida y vuelta? | **Sí,** si B1.4 confirma que el corpus no lo fija ya | Número fijo de decimales: pierde información y cambia salidas existentes |
+| D-R5-11 | ¿Generador de programas bien tipados y capacidad `gc_stress` en SEE? | **Sí.** Varias propiedades de R3 lo exigen; vive en SEE para no importar el motor | Programas generados dentro del motor: el sujeto se probaría a sí mismo |
+| D-R5-12 | ¿Cómo se mide `PERF.VM.*`? | **Trabajador de medición en el motor** (`pseudolearn_bench_worker`, herramienta) que ejecuta en proceso y emite muestras; orquestación y estadística con el arnés Dart de `pseudolearn_benchmarks`, el mismo que midió `reference` | Medición en `ceiling` (prohibido importar el motor) o desde `pseudo ejecutar` (incluye arranque y E/S) |
+| D-R5-13 | ¿Herramienta de mutación para E-16? | **`cargo-mutants` con versión exacta**, como herramienta auxiliar local auditada; no es una cadena nueva ni dependencia de ningún crate | Mutador propio en `xtask`: más código que mantener sin ganancia |
+| D-R5-14 | ¿Objetivo `wasm32-wasip1` y ejecución con WASI de Node para E-17? | **Sí.** Añade un objetivo a la cadena Rust fijada y usa Node, ya presente; no instala cadenas nuevas | Esperar a `pseudolearn_wasm` de R8: dejaría el determinismo Wasm sin verificar en la fase que lo produce |
+| D-R5-15 | ¿Medición provisional M3 de latencia de retroceso y reinterpretación de E-06 (§7.2)? | **Sí,** M3 p95 ≤ 50 ms en Apple M2, provisional como el resto de `PERF.VM.*` | Sin métrica: la línea temporal no tendría criterio de aceptación |
+| D-R5-16 | ¿Superinstrucciones con validación fuera de muestra y sin PGO? | **Sí.** PGO añadiría `llvm-tools` a la cadena y haría el binario dependiente de un perfil; queda como último peldaño de RR-01 con decisión explícita | Elegirlas solo con AWFY-core |
+| D-R5-17 | ¿Hipótesis C solo si E-02R y la trazadora muestran ≥ 10 % en `arrays`? | **Sí** (§3.3) | Implementarla siempre: complejidad sin ganancia demostrada |
+| D-R5-18 | ¿Criterio de elección del recolector de E-12 (§7.3)? | **Sí,** con las tres variantes medidas y la perdedora fuera del motor | Elegir sin medir |
+| D-R5-19 | ¿Contrato de límites de análisis (§6.4)? | **Sí:** profundidad de anidación mínima garantizada (propuesta: 256 niveles), diagnóstico propio con tramo y sin agotar la pila; el valor se fija en BF.1 con casos de borde | Reutilizar los límites de ejecución de `ENG.LIMITS`, que miden otra cosa |
+
+
 ## 2. Riesgos
 
 Escala como en [17](../17-riesgos-preguntas-y-decisiones.md) §3: probabilidad e impacto en Baja, Media
@@ -109,6 +137,33 @@ o Alta.
 | RN-12 | **El núcleo Dart deja de compilar** con versiones nuevas de Dart antes de R9                  | B | M | Fijar la versión del SDK para el sujeto `reference`; es solo un oráculo                                             | Avisos de obsolescencia del SDK                             |
 
 ---
+
+### Riesgos de R5
+
+RC-01: resuelto por E-02R. 27 000 muestras, diez procesos y treinta iteraciones.
+V2R/V1F ≤ 1,276 por núcleo, límite superior de IC 95 % ≤ 1,280;
+V3R/V2R ≤ 1,003 por familia. Datos crudos y procedencia en
+`packages/pseudolearn_benchmarks/results/e02r/`; evaluación reproducible en
+`packages/pseudolearn_spec/results/r5-e02r.json`. La puerta sobre VM real se conserva.
+
+| ID | Riesgo | P | I | Señal | Escalera de subsanación dentro de R5 |
+|---|---|---|---|---|---|
+| RR-01 | Despacho lento o mala asignación de registros en el `match` generado (hereda RC-05) | M | A | B3.3 proyecta < 30×; B7.7 < 10× o algún programa < 5× | 1) manejadores pequeños con rutas frías fuera de línea; 2) formas registro-inmediato; 3) superinstrucciones adicionales del perfil; 4) estado caliente en variables locales y bancos en porciones locales al marco; 5) despacho por familias en dos niveles; 6) bancos de tamaño de tipo monomorfizados; 7) PGO con decisión explícita (D-R5-16) |
+| RR-02 | Observador en pausa > 2 % | M | A | E-02R V3R/V2R > 1,05; E-06 M4 > 2 % | 1) recalibrar κ y `Q_min`; 2) copiar sin comparar lo asignado desde el último punto; 3) particionar el montón por antigüedad y comparar solo bloques de objetos mutables; 4) gemelo de grabación con tarjetas (V3R-tarjetas) monomorfizado aparte, solo cuando hay observador |
+| RR-03 | Latencia de retroceso alta con montones grandes | M | M | E-06 M3 > 50 ms | 1) densificación perezosa más agresiva alrededor del cursor; 2) intervalo máximo absoluto además del proporcional; 3) caché de la VM de reproducción con su propio deshacer para retrocesos consecutivos; 4) peldaño 4 de RR-02 |
+| RR-04 | Memoria de la línea temporal (sombra + segmentos) | M | M | RSS > 2,5× el montón vivo; horizonte demasiado corto | 1) raleo exponencial más fuerte con fusión de segmentos; 2) compresión de segmentos (bloques con diferencia por palabra); 3) excluir el texto (ya excluido) y el espacio libre; 4) presupuesto por anfitrión con horizonte declarado |
+| RR-05 | Divergencia entre gemelos o al cambiar de gemelo (hereda RC-02) | B | A | Un caso o una semilla con diferencia | Generación por una sola función parametrizada; contraejemplo reducido se convierte en test espejo; corrección antes de seguir |
+| RR-06 | Diferencias entre plataformas (matemática, formato, NaN en Wasm, iteración de tablas *hash*) | M | A | E-17 o B3.4 | Redondeo correcto (T23); formato propio; centinelas leídos como bits; solo `BTreeMap` o tablas con orden fijo en salidas; cada diferencia corregida en la fase |
+| RR-07 | Conteo de celdas inexacto (raíces, cadenas compartidas, temporales) | M | A | Propiedad de conteo frente al oráculo nocional | Mapas nocionales por punto seguro; aclaración D-R5-06; contraejemplos como casos del corpus derivados de la regla |
+| RR-08 | Camino de asignación lento (Storage 1,51× en la ablación) | M | M | E-02R Storage > 1,30 | 1) avance en bloques puestos a cero; 2) cabecera escrita con una sola operación; 3) listas por clase sin búsqueda; 4) variante Immix de E-12 |
+| RR-09 | La deuda heredada de R4 es mayor de lo inventariado y retrasa `lowering` | A | A | BF.8 no se alcanza | Inventario completo en B0.3; reescritura por pasadas con tests espejo; BF en paralelo con E-02R; B2 no empieza sin la puerta BF.8 |
+| RR-15 | El análisis no alcanza 10⁶ líneas/s ni p95 ≤ 16 ms | M | M | BF.6 | 1) eliminar asignaciones por token y por diagnóstico; 2) comparar lexemas por identidad del hash perfecto, sin cadenas; 3) NFC solo fuera del camino ASCII; 4) presentación de mensajes solo en el borde; 5) arenas con capacidad reservada por tamaño de fuente; 6) pasadas semánticas fusionadas donde el perfil lo justifique |
+| RR-10 | Pánicos o `INTERNAL-FAULT` con programas raros | M | A | B7.6 | Generador, mutación y verificador de bytecode; cada hallazgo, test espejo y corrección |
+| RR-11 | Alcance de R5 (once capas, cinco experimentos) excede la iteración | A | M | Retraso relativo entre bloques | El plan no recorta alcance: la fase sigue abierta hasta cumplir. Prioriza el camino crítico (B1 → B3 → B4 → B5) y paraleliza solo lo que no comparte archivos |
+| RR-12 | El módulo Wasm supera el presupuesto ya en R5 | M | M | E-17 publica > 600 KiB con brotli | 1) `opt-level = "z"` y LTO para Wasm; 2) tablas generadas compactas; 3) separar el formato de texto de la RI y la narración de la CLI del módulo de ejecución por *features* |
+| RR-13 | Artefactos de generación de código nativo distorsionan las mediciones (§2.3 ᵃ) | M | B | Cocientes sin causa en llamadas | Medir la VM real; rutas frías fuera del bucle; informar sin ocultar |
+| RR-14 | La reproducción repite un efecto externo o cambia la continuación | B | A | `API.EXECUTE#P1` | VM de reproducción separada; salida suprimida por cursor; entradas desde la cinta; propiedad con semilla |
+
 
 ## 3. Cambios de reglas por fase
 

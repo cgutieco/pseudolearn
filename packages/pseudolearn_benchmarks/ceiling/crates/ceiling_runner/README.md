@@ -16,6 +16,23 @@ Capa ceiling_runner; dependencias: ceiling_kernels, ceiling_statistics, serde_js
 
 Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
 
+
+Problema: comparar acceso paginado con acceso plano requiere el mismo coste de llamadas.
+Elección: el experimento de revalidación conserva V0–V3 e incorpora V1F con los bancos de V2,
+V2R con montón contiguo, asignación en bloques puestos a cero, trampas inmediatas y combustible,
+V2R sin comprobación de índice del lenguaje como cota experimental, V3R con sombra diferencial
+sin barrera y V3R con tarjetas. Ninguna variante se usa como implementación del motor.
+Las políticas de observación se monomorfizan: la diferencial no ejecuta código por escritura;
+la de tarjetas marca el bloque modificado. Los puntos comparan bloques de 64 palabras,
+retienen contenido antiguo y copian los bancos activos; la captura queda acotada a 64 puntos.
+El combustible persiste entre repeticiones de una muestra y se exige al menos un punto real
+por muestra observada. Reiniciar una repetición borra el estado lógico, no el contador de muestras.
+El asignador avanza sobre bloques de 4096 palabras inicializados de una vez, sin reservar por objeto.
+Alternativas descartadas: V1 sin marcos como denominador de llamadas, muestras sin puntos reales,
+reemplazar resultados antiguos o atribuir rendimiento de estos núcleos nativos a la VM.
+La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso`;
+los resultados se conservan en `../results/e02r/`, con diez procesos y treinta iteraciones.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, unsafe, índices que puedan entrar en pánico ni conversiones numéricas con pérdida. Fallos como Result; límites leídos de architecture.yaml. Tests externos en tests/ espejo de src/.

@@ -6,6 +6,18 @@ use std::time::Duration;
 
 pub enum Experiment {
     Idiomatic,
+    Framed(Box<crate::framed_direct::FramedDirect>),
+    Flat(Box<crate::remanso::RemansoMachine<crate::differential::Unobserved>>),
+    Unchecked(
+        Box<
+            crate::remanso::RemansoMachine<
+                crate::differential::Unobserved,
+                crate::remanso::UncheckedLanguageIndex,
+            >,
+        >,
+    ),
+    Differential(Box<crate::remanso::RemansoMachine<crate::differential::Differential>>),
+    Cards(Box<crate::remanso::RemansoMachine<crate::card_recording::CardRecording>>),
     Direct(DirectMachine),
     Paged(Box<ClepsydraMachine>),
 }
@@ -19,12 +31,37 @@ impl Experiment {
                 let timeline = (variant == 3).then(|| Timeline::new(Duration::from_millis(1)));
                 Ok(Self::Paged(Box::new(ClepsydraMachine::new(timeline)?)))
             }
+            4 => Ok(Self::Framed(Box::default())),
+            5 => Ok(Self::Flat(Box::default())),
+            6 => Ok(Self::Unchecked(Box::default())),
+            7 => Ok(Self::Differential(Box::default())),
+            8 => Ok(Self::Cards(Box::default())),
             _ => Err(crate::machine::Trap::InvalidHandle),
         }
     }
 
     pub fn run(&mut self, kernel: &str, size: i64) -> Outcome<String> {
         match self {
+            Self::Framed(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
+            Self::Flat(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
+            Self::Unchecked(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
+            Self::Differential(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
+            Self::Cards(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
             Self::Idiomatic => idiomatic(kernel, usize::try_from(size).unwrap_or_default()),
             Self::Direct(machine) => {
                 machine.reset();
@@ -37,9 +74,21 @@ impl Experiment {
         }
     }
 
+    pub fn services(&self) -> u64 {
+        match self {
+            Self::Flat(machine) => machine.services(),
+            Self::Unchecked(machine) => machine.services(),
+            Self::Differential(machine) => machine.services(),
+            Self::Cards(machine) => machine.services(),
+            _ => 0,
+        }
+    }
+
     pub fn checkpoints(&self) -> u64 {
         match self {
             Self::Paged(machine) => machine.checkpoints(),
+            Self::Differential(machine) => machine.checkpoints(),
+            Self::Cards(machine) => machine.checkpoints(),
             _ => 0,
         }
     }

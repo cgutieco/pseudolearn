@@ -6,11 +6,32 @@ use std::path::Path;
 type Samples = BTreeMap<(String, String, u8), BTreeMap<u64, Vec<f64>>>;
 
 pub fn write(output: &Path) -> Result<(), String> {
+    write_experiment(output, &[(1, 0, "V1"), (2, 1, "V2"), (3, 2, "V3")], 12000)
+}
+
+pub fn write_remanso(output: &Path) -> Result<(), String> {
+    let comparisons = [
+        (2, 1, "V2/V1"),
+        (3, 2, "V3/V2"),
+        (4, 1, "V1F/V1"),
+        (5, 4, "V2R/V1F"),
+        (6, 5, "V2R-unchecked/V2R"),
+        (7, 5, "V3R/V2R"),
+        (8, 5, "V3R-cards/V2R"),
+    ];
+    write_experiment(output, &comparisons, 27000)
+}
+
+fn write_experiment(
+    output: &Path,
+    comparisons: &[(u8, u8, &str)],
+    expected: usize,
+) -> Result<(), String> {
     let text =
         std::fs::read_to_string(output.join("raw.json")).map_err(|error| error.to_string())?;
     let rows: Vec<Value> = serde_json::from_str(&text).map_err(|error| error.to_string())?;
-    let samples = group(&rows)?;
-    let (kernels, families) = summaries(&samples)?;
+    let samples = group(&rows, expected)?;
+    let (kernels, families) = summaries(&samples, comparisons)?;
     let families = family_report(families)?;
     crate::collection::save(
         output,
@@ -18,13 +39,14 @@ pub fn write(output: &Path) -> Result<(), String> {
         &json!({
             "samples": rows.len(), "kernels": kernels, "families": families,
             "samplesDiscarded": 0, "stationarity": "not_proven",
-            "decision": "A family with V2/V1 > 1.30 requires memory design review before R5"
+            "comparisons": comparisons,
+            "decision": "Report all measured ratios; acceptance is evaluated against the declared experiment criteria"
         }),
     )
 }
 
-fn group(rows: &[Value]) -> Result<Samples, String> {
-    if rows.len() != 12000 {
+fn group(rows: &[Value], expected: usize) -> Result<Samples, String> {
+    if rows.len() != expected {
         return Err("Expected ten complete processes".to_owned());
     }
     let mut samples = Samples::new();
@@ -52,7 +74,7 @@ fn interval(ratios: &[f64]) -> Result<[f64; 2], String> {
     Ok(confidence(&logarithms)?.map(f64::exp))
 }
 
-fn family_report(families: BTreeMap<(String, u8), Vec<Vec<f64>>>) -> Result<Value, String> {
+fn family_report(families: BTreeMap<(String, String), Vec<Vec<f64>>>) -> Result<Value, String> {
     let mut report = serde_json::Map::new();
     for ((family, variant), kernels) in families {
         let mut paired = Vec::new();
@@ -65,41 +87,47 @@ fn family_report(families: BTreeMap<(String, u8), Vec<Vec<f64>>>) -> Result<Valu
         }
         let estimate = geometric(&paired)?;
         report.insert(
-            format!("{family}/V{variant}"),
+            format!("{family}/{variant}"),
             json!({
                 "ratio": estimate, "confidence95": interval(&paired)?,
-                "reviewBeforeR5": variant == 2 && estimate > 1.30,
+                "reviewBeforeR5": variant == "V2" && estimate > 1.30,
             }),
         );
     }
     Ok(Value::Object(report))
 }
 
-type Families = BTreeMap<(String, u8), Vec<Vec<f64>>>;
+type Families = BTreeMap<(String, String), Vec<Vec<f64>>>;
 
-fn summaries(samples: &Samples) -> Result<(BTreeMap<String, Value>, Families), String> {
+fn summaries(
+    samples: &Samples,
+    comparisons: &[(u8, u8, &str)],
+) -> Result<(BTreeMap<String, Value>, Families), String> {
     let mut kernels = BTreeMap::new();
-    let mut families: BTreeMap<(String, u8), Vec<Vec<f64>>> = BTreeMap::new();
+    let mut families: BTreeMap<(String, String), Vec<Vec<f64>>> = BTreeMap::new();
     for ((kernel, family, variant), processes) in samples {
-        if *variant == 0 {
+        let Some((_, denominator_variant, label)) = comparisons
+            .iter()
+            .find(|comparison| comparison.0 == *variant)
+        else {
             continue;
-        }
+        };
         let previous = samples
-            .get(&(kernel.clone(), family.clone(), variant.saturating_sub(1)))
+            .get(&(kernel.clone(), family.clone(), *denominator_variant))
             .ok_or("Missing previous variant")?;
         let numerator = averages(processes)?;
         let denominator = averages(previous)?;
         let ratios = ratio(&numerator, &denominator)?;
         let changes = changes(processes)?;
         kernels.insert(
-            format!("{kernel}/V{variant}"),
+            format!("{kernel}/{label}"),
             json!({
                 "ratio": geometric(&ratios)?, "confidence95": interval(&ratios)?,
                 "nanoseconds": mean(&numerator)?, "changePointsByProcess": changes,
             }),
         );
         families
-            .entry((family.clone(), *variant))
+            .entry((family.clone(), (*label).to_owned()))
             .or_default()
             .push(ratios);
     }

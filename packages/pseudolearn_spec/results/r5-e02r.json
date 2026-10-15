@@ -1,0 +1,158 @@
+{
+  "experiment": "E-02R",
+  "samples": 27000,
+  "processes": 10,
+  "iterations": 30,
+  "variants": {
+    "0": "V0",
+    "1": "V1",
+    "2": "V2",
+    "3": "V3",
+    "4": "V1F",
+    "5": "V2R",
+    "6": "V2R-unchecked",
+    "7": "V3R",
+    "8": "V3R-cards"
+  },
+  "source": "packages/pseudolearn_benchmarks/results/e02r",
+  "checks": [
+    {
+      "group": "kernels",
+      "name": "bounce/V2R/V1F",
+      "ratio": 1.2757953643178062,
+      "upper95": 1.2783496867827744,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "list/V2R/V1F",
+      "ratio": 1.1303570228325308,
+      "upper95": 1.1319493432718957,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "mandelbrot/V2R/V1F",
+      "ratio": 1.001343810753773,
+      "upper95": 1.0028194952914307,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "nbody/V2R/V1F",
+      "ratio": 1.1918794686082008,
+      "upper95": 1.1955829666008704,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "permute/V2R/V1F",
+      "ratio": 1.0437714312302269,
+      "upper95": 1.0769661742952825,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "queens/V2R/V1F",
+      "ratio": 1.2094649355170664,
+      "upper95": 1.2133285424627867,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "richards/V2R/V1F",
+      "ratio": 1.09071152343963,
+      "upper95": 1.094956375874073,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "sieve/V2R/V1F",
+      "ratio": 1.2749011871336764,
+      "upper95": 1.2790713298336969,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "storage/V2R/V1F",
+      "ratio": 1.2024743284257005,
+      "upper95": 1.2198843092708875,
+      "pass": true
+    },
+    {
+      "group": "kernels",
+      "name": "towers/V2R/V1F",
+      "ratio": 1.0271225691181578,
+      "upper95": 1.0296874926751192,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "arrays/V2R/V1F",
+      "ratio": 1.2417521017043873,
+      "upper95": 1.2449563444086396,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "arrays/V3R/V2R",
+      "ratio": 0.9947391113181984,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "numeric/V2R/V1F",
+      "ratio": 1.0924656191639708,
+      "upper95": 1.0945652942216482,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "numeric/V3R/V2R",
+      "ratio": 1.002249021855453,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "objects/V2R/V1F",
+      "ratio": 1.1420389833505789,
+      "upper95": 1.1456611040657478,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "objects/V3R/V2R",
+      "ratio": 1.001442945286,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "recursive/V2R/V1F",
+      "ratio": 1.0437714312302269,
+      "upper95": 1.0769661742952825,
+      "pass": true
+    },
+    {
+      "group": "families",
+      "name": "recursive/V3R/V2R",
+      "ratio": 0.9914015572551911,
+      "pass": true
+    }
+  ],
+  "all_samples_validated": true,
+  "all_observed_samples_record_checkpoints": true,
+  "rc01_resolved": true,
+  "hypothesis_c_native_arrays_gain": 0.17838064019980382,
+  "vm_followup": "La señal nativa exige comprobar el beneficio de la comprobación de índice en la trazadora de VM; no demuestra beneficio en VM.",
+  "limitations": [
+    "Núcleos compilados, no rendimiento de VM",
+    "Carga externa y frecuencia no controladas",
+    "No hay muestras descartadas ni afirmación de estacionariedad"
+  ],
+  "files": {
+    "summary.json": "83c1a60063dabfe83dd689890afe06fb6a2149c71524faac822cf4bc827167e0",
+    "raw.json": "483604363384bf85eccb64d37e24110631fcc678bbfece1dca6333702989b7f6",
+    "capture.json": "9193cb65e39dde6a108ac27a97deee522d1d48d9a6757ca3ee13d89fd0716add",
+    "processes.json": "e6f95b23b3c8c5a10f449def85bce61b63ce8ba594f27f2f5d38032705bc8185"
+  }
+}

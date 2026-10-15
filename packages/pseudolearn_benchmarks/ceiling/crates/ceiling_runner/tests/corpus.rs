@@ -5,7 +5,7 @@ mod corpus;
 fn all_variants_match_both_normative_sizes() -> Result<(), String> {
     for purpose in ["verificacion", "medicion"] {
         for workload in corpus::load(purpose)? {
-            for variant in 0..4 {
+            for variant in 0..9 {
                 let actual = ceiling_kernels::variant::run(&workload.name, variant, workload.size)
                     .map_err(|error| format!("{} V{variant}: {error:?}", workload.name))?;
                 assert_eq!(actual, workload.expected, "{} V{variant}", workload.name);

@@ -1,6 +1,6 @@
 # 11 · Plan de R5 · «Remanso»: RI, VM, runtime, biblioteca y línea temporal de Clepsidra
 
-> **Estado:** propuesta para revisión; R5 **no está autorizada** (`PHASE-STOP`). Fecha: 2026-10-15.
+> **Estado:** R5 autorizada y en ejecución por el mensaje del 2026-10-15. Casillas pendientes hasta verificar evidencia.
 > Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 >
 > Este documento concreta [R5](07-fases.md) sobre la arquitectura [Clepsidra](09-plan-r3-motor-clepsidra.md)
@@ -1217,22 +1217,22 @@ código; `cargo xtask verify` en verde al terminar cada paso que toca código.
 
 ### B0 · Preparación y puerta de entrada
 
-- [ ] **B0.1 Estado del repositorio.** `git branch --show-current` es `feature/agregar-ruta-de-especificacion`;
+- [x] **B0.1 Estado del repositorio.** `git branch --show-current` es `feature/agregar-ruta-de-especificacion`;
   árbol limpio; HEAD local igual al remoto (`git ls-remote`).
-- [ ] **B0.2 Decisiones y riesgos.** En [08](08-decisiones-riesgos-y-cambios-de-reglas.md) se añade §1.6
+- [x] **B0.2 Decisiones y riesgos.** En [08](08-decisiones-riesgos-y-cambios-de-reglas.md) se añade §1.6
   «Decisiones de R5» con D-R5-01 a D-R5-19, la fecha y la fuente (el mensaje de autorización). Los riesgos
   RR-01 a RR-15 de §10 entran en 08 §2. RC-01 se marca «en revisión por E-02R».
-- [ ] **B0.3 Deuda heredada de R4.** Reejecutar `see conform --subject engine --operation analyze` y
+- [x] **B0.3 Deuda heredada de R4.** Reejecutar `see conform --subject engine --operation analyze` y
   `--subject cli --operation cli` y registrar en `results/r5-frontend-debt.json` cada observación en `incumple`
   con su causa (tabla de §6.1), más E-08, textos y lexemas copiados a mano, vistas sin generar, tests no espejo y
   contrato de límites de análisis ausente. Es la lista de entrada del bloque BF; 07 R4 no se modifica.
-- [ ] **B0.4 Línea de partida.** `cargo xtask verify` en motor, CLI, `pseudolearn_spec`,
+- [x] **B0.4 Línea de partida.** `cargo xtask verify` en motor, CLI, `pseudolearn_spec`,
   `pseudolearn_rust_checks` y `ceiling`; `dart test` en núcleo y arnés; `see conform --subject reference`.
   Cantidades de tests y observaciones en `results/r5-baseline.json`: son la referencia de regresiones.
-- [ ] **B0.5 Inventario.** Todas las reglas, casos y propiedades con operación `execute`, `trace`, `ir` o `cli`
+- [x] **B0.5 Inventario.** Todas las reglas, casos y propiedades con operación `execute`, `trace`, `ir` o `cli`
   y sujeto `engine` o `cli`, por especificación, en `results/r5-inventory.json`, con la correspondencia de
   cada criterio de 07 R5 con su verificador. Un criterio sin ejecutor bloquea su aceptación.
-- [ ] **B0.6 Inicio de autoría.** Marca de tiempo en `results/r5-authoring-start.json`.
+- [x] **B0.6 Inicio de autoría.** Marca de tiempo en `results/r5-authoring-start.json`.
 
 ### BF · Deuda heredada de R4: front-end conforme y HIR tipado
 
@@ -1273,12 +1273,12 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 
 ### B1 · RC-01, contratos y herramientas de verificación
 
-- [ ] **B1.1 E-02R en `ceiling`.** Variantes de §7.1, con su `README.md` actualizado (problema, elección y
+- [x] **B1.1 E-02R en `ceiling`.** Variantes de §7.1, con su `README.md` actualizado (problema, elección y
   alternativas) y tests de salida exacta contra el corpus por variante. Fixture negativo: una variante que
   produce una salida distinta es rechazada por el recolector.
-- [ ] **B1.2 Medición.** `cargo run --release -p ceiling_runner -- collect` con el protocolo; datos en
+- [x] **B1.2 Medición.** `cargo run --release -p ceiling_runner -- collect` con el protocolo; datos en
   `results/e02r/` con manifiesto y procedencia previa a la compilación.
-- [ ] **B1.3 Decisión de RC-01.** Informe con cocientes por núcleo y familia e intervalos; aplicación de los
+- [x] **B1.3 Decisión de RC-01.** Informe con cocientes por núcleo y familia e intervalos; aplicación de los
   criterios de §2.5 y, si hace falta, del protocolo de iteración de §7.1. RC-01 queda **resuelto** en 08 con la
   evidencia, o la fase se para.
 - [ ] **B1.4 Contratos.** Cambios clasificados de §6.4 aprobados en D-R5-06, D-R5-08, D-R5-09, D-R5-10 y
@@ -1570,7 +1570,6 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 
 ## 14. Estado
 
-Propuesta lista para revisión. No hay código del motor de R5 ni resultados normativos producidos por esta
-preparación; las casillas de §8 describen la evidencia exigida, no trabajo hecho. D-R5-01 está decidida (la
-deuda de R4 es el bloque BF de R5; R4 sigue cerrada). R5 necesita la autorización con la confirmación o el
-cambio de D-R5-02 a D-R5-19.
+R5 autorizada el 2026-10-15. B0 y E-02R ejecutados; RC-01 resuelto con la evidencia de B1.1–B1.3.
+La deuda de R4 pertenece a BF y R4 sigue cerrada. Las demás casillas se conservan pendientes
+hasta ejecutar su verificación. La fase permanece abierta.

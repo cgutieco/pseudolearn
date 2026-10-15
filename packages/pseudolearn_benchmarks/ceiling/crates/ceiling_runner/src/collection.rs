@@ -2,7 +2,14 @@ use serde_json::{Value, json};
 use std::path::Path;
 
 pub fn collect() -> Result<(), String> {
-    let output = Path::new("../results/e02");
+    collect_experiment(Path::new("../results/e02"), "run", 1200)
+}
+
+pub fn collect_remanso() -> Result<(), String> {
+    collect_experiment(Path::new("../results/e02r"), "run-remanso", 2700)
+}
+
+fn collect_experiment(output: &Path, operation: &str, expected: usize) -> Result<(), String> {
     std::fs::create_dir_all(output).map_err(|error| error.to_string())?;
     save(output, "capture.json", &crate::capture::provenance()?)?;
     crate::capture::command("cargo", &["build", "--release", "-p", "ceiling_runner"])?;
@@ -11,7 +18,7 @@ pub fn collect() -> Result<(), String> {
     for process in 0..10 {
         eprintln!("E-02: process {process}/10");
         let result = std::process::Command::new("/usr/bin/time")
-            .args(["-lp", "target/release/ceiling", "run"])
+            .args(["-lp", "target/release/ceiling", operation])
             .output()
             .map_err(|error| error.to_string())?;
         if !result.status.success() {
@@ -21,16 +28,26 @@ pub fn collect() -> Result<(), String> {
             &String::from_utf8_lossy(&result.stdout),
             process,
             &mut records,
+            expected,
         )?;
         metrics.push(json!({"process": process,
             "timeMetrics": String::from_utf8_lossy(&result.stderr)}));
         save(output, "raw.json", &json!(records))?;
     }
     save(output, "processes.json", &json!(metrics))?;
-    crate::report::write(output)
+    if operation == "run-remanso" {
+        crate::report::write_remanso(output)
+    } else {
+        crate::report::write(output)
+    }
 }
 
-fn append(text: &str, process: u32, records: &mut Vec<Value>) -> Result<(), String> {
+fn append(
+    text: &str,
+    process: u32,
+    records: &mut Vec<Value>,
+    expected: usize,
+) -> Result<(), String> {
     let mut rows = Vec::new();
     for line in text.lines() {
         let mut row: Value = serde_json::from_str(line).map_err(|error| error.to_string())?;
@@ -39,7 +56,7 @@ fn append(text: &str, process: u32, records: &mut Vec<Value>) -> Result<(), Stri
             .insert("process".to_owned(), json!(process));
         rows.push(row);
     }
-    if rows.len() != 1200 {
+    if rows.len() != expected {
         return Err("Incomplete E-02 process".to_owned());
     }
     records.extend(rows);
