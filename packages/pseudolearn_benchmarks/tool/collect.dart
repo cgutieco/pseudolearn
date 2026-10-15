@@ -87,6 +87,7 @@ Future<Map<String, Object>> collectProcess(
   List<Map<String, dynamic>> records, {
   String worker = 'worker',
   int expectedRows = 360,
+  List<String> workerArguments = const [],
 }) async {
   final executable = target == 'native'
       ? 'build/$worker${Platform.isWindows ? '.exe' : ''}'
@@ -94,7 +95,7 @@ Future<Map<String, Object>> collectProcess(
   final arguments = switch (target) {
     'js' => ['build/worker.js'],
     'wasm' => ['build/run-wasm.mjs'],
-    _ => <String>[],
+    _ => workerArguments,
   };
   final process = await Process.start(executable, arguments);
   final output = process.stdout.transform(utf8.decoder).join();

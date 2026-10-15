@@ -1,60 +1,57 @@
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+use crate::identities::{ClassId, TypeId};
+use std::collections::BTreeMap;
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Type {
     Integer,
     Real,
-    String,
-    Character,
     Boolean,
-    Void,
-    Array {
-        element_type: Box<Type>,
-        dimension_count: usize,
-    },
-    Class {
-        class_name: String,
-    },
+    Character,
+    String,
+    Unit,
+    Array { element: TypeId, rank: u32 },
+    Object(ClassId),
     Unknown,
     Error,
 }
 
-impl Type {
-    pub fn is_assignable_from(&self, source_type: &Type, is_strict: bool) -> bool {
-        if *self == Type::Error || *source_type == Type::Error {
-            return true;
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ValueClass {
+    Scalar,
+    Reference,
+    Unit,
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct TypeInterner {
+    pub types: Vec<Type>,
+    indices: BTreeMap<Type, TypeId>,
+}
+
+impl TypeInterner {
+    pub fn intern(&mut self, kind: Type) -> TypeId {
+        if let Some(identifier) = self.indices.get(&kind) {
+            return *identifier;
         }
-        if self == source_type {
-            return true;
-        }
-        if !is_strict && *self == Type::Real && *source_type == Type::Integer {
-            return true;
-        }
-        false
+        let identifier = TypeId(u32::try_from(self.types.len()).unwrap_or(u32::MAX));
+        self.types.push(kind.clone());
+        self.indices.insert(kind, identifier);
+        identifier
     }
 
-    pub fn is_numeric(&self) -> bool {
-        matches!(self, Type::Integer | Type::Real)
+    pub fn get(&self, identifier: TypeId) -> Type {
+        usize::try_from(identifier.0)
+            .ok()
+            .and_then(|index| self.types.get(index))
+            .cloned()
+            .unwrap_or(Type::Error)
     }
 
-    pub fn is_boolean(&self) -> bool {
-        matches!(self, Type::Boolean)
-    }
-
-    pub fn is_error(&self) -> bool {
-        matches!(self, Type::Error)
-    }
-
-    pub fn from_name(type_name: &str) -> Self {
-        let normalized = type_name.trim().to_lowercase();
-        match normalized.as_str() {
-            "entero" | "integer" => Type::Integer,
-            "real" | "numero" | "float" => Type::Real,
-            "cadena" | "texto" | "string" => Type::String,
-            "caracter" | "character" | "char" => Type::Character,
-            "logico" | "booleano" | "boolean" | "bool" => Type::Boolean,
-            "void" | "vacio" => Type::Void,
-            _ => Type::Class {
-                class_name: type_name.to_owned(),
-            },
+    pub fn value_class(&self, identifier: TypeId) -> ValueClass {
+        match self.get(identifier) {
+            Type::String | Type::Array { .. } | Type::Object(_) => ValueClass::Reference,
+            Type::Unit => ValueClass::Unit,
+            _ => ValueClass::Scalar,
         }
     }
 }

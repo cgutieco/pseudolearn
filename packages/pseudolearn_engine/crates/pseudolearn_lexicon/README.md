@@ -2,17 +2,17 @@
 
 ## 1. Qué es y qué no es
 
-Expone vocabularios bilingües generados desde el corpus. Contrato documentado, sin implementación ni manifiesto Cargo.
+Expone vocabularios bilingües y firmas generados desde el corpus. Implementación síncrona sin estado mutable.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R4 |
+| Ninguno en el contrato implementado | — | — |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
+Rust exacto del miembro, rustfmt y Clippy. El build genera tablas en OUT_DIR; no se despliega.
 La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
 La comprobación disponible usa, desde la raíz del monorepo,
 `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
@@ -33,6 +33,10 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 Problema: expone vocabularios bilingües generados desde el corpus respetando los observables del corpus.
 Elección: Tablas generadas de vocabulario y funciones por perfil; **hash perfecto** generado en `build.rs`; normalización de caja y acentos por perfil; identidades de apertura de nivel superior para autodeclarar el vocabulario.
 Alternativas descartadas y fundamento: El hash perfecto generado reconoce palabras sin búsquedas con asignaciones. Se rechaza copiar el vocabulario o usar la grafía de la orden para inferir idioma.
+
+Problema: las firmas copiadas divergen del catálogo. Elección: `build.rs` genera parámetros y retorno
+de cada incorporada desde `LIB.MODEL`, además de los lexemas y alias. Los prefijos de palabras compuestas
+se generan para evitar construir cadenas candidatas en cada identificador. Se rechaza la tabla de firmas manual.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -57,3 +61,8 @@ formato, Clippy, auditoría de dependencias y pruebas diferenciales según los c
 ## 8. Fuentes consultadas y genealogía conceptual
 
 El hash perfecto generado reconoce palabras sin búsquedas con asignaciones. Se rechaza copiar el vocabulario o usar la grafía de la orden para inferir idioma.
+
+Problema medido: el plegado asignaba dos cadenas por cada identificador ASCII. Elección: hash perfecto
+generado sin colisiones, consulta y comparación de caja ASCII sin reservar; NFC y plegado español solo
+para entradas Unicode. El inglés conserva acentos. El prefijo compuesto se consulta sin reservar.
+Se descarta normalizar literales o identificadores del usuario como palabras reservadas.

@@ -5,7 +5,7 @@
   "titulo": "Catálogo bilingüe de diagnósticos",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -31,10 +31,10 @@
   ],
   "cambio": {
     "clase": "ampliacion",
-    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
+    "impacto_usuarios": "Diagnóstico específico al superar el límite portable de anidación del análisis. Los programas dentro del límite no cambian.",
+    "impacto_implementaciones": "Generar analysisNestingLimitExceeded y la ficha internalFault de la barrera pública, sin mensajes manuales.",
+    "justificacion": "Distinguir recursos del análisis de los marcos de ejecución.",
+    "revisado_por": "autorización de la fase R5; autoría automatizada"
   }
 }
 ---
@@ -2570,6 +2570,38 @@
       "tipos_argumentos": {
         "limit": "numero"
       }
+    },
+    "analysisNestingLimitExceeded": {
+      "mensajes": {
+        "es": "Se superó el límite de anidación del análisis: {limit}",
+        "en": "Analysis nesting limit exceeded: {limit}"
+      },
+      "argumentos": [
+        "limit"
+      ],
+      "clase": "syntax",
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
+    "internalFault": {
+      "mensajes": {
+        "es": "Fallo interno del motor",
+        "en": "Internal engine fault"
+      },
+      "argumentos": [],
+      "clase": "internal",
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     }
   }
 }

@@ -1239,16 +1239,16 @@ código; `cargo xtask verify` en verde al terminar cada paso que toca código.
 Bloque de R5 por decisión D-R5-01. Su evidencia lleva prefijo `r5-frontend-`. Ninguna casilla de R4 en 07 se
 modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 
-- [ ] **BF.1 Contratos primero.** Contrato de límites de análisis de §6.4 (D-R5-19): regla, diagnóstico en
+- [x] **BF.1 Contratos primero.** Contrato de límites de análisis de §6.4 (D-R5-19): regla, diagnóstico en
   `DIAG.CATALOG` con ficha bilingüe (skill `diagnostics-authoring`), casos de borde (exactamente en el límite,
   uno por encima, anidación de paréntesis, unarios, potencia y bloques) en los dos perfiles; clasificación,
   impacto, `lock`, `export` y `validate`. Revisar que ningún caso `analyze` en `incumple` estuviera mal derivado
   de su regla; si lo estaba, corregir el caso (nunca para acomodar al sujeto) y registrarlo.
-- [ ] **BF.2 Vistas generadas.** `build.rs` de `syntax` genera clases de nodo y vistas tipadas desde la
+- [x] **BF.2 Vistas generadas.** `build.rs` de `syntax` genera clases de nodo y vistas tipadas desde la
   exportación de `LANG.SYNTAX.GRAMMAR` con un lector validado del subconjunto EBNF normativo. Tests: producción o
   referencia no resuelta rechazada; dos generaciones iguales; exportación desactualizada detectada. Se retira
   el `NodeKind` escrito a mano.
-- [ ] **BF.3 Léxico y recuperación.** Diagnósticos léxicos y sintácticos ausentes de §6.1; fragmentos
+- [x] **BF.3 Léxico y recuperación.** Diagnósticos léxicos y sintácticos ausentes de §6.1; fragmentos
   inválidos sin cascada; recuperación por contextos con progreso garantizado; límite de anidación. Casos de
   `LANG.LEXICAL.*`, `LANG.SYNTAX.*` y `DIAG.CLASSES` en `cumple`; `TOOL.SERVICE.LOSSLESS-TREE` P1–P2 sigue en
   `cumple`.
@@ -1260,11 +1260,11 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 - [ ] **BF.5 API y CLI.** `API.ANALYZE` sobre el nuevo HIR y esquema; mensajes de la CLI generados desde
   `TOOL.CLI.MESSAGES` (se retiran los literales de `messages.rs`); casos `cli` de `comprobar`, `preferencias`,
   convenciones y mensajes en `cumple` en los dos idiomas de interfaz.
-- [ ] **BF.6 Rendimiento y E-08.** Perfil del análisis completo; optimización guiada por el perfil; E-08 repetido
+- [x] **BF.6 Rendimiento y E-08.** Perfil del análisis completo; optimización guiada por el perfil; E-08 repetido
   con `PERF.PROTOCOL` completo (diez procesos, treinta iteraciones, datos crudos, intervalos, procedencia) en
   `packages/pseudolearn_benchmarks/results/e08r/` y `results/r5-frontend-e08.json`. Criterios: ≥ 10⁶ líneas/s
   (`PERF.FRONTEND.THROUGHPUT`) y p95 ≤ 16 ms en 10 000 líneas. Escalera RR-15 si falla.
-- [ ] **BF.7 Robustez.** Texto vacío, solo trivia, binario inválido, Unicode NFD, texto aleatorio y anidación
+- [x] **BF.7 Robustez.** Texto vacío, solo trivia, binario inválido, Unicode NFD, texto aleatorio y anidación
   extrema en procesos aislados: cero pánicos, abortos o bloqueos; `DIAG.ENGINE.INTERNAL-FAULT` nunca en el corpus.
 - [ ] **BF.8 Puerta del bloque.** `see conform --subject engine --operation analyze`: **cero** `incumple`,
   `pendiente` o `no_aplicable` exigibles en todas las combinaciones de perfil y rigor; casos `cli` de las órdenes
@@ -1571,5 +1571,9 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 ## 14. Estado
 
 R5 autorizada el 2026-10-15. B0 y E-02R ejecutados; RC-01 resuelto con la evidencia de B1.1–B1.3.
+El análisis supera 524 observaciones sin divergencias y E-08 cumple el protocolo con 8.400 muestras.
+BF continúa con las invariantes del HIR; las órdenes de ejecución y RI de la CLI siguen pendientes.
+El análisis supera 524 observaciones sin divergencias y E-08 cumple el protocolo con 8.400 muestras.
+BF continúa con las invariantes del HIR; las órdenes de ejecución y RI de la CLI siguen pendientes.
 La deuda de R4 pertenece a BF y R4 sigue cerrada. Las demás casillas se conservan pendientes
 hasta ejecutar su verificación. La fase permanece abierta.

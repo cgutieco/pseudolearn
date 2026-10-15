@@ -2,7 +2,7 @@
   {
     "binding": "pendiente",
     "cases": 5,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CHECK@0.1.0#R1",
@@ -42,7 +42,7 @@
   {
     "binding": "pendiente",
     "cases": 3,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R3",
@@ -52,7 +52,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R4",
@@ -82,7 +82,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.1.0#R7",

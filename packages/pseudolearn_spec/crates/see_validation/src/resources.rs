@@ -1,8 +1,10 @@
 use see_model::{Specification, field};
 use serde_json::Value;
 
+pub mod analysis_limits;
 pub mod grammar;
 pub mod lexicon;
+pub mod structural;
 
 pub fn check(specification: &Specification) -> Vec<String> {
     let mut errors = Vec::new();
@@ -18,6 +20,8 @@ pub fn check(specification: &Specification) -> Vec<String> {
             "vocabulary" | "functions" => lexicon::check(value),
             "diagnostics" => diagnostics(value),
             "grammar" => grammar::check(value),
+            "analysisLimits" => analysis_limits::check(value),
+            "unsupportedConstructs" => structural::check(value),
             crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
             crate::cli::CONVENTIONS_TERM => crate::cli::conventions(value),
             name => Err(format!("Unknown normative resource {name}")),

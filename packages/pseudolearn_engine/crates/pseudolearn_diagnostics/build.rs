@@ -1,3 +1,5 @@
+#[path = "codegen/policy.rs"]
+mod policy;
 use std::path::Path;
 
 fn main() {
@@ -27,7 +29,7 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_as_str_methods(diagnostics));
     code.push_str(&generate_from_name_methods(diagnostics));
     code.push_str(&generate_template_methods(diagnostics));
-    code.push_str(&generate_class_methods(diagnostics));
+    code.push_str(&policy::generate(diagnostics)?);
 
     std::fs::write(destination, code)?;
     Ok(())
@@ -161,56 +163,6 @@ fn format_template_arms(chunk: &[(&String, &serde_json::Value)]) -> String {
         let escaped_en = english_text.replace('\\', "\\\\").replace('"', "\\\"");
         arms.push_str(&format!(
             "            Self::{pascal} => Some(if locale == \"en\" {{ \"{escaped_en}\" }} else {{ \"{escaped_es}\" }}),\n"
-        ));
-    }
-    arms
-}
-
-fn generate_class_methods(diagnostics: &serde_json::Map<String, serde_json::Value>) -> String {
-    let items: Vec<(&String, &serde_json::Value)> = diagnostics.iter().collect();
-    let chunks: Vec<&[(&String, &serde_json::Value)]> = items.chunks(35).collect();
-    let mut code = String::new();
-    code.push_str("impl DiagnosticCode {\n");
-    code.push_str("    pub fn default_class(&self) -> DiagnosticClass {\n");
-    for index in 0..chunks.len() {
-        code.push_str(&format!(
-            "        if let Some(class) = self.class_part_{index}() {{ return class; }}\n"
-        ));
-    }
-    code.push_str("        DiagnosticClass::Internal\n");
-    code.push_str("    }\n\n");
-
-    for (index, chunk) in chunks.iter().enumerate() {
-        code.push_str(&format!(
-            "    fn class_part_{index}(&self) -> Option<DiagnosticClass> {{\n"
-        ));
-        code.push_str("        match self {\n");
-        code.push_str(&format_class_arms(chunk));
-        code.push_str("            _ => None,\n");
-        code.push_str("        }\n");
-        code.push_str("    }\n\n");
-    }
-    code.push_str("}\n");
-    code
-}
-
-fn format_class_arms(chunk: &[(&String, &serde_json::Value)]) -> String {
-    let mut arms = String::new();
-    for (identifier, entry_value) in chunk {
-        let pascal = to_pascal_case(identifier);
-        let class_str = entry_value
-            .get("clase")
-            .and_then(serde_json::Value::as_str)
-            .unwrap_or("semantic");
-        let class_variant = match class_str {
-            "lexical" => "DiagnosticClass::Lexical",
-            "syntactic" => "DiagnosticClass::Syntactic",
-            "semantic" => "DiagnosticClass::Semantic",
-            "resource" => "DiagnosticClass::Resource",
-            _ => "DiagnosticClass::Internal",
-        };
-        arms.push_str(&format!(
-            "            Self::{pascal} => Some({class_variant}),\n"
         ));
     }
     arms

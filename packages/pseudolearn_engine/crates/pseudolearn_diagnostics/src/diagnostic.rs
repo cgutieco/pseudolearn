@@ -8,6 +8,7 @@ pub enum DiagnosticClass {
     Syntactic,
     Semantic,
     Resource,
+    Runtime,
     Internal,
 }
 
@@ -15,9 +16,10 @@ impl DiagnosticClass {
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Lexical => "lexical",
-            Self::Syntactic => "syntactic",
+            Self::Syntactic => "syntax",
             Self::Semantic => "semantic",
             Self::Resource => "resource",
+            Self::Runtime => "runtime",
             Self::Internal => "internal",
         }
     }
@@ -55,7 +57,7 @@ impl Diagnostic {
         Self {
             code,
             class: code.default_class(),
-            severity: DiagnosticSeverity::Error,
+            severity: code.severity("estricto"),
             span,
             related: Vec::new(),
             arguments: BTreeMap::new(),

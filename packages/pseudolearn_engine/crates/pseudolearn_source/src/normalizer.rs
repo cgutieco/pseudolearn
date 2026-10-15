@@ -10,6 +10,10 @@ impl IdentifierNormalizer {
         text.nfc().collect::<String>()
     }
 
+    pub fn is_continuation(character: char) -> bool {
+        unicode_ident::is_xid_continue(character)
+    }
+
     pub fn equals(first: &str, second: &str) -> bool {
         if first == second {
             return true;

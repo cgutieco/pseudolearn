@@ -167,6 +167,7 @@
       "LANG.SUBPROGRAM.SCOPE"
     ],
     "LANG.SYNTAX": [
+      "LANG.SYNTAX.ANALYSIS-LIMITS",
       "LANG.SYNTAX.GRAMMAR",
       "LANG.SYNTAX.RECOVERY"
     ],
@@ -280,6 +281,9 @@
   },
   "format": "see-export/1",
   "resources": {
+    "analysisLimits": {
+      "nesting": 256
+    },
     "cliConventions": {
       "aperturas": [
         "algorithm",
@@ -668,6 +672,24 @@
       }
     },
     "diagnostics": {
+      "analysisNestingLimitExceeded": {
+        "argumentos": [
+          "limit"
+        ],
+        "clase": "syntax",
+        "mensajes": {
+          "en": "Analysis nesting limit exceeded: {limit}",
+          "es": "Se superó el límite de anidación del análisis: {limit}"
+        },
+        "politica": "A",
+        "severidad": {
+          "estricto": "error",
+          "flexible": "error"
+        },
+        "tipos_argumentos": {
+          "limit": "numero"
+        }
+      },
       "argumentCountMismatch": {
         "argumentos": [
           "expected",
@@ -1730,6 +1752,20 @@
         "mensajes": {
           "en": "The operation produces an integer outside the signed 64-bit range",
           "es": "La operación produce un entero fuera del rango de 64 bits con signo"
+        },
+        "politica": "A",
+        "severidad": {
+          "estricto": "error",
+          "flexible": "error"
+        },
+        "tipos_argumentos": {}
+      },
+      "internalFault": {
+        "argumentos": [],
+        "clase": "internal",
+        "mensajes": {
+          "en": "Internal engine fault",
+          "es": "Fallo interno del motor"
         },
         "politica": "A",
         "severidad": {
@@ -3639,6 +3675,77 @@
         "datos": []
       }
     },
+    "unsupportedConstructs": {
+      "abstract": {
+        "allow_line": false,
+        "closings": [
+          "FinClase",
+          "endClass"
+        ],
+        "code": "unsupportedAbstractConstruct",
+        "openings": [
+          "Abstracta",
+          "Abstracto",
+          "abstract"
+        ]
+      },
+      "exception": {
+        "allow_line": true,
+        "closings": [
+          "FinIntentar",
+          "endTry"
+        ],
+        "code": "unsupportedExceptionConstruct",
+        "openings": [
+          "Intentar",
+          "try"
+        ]
+      },
+      "generic": {
+        "allow_line": false,
+        "closings": [],
+        "code": "unsupportedGenericsConstruct",
+        "openings": [
+          "Generico",
+          "Genérico",
+          "generic"
+        ]
+      },
+      "interface": {
+        "allow_line": false,
+        "closings": [
+          "FinInterfaz",
+          "endInterface"
+        ],
+        "code": "unsupportedInterfaceConstruct",
+        "openings": [
+          "Interfaz",
+          "interface"
+        ]
+      },
+      "protected": {
+        "allow_line": false,
+        "closings": [],
+        "code": "unsupportedProtectedConstruct",
+        "openings": [
+          "Protegido",
+          "protected"
+        ]
+      },
+      "static": {
+        "allow_line": false,
+        "closings": [
+          "FinMetodo",
+          "endMethod"
+        ],
+        "code": "unsupportedStaticConstruct",
+        "openings": [
+          "Estatico",
+          "Estático",
+          "static"
+        ]
+      }
+    },
     "vocabulary": {
       "algorithm": {
         "alias": {
@@ -5460,6 +5567,24 @@
             "termino": "diagnostics",
             "texto": "Fichas de diagnóstico y plantillas de presentación de la edición vigente.",
             "valor": {
+              "analysisNestingLimitExceeded": {
+                "argumentos": [
+                  "limit"
+                ],
+                "clase": "syntax",
+                "mensajes": {
+                  "en": "Analysis nesting limit exceeded: {limit}",
+                  "es": "Se superó el límite de anidación del análisis: {limit}"
+                },
+                "politica": "A",
+                "severidad": {
+                  "estricto": "error",
+                  "flexible": "error"
+                },
+                "tipos_argumentos": {
+                  "limit": "numero"
+                }
+              },
               "argumentCountMismatch": {
                 "argumentos": [
                   "expected",
@@ -6522,6 +6647,20 @@
                 "mensajes": {
                   "en": "The operation produces an integer outside the signed 64-bit range",
                   "es": "La operación produce un entero fuera del rango de 64 bits con signo"
+                },
+                "politica": "A",
+                "severidad": {
+                  "estricto": "error",
+                  "flexible": "error"
+                },
+                "tipos_argumentos": {}
+              },
+              "internalFault": {
+                "argumentos": [],
+                "clase": "internal",
+                "mensajes": {
+                  "en": "Internal engine fault",
+                  "es": "Fallo interno del motor"
                 },
                 "politica": "A",
                 "severidad": {
@@ -8053,14 +8192,14 @@
           "kind": "caso"
         }
       ],
-      "hash": "88a383ef9c675089d61648c62540f1f93faa9c8ce3688a8b67885c2972082529",
+      "hash": "3c862b204aeeeb950a4c2387c4b09bbc1842d5a99f61b7c5bcf3315423caf96f",
       "metadata": {
         "cambio": {
           "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "impacto_implementaciones": "Generar analysisNestingLimitExceeded y la ficha internalFault de la barrera pública, sin mensajes manuales.",
+          "impacto_usuarios": "Diagnóstico específico al superar el límite portable de anidación del análisis. Los programas dentro del límite no cambian.",
+          "justificacion": "Distinguir recursos del análisis de los marcos de ejecución.",
+          "revisado_por": "autorización de la fase R5; autoría automatizada"
         },
         "depende_de": [
           {
@@ -8094,7 +8233,7 @@
         ],
         "titulo": "Catálogo bilingüe de diagnósticos",
         "titulo_en": null,
-        "version": "0.3.0"
+        "version": "0.5.0"
       }
     },
     {
@@ -16818,7 +16957,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
+            "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
             "verificacion": [
               "C1",
               "C2"
@@ -16880,16 +17019,95 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "id": "D1",
+            "termino": "unsupportedConstructs",
+            "texto": "Formas reconocibles solo en posición estructural; no son palabras reservadas.",
+            "valor": {
+              "abstract": {
+                "allow_line": false,
+                "closings": [
+                  "FinClase",
+                  "endClass"
+                ],
+                "code": "unsupportedAbstractConstruct",
+                "openings": [
+                  "Abstracta",
+                  "Abstracto",
+                  "abstract"
+                ]
+              },
+              "exception": {
+                "allow_line": true,
+                "closings": [
+                  "FinIntentar",
+                  "endTry"
+                ],
+                "code": "unsupportedExceptionConstruct",
+                "openings": [
+                  "Intentar",
+                  "try"
+                ]
+              },
+              "generic": {
+                "allow_line": false,
+                "closings": [],
+                "code": "unsupportedGenericsConstruct",
+                "openings": [
+                  "Generico",
+                  "Genérico",
+                  "generic"
+                ]
+              },
+              "interface": {
+                "allow_line": false,
+                "closings": [
+                  "FinInterfaz",
+                  "endInterface"
+                ],
+                "code": "unsupportedInterfaceConstruct",
+                "openings": [
+                  "Interfaz",
+                  "interface"
+                ]
+              },
+              "protected": {
+                "allow_line": false,
+                "closings": [],
+                "code": "unsupportedProtectedConstruct",
+                "openings": [
+                  "Protegido",
+                  "protected"
+                ]
+              },
+              "static": {
+                "allow_line": false,
+                "closings": [
+                  "FinMetodo",
+                  "endMethod"
+                ],
+                "code": "unsupportedStaticConstruct",
+                "openings": [
+                  "Estatico",
+                  "Estático",
+                  "static"
+                ]
+              }
+            }
+          },
+          "kind": "definicion"
         }
       ],
-      "hash": "73d56caceff854e7bf01cf9ca2519baf80999ae0a3471e46752d5243e8bf04f3",
+      "hash": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Generar el reconocimiento estructural desde D1, sin lexemas copiados en el parser.",
+          "impacto_usuarios": "Hace explícitas las formas pedagógicas ya excluidas sin reservar nombres ordinarios.",
+          "justificacion": "Conservar la frontera entre palabras reservadas y formas estructurales no admitidas.",
+          "revisado_por": "autorización de la fase R5; autoría automatizada"
         },
         "depende_de": [
           {
@@ -16918,7 +17136,7 @@
         ],
         "titulo": "Diagnósticos de construcciones ajenas a la edición",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {
@@ -20220,10 +20438,6 @@
                 {
                   "codigo": "integerLiteralOutOfRange",
                   "severidad": "error"
-                },
-                {
-                  "codigo": "expectedExpression",
-                  "severidad": "error"
                 }
               ]
             },
@@ -20247,14 +20461,14 @@
           "kind": "caso"
         }
       ],
-      "hash": "71b4db1cb562bcbc6224c5dea6e4d0112c167b7280ef177ec20f4746bdbaaa6d",
+      "hash": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
       "metadata": {
         "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-          "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-          "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-          "revisado_por": "autoría automatizada; no revisión humana independiente"
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Suprimir expectedExpression derivado del mismo literal inválido.",
+          "impacto_usuarios": "Un literal fuera de rango produce un único diagnóstico principal, con cualquier signo precedente.",
+          "justificacion": "La regla define el signo separado y el rango del literal; DIAG.CLASSES y la recuperación prohíben duplicar el fallo por sincronización.",
+          "revisado_por": "autorización de la remediación de R5; derivación de la regla"
         },
         "depende_de": [
           {
@@ -20283,7 +20497,7 @@
         ],
         "titulo": "Literales numéricos",
         "titulo_en": null,
-        "version": "0.2.0"
+        "version": "0.3.0"
       }
     },
     {
@@ -24842,6 +25056,350 @@
         "titulo": "Ámbitos y nombres",
         "titulo_en": null,
         "version": "0.2.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "id": "D1",
+            "termino": "analysisLimits",
+            "texto": "Límite portable común a todos los consumidores.",
+            "valor": {
+              "nesting": 256
+            }
+          },
+          "kind": "definicion"
+        },
+        {
+          "fields": {
+            "clase": "sintactica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Se admiten hasta D1.nesting construcciones simultáneamente anidadas. Cada paréntesis de agrupación, operador unario, potencia cuyo operando derecho contiene otra potencia y sentencia compuesta abre un nivel; unidades y listas no añaden un nivel. El primer nivel que excede la cota produce analysisNestingLimitExceeded, clase syntax, severidad error en ambos rigores, argumento limit y tramo del símbolo o apertura que lo excede. Se conserva el árbol recuperable, no se agregan cierres derivados del rechazo y ninguna profundidad agota la pila del anfitrión. El valor es un recurso del análisis, independiente de ENG.LIMITS.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite",
+              "parentheses"
+            ],
+            "id": "C1",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((1))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((1))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": [
+                {
+                  "argumentos": {
+                    "limit": "256"
+                  },
+                  "clase": "syntax",
+                  "codigo": "analysisNestingLimitExceeded",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite",
+              "parentheses"
+            ],
+            "id": "C2",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite (((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((1)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir (((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((1)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite",
+              "unary"
+            ],
+            "id": "C3",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": [
+                {
+                  "argumentos": {
+                    "limit": "256"
+                  },
+                  "clase": "syntax",
+                  "codigo": "analysisNestingLimitExceeded",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite",
+              "unary"
+            ],
+            "id": "C4",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite",
+              "power"
+            ],
+            "id": "C5",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": [
+                {
+                  "argumentos": {
+                    "limit": "256"
+                  },
+                  "clase": "syntax",
+                  "codigo": "analysisNestingLimitExceeded",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite",
+              "power"
+            ],
+            "id": "C6",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nwrite 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1;\nendAlgorithm\n",
+              "es": "Algoritmo P\nEscribir 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1 ^ 1;\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": []
+            },
+            "etiquetas": [
+              "limite",
+              "blocks"
+            ],
+            "id": "C7",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendAlgorithm\n",
+              "es": "Algoritmo P\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "diagnosticos": [
+                {
+                  "argumentos": {
+                    "limit": "256"
+                  },
+                  "clase": "syntax",
+                  "codigo": "analysisNestingLimitExceeded",
+                  "severidad": "error"
+                }
+              ]
+            },
+            "etiquetas": [
+              "limite",
+              "blocks"
+            ],
+            "id": "C8",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programas": {
+              "en": "algorithm P\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nif true then\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendIf\nendAlgorithm\n",
+              "es": "Algoritmo P\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nSi Verdadero Entonces\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinSi\nFinAlgoritmo\n"
+            },
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+      "metadata": {
+        "cambio": {
+          "clase": "restriccion",
+          "impacto_implementaciones": "Contar construcciones anidadas antes de descender y emitir el diagnóstico propio sin cascadas.",
+          "impacto_usuarios": "Hace explícito el límite de recursos del análisis; ninguna construcción nueva.",
+          "justificacion": "Garantizar rechazo total y portable antes de agotar la pila.",
+          "revisado_por": "autorización de la fase R5; autoría automatizada"
+        },
+        "depende_de": [
+          {
+            "id": "LANG.SYNTAX.GRAMMAR",
+            "tipo": "usa",
+            "version": ">=0.2.0, <1.0.0"
+          },
+          {
+            "id": "DIAG.CATALOG",
+            "tipo": "usa",
+            "version": ">=0.4.0, <1.0.0"
+          }
+        ],
+        "dominio": "lenguaje",
+        "duenos": [
+          "responsable-lenguaje"
+        ],
+        "edicion": {
+          "introducida_en": "2026"
+        },
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "LANG.SYNTAX.ANALYSIS-LIMITS",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "La profundidad de análisis se limita explícitamente sin agotar la pila del anfitrión.",
+        "revisado_por": [],
+        "sujetos": [
+          "engine"
+        ],
+        "titulo": "Límite portable de anidación del análisis",
+        "titulo_en": null,
+        "version": "0.1.0"
       }
     },
     {

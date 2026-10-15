@@ -2,7 +2,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "API.ANALYZE@0.1.0#R1",
@@ -25,7 +25,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.CATALOG@0.3.0#R1",
+    "rule": "DIAG.CATALOG@0.5.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
@@ -42,7 +42,7 @@
   {
     "binding": "pendiente",
     "cases": 6,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "DIAG.CLASSES@0.2.0#R2",
@@ -82,7 +82,7 @@
   {
     "binding": "pendiente",
     "cases": 12,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "DIAG.ORDERING@0.2.0#R1",
@@ -92,7 +92,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "DIAG.SEVERITY.POLICY@0.2.0#R1",
@@ -102,7 +102,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.ARRAY.ACCESS@0.2.0#R1",
@@ -112,7 +112,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.ARRAY.DIMENSION@0.2.0#R1",
@@ -122,7 +122,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
@@ -132,7 +132,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.COPY@0.2.0#R1",
@@ -142,7 +142,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.DECLARATION@0.2.0#R1",
@@ -152,7 +152,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.FIELDS@0.2.0#R1",
@@ -162,7 +162,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.INHERITANCE@0.2.0#R1",
@@ -172,7 +172,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
@@ -182,7 +182,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
@@ -192,7 +192,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.METHODS@0.2.0#R1",
@@ -202,17 +202,17 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
+    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.OVERRIDE@0.2.0#R1",
@@ -222,7 +222,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
@@ -272,7 +272,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.0#R5",
@@ -282,7 +282,7 @@
   {
     "binding": "pendiente",
     "cases": 6,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.0#R6",
@@ -292,7 +292,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.IF@0.2.0#R1",
@@ -302,7 +302,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.REPEAT@0.2.0#R1",
@@ -312,7 +312,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.SWITCH@0.2.0#R1",
@@ -332,7 +332,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.DECL.DESIGNATOR@0.2.0#R1",
@@ -342,7 +342,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
@@ -352,7 +352,7 @@
   {
     "binding": "pendiente",
     "cases": 12,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.DECL.UNUSED@0.2.0#R1",
@@ -362,7 +362,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.DECL.VARIABLE@0.2.0#R1",
@@ -372,7 +372,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.EDITION.MODEL@0.2.0#R1",
@@ -392,7 +392,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.IO.OUTPUT@0.2.0#R1",
@@ -402,7 +402,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.IO.VALUE-FORMAT@0.2.0#R1",
@@ -412,7 +412,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
@@ -422,7 +422,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.COMMENT@0.2.0#R1",
@@ -432,7 +432,7 @@
   {
     "binding": "pendiente",
     "cases": 12,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.ERRORS@0.2.0#R1",
@@ -442,7 +442,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
@@ -452,7 +452,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
@@ -462,17 +462,17 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
+    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
@@ -482,7 +482,7 @@
   {
     "binding": "pendiente",
     "cases": 6,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
@@ -502,7 +502,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.OPS.COMPARISON@0.2.0#R1",
@@ -512,7 +512,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.OPS.CONCATENATION@0.2.0#R1",
@@ -522,7 +522,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.OPS.DIVISION@0.2.0#R1",
@@ -542,7 +542,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.OPS.PRECEDENCE@0.2.0#R1",
@@ -562,7 +562,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
@@ -572,7 +572,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
@@ -582,7 +582,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
@@ -592,7 +592,7 @@
   {
     "binding": "pendiente",
     "cases": 16,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
@@ -622,7 +622,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SOURCE.POSITION@0.2.0#R1",
@@ -632,7 +632,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
@@ -642,7 +642,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.STMT.TERMINATION@0.2.0#R1",
@@ -652,7 +652,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
@@ -662,7 +662,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
@@ -672,7 +672,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
@@ -682,7 +682,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
@@ -692,7 +692,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
@@ -702,7 +702,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
@@ -712,7 +712,7 @@
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
@@ -720,9 +720,19 @@
     "subject": "engine"
   },
   {
+    "binding": "sin vinculo",
+    "cases": 32,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.ANALYSIS-LIMITS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
@@ -732,7 +742,7 @@
   {
     "binding": "pendiente",
     "cases": 6,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
@@ -742,7 +752,7 @@
   {
     "binding": "pendiente",
     "cases": 10,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
@@ -762,7 +772,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
@@ -772,7 +782,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
@@ -782,7 +792,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.ARRAY@0.2.0#R1",
@@ -802,7 +812,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
@@ -812,7 +822,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.CLASS@0.2.0#R1",
@@ -822,7 +832,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.INFERENCE@0.2.0#R1",
@@ -832,7 +842,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.RELATIONS@0.2.0#R1",
@@ -842,7 +852,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
@@ -852,7 +862,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.COPY@0.2.0#R1",
@@ -862,7 +872,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.MATH@0.2.0#R1",
@@ -872,7 +882,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.RANDOM@0.2.0#R1",
@@ -882,7 +892,7 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
@@ -892,7 +902,7 @@
   {
     "binding": "pendiente",
     "cases": 8,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "LIB.MODEL@0.2.0#R1",

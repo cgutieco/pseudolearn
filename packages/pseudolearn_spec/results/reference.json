@@ -1,6 +1,6 @@
 {
   "corpus_hashes": {
-    "DIAG.CATALOG": "88a383ef9c675089d61648c62540f1f93faa9c8ce3688a8b67885c2972082529",
+    "DIAG.CATALOG": "3c862b204aeeeb950a4c2387c4b09bbc1842d5a99f61b7c5bcf3315423caf96f",
     "DIAG.CLASSES": "53b4a34784ff0ed8e4e8485340173a66954131f6da6566724bd8c102277a6199",
     "DIAG.ENGINE.INTERNAL-FAULT": "0fa388aff0f358adc9dafa43132941a4573f38a2be24807043fbc1053f8aea15",
     "DIAG.MESSAGES": "ca86d1306f05512933d4b95769d56a651cc3264643b611c8d7531eb132e9b2eb",
@@ -20,7 +20,7 @@
     "LANG.CLASS.INSTANTIATION": "ab40eee10a687827a2ab0d955286282f9392c21303996c37444b24a99bf670c9",
     "LANG.CLASS.MEMBER-ACCESS": "ffc915eac7dfbb07957499a294cc5d483429f133e290e2cca2e2745b15366b10",
     "LANG.CLASS.METHODS": "87b8bc1a7957a1ca8d48a07d101c0bea7d703d2df558c9c022ddf44a244d717c",
-    "LANG.CLASS.OUT-OF-SCOPE": "73d56caceff854e7bf01cf9ca2519baf80999ae0a3471e46752d5243e8bf04f3",
+    "LANG.CLASS.OUT-OF-SCOPE": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
     "LANG.CLASS.OVERRIDE": "d5558277813c7df3c67586c1060ca3336f0a3958ae798ba12f9f4b60fbb7c6f1",
     "LANG.CLASS.SELF-AND-SUPER": "f6af8c0cb84b61edde118308a820541027fa79a1888f6fe66c8158dfcfc75533",
     "LANG.CONTROL.FOR": "0bca8d3456e632576b06ad512c84fac69e2042b76fdc7ecc68371153559b7575",
@@ -41,7 +41,7 @@
     "LANG.LEXICAL.ERRORS": "a8d9f04fb9e803592315289738983681da8871c6a5a74f6b991b6095e93dd582",
     "LANG.LEXICAL.IDENTIFIER": "82906e20c938e44b9cffeb90f897a572f4c5eb15e3dfa759aca1bb04d0b5b3e7",
     "LANG.LEXICAL.KEYWORD": "6b1f5b101fbc9f7736d0ac745ba9a391856217557a534420b2c50b35369663bc",
-    "LANG.LEXICAL.NUMBER-LITERAL": "71b4db1cb562bcbc6224c5dea6e4d0112c167b7280ef177ec20f4746bdbaaa6d",
+    "LANG.LEXICAL.NUMBER-LITERAL": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
     "LANG.LEXICAL.OPERATOR-TOKEN": "addeb5ddbfd6d28ad99f385b32500081d4be2cf75967ca4591801c2be48f4597",
     "LANG.LEXICAL.TEXT-LITERAL": "1fa39b1756120048b406192f4ff9e364ae735b7a3eaa72f35ee3912c9ea01a0c",
     "LANG.LEXICAL.WHITESPACE": "37d3351a1e8cd2a61b1e920f2f454300dbc9aa8b4725846ac2492c3e97e4a32e",
@@ -23365,10 +23365,6 @@
           {
             "codigo": "integerLiteralOutOfRange",
             "severidad": "error"
-          },
-          {
-            "codigo": "expectedExpression",
-            "severidad": "error"
           }
         ]
       },
@@ -23447,10 +23443,6 @@
         "diagnosticos": [
           {
             "codigo": "integerLiteralOutOfRange",
-            "severidad": "error"
-          },
-          {
-            "codigo": "expectedExpression",
             "severidad": "error"
           }
         ]
@@ -23531,10 +23523,6 @@
           {
             "codigo": "integerLiteralOutOfRange",
             "severidad": "error"
-          },
-          {
-            "codigo": "expectedExpression",
-            "severidad": "error"
           }
         ]
       },
@@ -23613,10 +23601,6 @@
         "diagnosticos": [
           {
             "codigo": "integerLiteralOutOfRange",
-            "severidad": "error"
-          },
-          {
-            "codigo": "expectedExpression",
             "severidad": "error"
           }
         ]

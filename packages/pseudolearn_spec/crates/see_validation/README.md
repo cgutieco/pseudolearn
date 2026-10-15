@@ -19,6 +19,14 @@ Las definiciones admiten valor como objeto normativo. Los casos admiten semilla 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
+Problema: el límite portable de análisis debe llegar a los consumidores como dato validado.
+Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo representable en u32.
+La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
+y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
+
+El recurso `unsupportedConstructs` valida aperturas, cierres, diagnóstico y forma de apertura.
+Son datos no reservados; el parser solo reconoce su posición estructural.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.

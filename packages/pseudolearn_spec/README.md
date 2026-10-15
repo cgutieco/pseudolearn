@@ -145,6 +145,11 @@ Identidades permanentes de evidencia, independientes de la investigación transi
 | REF-RETURN-EXIT | La sentencia Retornar no produce statement_exited antes del evento return de su llamada. | R5 |
 | REF-UNICODE-CHARACTER | Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. | R4 |
 
+Problema: el límite portable de análisis debe llegar a los consumidores como dato validado.
+Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo representable en u32.
+La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
+y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés sin comentarios, doc/allow/expect, unsafe ni pánicos explícitos. Fallos esperables

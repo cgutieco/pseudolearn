@@ -1,89 +1,36 @@
-use crate::model::{AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiSpan};
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity, render, sort_diagnostics};
+use crate::model::{AnalyzeRequest, AnalyzeResponse};
+use pseudolearn_diagnostics::{DiagnosticCode, sort_diagnostics};
 use pseudolearn_lexicon::Profile;
-use pseudolearn_semantic::analyze_semantics;
+use pseudolearn_semantic::{SemanticOptions, analyze_with_options};
 use pseudolearn_source::SourceText;
-use pseudolearn_syntax::parse_source;
-use std::collections::BTreeMap;
+use pseudolearn_syntax::parse_source_with_terminator;
 
 pub fn execute_analyze(request: &AnalyzeRequest) -> AnalyzeResponse {
-    let execution_result = std::panic::catch_unwind(|| perform_analysis(request));
-    match execution_result {
-        Ok(response) => response,
-        Err(_) => fallback_internal_fault(),
-    }
+    std::panic::catch_unwind(|| perform_analysis(request))
+        .unwrap_or_else(|_| crate::diagnostic_conversion::internal_fault())
 }
 
 fn perform_analysis(request: &AnalyzeRequest) -> AnalyzeResponse {
-    let profile = if request.profile.trim().to_lowercase() == "en" {
-        Profile::English
-    } else {
-        Profile::Spanish
-    };
-    let is_strict = request.strictness.trim().to_lowercase() != "flexible";
-    let source_text = SourceText::new(request.program.clone());
-    let (syntax_tree, mut diagnostics) = parse_source(&source_text, profile);
-    let (_, mut semantic_diagnostics) = analyze_semantics(&syntax_tree, &source_text, is_strict);
-    diagnostics.append(&mut semantic_diagnostics);
+    let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
+    let strict = request.strictness != "flexible";
+    let source = SourceText::new(request.program.clone());
+    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
+    let (tree, mut diagnostics) = parse_source_with_terminator(&source, profile, terminator);
+    if !tree.has_errors {
+        let (_, mut semantic) =
+            analyze_with_options(&tree, &source, SemanticOptions { profile, strict });
+        diagnostics.append(&mut semantic);
+    }
     sort_diagnostics(&mut diagnostics);
-
-    let locale = if profile == Profile::English {
-        "en"
-    } else {
-        "es"
-    };
-    let api_diagnostics = convert_diagnostics(&diagnostics, locale);
-    AnalyzeResponse::new(true, api_diagnostics)
-}
-
-fn convert_diagnostics(diagnostics: &[Diagnostic], locale: &str) -> Vec<ApiDiagnostic> {
-    diagnostics
+    let converted = diagnostics
         .iter()
         .map(|diagnostic| {
-            let severity_string = match diagnostic.severity {
-                DiagnosticSeverity::Warning => "warning".to_owned(),
-                DiagnosticSeverity::Information => "info".to_owned(),
-                DiagnosticSeverity::Error => "error".to_owned(),
-            };
-            let span = ApiSpan {
-                start: diagnostic.span.start,
-                ending: diagnostic.span.ending,
-            };
-            let related_spans = diagnostic
-                .related
-                .iter()
-                .map(|related_span| ApiSpan {
-                    start: related_span.start,
-                    ending: related_span.ending,
-                })
-                .collect();
-            ApiDiagnostic {
-                code: diagnostic.code.as_str().to_owned(),
-                class: diagnostic.class.as_str().to_owned(),
-                severity: severity_string,
-                message: render(diagnostic, locale),
-                span,
-                arguments: diagnostic.arguments.clone(),
-                related: related_spans,
-            }
+            crate::diagnostic_conversion::convert(diagnostic, &source, profile.as_str())
         })
-        .collect()
-}
-
-fn fallback_internal_fault() -> AnalyzeResponse {
-    let internal_fault = ApiDiagnostic {
-        code: "internalFault".to_owned(),
-        class: "internal".to_owned(),
-        severity: "error".to_owned(),
-        message: "Internal engine fault".to_owned(),
-        span: ApiSpan {
-            start: 0,
-            ending: 0,
-        },
-        arguments: BTreeMap::new(),
-        related: Vec::new(),
-    };
-    AnalyzeResponse::new(false, vec![internal_fault])
+        .collect();
+    let mut response = AnalyzeResponse::new(true, converted);
+    response.schema = crate::diagnostic_conversion::schema(&tree, &source);
+    response
 }
 
 pub fn detect_vocabulary_profile(source: &str) -> Option<&'static str> {

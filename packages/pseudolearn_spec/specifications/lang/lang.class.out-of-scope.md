@@ -5,7 +5,7 @@
   "titulo": "Diagnósticos de construcciones ajenas a la edición",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -25,11 +25,11 @@
     }
   ],
   "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
+    "clase": "aclaracion",
+    "impacto_usuarios": "Hace explícitas las formas pedagógicas ya excluidas sin reservar nombres ordinarios.",
+    "impacto_implementaciones": "Generar el reconocimiento estructural desde D1, sin lexemas copiados en el parser.",
+    "justificacion": "Conservar la frontera entre palabras reservadas y formas estructurales no admitidas.",
+    "revisado_por": "autorización de la fase R5; autoría automatizada"
   }
 }
 ---
@@ -41,7 +41,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
+  "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
   "verificacion": [
     "C1",
     "C2"
@@ -101,5 +101,84 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```definicion
+{
+  "id": "D1",
+  "termino": "unsupportedConstructs",
+  "texto": "Formas reconocibles solo en posición estructural; no son palabras reservadas.",
+  "valor": {
+    "interface": {
+      "code": "unsupportedInterfaceConstruct",
+      "openings": [
+        "Interfaz",
+        "interface"
+      ],
+      "closings": [
+        "FinInterfaz",
+        "endInterface"
+      ],
+      "allow_line": false
+    },
+    "abstract": {
+      "code": "unsupportedAbstractConstruct",
+      "openings": [
+        "Abstracta",
+        "Abstracto",
+        "abstract"
+      ],
+      "closings": [
+        "FinClase",
+        "endClass"
+      ],
+      "allow_line": false
+    },
+    "static": {
+      "code": "unsupportedStaticConstruct",
+      "openings": [
+        "Estatico",
+        "Estático",
+        "static"
+      ],
+      "closings": [
+        "FinMetodo",
+        "endMethod"
+      ],
+      "allow_line": false
+    },
+    "protected": {
+      "code": "unsupportedProtectedConstruct",
+      "openings": [
+        "Protegido",
+        "protected"
+      ],
+      "closings": [],
+      "allow_line": false
+    },
+    "generic": {
+      "code": "unsupportedGenericsConstruct",
+      "openings": [
+        "Generico",
+        "Genérico",
+        "generic"
+      ],
+      "closings": [],
+      "allow_line": false
+    },
+    "exception": {
+      "code": "unsupportedExceptionConstruct",
+      "openings": [
+        "Intentar",
+        "try"
+      ],
+      "closings": [
+        "FinIntentar",
+        "endTry"
+      ],
+      "allow_line": true
+    }
+  }
 }
 ```

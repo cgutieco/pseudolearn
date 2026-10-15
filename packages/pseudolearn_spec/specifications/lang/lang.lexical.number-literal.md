@@ -5,7 +5,7 @@
   "titulo": "Literales numéricos",
   "dominio": "lenguaje",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -25,11 +25,11 @@
     }
   ],
   "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
+    "clase": "aclaracion",
+    "impacto_usuarios": "Un literal fuera de rango produce un único diagnóstico principal, con cualquier signo precedente.",
+    "impacto_implementaciones": "Suprimir expectedExpression derivado del mismo literal inválido.",
+    "justificacion": "La regla define el signo separado y el rango del literal; DIAG.CLASSES y la recuperación prohíben duplicar el fallo por sincronización.",
+    "revisado_por": "autorización de la remediación de R5; derivación de la regla"
   }
 }
 ---
@@ -124,10 +124,6 @@
     "diagnosticos": [
       {
         "codigo": "integerLiteralOutOfRange",
-        "severidad": "error"
-      },
-      {
-        "codigo": "expectedExpression",
         "severidad": "error"
       }
     ]

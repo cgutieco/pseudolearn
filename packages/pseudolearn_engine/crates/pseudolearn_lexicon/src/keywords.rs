@@ -3,12 +3,18 @@ use crate::profile::{Profile, fold_text};
 include!(concat!(env!("OUT_DIR"), "/generated_lexicon.rs"));
 
 pub fn find_keyword(word: &str, profile: Profile) -> Option<KeywordKind> {
-    let folded_word = fold_text(word);
+    if word.is_ascii() {
+        return find_keyword_by_profile(word, profile.as_str());
+    }
+    let folded_word = profile.fold_word(word);
     find_keyword_by_profile(&folded_word, profile.as_str())
 }
 
 pub fn find_builtin(word: &str, profile: Profile) -> Option<BuiltinKind> {
-    let folded_word = fold_text(word);
+    if word.is_ascii() {
+        return find_builtin_by_profile(word, profile.as_str());
+    }
+    let folded_word = profile.fold_word(word);
     find_builtin_by_profile(&folded_word, profile.as_str())
 }
 

@@ -40,3 +40,9 @@ fn validates_bilingual_diagnostics_and_rejects_missing_or_mismatched_markers() -
     }
     Ok(())
 }
+
+#[path = "resources/analysis_limits.rs"]
+mod analysis_limits;
+
+#[path = "resources/structural.rs"]
+mod structural;

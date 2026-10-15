@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Ofrece operaciones públicas totales sobre recursos del núcleo. Contrato documentado, sin implementación ni manifiesto Cargo.
+Ofrece operaciones públicas totales sobre recursos del núcleo. Implementación disponible en el workspace.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
@@ -12,7 +12,7 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
+Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despliega por separado.
 La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
 La comprobación disponible usa, desde la raíz del monorepo,
 `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
@@ -33,6 +33,13 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo respetando los observables del corpus.
 Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
 Alternativas descartadas y fundamento: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
+
+Problema: posiciones públicas y unidades recuperadas deben describir el texto, no desplazamientos internos.
+Elección: la API convierte cada tramo UTF-8 a pares línea/columna y expone el esquema de unidades
+recuperadas en orden de fuente. El análisis pasa perfil y rigor al front-end; solo solicita HIR sin
+errores léxicos o sintácticos. El idioma de presentación se resuelve al renderizar un diagnóstico
+mediante su código y argumentos, sin modificar códigos, tramos ni salida del programa.
+Se rechaza que la CLI tenga que reconstruir posiciones o traducir un mensaje ya presentado.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

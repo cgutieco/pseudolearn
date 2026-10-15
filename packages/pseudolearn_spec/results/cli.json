@@ -76,12 +76,10 @@
         "exit_code": 1,
         "json": null,
         "kind": "cli",
-        "output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+        "output": "p.pseudo:2:10: error: Undeclared variable: total [undeclaredVariable]\n"
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "p.pseudo:2:10: error: Undeclared variable: total [undeclaredVariable]\n",
@@ -91,7 +89,7 @@
       "rule": "R1",
       "specification": "TOOL.CLI.CHECK",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -372,12 +370,10 @@
         "exit_code": 1,
         "json": null,
         "kind": "cli",
-        "output": "p.pseudo:2:7: error: Undeclared variable: total [undeclaredVariable]\n"
+        "output": "p.pseudo:2:7: error: Variable no declarada: total [undeclaredVariable]\n"
       },
       "case": "C9",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "p.pseudo:2:7: error: Variable no declarada: total [undeclaredVariable]\n",
@@ -387,31 +383,7 @@
       "rule": "R3",
       "specification": "TOOL.CLI.CONVENTIONS",
       "strictness": "estricto",
-      "verdict": "incumple"
-    },
-    {
-      "actual": {
-        "error_output": "",
-        "exit_code": 1,
-        "json": null,
-        "kind": "cli",
-        "output": "p.pseudo:4:10: error: Declaración duplicada del subprograma {lexeme} [duplicateSubroutine]\n"
-      },
-      "case": "C10",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida"
-      ],
-      "expected": {
-        "codigo_salida": 0,
-        "salida": "",
-        "salida_error": ""
-      },
-      "profile": "es",
-      "rule": "R3",
-      "specification": "TOOL.CLI.CONVENTIONS",
-      "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -421,11 +393,29 @@
         "kind": "cli",
         "output": ""
       },
+      "case": "C10",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.CONVENTIONS",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": "vacio.pseudo:1:1: error: Se esperaba el inicio del algoritmo [expectedAlgorithmStart]\n"
+      },
       "case": "C11",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "vacio.pseudo:1:1: error: Se esperaba el inicio del algoritmo [expectedAlgorithmStart]\n",
@@ -435,7 +425,7 @@
       "rule": "R3",
       "specification": "TOOL.CLI.CONVENTIONS",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -544,16 +534,14 @@
     },
     {
       "actual": {
-        "error_output": "pseudo: unknown command 'volar'\n",
+        "error_output": "pseudo: orden desconocida «volar»\n",
         "exit_code": 2,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C17",
-      "differences": [
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 2,
         "salida": "",
@@ -563,7 +551,7 @@
       "rule": "R4",
       "specification": "TOOL.CLI.CONVENTIONS",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -721,16 +709,14 @@
     },
     {
       "actual": {
-        "error_output": "pseudo: valor no válido «fr» para language\n",
+        "error_output": "pseudo: valor no válido «fr» para idioma\n",
         "exit_code": 2,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C24",
-      "differences": [
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 2,
         "salida": "",
@@ -740,7 +726,7 @@
       "rule": "R7",
       "specification": "TOOL.CLI.CONVENTIONS",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {

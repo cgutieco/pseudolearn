@@ -1,152 +1,131 @@
+use crate::expression_model::{HirExpression, HirPlace, Literal};
+use crate::identities::ExpressionId;
 use crate::session::AnalysisSession;
 use crate::types::Type;
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
-use pseudolearn_source::Span;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
-pub fn check_expression_node(session: &mut AnalysisSession<'_>, node_index: usize) -> Type {
-    let node = match session.syntax_tree.nodes.get(node_index) {
-        Some(entry) => *entry,
-        None => return Type::Error,
-    };
-    match node.kind {
-        NodeKind::LiteralExpression => check_literal(session, node.first_token),
-        NodeKind::IdentifierExpression => check_identifier(session, node.first_token),
-        NodeKind::BinaryExpression => check_binary(session, node_index),
-        NodeKind::UnaryExpression => check_unary(session, node_index),
-        _ => Type::Unknown,
-    }
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum ExpressionPurpose {
+    Value,
+    Destination,
+    Argument,
+    Statement,
 }
 
-fn check_literal(session: &AnalysisSession<'_>, first_token: u32) -> Type {
-    let token_index = usize::try_from(first_token).unwrap_or(0);
-    match session.syntax_tree.tokens.kind(token_index) {
-        Some(TokenKind::IntegerLiteral) => Type::Integer,
-        Some(TokenKind::RealLiteral) => Type::Real,
-        Some(TokenKind::StringLiteral) => Type::String,
-        Some(TokenKind::CharacterLiteral) => Type::Character,
-        Some(TokenKind::BooleanLiteral(_)) => Type::Boolean,
-        _ => Type::Unknown,
-    }
+pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
+    check_for(session, node, ExpressionPurpose::Value)
 }
 
-fn check_identifier(session: &mut AnalysisSession<'_>, first_token: u32) -> Type {
-    let token_index = usize::try_from(first_token).unwrap_or(0);
-    let identifier_text = match session
-        .syntax_tree
-        .tokens
-        .text(session.source_text.as_str(), token_index)
-    {
-        Some(text) => text,
-        None => return Type::Error,
-    };
-    let span = session
-        .syntax_tree
-        .tokens
-        .span(token_index)
-        .unwrap_or_default();
-    let current_scope_instance = match session.scopes.get(session.current_scope.0) {
-        Some(scope) => scope,
-        None => return Type::Error,
-    };
-    let resolved_symbol_id = current_scope_instance.resolve(identifier_text, session.scopes);
-    match resolved_symbol_id {
-        Some(symbol_id) => handle_resolved_symbol(session, symbol_id, span),
-        None => {
-            if session.is_strict {
-                session.diagnostics.push(
-                    Diagnostic::new(DiagnosticCode::UndeclaredVariable, span)
-                        .with_argument("lexeme", identifier_text),
-                );
-                Type::Error
-            } else {
-                session.diagnostics.push(
-                    Diagnostic::new(DiagnosticCode::UndeclaredVariable, span)
-                        .with_severity(pseudolearn_diagnostics::DiagnosticSeverity::Warning)
-                        .with_argument("lexeme", identifier_text),
-                );
-                Type::Unknown
-            }
-        }
-    }
-}
-
-fn handle_resolved_symbol(
+pub(crate) fn check_for(
     session: &mut AnalysisSession<'_>,
-    symbol_id: crate::arena::SymbolId,
-    span: Span,
-) -> Type {
-    let Some(symbol) = session.symbols.get_mut(symbol_id.0) else {
-        return Type::Error;
-    };
-    if session.is_strict && !symbol.is_assigned {
-        session.diagnostics.push(Diagnostic::new(
-            DiagnosticCode::UninitializedVariableRead,
-            span,
-        ));
+    node: usize,
+    purpose: ExpressionPurpose,
+) -> ExpressionId {
+    match session.kind(node) {
+        NodeKind::Identifier => crate::name_resolution::local(session, node, purpose),
+        NodeKind::Literal => literal(session, node),
+        NodeKind::Unary => crate::operators::unary(session, node),
+        NodeKind::Addition
+        | NodeKind::Multiplication
+        | NodeKind::PowerExpression
+        | NodeKind::Equality
+        | NodeKind::Ordering
+        | NodeKind::Conjunction
+        | NodeKind::Disjunction => crate::operators::binary(session, node),
+        NodeKind::Primary => session
+            .tree
+            .child_indices(node)
+            .first()
+            .copied()
+            .map(|child| check_for(session, child, purpose))
+            .unwrap_or_else(|| invalid(session, node)),
+        NodeKind::Instantiation => crate::call_checker::instantiate(session, node),
+        NodeKind::Postfix => crate::postfix_checker::check(session, node, purpose),
+        NodeKind::ThisObject | NodeKind::SuperClass => receiver(session, node),
+        _ => invalid(session, node),
     }
-    symbol.mark_read();
-    symbol.inferred_type.clone()
 }
 
-fn check_binary(session: &mut AnalysisSession<'_>, node_index: usize) -> Type {
-    let node = match session.syntax_tree.nodes.get(node_index) {
-        Some(entry) => *entry,
-        None => return Type::Error,
+pub(crate) fn invalid(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
+    let kind = session.module.types.intern(Type::Error);
+    session.emit(HirExpression::Invalid, kind, session.span(node))
+}
+
+fn literal(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
+    let text = session.lexeme(node).to_owned();
+    let (literal, kind) = match session.token_kind(node) {
+        Some(TokenKind::IntegerLiteral) => {
+            (Literal::Integer(text.parse().unwrap_or(0)), Type::Integer)
+        }
+        Some(TokenKind::RealLiteral) => (Literal::Real(text.parse().unwrap_or(0.0)), Type::Real),
+        Some(TokenKind::BooleanLiteral(value)) => (Literal::Boolean(value), Type::Boolean),
+        Some(TokenKind::CharacterLiteral) => {
+            let decoded = pseudolearn_syntax::scan_literal(&text).content;
+            (
+                Literal::Character(decoded.chars().next().unwrap_or('\0')),
+                Type::Character,
+            )
+        }
+        _ => (
+            Literal::String(pseudolearn_syntax::scan_literal(&text).content),
+            Type::String,
+        ),
     };
-    let first_token = usize::try_from(node.first_token).unwrap_or(0);
-    let span = session
-        .syntax_tree
-        .tokens
-        .span(first_token)
-        .unwrap_or_default();
-    let left_index = node_index.saturating_add(1);
-    let left_type = check_expression_node(session, left_index);
-    let right_index = left_index.saturating_add(1);
-    let right_type = check_expression_node(session, right_index);
-    combine_binary_types(session, &left_type, &right_type, span)
+    let kind = session.module.types.intern(kind);
+    session.emit(HirExpression::Literal(literal), kind, session.span(node))
 }
 
-fn combine_binary_types(
+fn receiver(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
+    let Some(class) = session.owner() else {
+        return invalid(session, node);
+    };
+    let class = if session.kind(node) == NodeKind::SuperClass {
+        crate::hierarchy::class_model(session, class)
+            .and_then(|class| class.superclass)
+            .unwrap_or(class)
+    } else {
+        class
+    };
+    let kind = session.module.types.intern(Type::Object(class));
+    session.emit(HirExpression::This(class), kind, session.span(node))
+}
+
+pub(crate) fn place(session: &AnalysisSession<'_>, expression: ExpressionId) -> Option<HirPlace> {
+    let kind = usize::try_from(expression.0)
+        .ok()
+        .and_then(|index| session.module.expressions.kinds.get(index))?;
+    match kind {
+        HirExpression::Local(local)
+            if matches!(session.expression_type(expression), Type::Array { .. }) =>
+        {
+            Some(HirPlace::WholeArray(*local))
+        }
+        HirExpression::Local(local) => Some(HirPlace::Local(*local)),
+        HirExpression::Field { receiver, field } => Some(HirPlace::Field {
+            receiver: *receiver,
+            field: *field,
+        }),
+        HirExpression::Element { array, indices } => Some(HirPlace::Element {
+            array: *array,
+            indices: indices.clone(),
+        }),
+        _ => None,
+    }
+}
+
+pub(crate) fn widen(
     session: &mut AnalysisSession<'_>,
-    left_type: &Type,
-    right_type: &Type,
-    span: Span,
-) -> Type {
-    if left_type.is_error() || right_type.is_error() {
-        return Type::Error;
+    expression: ExpressionId,
+    target: &Type,
+) -> ExpressionId {
+    if *target != Type::Real || session.expression_type(expression) != Type::Integer {
+        return expression;
     }
-    if *left_type == Type::Boolean && *right_type == Type::Boolean {
-        return Type::Boolean;
-    }
-    if left_type.is_numeric() && right_type.is_numeric() {
-        if *left_type == Type::Real || *right_type == Type::Real {
-            return Type::Real;
-        }
-        return Type::Integer;
-    }
-    if *left_type == Type::String || *right_type == Type::String {
-        if left_type.is_numeric() || right_type.is_numeric() {
-            session.diagnostics.push(Diagnostic::new(
-                DiagnosticCode::CannotConcatenateNumberWithText,
-                span,
-            ));
-            return Type::Error;
-        }
-        return Type::String;
-    }
-    session.diagnostics.push(Diagnostic::new(
-        DiagnosticCode::IncompatibleOperandTypes,
-        span,
-    ));
-    Type::Error
-}
-
-fn check_unary(session: &mut AnalysisSession<'_>, node_index: usize) -> Type {
-    let operand_index = node_index.saturating_add(1);
-    let operand_type = check_expression_node(session, operand_index);
-    if operand_type.is_error() {
-        return Type::Error;
-    }
-    operand_type
+    let kind = session.module.types.intern(Type::Real);
+    let span = usize::try_from(expression.0)
+        .ok()
+        .and_then(|index| session.module.expressions.spans.get(index))
+        .copied()
+        .unwrap_or_default();
+    session.emit(HirExpression::Widen(expression), kind, span)
 }

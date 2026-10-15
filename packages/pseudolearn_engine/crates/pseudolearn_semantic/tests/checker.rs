@@ -24,7 +24,7 @@ fn detects_undeclared_variable_in_strict_mode() {
 
 #[test]
 fn detects_duplicate_subroutine() {
-    let source_code = "Funcion f()\nFinFuncion\nFuncion f()\nFinFuncion\n";
+    let source_code = "SubProceso duplicate()\nFinSubProceso\nSubProceso duplicate()\nFinSubProceso\nAlgoritmo Entry\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let (_, diagnostics) = analyze_semantics(&tree, &source, true);

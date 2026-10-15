@@ -21,6 +21,11 @@ Resultados crudos y resumen en la ruta indicada. Recalcular estadísticas sin re
 `results/` contiene solamente evidencias seleccionadas y no es salida del build del motor.
 La línea base AWFY nativa se recoge con `dart run tool/collect_awfy.dart`; evidencia en
 `results/macos-r3-awfy/`. `dart run bin/awfy_worker.dart --verify` comprueba todas las cargas.
+El análisis Rust se mide con `dart run tool/collect_frontend.dart`: captura procedencia antes del build,
+ejecuta diez procesos del trabajador público y conserva treinta rondas de 28 configuraciones. Incluye
+1.000, 10.000 y 50.000 líneas, ambos perfiles, ambos rigores, entradas incompletas y el corpus.
+`tool/frontend_statistics.dart` rechaza muestras incompletas o duplicadas, calcula IC 95 % sobre medias
+por proceso y p95 sobre las 300 latencias; no elimina muestras ni relaja umbrales.
 El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
 Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
 `results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.

@@ -195,12 +195,16 @@ fn check_system_language() -> Option<String> {
     for variable_name in ["LC_ALL", "LC_MESSAGES", "LANG"] {
         if let Ok(variable_value) = std::env::var(variable_name) {
             let trimmed = variable_value.trim();
+            if trimmed.is_empty() {
+                continue;
+            }
             if trimmed.starts_with("en") {
                 return Some("en".to_owned());
             }
             if trimmed.starts_with("es") {
                 return Some("es".to_owned());
             }
+            return None;
         }
     }
     None

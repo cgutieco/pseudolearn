@@ -1,198 +1,185 @@
 use crate::parser_state::ParserState;
 use crate::tokens::TokenKind;
 use crate::tree::NodeKind;
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
+use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::KeywordKind;
 
-pub fn parse_expression(
-    parser_state: &mut ParserState<'_>,
-    minimum_binding_power: u8,
-) -> Option<usize> {
-    if !parser_state.enter_recursion() {
-        return None;
-    }
-    let mut left_node_index = parse_prefix_or_primary(parser_state)?;
-
-    loop {
-        parser_state.skip_trivia();
-        let (left_power, right_power) = match infix_binding_power(parser_state.current_kind()) {
-            Some(powers) => powers,
-            None => break,
-        };
-        if left_power < minimum_binding_power {
+pub(crate) fn parse_expression(state: &mut ParserState<'_>, minimum: u8) -> Result<usize, ()> {
+    let mut left = prefix(state)?;
+    while let Some((binding, right_binding, kind)) = binding(state.kind()) {
+        if binding < minimum {
             break;
         }
-        let first_token = parser_state.nodes.get(left_node_index)?.first_token;
-        parser_state.advance();
-        parser_state.skip_trivia_and_newlines();
-        let _right_node_index = parse_expression(parser_state, right_power)?;
-        let total_subtrees = parser_state.nodes.len().saturating_sub(left_node_index);
-        let subtree_size = u32::try_from(total_subtrees.saturating_add(1)).unwrap_or(1);
-        let binary_index =
-            parser_state.push_node(NodeKind::BinaryExpression, first_token, subtree_size);
-        left_node_index = binary_index;
-    }
-
-    parser_state.exit_recursion();
-    Some(left_node_index)
-}
-
-fn parse_prefix_or_primary(parser_state: &mut ParserState<'_>) -> Option<usize> {
-    parser_state.skip_trivia_and_newlines();
-    let current_kind = parser_state.current_kind();
-    if let Some(prefix_power) = prefix_binding_power(current_kind) {
-        let first_token = parser_state.current_token_u32();
-        parser_state.advance();
-        parser_state.skip_trivia_and_newlines();
-        let operand_index = parse_expression(parser_state, prefix_power)?;
-        let total_subtrees = parser_state.nodes.len().saturating_sub(operand_index);
-        let subtree_size = u32::try_from(total_subtrees.saturating_add(1)).unwrap_or(1);
-        return Some(parser_state.push_node(NodeKind::UnaryExpression, first_token, subtree_size));
-    }
-    parse_primary_and_postfix(parser_state)
-}
-
-fn parse_primary_and_postfix(parser_state: &mut ParserState<'_>) -> Option<usize> {
-    let mut primary_index = parse_primary(parser_state)?;
-    loop {
-        parser_state.skip_trivia();
-        match parser_state.current_kind() {
-            TokenKind::LeftBracket => {
-                primary_index = parse_indexing(parser_state, primary_index)?;
-            }
-            TokenKind::LeftParenthesis => {
-                primary_index = parse_call(parser_state, primary_index)?;
-            }
-            TokenKind::Dot => {
-                primary_index = parse_member_access(parser_state, primary_index)?;
-            }
-            _ => break,
+        let operator = state.token();
+        let node = state.nodes.get(left).ok_or(())?;
+        let marker = left
+            .saturating_add(1)
+            .saturating_sub(usize::try_from(node.subtree_size).unwrap_or(1));
+        let start = node.first_token;
+        let recursive_power = kind == NodeKind::PowerExpression;
+        if recursive_power {
+            state.enter()?;
+        }
+        state.advance();
+        let right = parse_expression(state, right_binding);
+        if recursive_power {
+            state.leave();
+        }
+        right?;
+        left = state.finish(kind, start, marker);
+        if let Some(slot) = state.operators.get_mut(left) {
+            *slot = Some(operator);
         }
     }
-    Some(primary_index)
+    Ok(left)
 }
 
-fn parse_primary(parser_state: &mut ParserState<'_>) -> Option<usize> {
-    let first_token = parser_state.current_token_u32();
-    let current_kind = parser_state.current_kind();
-    if current_kind.is_literal() {
-        parser_state.advance();
-        return Some(parser_state.push_node(NodeKind::LiteralExpression, first_token, 1));
-    }
-    if current_kind == TokenKind::Identifier {
-        parser_state.advance();
-        return Some(parser_state.push_node(NodeKind::IdentifierExpression, first_token, 1));
-    }
-    if current_kind == TokenKind::LeftParenthesis {
-        parser_state.advance();
-        parser_state.skip_trivia_and_newlines();
-        let inner_expression = parse_expression(parser_state, 0)?;
-        if !parser_state.expect(
-            TokenKind::RightParenthesis,
-            DiagnosticCode::UnclosedParenthesis,
-        ) {
-            return None;
-        }
-        return Some(inner_expression);
-    }
-    let span = parser_state.current_span();
-    parser_state
-        .diagnostics
-        .push(Diagnostic::new(DiagnosticCode::ExpectedExpression, span));
-    None
-}
-
-fn parse_indexing(parser_state: &mut ParserState<'_>, target_node_index: usize) -> Option<usize> {
-    let first_token = parser_state.nodes.get(target_node_index)?.first_token;
-    parser_state.advance();
-    parser_state.skip_trivia_and_newlines();
-    if parser_state.current_kind() == TokenKind::RightBracket {
-        let span = parser_state.current_span();
-        parser_state
-            .diagnostics
-            .push(Diagnostic::new(DiagnosticCode::EmptyIndexList, span));
-        parser_state.advance();
-        return None;
-    }
-    let _index_expression = parse_expression(parser_state, 0)?;
-    while parser_state.eat_if(TokenKind::Comma) {
-        parser_state.skip_trivia_and_newlines();
-        let _next_index = parse_expression(parser_state, 0)?;
-    }
-    parser_state.expect(TokenKind::RightBracket, DiagnosticCode::UnclosedBracket);
-    let total_subtrees = parser_state.nodes.len().saturating_sub(target_node_index);
-    let subtree_size = u32::try_from(total_subtrees.saturating_add(1)).unwrap_or(1);
-    Some(parser_state.push_node(NodeKind::IndexingExpression, first_token, subtree_size))
-}
-
-fn parse_call(parser_state: &mut ParserState<'_>, target_node_index: usize) -> Option<usize> {
-    let first_token = parser_state.nodes.get(target_node_index)?.first_token;
-    parser_state.advance();
-    parser_state.skip_trivia_and_newlines();
-    if !parser_state.eat_if(TokenKind::RightParenthesis) {
-        let _first_argument = parse_expression(parser_state, 0)?;
-        while parser_state.eat_if(TokenKind::Comma) {
-            parser_state.skip_trivia_and_newlines();
-            let _next_argument = parse_expression(parser_state, 0)?;
-        }
-        parser_state.expect(
-            TokenKind::RightParenthesis,
-            DiagnosticCode::UnclosedParenthesis,
-        );
-    }
-    let total_subtrees = parser_state.nodes.len().saturating_sub(target_node_index);
-    let subtree_size = u32::try_from(total_subtrees.saturating_add(1)).unwrap_or(1);
-    Some(parser_state.push_node(NodeKind::CallExpression, first_token, subtree_size))
-}
-
-fn parse_member_access(
-    parser_state: &mut ParserState<'_>,
-    target_node_index: usize,
-) -> Option<usize> {
-    let first_token = parser_state.nodes.get(target_node_index)?.first_token;
-    parser_state.advance();
-    parser_state.skip_trivia();
-    if parser_state.current_kind() != TokenKind::Identifier {
-        let span = parser_state.current_span();
-        parser_state.diagnostics.push(Diagnostic::new(
-            DiagnosticCode::ExpectedMemberNameAfterDot,
-            span,
-        ));
-        return None;
-    }
-    parser_state.advance();
-    let total_subtrees = parser_state.nodes.len().saturating_sub(target_node_index);
-    let subtree_size = u32::try_from(total_subtrees.saturating_add(1)).unwrap_or(1);
-    Some(parser_state.push_node(NodeKind::MemberAccessExpression, first_token, subtree_size))
-}
-
-fn prefix_binding_power(token_kind: TokenKind) -> Option<u8> {
-    match token_kind {
+fn prefix(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    if matches!(
+        state.kind(),
         TokenKind::Plus
-        | TokenKind::Minus
-        | TokenKind::LogicalNot
-        | TokenKind::Keyword(KeywordKind::Not) => Some(70),
-        _ => None,
+            | TokenKind::Minus
+            | TokenKind::LogicalNot
+            | TokenKind::Keyword(KeywordKind::Not)
+    ) {
+        state.enter()?;
+        state.advance();
+        let result = parse_expression(state, 80);
+        state.leave();
+        result?;
+        let node = state.finish(NodeKind::Unary, start, marker);
+        if let Some(slot) = state.operators.get_mut(node) {
+            *slot = Some(start);
+        }
+        return Ok(node);
     }
+    let primary = primary(state)?;
+    crate::postfix_parser::parse_postfix(state, primary)
 }
 
-fn infix_binding_power(token_kind: TokenKind) -> Option<(u8, u8)> {
-    match token_kind {
-        TokenKind::LogicalOr | TokenKind::Keyword(KeywordKind::Or) => Some((10, 11)),
-        TokenKind::LogicalAnd | TokenKind::Keyword(KeywordKind::And) => Some((20, 21)),
-        TokenKind::Equal
-        | TokenKind::NotEqual
-        | TokenKind::Less
-        | TokenKind::LessEqual
-        | TokenKind::Greater
-        | TokenKind::GreaterEqual => Some((30, 31)),
-        TokenKind::Plus | TokenKind::Minus => Some((40, 41)),
+fn primary(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    let kind = state.kind();
+    if kind.is_literal() {
+        state.advance();
+        return Ok(state.finish(NodeKind::Literal, start, marker));
+    }
+    if kind == TokenKind::Identifier {
+        state.advance();
+        return Ok(state.finish(NodeKind::Identifier, start, marker));
+    }
+    if kind == TokenKind::LeftParenthesis {
+        return grouping(state);
+    }
+    if kind == TokenKind::Keyword(KeywordKind::NewInstance) {
+        return instance(state);
+    }
+    if matches!(
+        kind,
+        TokenKind::Keyword(KeywordKind::ThisObject | KeywordKind::SuperClass)
+    ) {
+        return receiver(state);
+    }
+    let span = state.span();
+    if !state.lexical_gap {
+        state.report(DiagnosticCode::ExpectedExpression, span);
+    }
+    Err(())
+}
+
+fn grouping(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.enter()?;
+    state.advance();
+    if state.eat(TokenKind::RightParenthesis) {
+        let span = state
+            .tokens
+            .span(usize::try_from(start).unwrap_or(0))
+            .unwrap_or_default();
+        state.report(DiagnosticCode::EmptyParentheses, span);
+        state.leave();
+        return Err(());
+    }
+    let result = parse_expression(state, 0);
+    state.leave();
+    result?;
+    state.require(
+        TokenKind::RightParenthesis,
+        DiagnosticCode::UnclosedParenthesis,
+    )?;
+    Ok(state.finish(NodeKind::Primary, start, marker))
+}
+
+fn instance(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.advance();
+    crate::declaration_parser::name(state, DiagnosticCode::ExpectedClassName)?;
+    if state.kind() != TokenKind::LeftParenthesis {
+        let span = state.span();
+        state.report(DiagnosticCode::MissingInstantiationParentheses, span);
+        return Err(());
+    }
+    crate::postfix_parser::arguments(state)?;
+    Ok(state.finish(NodeKind::Instantiation, start, marker))
+}
+
+fn receiver(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    let is_this = state.kind() == TokenKind::Keyword(KeywordKind::ThisObject);
+    if !state.inside_method {
+        let code = if is_this {
+            DiagnosticCode::ThisOutsideMethod
+        } else {
+            DiagnosticCode::SuperOutsideMethod
+        };
+        let span = state.span();
+        state.report(code, span);
+        return Err(());
+    }
+    if !is_this && !state.has_superclass {
+        let span = state.span();
+        state.report(DiagnosticCode::SuperInClassWithoutSuperclass, span);
+        return Err(());
+    }
+    state.advance();
+    Ok(state.finish(
+        if is_this {
+            NodeKind::ThisObject
+        } else {
+            NodeKind::SuperClass
+        },
+        start,
+        marker,
+    ))
+}
+
+fn binding(kind: TokenKind) -> Option<(u8, u8, NodeKind)> {
+    match kind {
+        TokenKind::LogicalOr | TokenKind::Keyword(KeywordKind::Or) => {
+            Some((10, 11, NodeKind::Disjunction))
+        }
+        TokenKind::LogicalAnd | TokenKind::Keyword(KeywordKind::And) => {
+            Some((20, 21, NodeKind::Conjunction))
+        }
+        TokenKind::Equal | TokenKind::NotEqual => Some((30, 31, NodeKind::Equality)),
+        TokenKind::Less | TokenKind::LessEqual | TokenKind::Greater | TokenKind::GreaterEqual => {
+            Some((40, 41, NodeKind::Ordering))
+        }
+        TokenKind::Plus | TokenKind::Minus => Some((50, 51, NodeKind::Addition)),
         TokenKind::Star
         | TokenKind::Slash
-        | TokenKind::Modulo
         | TokenKind::IntegerDivision
-        | TokenKind::Keyword(KeywordKind::Modulo) => Some((50, 51)),
-        TokenKind::Power => Some((61, 60)),
+        | TokenKind::Modulo
+        | TokenKind::Keyword(KeywordKind::Modulo | KeywordKind::IntegerDivide) => {
+            Some((60, 61, NodeKind::Multiplication))
+        }
+        TokenKind::Power => Some((70, 70, NodeKind::PowerExpression)),
         _ => None,
     }
 }

@@ -1,79 +1,123 @@
-use crate::arena::SymbolId;
+use crate::hir::{FunctionKind, HirClass, HirFunction};
+use crate::identities::{ClassId, FunctionId};
 use crate::session::AnalysisSession;
-use crate::symbols::{Symbol, SymbolKind};
 use crate::types::Type;
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
+use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
-pub fn resolve_units(session: &mut AnalysisSession<'_>) {
-    let node_count = session.syntax_tree.nodes.len();
-    for node_index in 0..node_count {
-        let node = match session.syntax_tree.nodes.get(node_index) {
-            Some(entry) => *entry,
-            None => continue,
-        };
-        if let Some(kind) = symbol_kind_for_node(node.kind) {
-            declare_unit(session, node.first_token, kind);
-        }
+pub(crate) fn register(session: &mut AnalysisSession<'_>) {
+    let classes: Vec<_> = session
+        .tree
+        .nodes
+        .iter()
+        .enumerate()
+        .filter(|(_, node)| node.kind == NodeKind::ClassUnit)
+        .map(|(index, _)| index)
+        .collect();
+    for node in classes {
+        register_class(session, node);
+    }
+    let nodes: Vec<_> = session
+        .tree
+        .nodes
+        .iter()
+        .enumerate()
+        .filter(|(_, node)| matches!(node.kind, NodeKind::AlgorithmUnit | NodeKind::Subprogram))
+        .map(|(index, _)| index)
+        .collect();
+    for node in nodes {
+        register_function(session, node, None);
+    }
+    for class in 0..session.module.classes.len() {
+        crate::class_registry::members(session, ClassId(u32::try_from(class).unwrap_or(u32::MAX)));
     }
 }
 
-fn symbol_kind_for_node(kind: NodeKind) -> Option<SymbolKind> {
-    match kind {
-        NodeKind::ProgramUnit | NodeKind::ProcedureUnit => Some(SymbolKind::Procedure {
-            parameter_types: Vec::new(),
-        }),
-        NodeKind::FunctionUnit => Some(SymbolKind::Function {
-            return_type: Type::Unknown,
-            parameter_types: Vec::new(),
-        }),
-        NodeKind::ClassUnit => Some(SymbolKind::Class {
-            superclass_name: None,
-        }),
-        _ => None,
-    }
-}
-
-fn duplicate_diagnostic_code(kind: &SymbolKind) -> DiagnosticCode {
-    match kind {
-        SymbolKind::Class { .. } => DiagnosticCode::DuplicateClass,
-        _ => DiagnosticCode::DuplicateSubroutine,
-    }
-}
-
-fn declare_unit(
-    session: &mut AnalysisSession<'_>,
-    first_token_index: u32,
-    symbol_kind: SymbolKind,
-) {
-    let name_token_index = usize::try_from(first_token_index)
-        .unwrap_or(0)
-        .saturating_add(1);
-    let name_text = match session
-        .syntax_tree
-        .tokens
-        .text(session.source_text.as_str(), name_token_index)
-    {
-        Some(text) => text,
-        None => return,
+fn register_class(session: &mut AnalysisSession<'_>, node: usize) {
+    let Some(name_node) = session.child(node, NodeKind::Identifier) else {
+        return;
     };
-    let span = session
-        .syntax_tree
-        .tokens
-        .span(name_token_index)
-        .unwrap_or_default();
-    let root_scope = session.current_scope;
-    let root_scope_instance = match session.scopes.get_mut(root_scope.0) {
-        Some(scope) => scope,
-        None => return,
-    };
-    if root_scope_instance.find_local(name_text).is_some() {
-        let code = duplicate_diagnostic_code(&symbol_kind);
-        session.diagnostics.push(Diagnostic::new(code, span));
+    let name = session.name(name_node);
+    let identifier = ClassId(u32::try_from(session.module.classes.len()).unwrap_or(u32::MAX));
+    if session.classes.contains_key(&name) {
+        session.named_report(DiagnosticCode::DuplicateClass, name_node, &name);
         return;
     }
-    let symbol =
-        Symbol::new(name_text.to_owned(), symbol_kind, span, root_scope).with_type(Type::Void);
-    let identifier = session.symbols.allocate(symbol);
-    root_scope_instance.insert(name_text, SymbolId(identifier));
+    session.classes.insert(name.clone(), identifier);
+    session.module.classes.push(HirClass {
+        name,
+        superclass: None,
+        fields: Vec::new(),
+        methods: Vec::new(),
+        virtual_slots: Vec::new(),
+        constructor: None,
+        span: session.span(node),
+        syntax: node,
+    });
+}
+
+pub(crate) fn register_function(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    owner: Option<ClassId>,
+) -> FunctionId {
+    let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
+    let name = session.name(name_node);
+    let result = session
+        .child(node, NodeKind::Type)
+        .map(|node| crate::type_resolution::resolve(session, node))
+        .unwrap_or_else(|| session.module.types.intern(Type::Unit));
+    let kind = function_kind(session, node, result);
+    let identifier = FunctionId(u32::try_from(session.module.functions.len()).unwrap_or(u32::MAX));
+    if owner.is_none() && kind != FunctionKind::Main {
+        register_name(session, &name, name_node, identifier);
+    }
+    let closing = session.closing_span(node);
+    session.module.functions.push(HirFunction {
+        kind,
+        name,
+        owner,
+        parameters: Vec::new(),
+        result,
+        body: Vec::new(),
+        span: session.span(node),
+        closing_span: closing,
+        syntax: node,
+        private: false,
+    });
+    session.local_names.push(std::collections::BTreeMap::new());
+    session.current = identifier;
+    crate::local_registry::parameters(session, node);
+    crate::local_registry::declarations(session, node);
+    identifier
+}
+
+fn register_name(
+    session: &mut AnalysisSession<'_>,
+    name: &str,
+    node: usize,
+    identifier: FunctionId,
+) {
+    if session.functions.contains_key(name) {
+        session.named_report(DiagnosticCode::DuplicateSubroutine, node, name);
+        return;
+    }
+    if session.classes.contains_key(name) {
+        session.named_report(DiagnosticCode::ClassAndSubroutineSameName, node, name);
+    }
+    session.functions.insert(name.to_owned(), identifier);
+}
+
+fn function_kind(
+    session: &AnalysisSession<'_>,
+    node: usize,
+    result: crate::identities::TypeId,
+) -> FunctionKind {
+    match session.kind(node) {
+        NodeKind::AlgorithmUnit => FunctionKind::Main,
+        NodeKind::MethodMember => FunctionKind::Method,
+        NodeKind::ConstructorMember => FunctionKind::Constructor,
+        _ if session.module.types.get(result) == Type::Unit => FunctionKind::Procedure,
+        _ => FunctionKind::Function,
+    }
 }

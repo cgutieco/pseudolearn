@@ -39,6 +39,11 @@ Alternativas descartadas: comentarios mágicos, configuración ejecutable y mani
 Los alias ingleses siempre se aceptan y conservan idénticos efectos y salida.
 Opciones: --rigor/--strictness, --traza/--trace, --json. La ayuda muestra forma del idioma de interfaz y la otra como alias.
 
+`build.rs` genera el catálogo de mensajes desde la exportación de `TOOL.CLI.MESSAGES`.
+La sustitución de argumentos recorre la plantilla una sola vez, preservando llaves en lexemas del usuario.
+Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
+La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios. Mensajes desde TOOL.CLI.MESSAGES y DIAG.MESSAGES generados; sin copias ni prosa en la lógica.

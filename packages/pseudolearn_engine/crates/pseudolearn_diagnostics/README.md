@@ -2,17 +2,17 @@
 
 ## 1. Qué es y qué no es
 
-Representa diagnósticos mediante códigos con argumentos tipados. Contrato documentado, sin implementación ni manifiesto Cargo.
+Representa diagnósticos mediante códigos con argumentos tipados. Implementación disponible en el workspace.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R4 |
+| Ninguno en el contrato de análisis implementado | — | — |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
+Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despliega por separado.
 La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
 La comprobación disponible usa, desde la raíz del monorepo,
 `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
@@ -33,6 +33,11 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 Problema: representa diagnósticos mediante códigos con argumentos tipados respetando los observables del corpus.
 Elección: `Diagnostic { code, class, severity, span, related, arguments }`; `enum DiagnosticCode` generado; plantillas bilingües generadas; ordenación de `DIAG.ORDERING`.
 Alternativas descartadas y fundamento: El corpus DIAG aporta el catálogo y las plantillas. Se rechaza traducir lexemas del usuario o mezclar idioma de interfaz con vocabulario.
+
+Problema: clase y severidad deben coincidir con la ficha del corpus. Elección: el generador valida
+las clases cerradas lexical, syntax, semantic, runtime e internal y genera las dos severidades.
+El modelo conserva códigos, tramos y argumentos; la selección de rigor consulta la tabla generada.
+Se rechaza inferir clase por un prefijo del código o tratar una clase desconocida como fallo interno.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

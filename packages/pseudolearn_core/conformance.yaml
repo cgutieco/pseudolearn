@@ -100,7 +100,7 @@
   ],
   "vinculos": [
     {
-      "regla": "DIAG.CATALOG@0.3.0#R1",
+      "regla": "DIAG.CATALOG@0.5.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -266,7 +266,7 @@
       "justificacion": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
+      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
@@ -402,7 +402,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
+      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."

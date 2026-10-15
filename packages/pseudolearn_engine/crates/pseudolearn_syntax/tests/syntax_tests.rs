@@ -44,6 +44,10 @@ fn reports_unterminated_string_diagnostic() {
 fn handles_empty_source() {
     let source = SourceText::new(String::new());
     let (tree, diagnostics) = parse_source(&source, Profile::Spanish);
-    assert!(diagnostics.is_empty());
-    assert_eq!(tree.node_count(), 0);
+    assert!(
+        diagnostics
+            .iter()
+            .any(|diagnostic| diagnostic.code.as_str() == "expectedAlgorithmStart")
+    );
+    assert_eq!(tree.node_count(), 1);
 }

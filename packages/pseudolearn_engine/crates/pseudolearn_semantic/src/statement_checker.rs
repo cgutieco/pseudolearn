@@ -1,137 +1,105 @@
-use crate::arena::SymbolId;
-use crate::expression_checker::check_expression_node;
+use crate::expression_checker::{ExpressionPurpose, check_for};
+use crate::hir::FunctionKind;
+use crate::identities::StatementId;
 use crate::session::AnalysisSession;
-use crate::symbols::{Symbol, SymbolKind};
+use crate::statement_model::HirStatement;
 use crate::types::Type;
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
-use pseudolearn_source::Span;
+use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
-pub fn check_statement_node(session: &mut AnalysisSession<'_>, node_index: usize) {
-    let node = match session.syntax_tree.nodes.get(node_index) {
-        Some(entry) => *entry,
-        None => return,
-    };
-    match node.kind {
-        NodeKind::VariableDeclaration => check_variable_declaration(session, node.first_token),
-        NodeKind::AssignmentStatement => check_assignment(session, node.first_token),
-        NodeKind::IfStatement | NodeKind::WhileStatement => {
-            check_condition_statement(session, node_index)
-        }
-        _ => {}
-    }
+pub(crate) fn body(session: &mut AnalysisSession<'_>, node: usize) -> Vec<StatementId> {
+    session
+        .children(node)
+        .into_iter()
+        .filter_map(|statement| check(session, statement))
+        .collect()
 }
 
-fn check_variable_declaration(session: &mut AnalysisSession<'_>, first_token: u32) {
-    let mut token_index = usize::try_from(first_token).unwrap_or(0).saturating_add(1);
-    let mut names = Vec::new();
-    while token_index < session.syntax_tree.tokens.token_count() {
-        match session.syntax_tree.tokens.kind(token_index) {
-            Some(TokenKind::Identifier) => {
-                if let Some(text) = session
-                    .syntax_tree
-                    .tokens
-                    .text(session.source_text.as_str(), token_index)
-                {
-                    let span = session
-                        .syntax_tree
-                        .tokens
-                        .span(token_index)
-                        .unwrap_or_default();
-                    names.push((text.to_owned(), span));
-                }
-            }
-            Some(TokenKind::Keyword(_)) => break,
-            _ => {}
+pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<StatementId> {
+    if session.kind(node) == NodeKind::Statement {
+        return session
+            .tree
+            .child_indices(node)
+            .first()
+            .copied()
+            .and_then(|child| check(session, child));
+    }
+    let kind = match session.kind(node) {
+        NodeKind::Declaration => {
+            HirStatement::Declare(session.declarations.get(&node).cloned().unwrap_or_default())
         }
-        token_index = token_index.saturating_add(1);
-    }
-    let declared_type = Type::Integer;
-    for (name, span) in names {
-        insert_variable(session, name, declared_type.clone(), span);
-    }
+        NodeKind::DimensionDeclaration => return crate::dimension_checker::check(session, node),
+        NodeKind::AssignmentStatement => crate::assignment_checker::assignment(session, node)?,
+        NodeKind::Output => output(session, node),
+        NodeKind::Input => crate::assignment_checker::input(session, node),
+        NodeKind::CallStatement => {
+            let expression = session.tree.child_indices(node).first().copied()?;
+            HirStatement::Call(check_for(session, expression, ExpressionPurpose::Statement))
+        }
+        NodeKind::ReturnStatement => returned(session, node),
+        NodeKind::Conditional
+        | NodeKind::WhileLoop
+        | NodeKind::RepeatLoop
+        | NodeKind::ForLoop
+        | NodeKind::Switch => crate::control_checker::check(session, node)?,
+        _ => return None,
+    };
+    Some(session.statement(kind, session.span(node)))
 }
 
-fn insert_variable(
-    session: &mut AnalysisSession<'_>,
-    name: String,
-    declared_type: Type,
-    span: Span,
-) {
-    let scope = match session.scopes.get_mut(session.current_scope.0) {
-        Some(entry) => entry,
-        None => return,
+fn output(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
+    let values: Vec<_> = session
+        .children(node)
+        .into_iter()
+        .map(|expression| crate::expression_checker::check(session, expression))
+        .collect();
+    for value in &values {
+        if matches!(session.expression_type(*value), Type::Object(_)) {
+            session.report(DiagnosticCode::ObjectCannotBeWritten, node);
+        }
+    }
+    let newline = !session.has_token(node, TokenKind::Keyword(KeywordKind::WithoutNewline));
+    HirStatement::Write { values, newline }
+}
+
+fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
+    let mut value = session
+        .tree
+        .child_indices(node)
+        .first()
+        .copied()
+        .map(|value| crate::expression_checker::check(session, value));
+    let Some(function) = crate::hierarchy::function(session, session.current).cloned() else {
+        return HirStatement::Return(value);
     };
-    if scope.find_local(&name).is_some() {
-        session.diagnostics.push(Diagnostic::new(
-            DiagnosticCode::DuplicateVariableDeclaration,
-            span,
+    let expected = session.module.types.get(function.result);
+    let violation = match (function.kind, value) {
+        (FunctionKind::Main, _) => Some(DiagnosticCode::ReturnOutsideSubroutine),
+        (FunctionKind::Constructor, Some(_)) => Some(DiagnosticCode::ReturnWithValueInConstructor),
+        (_, Some(_)) if expected == Type::Unit => {
+            Some(DiagnosticCode::ReturnExpressionInVoidSubroutine)
+        }
+        (_, None) if expected != Type::Unit => Some(DiagnosticCode::MissingReturnExpression),
+        _ => None,
+    };
+    if let Some(code) = violation {
+        session.report(code, node);
+    }
+    if let Some(expression) = value {
+        if expected != Type::Unit
+            && !crate::type_resolution::assignable(
+                session,
+                &expected,
+                &session.expression_type(expression),
+            )
+        {
+            session.report(DiagnosticCode::IncompatibleReturnType, node);
+        }
+        value = Some(crate::expression_checker::widen(
+            session, expression, &expected,
         ));
-        return;
     }
-    let symbol = Symbol::new(
-        name.clone(),
-        SymbolKind::Variable,
-        span,
-        session.current_scope,
-    )
-    .with_type(declared_type);
-    let symbol_id = session.symbols.allocate(symbol);
-    scope.insert(&name, SymbolId(symbol_id));
-}
-
-fn check_assignment(session: &mut AnalysisSession<'_>, first_token: u32) {
-    let target_token_index = usize::try_from(first_token).unwrap_or(0);
-    let target_name = match session
-        .syntax_tree
-        .tokens
-        .text(session.source_text.as_str(), target_token_index)
-    {
-        Some(text) => text,
-        None => return,
-    };
-    let span = session
-        .syntax_tree
-        .tokens
-        .span(target_token_index)
-        .unwrap_or_default();
-    let scope = match session.scopes.get(session.current_scope.0) {
-        Some(entry) => entry,
-        None => return,
-    };
-    let resolved = scope.resolve(target_name, session.scopes);
-    match resolved {
-        Some(symbol_id) => {
-            if let Some(symbol) = session.symbols.get_mut(symbol_id.0) {
-                symbol.mark_assigned();
-            }
-        }
-        None => {
-            if session.is_strict {
-                session
-                    .diagnostics
-                    .push(Diagnostic::new(DiagnosticCode::UndeclaredVariable, span));
-            }
-        }
-    }
-}
-
-fn check_condition_statement(session: &mut AnalysisSession<'_>, node_index: usize) {
-    let condition_index = node_index.saturating_add(1);
-    let condition_type = check_expression_node(session, condition_index);
-    if !condition_type.is_error() && !condition_type.is_boolean() {
-        let node = match session.syntax_tree.nodes.get(node_index) {
-            Some(entry) => entry,
-            None => return,
-        };
-        let first_token = usize::try_from(node.first_token).unwrap_or(0);
-        let span = session
-            .syntax_tree
-            .tokens
-            .span(first_token)
-            .unwrap_or_default();
-        session
-            .diagnostics
-            .push(Diagnostic::new(DiagnosticCode::NonBooleanCondition, span));
-    }
+    session.returned = true;
+    HirStatement::Return(value)
 }

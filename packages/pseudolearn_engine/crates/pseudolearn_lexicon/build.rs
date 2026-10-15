@@ -1,3 +1,7 @@
+#[path = "codegen/function_metadata.rs"]
+mod function_metadata;
+#[path = "codegen/perfect_hash.rs"]
+mod perfect_hash;
 use std::path::Path;
 
 fn main() {
@@ -31,6 +35,8 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_enums(vocabulary, functions));
     code.push_str(&generate_keywords(vocabulary));
     code.push_str(&generate_builtins(functions));
+    code.push_str(&function_metadata::signatures(functions)?);
+    code.push_str(&function_metadata::compound_prefixes(vocabulary));
     code.push_str(&generate_openers(vocabulary));
 
     std::fs::write(destination, code)?;
@@ -72,24 +78,12 @@ fn generate_keywords(vocabulary: &serde_json::Map<String, serde_json::Value>) ->
     code.push_str("    }\n");
     code.push_str("}\n\n");
 
-    let (spanish_pairs, english_pairs) = collect_pairs(vocabulary);
-    code.push_str(&format_pair_table(
-        "KEYWORDS_ES",
+    code.push_str(&perfect_hash::generate(
+        "keyword",
         "KeywordKind",
-        &spanish_pairs,
-    ));
-    code.push_str(&format_pair_table(
-        "KEYWORDS_EN",
-        "KeywordKind",
-        &english_pairs,
+        collect_pairs(vocabulary),
     ));
 
-    code.push_str("pub fn find_keyword_by_profile(folded_word: &str, profile_name: &str) -> Option<KeywordKind> {\n");
-    code.push_str("    let table = if profile_name == \"en\" { &KEYWORDS_EN[..] } else { &KEYWORDS_ES[..] };\n");
-    code.push_str("    table.binary_search_by_key(&folded_word, |&(entry_word, _)| entry_word)\n");
-    code.push_str("        .ok()\n");
-    code.push_str("        .and_then(|index| table.get(index).map(|&(_, kind)| kind))\n");
-    code.push_str("}\n\n");
     code
 }
 
@@ -106,24 +100,12 @@ fn generate_builtins(functions: &serde_json::Map<String, serde_json::Value>) -> 
     code.push_str("    }\n");
     code.push_str("}\n\n");
 
-    let (spanish_pairs, english_pairs) = collect_pairs(functions);
-    code.push_str(&format_pair_table(
-        "BUILTINS_ES",
+    code.push_str(&perfect_hash::generate(
+        "builtin",
         "BuiltinKind",
-        &spanish_pairs,
-    ));
-    code.push_str(&format_pair_table(
-        "BUILTINS_EN",
-        "BuiltinKind",
-        &english_pairs,
+        collect_pairs(functions),
     ));
 
-    code.push_str("pub fn find_builtin_by_profile(folded_word: &str, profile_name: &str) -> Option<BuiltinKind> {\n");
-    code.push_str("    let table = if profile_name == \"en\" { &BUILTINS_EN[..] } else { &BUILTINS_ES[..] };\n");
-    code.push_str("    table.binary_search_by_key(&folded_word, |&(entry_word, _)| entry_word)\n");
-    code.push_str("        .ok()\n");
-    code.push_str("        .and_then(|index| table.get(index).map(|&(_, kind)| kind))\n");
-    code.push_str("}\n\n");
     code
 }
 
@@ -147,17 +129,6 @@ fn collect_pairs(dictionary: &serde_json::Map<String, serde_json::Value>) -> Pro
     english_pairs.sort_by(|left_pair, right_pair| left_pair.0.cmp(&right_pair.0));
     english_pairs.dedup_by(|left_pair, right_pair| left_pair.0 == right_pair.0);
     (spanish_pairs, english_pairs)
-}
-
-fn format_pair_table(name: &str, kind_type: &str, pairs: &[FormPair]) -> String {
-    let length = pairs.len();
-    let mut code = format!("const {name}: [(&str, {kind_type}); {length}] = [\n");
-    for (form, pascal) in pairs {
-        let escaped = form.replace('\\', "\\\\").replace('"', "\\\"");
-        code.push_str(&format!("    (\"{escaped}\", {kind_type}::{pascal}),\n"));
-    }
-    code.push_str("];\n\n");
-    code
 }
 
 fn generate_openers(vocabulary: &serde_json::Map<String, serde_json::Value>) -> String {

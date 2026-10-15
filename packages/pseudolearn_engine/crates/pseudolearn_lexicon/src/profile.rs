@@ -22,7 +22,10 @@ impl Profile {
     }
 
     pub fn fold_word(&self, text: &str) -> String {
-        fold_text(text)
+        match self {
+            Self::Spanish => fold_text(&pseudolearn_source::IdentifierNormalizer::normalize(text)),
+            Self::English => text.to_lowercase(),
+        }
     }
 }
 

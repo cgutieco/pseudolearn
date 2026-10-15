@@ -1,0 +1,72 @@
+[
+  {
+    "target": "native",
+    "process": 0,
+    "peakRssSampledBytes": 428720128,
+    "lastCpuSampleSeconds": 6.03,
+    "metricSamples": 109
+  },
+  {
+    "target": "native",
+    "process": 1,
+    "peakRssSampledBytes": 427278336,
+    "lastCpuSampleSeconds": 6.07,
+    "metricSamples": 107
+  },
+  {
+    "target": "native",
+    "process": 2,
+    "peakRssSampledBytes": 434225152,
+    "lastCpuSampleSeconds": 0.0,
+    "metricSamples": 109
+  },
+  {
+    "target": "native",
+    "process": 3,
+    "peakRssSampledBytes": 425803776,
+    "lastCpuSampleSeconds": 6.06,
+    "metricSamples": 107
+  },
+  {
+    "target": "native",
+    "process": 4,
+    "peakRssSampledBytes": 431620096,
+    "lastCpuSampleSeconds": 6.12,
+    "metricSamples": 108
+  },
+  {
+    "target": "native",
+    "process": 5,
+    "peakRssSampledBytes": 433881088,
+    "lastCpuSampleSeconds": 0.0,
+    "metricSamples": 108
+  },
+  {
+    "target": "native",
+    "process": 6,
+    "peakRssSampledBytes": 427212800,
+    "lastCpuSampleSeconds": 6.11,
+    "metricSamples": 108
+  },
+  {
+    "target": "native",
+    "process": 7,
+    "peakRssSampledBytes": 437534720,
+    "lastCpuSampleSeconds": 6.13,
+    "metricSamples": 108
+  },
+  {
+    "target": "native",
+    "process": 8,
+    "peakRssSampledBytes": 430800896,
+    "lastCpuSampleSeconds": 6.15,
+    "metricSamples": 108
+  },
+  {
+    "target": "native",
+    "process": 9,
+    "peakRssSampledBytes": 427360256,
+    "lastCpuSampleSeconds": 6.19,
+    "metricSamples": 109
+  }
+]

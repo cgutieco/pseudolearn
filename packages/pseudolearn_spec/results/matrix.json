@@ -5,7 +5,7 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "DIAG.CATALOG@0.3.0#R1",
+    "rule": "DIAG.CATALOG@0.5.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -315,7 +315,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
+    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },
@@ -575,7 +575,7 @@
     "measured": "incumple",
     "measurements": [],
     "reason": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado.",
-    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
+    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
     "state": "experimental",
     "subject": "reference"
   },

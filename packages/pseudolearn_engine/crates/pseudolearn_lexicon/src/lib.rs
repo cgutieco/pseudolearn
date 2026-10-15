@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+mod hash;
+
 pub mod keywords;
 pub mod profile;
 pub mod signatures;

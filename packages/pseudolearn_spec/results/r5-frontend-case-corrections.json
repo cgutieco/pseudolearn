@@ -1,0 +1,23 @@
+[
+  {
+    "specification": "LANG.LEXICAL.NUMBER-LITERAL",
+    "case": "C3",
+    "before": [
+      {
+        "codigo": "integerLiteralOutOfRange",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedExpression",
+        "severidad": "error"
+      }
+    ],
+    "after": [
+      {
+        "codigo": "integerLiteralOutOfRange",
+        "severidad": "error"
+      }
+    ],
+    "reason": "La representación decimal positiva excede i64 y basta integerLiteralOutOfRange. El signo separado no crea una segunda causa de error."
+  }
+]

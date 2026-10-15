@@ -2,17 +2,17 @@
 
 ## 1. Qué es y qué no es
 
-Adapta la API al protocolo de conformidad por procesos. Contrato documentado, sin implementación ni manifiesto Cargo.
+Adapta la API al protocolo de conformidad por procesos. Implementa análisis JSONL sobre la API pública. Ejecución, observación y RI siguen pendientes de sus capas.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R4 |
+| execute, observe, seek, ir y gc_stress | Capas de ejecución | R5 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
+Rust exacto del miembro, rustfmt y Clippy. El binario `conformance_adapter` procesa JSONL; no se despliega por separado.
 La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
 La comprobación disponible usa, desde la raíz del monorepo,
 `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
@@ -57,3 +57,7 @@ formato, Clippy, auditoría de dependencias y pruebas diferenciales según los c
 ## 8. Fuentes consultadas y genealogía conceptual
 
 SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
+
+La robustez se ejecuta en procesos aislados por entrada, con semilla 42 y ambos perfiles y rigores.
+Incluye texto vacío, trivia, NFD, Unicode arbitrario, UTF-8 inválido y anidaciones de hasta 100.000
+operadores o paréntesis. Se exige proceso exitoso, stderr vacío, árbol y ausencia de fallo interno.

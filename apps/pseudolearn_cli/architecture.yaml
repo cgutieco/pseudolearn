@@ -1,4 +1,5 @@
 package: pseudolearn_cli
+generated_sources: [generated]
 layers:
   - name: pseudolearn_cli
     path: .

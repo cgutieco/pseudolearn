@@ -5,9 +5,10 @@ generated_sources:
   - crates/pseudolearn_diagnostics/generated
   - crates/pseudolearn_lexicon/generated
   - crates/pseudolearn_syntax/generated
+  - crates/pseudolearn_ir/generated
   - crates/pseudolearn_bytecode/generated
   - crates/pseudolearn_vm/generated
-deterministic_output_crates: [pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_api]
+deterministic_output_crates: [pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_api]
 layers:
   - name: pseudolearn_source
     path: crates/pseudolearn_source
@@ -92,6 +93,12 @@ layers:
     may_import: [pseudolearn_api]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
+  - name: pseudolearn_bench_worker
+    path: crates/pseudolearn_bench_worker
+    may_import: [pseudolearn_api]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+    tooling: true
   - name: xtask
     path: xtask
     may_import: []

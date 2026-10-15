@@ -5,7 +5,6 @@ use crate::messages::{format_diagnostic_line, missing_input, unreadable_input};
 use crate::options::CliOptions;
 use pseudolearn_api::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, detect_vocabulary_profile, execute_analyze,
-    line_and_column,
 };
 use serde_json::json;
 use std::path::Path;
@@ -60,10 +59,10 @@ fn check_target_file(
         .any(|entry| entry.severity == "error");
 
     if options.json_output {
-        let json_representation = build_json_file(file_path, &content, &response.diagnostics);
+        let json_representation = build_json_file(file_path, &response.diagnostics);
         Ok((has_error, Some(json_representation)))
     } else {
-        render_diagnostics(file_path, &content, &response, &options.interface_language);
+        render_diagnostics(file_path, &response, &options.interface_language);
         Ok((has_error, None))
     }
 }
@@ -77,30 +76,22 @@ fn determine_vocabulary(options: &CliOptions, content: &str) -> String {
         .to_owned()
 }
 
-fn render_diagnostics(
-    file_path: &str,
-    content: &str,
-    response: &AnalyzeResponse,
-    interface_language: &str,
-) {
+fn render_diagnostics(file_path: &str, response: &AnalyzeResponse, interface_language: &str) {
     for diagnostic in &response.diagnostics {
-        let (line, column) = line_and_column(content, diagnostic.span.start);
+        let (line, column) = (diagnostic.span.start.line, diagnostic.span.start.column);
         let formatted =
             format_diagnostic_line(interface_language, file_path, (line, column), diagnostic);
         print!("{formatted}");
     }
 }
 
-fn build_json_file(
-    file_path: &str,
-    content: &str,
-    diagnostics: &[ApiDiagnostic],
-) -> serde_json::Value {
+fn build_json_file(file_path: &str, diagnostics: &[ApiDiagnostic]) -> serde_json::Value {
     let converted: Vec<serde_json::Value> = diagnostics
         .iter()
         .map(|diagnostic| {
-            let (start_line, start_col) = line_and_column(content, diagnostic.span.start);
-            let (end_line, end_col) = line_and_column(content, diagnostic.span.ending);
+            let (start_line, start_col) =
+                (diagnostic.span.start.line, diagnostic.span.start.column);
+            let (end_line, end_col) = (diagnostic.span.end.line, diagnostic.span.end.column);
             json!({
                 "code": diagnostic.code,
                 "class": diagnostic.class,

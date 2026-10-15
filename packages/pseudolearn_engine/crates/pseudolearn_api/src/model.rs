@@ -9,9 +9,15 @@ pub struct AnalyzeRequest {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiPosition {
+    pub line: u32,
+    pub column: u32,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ApiSpan {
-    pub start: u32,
-    pub ending: u32,
+    pub start: ApiPosition,
+    pub end: ApiPosition,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -30,6 +36,7 @@ pub struct AnalyzeResponse {
     pub kind: String,
     pub tree: bool,
     pub diagnostics: Vec<ApiDiagnostic>,
+    pub schema: Vec<ApiUnit>,
 }
 
 impl AnalyzeResponse {
@@ -38,6 +45,14 @@ impl AnalyzeResponse {
             kind: "analyze".to_owned(),
             tree,
             diagnostics,
+            schema: Vec::new(),
         }
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiUnit {
+    pub kind: String,
+    pub name: String,
+    pub span: ApiSpan,
 }

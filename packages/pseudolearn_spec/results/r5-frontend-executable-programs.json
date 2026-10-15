@@ -1,0 +1,182 @@
+{
+  "programs_checked": 606,
+  "expected_analysis_rejections": [
+    {
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "case": "C3",
+      "profile": "en",
+      "strictness": "estricto",
+      "diagnostics": [
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "missingStatementTerminator",
+          "message": "Expected a semicolon at the end of the statement",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 12,
+              "line": 2
+            },
+            "start": {
+              "column": 9,
+              "line": 2
+            }
+          }
+        },
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "unexpectedStatement",
+          "message": "Unrecognized statement or token: {lexeme}",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 8,
+              "line": 3
+            },
+            "start": {
+              "column": 7,
+              "line": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "case": "C3",
+      "profile": "en",
+      "strictness": "flexible",
+      "diagnostics": [
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "missingStatementTerminator",
+          "message": "Expected a semicolon at the end of the statement",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 12,
+              "line": 2
+            },
+            "start": {
+              "column": 9,
+              "line": 2
+            }
+          }
+        },
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "unexpectedStatement",
+          "message": "Unrecognized statement or token: {lexeme}",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 8,
+              "line": 3
+            },
+            "start": {
+              "column": 7,
+              "line": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "case": "C3",
+      "profile": "es",
+      "strictness": "estricto",
+      "diagnostics": [
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "missingStatementTerminator",
+          "message": "Se esperaba un punto y coma al final de la sentencia",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 15,
+              "line": 2
+            },
+            "start": {
+              "column": 12,
+              "line": 2
+            }
+          }
+        },
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "unexpectedStatement",
+          "message": "Instrucción o elemento no reconocido: {lexeme}",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 8,
+              "line": 3
+            },
+            "start": {
+              "column": 7,
+              "line": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "case": "C3",
+      "profile": "es",
+      "strictness": "flexible",
+      "diagnostics": [
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "missingStatementTerminator",
+          "message": "Se esperaba un punto y coma al final de la sentencia",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 15,
+              "line": 2
+            },
+            "start": {
+              "column": 12,
+              "line": 2
+            }
+          }
+        },
+        {
+          "arguments": {},
+          "class": "syntax",
+          "code": "unexpectedStatement",
+          "message": "Instrucción o elemento no reconocido: {lexeme}",
+          "related": [],
+          "severity": "error",
+          "span": {
+            "end": {
+              "column": 8,
+              "line": 3
+            },
+            "start": {
+              "column": 7,
+              "line": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

@@ -97,7 +97,7 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "DIAG.CATALOG@0.3.0#R1",
+      "regla": "DIAG.CATALOG@0.5.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -200,7 +200,7 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.2.0#R1",
+      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"
@@ -354,7 +354,7 @@
       "resuelve_en": "R5"
     },
     {
-      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.2.0#R1",
+      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R5"

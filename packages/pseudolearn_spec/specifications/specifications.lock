@@ -136,6 +136,34 @@
       "state": "experimental",
       "version": "0.3.0"
     },
+    "DIAG.CATALOG@0.4.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "3165dd83f55922fd5f7f70b00f86c70fc5cfe281faee61f5c6a3676db07bf8c4",
+      "state": "experimental",
+      "version": "0.4.0"
+    },
+    "DIAG.CATALOG@0.5.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "3c862b204aeeeb950a4c2387c4b09bbc1842d5a99f61b7c5bcf3315423caf96f",
+      "state": "experimental",
+      "version": "0.5.0"
+    },
     "DIAG.CLASSES@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -1053,6 +1081,20 @@
       "state": "experimental",
       "version": "0.2.0"
     },
+    "LANG.CLASS.OUT-OF-SCOPE@0.3.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
+      "state": "experimental",
+      "version": "0.3.0"
+    },
     "LANG.CLASS.OVERRIDE@0.1.0": {
       "edition": {
         "introducida_en": "2026"
@@ -1704,6 +1746,20 @@
       "hash": "71b4db1cb562bcbc6224c5dea6e4d0112c167b7280ef177ec20f4746bdbaaa6d",
       "state": "experimental",
       "version": "0.2.0"
+    },
+    "LANG.LEXICAL.NUMBER-LITERAL@0.3.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "R1": "regla"
+      },
+      "hash": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
+      "state": "experimental",
+      "version": "0.3.0"
     },
     "LANG.LEXICAL.OPERATOR-TOKEN@0.1.0": {
       "edition": {
@@ -2418,6 +2474,26 @@
       "hash": "486e074de4798a2919a7c7c6db8c8465df9296041fd2f8b7e44da1ede630437b",
       "state": "experimental",
       "version": "0.2.0"
+    },
+    "LANG.SYNTAX.ANALYSIS-LIMITS@0.1.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+      "state": "experimental",
+      "version": "0.1.0"
     },
     "LANG.SYNTAX.GRAMMAR@0.1.0": {
       "edition": {
@@ -3571,9 +3647,9 @@
         "D1": "definicion",
         "R1": "regla"
       },
-      "hash": "88a383ef9c675089d61648c62540f1f93faa9c8ce3688a8b67885c2972082529",
+      "hash": "3c862b204aeeeb950a4c2387c4b09bbc1842d5a99f61b7c5bcf3315423caf96f",
       "state": "experimental",
-      "version": "0.3.0"
+      "version": "0.5.0"
     },
     "DIAG.CLASSES": {
       "edition": {
@@ -4252,11 +4328,12 @@
       "elements": {
         "C1": "caso",
         "C2": "caso",
+        "D1": "definicion",
         "R1": "regla"
       },
-      "hash": "73d56caceff854e7bf01cf9ca2519baf80999ae0a3471e46752d5243e8bf04f3",
+      "hash": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "LANG.CLASS.OVERRIDE": {
       "edition": {
@@ -4567,9 +4644,9 @@
         "C3": "caso",
         "R1": "regla"
       },
-      "hash": "71b4db1cb562bcbc6224c5dea6e4d0112c167b7280ef177ec20f4746bdbaaa6d",
+      "hash": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
       "state": "experimental",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "LANG.LEXICAL.OPERATOR-TOKEN": {
       "edition": {
@@ -4948,6 +5025,26 @@
       "hash": "486e074de4798a2919a7c7c6db8c8465df9296041fd2f8b7e44da1ede630437b",
       "state": "experimental",
       "version": "0.2.0"
+    },
+    "LANG.SYNTAX.ANALYSIS-LIMITS": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "D1": "definicion",
+        "R1": "regla"
+      },
+      "hash": "da8cd8dd5ffd283924b0b1fd015a50e14a28cda9f98d5cfe8251aace968aad2d",
+      "state": "experimental",
+      "version": "0.1.0"
     },
     "LANG.SYNTAX.GRAMMAR": {
       "edition": {

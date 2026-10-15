@@ -1,4 +1,7 @@
 {
+  "analysisLimits": {
+    "nesting": 256
+  },
   "cliConventions": {
     "aperturas": [
       "algorithm",
@@ -387,6 +390,24 @@
     }
   },
   "diagnostics": {
+    "analysisNestingLimitExceeded": {
+      "argumentos": [
+        "limit"
+      ],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Analysis nesting limit exceeded: {limit}",
+        "es": "Se superó el límite de anidación del análisis: {limit}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "limit": "numero"
+      }
+    },
     "argumentCountMismatch": {
       "argumentos": [
         "expected",
@@ -1449,6 +1470,20 @@
       "mensajes": {
         "en": "The operation produces an integer outside the signed 64-bit range",
         "es": "La operación produce un entero fuera del rango de 64 bits con signo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "internalFault": {
+      "argumentos": [],
+      "clase": "internal",
+      "mensajes": {
+        "en": "Internal engine fault",
+        "es": "Fallo interno del motor"
       },
       "politica": "A",
       "severidad": {
@@ -3356,6 +3391,77 @@
     },
     "statement_exited": {
       "datos": []
+    }
+  },
+  "unsupportedConstructs": {
+    "abstract": {
+      "allow_line": false,
+      "closings": [
+        "FinClase",
+        "endClass"
+      ],
+      "code": "unsupportedAbstractConstruct",
+      "openings": [
+        "Abstracta",
+        "Abstracto",
+        "abstract"
+      ]
+    },
+    "exception": {
+      "allow_line": true,
+      "closings": [
+        "FinIntentar",
+        "endTry"
+      ],
+      "code": "unsupportedExceptionConstruct",
+      "openings": [
+        "Intentar",
+        "try"
+      ]
+    },
+    "generic": {
+      "allow_line": false,
+      "closings": [],
+      "code": "unsupportedGenericsConstruct",
+      "openings": [
+        "Generico",
+        "Genérico",
+        "generic"
+      ]
+    },
+    "interface": {
+      "allow_line": false,
+      "closings": [
+        "FinInterfaz",
+        "endInterface"
+      ],
+      "code": "unsupportedInterfaceConstruct",
+      "openings": [
+        "Interfaz",
+        "interface"
+      ]
+    },
+    "protected": {
+      "allow_line": false,
+      "closings": [],
+      "code": "unsupportedProtectedConstruct",
+      "openings": [
+        "Protegido",
+        "protected"
+      ]
+    },
+    "static": {
+      "allow_line": false,
+      "closings": [
+        "FinMetodo",
+        "endMethod"
+      ],
+      "code": "unsupportedStaticConstruct",
+      "openings": [
+        "Estatico",
+        "Estático",
+        "static"
+      ]
     }
   },
   "vocabulary": {

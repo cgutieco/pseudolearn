@@ -2,17 +2,17 @@
 
 ## 1. Qué es y qué no es
 
-Representa el texto fuente original con posiciones verificadas. Contrato documentado, sin implementación ni manifiesto Cargo.
+Representa el texto fuente original con posiciones verificadas. Implementación disponible en el workspace.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
 | Pendiente | Dependencia | Fase |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R4 |
+| Ninguno en el contrato de análisis implementado | — | — |
 
 ## 2. Guía operativa y ciclo de vida
 
-Rust exacto del miembro, rustfmt y Clippy. No hay binario, build ni despliegue disponible.
+Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despliega por separado.
 La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
 La comprobación disponible usa, desde la raíz del monorepo,
 `cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
@@ -33,6 +33,11 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 Problema: representa el texto fuente original con posiciones verificadas respetando los observables del corpus.
 Elección: `SourceText` con los bytes originales; índice de inicios de línea; conversión perezosa de desplazamiento de byte a columna en puntos de código; detección de BOM; NFC solo para comparar nombres, con camino rápido ASCII.
 Alternativas descartadas y fundamento: Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
+
+Problema: NFC debe aplicarse después de consumir el nombre completo. Elección: el scanner consulta
+`IdentifierNormalizer::is_continuation` para conservar las marcas combinantes dentro del mismo token.
+La admisibilidad del alfabeto por rigor se comprueba sobre el nombre normalizado. Se rechaza cortar
+el token ante una marca combinante, porque produciría un falso carácter inválido.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

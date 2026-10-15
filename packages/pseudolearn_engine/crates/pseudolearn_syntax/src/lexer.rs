@@ -1,6 +1,5 @@
 use crate::literal_scanner::{
-    scan_block_comment, scan_character_literal, scan_line_comment, scan_numeric_literal,
-    scan_string_literal,
+    scan_block_comment, scan_line_comment, scan_literal, scan_numeric_literal,
 };
 use crate::operator_scanner::scan_operator_or_punctuation;
 use crate::tokens::{TokenKind, Tokens};
@@ -10,9 +9,9 @@ use pseudolearn_source::{SourceText, Span};
 
 pub struct Lexer<'source> {
     source: &'source SourceText,
-    profile: Profile,
+    pub(crate) profile: Profile,
     cursor: usize,
-    tokens: Tokens,
+    pub(crate) tokens: Tokens,
     diagnostics: Vec<Diagnostic>,
 }
 
@@ -134,29 +133,37 @@ impl<'source> Lexer<'source> {
     }
 
     fn scan_string_token(&mut self, start_offset: u32) {
-        let (advance, closed) = scan_string_literal(self.current_slice());
-        self.advance_by(advance);
-        let ending_offset = self.current_u32();
-        if !closed {
-            let span = Span::new(start_offset, ending_offset);
+        let literal = scan_literal(self.current_slice());
+        self.advance_by(literal.bytes);
+        let span = Span::new(start_offset, self.current_u32());
+        if !literal.closed {
             self.diagnostics
                 .push(Diagnostic::new(DiagnosticCode::UnterminatedString, span));
         }
-        self.tokens
-            .push(TokenKind::StringLiteral, start_offset, ending_offset);
+        if let Some((offset, escape)) = &literal.invalid_escape {
+            let start = start_offset.saturating_add(u32::try_from(*offset).unwrap_or(0));
+            let ending = start.saturating_add(u32::try_from(escape.len()).unwrap_or(0));
+            self.diagnostics.push(
+                Diagnostic::new(
+                    DiagnosticCode::InvalidEscapeSequence,
+                    Span::new(start, ending),
+                )
+                .with_argument("lexeme", escape),
+            );
+        }
+        let invalid = !literal.closed || literal.invalid_escape.is_some();
+        let kind = if invalid {
+            TokenKind::InvalidCharacter
+        } else if literal.content.chars().count() == 1 {
+            TokenKind::CharacterLiteral
+        } else {
+            TokenKind::StringLiteral
+        };
+        self.tokens.push(kind, start_offset, self.current_u32());
     }
 
     fn scan_character_token(&mut self, start_offset: u32) {
-        let (advance, closed) = scan_character_literal(self.current_slice());
-        self.advance_by(advance);
-        let ending_offset = self.current_u32();
-        if !closed {
-            let span = Span::new(start_offset, ending_offset);
-            self.diagnostics
-                .push(Diagnostic::new(DiagnosticCode::UnterminatedString, span));
-        }
-        self.tokens
-            .push(TokenKind::CharacterLiteral, start_offset, ending_offset);
+        self.scan_string_token(start_offset);
     }
 
     fn scan_number_token(&mut self, start_offset: u32) {
@@ -167,7 +174,23 @@ impl<'source> Lexer<'source> {
         } else {
             TokenKind::IntegerLiteral
         };
-        self.tokens.push(kind, start_offset, self.current_u32());
+        let ending = self.current_u32();
+        let lexeme = self.slice_from(start_offset, ending);
+        if !is_real && lexeme.parse::<i64>().is_err() {
+            self.diagnostics.push(
+                Diagnostic::new(
+                    DiagnosticCode::IntegerLiteralOutOfRange,
+                    Span::new(start_offset, ending),
+                )
+                .with_argument("lexeme", lexeme),
+            );
+        }
+        let kind = if !is_real && lexeme.parse::<i64>().is_err() {
+            TokenKind::InvalidCharacter
+        } else {
+            kind
+        };
+        self.tokens.push(kind, start_offset, ending);
     }
 
     fn scan_punctuation_token(&mut self, start_offset: u32) {
@@ -187,7 +210,7 @@ impl<'source> Lexer<'source> {
 
     fn scan_identifier_or_keyword(&mut self, start_offset: u32) {
         while let Some(character) = self.current_slice().chars().next() {
-            if character.is_alphanumeric() || character == '_' {
+            if pseudolearn_source::IdentifierNormalizer::is_continuation(character) {
                 self.advance_by(character.len_utf8());
             } else {
                 break;
@@ -211,45 +234,7 @@ impl<'source> Lexer<'source> {
             .push(TokenKind::Identifier, start_offset, ending_offset);
     }
 
-    fn match_compound_keyword(&mut self, word: &str, start_offset: u32) -> bool {
-        let checkpoint = self.cursor;
-        let mut whitespace_bytes: usize = 0;
-        let remainder = self.current_slice();
-        for character in remainder.chars() {
-            if character == ' ' || character == '\t' {
-                whitespace_bytes = whitespace_bytes.saturating_add(character.len_utf8());
-            } else {
-                break;
-            }
-        }
-        if whitespace_bytes == 0 {
-            return false;
-        }
-        let after_whitespace = remainder.get(whitespace_bytes..).unwrap_or("");
-        let second_word_bytes = after_whitespace
-            .chars()
-            .take_while(|character| character.is_alphanumeric() || *character == '_')
-            .map(char::len_utf8)
-            .sum::<usize>();
-        if second_word_bytes == 0 {
-            return false;
-        }
-        let second_word = after_whitespace.get(..second_word_bytes).unwrap_or("");
-        let combined = format!("{word} {second_word}");
-        if let Some(keyword) = find_keyword(&combined, self.profile) {
-            self.advance_by(whitespace_bytes.saturating_add(second_word_bytes));
-            self.tokens.push(
-                TokenKind::Keyword(keyword),
-                start_offset,
-                self.current_u32(),
-            );
-            return true;
-        }
-        self.cursor = checkpoint;
-        false
-    }
-
-    fn current_slice(&self) -> &'source str {
+    pub(crate) fn current_slice(&self) -> &'source str {
         self.source.as_str().get(self.cursor..).unwrap_or("")
     }
 
@@ -262,11 +247,11 @@ impl<'source> Lexer<'source> {
             .unwrap_or("")
     }
 
-    fn advance_by(&mut self, count: usize) {
+    pub(crate) fn advance_by(&mut self, count: usize) {
         self.cursor = self.cursor.saturating_add(count);
     }
 
-    fn current_u32(&self) -> u32 {
+    pub(crate) fn current_u32(&self) -> u32 {
         u32::try_from(self.cursor).unwrap_or(u32::MAX)
     }
 }
