@@ -33,9 +33,9 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 Fuera de alcance de producto: construcciones nuevas, concurrencia, reloj libre, efectos no grabables y JIT.
 Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | R5 |
+| ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | Motor de ejecución |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
@@ -214,7 +214,7 @@ El camino rápido no ejecuta instrucciones de observación. Ambos gemelos compar
 El montón usa palabras contiguas y asas u32 directas; la identidad es ordinal, nunca dirección.
 Texto UTF-8, indicador ASCII y migas cada 64 puntos de código. Recolector preciso sin movimiento, marcas laterales y disparo por celdas.
 Los bancos crecen por duplicación en llamadas; el límite de marcos es independiente del tamaño del banco.
-Los umbrales provisionales y la línea base viven en PERF; resultados desfavorables de E-02 se conservan y condicionan R5.
+Los umbrales provisionales y la línea base viven en PERF; resultados desfavorables de E-02 se conservan y condicionan el motor de ejecución.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
@@ -222,7 +222,7 @@ Los umbrales provisionales y la línea base viven en PERF; resultados desfavorab
 |---|---|
 | layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |
 | cargo xtask verify al implementar | Formato, Clippy, tests, dependencias, cadena y seis verificadores |
-| see conform engine | Casos de análisis y ejecución según la fase, ambos perfiles y rigores |
+| see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles y rigores |
 | Diferencial de gemelos | Igualdad de salida, fallos y estado observable |
 | PERF | Medición local contra referencia con todos los resultados |
 

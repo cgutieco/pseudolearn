@@ -8,7 +8,6 @@ version: 0.3.0
 duenos: [responsable-especificaciones]
 sujetos: [see]
 resumen: Formato de especificaciones.
-cambio: {"clase": "ampliacion", "impacto_usuarios": "Los autores pueden declarar observación, RI, CLI y mediciones con bloques y operaciones tipados.", "impacto_implementaciones": "see acepta campos y bloques opcionales nuevos; los corpus anteriores siguen siendo válidos.", "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.", "revisado_por": "autoría automatizada; no revisión humana independiente"}
 ---
 
 # Formato de especificaciones

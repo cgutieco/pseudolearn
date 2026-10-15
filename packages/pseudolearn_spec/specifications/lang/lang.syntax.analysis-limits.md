@@ -27,14 +27,7 @@
       "version": ">=0.4.0, <1.0.0",
       "tipo": "usa"
     }
-  ],
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "Los diagnósticos conservan el mismo código y el límite numérico.",
-    "impacto_implementaciones": "El argumento limit se serializa como número, no como cadena.",
-    "justificacion": "Corregir la derivación de los casos según el argumento tipado numero del catálogo y DIAG.MODEL.",
-    "revisado_por": "autorización de la fase R5 en la conversación"
-  }
+  ]
 }
 ---
 

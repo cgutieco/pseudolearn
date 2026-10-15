@@ -5,9 +5,9 @@
 Binario pseudo para comprobar, ejecutar e inspeccionar programas. Análisis y preferencias implementados; ejecución e inspección pendientes de sus capas.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| ejecutar/run y ri/ir | API de ejecución | R5 |
+| ejecutar/run y ri/ir | API de ejecución | Motor de ejecución |
 | compilar/build | Backend nativo | R6 |
 | formatear/format, traducir/translate, lsp | Servicio de lenguaje | R7 |
 

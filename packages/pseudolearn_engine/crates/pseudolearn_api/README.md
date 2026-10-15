@@ -6,9 +6,9 @@ Ofrece operaciones públicas totales sobre recursos del núcleo. Implementación
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | R4 y R5 |
+| Implementación y tests del crate | Corpus validado y capas inferiores | Front-end y motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 

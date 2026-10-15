@@ -36,8 +36,21 @@ pub(crate) fn check(
         | PropertyExecutor::InterfaceLanguage => {
             crate::property_resources::check(executor, scenario, subject)
         }
-        PropertyExecutor::SnapshotIsolation | PropertyExecutor::PastStateIsolation | PropertyExecutor::DeltaMinimality | PropertyExecutor::DeltaReconstruction => crate::property_states::check(executor, scenario, subject),
-        PropertyExecutor::StepPartition | PropertyExecutor::StepDepth | PropertyExecutor::InputBatching | PropertyExecutor::ExecutionControls | PropertyExecutor::HostRecording | PropertyExecutor::StateQuery | PropertyExecutor::WireRoundtrip => crate::property_recording::check(executor, scenario, subject),
+        PropertyExecutor::SnapshotIsolation
+        | PropertyExecutor::PastStateIsolation
+        | PropertyExecutor::DeltaMinimality
+        | PropertyExecutor::DeltaReconstruction => {
+            crate::property_states::check(executor, scenario, subject)
+        }
+        PropertyExecutor::StepPartition
+        | PropertyExecutor::StepDepth
+        | PropertyExecutor::InputBatching
+        | PropertyExecutor::ExecutionControls
+        | PropertyExecutor::HostRecording
+        | PropertyExecutor::StateQuery
+        | PropertyExecutor::WireRoundtrip => {
+            crate::property_recording::check(executor, scenario, subject)
+        }
         _ => Err("SEE-PROPERTY: executor unavailable".to_owned()),
     }
 }

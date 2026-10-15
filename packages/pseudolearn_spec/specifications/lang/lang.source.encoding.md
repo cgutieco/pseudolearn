@@ -17,14 +17,7 @@
   "edicion": {
     "introducida_en": "2026"
   },
-  "depende_de": [],
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Sin cambios en el lenguaje ni en el código admitido.",
-    "impacto_implementaciones": "Activa el sujeto engine en R4 manteniendo reference.",
-    "justificacion": "Habilitar la verificación de conformidad estática del nuevo motor en Rust.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "depende_de": []
 }
 ---
 

@@ -13,14 +13,7 @@
     "see"
   ],
   "resumen": "Matriz de conformidad.",
-  "depende_de": [],
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "La matriz distingue evidencia pendiente y publica la cobertura de la RI.",
-    "impacto_implementaciones": "La salida de see matrix pasa a ser un objeto con conformidad, cobertura y estados.",
-    "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "depende_de": []
 }
 ---
 

@@ -13,14 +13,7 @@
     "see"
   ],
   "resumen": "Validación por capas.",
-  "depende_de": [],
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Los autores reciben rechazos específicos para observación, RI, CLI, mediciones y cobertura.",
-    "impacto_implementaciones": "see aplica nuevas validaciones sobre bloques y casos opcionales; los corpus sin ellos no cambian.",
-    "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "depende_de": []
 }
 ---
 

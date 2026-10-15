@@ -23,14 +23,7 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ],
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "Un literal fuera de rango produce un único diagnóstico principal, con cualquier signo precedente.",
-    "impacto_implementaciones": "Suprimir expectedExpression derivado del mismo literal inválido.",
-    "justificacion": "La regla define el signo separado y el rango del literal; DIAG.CLASSES y la recuperación prohíben duplicar el fallo por sincronización.",
-    "revisado_por": "autorización de la remediación de R5; derivación de la regla"
-  }
+  ]
 }
 ---
 

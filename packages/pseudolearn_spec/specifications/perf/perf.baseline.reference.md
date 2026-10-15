@@ -25,14 +25,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Reference baseline",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Publica la línea base de los diez programas AWFY-core en ambos modos sin cambiar su comportamiento.",
-    "impacto_implementaciones": "La puerta de rendimiento de la VM compara los mismos tamaños con esta serie nativa local, además de conservar E-01.",
-    "justificacion": "La comparación por suite necesita una medición de reference para cada uno de los diez programas normativos.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "titulo_en": "Reference baseline"
 }
 ---
 

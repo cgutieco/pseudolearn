@@ -71,7 +71,7 @@ Las capas con `pending: true` permiten fases intermedias: el verificador exige s
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 El código inglés no lleva comentarios, atributos doc, allow ni expect. `#![forbid(unsafe_code)]`
-protege cada crate de R0. Límites y listas de nombres están únicamente en `architecture.yaml`.
+protege cada crate verificado. Límites y listas de nombres están únicamente en `architecture.yaml`.
 Los tests se excluyen de tamaño, no de comentarios, nombres o atributos. Se inspeccionan `src`,
 `tests`, ejemplos y build scripts; no se inspeccionan target, .git ni fixtures negativos.
 Las declaraciones, aliases de imports, genéricos, bindings y tiempos de vida se verifican como declaraciones; rutas de terceros y
@@ -80,7 +80,7 @@ propios renombrables: se verifican sus bindings y genéricos, no el nombre impue
 
 ## 6. Decisiones de producto que condicionan el código
 
-ADR-001 exige una fundación sin motor. La ausencia de corpus en R0 no habilita implementar `see`,
+ADR-001 exige una fundación sin motor. La ausencia inicial de corpus no habilita implementar `see`,
 conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos verificadores.
 
 ## 7. Verificación, testing y aseguramiento de calidad
@@ -100,7 +100,7 @@ conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos ver
 | toolchain | Miembros con versiones divergentes |
 
 Entradas vacías, Rust inválido y reglas inválidas tienen tests explícitos. No se aprueba una fase
-con un verificador fallando. La evidencia de aceptación vive en el informe de R0. No hay pendientes de implementación del verificador.
+con un verificador fallando. La evidencia de aceptación vive en el informe de verificación. No hay pendientes de implementación del verificador.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

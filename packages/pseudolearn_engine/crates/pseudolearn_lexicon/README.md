@@ -6,7 +6,7 @@ Expone vocabularios bilingües y firmas generados desde el corpus. Implementaci�
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Ninguno en el contrato implementado | — | — |
 

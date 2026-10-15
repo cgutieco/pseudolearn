@@ -25,7 +25,7 @@ Código en inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límit
 
 ## 6. Decisiones de producto que condicionan el código
 
-La fase R4 habilita el front-end del motor y sus verificadores asociados.
+Habilita el front-end del motor y sus verificadores asociados.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

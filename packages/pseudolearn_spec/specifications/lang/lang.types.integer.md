@@ -17,13 +17,6 @@
   "depende_de": [],
   "edicion": {
     "introducida_en": "2026"
-  },
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Activa la comprobación del motor Rust sin cambiar programas válidos.",
-    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
-    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
-    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---

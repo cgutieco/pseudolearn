@@ -35,14 +35,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution",
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "La cancelación puede detener también una condición de un bucle vacío, sin efectos parciales.",
-    "impacto_implementaciones": "La API conserva los puntos de cancelación del modelo de ejecución.",
-    "justificacion": "Evitar que la frontera API contradiga el modelo de ejecución y deje sin cancelar un bucle vacío.",
-    "revisado_por": "autorización de la fase R5 en la conversación"
-  }
+  "titulo_en": "Execution"
 }
 ---
 

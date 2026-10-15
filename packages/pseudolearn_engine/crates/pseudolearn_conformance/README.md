@@ -6,9 +6,9 @@ Adapta la API al protocolo de conformidad por procesos. Implementa análisis JSO
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| execute, observe, seek, ir y gc_stress | Capas de ejecución | R5 |
+| execute, observe, seek, ir y gc_stress | Capas de ejecución | Motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 

@@ -5,7 +5,6 @@ titulo: Identidad persistente
 dominio: proceso
 estado: borrador
 version: 0.2.0
-cambio: {"clase": "ampliacion", "impacto_usuarios": "Los elementos de medición, instrucción y cobertura tienen prefijo propio.", "impacto_implementaciones": "see acepta los prefijos M, O y V; los elementos existentes no cambian.", "justificacion": "R3 especifica el motor, sus fronteras y las herramientas básicas antes de escribir el motor.", "revisado_por": "autoría automatizada; no revisión humana independiente"}
 duenos: [responsable-especificaciones]
 sujetos: [see]
 resumen: Identidad persistente.

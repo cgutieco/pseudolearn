@@ -222,3 +222,22 @@ fn interface_language_only_changes_diagnostic_prose() -> Result<(), String> {
     }
     Ok(())
 }
+
+#[test]
+fn step_depth_verifies_step_conditions() -> Result<(), String> {
+    let base = json!({
+        "events": [
+            {"clase": "statement_entered", "profundidad": 0, "linea": 1},
+            {"clase": "statement_entered", "profundidad": 1, "linea": 2},
+            {"clase": "output", "profundidad": 1, "linea": 2},
+            {"clase": "statement_exited", "profundidad": 1, "linea": 2}
+        ]
+    });
+    let mut responses = vec![result(base)];
+    for target in [1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] {
+        responses.push(result(json!({"target": target})));
+    }
+    let (report, _) = measured(PropertyExecutor::StepDepth, responses)?;
+    assert_eq!(report.verdict, "cumple");
+    Ok(())
+}

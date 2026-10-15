@@ -25,7 +25,7 @@ Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites 
 
 ## 6. Decisiones de producto que condicionan el código
 
-La fase R0 habilita verificadores, sin código del motor ni del sistema see.
+Habilita verificadores, sin código del motor ni del sistema see.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

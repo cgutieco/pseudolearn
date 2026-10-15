@@ -13,14 +13,7 @@
     "see"
   ],
   "resumen": "Exportación para consumidores.",
-  "depende_de": [],
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Se explicitan contratos existentes y casos límite sin añadir construcciones.",
-    "impacto_implementaciones": "Los consumidores comprueban las reglas ampliadas; reference permanece congelado.",
-    "justificacion": "Migración completa del lenguaje vigente y de sus recursos normativos.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "depende_de": []
 }
 ---
 

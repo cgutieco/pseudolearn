@@ -6,9 +6,9 @@ Construye un árbol sintáctico sin pérdida para cualquier texto. La implementa
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Extensiones de ejecución ajenas a sintaxis | Consumidores superiores | R5 |
+| Extensiones de ejecución ajenas a sintaxis | Consumidores superiores | Motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 

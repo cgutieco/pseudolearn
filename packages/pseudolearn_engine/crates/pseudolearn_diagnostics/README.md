@@ -6,7 +6,7 @@ Representa diagnósticos mediante códigos con argumentos tipados. Implementaci�
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Ninguno en el contrato de análisis implementado | — | — |
 

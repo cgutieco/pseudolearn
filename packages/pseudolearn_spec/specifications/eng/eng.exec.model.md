@@ -26,14 +26,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution model",
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "Precisa redondeo, formato o recursos sin añadir construcciones.",
-    "impacto_implementaciones": "Actualiza contratos y casos derivados para ejecución portable y verificable.",
-    "justificacion": "Eliminar ambigüedades antes de implementar la ejecución determinista.",
-    "revisado_por": "autorización de la fase R5 en la conversación"
-  }
+  "titulo_en": "Execution model"
 }
 ---
 

@@ -356,6 +356,24 @@ publicar un commit no los dispara. El informe y las
 casillas definitivas se publican después de reunir la evidencia. No se avanza a otra fase sin un
 mensaje nuevo de autorización (`PHASE-STOP`).
 
+### Prohibición estricta de referencias a la carpeta `docs` y sus fases (`DOC-NO-TRANSIENT-REFS`)
+
+Está terminantemente prohibido referenciar cualquier documento, sección, plan o fase de la carpeta `docs/` en cualquier otra parte del monorepo fuera de esa carpeta. Ningún archivo externo —ya sean especificaciones del lenguaje o del motor, contratos canónicos, código fuente o archivos `README.md` de paquetes y crates— puede citar nombres de fases (por ejemplo, `R0`, `R4`, `R5`), planes o identificadores documentales transitorios.
+
+Ejemplos claros de violaciones inadmisibles corregidas incluyen:
+- Citar fases en metadatos de especificaciones, como `"revisado_por": "autorización de la fase R5 en la conversación"` o `"revisado_por": "autorización de la fase R5; autoría automatizada"`. Estas líneas quedan expresamente prohibidas por referenciar el contenido transitorio de las fases de `docs/`.
+- Citar fases en los archivos `README.md` de crates o herramientas (por ejemplo, en `packages/pseudolearn_engine/crates/pseudolearn_runtime/README.md` donde se citaba `R5` en el texto y en las columnas de tablas de pendientes). Todo `README.md` y especificación debe ser estrictamente autosustentable; sus pendientes y compromisos se expresan exclusivamente en términos de componentes técnicos e invariantes del software.
+
+### Política de versiones de especificaciones hasta la finalización del lenguaje
+
+Las versiones numéricas de todas las especificaciones a partir de ahora **ya no van a cambiar ni incrementarse**. En el futuro, cuando el lenguaje esté 100% terminado, todas las especificaciones se homologarán a una sola versión base unificada, que será la `1.0.0`.
+
+Esto **no significa que las especificaciones no puedan modificarse**: las especificaciones **sí pueden cambiar, corregirse y evolucionar** durante el desarrollo del lenguaje cada vez que sea necesario afinar o ajustar su filosofía o sus reglas normativas. Lo que cambia es la disciplina de versionado y registro:
+
+1. **Evolución sin versionado incremental:** Cualquier modificación, corrección o cambio en la filosofía de una especificación se asume directamente como la versión oficial vigente del contrato normativo, sin subir su número de versión.
+2. **Prohibición del bloque `"cambio"` durante el desarrollo:** Quedan eliminados y prohibidos los bloques `"cambio": { ... }` (con sus campos de `clase`, `impacto_usuarios`, `impacto_implementaciones`, `justificacion` y `revisado_por`) en los archivos de especificación. Ninguna especificación documenta un historial de cambios intermedios ni citas a fases o autorizaciones transitorias en sus metadatos; el contrato en el cuerpo describe el comportamiento normativo actual.
+3. **Reactivación posterior al 100% del lenguaje:** Únicamente después de que se declare que el lenguaje está 100% completo y todas sus especificaciones se homologuen a `1.0.0`, se reactivará formalmente el uso de los bloques `"cambio": { ... }`, momento a partir del cual las especificaciones volverán a registrar cambios formales e incrementos de versión.
+
 ### Plantilla de informe por fase
 
 - **Implementación:** tareas terminadas, responsabilidades y decisiones.

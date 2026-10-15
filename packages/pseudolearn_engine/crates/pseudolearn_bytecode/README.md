@@ -2,12 +2,12 @@
 
 ## 1. Qué es y qué no es
 
-Traduce la RI verificada a bytecode gemelo. Diseño aprobado; implementación pendiente en R5.
+Traduce la RI verificada a bytecode gemelo. Diseño aprobado; pendiente de implementación del motor de ejecución.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | R5 |
+| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 

@@ -23,14 +23,7 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ],
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "Hace explícitas las formas pedagógicas ya excluidas sin reservar nombres ordinarios.",
-    "impacto_implementaciones": "Generar el reconocimiento estructural desde D1, sin lexemas copiados en el parser.",
-    "justificacion": "Conservar la frontera entre palabras reservadas y formas estructurales no admitidas.",
-    "revisado_por": "autorización de la fase R5; autoría automatizada"
-  }
+  ]
 }
 ---
 

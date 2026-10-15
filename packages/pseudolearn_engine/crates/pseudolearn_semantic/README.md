@@ -6,9 +6,9 @@ Produce un HIR tipado desde la resolución estática. El análisis registra firm
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Fase |
+| Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Consumir el HIR desde lowering y ampliar propiedades de ejecución | RI verificada | R5 |
+| Consumir el HIR desde lowering y ampliar propiedades de ejecución | RI verificada | Motor de ejecución |
 
 ## 2. Guía operativa y ciclo de vida
 

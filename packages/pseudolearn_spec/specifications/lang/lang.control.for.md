@@ -23,13 +23,6 @@
   ],
   "edicion": {
     "introducida_en": "2026"
-  },
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Sin cambios en el bucle contado ni sus programas.",
-    "impacto_implementaciones": "Admite el contrato entero actualizado que activa el sujeto Rust.",
-    "justificacion": "La activación de un sujeto no modifica el dominio entero usado por Para.",
-    "revisado_por": "autorización de la fase R5 en la conversación"
   }
 }
 ---

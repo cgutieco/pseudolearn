@@ -31,14 +31,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Lossless tree",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "No cambia el texto aceptado ni la obligación de reimpresión exacta.",
-    "impacto_implementaciones": "engine declara la obligación de árbol sin pérdida en R4; service conserva la misma obligación. Las propiedades requieren evidencia ejecutada, no solo presencia de árbol.",
-    "justificacion": "Alinear los sujetos declarados con el ejecutor engine ya exigido por P1 y P2; explicitar que el BOM se conserva como prefijo sin ser un token del lenguaje y que el dominio es texto UTF-8 válido.",
-    "revisado_por": "autoría automatizada; no revisión humana independiente"
-  }
+  "titulo_en": "Lossless tree"
 }
 ---
 

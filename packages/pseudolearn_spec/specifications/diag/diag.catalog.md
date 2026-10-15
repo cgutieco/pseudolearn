@@ -28,14 +28,7 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ],
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Diagnóstico específico al superar el límite portable de anidación del análisis. Los programas dentro del límite no cambian.",
-    "impacto_implementaciones": "Generar analysisNestingLimitExceeded y la ficha internalFault de la barrera pública, sin mensajes manuales.",
-    "justificacion": "Distinguir recursos del análisis de los marcos de ejecución.",
-    "revisado_por": "autorización de la fase R5; autoría automatizada"
-  }
+  ]
 }
 ---
 
