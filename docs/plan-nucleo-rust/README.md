@@ -31,6 +31,7 @@
 | 07 | [Fases de implementación](07-fases.md)                                         | Fases R0–R9 con entradas, contenido, criterios de aceptación y experimentos                       |
 | 08 | [Decisiones, riesgos y cambios de reglas](08-decisiones-riesgos-y-cambios-de-reglas.md) | Qué está decidido, qué se asume, qué falta; riesgos; cambios a `AGENTS.md` y skills          |
 | 09 | [Plan de R3 · Arquitectura «Clepsidra»](09-plan-r3-motor-clepsidra.md) | Arquitectura y técnica del motor, comparación con soluciones típicas y ejecución de R3 en una iteración |
+| 10 | [Plan de R4 · Front-end de Clepsidra](10-plan-r4-frontend.md) | Diseño del análisis, generación, recuperación, conformidad, E-08 y ejecución verificable de R4 |
 
 Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. El resto se consulta.
 

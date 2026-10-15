@@ -168,6 +168,12 @@ R0 Fundación
 
 ### R4 · Front-end en Rust
 
+> **Plan detallado:** [10 · Plan de R4 · Front-end de Clepsidra](10-plan-r4-frontend.md).
+> La preparación documental está redactada; R4 sigue pendiente de autorización explícita. Sus bloques
+> B0–B8 detallan esta fase, sin sustituir sus criterios. Las casillas se marcan solo con evidencia del
+> cierre B8. La CLI incluye `comprobar/check` y `preferencias/preferences`, según su README y la
+> frontera de idioma aprobada en R3.
+
 - [ ] **Experimentos:** E-08.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.

@@ -198,10 +198,17 @@ recorren hacia atrás saltando por `subtree_size`. Las vistas tipadas de nodos s
 `LANG.SYNTAX.GRAMMAR`. Reimprimir es concatenar los textos de los tokens, así que el árbol es sin
 pérdida por construcción.
 
-**Por qué.** Un árbol verde/rojo (`rowan`) asigna e interna cada nodo y recorre punteros. Un árbol
-postorden ocupa una asignación por análisis, cabe en caché y se recorre linealmente. Con 79 000 líneas
-por segundo de la línea base Dart (H-21), multiplicar por diez permite reanalizar un archivo de 10 000
-líneas entero en cada pulsación, dentro de 16 ms y **sin incrementalidad**.
+**Por qué.** El almacenamiento contiguo reduce indirecciones y permite recorrer los nodos linealmente;
+el número real de asignaciones, las reservas y la localidad se verifican al implementar. No se afirma
+una asignación única para todo el análisis. Con las 79 000 líneas por segundo citadas de la línea base
+Dart (H-21), multiplicar por diez daría aproximadamente 12,7 ms para 10 000 líneas. Resolverlas en
+16 ms requiere al menos 625 000 líneas/s de promedio, unas 7,9 veces la cifra original.
+La conversión aritmética es compatible con el objetivo, pero no demuestra latencia p95 por edición.
+`PERF.FRONTEND.THROUGHPUT` exige provisionalmente un millón de líneas/s de análisis completo en Apple
+M2; E-08 mide por separado la latencia p95 de reanálisis y la memoria. Las comparaciones con Dart
+requieren el mismo hardware y cargas comparables según `PERF.PROTOCOL`. El reanálisis completo
+**sin incrementalidad** es una hipótesis hasta reunir esa evidencia; el
+[plan de R4](10-plan-r4-frontend.md) concreta su prueba.
 
 **Contratos.** `TOOL.SERVICE.LOSSLESS-TREE` (reimpresión exacta, comentarios incluidos) y
 `PERF.FRONTEND.THROUGHPUT`. La forma del árbol no es observable: queda en el `README.md` de

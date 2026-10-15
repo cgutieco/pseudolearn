@@ -106,14 +106,27 @@ Coste relativo: **B** (días), **M** (semanas), **A** (meses).
 
 <a id="e-08"></a>
 
-### E-08 · Front-end sin pérdida e incremental
+### E-08 · Front-end sin pérdida y viabilidad del reanálisis completo
 
-- **Pregunta.** ¿Cumple un front-end en Dart las latencias de servidor de lenguaje?
-- **Método.** Árbol con trivia, lexer y parser incrementales y análisis por consultas para el
-  subconjunto actual; medir p50/p95 por pulsación en archivos de 1 000, 10 000 y 50 000 líneas.
-- **Criterio.** p95 ≤ 16 ms en 10 000 líneas en hardware de referencia. Si no, valorar el front-end en
-  un lenguaje de sistemas (A2 en [13](13-arquitecturas-candidatas.md)).
-- **Informa.** [D-05](17-riesgos-preguntas-y-decisiones.md#d-05).
+- **Pregunta.** ¿Permite el front-end Rust de Clepsidra reanalizar por completo cada edición dentro
+  del presupuesto de latencia del editor, conservando texto y diagnósticos?
+- **Método.** Árbol postorden sin pérdida y análisis léxico, sintáctico y semántico completo, sin
+  incrementalidad. Medir p50/p95 por edición reproducible en archivos de 1 000, 10 000 y 50 000 líneas,
+  en español e inglés y con rigor estricto y flexible; incluir ediciones válidas e incompletas,
+  posiciones al inicio, centro y final, Unicode y cambios de nombres con muchos usos. Registrar el
+  coste por etapa, el total, los bytes, tokens, nodos y la memoria máxima muestreada. Las cargas se
+  preparan fuera del intervalo y los resultados se validan después. Seguir `PERF.PROTOCOL` y publicar
+  datos crudos y procedencia. El protocolo detallado está en el
+  [plan de R4](plan-nucleo-rust/10-plan-r4-frontend.md).
+- **Criterio.** p95 ≤ 16 ms de análisis completo por edición en 10 000 líneas en el hardware de
+  referencia. Se informa por carga y configuración, sin ocultar los casos lentos en un agregado.
+  `PERF.FRONTEND.THROUGHPUT` se mide por separado: su umbral no demuestra p95. Un incumplimiento
+  refuta la hipótesis de reanálisis completo para esa carga y exige una decisión documentada para R7;
+  no autoriza añadir incrementalidad ni cambiar umbrales en silencio. El experimento queda completo
+  con resultados válidos aunque refute la hipótesis; los requisitos normativos de rendimiento siguen
+  siendo exigibles según el corpus.
+- **Informa.** Estrategia de incrementalidad e identidad entre ediciones de R7; no reabre la decisión
+  Rust de ADR-001.
 - **Coste.** M.
 
 <a id="e-09"></a>

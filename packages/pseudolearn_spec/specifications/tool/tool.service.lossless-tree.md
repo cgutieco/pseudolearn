@@ -5,11 +5,12 @@
   "titulo": "Árbol sin pérdida",
   "dominio": "herramienta",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-herramientas"
   ],
   "sujetos": [
+    "engine",
     "service"
   ],
   "resumen": "Reimprimir el árbol reproduce exactamente el texto.",
@@ -30,7 +31,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Lossless tree"
+  "titulo_en": "Lossless tree",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "No cambia el texto aceptado ni la obligación de reimpresión exacta.",
+    "impacto_implementaciones": "engine declara la obligación de árbol sin pérdida en R4; service conserva la misma obligación. Las propiedades requieren evidencia ejecutada, no solo presencia de árbol.",
+    "justificacion": "Alinear los sujetos declarados con el ejecutor engine ya exigido por P1 y P2; explicitar que el BOM se conserva como prefijo sin ser un token del lenguaje y que el dominio es texto UTF-8 válido.",
+    "revisado_por": "autoría automatizada; no revisión humana independiente"
+  }
 }
 ---
 
@@ -41,7 +49,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Para todo texto fuente, la concatenación de los textos de los tokens del árbol, incluida la trivia (espacios, saltos de línea, comentarios y BOM) y los fragmentos con error, es exactamente el texto original byte a byte.",
+  "texto": "Para todo texto fuente UTF-8 válido, la reimpresión del árbol conserva el prefijo BOM inicial, que no es un token del lenguaje, y concatena los fragmentos originales de sus tokens, trivia (espacios, saltos de línea y comentarios) y fragmentos con error, reproduciendo exactamente el texto original byte a byte. La entrada UTF-8 inválida es un fallo de entrada según LANG.SOURCE.ENCODING y no se decodifica con pérdida para construir un árbol.",
   "verificacion": [
     "P1"
   ]
@@ -66,7 +74,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Todo texto produce un árbol, también el vacío y el que solo contiene trivia o errores; el árbol nunca omite un fragmento del texto.",
+  "texto": "Todo texto fuente UTF-8 válido produce un árbol, también el vacío y el que solo contiene trivia o errores; la reimpresión del árbol nunca omite un fragmento del texto, incluido su prefijo BOM cuando existe.",
   "verificacion": [
     "P2"
   ]

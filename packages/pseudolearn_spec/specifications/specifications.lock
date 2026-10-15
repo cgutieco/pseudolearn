@@ -2351,6 +2351,18 @@
       "hash": "8dd5c797310b092ec80cb9962e4c64e9f95e72f484f78f26e28158a9358718f5",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "TOOL.SERVICE.LOSSLESS-TREE@0.2.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
+      "state": "experimental",
+      "version": "0.2.0"
     }
   },
   "specifications": {
@@ -4550,9 +4562,9 @@
         "R1": "regla",
         "R2": "regla"
       },
-      "hash": "8dd5c797310b092ec80cb9962e4c64e9f95e72f484f78f26e28158a9358718f5",
+      "hash": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     }
   }
 }
