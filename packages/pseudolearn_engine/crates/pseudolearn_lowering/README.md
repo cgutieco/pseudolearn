@@ -28,6 +28,8 @@ Escribir evalúa todos sus operandos antes del único out.write. Para evalúa in
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+El conjunto de variables acarreadas por un bucle incluye escrituras anidadas en condicionales,
+selecciones y bucles internos; así cada iteración recibe el valor SSA que dejó la anterior.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

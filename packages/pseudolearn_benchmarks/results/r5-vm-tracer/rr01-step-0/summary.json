@@ -1,0 +1,277 @@
+{
+  "protocol": "PERF.PROTOCOL",
+  "environment": {
+    "sourceHashes": {},
+    "dirtyTree": true,
+    "commit": "8bd722e5438590f7c4796beeabb136e13ddc8989",
+    "dart": "Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700) on \"macos_arm64\"",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "os": "macos",
+    "osVersion": "Version 27.0.1 (Build 26A434)",
+    "cpuCount": 8,
+    "hardware": "unavailable; Version 27.0.1 (Build 26A434)",
+    "utc": "2026-10-15T19:07:37.227014Z",
+    "processesPerBackendAndWorkload": 10,
+    "iterationsPerProcess": 30,
+    "tool": "B3.3 direct VM and frozen reference tracer"
+  },
+  "workloads": {
+    "mandelbrot-8": {
+      "referenceMeanNanoseconds": 11737842.796666667,
+      "vmMeanNanoseconds": 2555464.6133333333,
+      "pairedProcessGeometricSpeedup": 4.5979920194333195,
+      "confidence95": [
+        4.340051285379715,
+        4.845704892668067
+      ],
+      "speedupsByProcess": [
+        3.740090655341567,
+        4.57824526064506,
+        4.483331912680312,
+        4.521800658090342,
+        4.684335290941774,
+        4.591477860358716,
+        4.690768801612874,
+        4.341793050456436,
+        5.055060501183111,
+        5.494759272972648
+      ],
+      "changePointCandidatesByBackendProcess": {
+        "reference/0": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "reference/1": [],
+        "reference/2": [],
+        "reference/3": [],
+        "reference/4": [],
+        "reference/5": [],
+        "reference/6": [],
+        "reference/7": [],
+        "reference/8": [],
+        "reference/9": [],
+        "vm/0": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "vm/1": [],
+        "vm/2": [],
+        "vm/3": [],
+        "vm/4": [],
+        "vm/5": [],
+        "vm/6": [],
+        "vm/7": [],
+        "vm/8": [],
+        "vm/9": []
+      },
+      "stationarity": "not_proven",
+      "samplesPerBackend": 300
+    },
+    "integer-loop-10000": {
+      "referenceMeanNanoseconds": 18241217.499999996,
+      "vmMeanNanoseconds": 5222668.176666667,
+      "pairedProcessGeometricSpeedup": 3.52902234364807,
+      "confidence95": [
+        3.1101317451513175,
+        4.005809043274469
+      ],
+      "speedupsByProcess": [
+        3.453149115682388,
+        3.824401459134445,
+        3.620362414951458,
+        4.000739847000119,
+        3.883293726565386,
+        3.416149826352058,
+        4.9771314695836795,
+        3.957558715247878,
+        2.5367601488677964,
+        2.362924668377622
+      ],
+      "changePointCandidatesByBackendProcess": {
+        "reference/0": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "reference/1": [],
+        "reference/2": [
+          22
+        ],
+        "reference/3": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "reference/4": [
+          22,
+          23,
+          24,
+          25
+        ],
+        "reference/5": [],
+        "reference/6": [],
+        "reference/7": [],
+        "reference/8": [],
+        "reference/9": [],
+        "vm/0": [],
+        "vm/1": [],
+        "vm/2": [],
+        "vm/3": [],
+        "vm/4": [],
+        "vm/5": [],
+        "vm/6": [],
+        "vm/7": [
+          7,
+          8
+        ],
+        "vm/8": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "vm/9": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "stationarity": "not_proven",
+      "samplesPerBackend": 300
+    },
+    "recursive-fibonacci-18": {
+      "referenceMeanNanoseconds": 12724856.850000001,
+      "vmMeanNanoseconds": 4299223.176666667,
+      "pairedProcessGeometricSpeedup": 3.023227739961507,
+      "confidence95": [
+        2.649760355585141,
+        3.252518258427612
+      ],
+      "speedupsByProcess": [
+        3.3865814537009653,
+        3.2101847528412977,
+        3.1185651578409868,
+        3.2167553413174725,
+        3.261493907904524,
+        3.1901978681295895,
+        1.7065724265597957,
+        3.1933123651144544,
+        3.238998537778948,
+        3.184440662148833
+      ],
+      "changePointCandidatesByBackendProcess": {
+        "reference/0": [
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "reference/1": [],
+        "reference/2": [],
+        "reference/3": [],
+        "reference/4": [],
+        "reference/5": [],
+        "reference/6": [],
+        "reference/7": [
+          22,
+          23
+        ],
+        "reference/8": [],
+        "reference/9": [],
+        "vm/0": [],
+        "vm/1": [],
+        "vm/2": [],
+        "vm/3": [],
+        "vm/4": [],
+        "vm/5": [],
+        "vm/6": [],
+        "vm/7": [],
+        "vm/8": [],
+        "vm/9": []
+      },
+      "stationarity": "not_proven",
+      "samplesPerBackend": 300
+    }
+  },
+  "geometricMeanSpeedup": 3.660702998880109,
+  "targetSpeedup": 30,
+  "targetMet": false,
+  "samplesDiscarded": 0,
+  "timing": "nanoseconds; compilation and result validation excluded",
+  "limitations": [
+    "Stationarity is not proven; candidate change points retain all samples",
+    "Local CPU frequency and unrelated system load are uncontrolled"
+  ]
+}

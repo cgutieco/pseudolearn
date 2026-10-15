@@ -1,0 +1,22 @@
+{
+  "workloads": [
+    {
+      "id": "mandelbrot-8",
+      "inputs": [],
+      "expectedOutput": "",
+      "source": "SubProceso OExclusivo(primero Como Entero, segundo Como Entero) Como Entero\nDefinir a, b, resultado, peso Como Entero;\na <- primero;\nb <- segundo;\nresultado <- 0;\npeso <- 1;\nMientras a > 0 O b > 0 Hacer\nSi (a mod 2) <> (b mod 2) Entonces\nresultado <- resultado + peso;\nFinSi\na <- a div 2;\nb <- b div 2;\npeso <- peso * 2;\nFinMientras\nRetornar resultado;\nFinSubProceso\nAlgoritmo Mandelbrot\nDefinir n, suma, acumulado, bits, columna, fila, iteracion, escape Como Entero;\nDefinir zr, zi, zrzr, zizi, cr, ci Como Real;\nn <- 8;\nsuma <- 0;\nacumulado <- 0;\nbits <- 0;\nfila <- 0;\nMientras fila < n Hacer\nci <- (2.0 * fila / n) - 1.0;\ncolumna <- 0;\nMientras columna < n Hacer\nzrzr <- 0.0;\nzi <- 0.0;\nzizi <- 0.0;\ncr <- (2.0 * columna / n) - 1.5;\niteracion <- 0;\nescape <- 0;\nMientras (zrzr + zizi) <= 4.0 Y iteracion < 50 Hacer\nzr <- zrzr - zizi + cr;\nzi <- 2.0 * zr * zi + ci;\nzrzr <- zr * zr;\nzizi <- zi * zi;\niteracion <- iteracion + 1;\nFinMientras\nSi zrzr + zizi > 4.0 Entonces\nescape <- 1;\nFinSi\nacumulado <- acumulado * 2 + escape;\nbits <- bits + 1;\nSi bits = 8 Entonces\nsuma <- OExclusivo(suma, acumulado);\nacumulado <- 0;\nbits <- 0;\nSiNo\nSi columna = n - 1 Entonces\nacumulado <- acumulado * (2 ^ (8 - bits));\nsuma <- OExclusivo(suma, acumulado);\nacumulado <- 0;\nbits <- 0;\nFinSi\nFinSi\ncolumna <- columna + 1;\nFinMientras\nfila <- fila + 1;\nFinMientras\nSi suma <> 253 Entonces\nsuma <- 9223372036854775807;\nsuma <- suma + 1;\nFinSi\nFinAlgoritmo\n"
+    },
+    {
+      "id": "integer-loop-10000",
+      "inputs": [],
+      "expectedOutput": "",
+      "source": "Algoritmo IntegerLoop\nDefinir indice, total Como Entero;\nindice <- 1;\ntotal <- 0;\nMientras indice <= 10000 Hacer\ntotal <- total + indice;\nindice <- indice + 1;\nFinMientras\nSi total <> 50005000 Entonces\ntotal <- 9223372036854775807;\ntotal <- total + 1;\nFinSi\nFinAlgoritmo\n"
+    },
+    {
+      "id": "recursive-fibonacci-18",
+      "inputs": [],
+      "expectedOutput": "",
+      "source": "SubProceso Fibonacci(valor Como Entero) Como Entero\nSi valor <= 1 Entonces\nRetornar valor;\nFinSi\nRetornar Fibonacci(valor - 1) + Fibonacci(valor - 2);\nFinSubProceso\nAlgoritmo IntegerRecursion\nDefinir resultado Como Entero;\nresultado <- Fibonacci(18);\nSi resultado <> 2584 Entonces\nresultado <- 9223372036854775807;\nresultado <- resultado + 1;\nFinSi\nFinAlgoritmo\n"
+    }
+  ]
+}

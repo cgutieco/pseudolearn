@@ -1346,14 +1346,49 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
   ausente).
 - [ ] **B3.2 `vm`: núcleo.** Despacho generado en `build.rs`; bancos crecientes; aritmética entera, real, lógica
   y de caracteres con trampas inmediatas; control; salida de servicio por combustible.
-- [ ] **B3.3 Trazadora de rendimiento.** Mandelbrot, bucle entero y recursión entera (§4.5) medidos con el
-  trabajador de medición: ns por instrucción y aceleración proyectada frente a `reference`. Criterio:
-  proyección ≥ 30× en la media de las tres cargas. Si no, escalera RR-01 **en este paso**, antes de seguir.
-  Resultado en `results/r5-vm-tracer.json`.
+- [ ] **B3.3 Trazadora de rendimiento interna.** Herramienta de capa `tooling`; compila cada carga antes del
+  intervalo medido y llama directamente a la VM. No reutiliza `pseudolearn_bench_worker` ni adelanta
+  `API.EXECUTE`. Un único conjunto emparejado de Mandelbrot, bucle entero y recursión entera usa los mismos
+  programas e inputs en VM y `reference`. Aplica `PERF.PROTOCOL`: diez procesos, treinta iteraciones por
+  proceso, estado nuevo, resultado validado, sin I/O crudo dentro del intervalo y procedencia capturada antes
+  de compilar. Conserva crudos en
+  `packages/pseudolearn_benchmarks/results/r5-vm-tracer/` y resumen en
+  `packages/pseudolearn_spec/results/r5-vm-tracer.json`. Criterio: media geométrica de aceleración proyectada
+  ≥ 30×. Si falla, aplica RR-01 en orden y repite la medición antes de continuar.
 - [ ] **B3.4 Runtime aritmético y biblioteca matemática.** Aritmética comprobada (incluido `int.mod` del mínimo
   entre −1), conversiones, `trunc`/`redon`, potencia entera y real, y las seis funciones con redondeo correcto
   (T23) validadas contra el oráculo en 10⁶ argumentos por función. Casos `execute` de `LANG.OPS.*`,
   `LANG.TYPES.INTEGER`, `LANG.TYPES.REAL` y `LIB.CORE.MATH`/`ROUNDING` en `cumple`.
+
+#### Estado de B3 al 2026-10-15
+
+- **B3.1 parcial:** el compilador genera gemelos desde RI verificada, mapa de registros por clase, depósitos
+  de constantes, bloques, cargos de salto y puntos de retorno compartidos por identidad. El verificador tiene
+  negativos para ventana, destino, clase y retorno; la superinstrucción `compareBranch` se seleccionó con
+  perfiles de entrenamiento y se validó en el bucle entero reservado. Falta el acolchado del código a
+  potencia de dos.
+- **B3.2 parcial:** la VM ejecuta el subconjunto escalar y recursivo usado por la trazadora, con control,
+  combustible, sondeo para retrocesos vacíos, trampas con tramo, salida entera y bancos escalar/referencia.
+  No cubre todavía todas las operaciones, las referencias de usuario, el texto, los arreglos, la entrada ni
+  los objetos. `API.EXECUTE` y el protocolo público no se modificaron.
+- **B3.3:** la trazadora interna ya aplica el protocolo completo y valida las tres cargas en ambos motores;
+  conserva procedencia con hashes capturados antes de compilar, 10 procesos × 30 iteraciones, crudos en
+  `packages/pseudolearn_benchmarks/results/r5-vm-tracer/` y resumen en
+  `packages/pseudolearn_spec/results/r5-vm-tracer.json`. La repetición sin PGO con la procedencia completa
+  dio **11,4822×**. Tras entrenar PGO con Mandelbrot y Fibonacci y dejar el bucle entero fuera de muestra,
+  subió a **16,6015×**.
+  Sigue por debajo del umbral de 30×. La selección, el perfil PGO y sus datos de entrenamiento están en
+  `packages/pseudolearn_benchmarks/results/r5-vm-tracer/rr01-pgo-profile/`.
+- **B3.4 parcial:** están implementados la aritmética primitiva comprobada, `int.mod` para `i64::MIN % -1`,
+  potencia entera, conversiones, truncamiento, redondeo, valor absoluto y raíz cuadrada correctamente
+  redondeada. Faltan potencia real, `ln`, `exp`, `sin`, `cos`, `atan` y el contraste SEE independiente de
+  10⁶ argumentos por cada función matemática.
+- Las operaciones `execute` del corpus aún no se contrastaron: el adaptador público mantiene `API.EXECUTE`
+  pendiente según el alcance de este bloque. Las pruebas actuales cubren el bytecode y la VM directamente.
+- RR-01 se aplicó en orden hasta su último peldaño, PGO, con `llvm-profdata` de LLVM 23.1.1 compatible con
+  rustc 1.99.0. La escalera queda agotada: la aceleración final no alcanza 30×. Por el contrato de §0.2 y
+  `CONFLICT-REPORT`, B3 se mantiene abierto y el trabajo se detiene aquí hasta decidir una técnica fuera de
+  RR-01 o revisar explícitamente el criterio; no se continúa a B4 ni se cierra B3.
 
 ### B4 · Runtime, biblioteca, arreglos, subprogramas, objetos y recolector
 

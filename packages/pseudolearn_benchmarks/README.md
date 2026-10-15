@@ -26,6 +26,16 @@ ejecuta diez procesos del trabajador público y conserva treinta rondas de 28 co
 1.000, 10.000 y 50.000 líneas, ambos perfiles, ambos rigores, entradas incompletas y el corpus.
 `tool/frontend_statistics.dart` rechaza muestras incompletas o duplicadas, calcula IC 95 % sobre medias
 por proceso y p95 sobre las 300 latencias; no elimina muestras ni relaja umbrales.
+La comparación temprana de R5 se recoge con `dart run tool/r5_vm_tracer.dart`. Las tres cargas
+emparejadas viven en `tool/data/r5-vm-workloads.json`; el worker Rust compila RI verificada a bytecode
+antes del cronómetro y ejecuta la VM directamente. Cada worker de `reference` analiza el mismo texto
+antes del cronómetro y crea un intérprete nuevo por iteración. Los crudos se guardan en
+`results/r5-vm-tracer/` y el resumen en `packages/pseudolearn_spec/results/r5-vm-tracer.json`.
+Los perfiles de Mandelbrot y Fibonacci eligen comparación-salto; el bucle entero queda reservado para
+la validación fuera de muestra. Los perfiles y el archivo de selección forman parte de la procedencia.
+La captura incluye hashes del motor, del código Dart `reference`, de ambos manifiestos y de la versión
+exacta de Rust antes de compilar. La repetición PGO de RR-01 conserva el perfil fusionado y los datos de
+entrenamiento en `results/r5-vm-tracer/rr01-pgo-profile/`.
 El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
 Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
 `results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.
@@ -39,7 +49,7 @@ No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del r
 | suite | Programas con resultados esperados | model | execution |
 | execution | Análisis y ejecución mediante API pública | model, pseudolearn_core | suite, imports internos del núcleo |
 | bin | Ejecutar suite y emitir JSON | model, suite, execution | internals del núcleo |
-| tool | Compilar, recolectar y verificar | API del paquete, SDK, analyzer, yaml | modificar el núcleo |
+| tooling | Compilar, recolectar y verificar | API del paquete, SDK, analyzer, yaml; worker interno de VM | modificar el núcleo |
 
 Las reglas están en `architecture.yaml`; tests reflejan `lib/src` y `tool`.
 El cargador de corpus devuelve un fallo como valor ante exportación inválida y no copia programas.
@@ -47,6 +57,8 @@ Cada proceso analiza las cargas con el perfil español flexible antes de medir; 
 La observación recibe instantáneas y cuenta eventos sin conservarlos. Se valida terminación y salida
 en ambas configuraciones antes de aceptar la muestra. Un fallo retorna un resultado, no escapa.
 El worker es secuencial, con semilla fija, sin I/O dentro del intervalo medido.
+La guarda de resultado forma parte del programa y fuerza una trampa si el valor calculado diverge del
+control independiente; las muestras aceptadas deben terminar normalmente y validar la salida vacía.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 

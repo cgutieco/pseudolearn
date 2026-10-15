@@ -236,7 +236,7 @@ fn print_value_arguments(buffer: &mut String, arguments: &[ValueId], context: &P
 fn print_literal_operand(buffer: &mut String, operand: &Operand) {
     match operand {
         Operand::LiteralI64(number) => buffer.push_str(&number.to_string()),
-        Operand::LiteralF64(number) => buffer.push_str(&format!("{number}")),
+        Operand::LiteralF64(number) => buffer.push_str(&format_f64_literal(*number)),
         Operand::LiteralBool(flag) => buffer.push_str(if *flag { "true" } else { "false" }),
         Operand::LiteralChar(character) => {
             buffer.push('\'');
@@ -249,6 +249,15 @@ fn print_literal_operand(buffer: &mut String, operand: &Operand) {
         Operand::Identifier(identifier) => buffer.push_str(identifier),
         Operand::Newline => buffer.push_str("newline"),
         _ => {}
+    }
+}
+
+fn format_f64_literal(value: f64) -> String {
+    let rendered = format!("{value}");
+    if rendered.contains('.') || rendered.contains('e') || rendered.contains('E') {
+        rendered
+    } else {
+        format!("{rendered}.0")
     }
 }
 

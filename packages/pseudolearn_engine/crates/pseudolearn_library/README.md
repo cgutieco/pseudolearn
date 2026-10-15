@@ -2,30 +2,37 @@
 
 ## 1. Qué es y qué no es
 
-Implementa las funciones incorporadas sobre valores del runtime. Diseño aprobado; pendiente de implementación del motor de ejecución.
+Implementa conversiones, redondeo e intrínsecos matemáticos sobre valores del runtime. La primera entrega
+mantiene los dominios y errores explícitos para que la VM atribuya las trampas al span de la instrucción.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
+| Potencia real, ln, exp, sin, cos y atan correctamente redondeadas; contraste racional masivo | T23 y oráculo SEE independiente | B3.4 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
-Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
-actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+Usa la versión exacta de rust-toolchain.toml del miembro. El crate ya está activo en el workspace y
+cubre conversiones, redondeo, valor absoluto y raíz cuadrada. Las trascendentes y su validación masiva
+siguen pendientes de B3.4. Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro.
 
 ## 3. Arquitectura y modelo del sistema
 
 Nivel 6. Importa runtime y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Funciones puras sobre representaciones del runtime, con identidad y firma generadas. Raíz cuadrada binario64 del hardware; ln, exp, sen, cos, atan y potencia real mediante aproximación doble-doble con cota y reevaluación de precisión múltiple cuando no se puede decidir el redondeo. Formato decimal mínimo de ida y vuelta, conversiones y copia superficial.
+Funciones puras sobre representaciones del runtime, con identidad y firma generadas. La raíz cuadrada debe
+ser correctamente redondeada; ln, exp, sin, cos, atan y potencia real usan aproximación doble-doble con
+cota y reevaluación de precisión múltiple cuando no se puede decidir el redondeo. No se agrega una
+dependencia matemática externa. El formato decimal mínimo de ida y vuelta y la copia superficial pertenecen
+a bloques posteriores.
 
 Invariantes: Mismo resultado binario64 y mismo texto en todas las plataformas. Los dominios inválidos y resultados no finitos atrapan antes de guardar un valor.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 La libm del anfitrión puede diferir en el último bit, que el formato hace visible. El redondeo correcto es derivable por un oráculo racional independiente. Se usa sqrt correctamente redondeada y se rechazan las trascendentes del anfitrión. Display aporta dígitos mínimos posicionales y se añade .0 cuando hace falta; el cero negativo se conserva. Copiar conserva ausencia, comparte referencias y no ejecuta constructor.
+
+La raíz cuadrada normaliza el significando binario y calcula la raíz entera inferior de un radicando escalado. Compara el radicando con el cuadrado del punto medio entre significandos consecutivos para decidir el redondeo, sin consultar la libm ni perder el cero negativo. El valor absoluto real borra solo el bit de signo y conserva el payload de NaN.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.

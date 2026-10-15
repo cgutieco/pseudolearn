@@ -2,30 +2,40 @@
 
 ## 1. Qué es y qué no es
 
-Traduce la RI verificada a bytecode gemelo. Diseño aprobado; pendiente de implementación del motor de ejecución.
+Traduce una RI verificada a bytecode gemelo con asignación de registros por clase, depósitos de constantes,
+verificación estructural y selección perfilada de superinstrucciones.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
+| Acolchado del código a potencia de dos y comprobación de límites de PC resultantes | Formato de bytecode y verificador | B3.1 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
-Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
-actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+Usa la versión exacta de rust-toolchain.toml del miembro. El crate ya está activo en el workspace;
+el acolchado a potencia de dos mantiene B3.1 abierto. Comprobación: `cargo xtask verify` y
+`rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
 Nivel 5. Importa ir y source; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Instrucciones de ocho bytes con opcode u8 y hasta tres operandos u16; constantes por función y texto por módulo. Ranuras de origen por variable y temporales por exploración lineal, separados en escalar y referencia. Salida de SSA con copias paralelas y temporal para ciclos. Código acolchado a potencia de dos con Unreachable.
+El catálogo de opcodes y sus identidades se generan desde la exportación de `IR.INSTRUCTIONS`. Cada función
+conserva descriptores de bloque, tablas de constantes, tipos de registro y spans laterales. Las ranuras se
+asignan en orden estable y se separan por clase de valor. La salida SSA transporta argumentos de bloque
+como copias paralelas; los gemelos rápido y sondeado comparten registros, constantes, descriptores y puntos
+de retorno.
 
-Invariantes: Los gemelos comparten el mapa de registros. Cada operando cabe en su ventana; cada salto pertenece a su función; cada punto seguro tiene mapas y cada punto de retorno existe en ambos gemelos.
+Invariantes: Los gemelos comparten el mapa de registros, depósitos de constantes y descriptores de bloque. Cada operando cabe en su ventana; cada salto pertenece a su función; cada superinstrucción contiene un par compatible del mismo bloque; cada punto de retorno existe en ambos gemelos con PC propio.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo. Mapas nocionales de raíces, definición y variable→ranura distinguen el estado del programa de temporales muertos. Superinstrucciones se seleccionan por perfil y se validan fuera de muestra. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
+Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo y PC propio para cada variante. El verificador rechaza registros fuera de ventana, saltos inválidos, incompatibilidades de clase, continuaciones sin identidad y fusiones de opcode incompatibles. El compilador recibe las superinstrucciones elegidas a partir de perfiles de entrenamiento; la fusión de comparación y salto se valida con una carga reservada. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
+Los literales escalares usados por operaciones aritméticas, comparaciones y escritura pasan como
+operandos constantes directos; se mantienen registros solo cuando una transferencia de bloque,
+llamada o instrucción sin forma inmediata necesita el valor.
+Fast elimina marcadores de observación antes del despacho; Probed los conserva. Las tablas de retorno
+comparten identidad y mantienen sus contadores de programa por gemelo.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.

@@ -35,3 +35,20 @@ fn roundtrips_loop_and_branches_canonically() {
         assert_eq!(canonical, source);
     }
 }
+
+#[test]
+fn preserves_real_literal_types_when_the_value_is_an_integer() {
+    let source_text =
+        "module P es\nfunc @main() -> f64 {\nb0() mass 0:\n  %0 = const.f64 2.0\n  return %0\n}\n";
+    let parsed = parse_module(source_text);
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        let canonical = print_canonical(&module);
+        assert_eq!(canonical, source_text);
+        let reparsed = parse_module(&canonical);
+        assert!(reparsed.is_ok());
+        if let Ok(roundtrip) = reparsed {
+            assert_eq!(pseudolearn_ir::verify_module(&roundtrip), Ok(()));
+        }
+    }
+}

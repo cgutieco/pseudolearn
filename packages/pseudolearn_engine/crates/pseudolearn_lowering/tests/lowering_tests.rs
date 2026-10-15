@@ -2,6 +2,7 @@
 
 use pseudolearn_ir::verify_module;
 use pseudolearn_lowering::lower_module;
+use pseudolearn_lowering::statements_while::collect_modified_locals;
 use pseudolearn_semantic::expression_model::{HirExpression, HirPlace, Literal};
 use pseudolearn_semantic::hir::{FunctionKind, HirFunction, HirLocal, HirModule, Passing};
 use pseudolearn_semantic::identities::{ExpressionId, LocalId, StatementId};
@@ -198,4 +199,52 @@ fn lowers_for_loop_and_switch_statement() {
     if let Ok(target_module) = lowered {
         assert_eq!(verify_module(&target_module), Ok(()));
     }
+}
+
+#[test]
+fn collects_loop_writes_nested_in_conditionals_switches_and_inner_loops() {
+    let mut module = HirModule::default();
+    module.statements.kinds = vec![
+        HirStatement::Conditional {
+            condition: ExpressionId(0),
+            affirmative: vec![StatementId(1)],
+            negative: vec![StatementId(2)],
+        },
+        HirStatement::Assign {
+            destination: HirPlace::Local(LocalId(2)),
+            value: ExpressionId(0),
+        },
+        HirStatement::Switch {
+            selector: ExpressionId(0),
+            cases: vec![HirCase {
+                labels: vec![ExpressionId(0)],
+                body: vec![StatementId(3)],
+            }],
+            default: vec![StatementId(4)],
+        },
+        HirStatement::Assign {
+            destination: HirPlace::Local(LocalId(0)),
+            value: ExpressionId(0),
+        },
+        HirStatement::Repeat {
+            body: vec![StatementId(5)],
+            condition: ExpressionId(0),
+        },
+        HirStatement::For {
+            control: LocalId(3),
+            initial: ExpressionId(0),
+            ending: ExpressionId(0),
+            step: None,
+            body: vec![StatementId(6)],
+        },
+        HirStatement::Assign {
+            destination: HirPlace::Local(LocalId(1)),
+            value: ExpressionId(0),
+        },
+    ];
+    let modified = collect_modified_locals(&[StatementId(0)], &module);
+    assert_eq!(
+        modified,
+        vec![LocalId(0), LocalId(1), LocalId(2), LocalId(3)]
+    );
 }

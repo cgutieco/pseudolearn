@@ -27,6 +27,26 @@ void main() {
       contains(contains('LAYER-DIRECTION')),
     );
   });
+  test('rejects tooling imports outside its declared layer', () {
+    expect(
+      verifier.inspect(
+        "import '../lib/src/unlisted/workload.dart';",
+        'tool/invalid.dart',
+        rules,
+      ),
+      contains(contains('LAYER-DIRECTION')),
+    );
+  });
+  test('accepts tooling imports from a declared layer', () {
+    expect(
+      verifier.inspect(
+        "import '../lib/src/model/workload.dart';",
+        'tool/valid.dart',
+        rules,
+      ),
+      isEmpty,
+    );
+  });
   test('rejects excessive file length', () {
     expect(
       verifier.inspect('\n' * 301, 'lib/src/model/empty.dart', rules),

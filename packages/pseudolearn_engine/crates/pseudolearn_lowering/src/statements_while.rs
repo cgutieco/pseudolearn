@@ -199,6 +199,14 @@ fn collect_from_statement(
     let Some(statement) = module.statements.kinds.get(index) else {
         return;
     };
+    collect_statement_locals(statement, module, modified);
+}
+
+fn collect_statement_locals(
+    statement: &pseudolearn_semantic::statement_model::HirStatement,
+    module: &pseudolearn_semantic::hir::HirModule,
+    modified: &mut HashSet<LocalId>,
+) {
     match statement {
         pseudolearn_semantic::statement_model::HirStatement::Assign {
             destination: pseudolearn_semantic::expression_model::HirPlace::Local(local_id),
@@ -209,7 +217,48 @@ fn collect_from_statement(
         pseudolearn_semantic::statement_model::HirStatement::Read(places) => {
             collect_from_read_places(places, modified);
         }
+        pseudolearn_semantic::statement_model::HirStatement::Conditional {
+            affirmative,
+            negative,
+            ..
+        } => {
+            collect_nested_statements(affirmative, module, modified);
+            collect_nested_statements(negative, module, modified);
+        }
+        pseudolearn_semantic::statement_model::HirStatement::While { body, .. }
+        | pseudolearn_semantic::statement_model::HirStatement::Repeat { body, .. } => {
+            collect_nested_statements(body, module, modified);
+        }
+        pseudolearn_semantic::statement_model::HirStatement::For { control, body, .. } => {
+            modified.insert(*control);
+            collect_nested_statements(body, module, modified);
+        }
+        pseudolearn_semantic::statement_model::HirStatement::Switch { cases, default, .. } => {
+            collect_switch_statements(cases, default, module, modified);
+        }
         _ => {}
+    }
+}
+
+fn collect_switch_statements(
+    cases: &[pseudolearn_semantic::statement_model::HirCase],
+    default: &[StatementId],
+    module: &pseudolearn_semantic::hir::HirModule,
+    modified: &mut HashSet<LocalId>,
+) {
+    for case in cases {
+        collect_nested_statements(&case.body, module, modified);
+    }
+    collect_nested_statements(default, module, modified);
+}
+
+fn collect_nested_statements(
+    statements: &[StatementId],
+    module: &pseudolearn_semantic::hir::HirModule,
+    modified: &mut HashSet<LocalId>,
+) {
+    for statement_id in statements {
+        collect_from_statement(*statement_id, module, modified);
     }
 }
 

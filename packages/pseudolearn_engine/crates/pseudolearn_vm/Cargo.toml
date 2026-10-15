@@ -1,0 +1,17 @@
+[package]
+name = "pseudolearn_vm"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_bytecode = { path = "../pseudolearn_bytecode", version = "=0.1.0" }
+pseudolearn_runtime = { path = "../pseudolearn_runtime", version = "=0.1.0" }
+pseudolearn_library = { path = "../pseudolearn_library", version = "=0.1.0" }
+pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+
+[build-dependencies]
+serde_json = "1.0"
+
+[lints]
+workspace = true

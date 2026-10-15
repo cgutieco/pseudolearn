@@ -1,0 +1,16 @@
+{
+  "sourceHashes": {},
+  "dirtyTree": true,
+  "commit": "8bd722e5438590f7c4796beeabb136e13ddc8989",
+  "dart": "Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700) on \"macos_arm64\"",
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+  "os": "macos",
+  "osVersion": "Version 27.0.1 (Build 26A434)",
+  "cpuCount": 8,
+  "hardware": "unavailable; Version 27.0.1 (Build 26A434)",
+  "utc": "2026-10-15T19:13:07.479246Z",
+  "processesPerBackendAndWorkload": 10,
+  "iterationsPerProcess": 30,
+  "tool": "B3.3 direct VM and frozen reference tracer"
+}

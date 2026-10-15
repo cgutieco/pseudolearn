@@ -42,7 +42,16 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene las capas de análisis estático implementadas en Rust: `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_lexicon`, `pseudolearn_syntax`, `pseudolearn_semantic`, `pseudolearn_api` y `pseudolearn_conformance`.
+El workspace contiene las capas de análisis estático, RI y lowering procedural, más la implementación
+parcial de B3 en `pseudolearn_bytecode`, `pseudolearn_runtime`, `pseudolearn_library` y `pseudolearn_vm`.
+Los crates ya están activos en el workspace; la API pública de ejecución permanece pendiente de su bloque
+propio.
+
+La implementación actual cubre bytecode escalar verificado, ejecución de enteros y reales, control,
+llamadas, combustible, trampas tipadas, conversiones, redondeo y raíz cuadrada. El heap, texto, arreglos,
+entrada y la biblioteca matemática completa siguen pendientes de sus bloques. La trazadora B3.3 midió
+16,60× tras PGO frente al objetivo temprano de 30×; RR-01 se agotó y los resultados se conservan en
+`packages/pseudolearn_benchmarks/results/r5-vm-tracer/`.
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
 - Compilación optimizada: `cargo build --release`.
@@ -67,19 +76,20 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 3 | pseudolearn_semantic | Produce un HIR tipado desde la resolución estática | source, diagnostics, lexicon, syntax |
 | 3 | pseudolearn_ir | Define la representación intermedia verificada | source, abi |
 | 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
-| 4 | pseudolearn_bytecode | Traduce la RI verificada a bytecode gemelo con asignación bicameral de registros | ir, source |
-| 4 | pseudolearn_runtime | Gestiona los valores de ejecución en un montón plano determinista | abi, diagnostics |
-| 5 | pseudolearn_library | Implementa las funciones incorporadas sobre valores del runtime | runtime, diagnostics |
-| 6 | pseudolearn_vm | Ejecuta bytecode verificado emitiendo eventos observables | bytecode, runtime, library, diagnostics |
+| 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
+| 4 | pseudolearn_runtime | Proporciona aritmética primitiva comprobada; el montón es posterior | abi, diagnostics |
+| 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos | runtime, diagnostics |
+| 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
+| tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
 
 
 texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor.
 El backend nativo consume la misma RI. diagnostics y lexicon suministran datos generados a las etapas.
 
-crates contiene las capas documentadas y el trabajador de medición; specification-export aloja datos cuando exista el consumidor.
+`crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
 Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; el anfitrión orquesta ejecuciones independientes.
 codegen, service y wasm se declaran con sus carpetas al empezar sus fases; no son capas presentes del modo declarativo.
@@ -87,6 +97,8 @@ codegen, service y wasm se declaran con sus carpetas al empezar sus fases; no so
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
+La VM despacha sobre instrucciones inmutables del bytecode verificado sin clonarlas en cada paso;
+los errores de ejecución siguen rutas frías separadas del despacho habitual.
 
 ### source
 
@@ -130,20 +142,31 @@ Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpu
 
 ### bytecode
 
+La implementación actual compila RI verificada en los gemelos y valida sus destinos, clases y puntos de
+retorno. El acolchado del código a potencia de dos sigue pendiente.
+
 Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros. Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
 Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
 
-### runtime
+### runtime (implementación parcial de B3)
 
-Problema: gestiona los valores de ejecución en un montón plano determinista. Elección: Montón contiguo `Vec<u64>` con asas directas `u32`, cero reservado; asignación por avance en bloques puestos a cero y reutilización determinista; recolector preciso sin movimiento con **marcas laterales** y **disparo determinista** por celdas; límite de celdas exacto (cota superior = vivas tras la última recolección + asignadas desde entonces; si la cota supera el límite, se recolecta y se decide con el valor exacto); texto UTF-8 con indicador ASCII y migas cada 64 puntos de código; aritmética comprobada; azar xoshiro256\*\* con SplitMix64; `#![forbid(unsafe_code)]`.
+La implementación actual de B3 cubre aritmética primitiva comprobada, incluido `i64::MIN % -1`.
+El heap, texto, arreglos, recolección y azar descritos a continuación pertenecen a B4 y siguen pendientes.
+El diseño previsto mantiene `#![forbid(unsafe_code)]`.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
-### library
+### library (implementación parcial de B3)
+
+La entrega actual implementa conversiones, truncamiento, redondeo, valor absoluto y raíz cuadrada. La
+potencia real y `ln`, `exp`, `sin`, `cos` y `atan` con redondeo correcto siguen pendientes.
 
 Problema: implementa las funciones incorporadas sobre valores del runtime. Elección: Funciones incorporadas sobre los valores del runtime, sin estado global; azar desde la capacidad inyectada.
 Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
 
-### vm
+### vm (implementación parcial de B3)
+
+La VM actual cubre operaciones escalares, control, llamadas y salida entera. Entrada, referencias de
+usuario, texto, arreglos y objetos quedan fuera de esta entrega.
 
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
@@ -174,8 +197,10 @@ Alternativas descartadas: El corpus API define recursos y codificaciones; se rec
 Problema: adapta la api al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
-Problema: seguridad sin ramas por acceso. Elección: bancos potencia de dos, índices enmascarados y código acolchado tras verificación de operandos y saltos.
-Alternativa descartada: unsafe en el bucle caliente.
+Problema: una máscara puede convertir un índice inválido en otro registro válido. Elección: bancos con capacidad creciente en potencias de dos y acceso indexado comprobado después de validar bytecode; el relleno de capacidad no amplía la ventana lógica.
+Alternativa descartada: enmascarar índices de bytecode, porque puede ocultar un operando fuera de ventana.
+Problema: validar resultados no debe introducir E/S cruda en el camino medido. Elección: la VM acumula la salida en memoria y la devuelve al llamador; el tracer valida el resultado después del intervalo.
+Alternativa descartada: escribir en stdout o en archivos desde la VM.
 Problema: límites portables. Elección: combustible por masa de sentencia con caída exacta al código sondeado, celdas alcanzables y marcos activos.
 Alternativa descartada: usar bytes o reloj para decidir fallos deterministas.
 Problema: memoria retenida. Elección: presupuesto y raleo exponencial de puntos de control con horizonte declarado.
@@ -194,9 +219,11 @@ combustible; la capa superior decide cancelación, punto de control o reproducci
 Alternativas descartadas: raíces como prefijo completo del banco, retorno ligado a un gemelo y
 acumulación de banderas de trampa fuera de expresiones puras fusionadas.
 
-`crates/pseudolearn_bench_worker` es una herramienta de medición que solo importa la API pública.
-Genera cargas desde la exportación, ejecuta análisis en proceso y emite muestras después del intervalo.
-La orquestación conserva diez procesos, treinta muestras, procedencia y métricas de proceso.
+`crates/pseudolearn_bench_worker` es la herramienta de medición de API pública y solo importa esa API.
+La trazadora de la VM es una herramienta interna distinta: compila antes de medir y llama a la VM
+directamente para ejecutar las mismas cargas que `reference`; no llama a la API de ejecución ni se mezcla
+con el trabajador público. Ambas conservan procedencia, muestras por proceso y validación de resultados
+según el protocolo de rendimiento.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

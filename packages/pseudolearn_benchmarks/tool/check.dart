@@ -27,7 +27,10 @@ void main() {
       }
     }
     for (final layer in rules['layers'] as YamlList) {
-      if (!Directory('lib/src/${layer['path']}').existsSync()) {
+      final path = layer['name'] == 'tooling'
+          ? layer['path'] as String
+          : 'lib/src/${layer['path']}';
+      if (!Directory(path).existsSync()) {
         findings.add('LAYER-DECLARED');
       }
     }
@@ -73,7 +76,13 @@ List<String> inspect(String source, String path, YamlMap rules) {
 List<String> checkImports(CompilationUnit unit, String path, YamlMap rules) {
   final findings = <String>[];
   final layers = rules['layers'] as YamlList;
-  final sourceLayer = path.startsWith('lib/src/') ? path.split('/')[2] : null;
+  final sourceLayer = switch (path) {
+    final sourcePath when sourcePath.startsWith('lib/src/') => sourcePath.split(
+      '/',
+    )[2],
+    final sourcePath when sourcePath.startsWith('tool/') => 'tooling',
+    _ => null,
+  };
   final rule = layers
       .where((layer) => layer['name'] == sourceLayer)
       .firstOrNull;
@@ -83,6 +92,30 @@ List<String> checkImports(CompilationUnit unit, String path, YamlMap rules) {
     if (uri.startsWith('package:pseudolearn_core/') &&
         uri != 'package:pseudolearn_core/pseudolearn_core.dart') {
       findings.add('$path LAYER-DIRECTION');
+    }
+    if (sourceLayer == 'tooling') {
+      if (!uri.startsWith('package:') && !uri.startsWith('dart:')) {
+        final target = File(path).absolute.uri.resolve(uri).path;
+        final toolingRoot = Directory('tool').absolute.uri.path;
+        final sourceRoot = Directory('lib/src').absolute.uri.path;
+        if (target.startsWith(toolingRoot)) continue;
+        if (target.startsWith(sourceRoot)) {
+          final targetLayer = target
+              .substring(sourceRoot.length)
+              .split('/')
+              .first;
+          final permittedLayers = rule == null
+              ? null
+              : rule['may_import'] as YamlList;
+          if (permittedLayers == null ||
+              !permittedLayers.contains(targetLayer)) {
+            findings.add('$path LAYER-DIRECTION');
+          }
+        } else {
+          findings.add('$path LAYER-DIRECTION');
+        }
+      }
+      continue;
     }
     if (rule == null || uri.startsWith('dart:')) continue;
     if (uri.startsWith('package:')) {

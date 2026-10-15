@@ -4,10 +4,12 @@ use crate::identities::ValueId;
 use crate::model::Module;
 use crate::operand::Operand;
 use crate::operation::Operation;
+use crate::type_checker_calls::check_call_result;
 use crate::type_checker_control::check_control_and_io;
 use crate::type_checker_helpers::{
     TypeError, expect_one_typed, expect_predicate_and_two_typed, expect_two_typed,
 };
+use crate::type_checker_values::check_value_operations;
 use crate::types::IrType;
 
 pub fn check_instruction_types(
@@ -16,6 +18,9 @@ pub fn check_instruction_types(
     get_type: impl Fn(ValueId) -> Option<IrType>,
     module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
+    if let Some(result) = check_value_operations(operation, operands, &get_type)? {
+        return Ok(Some(result));
+    }
     if let Some(result) = check_constants(operation, operands)? {
         return Ok(Some(result));
     }
@@ -29,6 +34,9 @@ pub fn check_instruction_types(
         return Ok(Some(result));
     }
     if let Some(result) = check_memory(operation, operands, &get_type, module)? {
+        return Ok(Some(result));
+    }
+    if let Some(result) = check_call_result(operation, operands, module)? {
         return Ok(Some(result));
     }
     check_control_and_io(operation, operands, &get_type)

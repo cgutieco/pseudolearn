@@ -1,0 +1,422 @@
+[
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:09.646648Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:10.538189Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:10.722861Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:11.130496Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:11.215575Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:11.690927Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:11.744893Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:12.157879Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:12.203148Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:12.573337Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:12.620440Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:13.006384Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:13.051676Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:13.439233Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:13.488016Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:13.866627Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:13.914037Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:14.298777Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "mandelbrot-8",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:14.350560Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "mandelbrot-8",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:14.768852Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:14.815221Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:15.354232Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:15.415312Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:15.949543Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:16.014092Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:16.538845Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:16.602332Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:17.140831Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:17.203971Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:17.757141Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:17.826937Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:18.349158Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:18.411825Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:19.041350Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:19.105920Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:19.628330Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:19.693553Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:20.229915Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "integer-loop-10000",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:20.293637Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "integer-loop-10000",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:20.808024Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:20.870902Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 0,
+    "startedAtUtc": "2026-10-15T19:09:21.284181Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:21.349683Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 1,
+    "startedAtUtc": "2026-10-15T19:09:21.778053Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:21.842427Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 2,
+    "startedAtUtc": "2026-10-15T19:09:22.286368Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:22.355732Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 3,
+    "startedAtUtc": "2026-10-15T19:09:22.921607Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:22.985422Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 4,
+    "startedAtUtc": "2026-10-15T19:09:23.392341Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:23.455758Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 5,
+    "startedAtUtc": "2026-10-15T19:09:23.865436Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:23.931677Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 6,
+    "startedAtUtc": "2026-10-15T19:09:24.343733Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:24.408381Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 7,
+    "startedAtUtc": "2026-10-15T19:09:24.835968Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:24.900460Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 8,
+    "startedAtUtc": "2026-10-15T19:09:25.322523Z",
+    "samples": 30
+  },
+  {
+    "backend": "reference",
+    "workload": "recursive-fibonacci-18",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:25.387139Z",
+    "samples": 30
+  },
+  {
+    "backend": "vm",
+    "workload": "recursive-fibonacci-18",
+    "process": 9,
+    "startedAtUtc": "2026-10-15T19:09:25.801063Z",
+    "samples": 30
+  }
+]

@@ -1,0 +1,12 @@
+[package]
+name = "pseudolearn_runtime"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_abi = { path = "../pseudolearn_abi", version = "=0.1.0" }
+pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+
+[lints]
+workspace = true

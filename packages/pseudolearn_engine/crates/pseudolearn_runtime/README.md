@@ -2,30 +2,31 @@
 
 ## 1. Qué es y qué no es
 
-Gestiona los valores de ejecución en un montón plano determinista. Diseño aprobado; pendiente de implementación del motor de ejecución.
+Gestiona los valores de ejecución en un montón plano determinista. La primera entrega implementa la
+aritmética primitiva comprobada que consumen los intrínsecos y la VM.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
+| Heap, texto, arreglos, recolección, azar y operaciones de sus tipos | ABI y contratos de B4 | B4 |
 
 ## 2. Guía operativa y ciclo de vida
 
-Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
-Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
-actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+Usa la versión exacta de rust-toolchain.toml del miembro. El crate ya está activo en el workspace y
+contiene aritmética primitiva comprobada de B3. El heap permanece para B4. Comprobación: `cargo xtask verify`
+y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
 Nivel 6. Importa abi y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Vec<u64> plano con asas directas, crecimiento por duplicación y avance en bloques de 4096 palabras puestos a cero. Recolector no móvil con marcado iterativo, bits laterales y raíces nocionales; reutilización determinista elegida mediante medición de prototipos. Arena UTF-8 de solo apéndice, cabeceras inmutables por prefijo, indicador ASCII y migas cada 64 puntos. Aritmética comprobada; xoshiro256** con SplitMix64.
+Vec<u64> plano con asas directas, crecimiento por duplicación y avance en bloques de 4096 palabras puestos a cero. Recolector no móvil con marcado iterativo, bits laterales y raíces nocionales; reutilización determinista elegida mediante medición de prototipos. Arena UTF-8 de solo apéndice, cabeceras inmutables por prefijo, indicador ASCII y migas cada 64 puntos. La aritmética primitiva es comprobada; `int.mod` produce cero para el entero mínimo módulo −1. El montón, la arena de texto, la recolección y xoshiro256** con SplitMix64 permanecen en bloques posteriores.
 
 Invariantes: La recolección no cambia observables. La identidad es un ordinal que no se reutiliza. Ninguna escritura rápida paga una barrera. El estado interno se reproduce determinísticamente.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-El montón paginado y su copia en escritura no superaron el criterio de coste; la medición de memoria plana y combustible está en results/r5-e02r.json del sistema de especificaciones. El límite de celdas usa raíces exactas y cuenta el valor nuevo antes de sobrescribir. La ausencia usa centinelas, cota densa en arreglos enteros y máscara en objetos. Compartir apéndice conserva prefijos anteriores; una bifurcación del tramo obliga a copiar. La compactación de texto actualiza cabeceras y avisa a la línea temporal. Un fallo de reserva es un recurso de API, no un observable del programa.
+El montón paginado y su copia en escritura no superaron el criterio de coste; la medición de memoria plana y combustible está en results/r5-e02r.json del sistema de especificaciones. El límite de celdas usa raíces exactas y cuenta el valor nuevo antes de sobrescribir. La ausencia usa centinelas, cota densa en arreglos enteros y máscara en objetos. Compartir apéndice conserva prefijos anteriores; una bifurcación del tramo obliga a copiar. La compactación de texto actualiza cabeceras y avisa a la línea temporal. Un fallo de reserva es un recurso de API, no un observable del programa. La aritmética convierte overflow y división por cero en errores tipados; no depende de pánicos de Rust.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
