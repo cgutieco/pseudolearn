@@ -135,6 +135,18 @@ impl<'source> Lexer<'source> {
         }
     }
 
+    fn scalar_at(&self) -> Option<(char, usize)> {
+        let rest = self.characters.get(self.position..)?;
+        let width = match rest.first()? {
+            0..=0x7F => 1,
+            0xC0..=0xDF => 2,
+            0xE0..=0xEF => 3,
+            _ => 4,
+        };
+        let text = std::str::from_utf8(rest.get(..width)?).ok()?;
+        text.chars().next().map(|character| (character, width))
+    }
+
     fn lex_string(&mut self) -> Result<TokenKind, String> {
         self.position = self.position.saturating_add(1);
         self.column = self.column.saturating_add(1);
@@ -157,11 +169,15 @@ impl<'source> Lexer<'source> {
                     _ => return Err("Invalid string escape".to_owned()),
                 };
                 text.push(escaped);
+                self.position = self.position.saturating_add(1);
+                self.column = self.column.saturating_add(1);
             } else {
-                text.push(char::from(byte));
+                let (character, width) =
+                    self.scalar_at().ok_or("Invalid UTF-8 in string literal")?;
+                text.push(character);
+                self.position = self.position.saturating_add(width);
+                self.column = self.column.saturating_add(1);
             }
-            self.position = self.position.saturating_add(1);
-            self.column = self.column.saturating_add(1);
         }
         Err("Unterminated string literal".to_owned())
     }
@@ -182,7 +198,11 @@ impl<'source> Lexer<'source> {
                     _ => return Err("Invalid char escape".to_owned()),
                 }
             }
-            Some(&byte) => char::from(byte),
+            Some(_) => {
+                let (scalar, width) = self.scalar_at().ok_or("Invalid UTF-8 in char literal")?;
+                self.position = self.position.saturating_add(width.saturating_sub(1));
+                scalar
+            }
             None => return Err("Unterminated character literal".to_owned()),
         };
         self.position = self.position.saturating_add(1);

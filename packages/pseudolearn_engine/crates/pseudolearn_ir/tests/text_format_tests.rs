@@ -52,3 +52,36 @@ fn preserves_real_literal_types_when_the_value_is_an_integer() {
         }
     }
 }
+
+#[test]
+fn round_trips_array_type_operands_of_array_creation() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:27\n  %0 = const.i64 2 @2:13-2:14\n  %1 = array.new array<i64, 1>, %0 @2:1-2:27\n  stmt.exit @2:1-2:27\n  return @3:1-3:13\n}\n";
+    let parsed = parse_module(source_text);
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        assert_eq!(print_canonical(&module), source_text);
+        assert_eq!(pseudolearn_ir::verify_module(&module), Ok(()));
+    }
+}
+
+#[test]
+fn rejects_array_type_operand_without_rank() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:27\n  %0 = const.i64 2 @2:13-2:14\n  %1 = array.new array<i64>, %0 @2:1-2:27\n  stmt.exit @2:1-2:27\n  return @3:1-3:13\n}\n";
+    assert!(parse_module(source_text).is_err());
+}
+
+#[test]
+fn round_trips_non_ascii_character_and_string_literals() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:23\n  %0 = const.char '😀' @2:19-2:22\n  %1 = const.str \"añ😀\" @2:19-2:22\n  out.write %1, newline @2:1-2:23\n  stmt.exit @2:1-2:23\n  return @3:1-3:13\n}\n";
+    let parsed = parse_module(source_text);
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        assert_eq!(print_canonical(&module), source_text);
+    }
+}
+
+#[test]
+fn rejects_unterminated_non_ascii_character_literal() {
+    let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.char '😀 @2:19-2:22\n  return\n}\n";
+    assert!(parse_module(source_text).is_err());
+}

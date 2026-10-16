@@ -113,7 +113,7 @@ fn parse_word_operand(
             let predicate = PredicateKind::from_name(pred).ok_or("Invalid predicate")?;
             Ok(Operand::Predicate(predicate))
         }
-        ir_type if IrType::parse_type(ir_type).is_some() => {
+        ir_type if IrType::parse_type(ir_type).is_some() || is_compound_type_head(ir_type) => {
             let parsed = parse_type_fn(tokens, cursor)?;
             Ok(Operand::Type(parsed))
         }
@@ -122,6 +122,10 @@ fn parse_word_operand(
             Ok(Operand::Identifier(text))
         }
     }
+}
+
+fn is_compound_type_head(word: &str) -> bool {
+    matches!(word, "array" | "cell" | "obj")
 }
 
 fn parse_value_id(tokens: &[Token], cursor: &mut usize) -> Result<ValueId, String> {
