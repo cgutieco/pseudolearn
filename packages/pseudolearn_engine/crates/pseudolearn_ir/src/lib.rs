@@ -5,6 +5,7 @@ pub mod columns;
 pub mod dominance;
 pub mod identities;
 pub mod lexer;
+mod lexer_literals;
 pub mod model;
 pub mod operand;
 pub mod operand_parser;

@@ -1,0 +1,26 @@
+{
+  "format": "see-differential-exemptions/1",
+  "exemptions": [
+    {
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "rule": "R2",
+      "case": "C5",
+      "finding": "REF-DUPLICATE-EXPECTED-EXPRESSION",
+      "justification": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "rule": "R3",
+      "case": "C6",
+      "finding": "REF-DUPLICATE-EXPECTED-EXPRESSION",
+      "justification": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "rule": "R1",
+      "case": "C3",
+      "finding": "REF-FLEXIBLE-SAME-LINE-TOKEN",
+      "justification": "en rigor flexible solo el salto de línea omite el terminador; un token en la misma línea tras una sentencia completa es un terminador ausente (missingStatementTerminator), no una sentencia inesperada. engine sigue la regla; reference permanece congelado."
+    }
+  ]
+}

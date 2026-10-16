@@ -4,6 +4,7 @@ mod corpus;
 mod e06;
 mod execution;
 mod frontend;
+mod robustness;
 mod workloads;
 
 fn main() -> std::process::ExitCode {
@@ -12,6 +13,8 @@ fn main() -> std::process::ExitCode {
         "execute" => execution::collect(),
         "e06" => e06::collect(),
         "e06-rss" => e06::rss_child(&std::env::args().nth(2).unwrap_or_default()),
+        "robust" => robustness::collect(),
+        "robust-child" => robustness::child(),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile".to_owned()),

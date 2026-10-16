@@ -85,3 +85,19 @@ fn rejects_unterminated_non_ascii_character_literal() {
     let source_text = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.char '😀 @2:19-2:22\n  return\n}\n";
     assert!(parse_module(source_text).is_err());
 }
+
+#[test]
+fn rejects_unexpected_characters_outside_literals_instead_of_looping() {
+    for stray in ["#", "$", "Ļ", "😀", "\u{7}"] {
+        let source_text =
+            format!("module P es\nfunc @main(){stray}-> unit {{\nb0() mass 0:\n  return\n}}\n");
+        assert!(parse_module(&source_text).is_err(), "{stray:?}");
+    }
+}
+
+#[test]
+fn rejects_stray_character_at_the_end_of_the_text() {
+    assert!(
+        parse_module("module P es\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n#").is_err()
+    );
+}

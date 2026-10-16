@@ -1,0 +1,4838 @@
+{
+  "coincide": 878,
+  "compared": 1180,
+  "contract_scope": "output, termination and error diagnostic codes",
+  "engine_observations": 1512,
+  "exempt_differences": [
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [
+            "undeclaredVariable"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "undeclaredVariable",
+            "variableUsedUninitialized"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [
+            "undeclaredVariable"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "undeclaredVariable",
+            "variableUsedUninitialized"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "DIAG.CLASSES",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C9",
+        "engine": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "cancelled"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "limit_reached"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R3",
+        "specification": "ENG.EXEC.MODEL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
+    },
+    {
+      "difference": {
+        "case": "C9",
+        "engine": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "cancelled"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "limit_reached"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R3",
+        "specification": "ENG.EXEC.MODEL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
+    },
+    {
+      "difference": {
+        "case": "C9",
+        "engine": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "cancelled"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "limit_reached"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R3",
+        "specification": "ENG.EXEC.MODEL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
+    },
+    {
+      "difference": {
+        "case": "C9",
+        "engine": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "cancelled"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "",
+          "termination": {
+            "code": null,
+            "kind": "limit_reached"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R3",
+        "specification": "ENG.EXEC.MODEL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "classInsideAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "classInsideAlgorithm",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.DECLARATION",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "classInsideAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "classInsideAlgorithm",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.DECLARATION",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "classInsideAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "classInsideAlgorithm",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.DECLARATION",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "classInsideAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "classInsideAlgorithm",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.DECLARATION",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "privateMemberAccess"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.FIELDS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "privateMemberAccess"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.FIELDS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "privateMemberAccess"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.FIELDS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "privateMemberAccess"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.FIELDS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undefinedMember"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.MEMBER-ACCESS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undefinedMember"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.MEMBER-ACCESS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undefinedMember"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.MEMBER-ACCESS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undefinedMember"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.MEMBER-ACCESS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "methodOutsideClass"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "methodOutsideClass",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.METHODS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "methodOutsideClass"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "methodOutsideClass",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.METHODS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "methodOutsideClass"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "methodOutsideClass",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.METHODS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "methodOutsideClass"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "methodOutsideClass",
+            "unexpectedTokenInExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.METHODS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.OUT-OF-SCOPE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.OUT-OF-SCOPE",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.OUT-OF-SCOPE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.OUT-OF-SCOPE",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "thisOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "thisOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "thisOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "thisOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "superOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "superOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "superOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "superOutsideMethod"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.CLASS.SELF-AND-SUPER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "initializationInDeclarationNotAllowed"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "initializationInDeclarationNotAllowed",
+            "missingStatementTerminator"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.DECL.VARIABLE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATEMENT-CASCADE: Tras rechazar un inicializador en declaración agrega missingStatementTerminator sobre la misma sentencia. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "initializationInDeclarationNotAllowed"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "initializationInDeclarationNotAllowed",
+            "missingStatementTerminator"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.DECL.VARIABLE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STATEMENT-CASCADE: Tras rechazar un inicializador en declaración agrega missingStatementTerminator sobre la misma sentencia. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.EDITION.MODEL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.EDITION.MODEL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.EDITION.MODEL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unsupportedInterfaceConstruct",
+            "unexpectedStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.EDITION.MODEL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.IO.VALUE-FORMAT",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.IO.VALUE-FORMAT",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.IO.VALUE-FORMAT",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C4",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0000001:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.IO.VALUE-FORMAT",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "integerLiteralOutOfRange"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "integerLiteralOutOfRange",
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.NUMBER-LITERAL",
+        "strictness": "estricto"
+      },
+      "exemption": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "integerLiteralOutOfRange"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "integerLiteralOutOfRange",
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.NUMBER-LITERAL",
+        "strictness": "flexible"
+      },
+      "exemption": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "integerLiteralOutOfRange"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "integerLiteralOutOfRange",
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.NUMBER-LITERAL",
+        "strictness": "estricto"
+      },
+      "exemption": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "integerLiteralOutOfRange"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "integerLiteralOutOfRange",
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.NUMBER-LITERAL",
+        "strictness": "flexible"
+      },
+      "exemption": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "missingStatementTerminator",
+            "unexpectedStatement"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.WHITESPACE",
+        "strictness": "flexible"
+      },
+      "exemption": "en rigor flexible solo el salto de línea omite el terminador; un token en la misma línea tras una sentencia completa es un terminador ausente (missingStatementTerminator), no una sentencia inesperada. engine sigue la regla; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "missingStatementTerminator",
+            "unexpectedStatement"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unexpectedStatement",
+            "unexpectedStatement"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R1",
+        "specification": "LANG.LEXICAL.WHITESPACE",
+        "strictness": "flexible"
+      },
+      "exemption": "en rigor flexible solo el salto de línea omite el terminador; un token en la misma línea tras una sentencia completa es un terminador ausente (missingStatementTerminator), no una sentencia inesperada. engine sigue la regla; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [],
+          "output": "2\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter",
+            "unexpectedStatement"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-SOURCE-NFC: No reconoce como el mismo nombre la grafía compuesta y la descompuesta por ausencia de NFC. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [],
+          "output": "2\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unrecognizedCharacter",
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R2",
+        "specification": "LANG.SOURCE.ENCODING",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-SOURCE-NFC: No reconoce como el mismo nombre la grafía compuesta y la descompuesta por ausencia de NFC. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.PARAMETERS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.PARAMETERS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.PARAMETERS",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [
+            "duplicateParameterName"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "duplicateParameterName",
+            "argumentCountMismatch"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.PARAMETERS",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undeclaredVariable"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "undeclaredVariable",
+            "variableUsedUninitialized"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.SCOPE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: Informa inicialización sobre un identificador cuya resolución ya falló por ausencia de declaración. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C2",
+        "engine": {
+          "error_codes": [
+            "undeclaredVariable"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "undeclaredVariable",
+            "variableUsedUninitialized"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SUBPROGRAM.SCOPE",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-INVALID-SYMBOL-CASCADE: Informa inicialización sobre un identificador cuya resolución ya falló por ausencia de declaración. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "H-06: La recuperación emite expectedExpression duplicado para una sentencia malformada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "H-06: La recuperación emite expectedExpression duplicado para una sentencia malformada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R2",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C5",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R2",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C6",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R3",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "estricto"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C6",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R3",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C6",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R3",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "estricto"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C6",
+        "engine": {
+          "error_codes": [
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "expectedExpression",
+            "expectedExpression"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "cumple",
+        "rule": "R3",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "reference informa dos veces el mismo diagnóstico expectedExpression sobre el mismo tramo; el contrato exige un diagnóstico por restricción que falla, y engine lo informa una vez."
+    },
+    {
+      "difference": {
+        "case": "C8",
+        "engine": {
+          "error_codes": [
+            "unclosedWhileStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unclosedWhileStatement",
+            "unclosedIfStatement",
+            "unclosedAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R4",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C8",
+        "engine": {
+          "error_codes": [
+            "unclosedWhileStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "unclosedWhileStatement",
+            "unclosedIfStatement",
+            "unclosedAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R4",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C8",
+        "engine": {
+          "error_codes": [
+            "unclosedWhileStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unclosedWhileStatement",
+            "unclosedIfStatement",
+            "unclosedAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R4",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C8",
+        "engine": {
+          "error_codes": [
+            "unclosedWhileStatement"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "unclosedWhileStatement",
+            "unclosedIfStatement",
+            "unclosedAlgorithm"
+          ],
+          "output": null,
+          "termination": {
+            "code": null,
+            "kind": null
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R4",
+        "specification": "LANG.SYNTAX.RECOVERY",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512A\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.CHARACTER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512A\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.CHARACTER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512A\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.CHARACTER",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "128512A\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.CHARACTER",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.REAL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.REAL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.REAL",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C3",
+        "engine": {
+          "error_codes": [],
+          "output": "0.30000000000000004:-0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [],
+          "output": "0.30000000000000004:0.0\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LANG.TYPES.REAL",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "2:😀:128512:😀\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LIB.CORE.TEXT",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "2:😀:128512:😀\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "en",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LIB.CORE.TEXT",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "2:😀:128512:😀\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LIB.CORE.TEXT",
+        "strictness": "estricto"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "difference": {
+        "case": "C1",
+        "engine": {
+          "error_codes": [],
+          "output": "2:😀:128512:😀\n",
+          "termination": {
+            "code": null,
+            "kind": "completed"
+          }
+        },
+        "engine_verdict": "cumple",
+        "profile": "es",
+        "reference": {
+          "error_codes": [
+            "incompatibleArgumentType"
+          ],
+          "output": "",
+          "termination": {
+            "code": "analysisFailed",
+            "kind": "failed"
+          }
+        },
+        "reference_verdict": "incumple",
+        "rule": "R1",
+        "specification": "LIB.CORE.TEXT",
+        "strictness": "flexible"
+      },
+      "exemption": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."
+    }
+  ],
+  "reference_observations": 1180,
+  "uncontracted_differences": [
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.CLASSES",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.CLASSES",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.CLASSES",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.CLASSES",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.ENGINE.INTERNAL-FAULT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.ENGINE.INTERNAL-FAULT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.ENGINE.INTERNAL-FAULT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.ENGINE.INTERNAL-FAULT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.MESSAGES",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.MESSAGES",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.MESSAGES",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.MESSAGES",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "incumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "incumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "DIAG.SEVERITY.POLICY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "ENG.EXEC.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C6",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C6",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C6",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C6",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C7",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C7",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C7",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C7",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R4",
+      "specification": "ENG.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.ACCESS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.ARRAY.DIMENSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.COPY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.COPY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.COPY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.COPY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.DECLARATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.DECLARATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.DECLARATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.DECLARATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INSTANTIATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INSTANTIATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INSTANTIATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INSTANTIATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OVERRIDE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OVERRIDE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OVERRIDE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OVERRIDE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R2",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C8",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "incumple",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C8",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "incumple",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C8",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "incumple",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C8",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "incumple",
+      "rule": "R5",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C11",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R6",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C11",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R6",
+      "specification": "LANG.CONTROL.FOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.DECL.DESIGNATOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.DECL.DESIGNATOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.DECL.DESIGNATOR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.DECL.DESIGNATOR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.INPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.INPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.OUTPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.OUTPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.OUTPUT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.IO.OUTPUT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.CHARACTER-LITERAL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.LEXICAL.WHITESPACE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.ARITHMETIC",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.ARITHMETIC",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.ARITHMETIC",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.ARITHMETIC",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.COMPARISON",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.CONCATENATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.CONCATENATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.CONCATENATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.CONCATENATION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.DIVISION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.DIVISION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.DIVISION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.DIVISION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.LOGICAL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.LOGICAL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.LOGICAL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.LOGICAL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.PRECEDENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.PRECEDENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.PRECEDENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.OPS.PRECEDENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.STRICTNESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.PROFILE.STRICTNESS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.ASSIGNMENT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.ASSIGNMENT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.ASSIGNMENT",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.ASSIGNMENT",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.TERMINATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.STMT.TERMINATION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.BY-REFERENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.BY-REFERENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.BY-REFERENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.BY-REFERENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.INTERACTIONS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.INTERACTIONS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SUBPROGRAM.RETURN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.GRAMMAR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.GRAMMAR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.GRAMMAR",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.SYNTAX.GRAMMAR",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C9",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R5",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C9",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R5",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C9",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R5",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C9",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R5",
+      "specification": "LANG.SYNTAX.RECOVERY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.BOOLEAN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.BOOLEAN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.BOOLEAN",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.BOOLEAN",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CHECKING-LEVELS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CHECKING-LEVELS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CHECKING-LEVELS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CHECKING-LEVELS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CLASS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CLASS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CLASS",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.CLASS",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INFERENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INFERENCE",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "incumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INFERENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "incumple",
+      "rule": "R1",
+      "specification": "LANG.TYPES.INFERENCE",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.CONVERSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.CONVERSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.CONVERSION",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.CONVERSION",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.COPY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.COPY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.COPY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.COPY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C4",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.MATH",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.ROUNDING",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.ROUNDING",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.ROUNDING",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C3",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.CORE.ROUNDING",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.MODEL",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C2",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "LIB.MODEL",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "MEM.IDENTITY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "en",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "MEM.IDENTITY",
+      "strictness": "flexible"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "MEM.IDENTITY",
+      "strictness": "estricto"
+    },
+    {
+      "case": "C1",
+      "engine_verdict": "cumple",
+      "profile": "es",
+      "reference_verdict": "cumple",
+      "rule": "R1",
+      "specification": "MEM.IDENTITY",
+      "strictness": "flexible"
+    }
+  ],
+  "uncontracted_span_or_notice_differences": 208,
+  "unresolved_differences": []
+}

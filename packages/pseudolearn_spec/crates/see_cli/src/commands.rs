@@ -29,6 +29,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
             &corpus,
             arguments.options.contains_key("check"),
         ),
+        "differential" => crate::differential::execute(&arguments, &corpus),
         "diff" => crate::history::diff(&arguments, &corpus),
         "conform" => crate::conformance::execute(&arguments, &corpus),
         "matrix" => crate::conformance::matrix(&arguments, &corpus),

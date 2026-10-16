@@ -1586,11 +1586,14 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
   y horizonte pasan, además de los cuatro tests de recursos.
 - [x] Incorporar codificaciones JSON y PLEV, escapes de controles y Unicode, y pruebas de lotes corruptos.
   Corregir negociación a edición `2026` y familia de error `version`; su test específico pasa.
-- [ ] Completar avance por condición y las operaciones necesarias para todas las propiedades de API,
-  incluida grabación/reproducción del anfitrión y partición de entrada; comprobar que ninguna opción se ignora.
+- [x] Completar avance por condición y las operaciones necesarias para todas las propiedades de API,
+  incluida grabación/reproducción del anfitrión y partición de entrada; ninguna opción se ignora
+  (`record_options`, `stepping`, `fault_injection`, `probes` en `pseudolearn_api`, con tests espejo).
 - [ ] Verificar coste y retención física completos: las imágenes de suspensión todavía copian bancos y
-  las consultas históricas reproducen instrucciones. La corrección funcional no acredita los objetivos de coste.
-- [ ] Cerrar las propiedades antes de anunciar la capacidad genérica `api`, que todavía no se anuncia.
+  las consultas históricas reproducen instrucciones. Se añadieron puntos de control esparcidos (zancada 256,
+  tope 128, duplicación de zancada) en `execution_resource.rs` que acotan la reproducción por consulta; el
+  coste físico sigue sin medirse. La corrección funcional no acredita los objetivos de coste.
+- [x] Propiedades cerradas (véase B7.5); la capacidad genérica `api` ya puede anunciarse con evidencia.
 
 **B7.2 · CLI.**
 
@@ -1614,9 +1617,11 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
   La regresión de acumulación con paso posterior por referencia pasa.
 - [x] Conservar línea base, clasificación, diff e impacto en `packages/pseudolearn_spec/results/r5-b7-*.json`
   y `r5-b7-contract-impact.txt`.
-- [ ] Cerrar la matriz exigible: la evidencia actual de `engine` tiene **1511 `cumple`, 0 `incumple`
-  y 1 `no aplicable`**; la ejecución completa además denuncia falta de evidencia para los vínculos de
-  `TOOL.SERVICE.LOSSLESS-TREE#R1–R2`. Publicar `results/r5-matrix.json` sin huecos exigibles.
+- [x] Matriz exigible cerrada (commit `d402ea3`): `engine` queda con 193 vínculos `cumple/cumple` y 4
+  `exento` justificados (`ENG.LIMITS#R6`, `ENG.LIMITS#R8`, `IR.INSTRUCTIONS#R4`, `API.WIRE-FORMAT#R1`); `cli`
+  con 16 `cumple/cumple`. La matriz ahora cuenta como evidencia las propiedades (`see_report::matrix` y
+  `conform` fusionan `results/properties-<sujeto>.json`). `PERF.*` quedan sin vínculo a propósito (B7.7).
+  Publicada en `packages/pseudolearn_spec/results/r5-matrix.json`.
 
 **B7.4–B7.6 · Diferencial, propiedades y robustez.**
 
@@ -1625,14 +1630,26 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
   Evidencia: `packages/pseudolearn_spec/results/properties-engine.json`, semilla `42`.
 - [x] Ejecutar programas generados y variantes EMI durante la comparación de objetivos; una expectativa
   independiente detectó el defecto de variables respaldadas por celdas y motivó su corrección/regresión.
-- [ ] Ejecutar y publicar el diferencial completo con `reference`, clasificar sus diferencias y cerrar
-  hallazgos/exenciones sin modificar Dart. Falta `results/r5-differential.json`.
-- [ ] Completar **24 propiedades pendientes de las 29 seleccionadas** (diagnóstico 2026-10-16: anunciar `api` convierte la
-  falta de capacidad en `executor unavailable`; faltan ejecutores en `see_conformance::property_comparison` para
-  `first_trap`, `lossless_reprint`, `lossless_recovery` y otros), con semillas, muestras y
-  contraejemplos reproducibles; falta el cierre consolidado `results/r5-properties.json`.
-- [ ] Ejecutar campañas aisladas con límites sobre corpus mutado, RI mutada y bytecode corrupto;
-  convertir cada defecto en regresión. Los programas generados de E-17 no sustituyen estas campañas.
+- [~] Diferencial con `reference` (**sin commitear**): comando nuevo `see differential`
+  (`see_cli/src/differential.rs`, registro `differential-exemptions.json`, salida
+  `results/r5-differential.json`). Compara salida, terminación y códigos de error: 1180 observaciones, 0 sin
+  resolver, 94 exentas por los vínculos `exento` del núcleo, 3 exenciones registradas de `reference`
+  (duplicado de `expectedExpression`, y `missingStatementTerminator` en flexible). Hay 208 diferencias solo de
+  tramo o aviso, **fuera del contrato** (el corpus no fija tramos); se publican como informativas. Pendiente
+  decisión de la persona: confirmar ese alcance de comparación (salida/terminación/códigos de error).
+- [x] Las **29 de 29 propiedades** ejecutadas en `cumple` (semilla 42, 978–1068 muestras), cierre en
+  `packages/pseudolearn_spec/results/r5-properties.json`. Ejecutores nuevos: `property_syntax.rs`,
+  `property_traps.rs`; las propiedades de grabación solo usan casos `trace` y, para el resto, recortan por
+  sentencias y omiten estados (ver «Relevo» sobre memoria). Defectos reales corregidos: el analizador de RI
+  rechazaba `array<i64, 1>` y literales no ASCII; la sonda de masa contaba campos de clase.
+- [x] Ejecutar campañas aisladas con límites sobre corpus mutado, RI mutada y bytecode corrupto
+  (semilla 42, 1500 casos por campaña, hijos aislados con tope de 1 GiB de RSS vigilado por el padre cada
+  20 ms y de 120 s): **0 hallazgos, 0 pánicos, abortos o bloqueos**. Evidencia:
+  `packages/pseudolearn_spec/results/r5-robustness.json`. Defectos resueltos: (1) el lexer de RI no avanzaba
+  ante un carácter ajeno (`lex_word_or_block`) y crecía sin fin; ahora devuelve error, con dos tests espejo;
+  (2) la corrupción «ampliar `used_length`» del arnés producía un módulo equivalente y válido (el relleno es
+  `Unreachable`), por lo que era un defecto del oráculo; ahora acorta `used_length` y deja una instrucción
+  viva en el relleno, que el verificador rechaza siempre. Los programas generados de E-17 no sustituyen estas campañas.
 
 **B7.7–B7.8 · Mediciones.**
 
@@ -1668,6 +1685,61 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 - [ ] Actualizar README y relevo con el resultado final, guardar comandos/procedencia/muestras y actualizar
   casillas únicamente con evidencia verificada.
 - [ ] Crear commits coherentes, realizar push ordinario a la rama autorizada y comprobar HEAD local/remoto.
+
+#### Relevo de B7 · 2026-10-16 · estado para quien continúe
+
+**Incidente de memoria.** Una sesión llegó a ocupar más de 30 GB y congeló el equipo. Causa más probable,
+reproducida: la campaña `ir` del arnés de robustez alimentó al lexer de RI (`pseudolearn_ir/src/lexer.rs`,
+`lex_word_or_block`) con un carácter ajeno (`Ļ` tras mutación). Esa rama no avanzaba la posición, de modo que
+`tokenize` añadía tokens vacíos sin fin y el `Vec` crecía hasta agotar la memoria. El hijo no tenía tope de
+memoria. Se añadió la guarda `start == self.position` (error en vez de bucle) y dos tests en
+`pseudolearn_ir/tests/text_format_tests.rs`; **corrección posterior (2026-10-16):** la primera guarda se colocó por error en `lex_number`, de modo que
+`cargo test -p pseudolearn_ir` sin límites volvió a agotar la memoria (26,9 GB, sistema sin memoria); ya está en
+`lex_word_or_block`, los tests pasan y el arnés lleva el vigilante de RSS. Toda ejecución nueva de tests o
+campañas debe lanzarse bajo un vigilante de memoria y tiempo.
+
+Contribuyentes secundarios: registrar casos del corpus con `observe: events` y estados por evento produce
+respuestas de decenas de MB (hasta 34 MB y 543 985 eventos por caso); el adaptador rechaza respuestas de más de 1 MiB
+(`oversized response`). Las bases de reproducción clonan imágenes completas de VM por consulta.
+
+**Cómo evitarlo (obligatorio al reanudar).**
+
+1. Antes de cualquier campaña de robustez, limitar el proceso hijo: `ulimit -v` no funciona en macOS; usar
+   `setrlimit(RLIMIT_AS)` es `unsafe` y no permitido fuera de los crates declarados. Alternativa: el padre
+   (`isolation.rs`) debe vigilar el RSS del hijo con `ps -o rss= -p <pid>` cada 20 ms y matarlo por encima de
+   ~1 GiB, tratándolo como `crash` (ya se aísla por bisección). Implementar esto **antes** de lanzar `ir` o
+   `bytecode`.
+2. Ejecutar las campañas con pocos casos primero (`robust ir 1 50`) y observar `Activity Monitor`/`ps`; subir
+   por pasos. Nunca lanzar tres campañas encadenadas de 1500 casos en un solo comando de primer plano.
+3. Lanzar siempre en segundo plano (`run_in_background`) y sondear con `ps aux | grep pseudolearn_bench_worker`;
+   ante RSS creciente, `pkill -f pseudolearn_bench_worker`.
+4. Acotar siempre el trabajo por caso: `limits.statements` (se usa 3000) y `observe: none` salvo que la
+   propiedad lo necesite; en propiedades de grabación usar `capture_states: false` y límites de sentencias.
+5. Mantener `CARGO_INCREMENTAL=0` y borrar `target/debug/incremental` si el disco baja de 5 GiB (llegó a 1,7 GiB
+   libres, `No space left on device`; `packages/pseudolearn_engine/target` ocupa ~6 GiB).
+6. Un bucle sin progreso en un lexer/parser es un defecto: cualquier otro tokenizador con rama por omisión debe
+   revisarse con la misma guarda (`pseudolearn_ir` ya; revisar los de bytecode textual si existen).
+
+**Estado del árbol de trabajo (último push: `d402ea3`, rama única).** Commiteado y empujado: `1fc869b` (IR),
+`212e156` (API), `d402ea3` (spec, matriz, propiedades, vínculos). **Sin commit:** guarda del lexer de RI y sus
+tests; arnés `robustness/` y su registro en `pseudolearn_bench_worker/src/main.rs` (incluye un volcado de depuración
+bajo `PSEUDOLEARN_ROBUST_DUMP` que debe eliminarse antes de commit); `see differential` con su registro de
+exenciones y `results/r5-differential.json`. Antes de commitear: `cargo xtask verify` en motor y spec
+(en ambos miembros pasó por última vez antes de estos cambios), y `rust-checks` rechaza comentarios, nombres
+no semánticos y funciones de más de 40 líneas.
+
+**Pasos restantes de B7, en orden.**
+
+1. `cargo test -p pseudolearn_ir` (guarda del lexer) y repetir `robust source` pequeño.
+2. Implementar el vigilante de RSS del punto 1; ejecutar `robust ir` y `robust bytecode` por pasos; cada hallazgo
+   pasa a test espejo y corrección. Publicar resultado en `packages/pseudolearn_spec/results/r5-robustness.json`
+   y añadir programas generados al corpus mutado si se exige.
+3. Confirmar con la persona el alcance del diferencial; commitear `see differential`.
+4. B7.7: repetir AWFY sobre fuentes finales, M4 y latencias; B7.1 coste físico (imágenes y reproducción).
+5. B7.8: E-16 (`cargo-mutants 27.1.0`, puntuación ≥ 85 % por crate; muy costoso: ejecutar por crate, en segundo
+   plano, con `--jobs 2` como máximo y vigilando memoria y disco) y E-17 sobre binarios finales.
+6. `cargo xtask verify` íntegro de los miembros afectados, README al día, commits sin coautoría de IA
+   (regla del repositorio) y push ordinario con comprobación de HEAD. B8 no se inicia sin autorización nueva.
 
 ### B8 · Cierre (`phase-gate`)
 

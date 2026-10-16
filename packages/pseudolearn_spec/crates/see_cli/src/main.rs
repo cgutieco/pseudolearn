@@ -4,6 +4,7 @@ mod arguments;
 mod bindings;
 mod commands;
 mod conformance;
+mod differential;
 mod e10;
 mod history;
 mod math_contrast;
