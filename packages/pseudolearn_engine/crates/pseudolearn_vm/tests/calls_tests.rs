@@ -5,6 +5,8 @@ fn exit_of(source_text: &str) -> RunExit {
     match compile_text(source_text) {
         Ok(bytecode) => run(&bytecode, Fuel::unlimited()).exit,
         Err(_) => RunExit::Trap(VmTrap {
+            arguments: std::collections::BTreeMap::new(),
+            related: Vec::new(),
             code: "invalidTestProgram",
             span: None,
         }),
@@ -39,6 +41,8 @@ fn undefined_argument_reaches_the_callee_as_undefined() {
     assert_eq!(
         exit_of(source),
         RunExit::Trap(VmTrap {
+            arguments: std::collections::BTreeMap::new(),
+            related: Vec::new(),
             code: "uninitializedVariableRead",
             span: Some(SourceSpan::new(2, 1, 2, 4)),
         })
@@ -51,6 +55,8 @@ fn callee_trap_reports_the_callee_span() {
     assert_eq!(
         exit_of(source),
         RunExit::Trap(VmTrap {
+            arguments: std::collections::BTreeMap::new(),
+            related: Vec::new(),
             code: "divisionByZero",
             span: Some(SourceSpan::new(2, 5, 2, 9)),
         })

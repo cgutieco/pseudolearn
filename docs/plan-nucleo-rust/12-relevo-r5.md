@@ -1,5 +1,9 @@
 # Relevo de R5 — 2026-10-15
 
+> Relevo histórico anterior a B2/B3. Para el árbol actual y la continuación de B4, leer
+> [13 · Relevo de B4](13-relevo-b4-remanso.md). Las afirmaciones de ausencia de backend y los
+> bloqueos de este documento no describen el checkpoint actual.
+
 ## Objetivo y punto de parada
 
 Implementar **toda R5** del plan de fases siguiendo el diseño Remanso. La persona pide ahora detener

@@ -1,0 +1,43 @@
+    Checking pseudolearn_abi v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_abi)
+   Compiling pseudolearn_vm v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_vm)
+    Checking pseudolearn_vm_dispatch v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_vm_dispatch)
+    Checking pseudolearn_ir v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_ir)
+    Checking pseudolearn_runtime v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_runtime)
+    Checking pseudolearn_library v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_library)
+    Checking pseudolearn_bytecode v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bytecode)
+    Checking pseudolearn_lowering v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_lowering)
+    Checking pseudolearn_math_probe v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_math_probe)
+    Checking pseudolearn_api v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_api)
+    Checking pseudolearn_conformance v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_conformance)
+    Checking pseudolearn_bench_worker v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bench_worker)
+    Checking pseudolearn_vm_tracer v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_vm_tracer)
+error: field assignment outside of initializer for an instance created with Default::default()
+  --> crates/pseudolearn_api/tests/runtime_support/cases.rs:93:9
+   |
+93 |         options.seed = request.get("seed").and_then(Value::as_i64).unwrap_or(42);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: consider initializing the variable with `pseudolearn_vm::RunOptions { seed: request.get("seed").and_then(Value::as_i64).unwrap_or(42), ..Default::default() }` and removing relevant reassignments
+  --> crates/pseudolearn_api/tests/runtime_support/cases.rs:92:9
+   |
+92 |         let mut options = RunOptions::default();
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+   = note: `-D clippy::field-reassign-with-default` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::field_reassign_with_default)]`
+
+error: field assignment outside of initializer for an instance created with Default::default()
+  --> crates/pseudolearn_api/tests/runtime_support/memory.rs:50:9
+   |
+50 |         options.inspect_memory = true;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: consider initializing the variable with `pseudolearn_vm::RunOptions { inspect_memory: true, ..Default::default() }` and removing relevant reassignments
+  --> crates/pseudolearn_api/tests/runtime_support/memory.rs:49:9
+   |
+49 |         let mut options = RunOptions::default();
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#field_reassign_with_default
+
+error: could not compile `pseudolearn_api` (test "runtime_corpus") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

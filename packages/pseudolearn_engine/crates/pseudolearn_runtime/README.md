@@ -18,6 +18,11 @@ y `rust-checks layers` del miembro. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 
+El montón separa palabras físicas, descriptores de asignación y celdas nocionales. Las operaciones reciben
+raíces exactas del consumidor; no inspeccionan marcos ni importan bytecode. Los fallos son tipados:
+reserva del anfitrión, límite de celdas del programa, dominio inválido y defecto interno.
+Los tipos primitivos compartidos del runtime describen la clase de palabra, no etiquetan cada valor.
+
 Nivel 6. Importa abi y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 Vec<u64> plano con asas directas, crecimiento por duplicación y avance en bloques de 4096 palabras puestos a cero. Recolector no móvil con marcado iterativo, bits laterales y raíces nocionales; reutilización determinista elegida mediante medición de prototipos. Arena UTF-8 de solo apéndice, cabeceras inmutables por prefijo, indicador ASCII y migas cada 64 puntos. La aritmética primitiva es comprobada; `int.mod` produce cero para el entero mínimo módulo −1. El montón, la arena de texto, la recolección y xoshiro256** con SplitMix64 permanecen en bloques posteriores.
@@ -25,6 +30,24 @@ Vec<u64> plano con asas directas, crecimiento por duplicación y avance en bloqu
 Invariantes: La recolección no cambia observables. La identidad es un ordinal que no se reutiliza. Ninguna escritura rápida paga una barrera. El estado interno se reproduce determinísticamente.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: validar UTF-8 en cada lectura vuelve lineales Longitud y el acceso indexado con migas.
+Elección: `String` posee el vector UTF-8 y conserva su invariante al añadir fragmentos válidos; sus
+subrangos se consultan sin validar toda la cadena. El indicador ASCII se deriva de bytes y puntos.
+Las migas pertenecen al tramo compartido y crecen por apéndice; las cabeceras apuntan a almacenamiento
+auxiliar del montón que no consume celdas. La compactación construye el búfer vivo con reserva
+comprobada, devuelve la correspondencia de tramos e invalida migas derivadas. Se descartan validación
+UTF-8 repetida, copias del índice por concatenación y acceso inseguro al vector de un `String`.
+
+Problema: la recuperación debe conservar identidad y minimizar cambios de bloques observados.
+Elección: marcado y barrido no móvil con listas por tamaño, seleccionada en la comparación local de
+10.800 muestras; evidencia en `../../pseudolearn_spec/results/r5-e12.json`. Las líneas no móviles y el
+conteo de referencias diferido exceden guardas de pausa o perturbación de bloques. El motor no conserva
+esas alternativas. Se reutilizan direcciones ascendentes dentro de cada tamaño; el ordinal nunca se
+reutiliza. El disparo usa `max(4096, vivas)` celdas asignadas y el límite se decide con alcanzabilidad
+exacta incluyendo el valor nuevo. Los modos automático, forzado y sin recuperación son datos internos.
+Los literales y metadatos auxiliares no consumen celdas nocionales. El texto creado cuenta por cabecera,
+aunque comparta bytes. Los puntos de compactación devuelven su desplazamiento de tramos al consumidor.
 
 El montón paginado y su copia en escritura no superaron el criterio de coste; la medición de memoria plana y combustible está en results/r5-e02r.json del sistema de especificaciones. El límite de celdas usa raíces exactas y cuenta el valor nuevo antes de sobrescribir. La ausencia usa centinelas, cota densa en arreglos enteros y máscara en objetos. Compartir apéndice conserva prefijos anteriores; una bifurcación del tramo obliga a copiar. La compactación de texto actualiza cabeceras y avisa a la línea temporal. Un fallo de reserva es un recurso de API, no un observable del programa. La aritmética convierte overflow y división por cero en errores tipados; no depende de pánicos de Rust. Cada operación primitiva está marcada `#[inline]` para que el manejador de la VM la integre a través del límite del crate; sin la marca la trazadora medía una llamada por operación aritmética.
 

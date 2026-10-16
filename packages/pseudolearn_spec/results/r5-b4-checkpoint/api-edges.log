@@ -1,0 +1,14 @@
+   Compiling pseudolearn_vm v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_vm)
+   Compiling pseudolearn_bytecode v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bytecode)
+   Compiling pseudolearn_api v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.10s
+     Running tests/runtime_edges.rs (packages/pseudolearn_engine/target/debug/deps/runtime_edges-626fe890545db269)
+
+running 4 tests
+test depth_includes_main_and_accepts_exact_boundary ... ok
+test reference_arguments_evaluate_indices_once_and_alias_immediately ... ok
+test constructor_reference_parameters_and_super_calls_share_one_receiver ... ok
+test suspended_frames_retain_roots_across_recursive_bank_growth ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+

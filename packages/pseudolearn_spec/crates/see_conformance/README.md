@@ -10,6 +10,10 @@ Negocia JSONL por proceso con capacidades explícitas, ejecuta casos en perfiles
 
 ## 3. Arquitectura y modelo del sistema
 
+`runtime_fixtures` materializa casos con el mismo constructor de peticiones de conformidad; sus
+programas generados de grafos conservan el resultado independiente de `see_oracles::cells`. Esta
+preparación de datos no anuncia capacidades de ningún sujeto ni produce un veredicto de conformidad.
+
 Imports internos permitidos: model, translation, generators, oracles; format solo en tests. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
 
 ## 4. Decisiones de diseño y fundamentos técnicos

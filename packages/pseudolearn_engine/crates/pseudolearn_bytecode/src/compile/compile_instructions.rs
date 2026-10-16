@@ -55,6 +55,14 @@ fn append_instruction(
     let program_counter =
         u32::try_from(variant.instructions.len()).map_err(|_| BytecodeError::InvalidModule)?;
     let instruction = compile_instruction(plan, identifier, program_counter, fast)?;
+    variant.definitions.insert(
+        program_counter,
+        crate::definitions::operands(
+            plan.source,
+            plan.source.columns.operands(identifier),
+            &plan.registers,
+        )?,
+    );
     variant.instructions.push(instruction);
     Ok(())
 }

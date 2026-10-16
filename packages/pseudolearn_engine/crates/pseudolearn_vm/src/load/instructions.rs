@@ -16,6 +16,7 @@ pub(super) struct DecodeContext<'module> {
     pub module: &'module BytecodeModule,
     pub function: &'module BytecodeFunction,
     pub definedness: &'module Definedness,
+    pub literals: &'module [String],
 }
 
 pub(super) fn decode_all(
@@ -75,11 +76,12 @@ fn decode_instruction(
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
     match dispatch_kind(instruction.opcode) {
-        DispatchKind::Constant => values::decode_constant(context.function, instruction),
+        DispatchKind::Constant => values::decode_constant(context, instruction),
         DispatchKind::ValueState => values::decode_value_state(context, instruction),
         DispatchKind::Scalar => decode_scalar(context.function, instruction),
         DispatchKind::Control => control::decode(context, loaded, program_counter, instruction),
-        DispatchKind::Output => values::decode_output(context.function, instruction),
+        DispatchKind::Output => decode_output(context, loaded, instruction),
+        DispatchKind::Memory => super::memory::decode(context, loaded, instruction),
         DispatchKind::Observation => Ok(Op::Observe),
         DispatchKind::Other => Ok(Op::Unsupported),
     }
@@ -95,6 +97,17 @@ fn decode_scalar(function: &BytecodeFunction, instruction: &Instruction) -> Resu
         &sources,
     )
     .ok_or_else(invalid_bytecode)
+}
+
+fn decode_output(
+    context: &DecodeContext<'_>,
+    loaded: &mut LoadedFunction,
+    instruction: &Instruction,
+) -> Result<Op, VmTrap> {
+    match values::decode_output(context.function, instruction)? {
+        Op::Unsupported => super::memory::decode(context, loaded, instruction),
+        operation => Ok(operation),
+    }
 }
 
 fn decode_fused(

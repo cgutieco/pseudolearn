@@ -5,13 +5,13 @@ use std::collections::BTreeMap;
 
 use crate::Opcode;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum RegisterClass {
     Scalar,
     Reference,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Register {
     pub class: RegisterClass,
     pub index: u16,
@@ -73,6 +73,15 @@ pub struct CodeVariant {
     pub used_length: u32,
     pub blocks: Vec<BasicBlock>,
     pub superinstructions: BTreeMap<u32, u32>,
+    pub roots: BTreeMap<u32, Vec<Register>>,
+    pub definitions: BTreeMap<u32, BTreeMap<Register, DefinitionState>>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum DefinitionState {
+    Defined,
+    Undefined,
+    Dynamic,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -93,6 +102,8 @@ pub struct ReturnPoint {
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytecodeFunction {
     pub name: String,
+    pub declaration_span: Option<IrSpan>,
+    pub names: BTreeMap<Register, String>,
     pub parameters: Vec<Register>,
     pub scalar_types: Vec<IrType>,
     pub reference_types: Vec<IrType>,
@@ -121,7 +132,18 @@ impl BytecodeFunction {
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytecodeModule {
     pub name: String,
+    pub vocabulary: String,
+    pub classes: Vec<BytecodeClass>,
     pub functions: Vec<BytecodeFunction>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct BytecodeClass {
+    pub name: String,
+    pub fields: Vec<(String, IrType)>,
+    pub methods: BTreeMap<String, u16>,
+    pub dense_integers: bool,
+    pub references: Vec<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq)]

@@ -57,6 +57,7 @@ pub trait Heap {
 }
 
 pub trait Calls {
+    fn retain(&mut self, _handle: Handle) {}
     fn enter(&mut self, words: &[i64], links: &[Handle]) -> Outcome<()>;
     fn word(&self, slot: usize) -> i64;
     fn handle(&self, slot: usize) -> Handle;

@@ -10,9 +10,22 @@ Desde el workspace: `cargo test -p ceiling_kernels` y `cargo xtask verify`. Sin 
 
 ## 3. Arquitectura y modelo del sistema
 
+`collection` contiene prototipos de gestión sobre palabras planas: listas por tamaño, líneas no móviles
+y conteo de referencias diferido con borrado de prueba. Los tres ejecutan los mismos algoritmos y reciben
+las mismas raíces de marco. Cada asignación conserva su resultado como local del marco; al retornar se
+retiran esas raíces. Un resultado conservado por el llamador se registra explícitamente antes de otra
+asignación. Las raíces no dependen del candidato. La recolección usa un calendario común por celdas
+asignadas y los puntos diferenciales uno por cantidad fija de operaciones.
+
 Capa ceiling_kernels; dependencias: biblioteca estándar. Sin acceso al motor ni al núcleo Dart. Reglas en architecture.yaml del workspace.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: elegir una política de recuperación requiere medir también la perturbación de la sombra.
+Elección: cada candidato registra pausas en tiempo y palabras, memoria pico y bloques cambiados por
+punto de 64 palabras. La ejecución ordinaria y la forzada deben conservar resultados independientes.
+Los experimentos son propietarios de sus prototipos; el motor implementa solo la política seleccionada.
+Se descarta usar estos tiempos como evidencia de velocidad de la VM.
 
 Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
 

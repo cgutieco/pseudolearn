@@ -6,8 +6,10 @@ pub mod math_arguments;
 pub mod math_contrast;
 mod math_power_arguments;
 mod math_sampling;
+pub mod memory_fixtures;
 pub mod protocol;
 pub mod requests;
+pub mod runtime_fixtures;
 pub mod tool_comparison;
 
 pub mod properties;

@@ -9,19 +9,18 @@ use crate::{Fault, RuntimeValue};
 
 const RESOURCE_LIMIT: Fault = "resourceLimit";
 
-impl Machine<'_> {
+impl<'program> Machine<'program> {
     pub(crate) fn call(&mut self, site: u32) -> Result<Flow, Fault> {
+        if self.frames.len().saturating_add(1) >= self.options.depth {
+            return Err("recursionDepthExceeded");
+        }
         let site = self
             .current
             .calls
             .get(usize::try_from(site).map_err(|_| INVALID_BYTECODE)?)
             .copied()
             .ok_or(INVALID_BYTECODE)?;
-        let callee = self
-            .program
-            .functions
-            .get(site.function)
-            .ok_or(INVALID_BYTECODE)?;
+        let callee = self.resolve_callee(&site)?;
         let caller = self.cursor;
         let callee_cursor = self.callee_cursor(callee)?;
         self.pass_arguments(&site, caller, callee_cursor)?;
@@ -32,10 +31,40 @@ impl Machine<'_> {
             destination: site.destination,
             scalar_base: caller.scalar_base,
             reference_base: caller.reference_base,
+            cell_count: self.cells.len(),
         });
         self.current = callee;
         self.cursor = callee_cursor;
         Ok(self.charge_entry(callee.entry_mass))
+    }
+
+    fn resolve_callee(&self, site: &CallSite) -> Result<&'program LoadedFunction, Fault> {
+        let declared = self
+            .program
+            .functions
+            .get(site.function)
+            .ok_or(INVALID_BYTECODE)?;
+        let Some(receiver) = site.receiver else {
+            return Ok(declared);
+        };
+        let receiver = pseudolearn_runtime::Handle(self.reference(receiver)?);
+        let class = pseudolearn_runtime::object_class(&self.heap, receiver)
+            .map_err(super::memory::memory_fault)?;
+        let class = self
+            .program
+            .classes
+            .get(usize::try_from(class).map_err(|_| INVALID_BYTECODE)?)
+            .ok_or(INVALID_BYTECODE)?;
+        let method = declared
+            .name
+            .rsplit_once('.')
+            .map(|(_, name)| name)
+            .ok_or(INVALID_BYTECODE)?;
+        let target = class.methods.get(method).ok_or(INVALID_BYTECODE)?;
+        self.program
+            .functions
+            .get(usize::from(*target))
+            .ok_or(INVALID_BYTECODE)
     }
 
     fn callee_cursor(&mut self, callee: &LoadedFunction) -> Result<Cursor, Fault> {
@@ -44,12 +73,20 @@ impl Machine<'_> {
             scalar_base: self
                 .cursor
                 .scalar_base
-                .checked_add(self.current.scalar_window)
+                .checked_add(
+                    self.current
+                        .scalar_window
+                        .saturating_sub(self.current.scalar_outgoing),
+                )
                 .ok_or(RESOURCE_LIMIT)?,
             reference_base: self
                 .cursor
                 .reference_base
-                .checked_add(self.current.reference_window)
+                .checked_add(
+                    self.current
+                        .reference_window
+                        .saturating_sub(self.current.reference_outgoing),
+                )
                 .ok_or(RESOURCE_LIMIT)?,
         };
         self.ensure_capacity(
@@ -62,7 +99,28 @@ impl Machine<'_> {
                 .checked_add(callee.reference_window)
                 .ok_or(RESOURCE_LIMIT)?,
         )?;
+        self.clear_window(cursor, callee)?;
         Ok(cursor)
+    }
+
+    fn clear_window(&mut self, cursor: Cursor, callee: &LoadedFunction) -> Result<(), Fault> {
+        let reference_end = cursor
+            .reference_base
+            .checked_add(callee.reference_window)
+            .ok_or(RESOURCE_LIMIT)?;
+        self.references
+            .get_mut(cursor.reference_base..reference_end)
+            .ok_or(INVALID_BYTECODE)?
+            .fill(0);
+        let scalar_end = cursor
+            .scalar_base
+            .checked_add(callee.scalar_window)
+            .ok_or(RESOURCE_LIMIT)?;
+        self.defined
+            .get_mut(cursor.scalar_base..scalar_end)
+            .ok_or(INVALID_BYTECODE)?
+            .fill(false);
+        Ok(())
     }
 
     fn pass_arguments(
@@ -136,6 +194,7 @@ impl Machine<'_> {
         let Some(frame) = self.frames.pop() else {
             return Ok(Flow::Completed(value));
         };
+        self.cells.truncate(frame.cell_count);
         self.current = frame.function;
         self.cursor = Cursor {
             program_counter: frame

@@ -6,6 +6,10 @@ Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conf
 
 ## 2. Guía operativa y ciclo de vida
 
+`runtime-fixtures` emite JSON de peticiones de ejecución materializadas con el traductor vigente y
+escenarios de memoria derivados por el oráculo independiente. Usa semilla y muestras del vínculo de
+transparencia de recolección, conserva hashes del corpus y no ejecuta sujetos ni modifica conformidad.
+
 `cargo test -p see_cli`; `cargo check -p see_cli` desde el miembro. No se despliega.
 
 ## 3. Arquitectura y modelo del sistema

@@ -4,6 +4,7 @@ pub mod card_recording;
 pub mod checked;
 pub mod clepsydra;
 pub mod clepsydra_memory;
+pub mod collection;
 pub mod differential;
 pub mod direct;
 pub mod flat_heap;

@@ -15,6 +15,8 @@ pub struct ClassDeclaration {
     pub name: String,
     pub superclass: Option<String>,
     pub fields: Vec<FieldDeclaration>,
+    pub methods: Vec<(String, String)>,
+    pub dense_integers: bool,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -27,6 +29,7 @@ pub struct Block {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct OriginEntry {
+    pub function: String,
     pub value: ValueId,
     pub variable: VariableId,
     pub name: String,
@@ -44,6 +47,7 @@ impl OriginTable {
 
     pub fn record(&mut self, value: ValueId, variable: VariableId, name: String) {
         self.entries.push(OriginEntry {
+            function: String::new(),
             value,
             variable,
             name,
@@ -62,6 +66,7 @@ pub struct Function {
     pub return_type: IrType,
     pub blocks: Vec<Block>,
     pub columns: InstructionColumns,
+    pub declaration_span: Option<crate::IrSpan>,
 }
 
 impl Function {
@@ -72,6 +77,7 @@ impl Function {
             return_type,
             blocks: Vec::new(),
             columns: InstructionColumns::new(),
+            declaration_span: None,
         }
     }
 

@@ -6,6 +6,8 @@ mod compile_constants;
 mod compile_instructions;
 mod compile_operands;
 mod compile_padding;
+mod registers;
+use registers::{assign_registers, collect_value_types};
 
 use pseudolearn_ir::identities::InstructionId;
 use pseudolearn_ir::{Function, IrType, Module, ValueClass, ValueId, verify_module};
@@ -67,6 +69,8 @@ pub fn compile_module_with_superinstructions(
     let functions = compile_functions(module, &options)?;
     let bytecode = BytecodeModule {
         name: module.name.clone(),
+        vocabulary: module.vocabulary.clone(),
+        classes: crate::classes::compile(module, &function_names)?,
         functions,
     };
     verify_bytecode(&bytecode)?;
@@ -117,13 +121,23 @@ fn compile_function(
     options: &CompileOptions<'_>,
 ) -> Result<BytecodeFunction, BytecodeError> {
     let value_types = collect_value_types(module, source)?;
-    let constant_plan = compile_constants::analyze(source);
-    let assignment = assign_registers(&value_types, &constant_plan)?;
+    let mut constant_plan = compile_constants::analyze(source);
+    let origins = module
+        .origins
+        .entries
+        .iter()
+        .filter(|origin| origin.function == source.name)
+        .collect::<Vec<_>>();
+    constant_plan
+        .register_values
+        .extend(origins.iter().map(|origin| origin.value));
+    let assignment = assign_registers(&value_types, &constant_plan, &origins)?;
+    let (origin_registers, names) = source_names(&origins, &assignment);
     let mut plan = FunctionPlan {
         source,
         function_index,
         function_names: options.function_names,
-        registers: assignment.by_value,
+        registers: assignment.by_value.clone(),
         constants_by_value: constant_plan.values,
         register_values: constant_plan.register_values,
         constants: Vec::new(),
@@ -131,10 +145,25 @@ fn compile_function(
         fast_return_points: BTreeMap::new(),
         probed_return_points: BTreeMap::new(),
     };
-    let fast = compile_variant(&mut plan, true, options.superinstructions)?;
-    let probed = compile_variant(&mut plan, false, &[])?;
+    let (fast, probed) = compile_twins(&mut plan, options.superinstructions, &origin_registers)?;
     let return_points = compile_instructions::return_points(&plan)?;
+    finish_function(
+        source,
+        (assignment, names),
+        (fast, probed),
+        (plan, return_points),
+    )
+}
+
+fn finish_function(
+    source: &Function,
+    (assignment, names): (RegisterAssignment, BTreeMap<Register, String>),
+    (fast, probed): (CodeVariant, CodeVariant),
+    (plan, return_points): (FunctionPlan<'_>, Vec<crate::ReturnPoint>),
+) -> Result<BytecodeFunction, BytecodeError> {
     Ok(BytecodeFunction {
+        declaration_span: source.declaration_span,
+        names,
         name: source.name.clone(),
         parameters: source
             .parameters
@@ -149,90 +178,6 @@ fn compile_function(
         return_points,
     })
 }
-
-fn collect_value_types(
-    module: &Module,
-    function: &Function,
-) -> Result<BTreeMap<ValueId, IrType>, BytecodeError> {
-    let mut value_types = BTreeMap::new();
-    for (value, value_type) in &function.parameters {
-        value_types.insert(*value, value_type.clone());
-    }
-    for block in &function.blocks {
-        for (value, value_type) in &block.parameters {
-            value_types.insert(*value, value_type.clone());
-        }
-        for identifier in &block.instructions {
-            infer_instruction_type(module, function, *identifier, &mut value_types)?;
-        }
-    }
-    Ok(value_types)
-}
-
-fn infer_instruction_type(
-    module: &Module,
-    function: &Function,
-    identifier: pseudolearn_ir::InstructionId,
-    value_types: &mut BTreeMap<ValueId, IrType>,
-) -> Result<(), BytecodeError> {
-    let operation = function
-        .columns
-        .operation(identifier)
-        .ok_or(BytecodeError::UnsupportedOperation)?;
-    let operands = function.columns.operands(identifier);
-    let inferred = pseudolearn_ir::type_checker::check_instruction_types(
-        operation,
-        operands,
-        |value| value_types.get(&value).cloned(),
-        module,
-    )
-    .map_err(|_| BytecodeError::InvalidIr("IR instruction type inference failed"))?;
-    if let Some(result) = function.columns.result(identifier) {
-        let value_type = inferred.ok_or(BytecodeError::MissingValue)?;
-        value_types.insert(result, value_type);
-    }
-    Ok(())
-}
-
-fn assign_registers(
-    value_types: &BTreeMap<ValueId, IrType>,
-    constant_plan: &ConstantPlan,
-) -> Result<RegisterAssignment, BytecodeError> {
-    let mut registers = BTreeMap::new();
-    let mut scalar_types = Vec::new();
-    let mut reference_types = Vec::new();
-    for (value, value_type) in value_types {
-        if compile_constants::can_elide(
-            *value,
-            &constant_plan.values,
-            &constant_plan.register_values,
-        ) {
-            continue;
-        }
-        let destination = if value_type.value_class() == ValueClass::Reference {
-            assign_register(RegisterClass::Reference, value_type, &mut reference_types)?
-        } else {
-            assign_register(RegisterClass::Scalar, value_type, &mut scalar_types)?
-        };
-        registers.insert(*value, destination);
-    }
-    Ok(RegisterAssignment {
-        by_value: registers,
-        scalar_types,
-        reference_types,
-    })
-}
-
-fn assign_register(
-    class: RegisterClass,
-    value_type: &IrType,
-    register_types: &mut Vec<IrType>,
-) -> Result<Register, BytecodeError> {
-    let index = u16::try_from(register_types.len()).map_err(|_| BytecodeError::TooManyRegisters)?;
-    register_types.push(value_type.clone());
-    Ok(Register { class, index })
-}
-
 fn compile_variant(
     plan: &mut FunctionPlan<'_>,
     fast: bool,
@@ -257,4 +202,36 @@ pub(super) fn register_for(
         .get(&value)
         .copied()
         .ok_or(BytecodeError::MissingValue)
+}
+
+fn source_names(
+    origins: &[&pseudolearn_ir::OriginEntry],
+    assignment: &RegisterAssignment,
+) -> (Vec<Register>, BTreeMap<Register, String>) {
+    let registers = origins
+        .iter()
+        .filter_map(|origin| assignment.by_value.get(&origin.value).copied())
+        .collect();
+    let names = origins
+        .iter()
+        .filter_map(|origin| {
+            assignment
+                .by_value
+                .get(&origin.value)
+                .map(|register| (*register, origin.name.clone()))
+        })
+        .collect();
+    (registers, names)
+}
+
+fn compile_twins(
+    plan: &mut FunctionPlan<'_>,
+    selected: &[SuperInstruction],
+    origins: &[Register],
+) -> Result<(CodeVariant, CodeVariant), BytecodeError> {
+    let mut fast = compile_variant(plan, true, selected)?;
+    let mut probed = compile_variant(plan, false, &[])?;
+    crate::roots::generate(&mut fast, origins)?;
+    crate::roots::generate(&mut probed, origins)?;
+    Ok((fast, probed))
 }

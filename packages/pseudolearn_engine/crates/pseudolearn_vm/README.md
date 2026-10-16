@@ -25,6 +25,13 @@ ejecutan en una sola llamada. Una carga se puede ejecutar cualquier número de v
 
 ## 3. Arquitectura y modelo del sistema
 
+La ejecución configurable recibe semilla, límites de profundidad y celdas, política de recolección y
+lexemas de formato. Las entradas existentes delegan con valores predeterminados. El montón pertenece
+a una ejecución; el programa cargado es inmutable y reutilizable. Las instrucciones de memoria se
+decodifican en carga y usan los mapas de raíces del bytecode, sin consultar tipos de fuente al ejecutar.
+Los destinos de celdas son índices estables de banco o pares asa-desplazamiento. Una escritura indirecta
+actualiza el banco propietario sin depender de su capacidad física.
+
 Nivel 7. Importa bytecode, runtime, library y diagnostics; en compilación usa `pseudolearn_vm_dispatch`.
 Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 

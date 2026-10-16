@@ -1,0 +1,15 @@
+   Compiling pseudolearn_ir v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_ir)
+   Compiling pseudolearn_bytecode v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bytecode)
+   Compiling pseudolearn_lowering v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_lowering)
+   Compiling pseudolearn_vm v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_vm)
+   Compiling pseudolearn_api v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.65s
+     Running tests/runtime_corpus.rs (target/debug/deps/runtime_corpus-1fa21c042de66b1b)
+
+running 1 test
+Runtime corpus: 296 profile/strictness configurations, three collection policies
+Memory oracle: 100 generated programs, two profiles, two strictness modes, three collection policies
+test runtime_executes_exported_cases_under_each_collection_policy ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.26s
+

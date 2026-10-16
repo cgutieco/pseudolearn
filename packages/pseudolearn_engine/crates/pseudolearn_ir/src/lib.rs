@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod assignability;
 pub mod columns;
 pub mod dominance;
 pub mod identities;
@@ -14,6 +15,7 @@ pub mod span;
 pub mod tokens;
 pub mod type_checker;
 pub mod type_checker_calls;
+mod type_checker_collections;
 pub mod type_checker_control;
 pub mod type_checker_helpers;
 pub mod type_checker_intrinsics;

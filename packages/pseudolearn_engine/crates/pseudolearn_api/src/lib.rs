@@ -9,7 +9,7 @@ pub mod wire;
 
 pub use analyze::{detect_vocabulary_profile, execute_analyze, line_and_column};
 pub use errors::ApiError;
-pub use ir_execution::{compile_source_to_ir, execute_ir};
+pub use ir_execution::{compile_source_to_ir, compile_source_to_module, execute_ir};
 pub use model::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiPosition, ApiSpan, ApiUnit, IrOutcome,
     IrRequest, IrResponse,

@@ -16,6 +16,10 @@ Comprobación: `cargo test -p pseudolearn_ir`, `cargo xtask verify` y `rust-chec
 
 ## 3. Arquitectura y modelo del sistema
 
+Los orígenes de variable se identifican por función, variable y valor SSA; un valor numérico aislado
+no identifica un origen entre funciones. Los metadatos laterales conservan el receptor y las firmas
+de métodos necesarios para especializar llamadas sin volver a resolver nombres de fuente.
+
 Nivel 3. Importa source y abi; serde_json solo para generación en build.rs. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. Operation, firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R9 con dominadores iterativos de Cooper–Harvey–Kennedy.

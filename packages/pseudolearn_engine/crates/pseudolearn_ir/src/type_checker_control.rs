@@ -23,19 +23,35 @@ fn check_io(
     get_type: &impl Fn(ValueId) -> Option<IrType>,
 ) -> Result<Option<IrType>, TypeError> {
     match operation {
-        Operation::OutWrite => match operands {
-            [Operand::Value(value)] | [Operand::Value(value), Operand::Newline] => {
-                let value_type = get_type(*value).ok_or(TypeError)?;
-                if value_type.value_class() == ValueClass::Scalar || value_type == IrType::Str {
-                    Ok(Some(IrType::Unit))
-                } else {
-                    Err(TypeError)
-                }
-            }
-            _ => Err(TypeError),
-        },
+        Operation::OutWrite => check_output(operands, get_type),
         _ => Ok(None),
     }
+}
+
+fn check_output(
+    operands: &[Operand],
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+) -> Result<Option<IrType>, TypeError> {
+    let values = if operands.last() == Some(&Operand::Newline) {
+        operands
+            .get(..operands.len().saturating_sub(1))
+            .ok_or(TypeError)?
+    } else {
+        operands
+    };
+    if values.is_empty() {
+        return Err(TypeError);
+    }
+    for operand in values {
+        let Operand::Value(value) = operand else {
+            return Err(TypeError);
+        };
+        let kind = get_type(*value).ok_or(TypeError)?;
+        if kind.value_class() != ValueClass::Scalar && kind != IrType::Str {
+            return Err(TypeError);
+        }
+    }
+    Ok(Some(IrType::Unit))
 }
 
 fn check_control(

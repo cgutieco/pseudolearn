@@ -11,10 +11,10 @@ pub fn check_call_result(
     operands: &[Operand],
     module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
-    if operation != Operation::Call {
+    if !matches!(operation, Operation::Call | Operation::CallVirtual) {
         return Ok(None);
     }
-    let [Operand::FunctionTarget { function_name, .. }] = operands else {
+    let Some(Operand::FunctionTarget { function_name, .. }) = operands.last() else {
         return Err(TypeError);
     };
     Ok(module

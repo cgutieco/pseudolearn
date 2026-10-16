@@ -23,6 +23,9 @@ pub fn lower_binary_operation(
         Type::Real => lower_real_binary(operator, operands, span, builder),
         Type::Boolean => lower_boolean_binary(operator, operands, span, builder),
         Type::String => lower_string_binary(operator, operands, span, builder),
+        Type::Character if operator == BinaryOperator::Add => {
+            lower_string_binary(operator, operands, span, builder)
+        }
         Type::Character => lower_character_binary(operator, operands, span, builder),
         _ => lower_fallback_binary(operator, operands, span, builder),
     }

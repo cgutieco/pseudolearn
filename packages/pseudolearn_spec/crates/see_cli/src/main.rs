@@ -12,6 +12,7 @@ mod property_execution;
 mod property_registry;
 mod property_selection;
 mod resources;
+mod runtime_fixtures;
 mod storage;
 mod templates;
 

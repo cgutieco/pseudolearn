@@ -6,7 +6,7 @@ use pseudolearn_semantic::hir::HirModule;
 
 pub fn lower_classes(module: &HirModule) -> Vec<ClassDeclaration> {
     let mut classes = Vec::new();
-    for class_definition in &module.classes {
+    for (class_index, class_definition) in module.classes.iter().enumerate() {
         let superclass = class_definition.superclass.and_then(|superclass_id| {
             usize::try_from(superclass_id.0)
                 .ok()
@@ -21,6 +21,18 @@ pub fn lower_classes(module: &HirModule) -> Vec<ClassDeclaration> {
             });
         }
         classes.push(ClassDeclaration {
+            dense_integers: crate::class_density::dense(class_index, module),
+            methods: class_definition
+                .methods
+                .iter()
+                .filter_map(|identity| {
+                    let function = module.functions.get(usize::try_from(identity.0).ok()?)?;
+                    Some((
+                        function.name.clone(),
+                        crate::functions::function_name(function, module),
+                    ))
+                })
+                .collect(),
             name: class_definition.name.clone(),
             superclass,
             fields,

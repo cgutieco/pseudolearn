@@ -58,7 +58,7 @@ fn resolve_target_function_name(target_function: Option<&HirFunction>) -> String
     }
 }
 
-fn lower_cell_argument(
+pub(crate) fn lower_cell_argument(
     argument_id: ExpressionId,
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
@@ -86,7 +86,7 @@ fn lower_cell_argument(
         state.environment.bind_cell(*local_id, cell);
         cell
     } else {
-        lower_expression_with_state(argument_id, state)
+        crate::places::lower_cell(argument_id, span, state)
     }
 }
 

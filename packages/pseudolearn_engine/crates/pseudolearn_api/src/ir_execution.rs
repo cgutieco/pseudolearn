@@ -36,6 +36,15 @@ pub fn compile_source_to_ir(
     profile_name: &str,
     strictness_mode: &str,
 ) -> Result<String, Vec<ApiDiagnostic>> {
+    compile_source_to_module(source_content, profile_name, strictness_mode)
+        .map(|module| pseudolearn_ir::print_canonical(&module))
+}
+
+pub fn compile_source_to_module(
+    source_content: &str,
+    profile_name: &str,
+    strictness_mode: &str,
+) -> Result<Module, Vec<ApiDiagnostic>> {
     let profile = Profile::from_name(profile_name).unwrap_or(Profile::Spanish);
     let strict = strictness_mode != "flexible";
     let source_text = SourceText::new(source_content.to_owned());
@@ -77,11 +86,11 @@ fn extract_canonical_ir(
     source_text: &SourceText,
     semantic_module: &HirModule,
     profile_name: &str,
-) -> Option<String> {
+) -> Option<Module> {
     let mut ir_module = pseudolearn_lowering::lower_module(semantic_module, source_text).ok()?;
     configure_module_header(&mut ir_module, syntax_tree, source_text, profile_name);
     pseudolearn_ir::verify_module(&ir_module).ok()?;
-    Some(pseudolearn_ir::print_canonical(&ir_module))
+    Some(ir_module)
 }
 
 fn configure_module_header(

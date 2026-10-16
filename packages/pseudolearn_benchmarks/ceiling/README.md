@@ -6,6 +6,10 @@ Arnés desechable E-02 del techo semántico de diez algoritmos AWFY-core. Compar
 
 ## 2. Guía operativa y ciclo de vida
 
+La comparación de recolectores se ejecuta con `cargo run --release -p ceiling_runner -- collect-memory`.
+Conserva captura previa al build, diez procesos de treinta iteraciones por carga y candidato, crudos en
+`../results/e12/` y resumen de selección junto a los resultados del sistema de especificaciones.
+
 Rust exacto de rust-toolchain.toml, rustfmt, Clippy y cargo-deny. Desde esta carpeta: `cargo xtask verify`; `cargo run --release -p ceiling_runner -- collect`. El recolector captura procedencia antes de compilar el trabajador release. Resultados en ../results/e02. Recolección local en macOS Apple M2; los núcleos y sus verificadores no dependen de ese hardware. Sin despliegue ni secretos.
 
 ## 3. Arquitectura y modelo del sistema

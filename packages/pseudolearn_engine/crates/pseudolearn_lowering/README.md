@@ -16,6 +16,10 @@ Comprobación: `cargo xtask verify` y `rust-checks all .` del miembro. No se des
 
 ## 3. Arquitectura y modelo del sistema
 
+Los argumentos por referencia se traducen como celdas de local, campo o elemento y se validan antes
+de entrar al cuerpo. Los constructores conservan argumentos y receptor; los métodos tienen identidad
+calificada por su clase. Los orígenes laterales quedan calificados por función.
+
 Nivel 4. Importa semantic, ir, diagnostics y source; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 Traducción procedural de expresiones, asignación, controles, entrada y salida; después llamadas y objetos. CFG SSA con análisis de asignación definida, celdas para referencias, masas y orígenes. Se marca la arista de retroceso de componentes cíclicos sin masa para sondeo.

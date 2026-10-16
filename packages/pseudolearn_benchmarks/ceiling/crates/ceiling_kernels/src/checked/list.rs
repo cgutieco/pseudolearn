@@ -78,10 +78,13 @@ fn measure<Implementation: Machine>(machine: &mut Implementation, element: Handl
 
 pub fn run<Implementation: Machine>(machine: &mut Implementation, size: i64) -> Outcome<String> {
     let first = make(machine, size)?;
+    machine.retain(first);
     let middle = machine.subtract(size, 5)?;
     let second = make(machine, middle)?;
+    machine.retain(second);
     let last = machine.subtract(size, 9)?;
     let third = make(machine, last)?;
+    machine.retain(third);
     let result = tail(machine, [first, second, third])?;
     let length = measure(machine, result)?;
     machine.settle()?;

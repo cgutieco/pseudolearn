@@ -19,11 +19,13 @@ pub fn lower_function(
     origins: &mut Vec<OriginEntry>,
 ) -> Function {
     let return_type = lower_type(function.result, module);
-    let resolved_name = resolve_function_name(function);
+    let resolved_name = function_name(function, module);
     let mut builder = FunctionBuilder::new(resolved_name, return_type.clone());
     let mut environment = VariableEnvironment::new();
     let entry_block = builder.create_block();
     builder.set_current_block(entry_block);
+    initialize_receiver(function, module, &mut builder);
+    record_receiver(&builder, origins);
 
     let expression_context = ExpressionContext { module, source };
     let mut statement_context = StatementContext {
@@ -33,12 +35,14 @@ pub fn lower_function(
         origins,
     };
     initialize_parameters(&function.parameters, &mut statement_context);
+    crate::constructor_flow::implicit_super(function, &mut statement_context);
     lower_statement_list(&function.body, &mut statement_context);
 
     terminate_function_blocks(&mut builder, &return_type, function, source);
     compute_blocks_mass(&mut builder);
 
     Function {
+        declaration_span: crate::spans::header_span(function.span, source),
         name: builder.name,
         parameters: builder.parameters,
         return_type: builder.return_type,
@@ -47,13 +51,34 @@ pub fn lower_function(
     }
 }
 
-fn resolve_function_name(function: &HirFunction) -> String {
+pub(crate) fn function_name(function: &HirFunction, module: &HirModule) -> String {
+    if let Some(owner) = function.owner
+        && let Some(class) = usize::try_from(owner.0)
+            .ok()
+            .and_then(|index| module.classes.get(index))
+    {
+        return format!("@{}.{}", class.name, function.name);
+    }
     if function.kind == FunctionKind::Main {
         "@main".to_owned()
     } else if function.name.starts_with('@') {
         function.name.clone()
     } else {
         format!("@{}", function.name)
+    }
+}
+
+fn initialize_receiver(function: &HirFunction, module: &HirModule, builder: &mut FunctionBuilder) {
+    if let Some(owner) = function.owner
+        && let Some(class) = usize::try_from(owner.0)
+            .ok()
+            .and_then(|index| module.classes.get(index))
+    {
+        let receiver = builder.next_value();
+        builder
+            .parameters
+            .push((receiver, IrType::Object(class.name.clone())));
+        builder.receiver = Some(receiver);
     }
 }
 
@@ -89,8 +114,10 @@ fn initialize_single_parameter(local_id: LocalId, context: &mut StatementContext
     let parameter_name = local_option
         .map(|local| local.name.clone())
         .unwrap_or_else(|| format!("v{}", local_id.0));
+    let origin_value = promote_parameter(local_id, (parameter_value, is_reference), context);
     context.origins.push(OriginEntry {
-        value: parameter_value,
+        function: context.builder.name.clone(),
+        value: origin_value,
         variable: VariableId(local_id.0),
         name: parameter_name,
     });
@@ -121,5 +148,49 @@ fn compute_blocks_mass(builder: &mut FunctionBuilder) {
             }
         }
         block.mass = enter_count;
+    }
+}
+
+fn record_receiver(builder: &FunctionBuilder, origins: &mut Vec<OriginEntry>) {
+    if let Some(receiver) = builder.receiver {
+        origins.push(OriginEntry {
+            function: builder.name.clone(),
+            value: receiver,
+            variable: VariableId(u32::MAX),
+            name: "receiver".to_owned(),
+        });
+    }
+}
+
+fn promote_parameter(
+    local_id: LocalId,
+    (parameter_value, is_reference): (pseudolearn_ir::ValueId, bool),
+    context: &mut StatementContext<'_, '_>,
+) -> pseudolearn_ir::ValueId {
+    if !is_reference && crate::address_taken::contains(local_id, context.expression_context.module)
+    {
+        let cell = context.builder.next_value();
+        let local_type = usize::try_from(local_id.0)
+            .ok()
+            .and_then(|index| context.expression_context.module.locals.get(index))
+            .map(|local| lower_type(local.type_id, context.expression_context.module))
+            .unwrap_or(IrType::Unit);
+        context.builder.emit_with_target(
+            pseudolearn_ir::Operation::CellLocal,
+            vec![pseudolearn_ir::Operand::Type(local_type)],
+            (Some(cell), None),
+        );
+        context.builder.emit_void(
+            pseudolearn_ir::Operation::CellStore,
+            vec![
+                pseudolearn_ir::Operand::Value(cell),
+                pseudolearn_ir::Operand::Value(parameter_value),
+            ],
+            None,
+        );
+        context.environment.bind_cell(local_id, cell);
+        cell
+    } else {
+        parameter_value
     }
 }

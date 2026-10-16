@@ -8,6 +8,7 @@ pub enum VerificationRule {
     ReturnPoint,
     SuperInstruction,
     Padding,
+    RootMap,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

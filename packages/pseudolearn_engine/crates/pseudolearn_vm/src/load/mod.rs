@@ -1,110 +1,27 @@
 #![forbid(unsafe_code)]
 
 mod definedness;
+mod definitions;
 mod edges;
 mod instructions;
+pub(crate) mod memory;
+mod metadata;
 mod operands;
 mod parallel_copy;
 
 #[cfg(test)]
 mod parallel_copy_tests;
 
-use pseudolearn_bytecode::{
-    BytecodeFunction, BytecodeModule, Opcode, Register, RegisterClass, SourceSpan, VerifiedBytecode,
-};
+use pseudolearn_bytecode::{BytecodeFunction, BytecodeModule, RegisterClass, VerifiedBytecode};
 
 use crate::VmTrap;
-use crate::dispatch::Op;
 use definedness::Definedness;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum Source {
-    Register(u16),
-    Immediate(u64),
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum Sentinel {
-    Real,
-    Boolean,
-    Character,
-    Unit,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum Definition {
-    Untracked,
-    Defined,
-    Undefined,
-    Copied,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct Move {
-    pub source: u16,
-    pub destination: u16,
-    pub class: RegisterClass,
-    pub definition: Definition,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct Edge {
-    pub target: usize,
-    pub mass: u64,
-    pub probe: bool,
-    pub moves_start: usize,
-    pub moves_end: usize,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct CallSite {
-    pub function: usize,
-    pub destination: Option<Register>,
-    pub return_point: usize,
-    pub arguments_start: usize,
-    pub arguments_end: usize,
-}
-
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) struct Origin {
-    pub first: Option<Opcode>,
-    pub second: Option<Opcode>,
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub(crate) struct LoadedFunction {
-    pub code: Vec<Op>,
-    pub mask: usize,
-    pub spans: Vec<Option<SourceSpan>>,
-    pub origins: Vec<Origin>,
-    pub edges: Vec<Edge>,
-    pub moves: Vec<Move>,
-    pub calls: Vec<CallSite>,
-    pub continuations: Vec<usize>,
-    pub scalar_window: usize,
-    pub reference_window: usize,
-    pub entry_mass: u64,
-}
-
-impl LoadedFunction {
-    #[inline(always)]
-    pub(crate) fn operation(&self, program_counter: usize) -> Op {
-        self.code
-            .get(program_counter & self.mask)
-            .copied()
-            .unwrap_or(Op::Unreachable)
-    }
-
-    pub(crate) fn span(&self, program_counter: usize) -> Option<SourceSpan> {
-        self.spans.get(program_counter).copied().flatten()
-    }
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub struct LoadedProgram {
-    pub(crate) functions: Vec<LoadedFunction>,
-    pub(crate) entry: usize,
-}
+mod model;
+pub use model::LoadedProgram;
+pub(crate) use model::{
+    CallSite, Definition, Edge, LoadedFunction, Move, Origin, Sentinel, Source,
+};
 
 pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
     let module = program.module();
@@ -113,12 +30,20 @@ pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
         .iter()
         .position(|function| function.name.trim_start_matches('@') == "main")
         .ok_or_else(|| VmTrap::new("missingEntryPoint", None))?;
+    let literals = metadata::literals(module);
     let functions = module
         .functions
         .iter()
-        .map(|function| load_function(module, function))
+        .map(|function| load_function(module, function, &literals))
         .collect::<Result<Vec<_>, _>>()?;
-    Ok(LoadedProgram { functions, entry })
+    Ok(LoadedProgram {
+        functions,
+        entry,
+        literals,
+        classes: module.classes.clone(),
+        layouts: metadata::layouts(module)?,
+        vocabulary: module.vocabulary.clone(),
+    })
 }
 
 pub(crate) fn invalid_bytecode() -> VmTrap {
@@ -128,17 +53,16 @@ pub(crate) fn invalid_bytecode() -> VmTrap {
 fn load_function(
     module: &BytecodeModule,
     function: &BytecodeFunction,
+    literals: &[String],
 ) -> Result<LoadedFunction, VmTrap> {
     let definedness = Definedness::analyze(function);
     let mut loaded = LoadedFunction {
+        name: function.name.clone(),
+        declaration_span: function.declaration_span,
+        names: function.names.clone(),
         code: Vec::with_capacity(function.fast.instructions.len()),
         mask: function.fast.instructions.len().saturating_sub(1),
-        spans: function
-            .fast
-            .instructions
-            .iter()
-            .map(|entry| entry.span)
-            .collect(),
+        spans: metadata::spans(function),
         origins: Vec::with_capacity(function.fast.instructions.len()),
         edges: Vec::new(),
         moves: Vec::new(),
@@ -146,18 +70,20 @@ fn load_function(
         continuations: continuations(function)?,
         scalar_window: window(function.scalar_types.len())?,
         reference_window: window(function.reference_types.len())?,
-        entry_mass: function
-            .fast
-            .blocks
-            .first()
-            .map_or(0, |block| u64::from(block.mass)),
+        scalar_outgoing: 0,
+        reference_outgoing: 0,
+        entry_mass: metadata::entry_mass(function),
+        memory: Vec::new(),
+        roots: metadata::roots(function)?,
     };
     let context = instructions::DecodeContext {
         module,
         function,
         definedness: &definedness,
+        literals,
     };
     instructions::decode_all(&context, &mut loaded)?;
+    reserve_outgoing(&mut loaded, function)?;
     if !loaded.code.len().is_power_of_two() {
         return Err(invalid_bytecode());
     }
@@ -170,6 +96,35 @@ fn window(register_count: usize) -> Result<usize, VmTrap> {
         return Err(invalid_bytecode());
     }
     Ok(size)
+}
+
+fn reserve_outgoing(
+    loaded: &mut LoadedFunction,
+    function: &BytecodeFunction,
+) -> Result<(), VmTrap> {
+    for instruction in &function.fast.instructions {
+        for operand in &instruction.operands {
+            if let pseudolearn_bytecode::BytecodeOperand::FunctionTarget { arguments, .. } = operand
+            {
+                let scalars = arguments
+                    .iter()
+                    .filter(|register| register.class == RegisterClass::Scalar)
+                    .count();
+                let references = arguments.len().saturating_sub(scalars);
+                loaded.scalar_outgoing = loaded.scalar_outgoing.max(scalars);
+                loaded.reference_outgoing = loaded.reference_outgoing.max(references);
+            }
+        }
+    }
+    loaded.scalar_window = loaded
+        .scalar_window
+        .checked_add(loaded.scalar_outgoing)
+        .ok_or_else(invalid_bytecode)?;
+    loaded.reference_window = loaded
+        .reference_window
+        .checked_add(loaded.reference_outgoing)
+        .ok_or_else(invalid_bytecode)?;
+    Ok(())
 }
 
 pub(crate) fn scratch_register(

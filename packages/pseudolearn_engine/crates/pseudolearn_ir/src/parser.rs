@@ -96,6 +96,8 @@ impl Parser {
             return Err("Expected '}' for class body".to_owned());
         }
         Ok(ClassDeclaration {
+            methods: Vec::new(),
+            dense_integers: false,
             name,
             superclass,
             fields,
@@ -122,17 +124,7 @@ impl Parser {
             other => return Err(format!("Expected @name, found {other:?}")),
         };
         self.expect_exact(TokenKind::OpenParen)?;
-        let mut parameters = Vec::new();
-        while self.peek() != &TokenKind::CloseParen && self.peek() != &TokenKind::Eof {
-            let parameter_value = self.parse_value()?;
-            self.expect_exact(TokenKind::Colon)?;
-            let parameter_type = self.parse_type()?;
-            parameters.push((parameter_value, parameter_type));
-            if self.peek() == &TokenKind::Comma {
-                let _ = self.advance();
-            }
-        }
-        self.expect_exact(TokenKind::CloseParen)?;
+        let parameters = self.parse_function_parameters()?;
         self.expect_exact(TokenKind::Arrow)?;
         let return_type = self.parse_type()?;
         self.expect_exact(TokenKind::OpenBrace)?;
@@ -148,12 +140,28 @@ impl Parser {
         self.expect_exact(TokenKind::CloseBrace)?;
 
         Ok(Function {
+            declaration_span: None,
             name,
             parameters,
             return_type,
             blocks,
             columns,
         })
+    }
+
+    fn parse_function_parameters(&mut self) -> Result<Vec<(ValueId, IrType)>, String> {
+        let mut parameters = Vec::new();
+        while self.peek() != &TokenKind::CloseParen && self.peek() != &TokenKind::Eof {
+            let parameter_value = self.parse_value()?;
+            self.expect_exact(TokenKind::Colon)?;
+            let parameter_type = self.parse_type()?;
+            parameters.push((parameter_value, parameter_type));
+            if self.peek() == &TokenKind::Comma {
+                let _ = self.advance();
+            }
+        }
+        self.expect_exact(TokenKind::CloseParen)?;
+        Ok(parameters)
     }
 
     fn parse_value(&mut self) -> Result<ValueId, String> {

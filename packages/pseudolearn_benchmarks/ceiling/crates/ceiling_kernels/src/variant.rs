@@ -98,7 +98,7 @@ pub fn run(kernel: &str, variant: u8, size: i64) -> Outcome<String> {
     Experiment::new(variant)?.run(kernel, size)
 }
 
-fn checked<Implementation: Machine>(
+pub fn checked<Implementation: Machine>(
     kernel: &str,
     machine: &mut Implementation,
     size: i64,

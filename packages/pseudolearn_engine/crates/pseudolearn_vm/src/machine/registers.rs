@@ -23,6 +23,12 @@ impl Machine<'_> {
             .get_mut(self.cursor.scalar_base.wrapping_add(usize::from(register)))
             .ok_or(INVALID_BYTECODE)?;
         *slot = word;
+        self.scalar_watermark = self.scalar_watermark.max(
+            self.cursor
+                .scalar_base
+                .wrapping_add(usize::from(register))
+                .saturating_add(1),
+        );
         Ok(())
     }
 
@@ -49,6 +55,12 @@ impl Machine<'_> {
             )
             .ok_or(INVALID_BYTECODE)?;
         *slot = handle;
+        self.reference_watermark = self.reference_watermark.max(
+            self.cursor
+                .reference_base
+                .wrapping_add(usize::from(register))
+                .saturating_add(1),
+        );
         Ok(())
     }
 
@@ -160,7 +172,7 @@ impl Machine<'_> {
         self.move_reference(destination, source)
     }
 
-    pub(crate) fn require_failed(&mut self) -> Result<Flow, Fault> {
+    pub(crate) fn require_failed(&mut self, _source: u16) -> Result<Flow, Fault> {
         Err(UNINITIALIZED)
     }
 

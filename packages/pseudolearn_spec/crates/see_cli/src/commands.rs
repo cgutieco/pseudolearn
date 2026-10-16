@@ -12,6 +12,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
     let corpus = storage::valid(&arguments.root)?;
     match arguments.command.as_str() {
         "validate" => Ok(format!("Validated {} specifications", corpus.len())),
+        "runtime-fixtures" => crate::runtime_fixtures::generate(&arguments, &corpus),
         "budget" => crate::e10::execute(&arguments.root, &corpus),
         "graph" => see_graph::render(
             &corpus,

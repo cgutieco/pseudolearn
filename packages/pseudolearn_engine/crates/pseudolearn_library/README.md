@@ -21,6 +21,10 @@ resumen en `packages/pseudolearn_spec/results/r5-math-contrast.json`.
 
 ## 3. Arquitectura y modelo del sistema
 
+El formato de valores primitivos recibe los lexemas lógicos canónicos como datos del consumidor.
+`ATexto` y la salida comparten exactamente ese formateador; ningún literal de vocabulario se copia aquí.
+Las conversiones decimales validan gramática, rango y finitud antes de devolver una palabra.
+
 Nivel 6. Importa runtime y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 Funciones puras sobre representaciones del runtime, sin estado global.

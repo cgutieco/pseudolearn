@@ -4,8 +4,6 @@ use pseudolearn_bytecode::{
     BytecodeFunction, BytecodeOperand, Instruction, Opcode, Register, RegisterClass, ValueType,
 };
 
-use super::Definition;
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(super) enum StaticState {
     Defined,
@@ -52,21 +50,6 @@ impl Definedness {
             && self.integers.get(usize::from(register.index)) == Some(&true)
     }
 
-    pub(super) fn definition_into(
-        &self,
-        source: Register,
-        destination_tracked: bool,
-    ) -> Definition {
-        if !destination_tracked {
-            return Definition::Untracked;
-        }
-        match self.state(source) {
-            StaticState::Defined => Definition::Defined,
-            StaticState::Undefined => Definition::Undefined,
-            StaticState::Dynamic => Definition::Copied,
-        }
-    }
-
     pub(super) fn is_tracked(&self, register: Register) -> bool {
         register.class == RegisterClass::Scalar
             && self.tracked.get(usize::from(register.index)) == Some(&true)
@@ -86,6 +69,7 @@ impl Definedness {
         for instruction in &function.fast.instructions {
             if let (Opcode::ValueUndefined, Some(register)) =
                 (instruction.opcode, instruction.destination)
+                && self.state(register) != StaticState::Dynamic
             {
                 self.set_state(register, StaticState::Undefined);
             }

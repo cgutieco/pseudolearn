@@ -1,0 +1,32 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+....
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+.. 2/3
+live_temporaries_expire_after_their_last_use --- FAILED
+
+failures:
+
+---- live_temporaries_expire_after_their_last_use stdout ----
+
+thread 'live_temporaries_expire_after_their_last_use' (1708526) panicked at crates/pseudolearn_bytecode/tests/memory_metadata_tests.rs:73:5:
+assertion `left == right` failed
+  left: Some(1)
+ right: Some(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    live_temporaries_expire_after_their_last_use
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p pseudolearn_bytecode --test memory_metadata_tests`

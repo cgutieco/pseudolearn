@@ -9,6 +9,10 @@ pub fn collect_remanso() -> Result<(), String> {
     collect_experiment(Path::new("../results/e02r"), "run-remanso", 2700)
 }
 
+pub fn collect_memory() -> Result<(), String> {
+    collect_experiment(Path::new("../results/e12"), "run-memory", 1080)
+}
+
 fn collect_experiment(output: &Path, operation: &str, expected: usize) -> Result<(), String> {
     std::fs::create_dir_all(output).map_err(|error| error.to_string())?;
     save(output, "capture.json", &crate::capture::provenance()?)?;
@@ -35,7 +39,9 @@ fn collect_experiment(output: &Path, operation: &str, expected: usize) -> Result
         save(output, "raw.json", &json!(records))?;
     }
     save(output, "processes.json", &json!(metrics))?;
-    if operation == "run-remanso" {
+    if operation == "run-memory" {
+        crate::memory_report::write(output)
+    } else if operation == "run-remanso" {
         crate::report::write_remanso(output)
     } else {
         crate::report::write(output)

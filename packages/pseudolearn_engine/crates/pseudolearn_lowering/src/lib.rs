@@ -1,14 +1,21 @@
 #![forbid(unsafe_code)]
 
+mod address_taken;
 pub mod builder;
+mod class_density;
 pub mod classes;
+mod constructor_flow;
+mod dispatch_targets;
 pub mod environment;
+mod expression_values;
 pub mod expressions;
 pub mod expressions_binary;
 pub mod expressions_builtins;
 pub mod expressions_complex;
 pub mod expressions_logical;
+mod expressions_objects;
 pub mod functions;
+mod places;
 pub mod spans;
 pub mod statement_context;
 pub mod statements;

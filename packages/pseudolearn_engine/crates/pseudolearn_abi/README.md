@@ -18,7 +18,7 @@ Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se de
 
 Nivel 0. Sin imports internos ni dependencias externas. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Palabra u64; Handle(u32) con cero reservado; cabeceras de dos palabras; ordinal u64 para objetos y arreglos. Objetos con máscara de enteros solo cuando necesitan definición, campos heredados antes que propios y mapa estático de desplazamientos de referencias. Arreglos con longitud, cota densa, dimensiones, mapa de definición y celdas por filas. Cadenas con puntos de código, desplazamiento y longitud en la arena, y asa de migas. Marco con función, identificador de retorno y bases de los dos bancos.
+Palabra u64; Handle(u32) con cero reservado; cabeceras de dos palabras; ordinal u64 para objetos y arreglos. Objetos con máscara de enteros solo cuando necesitan definición (una palabra por cada 64 campos, sin límite de 64 campos), campos heredados antes que propios y mapa estático de desplazamientos de referencias. Arreglos con longitud, cota densa, dimensiones, mapa de definición y celdas por filas. Cadenas con puntos de código, desplazamiento y longitud en la arena, y asa de migas. Marco con función, identificador de retorno y bases de los dos bancos.
 
 Invariantes: Una sola disposición para runtime, VM, línea temporal y futuros consumidores nativos. NaN representa real ausente, 2 lógico ausente, 0xFFFFFFFF carácter ausente y asa cero referencia ausente.
 

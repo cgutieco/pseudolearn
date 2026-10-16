@@ -23,6 +23,8 @@ fn compiled_scalar() -> pseudolearn_bytecode::BytecodeModule {
 fn panic_free_fallback() -> pseudolearn_bytecode::BytecodeModule {
     pseudolearn_bytecode::BytecodeModule {
         name: String::new(),
+        vocabulary: String::new(),
+        classes: Vec::new(),
         functions: Vec::new(),
     }
 }

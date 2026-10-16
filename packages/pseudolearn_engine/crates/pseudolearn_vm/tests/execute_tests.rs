@@ -7,12 +7,15 @@ fn execute_source(source_text: &str, fuel: Fuel) -> pseudolearn_vm::RunResult {
     let Some(bytecode) = verified.ok() else {
         return pseudolearn_vm::RunResult {
             exit: RunExit::Trap(pseudolearn_vm::VmTrap {
+                arguments: std::collections::BTreeMap::new(),
+                related: Vec::new(),
                 code: "invalidTestProgram",
                 span: None,
             }),
             output: String::new(),
             consumed_statements: 0,
             consumed_probes: 0,
+            memory_counts: Vec::new(),
         };
     };
     run(&bytecode, fuel)
@@ -40,6 +43,8 @@ fn reports_integer_trap_with_the_instruction_span() {
     let source_text = "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = const.i64 0\n  %2 = int.div %0, %1 @5:3-5:8\n  return %2\n}\n";
     let result = execute_source(source_text, Fuel::unlimited());
     let expected = RunExit::Trap(pseudolearn_vm::VmTrap {
+        arguments: std::collections::BTreeMap::new(),
+        related: Vec::new(),
         code: "divisionByZero",
         span: Some(pseudolearn_bytecode::SourceSpan::new(5, 3, 5, 8)),
     });

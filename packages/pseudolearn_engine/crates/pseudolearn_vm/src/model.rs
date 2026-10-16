@@ -42,4 +42,12 @@ pub struct RunResult {
     pub output: String,
     pub consumed_statements: u64,
     pub consumed_probes: u64,
+    pub memory_counts: Vec<MemoryCount>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct MemoryCount {
+    pub function: String,
+    pub program_counter: usize,
+    pub cells: u64,
 }

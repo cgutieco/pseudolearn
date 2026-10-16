@@ -2,9 +2,14 @@
 
 include!(concat!(env!("OUT_DIR"), "/generated_opcodes.rs"));
 
+mod class_verification;
+mod classes;
 mod compile;
+mod definitions;
 mod error;
 mod model;
+mod root_liveness;
+mod roots;
 mod verify;
 mod verify_padding;
 mod verify_superinstructions;
@@ -14,9 +19,10 @@ pub use compile::{
     compile_text_with_superinstructions,
 };
 pub use error::{BytecodeError, VerificationRule};
+pub use model::DefinitionState;
 pub use model::{
-    BasicBlock, BytecodeFunction, BytecodeModule, BytecodeOperand, CodeVariant, Constant,
-    Instruction, Register, RegisterClass, RegisterType, ReturnPoint, SuperInstruction,
+    BasicBlock, BytecodeClass, BytecodeFunction, BytecodeModule, BytecodeOperand, CodeVariant,
+    Constant, Instruction, Register, RegisterClass, RegisterType, ReturnPoint, SuperInstruction,
     VerifiedBytecode,
 };
 pub use pseudolearn_ir::IrSpan as SourceSpan;

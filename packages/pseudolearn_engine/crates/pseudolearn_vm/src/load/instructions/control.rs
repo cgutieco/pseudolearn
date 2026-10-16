@@ -9,7 +9,7 @@ use crate::VmTrap;
 use crate::dispatch::Op;
 use crate::load::edges::add_edge;
 use crate::load::operands::{first_register, scalar_source};
-use crate::load::{CallSite, Definition, LoadedFunction, Move, Source, invalid_bytecode};
+use crate::load::{CallSite, LoadedFunction, Move, Source, invalid_bytecode};
 
 pub(super) fn decode(
     context: &DecodeContext<'_>,
@@ -28,7 +28,7 @@ pub(super) fn decode(
             Ok(Op::Jump { edge })
         }
         Opcode::Branch => decode_branch(context, loaded, program_counter, instruction),
-        Opcode::Call => decode_call(context, loaded, instruction),
+        Opcode::Call | Opcode::CallVirtual => decode_call(context, loaded, instruction),
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),
         Opcode::TrapMissingReturn => Ok(Op::MissingReturn),
@@ -74,7 +74,7 @@ fn decode_call(
     let Some(BytecodeOperand::FunctionTarget {
         function_index,
         arguments,
-    }) = instruction.operands.first()
+    }) = instruction.operands.last()
     else {
         return Err(invalid_bytecode());
     };
@@ -87,7 +87,7 @@ fn decode_call(
         return Err(invalid_bytecode());
     }
     let arguments_start = loaded.moves.len();
-    append_arguments(context, loaded, arguments, callee)?;
+    append_arguments(context, loaded, arguments, (callee, instruction))?;
     let return_point = instruction.return_point.ok_or_else(invalid_bytecode)?;
     let site = CallSite {
         function: usize::from(*function_index),
@@ -95,6 +95,11 @@ fn decode_call(
         return_point: usize::try_from(return_point).map_err(|_| invalid_bytecode())?,
         arguments_start,
         arguments_end: loaded.moves.len(),
+        receiver: if instruction.opcode == Opcode::CallVirtual {
+            Some(first_register(instruction)?.index)
+        } else {
+            None
+        },
     };
     let index = u32::try_from(loaded.calls.len()).map_err(|_| invalid_bytecode())?;
     loaded.calls.push(site);
@@ -105,7 +110,7 @@ fn append_arguments(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
     arguments: &[Register],
-    callee: &BytecodeFunction,
+    (callee, instruction): (&BytecodeFunction, &Instruction),
 ) -> Result<(), VmTrap> {
     for (source, destination) in arguments.iter().zip(&callee.parameters) {
         if source.class != destination.class {
@@ -116,14 +121,14 @@ fn append_arguments(
             source: source.index,
             destination: destination.index,
             class: source.class,
-            definition: argument_definition(context, *source, integer),
+            definition: crate::load::definitions::source_definition(
+                context,
+                (instruction, *source),
+                integer,
+            ),
         });
     }
     Ok(())
-}
-
-fn argument_definition(context: &DecodeContext<'_>, source: Register, integer: bool) -> Definition {
-    context.definedness.definition_into(source, integer)
 }
 
 fn decode_return(instruction: &Instruction) -> Result<Op, VmTrap> {

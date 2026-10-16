@@ -21,3 +21,14 @@ impl ClassReferenceOffsets {
         self.offsets.len()
     }
 }
+
+pub fn object_fields_start_offset(fields: usize, dense: bool) -> Option<usize> {
+    if dense {
+        Some(OBJECT_FIELDS_START_OFFSET_WITHOUT_MASK)
+    } else {
+        fields
+            .checked_add(63)?
+            .checked_div(64)?
+            .checked_add(OBJECT_HEADER_WORDS)
+    }
+}

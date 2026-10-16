@@ -14,13 +14,27 @@ use crate::load::operands::{
 use crate::load::{Source, invalid_bytecode};
 
 pub(super) fn decode_constant(
-    function: &BytecodeFunction,
+    context: &DecodeContext<'_>,
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
+    let function = context.function;
     let Some(BytecodeOperand::Constant(index)) = instruction.operands.first() else {
         return Err(invalid_bytecode());
     };
     let destination = instruction.destination.ok_or_else(invalid_bytecode)?;
+    if let Some(pseudolearn_bytecode::Constant::Str(text)) =
+        function.constants.get(usize::from(*index))
+    {
+        let index = context
+            .literals
+            .iter()
+            .position(|literal| literal == text)
+            .ok_or_else(invalid_bytecode)?;
+        return Ok(Op::LoadText {
+            destination: destination.index,
+            index: u32::try_from(index).map_err(|_| invalid_bytecode())?,
+        });
+    }
     match (destination.class, constant_word(function, *index)) {
         (RegisterClass::Scalar, Some(word)) => Ok(Op::LoadWord {
             destination: destination.index,
@@ -74,17 +88,21 @@ fn decode_require(context: &DecodeContext<'_>, instruction: &Instruction) -> Res
             sentinel,
         });
     }
-    Ok(match context.definedness.state(source) {
-        StaticState::Defined => Op::MoveScalar {
-            destination: destination.index,
-            source: source.index,
+    Ok(
+        match crate::load::definitions::source_state(context, instruction, source) {
+            StaticState::Defined => Op::MoveScalar {
+                destination: destination.index,
+                source: source.index,
+            },
+            StaticState::Undefined => Op::RequireFailed {
+                source: source.index,
+            },
+            StaticState::Dynamic => Op::RequireDefinedInteger {
+                destination: destination.index,
+                source: source.index,
+            },
         },
-        StaticState::Undefined => Op::RequireFailed,
-        StaticState::Dynamic => Op::RequireDefinedInteger {
-            destination: destination.index,
-            source: source.index,
-        },
-    })
+    )
 }
 
 pub(super) fn decode_output(
@@ -95,7 +113,7 @@ pub(super) fn decode_output(
     let newline = match instruction.operands.get(1) {
         Some(BytecodeOperand::Newline) => true,
         None => false,
-        Some(_) => return Err(invalid_bytecode()),
+        Some(_) => return Ok(Op::Unsupported),
     };
     let integer = match value {
         BytecodeOperand::Register(register) => {

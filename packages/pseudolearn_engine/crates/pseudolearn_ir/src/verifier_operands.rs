@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+use crate::assignability::assignable;
+
 use crate::dominance::DominatorTree;
 use crate::identities::{BlockId, ValueId};
 use crate::model::{Function, Module};
@@ -134,7 +136,7 @@ fn verify_function_call(
         let argument_type = value_types
             .get(argument_value)
             .ok_or("IR.WELL-FORMEDNESS#R8")?;
-        if argument_type != parameter_type {
+        if !assignable(module, argument_type, parameter_type) {
             return Err("IR.WELL-FORMEDNESS#R8");
         }
     }

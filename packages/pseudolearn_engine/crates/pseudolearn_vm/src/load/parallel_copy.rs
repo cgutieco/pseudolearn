@@ -3,11 +3,21 @@
 use super::{Definition, Move};
 
 pub(super) fn sequentialize(pending: Vec<Move>, scratch: u16) -> Vec<Move> {
+    let mut ordered = pending
+        .iter()
+        .filter(|entry| {
+            entry.source == entry.destination
+                && matches!(
+                    entry.definition,
+                    Definition::Defined | Definition::Undefined
+                )
+        })
+        .copied()
+        .collect::<Vec<_>>();
     let mut pending = pending
         .into_iter()
         .filter(|entry| entry.source != entry.destination)
         .collect::<Vec<_>>();
-    let mut ordered = Vec::with_capacity(pending.len().saturating_add(1));
     while !pending.is_empty() {
         match pending
             .iter()

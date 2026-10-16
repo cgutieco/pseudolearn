@@ -1,0 +1,441 @@
+{
+  "candidates": [
+    {
+      "collector": "SizeClasses",
+      "confidence95": [
+        1.0,
+        1.0
+      ],
+      "eligible": true,
+      "timeRatio": 1.0,
+      "workloads": [
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 705.0,
+          "pauseMaxNanoseconds": 9000.0,
+          "pauseP95Nanoseconds": 5875.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 705.0,
+          "timeRatio": 1.0,
+          "workload": "bounce"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 125.0,
+          "pauseMaxNanoseconds": 3209.0,
+          "pauseP95Nanoseconds": 834.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 125.0,
+          "timeRatio": 1.0,
+          "workload": "list"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 256.0,
+          "pauseMaxNanoseconds": 204834.0,
+          "pauseP95Nanoseconds": 162875.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 8192,
+          "sweptWordsP95": 5640.0,
+          "timeRatio": 1.0,
+          "workload": "list-churn"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 0.0,
+          "pauseMaxNanoseconds": 42.0,
+          "pauseP95Nanoseconds": 42.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 0,
+          "sweptWordsP95": 0.0,
+          "timeRatio": 1.0,
+          "workload": "mandelbrot"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 45.0,
+          "pauseMaxNanoseconds": 209.0,
+          "pauseP95Nanoseconds": 167.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 45.0,
+          "timeRatio": 1.0,
+          "workload": "nbody"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 12.0,
+          "pauseMaxNanoseconds": 84.0,
+          "pauseP95Nanoseconds": 84.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 12.0,
+          "timeRatio": 1.0,
+          "workload": "permute"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 54.0,
+          "pauseMaxNanoseconds": 542.0,
+          "pauseP95Nanoseconds": 84.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 54.0,
+          "timeRatio": 1.0,
+          "workload": "queens"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 184.0,
+          "pauseMaxNanoseconds": 3209.0,
+          "pauseP95Nanoseconds": 958.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 184.0,
+          "timeRatio": 1.0,
+          "workload": "richards"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 5003.0,
+          "pauseMaxNanoseconds": 125.0,
+          "pauseP95Nanoseconds": 83.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 8192,
+          "sweptWordsP95": 5003.0,
+          "timeRatio": 1.0,
+          "workload": "sieve"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 4784.0,
+          "pauseMaxNanoseconds": 171459.0,
+          "pauseP95Nanoseconds": 128417.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 12288,
+          "sweptWordsP95": 9558.0,
+          "timeRatio": 1.0,
+          "workload": "storage"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 9555.0,
+          "pauseMaxNanoseconds": 184833.0,
+          "pauseP95Nanoseconds": 167500.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 12288,
+          "sweptWordsP95": 9555.0,
+          "timeRatio": 1.0,
+          "workload": "storage-deep"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 57.0,
+          "pauseMaxNanoseconds": 1583.0,
+          "pauseP95Nanoseconds": 500.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 57.0,
+          "timeRatio": 1.0,
+          "workload": "towers"
+        }
+      ]
+    },
+    {
+      "collector": "Lines",
+      "confidence95": [
+        0.9758435485562518,
+        0.9800309320761543
+      ],
+      "eligible": false,
+      "timeRatio": 0.9774448388544482,
+      "workloads": [
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 705.0,
+          "pauseMaxNanoseconds": 6958.0,
+          "pauseP95Nanoseconds": 6250.0,
+          "pauseP95Ratio": 1.0638297872340425,
+          "peakWords": 4096,
+          "sweptWordsP95": 800.0,
+          "timeRatio": 0.9980742100116561,
+          "workload": "bounce"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 125.0,
+          "pauseMaxNanoseconds": 1500.0,
+          "pauseP95Nanoseconds": 959.0,
+          "pauseP95Ratio": 1.1498800959232613,
+          "peakWords": 4096,
+          "sweptWordsP95": 160.0,
+          "timeRatio": 1.0002997859099891,
+          "workload": "list"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 256.0,
+          "pauseMaxNanoseconds": 144209.0,
+          "pauseP95Nanoseconds": 83584.0,
+          "pauseP95Ratio": 0.5131788181120491,
+          "peakWords": 8192,
+          "sweptWordsP95": 5664.0,
+          "timeRatio": 0.8367435835216528,
+          "workload": "list-churn"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 0.0,
+          "pauseMaxNanoseconds": 42.0,
+          "pauseP95Nanoseconds": 42.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 0,
+          "sweptWordsP95": 0.0,
+          "timeRatio": 0.9997021612709518,
+          "workload": "mandelbrot"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 45.0,
+          "pauseMaxNanoseconds": 250.0,
+          "pauseP95Nanoseconds": 209.0,
+          "pauseP95Ratio": 1.251497005988024,
+          "peakWords": 4096,
+          "sweptWordsP95": 64.0,
+          "timeRatio": 1.002195218833305,
+          "workload": "nbody"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 12.0,
+          "pauseMaxNanoseconds": 209.0,
+          "pauseP95Nanoseconds": 125.0,
+          "pauseP95Ratio": 1.4880952380952381,
+          "peakWords": 4096,
+          "sweptWordsP95": 32.0,
+          "timeRatio": 1.000699613022063,
+          "workload": "permute"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 54.0,
+          "pauseMaxNanoseconds": 375.0,
+          "pauseP95Nanoseconds": 167.0,
+          "pauseP95Ratio": 1.9880952380952381,
+          "peakWords": 4096,
+          "sweptWordsP95": 96.0,
+          "timeRatio": 1.0016695433446177,
+          "workload": "queens"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 184.0,
+          "pauseMaxNanoseconds": 2542.0,
+          "pauseP95Nanoseconds": 1042.0,
+          "pauseP95Ratio": 1.0876826722338204,
+          "peakWords": 4096,
+          "sweptWordsP95": 256.0,
+          "timeRatio": 1.0004917518619247,
+          "workload": "richards"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 5003.0,
+          "pauseMaxNanoseconds": 292.0,
+          "pauseP95Nanoseconds": 209.0,
+          "pauseP95Ratio": 2.5180722891566263,
+          "peakWords": 8192,
+          "sweptWordsP95": 5024.0,
+          "timeRatio": 1.008129820641788,
+          "workload": "sieve"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 4784.0,
+          "pauseMaxNanoseconds": 106750.0,
+          "pauseP95Nanoseconds": 76417.0,
+          "pauseP95Ratio": 0.5950691886588224,
+          "peakWords": 12288,
+          "sweptWordsP95": 10944.0,
+          "timeRatio": 0.8662587994261158,
+          "workload": "storage"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 9555.0,
+          "pauseMaxNanoseconds": 221166.0,
+          "pauseP95Nanoseconds": 174375.0,
+          "pauseP95Ratio": 1.041044776119403,
+          "peakWords": 12288,
+          "sweptWordsP95": 10944.0,
+          "timeRatio": 1.0227368890815924,
+          "workload": "storage-deep"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 57.0,
+          "pauseMaxNanoseconds": 3500.0,
+          "pauseP95Nanoseconds": 584.0,
+          "pauseP95Ratio": 1.168,
+          "peakWords": 4096,
+          "sweptWordsP95": 64.0,
+          "timeRatio": 1.0144461091501409,
+          "workload": "towers"
+        }
+      ]
+    },
+    {
+      "collector": "ReferenceCounts",
+      "confidence95": [
+        1.1239910382093812,
+        1.1359719677385989
+      ],
+      "eligible": false,
+      "timeRatio": 1.128477639534186,
+      "workloads": [
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 705.0,
+          "pauseMaxNanoseconds": 17375.0,
+          "pauseP95Nanoseconds": 9542.0,
+          "pauseP95Ratio": 1.6241702127659574,
+          "peakWords": 4096,
+          "sweptWordsP95": 705.0,
+          "timeRatio": 1.011872348680851,
+          "workload": "bounce"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 125.0,
+          "pauseMaxNanoseconds": 2333.0,
+          "pauseP95Nanoseconds": 1500.0,
+          "pauseP95Ratio": 1.7985611510791366,
+          "peakWords": 4096,
+          "sweptWordsP95": 125.0,
+          "timeRatio": 1.0021730670232336,
+          "workload": "list"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 256.0,
+          "pauseMaxNanoseconds": 331291.0,
+          "pauseP95Nanoseconds": 273041.0,
+          "pauseP95Ratio": 1.6763837298541826,
+          "peakWords": 8192,
+          "sweptWordsP95": 5640.0,
+          "timeRatio": 1.3320715053707353,
+          "workload": "list-churn"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 0.0,
+          "pauseMaxNanoseconds": 42.0,
+          "pauseP95Nanoseconds": 42.0,
+          "pauseP95Ratio": 1.0,
+          "peakWords": 0,
+          "sweptWordsP95": 0.0,
+          "timeRatio": 0.9990577452273417,
+          "workload": "mandelbrot"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 45.0,
+          "pauseMaxNanoseconds": 417.0,
+          "pauseP95Nanoseconds": 334.0,
+          "pauseP95Ratio": 2.0,
+          "peakWords": 4096,
+          "sweptWordsP95": 45.0,
+          "timeRatio": 1.0005233367930475,
+          "workload": "nbody"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 12.0,
+          "pauseMaxNanoseconds": 250.0,
+          "pauseP95Nanoseconds": 208.0,
+          "pauseP95Ratio": 2.4761904761904763,
+          "peakWords": 4096,
+          "sweptWordsP95": 12.0,
+          "timeRatio": 1.001946761999521,
+          "workload": "permute"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 54.0,
+          "pauseMaxNanoseconds": 375.0,
+          "pauseP95Nanoseconds": 209.0,
+          "pauseP95Ratio": 2.488095238095238,
+          "peakWords": 4096,
+          "sweptWordsP95": 54.0,
+          "timeRatio": 1.003726966018356,
+          "workload": "queens"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 184.0,
+          "pauseMaxNanoseconds": 7042.0,
+          "pauseP95Nanoseconds": 1959.0,
+          "pauseP95Ratio": 2.0448851774530272,
+          "peakWords": 4096,
+          "sweptWordsP95": 184.0,
+          "timeRatio": 1.0863968480836834,
+          "workload": "richards"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 5003.0,
+          "pauseMaxNanoseconds": 208.0,
+          "pauseP95Nanoseconds": 125.0,
+          "pauseP95Ratio": 1.5060240963855422,
+          "peakWords": 8192,
+          "sweptWordsP95": 5003.0,
+          "timeRatio": 1.0026452772855245,
+          "workload": "sieve"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 4784.0,
+          "pauseMaxNanoseconds": 297000.0,
+          "pauseP95Nanoseconds": 250000.0,
+          "pauseP95Ratio": 1.9467827468325845,
+          "peakWords": 12288,
+          "sweptWordsP95": 9558.0,
+          "timeRatio": 1.465107260576717,
+          "workload": "storage"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 9555.0,
+          "pauseMaxNanoseconds": 331208.0,
+          "pauseP95Nanoseconds": 305167.0,
+          "pauseP95Ratio": 1.821892537313433,
+          "peakWords": 12288,
+          "sweptWordsP95": 9555.0,
+          "timeRatio": 1.5954393973865884,
+          "workload": "storage-deep"
+        },
+        {
+          "changedBlocksP95Ratio": 1.0,
+          "markedWordsP95": 57.0,
+          "pauseMaxNanoseconds": 5292.0,
+          "pauseP95Nanoseconds": 1083.0,
+          "pauseP95Ratio": 2.166,
+          "peakWords": 4096,
+          "sweptWordsP95": 57.0,
+          "timeRatio": 1.2335475900325081,
+          "workload": "towers"
+        }
+      ]
+    }
+  ],
+  "iterations": 30,
+  "limits": "Prototype measurements do not establish VM throughput or timeline replay performance",
+  "model": "Native checked algorithms with common frame roots, fixed allocation collection cadence and 4096-operation checkpoints",
+  "processes": 10,
+  "samples": 10800,
+  "samplesDiscarded": 0,
+  "selected": "SizeClasses",
+  "workloads": 12
+}

@@ -13,6 +13,7 @@ pub struct FunctionBuilder {
     pub columns: InstructionColumns,
     pub blocks: Vec<Block>,
     pub current_block: Option<BlockId>,
+    pub receiver: Option<ValueId>,
     next_value_index: u32,
     next_block_index: u32,
 }
@@ -26,6 +27,7 @@ impl FunctionBuilder {
             columns: InstructionColumns::new(),
             blocks: Vec::new(),
             current_block: None,
+            receiver: None,
             next_value_index: 0,
             next_block_index: 0,
         }

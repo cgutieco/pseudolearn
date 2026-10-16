@@ -53,9 +53,15 @@ fn lower_assign_local(
             span,
         );
     } else {
-        context.environment.bind_value(local_id, value);
+        let stored = context.builder.next_value();
+        context.builder.emit_with_target(
+            Operation::ValueRequire,
+            vec![Operand::Value(value)],
+            (Some(stored), span),
+        );
+        context.environment.bind_value(local_id, stored);
         context.environment.mark_assigned(local_id);
-        record_origin_entry(local_id, value, context);
+        record_origin_entry(local_id, stored, context);
     }
 }
 
@@ -204,9 +210,9 @@ fn lower_single_dimension(
     context
         .builder
         .emit_with_target(Operation::ArrayNew, operands, (Some(array_value), span));
-    context.environment.bind_value(dimension.local, array_value);
+    let origin = bind_dimension(dimension.local, array_value, (span, context));
     context.environment.mark_assigned(dimension.local);
-    record_origin_entry(dimension.local, array_value, context);
+    record_origin_entry(dimension.local, origin, context);
 }
 
 fn record_origin_entry(local_id: LocalId, value: ValueId, context: &mut StatementContext<'_, '_>) {
@@ -216,6 +222,7 @@ fn record_origin_entry(local_id: LocalId, value: ValueId, context: &mut Statemen
         .map(|local| local.name.clone())
         .unwrap_or_else(|| format!("v{}", local_id.0));
     context.origins.push(OriginEntry {
+        function: context.builder.name.clone(),
         value,
         variable: VariableId(local_id.0),
         name: local_name,
@@ -236,4 +243,30 @@ fn resolve_field_name(field_number: u32, context: &StatementContext<'_, '_>) -> 
         })
         .map(|candidate_field| candidate_field.name.clone())
         .unwrap_or_else(|| "field".to_owned())
+}
+
+fn bind_dimension(
+    local: LocalId,
+    array_value: ValueId,
+    (span, context): (Option<IrSpan>, &mut StatementContext<'_, '_>),
+) -> ValueId {
+    if crate::address_taken::contains(local, context.expression_context.module) {
+        let cell = context.builder.next_value();
+        let kind = get_local_ir_type(local, context.expression_context.module);
+        context.builder.emit_with_target(
+            Operation::CellLocal,
+            vec![Operand::Type(kind)],
+            (Some(cell), span),
+        );
+        context.builder.emit_void(
+            Operation::CellStore,
+            vec![Operand::Value(cell), Operand::Value(array_value)],
+            span,
+        );
+        context.environment.bind_cell(local, cell);
+        cell
+    } else {
+        context.environment.bind_value(local, array_value);
+        array_value
+    }
 }

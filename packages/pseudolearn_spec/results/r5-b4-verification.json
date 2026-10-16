@@ -1,0 +1,220 @@
+{
+  "format": "r5-b4-verification/1",
+  "status": "in_progress",
+  "phaseClosed": false,
+  "r5Closed": false,
+  "b5Started": false,
+  "capturedUtc": "2026-10-16T04:20:52.088991+00:00",
+  "branch": "feature/agregar-ruta-de-especificacion",
+  "baseHead": "5505d4f15b9472a8a3cc76022b23c1a5cc33b8ab",
+  "publication": {
+    "status": "not_published",
+    "newCommits": 0,
+    "note": "All implementation and checkpoint changes remain in the local working tree, including untracked files."
+  },
+  "acceptanceDecision": {
+    "directTestsAndIndependentOracles": true,
+    "integratedExecuteConformance": "deferred_to_B7.3_after_API.EXECUTE",
+    "fullObservationProperties": "deferred_to_B7.3",
+    "noConformanceStatusAdvanced": true
+  },
+  "deliverables": [
+    {
+      "id": "B4.0",
+      "implementation": "complete",
+      "measurement": "complete",
+      "selected": "SizeClasses",
+      "globalGate": "pending"
+    },
+    {
+      "id": "B4.1",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    },
+    {
+      "id": "B4.2",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    },
+    {
+      "id": "B4.3",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    },
+    {
+      "id": "B4.4",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    },
+    {
+      "id": "B4.5",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    },
+    {
+      "id": "B4.6",
+      "implementation": "written",
+      "acceptance": "partial",
+      "closed": false
+    }
+  ],
+  "experiment": {
+    "summary": "r5-e12.json",
+    "rawDirectory": "packages/pseudolearn_benchmarks/results/e12",
+    "initialCapturePreserved": "packages/pseudolearn_benchmarks/results/e12/initial-line-per-object",
+    "samples": 10800,
+    "samplesDiscarded": 0,
+    "processes": 10,
+    "iterations": 30,
+    "workloads": 12,
+    "selected": "SizeClasses",
+    "candidates": [
+      {
+        "collector": "SizeClasses",
+        "confidence95": [
+          1.0,
+          1.0
+        ],
+        "eligible": true,
+        "timeRatio": 1.0
+      },
+      {
+        "collector": "Lines",
+        "confidence95": [
+          0.9758435485562518,
+          0.9800309320761543
+        ],
+        "eligible": false,
+        "timeRatio": 0.9774448388544482
+      },
+      {
+        "collector": "ReferenceCounts",
+        "confidence95": [
+          1.1239910382093812,
+          1.1359719677385989
+        ],
+        "eligible": false,
+        "timeRatio": 1.128477639534186
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "current-exported-runtime-corpus-and-cell-oracle",
+      "command": "cargo test -p pseudolearn_api --test runtime_corpus -- --nocapture",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "log": "r5-b4-checkpoint/checkpoint-corpus.log",
+      "corpusConfigurations": 296,
+      "collectionPolicies": 3,
+      "corpusExecutions": 888,
+      "generatedGraphs": 100,
+      "generatedProfiles": 2,
+      "generatedStrictnessModes": 2,
+      "generatedExecutions": 1200,
+      "oracle": "see_oracles::cells via separate SEE process",
+      "exclusions": [
+        "input requests",
+        "statement-budget requests",
+        "trace and replay properties"
+      ]
+    },
+    {
+      "name": "current-runtime-tests",
+      "command": "cargo test -p pseudolearn_runtime --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "testsPassed": 16,
+      "log": "r5-b4-checkpoint/checkpoint-runtime.log"
+    },
+    {
+      "name": "current-bytecode-existing-negatives",
+      "command": "cargo test -p pseudolearn_bytecode --test verify_tests --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "testsPassed": 5,
+      "log": "r5-b4-checkpoint/checkpoint-negative.log"
+    },
+    {
+      "name": "new-api-regressions",
+      "command": "cargo test -p pseudolearn_api --test runtime_edges -- --nocapture",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "testsPassed": 4,
+      "log": "r5-b4-checkpoint/api-edges.log",
+      "timing": "before last nominal-assignability refactor"
+    },
+    {
+      "name": "new-see-fixture-tests",
+      "command": "cargo test -p see_conformance --test memory_fixtures --test runtime_fixtures --quiet",
+      "member": "packages/pseudolearn_spec",
+      "exitCode": 0,
+      "testsPassed": 4,
+      "log": null
+    },
+    {
+      "name": "new-bytecode-metadata-tests",
+      "command": "cargo test -p pseudolearn_bytecode --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 101,
+      "testsPassedBeforeStop": 2,
+      "testsFailed": 1,
+      "log": "r5-b4-checkpoint/bytecode-latest.log",
+      "failure": "live_temporaries_expire_after_their_last_use: first root map has one root; test expects zero. Investigate materialized text literal and test actual lifetime rather than elision."
+    },
+    {
+      "name": "latest-clippy",
+      "command": "cargo clippy --workspace --all-targets -- -D warnings",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 101,
+      "log": "r5-b4-checkpoint/clippy-latest.log",
+      "failures": [
+        "field_reassign_with_default in runtime_support/cases.rs",
+        "field_reassign_with_default in runtime_support/memory.rs"
+      ]
+    },
+    {
+      "name": "current-rust-checks",
+      "command": "cargo run --manifest-path ../pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command --bin rust-checks -- all .",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 1,
+      "log": "r5-b4-checkpoint/checkpoint-limits.log",
+      "failures": [
+        "SIZE-FUNCTION: pseudolearn_ir/src/type_checker.rs check_memory: 43 lines, maximum 40"
+      ]
+    },
+    {
+      "name": "previous-workspace-tests",
+      "command": "cargo test --workspace --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 101,
+      "log": "r5-b4-checkpoint/workspace-tests-previous.log",
+      "note": "Precedes verification-order fix; existing negatives subsequently pass in checkpoint-negative.log. Full suite must still be repeated."
+    }
+  ],
+  "remainingImplementationAudit": [
+    "Exact roots at lexical scope boundaries, CFG joins, live intermediates and expired temporaries",
+    "Negative verifier coverage for instruction types, roots, definitions and class metadata",
+    "Subtype writes through promoted base-typed cells and block parameter compatibility",
+    "Indirect aliases, invalid effectful indices before callee entry, mutual recursion and reused windows",
+    "Escaping receiver before subclass integer initialization; shallow copies with cycles and absence",
+    "Generated oracle scenarios covering arrays and temporary lifetime as well as object graphs",
+    "Canonical layout usage and hot descriptor lookup costs",
+    "Automatic compaction report exposure and finite-real format preconditions",
+    "Self-contained package README cleanup and corrected relative E-12 link"
+  ],
+  "remainingClosure": [
+    "Fix known test and Clippy/size failures without changing thresholds",
+    "Run cargo xtask verify in engine, SEE and ceiling; verify affected consumers",
+    "Validate corpus, lock, export and transient-document references",
+    "Repeat B3 paired performance tracer and retain distinct raw data: geometric speedup >=30x; apply RR-01 if needed",
+    "Finalize this provisional coverage and evidence inventory",
+    "Mark B4.1-B4.6 only after their acceptance criteria pass",
+    "Create coherent commits, ordinary push on the sole branch and verify equal local/remote HEAD"
+  ]
+}

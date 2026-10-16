@@ -1395,7 +1395,13 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
 
 ### B4 · Runtime, biblioteca, arreglos, subprogramas, objetos y recolector
 
-- [ ] **B4.0 E-12.** Prototipos y medición de §7.3; elección registrada en el README de `runtime`.
+Autorizado en una sola iteración. Por decisión de la persona responsable, B4 se acredita con pruebas
+directas completas y oráculos independientes. La conformidad integrada `execute` y las propiedades
+completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se anticipa su estado `cumple`.
+
+- [x] **B4.0 E-12.** Prototipos y medición de §7.3 realizados: 10.800 muestras, elección
+  `SizeClasses` registrada en el README de `runtime` y `packages/pseudolearn_spec/results/r5-e12.json`.
+  La puerta global de B4 sigue pendiente.
 - [ ] **B4.1 Montón y arreglos.** Montón plano, asignación por avance en bloques, cabeceras, ordinales, arreglos
   de una y varias dimensiones con comprobación por dimensión, cota densa y mapas de definición; tamaño cero y
   negativo. Casos `LANG.ARRAY.*` y `LANG.TYPES.ARRAY`.
@@ -1416,6 +1422,26 @@ modifica. Al terminar, ninguna entrada de `r5-frontend-debt.json` queda abierta.
   generados».
 - [ ] **B4.6 Azar y anfitrión.** xoshiro256\*\* con SplitMix64, semilla por omisión 42; casos de
   `RT.HOST.INTERFACE` y `LIB.CORE.RANDOM`.
+
+#### Punto de continuación de B4 · 2026-10-15
+
+**B4 abierta, implementación detenida por petición de la persona para continuar en otra sesión.**
+El código de B4.1–B4.6 ya está escrito, con aceptación parcial; las casillas superiores permanecen
+abiertas hasta satisfacer sus pruebas, verificadores, regresión de rendimiento y publicación.
+
+- [x] E-12 medido y elegido; montón/arreglos, texto/conversiones, llamadas/celdas/objetos,
+  recolección/azar y soporte estático hasta bytecode implementados en el árbol local.
+- [x] Al corte pasan 296 configuraciones del corpus × tres políticas y cien grafos independientes
+  × dos perfiles × dos rigores × tres políticas; cuatro regresiones de integración API y tests runtime.
+- [ ] Resolver un test de vivacidad de raíces, dos errores de Clippy y `SIZE-FUNCTION` en
+  `ir/src/type_checker.rs` (43 líneas, máximo 40); completar negativos y bordes del relevo.
+- [ ] Actualizar README finales, ejecutar puertas completas de motor/SEE/ceiling, comprobar corpus,
+  lock/export/referencias, repetir trazadora ≥30× y publicar commits con HEAD local/remoto idénticos.
+
+**Continuar desde [13 · Relevo de B4](13-relevo-b4-remanso.md)**, que contiene archivos propietarios,
+evidencia, fallos concretos, auditorías pendientes y comandos. El inventario provisional es
+`packages/pseudolearn_spec/results/r5-b4-verification.json`. Todos los cambios de B4 siguen locales,
+incluidos los nuevos archivos sin seguimiento. No descartar el árbol ni iniciar B5.
 
 ### B5 · Gemelo sondeado, eventos, combustible y límites
 

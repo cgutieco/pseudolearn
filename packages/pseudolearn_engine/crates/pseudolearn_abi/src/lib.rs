@@ -23,6 +23,7 @@ pub use header::{
 pub use object_layout::{
     ClassReferenceOffsets, OBJECT_FIELDS_START_OFFSET_WITH_MASK,
     OBJECT_FIELDS_START_OFFSET_WITHOUT_MASK, OBJECT_HEADER_WORDS, OBJECT_INTEGER_MASK_WORD_OFFSET,
+    object_fields_start_offset,
 };
 pub use sentinel::{
     BOOLEAN_ABSENT_BITS, CHARACTER_ABSENT_BITS, REAL_ABSENT_BITS, boolean_absent_word,

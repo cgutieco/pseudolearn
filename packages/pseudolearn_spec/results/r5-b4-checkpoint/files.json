@@ -1,0 +1,825 @@
+{
+  "baseHead": "5505d4f15b9472a8a3cc76022b23c1a5cc33b8ab",
+  "files": [
+    {
+      "path": "docs/plan-nucleo-rust/07-fases.md",
+      "sha256": "d4f04c20c130a6aee45b79cfa560f22788e65689fd71f550b7f0d786a47b2105",
+      "bytes": 54524
+    },
+    {
+      "path": "docs/plan-nucleo-rust/11-plan-r5-ejecucion-remanso.md",
+      "sha256": "324b3f558ccffca3e5eea8ab530103ed952c4079f03b7be6b3edc5a537bb6a7f",
+      "bytes": 145923
+    },
+    {
+      "path": "docs/plan-nucleo-rust/12-relevo-r5.md",
+      "sha256": "d0b3117991c4a3d1698defc6b3aa86f0f7806214a04f5169469edf84def6a386",
+      "bytes": 17639
+    },
+    {
+      "path": "docs/plan-nucleo-rust/13-relevo-b4-remanso.md",
+      "sha256": "b068ceab7e6ce232bb1f00e0ab063611bd99b1a3c2aa9e65ad318c19925a8e8f",
+      "bytes": 19036
+    },
+    {
+      "path": "docs/plan-nucleo-rust/README.md",
+      "sha256": "0f1c9ee9354cfba61b4df6aa4c35e94f7e8109c184d2c962f68e2ba4d987c577",
+      "bytes": 9844
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/README.md",
+      "sha256": "7e57f1b7f5d9ae79bc7d5cb0223aa89b8e9221d1922c8896e6bbee68247f7f25",
+      "bytes": 6107
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/README.md",
+      "sha256": "7f89c96e9ace1f130cd6e9003f8e3d9da923c4d456e6f8147485fa4fc506346a",
+      "bytes": 4910
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/checked/list.rs",
+      "sha256": "c11ed4daeea617480a9fbbc9a945d12b02ee57bb340cd507a7d7f478155dc65a",
+      "bytes": 2921
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/allocation.rs",
+      "sha256": "d5cf4eb6fc11a09605f2d72b41358eeff1bc45b3ddac3a0607880c651cfa9f6a",
+      "bytes": 2657
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/calls.rs",
+      "sha256": "c1fdd99bfa2fe5c4c2d1a6ed42f242e8ba883c319885dc07fb925bc2a6848a64",
+      "bytes": 2262
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/heap.rs",
+      "sha256": "da748a16494e9e7637b7a6ea85a28bde22861f4e0a368b0b2c153cfece466c88",
+      "bytes": 3030
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/lines.rs",
+      "sha256": "f231943a8d01a7d627f8e095c02a1f3df1cb767fff98101638340c8fded5e7de",
+      "bytes": 3409
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/mod.rs",
+      "sha256": "6e851a2f4a0ec1a0ebf20b1a6bfeeaab0494ce482bfd58ddb52313c3c3bbc07d",
+      "bytes": 2632
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/reclaim.rs",
+      "sha256": "b0ec2c4787d3e206e8df22f92cb7e794009e3aebd513b34b1c860f3590ccb33b",
+      "bytes": 4294
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/collection/workloads.rs",
+      "sha256": "b937b16dd79fd9b3b04f4971aeffffb84bb8129f053b984c837d1e35deee51c3",
+      "bytes": 1844
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/lib.rs",
+      "sha256": "97ece60ba82798fab815bee267d25d99ccdf502dc1be262034e72741f8a6e3bc",
+      "bytes": 413
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/machine.rs",
+      "sha256": "192e682913633141cf8eac9f7c66989d3be3228225554bfbeed05226318b2491",
+      "bytes": 3169
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/src/variant.rs",
+      "sha256": "6c3f572c103ce278a7386d61680e769b90ceca4011546ab9a061ab0032b0290c",
+      "bytes": 5073
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_kernels/tests/collection.rs",
+      "sha256": "45a86a4202b7f8568ef8bea1cf732d393713b3abc30afa2e9d7bda611fb56326",
+      "bytes": 2308
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_runner/src/collection.rs",
+      "sha256": "0361d0c13b97acd5b518a65d939826d16578bf79da68401078d29664434d4bfe",
+      "bytes": 2635
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_runner/src/main.rs",
+      "sha256": "518719bc4ed8c0bbea57c904a9a9ee82c41fb27ab97e84512ab68a0591fe8bb1",
+      "bytes": 1138
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_runner/src/memory_report.rs",
+      "sha256": "517b8a097783906fdaf72d548839305f2dca5ea7989531ce2d99af73fee465df",
+      "bytes": 7753
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_runner/src/memory_report_tests.rs",
+      "sha256": "8110ea4863b0c6a072db4cb71493d6d49d336c7f6e01a9c1ac038467bc3189a8",
+      "bytes": 704
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/ceiling/crates/ceiling_runner/src/memory_worker.rs",
+      "sha256": "fe2e005a432e7c72cbf48fe97c00462e8b712b050695c3cdd5bce7a1e496dd4b",
+      "bytes": 3164
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/capture.json",
+      "sha256": "be87f2422a653a67a73c75dce5fbc92256b4f0be06e7ae42785f4768c4303da9",
+      "bytes": 9513
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/initial-line-per-object/capture.json",
+      "sha256": "dc9ab147f7590624a2ff8a7e61de9939bcd8a74074674947b6790f3e0b50f8b9",
+      "bytes": 9315
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/initial-line-per-object/processes.json",
+      "sha256": "3094c3793e78b1b750bf87074ff205f4ca7a25372ea36e530f0127ac010eb2e9",
+      "bytes": 8222
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/initial-line-per-object/raw.json",
+      "sha256": "80b731d4033766bb991dd0fbfd6cb41c799155e968a6c40c9ed0bbd4f8a1daed",
+      "bytes": 5257598
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/initial-line-per-object/summary.json",
+      "sha256": "00f43d43423b6478b719821101ca391cb201a5d15668f3207bb357db53edcd60",
+      "bytes": 7922
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/processes.json",
+      "sha256": "6dbe35a30190582f2bb2b4bdb56a3d198cb7ad18d7f376822c74cb8517ad7538",
+      "bytes": 8222
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/raw.json",
+      "sha256": "422eb9d5b37bcda26f92d66ddbe8c0c7867f89424e8ca60965b48fcfa7163e5a",
+      "bytes": 5258316
+    },
+    {
+      "path": "packages/pseudolearn_benchmarks/results/e12/summary.json",
+      "sha256": "b1e53633f56b30a5eeeafe5889610f513f3d3e54ba8c8a3ac5a1560bc0a5a28e",
+      "bytes": 13626
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_abi/README.md",
+      "sha256": "2fc518ddece906f0f84c656ce75543bb5e44c49c4c5648b6bbb4e00b0d3d8b09",
+      "bytes": 3357
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_abi/src/lib.rs",
+      "sha256": "5cb7e4841032bd73f5ade76d332ece1cd2082fdc13046756e846bbc39cea0d7e",
+      "bytes": 1340
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_abi/src/object_layout.rs",
+      "sha256": "c1b3318de1c1c92260c347cb9a98c4230097de6461563d1240a2269bfc663db9",
+      "bytes": 898
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_abi/tests/abi_tests.rs",
+      "sha256": "38b5e0c58dfd8c403620f3756a5c29da94608091060b86f7088db2eb650cb614",
+      "bytes": 4581
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/Cargo.toml",
+      "sha256": "d4d3afb3ac21036122c4c281b3baaac3b207397ad904eff3e5dde759cc92ea72",
+      "bytes": 967
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/README.md",
+      "sha256": "ae8271a8cb6dd16d94cd5d74fa90bc47461cd036449bd07209ac90213a122f02",
+      "bytes": 5769
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/src/ir_execution.rs",
+      "sha256": "aacf10dce12585f0aea8c03f767ad8a234263f97b9b5bc56155615e9cf8fa268",
+      "bytes": 4116
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/src/lib.rs",
+      "sha256": "62031455688b018178d87e3c969a414f4247463caa3b9f0dfa68a5605d9d7cc1",
+      "bytes": 745
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_corpus.rs",
+      "sha256": "aaa9456acdf8955d2f74eaef0ac27b96e67924550187082bf950c573e2f88f83",
+      "bytes": 152
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_edges.rs",
+      "sha256": "40245f7e7fa826201cabc87548fca391be4721225b825c74e084b5c7274cd550",
+      "bytes": 4004
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_support/cases.rs",
+      "sha256": "9a8d31c1110206b07dbcbb1540f4bab606640532610be6dbf52df933a54b017d",
+      "bytes": 4344
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_support/diagnostics.rs",
+      "sha256": "17e80fc90c60f72a0564bfac4815fc19ca6e5003cd6b119c1e5e588a11f1b3ab",
+      "bytes": 1895
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_support/memory.rs",
+      "sha256": "bb96ae5536ec1fb5ecf89f50e80b34272ced71b98499d2701ab64332ec3949eb",
+      "bytes": 2852
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_api/tests/runtime_support/mod.rs",
+      "sha256": "ec4490b7618c5810558d0bc42227ba98f9613993d41f58cfd75e17b7e5378c6e",
+      "bytes": 1447
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/README.md",
+      "sha256": "a6a08b6b6988626613b229c4f40067815366085e9592cd6d97e3a3a4a3249e66",
+      "bytes": 5814
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/class_verification.rs",
+      "sha256": "0d35c2879e9f14d0168e45451f2efda21f7e0a4c9c1b44907fd7942f7d7f959a",
+      "bytes": 1508
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/classes.rs",
+      "sha256": "f5f29a0002d5b49ecc644a125545fb3f25533e4eeee8aaf85d057b66bfe5c7bd",
+      "bytes": 2567
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/compile.rs",
+      "sha256": "e439a866c355bae9d7ac70107a2df52c4087264e17cbd081e4ef93874b2db812",
+      "bytes": 7937
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/compile/compile_instructions.rs",
+      "sha256": "dfe10bebcd4cb3b11c8be5d96720382276e36d632832eb9a47528b7597324875",
+      "bytes": 8696
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/compile/registers.rs",
+      "sha256": "071c5e7f531f5d9df7a6e0cd29b71001f66a1598310a7b9aae81ab5393fb68d0",
+      "bytes": 3553
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/definitions.rs",
+      "sha256": "75407f64c9793d2ac32a8ab0761cdc62209160d29d134c2e4f39b1ff1b91cfe1",
+      "bytes": 1776
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/error.rs",
+      "sha256": "90c14701280e9749ecd0a2c710f1136dc9a9dc111a263f81427f8259368d7932",
+      "bytes": 521
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/lib.rs",
+      "sha256": "2bde7e55d9a8add4e76b84ea3a27cb3d5473c0f768da2ea4e80734d3ff1b3fa4",
+      "bytes": 845
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/model.rs",
+      "sha256": "d9cf751f1242dfb76c84779a7081f6f8c12e5c01161ca41a562b9db19f373d06",
+      "bytes": 3929
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/root_liveness.rs",
+      "sha256": "d00147705c372a705ade4b03aebcf390e361d89446818a47857670744ef380fc",
+      "bytes": 3849
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/roots.rs",
+      "sha256": "575eb739e96ef200702ba3eec09ca49b7b03af20c9af73d899b7d5b9979641f2",
+      "bytes": 4038
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/src/verify.rs",
+      "sha256": "3d5f0c8e174edfe16dd4a2308edda7b19ef78d6301fd79636b6212865e46e2d5",
+      "bytes": 8714
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/tests/memory_metadata_tests.rs",
+      "sha256": "fd484e2763117c14a6790856de71c76aa7354220e17bd3970909e085437674a6",
+      "bytes": 2447
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_bytecode/tests/verify_tests.rs",
+      "sha256": "23a9e48cf1a71b6a9ad753c5fab3f3701d512880291e82e1950aedad74572dda",
+      "bytes": 5986
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/README.md",
+      "sha256": "7bbe1e5028ac5d95532ab2ea170423f65a767206ce03018c7fba3b90a3f1c9a3",
+      "bytes": 4034
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/assignability.rs",
+      "sha256": "03b64d4e61cd93445cbcb418b860016a2cc0342b7f308a95f7f74badcf34f306",
+      "bytes": 746
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/lib.rs",
+      "sha256": "3ce4d0a7a8c02d6659eaa138919e1ccd4ba310e37d9fd4ddca520460c2d6fa85",
+      "bytes": 1061
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/model.rs",
+      "sha256": "dbf0bbb5dcf137961d91042d8864eb5da572e0bf9d7484f8738ce32cf08c5062",
+      "bytes": 3102
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/parser.rs",
+      "sha256": "8f78fdfa6a3afdaee62abd7ef130947bc062560d537e06abad7b5eb044f1c099",
+      "bytes": 10161
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/type_checker.rs",
+      "sha256": "346c58513f32352de403d8223aa6c214e5510c43cf4b1fba2a375e2ead432849",
+      "bytes": 8952
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/type_checker_calls.rs",
+      "sha256": "59748f3ad0af50ffca449a3c2f35fca8af388a9ce9949006445804f7a30a657d",
+      "bytes": 659
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/type_checker_collections.rs",
+      "sha256": "c311fd56e534ccff4dffaee3c7d28d5f3dc4b48bb4f87fae128b39ee66c871c5",
+      "bytes": 5416
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/type_checker_control.rs",
+      "sha256": "a896ac298272a218077ff707dc72553dbe82546cb3f0733c276497adf640afec",
+      "bytes": 4121
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_ir/src/verifier_operands.rs",
+      "sha256": "b53b420fa51b4968b374af0dd324a44138c18c467ebf0fb7c3b8f7c3e25b94bb",
+      "bytes": 4170
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/README.md",
+      "sha256": "40282f4b35af0f8a582d28bbcf25c10a12b5e81f44d90ea0409aa6cbb39cd65f",
+      "bytes": 8438
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/src/decimal.rs",
+      "sha256": "5da1b894ce1531a8a13991989210ee69bf878138a8571167e76841b5ff72f0d8",
+      "bytes": 405
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/src/format.rs",
+      "sha256": "279b150a2986a063afcef5aa626632f5292b0552b61c8d8dd50b0d154f1799c3",
+      "bytes": 923
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/src/lib.rs",
+      "sha256": "3bac456082cbeed2fa2d30fc8b5a2376b21dbfe993addcf21cb5383ec6a485b6",
+      "bytes": 528
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/tests/decimal_tests.rs",
+      "sha256": "37e129b66b3c1e79d186a872a3e0ac8a4c3faa633bf8c15d7df21900627aacd9",
+      "bytes": 544
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_library/tests/format_tests.rs",
+      "sha256": "038ca692d9b8e2b3e49c4b15d6555a4e1bb93be510fbd6fdce4f7b95c6623636",
+      "bytes": 797
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/README.md",
+      "sha256": "af2c48c93b22d2f0d9886aef63921767a37f2374119dc62d2b93fd94116f6219",
+      "bytes": 3669
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/address_taken.rs",
+      "sha256": "8def83c25fe5985a533537ce2a1c1fb7e385972b7c2ab151ced2a9c3e5cd1b6e",
+      "bytes": 2116
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/builder.rs",
+      "sha256": "45f38163305b09a4745494188f201a729b02a98fde561108f33d726301a84c32",
+      "bytes": 3682
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/class_density.rs",
+      "sha256": "77df884633205e8e8f76c73bb0c1c9586282867358a45594428724ea4d953993",
+      "bytes": 4167
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/classes.rs",
+      "sha256": "77a77d3a02164e9a649a52009be9fa845b295b9aa3262036a13d92e9cbf3acba",
+      "bytes": 1605
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/constructor_flow.rs",
+      "sha256": "08439ec2d761619fe202f4c24dbef0b00a207462c3c3a44bbd24b4d19f6129c7",
+      "bytes": 2522
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/dispatch_targets.rs",
+      "sha256": "2ef4d9ee02961ad27458e6aa68749dfeb2497b3e7d14ac88bf927fada7eae3e8",
+      "bytes": 1435
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/environment.rs",
+      "sha256": "b798d2658e05079d49db532c652633e85fdf04121ccde8ce593451157e2d52e1",
+      "bytes": 6122
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/expression_values.rs",
+      "sha256": "815d8c35506ae35a3f45b3d6d9e0afea12d320edda2ac4702e5b03385661d2bd",
+      "bytes": 4483
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/expressions.rs",
+      "sha256": "45989b9ff8e7f2ba20e600811a75f13631ea8b133526dc336608042a32f7b76e",
+      "bytes": 5432
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/expressions_binary.rs",
+      "sha256": "592656321d6be44a79e36afa7f5f4bcbcb711b5c17538f9b4225b23fc831f1be",
+      "bytes": 6544
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/expressions_complex.rs",
+      "sha256": "fd936c3ab3e4d82bf2c52f3cd307413a001484450e4a67d810058abd669711df",
+      "bytes": 6057
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/expressions_objects.rs",
+      "sha256": "d122dd9ef9c0c149ab99c3f1757547bddd10d6a96360eb04d1a09a96f20b1274",
+      "bytes": 4849
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/functions.rs",
+      "sha256": "87cbbf9646c276cfb8be0943c89fd006302695d66213e65d6d27e80a4854654d",
+      "bytes": 7126
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/lib.rs",
+      "sha256": "bc3848b2dda3f409613866da4586a318c986a54b497ab28ac66a5d6292a2fd59",
+      "bytes": 1679
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/places.rs",
+      "sha256": "1762a91b58e2076d644df8f3222a4687b7ae289e88ea145bef3801e860cf0696",
+      "bytes": 1892
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/spans.rs",
+      "sha256": "7c2ad11adc4192017474e25f72aad3036247dac0ea14a7a5f3bd6ea75106a337",
+      "bytes": 859
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/statements_assignment.rs",
+      "sha256": "c5cfcdaebde4d3374acd3b9a337aaa035b1f4cbdb3b1ac495dbd58b37e500564",
+      "bytes": 8863
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/statements_declare.rs",
+      "sha256": "79809eb17ce692556b36aadddb2170cb504a96bc1a7ca04fc2ba9696cbff69e0",
+      "bytes": 3181
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/statements_for.rs",
+      "sha256": "e1e4fc6d0464d18d82c91f27d1e27456d9d26c7304e9e74b5bdc380eb6306830",
+      "bytes": 8299
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_lowering/src/statements_while.rs",
+      "sha256": "084effc2194992a64886a9ec06152adb97b654ad9d013a9a5a8cd5a224d92e86",
+      "bytes": 9079
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/README.md",
+      "sha256": "7cf53be503bcfe095a4be3cbd02a65fe66f8134bfea4e1ccdbcf025f00e2da74",
+      "bytes": 6447
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/array.rs",
+      "sha256": "cccff6bae05e5e34fda61a8e8119797d1f2c62a77a33c0228b031d84c7ecb43a",
+      "bytes": 5807
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/cell.rs",
+      "sha256": "75faa301ce393bcb9e6421565bf29e0d11d644850a3be2f06f892f2b309d233b",
+      "bytes": 2587
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/heap/allocate.rs",
+      "sha256": "931211100be8cae6daa6443f055f7c475637ac918bcf945f431319769b2168f7",
+      "bytes": 5002
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/heap/collect.rs",
+      "sha256": "d1cc97ef7468030268f8670f306189c36b20f8131f956074d34fd96891ff740d",
+      "bytes": 4009
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/heap/definition.rs",
+      "sha256": "aa1844ba2ccaabaf51e674487cdaa3bae836e725a6c1c31b4d78eb5e05ef4292",
+      "bytes": 3515
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/heap/markset.rs",
+      "sha256": "50d00e536b49a7b89989a3ac1eb9e0dc27ffb668731d9233c993f4750f93ab5f",
+      "bytes": 1714
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/heap/mod.rs",
+      "sha256": "ea143055dcf9da1f22ea788fb3173643f3200b76fd5bdf07a1b48815cdf3a62a",
+      "bytes": 2788
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/lib.rs",
+      "sha256": "827025bb223ef9de94ef265d0a9350c9e2e94ce5793db2fc2a55082adc2be550",
+      "bytes": 926
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/object.rs",
+      "sha256": "a67a1039eaa343d8600521ec8757726ccb42cc6797fbf9fc9f6ca295751880e0",
+      "bytes": 3886
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/random.rs",
+      "sha256": "5a312fa8f944b10a79f151074ed37fe444384f89a1ac2f3f3dfaa49aa39ef99c",
+      "bytes": 1410
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/text/compact.rs",
+      "sha256": "602e08e1453892b2fc40d4d77c1f1c5a7b2acf214a7886381958691c6f862ace",
+      "bytes": 3596
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/text/create.rs",
+      "sha256": "1a2a96f544a54327f2ad8a435c6fa779146bd06d9c93ac1185a729a07e495b15",
+      "bytes": 2364
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/text/indexed.rs",
+      "sha256": "f5e5391f24e0b0c9f0c541dc67249c6b570074f28259e1544a067fc712ed7840",
+      "bytes": 4839
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/text/mod.rs",
+      "sha256": "b55ada50dd9e21f1cd15cd86d42f2c26b764a8700d862beccdfbaf963cbe791a",
+      "bytes": 1646
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/text/parts.rs",
+      "sha256": "8e70b71e51b8114995013772218add557b198660d1c81b35b337616bec34c15c",
+      "bytes": 2416
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/src/value.rs",
+      "sha256": "b27ee6e71b9a6f20902602b2724b7fc880c9d9b234234650c54fa0c878f1a2ec",
+      "bytes": 1165
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/tests/array_tests.rs",
+      "sha256": "4efa73085cf57ad4f1314a38daa2f29604728c721f157bb26e907ff6f1b8e10d",
+      "bytes": 3036
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/tests/heap_tests.rs",
+      "sha256": "2fc426500e75468f18a8e21c52f6c026b099300d5bf119a6af651401149d5040",
+      "bytes": 3942
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/tests/random_tests.rs",
+      "sha256": "eed01d1968484f0380964ac78be14266d323c8bc4f2737a03d7c0f037bd87d24",
+      "bytes": 542
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_runtime/tests/text_tests.rs",
+      "sha256": "81994fd8345deed9da1003bd4b35217f9ad063c7ece361becb4891aa2c05254c",
+      "bytes": 3069
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/README.md",
+      "sha256": "580b414453ce7ec3efbe177f95ef6afb2f634f6f2434104187666557327ccaa0",
+      "bytes": 11191
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/data/dispatch_forms.json",
+      "sha256": "d8e9a9f0ab326d6fea49c52bc5da781df1af03dce765a0ec78c01f23f13500aa",
+      "bytes": 13448
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/lib.rs",
+      "sha256": "96bae12d06135fa986c5cf83d274bfc7c317fe819dd53f3db72b5a4aa231a9cb",
+      "bytes": 428
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/definedness.rs",
+      "sha256": "94255dabe2861ccc6af8fd83c91e86d763d3d04072c400304e97afa1f3830f5d",
+      "bytes": 4904
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/definitions.rs",
+      "sha256": "cd76610e098fcfb640bb8a7d4073dd2491f13c0eea7888d0cb50d2c3516a613b",
+      "bytes": 1383
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/edges.rs",
+      "sha256": "098f8fdf84b38cd031330528678dea80c82528f9ce7da2ccca0eb4e6360a2e69",
+      "bytes": 2988
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/instructions.rs",
+      "sha256": "e24af53f6b4bdb9a214860227f9575f471583109c1cfd4fedebfb688b7a7e562",
+      "bytes": 4824
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/instructions/control.rs",
+      "sha256": "15dffd9e2540370de624438d9dabcb032f56423dfca5750890448979f568aeaa",
+      "bytes": 5113
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/instructions/values.rs",
+      "sha256": "22868ce645014bace567245e4e4c9752f3df2b00a0784cd58d2783cbf5bae847",
+      "bytes": 4751
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/memory.rs",
+      "sha256": "1bc38626db9b7dde09b3ca9b2a97c6d3c51b3b5915ec5f4619fb2ed94710837c",
+      "bytes": 10359
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/memory/model.rs",
+      "sha256": "f2361c92fa44df60eb57c26f9a85f59bb6fe76e9e4d3901daf504569b3e7f45b",
+      "bytes": 1716
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/metadata.rs",
+      "sha256": "95b574eade962f3083ee19a5039cf938fcbe05a008c992d26e444b76d3e4aef3",
+      "bytes": 2576
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/mod.rs",
+      "sha256": "0c52bc6239e072862f84857a5514bff7d721507cc4b1e033461665999485d8a0",
+      "bytes": 4978
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/model.rs",
+      "sha256": "5e1c32ead5c34c815eeae8acf1f5cb6cf88b3cb04ca08280ffb3b15627d853c4",
+      "bytes": 2711
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/load/parallel_copy.rs",
+      "sha256": "5a9b76aaf41a80a671f5c0977f82dc281950663886cabda77ae07081c072edbb",
+      "bytes": 1665
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/calls.rs",
+      "sha256": "a7a26be1b442213bc107d8db09f9b04ce478801b4cb46b9cdf08c09bfe7c96cc",
+      "bytes": 9186
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/cells.rs",
+      "sha256": "6a1539ce88316fdf9b66f249cc89e355aa9fb1a41c7529e6db9b04357afab6eb",
+      "bytes": 5531
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/fault_context.rs",
+      "sha256": "45e3bbe3eda38c1344748555d65c9f5782d6d9dc733b56d057fadf678c64e673",
+      "bytes": 9170
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/memory.rs",
+      "sha256": "db58df9faf863b90d3ed9be7754c1788c0ca563fdcf23a6d693232132c3cb000",
+      "bytes": 6713
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/mod.rs",
+      "sha256": "7d718b45761ea428d10cbcc46fa69cd88e2e758872347ea4949d71ed6ff8a277",
+      "bytes": 6072
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/registers.rs",
+      "sha256": "686e916fc7bf667490b6ea5fe16b36d62f1588772012618c588904fab948821e",
+      "bytes": 5847
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/roots.rs",
+      "sha256": "2edc4de28389678e4da0b672984f694a80d42996221fdf6441823b81c8a7c8cc",
+      "bytes": 2789
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/text.rs",
+      "sha256": "ce1dbcf20d36c951939a8cff5ecdeb25ceb02a4e3673a8e70d4cfdfccd38e666",
+      "bytes": 6590
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/machine/traps.rs",
+      "sha256": "35b9466e9a2cc6ace2be084f4fa5c3a40ae1d7767b24563b30b03018f1ef034f",
+      "bytes": 845
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/model.rs",
+      "sha256": "5183e39b61e9b5c1849edbc5e2ea28975008ccfbf9be38d772dd25a4d239142f",
+      "bytes": 1008
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/options.rs",
+      "sha256": "e29b23112db8d2858fb95a2affe4c3d176d503caf8ec314c4fc909478ced87e2",
+      "bytes": 550
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/src/trap.rs",
+      "sha256": "4f631090d92d909d983809d4dbefa3090174a4b1f26d874e6e5b70a2e7696164",
+      "bytes": 666
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/tests/calls_tests.rs",
+      "sha256": "ed56e93868cb3b9aa096df122b7fef6717b1e2aaeaac01ae1033fb60cf50f0b7",
+      "bytes": 2473
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/tests/execute_tests.rs",
+      "sha256": "2ee7cd1770ac77c9138abb2e4e86dcd830e32ca287b5293763bd76f06000fdf5",
+      "bytes": 6473
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm/tests/registers_tests.rs",
+      "sha256": "bd32ef3a540ccdbe8f319d355168603a5031411deecd1b4c3e67373b2e4cae5f",
+      "bytes": 3269
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm_dispatch/src/catalog.rs",
+      "sha256": "b38fb33d4062aca9342f085d40333ff69d76a082e2ca8f1cac46d04f5d106b37",
+      "bytes": 3615
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm_dispatch/src/lib.rs",
+      "sha256": "76e89699fb5a4b9587d2daa38b462845b592580be6c3058f886175d594498e71",
+      "bytes": 2845
+    },
+    {
+      "path": "packages/pseudolearn_engine/crates/pseudolearn_vm_dispatch/tests/lib_tests.rs",
+      "sha256": "4adea6d8251c0c27316ac23cdcbbecc35119034ac609b5075a092de0befc6cfe",
+      "bytes": 3319
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_cli/README.md",
+      "sha256": "f8d9322b61a336ef0438ca912f3f04a94d8dfcd6237ea77310e622f27ea6120f",
+      "bytes": 3933
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_cli/src/commands.rs",
+      "sha256": "d8f84cdb7a13330b834b06eb957744dab6e4e7ff36d0cc1fc38e17d99a255fc7",
+      "bytes": 4831
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_cli/src/main.rs",
+      "sha256": "81a36272e7cc4b8f0e8e7276a9949ccbd7b67df1bcf39e9b69d814432c74b5f5",
+      "bytes": 641
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_cli/src/runtime_fixtures.rs",
+      "sha256": "889329fc96347a4893e494cf68bddece7f2113d4deb869ecfbfc87bd636d2576",
+      "bytes": 1676
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/README.md",
+      "sha256": "ebb1fcad5cacc138ff958ba60995829e4a3a68d34403d45233672907f998b84e",
+      "bytes": 3773
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/src/lib.rs",
+      "sha256": "59c23bb9c4cf42b07e7866653aff4fe65cfafc47e8a7b538efa4205822e7d4f5",
+      "bytes": 468
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/src/memory_fixtures.rs",
+      "sha256": "de1226b8a3e02acaed62e611df1fc0cbf4699ff08149e0525cff8b7a70020e68",
+      "bytes": 3430
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/src/runtime_fixtures.rs",
+      "sha256": "f99ec2e166716cc093e82e032b3e5bf36a921012ebb4fe4ad5ea58d1169dd301",
+      "bytes": 1639
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/tests/memory_fixtures.rs",
+      "sha256": "a75bd9a8efe6edb2ee5896883b289fef97ed4f51f6e26338a6d14085d0592c83",
+      "bytes": 1171
+    },
+    {
+      "path": "packages/pseudolearn_spec/crates/see_conformance/tests/runtime_fixtures.rs",
+      "sha256": "058c2daf47a7b3dda55170c07f5d71dddc9e9f87c41ab51d42c3d138ed1ebba4",
+      "bytes": 1446
+    },
+    {
+      "path": "packages/pseudolearn_spec/results/r5-b4-verification.json",
+      "sha256": "d22b3d7def7ceee39a60479e3419dcd3de4d7b7c56f954d03449e1f852227cf7",
+      "bytes": 7717
+    },
+    {
+      "path": "packages/pseudolearn_spec/results/r5-e12.json",
+      "sha256": "b1e53633f56b30a5eeeafe5889610f513f3d3e54ba8c8a3ac5a1560bc0a5a28e",
+      "bytes": 13626
+    }
+  ]
+}

@@ -1,17 +1,24 @@
 #![forbid(unsafe_code)]
 
 mod calls;
+mod cells;
 mod control;
+mod fault_context;
+mod memory;
 mod output;
 mod profile;
 mod registers;
+mod roots;
+mod text;
 mod traps;
 
 use pseudolearn_bytecode::{Register, VerifiedBytecode};
 
+use crate::RunOptions;
 use crate::dispatch::step;
 use crate::load::{LoadedFunction, LoadedProgram, load};
 use crate::{Fuel, RunExit, RunResult, RuntimeValue, ServiceReason, VmTrap};
+use pseudolearn_runtime::{Handle, Heap, RandomState};
 
 pub use profile::OpcodeProfile;
 use profile::{NoOpcodeObserver, OpcodeObserver};
@@ -38,6 +45,7 @@ struct ControlFrame<'program> {
     destination: Option<Register>,
     scalar_base: usize,
     reference_base: usize,
+    cell_count: usize,
 }
 
 pub(crate) struct Machine<'program> {
@@ -50,6 +58,14 @@ pub(crate) struct Machine<'program> {
     frames: Vec<ControlFrame<'program>>,
     remaining: Fuel,
     output: String,
+    heap: Heap,
+    literals: Vec<Handle>,
+    random: RandomState,
+    options: RunOptions,
+    cells: Vec<cells::Cell>,
+    reference_watermark: usize,
+    scalar_watermark: usize,
+    memory_counts: Vec<crate::MemoryCount>,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -60,13 +76,17 @@ pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
 }
 
 pub fn run_loaded(program: &LoadedProgram, fuel: Fuel) -> RunResult {
-    execute_with(program, fuel, &mut NoOpcodeObserver)
+    run_with_options(program, fuel, RunOptions::default())
+}
+
+pub fn run_with_options(program: &LoadedProgram, fuel: Fuel, options: RunOptions) -> RunResult {
+    execute_with(program, fuel, options, &mut NoOpcodeObserver)
 }
 
 pub fn run_profiled(program: &VerifiedBytecode, fuel: Fuel) -> (RunResult, OpcodeProfile) {
     let mut profile = OpcodeProfile::default();
     let result = match load(program) {
-        Ok(loaded) => execute_with(&loaded, fuel, &mut profile),
+        Ok(loaded) => execute_with(&loaded, fuel, RunOptions::default(), &mut profile),
         Err(trap) => trapped(trap),
     };
     (result, profile)
@@ -78,15 +98,17 @@ fn trapped(trap: VmTrap) -> RunResult {
         output: String::new(),
         consumed_statements: 0,
         consumed_probes: 0,
+        memory_counts: Vec::new(),
     }
 }
 
 fn execute_with<Observer: OpcodeObserver>(
     program: &LoadedProgram,
     fuel: Fuel,
+    options: RunOptions,
     observer: &mut Observer,
 ) -> RunResult {
-    match Machine::start(program, fuel) {
+    match Machine::start(program, fuel, options) {
         Ok(mut machine) => {
             let exit = machine
                 .enter_entry()
@@ -98,7 +120,11 @@ fn execute_with<Observer: OpcodeObserver>(
 }
 
 impl<'program> Machine<'program> {
-    fn start(program: &'program LoadedProgram, fuel: Fuel) -> Result<Self, VmTrap> {
+    fn start(
+        program: &'program LoadedProgram,
+        fuel: Fuel,
+        options: RunOptions,
+    ) -> Result<Self, VmTrap> {
         let current = program
             .functions
             .get(program.entry)
@@ -117,13 +143,30 @@ impl<'program> Machine<'program> {
             frames: Vec::new(),
             remaining: fuel,
             output: String::new(),
+            heap: Heap::new(options.memory),
+            literals: Vec::new(),
+            random: RandomState::seeded(options.seed),
+            options,
+            cells: Vec::new(),
+            reference_watermark: 0,
+            scalar_watermark: 0,
+            memory_counts: Vec::new(),
         };
-        let scalar_end = current.scalar_window.max(INITIAL_BANK_WORDS);
-        let reference_end = current.reference_window.max(INITIAL_BANK_WORDS);
-        machine
-            .ensure_capacity(scalar_end, reference_end)
-            .map_err(|fault| VmTrap::new(fault, None))?;
+        machine.initialize_storage()?;
         Ok(machine)
+    }
+
+    fn initialize_storage(&mut self) -> Result<(), VmTrap> {
+        if self.options.depth == 0 {
+            return Err(self.trap_context("recursionDepthExceeded", 0));
+        }
+        let scalar_end = self.current.scalar_window.max(INITIAL_BANK_WORDS);
+        let reference_end = self.current.reference_window.max(INITIAL_BANK_WORDS);
+        self.ensure_capacity(scalar_end, reference_end)
+            .map_err(|fault| VmTrap::new(fault, None))?;
+        self.initialize_literals()
+            .map_err(|fault| VmTrap::new(fault, None))?;
+        Ok(())
     }
 
     fn enter_entry(&mut self) -> Option<RunExit> {
@@ -143,7 +186,7 @@ impl<'program> Machine<'program> {
                 Ok(Flow::Continue) => {}
                 Ok(Flow::Completed(value)) => return RunExit::Completed(value),
                 Ok(Flow::Service(reason)) => return RunExit::Service(reason),
-                Err(fault) => return RunExit::Trap(VmTrap::new(fault, function.span(position))),
+                Err(fault) => return RunExit::Trap(self.trap_context(fault, position)),
             }
         }
     }
@@ -154,6 +197,7 @@ impl<'program> Machine<'program> {
             output: self.output,
             consumed_statements: initial.statements.saturating_sub(self.remaining.statements),
             consumed_probes: initial.probes.saturating_sub(self.remaining.probes),
+            memory_counts: self.memory_counts,
         }
     }
 }

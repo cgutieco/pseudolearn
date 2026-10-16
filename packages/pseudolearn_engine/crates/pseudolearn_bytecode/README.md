@@ -17,6 +17,12 @@ Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se de
 
 ## 3. Arquitectura y modelo del sistema
 
+El módulo conserva vocabulario, disposiciones de clase y metadatos de origen por función. Cada variante
+lleva mapas de raíces en instrucciones que asignan memoria o llaman: ranuras de variables en ámbito más
+temporales vivos de la evaluación actual. La información de variables sobrevive aunque no tengan usos
+futuros; la liveness de registros por sí sola no representa el conteo nocional. Las continuaciones
+suspendidas consultan el mapa de su llamada. Los mapas son datos verificados antes de cargar la VM.
+
 Nivel 5. Importa ir y source; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 El catálogo de opcodes y sus identidades se generan desde la exportación de `IR.INSTRUCTIONS`. Cada función

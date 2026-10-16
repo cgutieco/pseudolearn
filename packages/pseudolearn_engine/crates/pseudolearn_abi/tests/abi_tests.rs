@@ -102,3 +102,23 @@ fn verifies_structural_offsets() {
     assert_eq!(STRING_BREADCRUMBS_HANDLE_WORD_OFFSET, 4);
     assert_eq!(STRING_FIXED_WORDS_COUNT, 5);
 }
+
+#[test]
+fn object_masks_cover_every_field_and_reject_size_overflow() {
+    assert_eq!(
+        pseudolearn_abi::object_fields_start_offset(64, false),
+        Some(3)
+    );
+    assert_eq!(
+        pseudolearn_abi::object_fields_start_offset(65, false),
+        Some(4)
+    );
+    assert_eq!(
+        pseudolearn_abi::object_fields_start_offset(130, true),
+        Some(2)
+    );
+    assert_eq!(
+        pseudolearn_abi::object_fields_start_offset(usize::MAX, false),
+        None
+    );
+}

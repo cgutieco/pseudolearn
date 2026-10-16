@@ -9,6 +9,7 @@ use crate::verify_padding::{used_length, verify_padding};
 use crate::verify_superinstructions::verify_superinstructions;
 
 pub fn verify_bytecode(module: &BytecodeModule) -> Result<(), BytecodeError> {
+    crate::class_verification::verify(module)?;
     for (index, function) in module.functions.iter().enumerate() {
         let function_index = u16::try_from(index).map_err(|_| BytecodeError::InvalidModule)?;
         verify_function(module, function, function_index)?;
@@ -57,6 +58,7 @@ fn verify_variant(
         };
         verify_instruction(&context, program_counter, instruction)?;
     }
+    crate::roots::verify(function_context.function, variant)?;
     verify_return_points(
         function_context.function,
         function_context.function_index,

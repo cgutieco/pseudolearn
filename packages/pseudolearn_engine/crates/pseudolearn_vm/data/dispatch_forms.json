@@ -1,6 +1,17 @@
 {
   "categories": [
     {
+      "kind": "Memory",
+      "prefixes": [
+        "array.",
+        "object.",
+        "cell.",
+        "text.",
+        "ref.",
+        "host.random"
+      ]
+    },
+    {
       "kind": "Scalar",
       "prefixes": [
         "int.",
@@ -41,6 +52,7 @@
         "jump",
         "branch",
         "call",
+        "call.virtual",
         "return",
         "trap.missing_return",
         "unreachable",
@@ -444,6 +456,30 @@
   ],
   "special": [
     {
+      "form": "Memory",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "memory_operation"
+    },
+    {
+      "form": "LoadText",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "index",
+          "type": "u32"
+        }
+      ],
+      "handler": "load_text"
+    },
+    {
       "form": "LoadWord",
       "fields": [
         {
@@ -543,7 +579,12 @@
     },
     {
       "form": "RequireFailed",
-      "fields": [],
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
       "handler": "require_failed"
     },
     {

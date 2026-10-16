@@ -5,6 +5,8 @@ fn exit_of(source_text: &str) -> RunExit {
     match compile_text(source_text) {
         Ok(bytecode) => run(&bytecode, Fuel::unlimited()).exit,
         Err(_) => RunExit::Trap(VmTrap {
+            arguments: std::collections::BTreeMap::new(),
+            related: Vec::new(),
             code: "invalidTestProgram",
             span: None,
         }),
@@ -13,6 +15,8 @@ fn exit_of(source_text: &str) -> RunExit {
 
 fn uninitialized_at(line: u32) -> RunExit {
     RunExit::Trap(VmTrap {
+        arguments: std::collections::BTreeMap::new(),
+        related: Vec::new(),
         code: "uninitializedVariableRead",
         span: Some(SourceSpan::new(line, 1, line, 4)),
     })

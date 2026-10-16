@@ -32,7 +32,7 @@ pub(super) fn add_edge(
         .zip(block.parameters.iter().copied())
         .collect::<Vec<_>>();
     let moves_start = loaded.moves.len();
-    append_moves(context, loaded, &pairs)?;
+    append_moves(context, loaded, &pairs, source_pc)?;
     let edge = Edge {
         target: usize::try_from(block.start_pc).map_err(|_| invalid_bytecode())?,
         mass: u64::from(block.mass),
@@ -49,9 +49,10 @@ fn append_moves(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
     pairs: &[(Register, Register)],
+    source_pc: u32,
 ) -> Result<(), VmTrap> {
     for class in [RegisterClass::Scalar, RegisterClass::Reference] {
-        let pending = class_moves(context, pairs, class);
+        let pending = class_moves(context, pairs, (class, source_pc));
         let scratch = scratch_register(context.function, class)?;
         loaded.moves.extend(sequentialize(pending, scratch));
     }
@@ -61,7 +62,7 @@ fn append_moves(
 fn class_moves(
     context: &DecodeContext<'_>,
     pairs: &[(Register, Register)],
-    class: RegisterClass,
+    (class, source_pc): (RegisterClass, u32),
 ) -> Vec<Move> {
     pairs
         .iter()
@@ -70,7 +71,7 @@ fn class_moves(
             source: source.index,
             destination: destination.index,
             class,
-            definition: block_definition(context, *source, *destination),
+            definition: block_definition(context, *source, (*destination, source_pc)),
         })
         .collect()
 }
@@ -78,8 +79,13 @@ fn class_moves(
 fn block_definition(
     context: &DecodeContext<'_>,
     source: Register,
-    destination: Register,
+    (destination, source_pc): (Register, u32),
 ) -> Definition {
     let tracked = context.definedness.is_tracked(destination);
-    context.definedness.definition_into(source, tracked)
+    let instruction = usize::try_from(source_pc)
+        .ok()
+        .and_then(|position| context.function.fast.instructions.get(position));
+    instruction.map_or(Definition::Untracked, |instruction| {
+        super::definitions::source_definition(context, (instruction, source), tracked)
+    })
 }

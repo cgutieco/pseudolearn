@@ -43,6 +43,14 @@ pub(crate) fn verify_coverage(
 }
 
 pub(crate) fn render_kinds(names: &[String], categories: &[serde_json::Value]) -> String {
+    let kinds = categories
+        .iter()
+        .filter_map(|category| text_field(category, "kind").ok())
+        .chain(std::iter::once("Other"))
+        .collect::<std::collections::BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join(", ");
     let arms = names
         .iter()
         .map(|name| {
@@ -55,7 +63,7 @@ pub(crate) fn render_kinds(names: &[String], categories: &[serde_json::Value]) -
         .collect::<Vec<_>>()
         .join(" ");
     format!(
-        "#[derive(Clone, Copy, Debug, Eq, PartialEq)]\npub(crate) enum DispatchKind {{ Constant, ValueState, Scalar, Control, Observation, Output, Other }}\n\npub(crate) fn dispatch_kind(opcode: pseudolearn_bytecode::Opcode) -> DispatchKind {{ match opcode {{ {arms} }} }}\n\n"
+        "#[derive(Clone, Copy, Debug, Eq, PartialEq)]\npub(crate) enum DispatchKind {{ {kinds} }}\n\npub(crate) fn dispatch_kind(opcode: pseudolearn_bytecode::Opcode) -> DispatchKind {{ match opcode {{ {arms} }} }}\n\n"
     )
 }
 

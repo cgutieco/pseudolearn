@@ -19,7 +19,7 @@ impl Machine<'_> {
     }
 
     pub(crate) fn missing_return(&mut self) -> Result<Flow, Fault> {
-        Err("missingReturn")
+        Err("subroutineEndedWithoutReturn")
     }
 
     pub(crate) fn unreachable(&mut self) -> Result<Flow, Fault> {

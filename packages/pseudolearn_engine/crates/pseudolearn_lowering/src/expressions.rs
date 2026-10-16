@@ -2,20 +2,17 @@
 
 use crate::builder::FunctionBuilder;
 use crate::environment::VariableEnvironment;
+use crate::expression_values::{lower_literal, lower_local, lower_unary, lower_widen};
 use crate::expressions_binary::lower_binary_operation;
-use crate::expressions_complex::{
-    lower_builtin, lower_call, lower_element, lower_field, lower_new,
-};
+use crate::expressions_complex::{lower_builtin, lower_call, lower_element, lower_field};
 use crate::expressions_logical::{
     LogicalExpressionState, lower_short_circuit_and, lower_short_circuit_or,
 };
 use crate::spans::resolve_span;
-use pseudolearn_ir::{IrSpan, Operand, Operation, ValueId};
-use pseudolearn_semantic::expression_model::{
-    BinaryOperator, HirExpression, Literal, UnaryOperator,
-};
+use pseudolearn_ir::{IrSpan, ValueId};
+use pseudolearn_semantic::expression_model::{BinaryOperator, HirExpression};
 use pseudolearn_semantic::hir::HirModule;
-use pseudolearn_semantic::identities::{ExpressionId, LocalId};
+use pseudolearn_semantic::identities::ExpressionId;
 use pseudolearn_source::SourceText;
 
 pub struct ExpressionContext<'context> {
@@ -115,78 +112,15 @@ fn lower_complex_expression(
             function,
             arguments,
         } => lower_builtin(arguments, *function, span, state),
-        HirExpression::New { class, .. } => lower_new(class.0, span, state),
+        HirExpression::New { .. }
+        | HirExpression::This(_)
+        | HirExpression::VirtualCall { .. }
+        | HirExpression::SuperCall { .. } => crate::expressions_objects::lower(kind, span, state),
+        HirExpression::Uninitialized(local) => lower_local(*local, span, state),
         HirExpression::Field { receiver, field } => lower_field(*receiver, field.0, span, state),
         HirExpression::Element { array, indices } => lower_element(*array, indices, span, state),
         _ => state.builder.next_value(),
     }
-}
-
-fn lower_literal(
-    literal: &Literal,
-    span: Option<IrSpan>,
-    builder: &mut FunctionBuilder,
-) -> ValueId {
-    let result = builder.next_value();
-    match literal {
-        Literal::Integer(value) => {
-            let operand = Operand::LiteralI64(*value);
-            builder.emit_with_target(Operation::ConstI64, vec![operand], (Some(result), span));
-        }
-        Literal::Real(value) => {
-            let operand = Operand::LiteralF64(*value);
-            builder.emit_with_target(Operation::ConstF64, vec![operand], (Some(result), span));
-        }
-        Literal::Boolean(value) => {
-            let operand = Operand::LiteralBool(*value);
-            builder.emit_with_target(Operation::ConstBool, vec![operand], (Some(result), span));
-        }
-        Literal::Character(value) => {
-            let operand = Operand::LiteralChar(*value);
-            builder.emit_with_target(Operation::ConstChar, vec![operand], (Some(result), span));
-        }
-        Literal::String(value) => {
-            let operand = Operand::LiteralStr(value.clone());
-            builder.emit_with_target(Operation::ConstStr, vec![operand], (Some(result), span));
-        }
-    }
-    result
-}
-
-fn lower_local(
-    local_id: LocalId,
-    span: Option<IrSpan>,
-    state: &mut ExpressionState<'_, '_>,
-) -> ValueId {
-    if let Some(cell) = state.environment.get_cell(local_id) {
-        let loaded_value = state.builder.next_value();
-        state.builder.emit_with_target(
-            Operation::CellLoad,
-            vec![Operand::Value(cell)],
-            (Some(loaded_value), span),
-        );
-        loaded_value
-    } else {
-        state
-            .environment
-            .get_value(local_id)
-            .unwrap_or_else(|| state.builder.next_value())
-    }
-}
-
-fn lower_widen(
-    inner: ExpressionId,
-    span: Option<IrSpan>,
-    state: &mut ExpressionState<'_, '_>,
-) -> ValueId {
-    let inner_value = lower_expression_with_state(inner, state);
-    let result = state.builder.next_value();
-    state.builder.emit_with_target(
-        Operation::IntToReal,
-        vec![Operand::Value(inner_value)],
-        (Some(result), span),
-    );
-    result
 }
 
 fn lower_binary(
@@ -226,52 +160,4 @@ fn lower_binary(
         (left_type, span),
         (state.context.module, state.builder),
     )
-}
-
-fn lower_unary(
-    operator: UnaryOperator,
-    operand: ExpressionId,
-    operator_span: pseudolearn_source::Span,
-    state: &mut ExpressionState<'_, '_>,
-) -> ValueId {
-    let operand_value = lower_expression_with_state(operand, state);
-    let span = resolve_span(operator_span, state.context.source);
-    match operator {
-        UnaryOperator::Positive => operand_value,
-        UnaryOperator::Negative => lower_negative_unary(operand, operand_value, span, state),
-        UnaryOperator::Not => {
-            let result = state.builder.next_value();
-            state.builder.emit_with_target(
-                Operation::BoolNot,
-                vec![Operand::Value(operand_value)],
-                (Some(result), span),
-            );
-            result
-        }
-    }
-}
-
-fn lower_negative_unary(
-    operand: ExpressionId,
-    operand_value: ValueId,
-    span: Option<IrSpan>,
-    state: &mut ExpressionState<'_, '_>,
-) -> ValueId {
-    let result = state.builder.next_value();
-    let operand_type = usize::try_from(operand.0)
-        .ok()
-        .and_then(|index| state.context.module.expressions.types.get(index))
-        .map(|type_id| state.context.module.types.get(*type_id))
-        .unwrap_or(pseudolearn_semantic::types::Type::Integer);
-    let operation = if operand_type == pseudolearn_semantic::types::Type::Real {
-        Operation::RealNeg
-    } else {
-        Operation::IntNeg
-    };
-    state.builder.emit_with_target(
-        operation,
-        vec![Operand::Value(operand_value)],
-        (Some(result), span),
-    );
-    result
 }
