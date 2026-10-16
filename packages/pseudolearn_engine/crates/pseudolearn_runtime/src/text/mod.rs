@@ -11,12 +11,13 @@ pub use compact::TextCompaction;
 pub use create::{concat_text, new_text};
 pub use parts::{TextPart, concat_parts};
 
-#[derive(Default)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub(crate) struct TextArena {
     pub text: String,
     pub breadcrumbs: std::collections::BTreeMap<usize, Breadcrumbs>,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Breadcrumbs {
     pub positions: Vec<usize>,
     pub handle: Handle,

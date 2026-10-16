@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Adapta la API al protocolo de conformidad por procesos. Implementa análisis JSONL sobre la API pública. Ejecución, observación y RI siguen pendientes de sus capas.
+Adapta la API al protocolo de conformidad por procesos. Implementa análisis, RI y ejecución JSONL sobre la API pública. La negociación anuncia únicamente operaciones implementadas.
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 

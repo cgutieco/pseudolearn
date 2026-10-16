@@ -17,7 +17,11 @@ pub fn lower_repeat(
     context: &mut StatementContext<'_, '_>,
 ) {
     let span = resolve_span(statement_span, context.expression_context.source);
-    let loop_locals = collect_modified_locals(body, context.expression_context.module);
+    context
+        .builder
+        .emit_void(Operation::StmtEnter, vec![], span);
+    let mut loop_locals = collect_modified_locals(body, context.expression_context.module);
+    loop_locals.retain(|local_id| context.environment.get_cell(*local_id).is_none());
 
     let body_header = context.builder.create_block();
     jump_to_loop_header(body_header, &loop_locals, context);
@@ -26,13 +30,11 @@ pub fn lower_repeat(
     let mut body_environment = context.environment.clone();
     bind_loop_parameters(body_header, &loop_locals, &mut body_environment, context);
 
-    context
-        .builder
-        .emit_void(Operation::StmtEnter, vec![], span);
     execute_repeat_body(body, &mut body_environment, context);
 
+    let condition_span = repeat_condition_span(condition, context);
     let condition_value =
-        evaluate_repeat_condition(condition, span, &mut body_environment, context);
+        evaluate_repeat_condition(condition, condition_span, &mut body_environment, context);
     let exit_block = context.builder.create_block();
     emit_repeat_branch(
         condition_value,
@@ -111,4 +113,21 @@ fn emit_repeat_branch(
         ],
         None,
     );
+}
+
+fn repeat_condition_span(
+    condition: ExpressionId,
+    context: &StatementContext<'_, '_>,
+) -> Option<IrSpan> {
+    usize::try_from(condition.0)
+        .ok()
+        .and_then(|index| {
+            context
+                .expression_context
+                .module
+                .expressions
+                .spans
+                .get(index)
+        })
+        .and_then(|span| resolve_span(*span, context.expression_context.source))
 }

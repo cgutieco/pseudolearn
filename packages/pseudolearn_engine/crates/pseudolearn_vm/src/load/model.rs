@@ -106,6 +106,7 @@ pub(crate) struct LoadedFunction {
     pub entry_mass: u64,
     pub memory: Vec<memory::MemoryOp>,
     pub roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
+    pub probed_roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
 }
 
 impl LoadedFunction {
@@ -135,10 +136,17 @@ impl LoadedFunction {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct LoadedProgram {
+    pub(crate) name: String,
     pub(crate) functions: Vec<LoadedFunction>,
     pub(crate) entry: usize,
     pub(crate) literals: Vec<String>,
     pub(crate) classes: Vec<pseudolearn_bytecode::BytecodeClass>,
     pub(crate) vocabulary: String,
     pub(crate) layouts: Vec<std::sync::Arc<pseudolearn_runtime::ObjectLayout>>,
+}
+
+impl LoadedProgram {
+    pub fn class_schema(&self, identifier: u32) -> Option<&pseudolearn_bytecode::BytecodeClass> {
+        self.classes.get(usize::try_from(identifier).ok()?)
+    }
 }

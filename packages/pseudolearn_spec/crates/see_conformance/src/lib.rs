@@ -21,3 +21,7 @@ mod property_resources;
 mod property_scenarios;
 mod property_states;
 mod property_steps;
+
+pub mod target_programs;
+
+mod property_observation;

@@ -15,10 +15,10 @@ pseudolearn_lowering = { path = "../pseudolearn_lowering", version = "=0.1.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
-[lints]
-workspace = true
-
-[dev-dependencies]
 pseudolearn_bytecode = {path="../pseudolearn_bytecode",version="=0.1.0"}
 pseudolearn_vm = {path="../pseudolearn_vm",version="=0.1.0"}
 pseudolearn_runtime = {path="../pseudolearn_runtime",version="=0.1.0"}
+pseudolearn_timeline = {path="../pseudolearn_timeline",version="=0.1.0"}
+
+[lints]
+workspace = true

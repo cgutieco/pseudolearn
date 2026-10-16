@@ -64,7 +64,14 @@ pub(crate) fn binary(session: &mut AnalysisSession<'_>, node: usize) -> Expressi
         &session.expression_type(right),
     );
     crate::operator_diagnostics::diagnose(session, (operator, left, right), node, &result);
-    let (left, right) = widen_operands(session, (left, right));
+    let (left, right) = if operator == crate::expression_model::BinaryOperator::Divide {
+        (
+            crate::expression_checker::widen(session, left, &Type::Real),
+            crate::expression_checker::widen(session, right, &Type::Real),
+        )
+    } else {
+        widen_operands(session, (left, right))
+    };
     let type_id = session.module.types.intern(result);
     let operator_span = session.operator_span(node);
     session.emit(

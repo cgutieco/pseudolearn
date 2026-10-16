@@ -31,6 +31,11 @@ impl Machine<'_> {
                 .saturating_add(1),
         );
         if self.probed {
+            let absolute = self
+                .cursor
+                .scalar_base
+                .saturating_add(usize::from(register));
+            self.set_defined(absolute, true)?;
             self.change_buffer.record_scalar(register, word);
         }
         Ok(())
@@ -119,7 +124,13 @@ impl Machine<'_> {
     }
 
     pub(crate) fn mark_undefined(&mut self, destination: u16, word: u64) -> Result<Flow, Fault> {
-        self.load_word(destination, word)
+        self.load_word(destination, word)?;
+        let absolute = self
+            .cursor
+            .scalar_base
+            .saturating_add(usize::from(destination));
+        self.set_defined(absolute, false)?;
+        Ok(Flow::Continue)
     }
 
     pub(crate) fn mark_undefined_reference(&mut self, destination: u16) -> Result<Flow, Fault> {

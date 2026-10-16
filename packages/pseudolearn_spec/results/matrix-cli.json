@@ -112,7 +112,7 @@
   {
     "binding": "pendiente",
     "cases": 1,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.MESSAGES@0.1.0#R2",
@@ -122,10 +122,10 @@
   {
     "binding": "pendiente",
     "cases": 4,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "TOOL.CLI.RUN@0.1.0#R1",
+    "rule": "TOOL.CLI.RUN@0.2.0#R1",
     "state": "experimental",
     "subject": "cli"
   },
@@ -135,27 +135,27 @@
     "measured": "incumple",
     "measurements": [],
     "reason": null,
-    "rule": "TOOL.CLI.RUN@0.1.0#R2",
+    "rule": "TOOL.CLI.RUN@0.2.0#R2",
     "state": "experimental",
     "subject": "cli"
   },
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "TOOL.CLI.RUN@0.1.0#R3",
+    "rule": "TOOL.CLI.RUN@0.2.0#R3",
     "state": "experimental",
     "subject": "cli"
   },
   {
     "binding": "pendiente",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "TOOL.CLI.RUN@0.1.0#R4",
+    "rule": "TOOL.CLI.RUN@0.2.0#R4",
     "state": "experimental",
     "subject": "cli"
   }

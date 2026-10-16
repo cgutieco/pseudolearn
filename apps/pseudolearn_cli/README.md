@@ -2,12 +2,11 @@
 
 ## 1. Qué es y qué no es
 
-Binario pseudo para comprobar, ejecutar e inspeccionar programas. Análisis y preferencias implementados; ejecución e inspección pendientes de sus capas.
+Binario pseudo para comprobar, ejecutar e inspeccionar programas. Análisis, preferencias, ejecución e inspección de RI implementados sobre la API pública.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| ejecutar/run y ri/ir | API de ejecución | Motor de ejecución |
 | compilar/build | Backend nativo | R6 |
 | formatear/format, traducir/translate, lsp | Servicio de lenguaje | R7 |
 
@@ -44,7 +43,7 @@ La sustitución de argumentos recorre la plantilla una sola vez, preservando lla
 Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
 La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
 
-La extensión de ejecutar/run usará únicamente la API pública con entrada estándar, semilla, límites
+La ejecución de ejecutar/run usa únicamente la API pública con entrada estándar, semilla, límites
 de profundidad, sentencias y celdas. La traza se narra con las plantillas trace* del catálogo generado;
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli

@@ -1,12 +1,18 @@
 {
   "experiment": "E-06",
-  "paused_observer_ratio": 0.9520412729026035,
-  "delta_overhead_ratio": 1.15,
-  "depth_independence_slope": 0.00001,
-  "deep_stack_checkpoint_slots": 64,
-  "step_latency_ms": 0.003695,
-  "rewind_latency_ms": 0.0021584,
-  "retention_within_budget": true,
-  "rss_recording_ratio": 1,
-  "all_passed": true
+  "status": "invalidated",
+  "all_passed": false,
+  "reason": "La evidencia anterior contiene métricas constantes y no ejecuta las cargas ni el protocolo exigidos. Requiere medición integrada nueva.",
+  "invalidated_report": {
+    "experiment": "E-06",
+    "paused_observer_ratio": 0.9520412729026035,
+    "delta_overhead_ratio": 1.15,
+    "depth_independence_slope": 1e-05,
+    "deep_stack_checkpoint_slots": 64,
+    "step_latency_ms": 0.003695,
+    "rewind_latency_ms": 0.0021584,
+    "retention_within_budget": true,
+    "rss_recording_ratio": 1,
+    "all_passed": true
+  }
 }

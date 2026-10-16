@@ -1,0 +1,62 @@
+{
+  "all_passed": false,
+  "brotliBytes": 450453,
+  "corpusRequests": 968,
+  "differences": [],
+  "emiPairs": 10000,
+  "experiment": "E-17",
+  "formatBoundaryCases": 48,
+  "generatedPrograms": 10000,
+  "hostFlags": [
+    "--no-incremental-marking"
+  ],
+  "mathematics": {
+    "differences": 0,
+    "functions": {
+      "atan": {
+        "arguments": 1000000,
+        "differences": 0
+      },
+      "cos": {
+        "arguments": 1000000,
+        "differences": 0
+      },
+      "exp": {
+        "arguments": 1000000,
+        "differences": 0
+      },
+      "ln": {
+        "arguments": 1000000,
+        "differences": 0
+      },
+      "pow": {
+        "arguments": 1000000,
+        "differences": 0
+      },
+      "sin": {
+        "arguments": 1000000,
+        "differences": 0
+      }
+    },
+    "manifest": {
+      "countPerFunction": 1000000,
+      "functions": [
+        "exp",
+        "ln",
+        "sin",
+        "cos",
+        "atan",
+        "pow"
+      ],
+      "seed": 20261015
+    }
+  },
+  "nativeStderr": "",
+  "remaining": [
+    "full experiment acceptance review"
+  ],
+  "seed": 20261016,
+  "status": "partial",
+  "wasmBytes": 1998812,
+  "wasmStderr": ""
+}

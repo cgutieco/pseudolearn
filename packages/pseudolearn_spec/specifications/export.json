@@ -33733,7 +33733,7 @@
             "espera": {
               "codigo_salida": 1,
               "salida": "",
-              "salida_error": "p.pseudo:4:10: error: División por cero [divisionByZero]\n"
+              "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n"
             },
             "id": "C5",
             "operacion": "cli",
@@ -33963,9 +33963,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988",
+      "hash": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "aclaracion",
+          "impacto_implementaciones": "Corregir la columna esperada en C5 sin reinterpretar el tramo de la API. Regenerar lock y exportación.",
+          "impacto_usuarios": "Los diagnósticos de división por cero de la CLI señalan el operador div, igual que el motor.",
+          "justificacion": "Los casos derivados usaban el operando izquierdo en contradicción con IR.SOURCE-MAP#R2. Se conserva el tramo del operador y se corrigen los esperados por autorización explícita.",
+          "revisado_por": "persona responsable: confirmación explícita durante B7"
+        },
         "depende_de": [
           {
             "id": "TOOL.CLI.MESSAGES",
@@ -33995,7 +34001,7 @@
         ],
         "titulo": "Orden ejecutar",
         "titulo_en": "Run command",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {

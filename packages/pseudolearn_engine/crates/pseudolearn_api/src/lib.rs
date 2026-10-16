@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 pub mod analyze;
 mod argument_conversion;
 mod diagnostic_conversion;
@@ -21,3 +23,19 @@ pub use versioning::{
 pub use wire::{deserialize_from_str, serialize_to_string};
 
 pub use diagnostic_conversion::render_diagnostic;
+
+mod execution;
+mod execution_model;
+mod execution_state;
+mod execution_wire;
+pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_program};
+pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
+
+mod execution_resource;
+mod resources;
+pub use resources::ApiSession;
+
+mod event_codec;
+
+mod recording;
+mod state_changes;

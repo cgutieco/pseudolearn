@@ -14,18 +14,7 @@ impl Machine<'_> {
             ),
             &mut roots,
         )?;
-        for frame in &self.frames {
-            let continuation = *frame
-                .function
-                .continuations
-                .get(frame.return_point)
-                .ok_or(INVALID_BYTECODE)?;
-            self.frame_roots(
-                frame.function,
-                (continuation.saturating_sub(1), frame.reference_base),
-                &mut roots,
-            )?;
-        }
+        self.suspended_roots(&mut roots)?;
         if self.options.inspect_memory {
             let cells = self
                 .heap
@@ -40,13 +29,41 @@ impl Machine<'_> {
         Ok(roots)
     }
 
+    fn suspended_roots(&self, roots: &mut Vec<Handle>) -> Result<(), Fault> {
+        for frame in &self.frames {
+            let mut continuation = *frame
+                .function
+                .continuations
+                .get(frame.return_point)
+                .ok_or(INVALID_BYTECODE)?;
+            if self.probed {
+                continuation = *frame
+                    .function
+                    .fast_to_probed_returns
+                    .get(continuation)
+                    .ok_or(INVALID_BYTECODE)?;
+            }
+            self.frame_roots(
+                frame.function,
+                (continuation.saturating_sub(1), frame.reference_base),
+                roots,
+            )?;
+        }
+        Ok(())
+    }
+
     fn frame_roots(
         &self,
         function: &LoadedFunction,
         (position, base): (usize, usize),
         roots: &mut Vec<Handle>,
     ) -> Result<(), Fault> {
-        let slots = function.roots.get(&position).ok_or(INVALID_BYTECODE)?;
+        let maps = if self.probed {
+            &function.probed_roots
+        } else {
+            &function.roots
+        };
+        let slots = maps.get(&position).ok_or(INVALID_BYTECODE)?;
         for (register, is_cell) in slots {
             let absolute = base
                 .checked_add(usize::from(*register))

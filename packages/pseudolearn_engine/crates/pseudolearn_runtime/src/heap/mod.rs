@@ -28,6 +28,7 @@ pub(crate) enum Shape {
     Auxiliary,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Allocation {
     pub physical: usize,
     pub elements: usize,
@@ -47,6 +48,7 @@ pub(crate) struct AllocationRequest {
     pub literal: bool,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Heap {
     pub(crate) words: Vec<u64>,
     pub(crate) used: usize,

@@ -26,19 +26,23 @@ pub fn lower_switch(
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
 
-    let (exit_block, mut check_block, selector_value) =
-        initialize_switch(descriptor, span, context);
+    let (exit_block, mut check_block, selector_value) = initialize_switch(descriptor, context);
 
-    for case in descriptor.cases {
+    for (ordinal, case) in descriptor.cases.iter().enumerate() {
         check_block = lower_switch_case(
             case,
             (check_block, exit_block),
-            (selector_value, span),
+            (selector_value, span, ordinal),
             context,
         );
     }
 
-    lower_switch_default(descriptor.default_body, (check_block, exit_block), context);
+    lower_switch_default(
+        descriptor.default_body,
+        (check_block, exit_block),
+        span,
+        context,
+    );
 
     context.builder.set_current_block(exit_block);
     context.builder.emit_void(Operation::StmtExit, vec![], span);
@@ -46,7 +50,6 @@ pub fn lower_switch(
 
 fn initialize_switch(
     descriptor: &SwitchStatementDescriptor<'_>,
-    span: Option<IrSpan>,
     context: &mut StatementContext<'_, '_>,
 ) -> (BlockId, BlockId, ValueId) {
     let selector_value = lower_expression(
@@ -54,11 +57,6 @@ fn initialize_switch(
         context.expression_context,
         context.environment,
         context.builder,
-    );
-    context.builder.emit_void(
-        Operation::DecideCase,
-        vec![Operand::Value(selector_value)],
-        span,
     );
 
     let exit_block = context.builder.create_block();
@@ -77,7 +75,7 @@ fn initialize_switch(
 fn lower_switch_case(
     case: &HirCase,
     blocks: (BlockId, BlockId),
-    selector: (ValueId, Option<IrSpan>),
+    selector: (ValueId, Option<IrSpan>, usize),
     context: &mut StatementContext<'_, '_>,
 ) -> BlockId {
     let (check_block, exit_block) = blocks;
@@ -85,9 +83,23 @@ fn lower_switch_case(
     let case_body_block = context.builder.create_block();
     let following_check_block = context.builder.create_block();
 
-    let condition = evaluate_case_labels(&case.labels, selector, context);
+    let condition = evaluate_case_labels(&case.labels, (selector.0, selector.1), context);
     emit_case_branch(condition, (case_body_block, following_check_block), context);
 
+    context.builder.set_current_block(case_body_block);
+    let ordinal = context.builder.next_value();
+    context.builder.emit_with_target(
+        Operation::ConstI64,
+        vec![Operand::LiteralI64(
+            i64::try_from(selector.2).unwrap_or(i64::MAX),
+        )],
+        (Some(ordinal), None),
+    );
+    context.builder.emit_void(
+        Operation::DecideCase,
+        vec![Operand::Value(ordinal)],
+        selector.1,
+    );
     execute_case_body(&case.body, (case_body_block, exit_block), context);
 
     following_check_block
@@ -184,10 +196,17 @@ fn evaluate_case_labels(
 fn lower_switch_default(
     default_body: &[StatementId],
     blocks: (BlockId, BlockId),
+    span: Option<IrSpan>,
     context: &mut StatementContext<'_, '_>,
 ) {
     let (check_block, exit_block) = blocks;
     context.builder.set_current_block(check_block);
+    let decision = if default_body.is_empty() {
+        Operation::DecideNone
+    } else {
+        Operation::DecideDefault
+    };
+    context.builder.emit_void(decision, vec![], span);
     let mut default_environment = context.environment.clone();
     let mut default_context = StatementContext {
         expression_context: context.expression_context,

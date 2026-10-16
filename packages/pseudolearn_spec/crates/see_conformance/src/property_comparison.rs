@@ -86,7 +86,21 @@ fn observed(
         .as_object_mut()
         .ok_or("SEE-PROPERTY: request object")?
         .insert("observe".to_owned(), json!("events"));
-    let actual = observable(subject.exchange(&request)?);
+    let resource_execution = subject
+        .declaration()
+        .get("capabilities")
+        .and_then(Value::as_array)
+        .is_some_and(|capabilities| capabilities.contains(&json!("seek")));
+    let actual = if !resource_execution
+        || expected
+            .pointer("/termination/code")
+            .and_then(Value::as_str)
+            == Some("analysisFailed")
+    {
+        observable(subject.exchange(&request)?)
+    } else {
+        observable(crate::property_observation::execute(subject, &request)?)
+    };
     Ok((expected != actual).then_some((expected, actual)))
 }
 

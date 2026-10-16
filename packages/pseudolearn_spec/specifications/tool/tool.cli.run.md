@@ -5,7 +5,7 @@
   "titulo": "Orden ejecutar",
   "dominio": "herramienta",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-herramientas"
   ],
@@ -25,7 +25,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Run command"
+  "titulo_en": "Run command",
+  "cambio": {
+    "clase": "aclaracion",
+    "impacto_usuarios": "Los diagnósticos de división por cero de la CLI señalan el operador div, igual que el motor.",
+    "impacto_implementaciones": "Corregir la columna esperada en C5 sin reinterpretar el tramo de la API. Regenerar lock y exportación.",
+    "justificacion": "Los casos derivados usaban el operando izquierdo en contradicción con IR.SOURCE-MAP#R2. Se conserva el tramo del operador y se corrigen los esperados por autorización explícita.",
+    "revisado_por": "persona responsable: confirmación explícita durante B7"
+  }
 }
 ---
 
@@ -196,7 +203,7 @@
   "espera": {
     "codigo_salida": 1,
     "salida": "",
-    "salida_error": "p.pseudo:4:10: error: División por cero [divisionByZero]\n"
+    "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n"
   },
   "cli": {
     "argumentos": [

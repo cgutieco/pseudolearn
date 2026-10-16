@@ -252,6 +252,8 @@ Los umbrales provisionales y la línea base viven en PERF; resultados desfavorab
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
+La política de licencias admite las que usan las dependencias presentes; no conserva permisos preventivos sin consumidor, para que la auditoría no produzca avisos ignorados.
+
 | Puerta | Evidencia exigida |
 |---|---|
 | layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |

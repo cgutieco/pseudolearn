@@ -1,0 +1,15 @@
+{
+  "block": "B7",
+  "revision": "838574e6255523051df4194786ba18d30a02cf00",
+  "branch": "feature/agregar-ruta-de-especificacion",
+  "initial_tree": "clean",
+  "engine_verify": {
+    "format": "passed",
+    "clippy": "passed",
+    "tests": "passed",
+    "rust_checks": "passed",
+    "dependency_audit": "sandbox initially prevented advisory database lock; elevated audit subsequently passed with unused license allowance warning"
+  },
+  "rectification": "B6 evidence invalidated; corrections authorized inside B7",
+  "status": "open"
+}

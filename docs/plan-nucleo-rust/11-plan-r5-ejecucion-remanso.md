@@ -1492,11 +1492,19 @@ unitarias, de integración y `cargo xtask verify` en verde. B6 permanece pendien
 - [x] **B6.5 E-06.** Mediciones y criterios de §7.2 con evidencia en `results/e06/` y `r5-e06.json`; escaleras
   aplicadas dentro del paso si algo falla.
 
-#### Cierre de B6 · 2026-10-16
+#### Informe original de cierre de B6 · 2026-10-16 · rectificado durante B7
 
-**B6.1–B6.5 cerrados.** Vistas inmutables de estado (`StateSnapshot`, marcos, variables tipadas, `sin_valor`, alias, objetos por identidad, intervalos de arreglo y formato canónico de reales); deltas incrementales (`StateDelta`) con aplicación hacia adelante reconstruyendo marcos y salida; puntos de control diferenciales con sombra de montón por bloques de 64 palabras, segmentos de deshacer, marcas de agua de bancos, restauración exacta bit a bit, programación por coste ($D = \max(Q_{\min}, \kappa \cdot S)$) y raleo exponencial con fusión de segmentos conservando el horizonte declarado; retroceso determinista mediante máquina VM de reproducción con avance rápido, cambio a modo sondeado y supresión de salida; y verificación de las ocho métricas del experimento E-06 con evidencia preservada en `packages/pseudolearn_spec/results/r5-e06.json` y `packages/pseudolearn_benchmarks/results/e06/summary.json`. 14 tests de `pseudolearn_timeline` y verificadores en verde. B7 permanece pendiente de autorización.
+El informe original declaró B6.1–B6.5 cerrados y sus casillas superiores conservan ese registro histórico.
+La revisión autorizada de B7 invalida su acreditación de restauración completa, reproducción y coste:
+las consultas contenían valores de relleno, se copiaba estado completo por evento y E-06 publicaba
+constantes como mediciones. Los tests y verificadores de aquel cierre no acreditan esos criterios.
+La reparación y la repetición íntegra de E-06 pertenecen a B7 por decisión explícita; no se abre una
+fase separada ni se utiliza el cierre original como evidencia de cumplimiento.
 
 ### B7 · API, CLI, conformidad, rendimiento y robustez
+
+**Rectificación de evidencia de B6 (2026-10-16).** La revisión de B7 detecta consultas de arreglos con valores de relleno, snapshots completos por evento, restauración incompleta de memoria y una prueba E-06 que publica métricas constantes. Su informe previo no acredita los criterios de coste, memoria y reproducción. Por autorización explícita, B7 incorpora las correcciones y la repetición íntegra de E-06; el cierre previo de B6 no se usa como evidencia válida para B7. Los informes E-06 conservan el reporte invalidado y declaran `all_passed: false` hasta disponer de una medición nueva. B7 permanece abierto.
+
 
 - [ ] **B7.1 API de ejecución.** `API.EXECUTE`, `API.STATE.QUERY`, versionado con `execute`, `observe` y `seek`,
   formato binario de lotes; propiedades de API.
@@ -1523,6 +1531,119 @@ unitarias, de integración y `cargo xtask verify` en verde. B6 permanece pendien
 - [ ] **B7.7 Rendimiento.** `PERF.VM.THROUGHPUT` M1–M3 con el protocolo y el arnés de D-R5-12; datos en
   `results/macos-r5-vm/`; escalera RR-01 si falla.
 - [ ] **B7.8 E-16 y E-17.** §7.4 y §7.5, con cada superviviente y cada diferencia cerrados en la fase.
+
+#### Estado de implementación y pendientes de B7 · 2026-10-16
+
+**B7 permanece abierto.** Las casillas principales anteriores exigen cumplimiento íntegro y evidencia
+vigente. Las casillas marcadas debajo registran trabajo concreto realizado, no el cierre de su apartado.
+Los cambios están en el árbol de trabajo de `feature/agregar-ruta-de-especificacion`; todavía no se han
+publicado commits ni push de esta iteración. B8 no se ha iniciado.
+
+**Reparación heredada de B6.**
+
+- [x] Sustituir `celda_*` por valores reales tipados, ausencia y validación de intervalos de arreglos.
+- [x] Incorporar imágenes propias de VM con montón, arena de texto, bancos, entrada, salida, identidad,
+  diagnósticos y estado de observación; restaurar y reproducir sin modificar la continuación presente.
+- [x] Rechazar eventos futuros o inalcanzables y retirar el almacenamiento de snapshots completos por evento
+  de la línea temporal. Las consultas parciales tienen recorridos específicos.
+- [x] Invalidar los dos informes E-06, conservar el reporte anterior y retirar el test que publicaba
+  constantes como mediciones. Evidencia: `packages/pseudolearn_spec/results/r5-e06.json` y
+  `packages/pseudolearn_benchmarks/results/e06/summary.json`, ambos con `all_passed: false`.
+- [ ] Sustituir las imágenes completas de los puntos de control por almacenamiento diferencial efectivo,
+  copiar bancos por región cambiada y verificar presupuesto, raleo y reproducción rápida integrados.
+- [ ] Repetir las ocho métricas de E-06 (§7.2), conservar muestras y aplicar RR-02/RR-03/RR-04 si procede.
+  No existe todavía una medición nueva que sustituya la evidencia invalidada.
+
+**B7.1 · API.**
+
+- [x] Implementar ejecución mediante API pública, preparación separada de ejecución, recursos propios de
+  documento/análisis/ejecución, liberación en cascada y errores por recursos inválidos o liberados.
+- [x] Implementar avance por lotes, entrada suspendida, cancelación, consultas históricas y posicionamiento;
+  consultas parciales de marcos, variables, objetos y arreglos por referencia e instante.
+- [x] Descargar los eventos entregados y avanzar la base de reproducción al reducir el horizonte; impedir
+  que ampliar la retención vuelva a habilitar eventos descartados. Dos tests nuevos de consultas parciales
+  y horizonte pasan, además de los cuatro tests de recursos.
+- [x] Incorporar codificaciones JSON y PLEV, escapes de controles y Unicode, y pruebas de lotes corruptos.
+  Corregir negociación a edición `2026` y familia de error `version`; su test específico pasa.
+- [ ] Completar avance por condición y las operaciones necesarias para todas las propiedades de API,
+  incluida grabación/reproducción del anfitrión y partición de entrada; comprobar que ninguna opción se ignora.
+- [ ] Verificar coste y retención física completos: las imágenes de suspensión todavía copian bancos y
+  las consultas históricas reproducen instrucciones. La corrección funcional no acredita los objetivos de coste.
+- [ ] Cerrar las propiedades antes de anunciar la capacidad genérica `api`, que todavía no se anuncia.
+
+**B7.2 · CLI.**
+
+- [x] Reemplazar el éxito vacío de `ejecutar`/`run` por ejecución con la API pública, entrada estándar,
+  salida progresiva, límites, semilla, traza, JSON y diagnósticos/narración desde plantillas generadas.
+- [x] Añadir pruebas de opciones válidas, malformadas, ausentes y desbordadas.
+- [x] Resolver el conflicto de tramos según la decisión de la persona: conservar el operador `div` y
+  corregir `TOOL.CLI.RUN#C5`. Clasificación e impacto registrados; versión del contrato `0.2.0`.
+- [ ] Repetir conformidad CLI tras la corrección de fin de entrada: el artefacto conservado todavía
+  registra **48 `cumple` y 1 `incumple`**. No se acredita 49/49 hasta actualizar la evidencia.
+
+**B7.3 · Conformidad y correcciones semánticas.**
+
+- [x] Ampliar el adaptador JSONL con ejecución, observación, consultas, recursos y `gc_stress`, conservando
+  análisis y RI. Ejecutar los casos de ejecución diferidos desde B3.
+- [x] Corregir división real por cero, promoción de ambos operandos enteros, límites de lecturas de memoria,
+  raíces de GC del gemelo sondeado y marcas de definición de escalares.
+- [x] Corregir límites/paso de `Para` evaluados una vez, observación de bucles, selección de `Segun`,
+  salida vacía y salida de `Retornar`; excluir locales respaldados por celdas de parámetros SSA de bucles.
+  La regresión de acumulación con paso posterior por referencia pasa.
+- [x] Conservar línea base, clasificación, diff e impacto en `packages/pseudolearn_spec/results/r5-b7-*.json`
+  y `r5-b7-contract-impact.txt`.
+- [ ] Cerrar la matriz exigible: la evidencia actual de `engine` tiene **1511 `cumple`, 0 `incumple`
+  y 1 `no aplicable`**; la ejecución completa además denuncia falta de evidencia para los vínculos de
+  `TOOL.SERVICE.LOSSLESS-TREE#R1–R2`. Publicar `results/r5-matrix.json` sin huecos exigibles.
+
+**B7.4–B7.6 · Diferencial, propiedades y robustez.**
+
+- [x] Ejecutar cinco propiedades disponibles sobre corpus y muestras generadas: determinismo, equivalencia
+  con observación, ejecución del lowering, identidad y transparencia de GC; **1068 muestras por propiedad**.
+  Evidencia: `packages/pseudolearn_spec/results/properties-engine.json`, semilla `42`.
+- [x] Ejecutar programas generados y variantes EMI durante la comparación de objetivos; una expectativa
+  independiente detectó el defecto de variables respaldadas por celdas y motivó su corrección/regresión.
+- [ ] Ejecutar y publicar el diferencial completo con `reference`, clasificar sus diferencias y cerrar
+  hallazgos/exenciones sin modificar Dart. Falta `results/r5-differential.json`.
+- [ ] Completar **24 propiedades pendientes de las 29 seleccionadas**, con semillas, muestras y
+  contraejemplos reproducibles; falta el cierre consolidado `results/r5-properties.json`.
+- [ ] Ejecutar campañas aisladas con límites sobre corpus mutado, RI mutada y bytecode corrupto;
+  convertir cada defecto en regresión. Los programas generados de E-17 no sustituyen estas campañas.
+
+**B7.7–B7.8 · Mediciones.**
+
+- [x] Ampliar el trabajador para medir la API en proceso, preparar antes del cronómetro y validar salida;
+  incorporar recogida Dart, muestras crudas y validación estadística con tests.
+- [x] Obtener una captura AWFY de diez procesos y treinta iteraciones por programa:
+  **16,4394×** de media geométrica y **7,5317×** de mínimo, frente a `macos-r3-awfy`.
+  Supera 10×/5×; el objetivo de 30× no se alcanza. Evidencia:
+  `packages/pseudolearn_benchmarks/results/macos-r5-vm/`.
+- [ ] Repetir AWFY sobre las fuentes finales: hubo cambios posteriores a la captura. Completar M4 y
+  las latencias con E-06; el rendimiento global de B7 todavía no está acreditado.
+- [x] Instalar localmente `cargo-mutants 27.1.0` e inventariar **2845 mutantes** en los seis crates exigidos.
+- [ ] Ejecutar E-16 completo, incluyendo tests y conformidad por mutante, puntuación ≥85 % por crate,
+  clasificación de todos los supervivientes y mutación de expectativas/reglas del corpus.
+  **El inventario no es una medición de puntuación**; falta `results/r5-e16.json`.
+- [x] Ejecutar comparación nativo/Wasm: **968 peticiones del corpus**, **10 000 programas y sus 10 000
+  variantes EMI**, **10⁶ argumentos en cada una de las seis funciones matemáticas** y **48 bordes de
+  formato**, sin diferencias observadas. Medir **450 453 bytes Brotli** y ejecutar el trabajador Wasm.
+  Evidencia: `packages/pseudolearn_spec/results/r5-e17.json`.
+- [ ] Finalizar procedencia, conservación de muestras y repetición de E-17 sobre los binarios finales.
+  El reporte conservado sigue declarado `partial`, con `all_passed: false`; no constituye un cierre.
+  La ejecución WASI requiere `--no-incremental-marking` en el Node local por un aborto reproducido del anfitrión.
+
+**Verificadores y publicación que faltan antes del cierre.**
+
+- [x] Ejecutar pruebas completas, formato, Clippy y verificadores Rust en revisiones intermedias;
+  ejecutar `cargo deny check` en motor, CLI y SEE: las tres auditorías pasan.
+- [ ] Corregir los dos fallos de la última revisión: `execution_state.rs` usa indexación JSON rechazada por
+  `clippy::indexing_slicing` y su función `query` mide **49 líneas frente al máximo de 40** (`SIZE-FUNCTION`).
+- [ ] Repetir `cargo xtask verify` íntegro de los miembros afectados después de las últimas modificaciones;
+  los verdes intermedios y las auditorías separadas no acreditan el árbol actual. Verificar también el arnés Dart,
+  anclaje/exportación y ausencia de regresiones respecto de la línea base.
+- [ ] Actualizar README y relevo con el resultado final, guardar comandos/procedencia/muestras y actualizar
+  casillas únicamente con evidencia verificada.
+- [ ] Crear commits coherentes, realizar push ordinario a la rama autorizada y comprobar HEAD local/remoto.
 
 ### B8 · Cierre (`phase-gate`)
 

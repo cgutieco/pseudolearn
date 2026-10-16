@@ -10,6 +10,10 @@ Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards.
 Se excluyen CD, DeltaBlue, Havlak y Json, fuera del subconjunto vigente.
 La suite usa tamaños reducidos declarados para permitir repeticiones, no reproduce los tiempos del anexo.
 
+El rendimiento de ejecución Rust se recoge con `dart run tool/collect_execution.dart`, usando el trabajador de la API pública y la línea base `results/macos-r3-awfy/summary.json`. La preparación precede al cronómetro; cada muestra crea estado nuevo, conserva su duración cruda y valida salida y terminación. No mide la CLI ni serialización de eventos.
+
+La herramienta `node --no-warnings --no-incremental-marking tool/run_wasi.cjs <módulo.wasm> <directorio-preabierto> [argumentos...]` ejecuta adaptadores, sondas matemáticas y trabajadores WASI con un solo directorio preabierto y entorno vacío. El marcado incremental se desactiva para evitar el fallo reproducido del anfitrión local durante E/S de módulos con memoria grande; no altera el módulo ni los algoritmos medidos.
+
 ## 2. Guía operativa y ciclo de vida
 
 Flutter 3.47.5 aporta Dart 3.13.4; Node se fija en `node-version` para JS y Wasm.

@@ -58,7 +58,13 @@ impl Session {
         let line = self
             .responses
             .recv_timeout(self.timeout)
-            .map_err(|error| format!("SEE-PROTOCOL: adapter timeout or EOF: {error}"))??;
+            .map_err(|error| {
+                let stderr = self
+                    .errors
+                    .recv_timeout(Duration::from_millis(100))
+                    .unwrap_or_default();
+                format!("SEE-PROTOCOL: adapter timeout or EOF: {error}; stderr: {stderr}")
+            })??;
         let response: Value = serde_json::from_str(&line)
             .map_err(|error| format!("SEE-PROTOCOL: malformed JSON: {error}"))?;
         if response.get("kind") != request.get("kind") {

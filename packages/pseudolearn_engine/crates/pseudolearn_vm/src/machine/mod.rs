@@ -4,6 +4,7 @@ mod calls;
 mod cells;
 mod control;
 mod fault_context;
+mod image;
 mod input;
 mod memory;
 mod observation;
@@ -14,7 +15,7 @@ mod roots;
 mod text;
 mod traps;
 
-use pseudolearn_bytecode::{Register, VerifiedBytecode};
+use pseudolearn_bytecode::VerifiedBytecode;
 
 use crate::dispatch::step;
 use crate::events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
@@ -41,25 +42,14 @@ mod inspection;
 mod query;
 
 pub use cells::Cell;
+pub use image::{
+    MachineImage, restore_machine_image, resume_machine, snapshot_machine, suspend_machine,
+};
 pub use inspection::*;
 pub use query::*;
 
-#[derive(Clone, Copy, Default)]
-pub(crate) struct Cursor {
-    pub(crate) program_counter: usize,
-    pub(crate) scalar_base: usize,
-    pub(crate) reference_base: usize,
-}
-
-#[derive(Clone, Copy)]
-pub(crate) struct ControlFrame<'program> {
-    pub(crate) function: &'program LoadedFunction,
-    pub(crate) return_point: usize,
-    pub(crate) destination: Option<Register>,
-    pub(crate) scalar_base: usize,
-    pub(crate) reference_base: usize,
-    pub(crate) cell_count: usize,
-}
+mod control_state;
+pub(crate) use control_state::{ControlFrame, Cursor};
 
 pub struct Machine<'program> {
     pub(crate) program: &'program LoadedProgram,

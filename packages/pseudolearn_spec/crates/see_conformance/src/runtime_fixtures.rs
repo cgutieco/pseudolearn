@@ -3,10 +3,22 @@ use see_model::{Block, Corpus, contract::Vocabulary, strings};
 use serde_json::{Value, json};
 
 pub fn cases(corpus: &Corpus, vocabulary: &Vocabulary) -> Result<Vec<Value>, String> {
+    collect(corpus, vocabulary, &["execute"])
+}
+
+pub fn execution_cases(corpus: &Corpus, vocabulary: &Vocabulary) -> Result<Vec<Value>, String> {
+    collect(corpus, vocabulary, &["execute", "trace"])
+}
+
+fn collect(
+    corpus: &Corpus,
+    vocabulary: &Vocabulary,
+    operations: &[&str],
+) -> Result<Vec<Value>, String> {
     let mut fixtures = Vec::new();
     for specification in corpus {
         for case in &specification.blocks {
-            if case.kind == "caso" && requests::operation(case) == "execute" {
+            if case.kind == "caso" && operations.contains(&requests::operation(case)) {
                 append(
                     case,
                     (&specification.metadata.id, vocabulary),

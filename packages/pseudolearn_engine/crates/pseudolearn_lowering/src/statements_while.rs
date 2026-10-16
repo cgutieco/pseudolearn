@@ -18,7 +18,11 @@ pub fn lower_while(
     context: &mut StatementContext<'_, '_>,
 ) {
     let span = resolve_span(statement_span, context.expression_context.source);
-    let loop_locals = collect_modified_locals(body, context.expression_context.module);
+    context
+        .builder
+        .emit_void(Operation::StmtEnter, vec![], span);
+    let mut loop_locals = collect_modified_locals(body, context.expression_context.module);
+    loop_locals.retain(|local_id| context.environment.get_cell(*local_id).is_none());
 
     let header_block = context.builder.create_block();
     jump_to_loop_header(header_block, &loop_locals, context);
@@ -51,9 +55,6 @@ fn evaluate_while_condition(
     environment: &mut VariableEnvironment,
     context: &mut StatementContext<'_, '_>,
 ) -> ValueId {
-    context
-        .builder
-        .emit_void(Operation::StmtEnter, vec![], span);
     let condition_value = lower_expression(
         condition,
         context.expression_context,

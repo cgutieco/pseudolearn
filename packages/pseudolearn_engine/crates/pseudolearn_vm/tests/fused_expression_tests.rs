@@ -65,7 +65,7 @@ fn fused_arithmetic_preserves_second_trap_and_span_on_second_instruction_fault()
 }
 
 #[test]
-fn fused_arithmetic_preserves_non_finite_real_trap_and_span() {
+fn fused_arithmetic_preserves_real_zero_divisor_trap_and_span() {
     let source = "module P es\nfunc @main() -> f64 {\nb0() mass 0:\n  %0 = const.f64 1.5\n  %1 = const.f64 2.5\n  %2 = const.f64 0.0\n  %3 = real.add %0, %1 @2:1-2:10\n  %4 = real.div %3, %2 @3:1-3:10\n  return %4\n}\n";
     let fused_module =
         match compile_text_with_superinstructions(source, &[SuperInstruction::FusedArithmetic]) {
@@ -76,7 +76,7 @@ fn fused_arithmetic_preserves_non_finite_real_trap_and_span() {
     let expected = RunExit::Trap(VmTrap {
         arguments: BTreeMap::new(),
         related: Vec::new(),
-        code: "nonFiniteRealResult",
+        code: "divisionByZero",
         span: Some(SourceSpan::new(3, 1, 3, 10)),
     });
     assert_eq!(result.exit, expected);

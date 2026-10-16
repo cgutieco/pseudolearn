@@ -1,11 +1,13 @@
 #![forbid(unsafe_code)]
 
+mod execution;
 mod frontend;
 mod workloads;
 
 fn main() -> std::process::ExitCode {
     let operation = std::env::args().nth(1).unwrap_or_default();
     let result = match operation.as_str() {
+        "execute" => execution::collect(),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile".to_owned()),

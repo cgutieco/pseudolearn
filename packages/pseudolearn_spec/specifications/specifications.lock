@@ -3819,6 +3819,29 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "TOOL.CLI.RUN@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "TOOL.SERVICE.LOSSLESS-TREE@0.1.0": {
       "edition": {},
       "elements": {
@@ -6060,9 +6083,9 @@
         "R3": "regla",
         "R4": "regla"
       },
-      "hash": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988",
+      "hash": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "TOOL.SERVICE.LOSSLESS-TREE": {
       "edition": {},

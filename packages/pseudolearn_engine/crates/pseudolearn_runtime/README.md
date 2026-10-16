@@ -28,6 +28,8 @@ La recolección es no móvil y marca desde las asas raíz recibidas por la opera
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: restaurar palabras sin descriptores deja asas y texto inconsistentes. Elección: el estado copiable del montón conserva asignaciones, listas libres, arena, identidades y contadores junto con sus palabras. Se descarta restaurar solo el vector físico. La representación diferencial y su coste requieren medición integrada.
+
 Las búsquedas de asignaciones y bloques libres usan `BTreeMap`; las consultas de arreglo y campo consultan el mapa de asignaciones para validar el asa y recuperar su descriptor antes de acceder a las palabras. Se conserva esta estructura porque satisface las puertas actuales de corrección y verificación. No se establece un mínimo de rendimiento adicional.
 
 `compact_text` devuelve un `TextCompaction` con los rangos movidos. La compactación disparada por una recolección automática no conserva ni publica ese mapa: el runtime actual no tiene un consumidor de los desplazamientos del arena. Un consumidor que necesite observarlos debe añadir su contrato de notificación junto con su integración; el runtime no acumula mapas sin lector.

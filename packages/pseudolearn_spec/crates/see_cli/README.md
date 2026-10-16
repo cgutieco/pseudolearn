@@ -4,6 +4,8 @@
 
 Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export, budget, math-arguments y math-check. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. Los adaptadores ejecutables son reference, engine y cli.
 
+`target-parity [--count N] [--seed S]` compara los adaptadores release nativo y wasm32-wasip1 del motor con Node WASI. Requiere compilar ambos previamente. Node usa `--no-incremental-marking`: en macOS arm64, la configuración local reproduce SIGSEGV al recolectar desde `uvwasi_fd_write` con memoria Wasm grande; desactivar el marcado incremental evita ese fallo del anfitrión sin cambiar el módulo. Conserva conteos, divergencias y tamaño Brotli en `results/r5-e17.json`; la matemática masiva se informa por separado y no se declara completa por este contraste.
+
 ## 2. Guía operativa y ciclo de vida
 
 `runtime-fixtures` emite JSON de peticiones de ejecución materializadas con el traductor vigente y

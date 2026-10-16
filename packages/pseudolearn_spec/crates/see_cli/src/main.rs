@@ -14,6 +14,8 @@ mod property_selection;
 mod resources;
 mod runtime_fixtures;
 mod storage;
+mod target_evidence;
+mod target_parity;
 mod templates;
 
 fn main() -> std::process::ExitCode {

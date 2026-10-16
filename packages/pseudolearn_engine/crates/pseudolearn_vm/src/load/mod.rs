@@ -39,6 +39,7 @@ pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
         .map(|function| load_function(module, function, &literals))
         .collect::<Result<Vec<_>, _>>()?;
     Ok(LoadedProgram {
+        name: module.name.clone(),
         functions,
         entry,
         literals,
@@ -106,7 +107,8 @@ fn init_loaded_function(function: &BytecodeFunction) -> Result<LoadedFunction, V
         reference_outgoing: 0,
         entry_mass: metadata::entry_mass(function),
         memory: Vec::new(),
-        roots: metadata::roots(function)?,
+        roots: metadata::roots(function, false)?,
+        probed_roots: metadata::roots(function, true)?,
     })
 }
 

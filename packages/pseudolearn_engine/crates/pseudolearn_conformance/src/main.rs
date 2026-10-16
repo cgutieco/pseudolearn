@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use pseudolearn_api::{
     AnalyzeRequest, ENGINE_VERSION, IrRequest, PROTOCOL_VERSION, SUBJECT_NAME, execute_analyze,
     execute_ir, supported_capabilities, supported_profiles, supported_strictness,
@@ -6,6 +8,7 @@ use serde_json::{Value, json};
 use std::io::{BufRead, Write};
 
 fn main() {
+    let mut session = pseudolearn_api::ApiSession::default();
     let stdin = std::io::stdin();
     let locked_stdin = stdin.lock();
     for line in locked_stdin.lines() {
@@ -30,6 +33,8 @@ fn main() {
             }
             "analyze" => respond_analyze(&parsed),
             "ir" => respond_ir(&parsed),
+            "execute" => respond_execute(&parsed),
+            "api" => respond_api(&mut session, &parsed),
             _ => respond_unsupported(),
         }
     }
@@ -135,4 +140,26 @@ fn send_response(value: &Value) {
         let _ = writeln!(stdout, "{serialized}");
         let _ = stdout.flush();
     }
+}
+
+fn respond_execute(request_value: &Value) {
+    match serde_json::from_value::<pseudolearn_api::ExecuteRequest>(request_value.clone()) {
+        Ok(request) => {
+            if let Ok(response) = serde_json::to_value(pseudolearn_api::execute_program(&request)) {
+                send_response(&response);
+            }
+        }
+        Err(_) => respond_unsupported(),
+    }
+}
+
+fn respond_api(session: &mut pseudolearn_api::ApiSession, request: &Value) {
+    let result = session.call(
+        request
+            .get("operation")
+            .and_then(Value::as_str)
+            .unwrap_or(""),
+        request.get("arguments").unwrap_or(&Value::Null),
+    );
+    send_response(&json!({"kind":"api","result":result}));
 }

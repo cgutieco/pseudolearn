@@ -32,15 +32,7 @@ fn restore_checkpoint_reproduces_bit_for_bit_state() {
     let restore_result = restore_checkpoint(&mut machine, &checkpoint);
     assert!(restore_result.is_ok());
 
-    let state_after_restore = machine.capture_machine_state();
-    assert_eq!(
-        state_after_restore.cursor_pc,
-        checkpoint.machine_state.cursor_pc
-    );
-    assert_eq!(
-        state_after_restore.scalars,
-        checkpoint.machine_state.scalars
-    );
+    assert_eq!(pseudolearn_vm::snapshot_machine(&machine), checkpoint.image);
 }
 
 #[test]
@@ -84,39 +76,22 @@ fn cost_scheduler_calculates_distance_proportional_to_state_size() {
 #[test]
 fn thinning_manager_advances_declared_horizon_and_respects_budget() {
     let mut manager = ThinningManager::new(4);
-    let machine_state = pseudolearn_vm::MachineStateRecord {
-        cursor_pc: 0,
-        cursor_scalar_base: 0,
-        cursor_reference_base: 0,
-        current_function_index: 0,
-        frames: Vec::new(),
-        scalar_watermark: 0,
-        reference_watermark: 0,
-        scalars: Vec::new(),
-        references: Vec::new(),
-        defined: Vec::new(),
-        cells: Vec::new(),
-        random: pseudolearn_runtime::RandomState::seeded(0),
-        arena_used: 0,
-        output_length: 0,
-        input_index: 0,
-        statements_executed: 0,
-        polls_executed: 0,
-        event_count: 0,
-        heap_used: 0,
-        heap_ordinal: 0,
-        heap_allocated_cells: 0,
-        heap_live_cells: 0,
+    let source =
+        "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.i64 10\n  return %0\n}\n";
+    let program = build_program(source);
+    assert!(program.is_some());
+    let Some(program) = program else {
+        return;
     };
+    let machine = create_machine(&program, Fuel::unlimited(), RunOptions::default());
+    assert!(machine.is_ok());
+    let Ok(machine) = machine else {
+        return;
+    };
+    let mut shadow = ShadowHeap::new();
 
     for index in 0..10 {
-        let checkpoint = pseudolearn_timeline::Checkpoint {
-            event_index: index,
-            statement_index: u64::try_from(index).unwrap_or(0),
-            machine_state: machine_state.clone(),
-            heap_words: Vec::new(),
-            undo_segment: UndoSegment::new(),
-        };
+        let checkpoint = capture_checkpoint(&machine, index, &mut shadow);
         manager.push_checkpoint(checkpoint);
     }
 

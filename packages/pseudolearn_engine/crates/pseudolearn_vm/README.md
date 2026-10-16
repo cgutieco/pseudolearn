@@ -94,6 +94,10 @@ pilas propias. La profundidad no depende de una capacidad fija elegida por plata
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+La carga textual de PLEV usa JSON canónico: los controles se codifican con escapes y se decodifican sin alterar Unicode ni enteros de 64 bits. Se descartan caracteres de control sin escapar y secuencias incompletas; los errores se devuelven como valores.
+
+Problema: un recurso persistente no puede contener referencias a su propio programa. Elección: una imagen de ejecución independiente conserva el estado completo y permite reanudarlo contra el mismo programa inmutable. Incluye gemelo, combustible, entradas, salida, eventos, diagnósticos y montón. Se descartan referencias autorreferenciales y fugas para fabricar tiempos de vida estáticos.
+
 - **Problema:** la primera VM interpretaba directamente el modelo estructural del bytecode: buscaba la
   función y la superinstrucción en un `BTreeMap` en cada paso, leía operandos de un `Vec` de enums,
   comparaba predicados como cadenas, buscaba y clonaba el descriptor de bloque en cada salto, consultaba

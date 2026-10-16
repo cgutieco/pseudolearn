@@ -1,0 +1,72 @@
+[
+  {
+    "target": "native",
+    "process": 0,
+    "peakRssSampledBytes": 13156352,
+    "lastCpuSampleSeconds": 0.81,
+    "metricSamples": 18
+  },
+  {
+    "target": "native",
+    "process": 1,
+    "peakRssSampledBytes": 13172736,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 2,
+    "peakRssSampledBytes": 13189120,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 3,
+    "peakRssSampledBytes": 13172736,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 4,
+    "peakRssSampledBytes": 13271040,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 5,
+    "peakRssSampledBytes": 13189120,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 6,
+    "peakRssSampledBytes": 13271040,
+    "lastCpuSampleSeconds": 0.84,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 7,
+    "peakRssSampledBytes": 13991936,
+    "lastCpuSampleSeconds": 0.85,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 8,
+    "peakRssSampledBytes": 13402112,
+    "lastCpuSampleSeconds": 0.86,
+    "metricSamples": 16
+  },
+  {
+    "target": "native",
+    "process": 9,
+    "peakRssSampledBytes": 13172736,
+    "lastCpuSampleSeconds": 0.85,
+    "metricSamples": 16
+  }
+]

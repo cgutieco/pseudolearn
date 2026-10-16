@@ -99,7 +99,7 @@ fn minimum_integer_modulo_minus_one_is_zero() {
 
 #[test]
 fn non_finite_real_result_traps() {
-    let source = "module P es\nfunc @main() -> f64 {\nb0() mass 0:\n  %0 = const.f64 1.0\n  %1 = const.f64 0.0\n  %2 = real.div %0, %1 @1:1-1:2\n  return %2\n}\n";
+    let source = "module P es\nfunc @main() -> f64 {\nb0() mass 0:\n  %0 = const.f64 10.0\n  %1 = const.f64 400.0\n  %2 = real.pow %0, %1 @1:1-1:2\n  return %2\n}\n";
     assert_eq!(trap_of(source), Some("nonFiniteRealResult"));
 }
 

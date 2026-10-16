@@ -13,6 +13,7 @@ pub struct CliOptions {
     pub vocabulary: Option<String>,
     pub json_output: bool,
     pub help_requested: bool,
+    pub execution: crate::execution_options::ExecutionArguments,
 }
 
 #[derive(Default)]
@@ -23,6 +24,7 @@ struct ParsedArguments {
     vocabulary: Option<String>,
     json_output: bool,
     help_requested: bool,
+    execution: crate::execution_options::ExecutionArguments,
 }
 
 pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliError> {
@@ -41,6 +43,7 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
         vocabulary: parsed.vocabulary,
         json_output: parsed.json_output,
         help_requested: parsed.help_requested,
+        execution: parsed.execution,
     })
 }
 
@@ -63,6 +66,7 @@ fn handle_argument_step(
             Ok(())
         }
         "--traza" | "--trace" => {
+            parsed.execution.trace = true;
             *index = index.saturating_add(1);
             Ok(())
         }
@@ -74,10 +78,12 @@ fn handle_argument_step(
             handle_vocabulary_option(raw_arguments, index, locale, &mut parsed.vocabulary)
         }
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
-        | "--celdas" | "--cells" => {
-            *index = index.saturating_add(2);
-            Ok(())
-        }
+        | "--celdas" | "--cells" => crate::execution_options::parse_numeric(
+            raw_arguments,
+            index,
+            locale,
+            &mut parsed.execution,
+        ),
         _ => handle_positional_or_unknown(current, index, locale, parsed),
     }
 }

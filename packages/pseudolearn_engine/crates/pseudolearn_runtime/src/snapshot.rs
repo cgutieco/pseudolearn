@@ -104,6 +104,9 @@ pub fn is_defined_element(
         Shape::Array { element, .. } => (element, entry.payload),
         _ => return Err(MemoryError::Internal),
     };
+    if element_index >= entry.elements {
+        return Err(MemoryError::IndexOutOfRange);
+    }
     let target_offset = payload
         .checked_add(element_index)
         .ok_or(MemoryError::Internal)?;
@@ -149,6 +152,9 @@ pub fn read_element_raw(
     element_index: usize,
 ) -> Result<u64, MemoryError> {
     let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
+    if !matches!(entry.shape, Shape::Array { .. }) || element_index >= entry.elements {
+        return Err(MemoryError::IndexOutOfRange);
+    }
     let target_offset = entry
         .payload
         .checked_add(element_index)
@@ -158,6 +164,9 @@ pub fn read_element_raw(
 
 pub fn read_field_raw(heap: &Heap, handle: Handle, field_index: usize) -> Result<u64, MemoryError> {
     let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
+    if !matches!(entry.shape, Shape::Object(_)) || field_index >= entry.elements {
+        return Err(MemoryError::IndexOutOfRange);
+    }
     let target_offset = entry
         .payload
         .checked_add(field_index)

@@ -70,7 +70,7 @@ pub(crate) fn generated(
     })
 }
 
-fn generated_expectation(
+pub(crate) fn generated_expectation(
     program: &see_generators::program::GeneratedProgram,
 ) -> Result<Value, String> {
     let count = i128::from(program.elements);

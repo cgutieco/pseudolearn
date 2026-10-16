@@ -1,10 +1,13 @@
 #![forbid(unsafe_code)]
 
+mod array_view;
+mod cell_view;
 mod checkpoint;
 mod deltas;
 mod error;
 mod inspect;
 mod model;
+mod query_views;
 mod replay;
 mod scheduler;
 mod shadow;
@@ -28,3 +31,5 @@ pub use views::{
     AliasDestination, FrameView, ObjectView, StateSnapshot, VariableValue, VariableView,
     capture_snapshot, format_real,
 };
+
+pub use query_views::{capture_array_slice, capture_frame};

@@ -3,15 +3,18 @@
 mod adapter;
 mod check_command;
 mod error;
+mod execution_options;
 mod ir_command;
 mod messages;
 mod options;
 mod preferences_command;
+mod run_command;
+mod trace_output;
 
 use check_command::execute_check;
 use error::CliError;
 use ir_command::execute_ir;
-use messages::{help_text, missing_command, missing_input, unknown_command};
+use messages::{help_text, missing_command, unknown_command};
 use options::parse_cli_options;
 use preferences_command::execute_preferences;
 use std::process::ExitCode;
@@ -58,14 +61,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
             execute_preferences(&options, &options.positional_arguments)
         }
         "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
-        "ejecutar" | "run" => {
-            if options.positional_arguments.is_empty() {
-                return Err(CliError::Usage(
-                    missing_input(&options.interface_language).to_owned(),
-                ));
-            }
-            Ok(0)
-        }
+        "ejecutar" | "run" => run_command::execute_run(&options),
         other => Err(CliError::Usage(unknown_command(
             &options.interface_language,
             other,

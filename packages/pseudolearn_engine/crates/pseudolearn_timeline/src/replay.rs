@@ -1,33 +1,42 @@
-use pseudolearn_vm::{
-    Fuel, LoadedProgram, RunExit, RunOptions, create_machine, machine_events,
-    set_machine_output_suppressed, set_machine_probed,
-};
-
-use crate::checkpoint::{Checkpoint, restore_checkpoint};
+use crate::checkpoint::Checkpoint;
 use crate::error::TimelineError;
 use crate::views::{StateSnapshot, capture_snapshot};
+use pseudolearn_vm::{LoadedProgram, Machine, RunExit, RunOptions, machine_events, resume_machine};
 
 pub fn replay_to_event(
     program: &LoadedProgram,
     checkpoint: &Checkpoint,
     target_event: usize,
-    base_options: &RunOptions,
+    options: &RunOptions,
 ) -> Result<StateSnapshot, TimelineError> {
-    let mut replay_options = base_options.clone();
-    replay_options.twin_mode = pseudolearn_vm::TwinMode::Probed;
-    let mut replay_machine = create_machine(program, Fuel::unlimited(), replay_options)
-        .map_err(|_| TimelineError::ReplayFailure)?;
-    restore_checkpoint(&mut replay_machine, checkpoint)
-        .map_err(|_| TimelineError::ReplayFailure)?;
-    set_machine_output_suppressed(&mut replay_machine, true);
-    set_machine_probed(&mut replay_machine, true);
+    let machine = replay_machine_to_event(program, checkpoint, target_event, options)?;
+    Ok(capture_snapshot(&machine, target_event))
+}
 
-    while machine_events(&replay_machine).len() < target_event {
-        let exit_outcome = replay_machine.step_instruction();
-        if let Some(RunExit::Completed(_) | RunExit::Cancelled | RunExit::Trap(_)) = exit_outcome {
-            break;
+pub(crate) fn replay_machine_to_event<'program>(
+    program: &'program LoadedProgram,
+    checkpoint: &Checkpoint,
+    target_event: usize,
+    options: &RunOptions,
+) -> Result<Machine<'program>, TimelineError> {
+    if target_event < checkpoint.event_index {
+        return Err(TimelineError::ReplayFailure);
+    }
+    let mut machine = resume_machine(program, checkpoint.image.clone(), options.clone())
+        .map_err(|_| TimelineError::ReplayFailure)?;
+    let target_count = target_event
+        .checked_add(1)
+        .ok_or(TimelineError::ReplayFailure)?;
+    while machine_events(&machine).len() < target_count {
+        match machine.step_instruction() {
+            None => {}
+            Some(RunExit::Service(_)) => return Err(TimelineError::ReplayFailure),
+            Some(_) if machine_events(&machine).len() >= target_count => break,
+            Some(_) => return Err(TimelineError::ReplayFailure),
         }
     }
-
-    Ok(capture_snapshot(&replay_machine, target_event))
+    if machine_events(&machine).len() != target_count {
+        return Err(TimelineError::ReplayFailure);
+    }
+    Ok(machine)
 }

@@ -3,7 +3,7 @@
 ## 1. Qué es y qué no es
 
 Mide cargas de la API pública en proceso. Herramienta local; no es una capa del producto ni un sujeto de conformidad.
-Pendiente: mediciones de ejecución, eventos y estado cuando la API correspondiente esté implementada.
+El comando `execute` prepara las diez cargas AWFY de medición desde la exportación y emite treinta muestras por carga; valida salida y terminación fuera del intervalo. Pendientes: mediciones integradas de eventos y estado.
 
 ## 2. Guía operativa y ciclo de vida
 

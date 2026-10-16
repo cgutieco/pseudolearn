@@ -6,16 +6,18 @@ pub(super) fn source_state(
     instruction: &Instruction,
     register: Register,
 ) -> StaticState {
-    let position = context
-        .function
-        .fast
-        .instructions
-        .iter()
-        .position(|candidate| std::ptr::eq(candidate, instruction));
-    let state = position
-        .and_then(|position| u32::try_from(position).ok())
-        .and_then(|position| context.function.fast.definitions.get(&position))
-        .and_then(|states| states.get(&register));
+    let state = [&context.function.fast, &context.function.probed]
+        .into_iter()
+        .find_map(|variant| {
+            let position = variant
+                .instructions
+                .iter()
+                .position(|candidate| std::ptr::eq(candidate, instruction))?;
+            variant
+                .definitions
+                .get(&u32::try_from(position).ok()?)?
+                .get(&register)
+        });
     match state {
         Some(DefinitionState::Defined) => StaticState::Defined,
         Some(DefinitionState::Undefined) => StaticState::Undefined,

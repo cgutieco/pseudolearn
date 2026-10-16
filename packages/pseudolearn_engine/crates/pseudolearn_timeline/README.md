@@ -5,7 +5,7 @@
 Conserva una línea temporal consultable de la ejecución, con vistas inmutables de estado, deltas incrementales, puntos de control con sombra del montón y segmentos de deshacer de 64 palabras, raleo exponencial con fusión y retroceso determinista mediante máquina de reproducción.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
-Sin pendientes técnicos declarados en este crate.
+Pendientes técnicos: medición integrada de coste y memoria de puntos, deltas y reproducción; las consultas exactas no sustituyen la evidencia de rendimiento.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -20,6 +20,8 @@ Sombra del montón y segmentos de deshacer por bloques de 64 palabras, longitud 
 Invariantes: Restaurar un punto reproduce sus bits. Consultar el pasado no altera la continuación presente. El horizonte retenido se declara y las vistas entregadas son inmutables.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: una reproducción necesita descriptores del montón y estado de texto, entrada y observación además de palabras. Elección: los puntos conservan una imagen completa restaurable; las consultas usan una máquina independiente y rechazan eventos inalcanzables. Las consultas parciales leen solo la vista pedida. Se descarta conservar snapshots completos por evento. La reducción diferencial de imágenes y la reproducción rápida requieren validación de coste antes de declarar cumplimiento de rendimiento.
 
 El siguiente punto se programa a max(Q_min, κ·S) en masa de sentencia, con parámetros calibrados por coste y presupuesto. No se usa reloj para decidir puntos. Raleo exponencial fusiona segmentos conservando la imagen más antigua por bloque. Una VM independiente restaura sombra y segmentos, avanza rápido por masa de evento y cambia al sondeado en el bloque objetivo; densifica cerca del evento consultado. La salida se suprime y las entradas se releen de la cinta. La compactación de texto fuerza copia en el siguiente punto. Se rechaza barrera por escritura y copiar un estado completo por evento.
 

@@ -22,6 +22,10 @@ Imports internos permitidos: model, translation, generators, oracles; format sol
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+La correspondencia entre ejecución rápida y observada consume la ejecución observada por lotes de la API pública cuando el sujeto anuncia posicionamiento con recursos; los sujetos anteriores conservan la operación directa. Así una traza larga no rebasa el límite JSONL de una respuesta; el contraste conserva salida, terminación, diagnósticos y entradas consumidas. Los análisis rechazados se comparan por la operación directa, porque no pueden iniciar un recurso de ejecución. Se descarta ampliar el límite del transporte para acomodar una traza completa.
+
+El contraste entre objetivos materializa peticiones de ejecución y traza con el mismo traductor del corpus. Los programas sembrados se generan fuera del sujeto; su variante EMI elimina un bloque condicional de condición falsa agregado al final del algoritmo. La equivalencia EMI compara salida y terminación, mientras la paridad entre objetivos compara la respuesta completa de cada variante por separado. Se descarta exigir trazas idénticas entre fuentes distintas.
+
 diagnosticos compara multiconjuntos; diagnosticos_ordenados compara en orden los mismos campos observables. Ninguna comparación ordena ni deduplica resultados del sujeto. La semilla del caso se transmite sin transformación a seed del protocolo; su ausencia usa 42. `cancelacion_prueba` se transmite como `cancel_at_poll`, independiente de la cancelación por sentencia. El contador incluye condiciones para cancelar también bucles vacíos. La fuente y sus tramos se transmiten originales, también en casos de normalización NFC.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.

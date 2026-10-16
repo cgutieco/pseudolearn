@@ -31,14 +31,27 @@ version = "0.1.0"
 name = "pseudolearn_api"
 version = "0.1.0"
 dependencies = [
+ "pseudolearn_bytecode",
  "pseudolearn_diagnostics",
  "pseudolearn_ir",
  "pseudolearn_lexicon",
  "pseudolearn_lowering",
+ "pseudolearn_runtime",
  "pseudolearn_semantic",
  "pseudolearn_source",
  "pseudolearn_syntax",
+ "pseudolearn_timeline",
+ "pseudolearn_vm",
  "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "pseudolearn_bytecode"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_ir",
+ "pseudolearn_source",
  "serde_json",
 ]
 
@@ -77,6 +90,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "pseudolearn_library"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_diagnostics",
+ "pseudolearn_runtime",
+]
+
+[[package]]
 name = "pseudolearn_lowering"
 version = "0.1.0"
 dependencies = [
@@ -84,6 +105,14 @@ dependencies = [
  "pseudolearn_ir",
  "pseudolearn_semantic",
  "pseudolearn_source",
+]
+
+[[package]]
+name = "pseudolearn_runtime"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_abi",
+ "pseudolearn_diagnostics",
 ]
 
 [[package]]
@@ -111,6 +140,34 @@ dependencies = [
  "pseudolearn_diagnostics",
  "pseudolearn_lexicon",
  "pseudolearn_source",
+ "serde_json",
+]
+
+[[package]]
+name = "pseudolearn_timeline"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_bytecode",
+ "pseudolearn_diagnostics",
+ "pseudolearn_runtime",
+ "pseudolearn_vm",
+]
+
+[[package]]
+name = "pseudolearn_vm"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_bytecode",
+ "pseudolearn_diagnostics",
+ "pseudolearn_library",
+ "pseudolearn_runtime",
+ "pseudolearn_vm_dispatch",
+]
+
+[[package]]
+name = "pseudolearn_vm_dispatch"
+version = "0.1.0"
+dependencies = [
  "serde_json",
 ]
 

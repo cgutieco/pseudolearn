@@ -1,16 +1,12 @@
-use std::collections::BTreeMap;
-
-use pseudolearn_runtime::Handle;
-use pseudolearn_vm::{LoadedProgram, Machine, RunOptions, machine_statements_executed};
-
 use crate::checkpoint::capture_checkpoint;
-use crate::deltas::{StateDelta, compute_delta};
 use crate::error::TimelineError;
-use crate::replay::replay_to_event;
+use crate::inspect::{build_frame_view, build_single_object_view};
+use crate::replay::{replay_machine_to_event, replay_to_event};
 use crate::scheduler::{CostScheduler, SchedulerOptions};
 use crate::shadow::ShadowHeap;
 use crate::thinning::ThinningManager;
-use crate::views::{FrameView, ObjectView, StateSnapshot, VariableView, capture_snapshot};
+use crate::views::{FrameView, ObjectView, StateSnapshot, VariableValue, VariableView};
+use pseudolearn_vm::{LoadedProgram, Machine, RunOptions, machine_statements_executed};
 
 pub struct ExecutionTimeline<'program> {
     pub program: &'program LoadedProgram,
@@ -18,9 +14,7 @@ pub struct ExecutionTimeline<'program> {
     pub shadow: ShadowHeap,
     pub scheduler: CostScheduler,
     pub thinning: ThinningManager,
-    pub snapshots: Vec<StateSnapshot>,
-    pub deltas: Vec<StateDelta>,
-    pub exposure_table: BTreeMap<u64, Handle>,
+    latest_event: usize,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -42,53 +36,49 @@ impl<'program> ExecutionTimeline<'program> {
             shadow: ShadowHeap::new(),
             scheduler: CostScheduler::new(scheduler_options),
             thinning: ThinningManager::new(max_checkpoints),
-            snapshots: Vec::new(),
-            deltas: Vec::new(),
-            exposure_table: BTreeMap::new(),
+            latest_event: 0,
         }
     }
 
-    pub fn record_step(&mut self, machine: &Machine, event_index: usize) {
-        let snapshot = capture_snapshot(machine, event_index);
-        self.register_snapshot_objects(&snapshot);
-        if let Some(previous) = self.snapshots.last() {
-            let delta = compute_delta(previous, &snapshot);
-            self.deltas.push(delta);
+    pub fn record_step(
+        &mut self,
+        machine: &Machine,
+        event_index: usize,
+    ) -> Result<(), TimelineError> {
+        if event_index.checked_add(1) != Some(pseudolearn_vm::machine_events(machine).len()) {
+            return Err(TimelineError::ReplayFailure);
         }
-        self.snapshots.push(snapshot);
+        self.latest_event = event_index;
         let statements = machine_statements_executed(machine);
         if self.thinning.checkpoints_count() == 0 || self.scheduler.should_checkpoint(statements) {
             let checkpoint = capture_checkpoint(machine, event_index, &mut self.shadow);
-            let state_words = checkpoint
-                .machine_state
-                .heap_used
-                .saturating_add(checkpoint.machine_state.scalar_watermark);
-            self.scheduler.record_checkpoint(statements, state_words);
+            let state = &checkpoint.image.state;
+            let words = state.heap_used.saturating_add(state.scalar_watermark);
+            self.scheduler.record_checkpoint(statements, words);
             self.thinning.push_checkpoint(checkpoint);
         }
+        Ok(())
     }
 
     pub fn query_state(&mut self, event_index: usize) -> Result<StateSnapshot, TimelineError> {
         self.validate_event_boundaries(event_index)?;
-        if let Some(cached) = self
-            .snapshots
-            .iter()
-            .find(|candidate_snapshot| candidate_snapshot.event_index == event_index)
-        {
-            return Ok(cached.clone());
-        }
-        let checkpoint = self.thinning.find_candidate_checkpoint(event_index).ok_or(
-            TimelineError::PastHorizon {
-                requested: event_index,
-                horizon: self.thinning.horizon(),
-            },
-        )?;
+        let checkpoint = self
+            .thinning
+            .find_candidate_checkpoint(event_index)
+            .ok_or(TimelineError::ReplayFailure)?;
         replay_to_event(self.program, checkpoint, event_index, &self.options)
     }
 
     pub fn query_frames(&mut self, event_index: usize) -> Result<Vec<FrameView>, TimelineError> {
-        let snapshot = self.query_state(event_index)?;
-        Ok(snapshot.frames)
+        let machine = self.machine_at(event_index)?;
+        let mut frames = Vec::new();
+        for position in 0..machine.active_frames_count() {
+            let frame = machine
+                .active_frame(position)
+                .ok_or(TimelineError::ReplayFailure)?;
+            frames.push(build_frame_view(&machine, position, &frame));
+        }
+        Ok(frames)
     }
 
     pub fn query_variables(
@@ -96,16 +86,14 @@ impl<'program> ExecutionTimeline<'program> {
         event_index: usize,
         frame_position: usize,
     ) -> Result<Vec<VariableView>, TimelineError> {
-        let snapshot = self.query_state(event_index)?;
-        let total_frames = snapshot.frames.len();
-        let frame = snapshot
-            .frames
-            .get(frame_position)
+        let machine = self.machine_at(event_index)?;
+        let frame = machine
+            .active_frame(frame_position)
             .ok_or(TimelineError::InvalidFrame {
                 frame_position,
-                total_frames,
+                total_frames: machine.active_frames_count(),
             })?;
-        Ok(frame.variables.clone())
+        Ok(build_frame_view(&machine, frame_position, &frame).variables)
     }
 
     pub fn query_object(
@@ -113,11 +101,10 @@ impl<'program> ExecutionTimeline<'program> {
         event_index: usize,
         identity_ordinal: u64,
     ) -> Result<ObjectView, TimelineError> {
-        let snapshot = self.query_state(event_index)?;
-        snapshot
-            .objects
-            .into_iter()
-            .find(|candidate_object| candidate_object.identity_ordinal == identity_ordinal)
+        let machine = self.machine_at(event_index)?;
+        let handle = crate::array_view::find_identity(&machine, identity_ordinal)
+            .ok_or(TimelineError::InvalidObject { identity_ordinal })?;
+        build_single_object_view(&machine, handle)
             .ok_or(TimelineError::InvalidObject { identity_ordinal })
     }
 
@@ -126,64 +113,32 @@ impl<'program> ExecutionTimeline<'program> {
         event_index: usize,
         identity_ordinal: u64,
         slice_range: ArraySliceRange,
-    ) -> Result<Vec<String>, TimelineError> {
-        self.validate_event_boundaries(event_index)?;
-        let handle = self
-            .exposure_table
-            .get(&identity_ordinal)
-            .copied()
-            .ok_or(TimelineError::InvalidArray { identity_ordinal })?;
-        let checkpoint = self.thinning.find_candidate_checkpoint(event_index).ok_or(
-            TimelineError::PastHorizon {
-                requested: event_index,
-                horizon: self.thinning.horizon(),
-            },
-        )?;
-        let snapshot = replay_to_event(self.program, checkpoint, event_index, &self.options)?;
-        self.read_array_slice_elements(&snapshot, handle, slice_range)
+    ) -> Result<Vec<VariableValue>, TimelineError> {
+        let machine = self.machine_at(event_index)?;
+        crate::array_view::read_slice(&machine, identity_ordinal, slice_range)
     }
 
-    fn validate_event_boundaries(&self, target_event: usize) -> Result<(), TimelineError> {
+    fn machine_at(&self, event_index: usize) -> Result<Machine<'program>, TimelineError> {
+        self.validate_event_boundaries(event_index)?;
+        let checkpoint = self
+            .thinning
+            .find_candidate_checkpoint(event_index)
+            .ok_or(TimelineError::ReplayFailure)?;
+        replay_machine_to_event(self.program, checkpoint, event_index, &self.options)
+    }
+
+    fn validate_event_boundaries(&self, requested: usize) -> Result<(), TimelineError> {
         let horizon = self.thinning.horizon();
-        if target_event < horizon {
-            return Err(TimelineError::PastHorizon {
-                requested: target_event,
-                horizon,
-            });
+        if requested < horizon {
+            return Err(TimelineError::PastHorizon { requested, horizon });
         }
-        let latest_event = self
-            .snapshots
-            .last()
-            .map_or(0, |candidate_snapshot| candidate_snapshot.event_index);
-        if target_event > latest_event {
+        if requested > self.latest_event {
             return Err(TimelineError::FutureEvent {
-                requested: target_event,
-                latest: latest_event,
+                requested,
+                latest: self.latest_event,
             });
         }
         Ok(())
-    }
-
-    fn register_snapshot_objects(&mut self, snapshot: &StateSnapshot) {
-        for object in &snapshot.objects {
-            self.exposure_table
-                .entry(object.identity_ordinal)
-                .or_insert(Handle(object.handle_word));
-        }
-    }
-
-    fn read_array_slice_elements(
-        &self,
-        _snapshot: &StateSnapshot,
-        _handle: Handle,
-        slice_range: ArraySliceRange,
-    ) -> Result<Vec<String>, TimelineError> {
-        let mut elements = Vec::new();
-        for index in 0..slice_range.slice_length {
-            let offset = slice_range.start_index.saturating_add(index);
-            elements.push(format!("celda_{offset}"));
-        }
-        Ok(elements)
     }
 }
 

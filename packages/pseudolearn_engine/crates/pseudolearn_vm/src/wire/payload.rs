@@ -98,6 +98,7 @@ fn unescape_json_str(source: &str) -> Result<String, &'static str> {
                 Some('n') => result.push('\n'),
                 Some('r') => result.push('\r'),
                 Some('t') => result.push('\t'),
+                Some('u') => result.push(unicode_escape(&mut characters)?),
                 _ => return Err("Invalid escape sequence"),
             }
         } else {
@@ -105,4 +106,19 @@ fn unescape_json_str(source: &str) -> Result<String, &'static str> {
         }
     }
     Ok(result)
+}
+
+fn unicode_escape(characters: &mut impl Iterator<Item = char>) -> Result<char, &'static str> {
+    let mut code = 0_u32;
+    for _ in 0..4 {
+        let digit = characters
+            .next()
+            .and_then(|character| character.to_digit(16))
+            .ok_or("Invalid Unicode escape")?;
+        code = code
+            .checked_mul(16)
+            .and_then(|code| code.checked_add(digit))
+            .ok_or("Unicode escape overflow")?;
+    }
+    char::from_u32(code).ok_or("Invalid Unicode scalar")
 }

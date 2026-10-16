@@ -8,7 +8,9 @@ use pseudolearn_diagnostics::DiagnosticArgument;
 
 impl Machine<'_> {
     pub(crate) fn in_read_integer(&mut self, destination: u16) -> Result<Flow, Fault> {
-        self.ensure_input_requested();
+        if self.ensure_input_requested() {
+            return Ok(Flow::Continue);
+        }
         let Some(text) = self.next_input() else {
             self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
             return Ok(Flow::AwaitingInput);
@@ -33,7 +35,9 @@ impl Machine<'_> {
     }
 
     pub(crate) fn in_read_real(&mut self, destination: u16) -> Result<Flow, Fault> {
-        self.ensure_input_requested();
+        if self.ensure_input_requested() {
+            return Ok(Flow::Continue);
+        }
         let Some(text) = self.next_input() else {
             self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
             return Ok(Flow::AwaitingInput);
@@ -58,7 +62,9 @@ impl Machine<'_> {
     }
 
     pub(crate) fn in_read_boolean(&mut self, destination: u16) -> Result<Flow, Fault> {
-        self.ensure_input_requested();
+        if self.ensure_input_requested() {
+            return Ok(Flow::Continue);
+        }
         let Some(text) = self.next_input() else {
             self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
             return Ok(Flow::AwaitingInput);
@@ -84,7 +90,9 @@ impl Machine<'_> {
     }
 
     pub(crate) fn in_read_character(&mut self, destination: u16) -> Result<Flow, Fault> {
-        self.ensure_input_requested();
+        if self.ensure_input_requested() {
+            return Ok(Flow::Continue);
+        }
         let Some(text) = self.next_input() else {
             self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
             return Ok(Flow::AwaitingInput);
@@ -109,7 +117,9 @@ impl Machine<'_> {
     }
 
     pub(crate) fn in_read_string(&mut self, destination: u16) -> Result<Flow, Fault> {
-        self.ensure_input_requested();
+        if self.ensure_input_requested() {
+            return Ok(Flow::Continue);
+        }
         let Some(text) = self.next_input() else {
             self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
             return Ok(Flow::AwaitingInput);
@@ -126,7 +136,7 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
-    fn ensure_input_requested(&mut self) {
+    fn ensure_input_requested(&mut self) -> bool {
         if self.probed && !self.input_requested_emitted {
             let line = self.current_line();
             let depth = self.current_depth();
@@ -137,7 +147,10 @@ impl Machine<'_> {
                 payload: None,
             });
             self.input_requested_emitted = true;
+            self.cursor.program_counter = self.cursor.program_counter.saturating_sub(1);
+            return true;
         }
+        false
     }
 
     fn next_input(&mut self) -> Option<String> {

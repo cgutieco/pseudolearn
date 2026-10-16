@@ -27,7 +27,7 @@ pub fn capture_snapshot(machine: &Machine, event_index: usize) -> StateSnapshot 
     }
 }
 
-fn build_frame_view(
+pub(crate) fn build_frame_view(
     machine: &Machine,
     position: usize,
     inspection: &ActiveFrameInspection<'_>,
@@ -127,6 +127,11 @@ fn read_reference_variable(
         .get(register_index)
         .cloned()
         .unwrap_or(ValueType::Str);
+    if matches!(expected_type, ValueType::Cell(_))
+        && let Some(view) = crate::cell_view::inspect_cell(machine, handle_word, variable_name)
+    {
+        return view;
+    }
     let variable_type = format_value_type(&expected_type);
     if handle_word == 0 {
         return VariableView {
@@ -188,7 +193,7 @@ fn build_object_views(machine: &Machine) -> Vec<ObjectView> {
     views
 }
 
-fn build_single_object_view(machine: &Machine, handle: Handle) -> Option<ObjectView> {
+pub(crate) fn build_single_object_view(machine: &Machine, handle: Handle) -> Option<ObjectView> {
     let heap = machine.heap();
     let identity_ordinal = pseudolearn_runtime::allocation_ordinal(heap, handle).ok()?;
     let class_identifier = pseudolearn_runtime::object_class_identifier(heap, handle).ok()?;
@@ -221,7 +226,11 @@ fn build_single_object_view(machine: &Machine, handle: Handle) -> Option<ObjectV
     })
 }
 
-fn decode_field_value(machine: &Machine, kind: ValueKind, raw_word: u64) -> VariableValue {
+pub(crate) fn decode_field_value(
+    machine: &Machine,
+    kind: ValueKind,
+    raw_word: u64,
+) -> VariableValue {
     match kind {
         ValueKind::Integer => {
             let number = i64::from_ne_bytes(raw_word.to_ne_bytes());

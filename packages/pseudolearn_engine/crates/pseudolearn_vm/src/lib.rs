@@ -14,11 +14,12 @@ mod wire;
 pub use events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
 pub use load::{LoadedProgram, load};
 pub use machine::{
-    ActiveFrameInspection, Cell, Machine, MachineStateRecord, OpcodeProfile, SavedControlFrame,
-    create_machine, machine_cell, machine_defined, machine_events, machine_output,
-    machine_polls_executed, machine_program, machine_reference, machine_scalar,
-    machine_statements_executed, run, run_loaded, run_profiled, run_with_options,
-    set_machine_output_suppressed, set_machine_probed,
+    ActiveFrameInspection, Cell, Machine, MachineImage, MachineStateRecord, OpcodeProfile,
+    SavedControlFrame, create_machine, machine_cell, machine_defined, machine_events,
+    machine_output, machine_polls_executed, machine_program, machine_reference, machine_scalar,
+    machine_statements_executed, restore_machine_image, resume_machine, run, run_loaded,
+    run_profiled, run_with_options, set_machine_output_suppressed, set_machine_probed,
+    snapshot_machine, suspend_machine, take_machine_events,
 };
 pub use model::MemoryCount;
 pub use model::{Fuel, LimitKind, RunExit, RunResult, RuntimeValue, ServiceReason};

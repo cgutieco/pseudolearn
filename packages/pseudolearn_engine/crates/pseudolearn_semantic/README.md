@@ -30,6 +30,8 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+La división real amplía explícitamente ambos operandos enteros en el HIR; el tipo de resultado real no sustituye las conversiones de entrada. Se descarta emitir una operación entera y etiquetar su resultado como real.
+
 Problema: produce un hir tipado desde la resolución estática respetando los observables del corpus.
 Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`) en columnas; resolución de nombres y después de tipos; HIR tipado con la clase de valor de cada expresión; resolución de jerarquía y ranuras virtuales en mundo cerrado.
 Alternativas descartadas y fundamento: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.

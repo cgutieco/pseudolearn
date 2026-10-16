@@ -148,11 +148,11 @@ impl<'program> Machine<'program> {
     fn restore_banks_from_record(&mut self, record: &MachineStateRecord) {
         self.scalar_watermark = record.scalar_watermark;
         self.reference_watermark = record.reference_watermark;
-        self.scalars.resize(record.scalar_watermark, 0);
+        self.scalars.resize(record.scalars.len(), 0);
         self.scalars.copy_from_slice(&record.scalars);
-        self.references.resize(record.reference_watermark, 0);
+        self.references.resize(record.references.len(), 0);
         self.references.copy_from_slice(&record.references);
-        self.defined.resize(record.scalar_watermark, false);
+        self.defined.resize(record.defined.len(), false);
         self.defined.copy_from_slice(&record.defined);
     }
 
@@ -168,7 +168,11 @@ impl<'program> Machine<'program> {
         if frame_position < self.frames.len() {
             let frame = self.frames.get(frame_position)?;
             Some(ActiveFrameInspection {
-                function_name: &frame.function.name,
+                function_name: if frame.function.name.trim_start_matches('@') == "main" {
+                    &self.program.name
+                } else {
+                    &frame.function.name
+                },
                 names: &frame.function.names,
                 scalar_base: frame.scalar_base,
                 reference_base: frame.reference_base,
@@ -178,7 +182,11 @@ impl<'program> Machine<'program> {
             })
         } else {
             Some(ActiveFrameInspection {
-                function_name: &self.current.name,
+                function_name: if self.current.name.trim_start_matches('@') == "main" {
+                    &self.program.name
+                } else {
+                    &self.current.name
+                },
                 names: &self.current.names,
                 scalar_base: self.cursor.scalar_base,
                 reference_base: self.cursor.reference_base,

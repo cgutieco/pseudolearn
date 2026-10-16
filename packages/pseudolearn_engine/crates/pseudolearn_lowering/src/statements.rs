@@ -193,6 +193,10 @@ fn lower_write(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
+    if values.is_empty() && !newline {
+        context.builder.emit_void(Operation::StmtExit, vec![], span);
+        return;
+    }
     let mut operands = Vec::new();
     for &expression_id in values {
         let value = lower_expression(
@@ -203,6 +207,7 @@ fn lower_write(
         );
         operands.push(Operand::Value(value));
     }
+    ensure_output_value(&mut operands, context.builder);
     if newline {
         operands.push(Operand::Newline);
     }
@@ -246,10 +251,24 @@ fn lower_return(
             context.environment,
             context.builder,
         );
+        context.builder.emit_void(Operation::StmtExit, vec![], span);
         context
             .builder
             .emit_void(Operation::Return, vec![Operand::Value(return_value)], span);
     } else {
+        context.builder.emit_void(Operation::StmtExit, vec![], span);
         context.builder.emit_void(Operation::Return, vec![], span);
+    }
+}
+
+fn ensure_output_value(operands: &mut Vec<Operand>, builder: &mut crate::builder::FunctionBuilder) {
+    if operands.is_empty() {
+        let empty = builder.next_value();
+        builder.emit_with_target(
+            Operation::ConstStr,
+            vec![Operand::LiteralStr(String::new())],
+            (Some(empty), None),
+        );
+        operands.push(Operand::Value(empty));
     }
 }

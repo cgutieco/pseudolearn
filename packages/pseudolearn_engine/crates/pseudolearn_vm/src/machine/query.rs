@@ -12,6 +12,10 @@ pub fn machine_events<'machine>(machine: &'machine Machine<'_>) -> &'machine [Tr
     &machine.events
 }
 
+pub fn take_machine_events(machine: &mut Machine<'_>) -> Vec<TraceEvent> {
+    std::mem::take(&mut machine.events)
+}
+
 pub fn machine_output<'machine>(machine: &'machine Machine<'_>) -> &'machine str {
     &machine.output
 }
@@ -54,4 +58,19 @@ pub fn create_machine<'program>(
     options: RunOptions,
 ) -> Result<Machine<'program>, VmTrap> {
     Machine::start(program, fuel, options)
+}
+
+impl Machine<'_> {
+    pub fn replace_input_tape(&mut self, inputs: Vec<String>) {
+        self.inputs = inputs;
+    }
+    pub fn input_consumed_count(&self) -> usize {
+        self.input_index
+    }
+    pub fn execution_diagnostics(&self) -> &[VmTrap] {
+        &self.diagnostics
+    }
+    pub fn supply_input(&mut self, text: String) {
+        self.inputs.push(text);
+    }
 }

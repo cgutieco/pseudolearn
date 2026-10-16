@@ -37,6 +37,10 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: medir ejecución no debe incluir compilación. Elección: `PreparedProgram` conserva un programa cargado inmutable; `prepare_program` compila y `execute_prepared` crea una ejecución nueva con semilla, límites y entradas explícitos. Se descarta medir el arranque del adaptador o la serialización. El trabajador valida cada salida fuera del intervalo.
+
+Problema: ejecutar y suspender deben compartir semántica sin exponer estado mutable interno. Elección: la API posee programas e imágenes de ejecución independientes, administra identificadores de recursos y devuelve errores tipados. El adaptador y la CLI solo consumen esta frontera. Se descartan implementaciones de ejecución independientes en consumidores.
+
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo respetando los observables del corpus.
 Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
 Alternativas descartadas y fundamento: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.

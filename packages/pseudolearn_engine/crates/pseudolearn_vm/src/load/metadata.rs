@@ -48,9 +48,14 @@ pub(super) fn layouts(module: &BytecodeModule) -> Result<Vec<Arc<ObjectLayout>>,
 
 pub(super) fn roots(
     function: &BytecodeFunction,
+    probed: bool,
 ) -> Result<BTreeMap<usize, Vec<(u16, bool)>>, VmTrap> {
-    function
-        .fast
+    let variant = if probed {
+        &function.probed
+    } else {
+        &function.fast
+    };
+    variant
         .roots
         .iter()
         .map(|(position, roots)| {

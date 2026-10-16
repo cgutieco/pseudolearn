@@ -83,6 +83,9 @@ pub fn real_multiply(left: f64, right: f64) -> Result<f64, ArithmeticError> {
 
 #[inline]
 pub fn real_divide(left: f64, right: f64) -> Result<f64, ArithmeticError> {
+    if right == 0.0 {
+        return Err(ArithmeticError::DivisionByZero);
+    }
     finite(left / right)
 }
 

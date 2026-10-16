@@ -130,7 +130,9 @@ pub fn evaluate_for_bounds(
         context.environment,
         context.builder,
     );
+    let ending_value = freeze_control_value(ending_value, span, context.builder);
     let step_value = resolve_step_value(descriptor.step, span, context);
+    let step_value = freeze_control_value(step_value, span, context.builder);
     context.builder.emit_void(
         Operation::LoopCheckStep,
         vec![Operand::Value(step_value)],
@@ -160,4 +162,24 @@ fn resolve_step_value(
         );
         default_step
     }
+}
+
+fn freeze_control_value(
+    value: ValueId,
+    span: Option<IrSpan>,
+    builder: &mut FunctionBuilder,
+) -> ValueId {
+    let zero = builder.next_value();
+    builder.emit_with_target(
+        Operation::ConstI64,
+        vec![Operand::LiteralI64(0)],
+        (Some(zero), None),
+    );
+    let frozen = builder.next_value();
+    builder.emit_with_target(
+        Operation::IntAdd,
+        vec![Operand::Value(value), Operand::Value(zero)],
+        (Some(frozen), span),
+    );
+    frozen
 }

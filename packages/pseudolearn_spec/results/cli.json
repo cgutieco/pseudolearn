@@ -4,7 +4,7 @@
     "TOOL.CLI.CONVENTIONS": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
     "TOOL.CLI.IR": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
     "TOOL.CLI.MESSAGES": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
-    "TOOL.CLI.RUN": "9bbf5239898bd6298ba0a98320d6d4112c593b51da639c45492d8f07a7e89988"
+    "TOOL.CLI.RUN": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca"
   },
   "observations": [
     {
@@ -817,12 +817,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "Verdadero\n"
       },
       "case": "C3",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "Verdadero\n",
@@ -832,7 +830,7 @@
       "rule": "R2",
       "specification": "TOOL.CLI.MESSAGES",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -840,12 +838,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "1\n"
       },
       "case": "C1",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "1\n",
@@ -855,7 +851,7 @@
       "rule": "R1",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -863,12 +859,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "1\n"
       },
       "case": "C2",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "1\n",
@@ -878,7 +872,7 @@
       "rule": "R1",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -886,12 +880,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "42\n"
       },
       "case": "C3",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "42\n",
@@ -901,21 +893,18 @@
       "rule": "R1",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
-        "error_output": "",
-        "exit_code": 0,
+        "error_output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+        "exit_code": 1,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C4",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "",
@@ -925,43 +914,39 @@
       "rule": "R1",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
-        "error_output": "",
-        "exit_code": 0,
+        "error_output": "p.pseudo:4:12: error: División por cero [divisionByZero]\n",
+        "exit_code": 1,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C5",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "",
-        "salida_error": "p.pseudo:4:10: error: División por cero [divisionByZero]\n"
+        "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n"
       },
       "profile": "es",
       "rule": "R2",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
         "error_output": "",
-        "exit_code": 0,
+        "exit_code": 1,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C6",
       "differences": [
-        "Mismatch: codigo_salida",
         "Mismatch: salida_error"
       ],
       "expected": {
@@ -977,18 +962,14 @@
     },
     {
       "actual": {
-        "error_output": "",
-        "exit_code": 0,
+        "error_output": "p.pseudo:4:1: información: Se agotó el presupuesto de sentencias: 2 [statementBudgetExhausted]\n",
+        "exit_code": 1,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "1\n2\n"
       },
       "case": "C7",
-      "differences": [
-        "Mismatch: codigo_salida",
-        "Mismatch: salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "1\n2\n",
@@ -998,7 +979,7 @@
       "rule": "R2",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -1006,12 +987,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "5415695640260286\n"
       },
       "case": "C8",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "5415695640260286\n",
@@ -1021,7 +1000,7 @@
       "rule": "R3",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
@@ -1029,12 +1008,10 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "fin\n"
       },
       "case": "C9",
-      "differences": [
-        "Mismatch: salida"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "fin\n",
@@ -1044,21 +1021,18 @@
       "rule": "R3",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
-        "error_output": "",
+        "error_output": "p.pseudo:2  entra en sentencia  Escribir 1;\np.pseudo:2  escribe  1\\n\np.pseudo:2  sale de sentencia  Escribir 1;\n",
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "1\n"
       },
       "case": "C10",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "1\n",
@@ -1068,21 +1042,18 @@
       "rule": "R4",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {
-        "error_output": "",
+        "error_output": "p.pseudo:2  enters statement  Escribir 1;\np.pseudo:2  writes  1\\n\np.pseudo:2  exits statement  Escribir 1;\n",
         "exit_code": 0,
         "json": null,
         "kind": "cli",
-        "output": ""
+        "output": "1\n"
       },
       "case": "C11",
-      "differences": [
-        "Mismatch: salida",
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 0,
         "salida": "1\n",
@@ -1092,7 +1063,7 @@
       "rule": "R4",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     }
   ],
   "protocol": "see-protocol/1",

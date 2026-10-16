@@ -80,7 +80,7 @@ fn initial_snapshot_captures_main_frame_and_registers() {
     let Some(main_frame) = main_frame else {
         return;
     };
-    assert_eq!(main_frame.function_name, "@main");
+    assert_eq!(main_frame.function_name, "P");
 }
 
 #[test]

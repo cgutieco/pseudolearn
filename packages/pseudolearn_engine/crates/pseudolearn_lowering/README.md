@@ -28,6 +28,10 @@ Invariantes: Cada bloque tiene una masa igual a su cantidad de stmt.enter. Las c
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Los locales respaldados por celdas conservan su asa estable a través de un bucle y no reciben parámetros SSA escalares. Se descarta acarrear como entero una referencia de celda: las escrituras indirectas ya conservan el valor y el alias.
+
+Los límites y el paso de Para se congelan en temporales sin origen de variable para que una escritura del cuerpo no altere los controles ya evaluados. Mientras tiene una entrada a sentencia para el bucle completo y una decisión por prueba, incluida la final. La escritura sin valores usa un texto vacío, manteniendo el evento de salida y su salto opcional. Se descartan ranuras de origen mutables como caché de límites, entradas repetidas al bucle y RI inválida para salida vacía.
+
 Escribir evalúa todos sus operandos antes del único out.write. Para evalúa inicial, final y paso una vez, comprueba paso, prueba inclusive por signo e incrementa con comprobación aun tras la última iteración. Los índices de celdas por referencia se evalúan y comprueban antes de llamar. La desvirtualización usa la jerarquía cerrada. Se omite value.require solo para lecturas demostradas asignadas; los enteros restantes reciben definición SSA.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia

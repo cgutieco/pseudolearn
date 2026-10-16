@@ -125,6 +125,7 @@ fn escape_json_str(input: &str, out: &mut String) {
             '\n' => out.push_str("\\n"),
             '\r' => out.push_str("\\r"),
             '\t' => out.push_str("\\t"),
+            other if u32::from(other) < 32 => out.push_str(&format!("\\u{:04x}", u32::from(other))),
             other => out.push(other),
         }
     }

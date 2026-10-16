@@ -48,8 +48,16 @@ fn checked_real_operations_reject_non_finite_results() {
         real_add(f64::MAX, f64::MAX),
         Err(ArithmeticError::NonFiniteRealResult)
     );
+    assert_eq!(real_divide(1.0, 0.0), Err(ArithmeticError::DivisionByZero));
+}
+
+#[test]
+fn real_division_distinguishes_zero_divisors_from_overflow() {
+    assert_eq!(real_divide(0.0, -0.0), Err(ArithmeticError::DivisionByZero));
+    assert_eq!(real_divide(1.0, -0.0), Err(ArithmeticError::DivisionByZero));
     assert_eq!(
-        real_divide(1.0, 0.0),
+        real_divide(f64::MAX, 0.5),
         Err(ArithmeticError::NonFiniteRealResult)
     );
+    assert_eq!(real_divide(-9.0, 2.0), Ok(-4.5));
 }
