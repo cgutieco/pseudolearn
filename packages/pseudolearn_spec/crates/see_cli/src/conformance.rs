@@ -56,6 +56,7 @@ pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> 
         format!("results/{subject}.json")
     };
     let evidence: Evidence = storage::read_json(&arguments.root.join(&result_path))?;
+    let evidence = with_properties(arguments, subject, evidence)?;
     if evidence.subject != subject {
         return Err("SEE-PROTOCOL: evidence subject mismatch".to_owned());
     }
@@ -133,17 +134,33 @@ fn artifact_paths(subject: &str) -> (String, String) {
     }
 }
 
+fn with_properties(
+    arguments: &Arguments,
+    subject: &str,
+    mut evidence: Evidence,
+) -> Result<Evidence, String> {
+    let path = arguments
+        .root
+        .join(format!("results/properties-{subject}.json"));
+    if path.exists() {
+        let recorded: Evidence = storage::read_json(&path)?;
+        evidence.properties.extend(recorded.properties);
+    }
+    Ok(evidence)
+}
+
 fn save(
     arguments: &Arguments,
     selected: &Corpus,
     conformance: &Conformance,
     evidence: &Evidence,
 ) -> Result<String, String> {
-    let rows = see_report::matrix(selected, conformance, evidence);
     let subject = arguments
         .options
         .get("subject")
         .map_or("reference", String::as_str);
+    let combined = with_properties(arguments, subject, evidence.clone())?;
+    let rows = see_report::matrix(selected, conformance, &combined);
     let (result_file, matrix_file) = artifact_paths(subject);
     storage::artifact(
         &arguments.root.join(result_file),

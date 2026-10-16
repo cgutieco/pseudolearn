@@ -56,12 +56,14 @@ fn row(
         })
         .collect();
     let measurements = coverage::measurements(specification, rule);
-    let measured = if observations.is_empty() && !measurements.is_empty() {
+    let verdicts = collect_verdicts(&observations, specification, rule, evidence);
+    let measured = if verdicts.is_empty() && !measurements.is_empty() {
         "no aplicable"
     } else {
-        measurement(&observations)
+        measurement(&verdicts)
     };
-    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": observations.len(), "measurements": measurements, "state": specification.metadata.estado})
+    let cases = verdicts.len();
+    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": cases, "measurements": measurements, "state": specification.metadata.estado})
 }
 
 pub fn regressions(rows: &[Value], conformance: &Conformance) -> Vec<String> {
@@ -114,16 +116,44 @@ pub fn feature(corpus: &Corpus, manifest: &Manifest) -> Result<Value, String> {
     )
 }
 
-fn measurement(observations: &[&see_model::evidence::Observation]) -> &'static str {
-    if observations.is_empty() {
+fn collect_verdicts<'evidence>(
+    observations: &[&'evidence see_model::evidence::Observation],
+    specification: &see_model::Specification,
+    rule: &see_model::Block,
+    evidence: &'evidence Evidence,
+) -> Vec<&'evidence str> {
+    let mut verdicts: Vec<&str> = observations
+        .iter()
+        .map(|observation| observation.verdict.as_str())
+        .collect();
+    verdicts.extend(property_verdicts(specification, rule, evidence));
+    verdicts
+}
+
+fn property_verdicts<'evidence>(
+    specification: &see_model::Specification,
+    rule: &see_model::Block,
+    evidence: &'evidence Evidence,
+) -> Vec<&'evidence str> {
+    let verifying = see_model::strings(rule.fields.get("verificacion"));
+    let identity = format!(
+        "{}@{}",
+        specification.metadata.id, specification.metadata.version
+    );
+    evidence
+        .properties
+        .iter()
+        .filter(|run| run.specification == identity && verifying.contains(&run.property.as_str()))
+        .map(|run| run.verdict.as_str())
+        .collect()
+}
+
+fn measurement(verdicts: &[&str]) -> &'static str {
+    if verdicts.is_empty() {
         return "sin evidencia";
     }
     ["incumple", "pendiente", "no aplicable"]
         .into_iter()
-        .find(|verdict| {
-            observations
-                .iter()
-                .any(|observation| observation.verdict == *verdict)
-        })
+        .find(|verdict| verdicts.contains(verdict))
         .unwrap_or("cumple")
 }

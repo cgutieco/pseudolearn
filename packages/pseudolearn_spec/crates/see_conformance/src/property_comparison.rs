@@ -5,7 +5,10 @@ use serde_json::{Value, json};
 
 pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool {
     let capability = match executor {
-        PropertyExecutor::Determinism | PropertyExecutor::LoweringExecution => "execute",
+        PropertyExecutor::Determinism
+        | PropertyExecutor::LoweringExecution
+        | PropertyExecutor::FirstTrap
+        | PropertyExecutor::FusedFirstTrap => "execute",
         PropertyExecutor::ObservationCorrespondence => "observe",
         PropertyExecutor::GcTransparency | PropertyExecutor::IdentityStability => "gc_stress",
         _ => "api",
@@ -36,10 +39,23 @@ pub(crate) fn check(
         | PropertyExecutor::InterfaceLanguage => {
             crate::property_resources::check(executor, scenario, subject)
         }
+        _ => check_extended(executor, scenario, subject),
+    }
+}
+
+fn check_extended(
+    executor: PropertyExecutor,
+    scenario: &Scenario,
+    subject: &mut impl PropertySubject,
+) -> Result<Option<(Value, Value)>, String> {
+    match executor {
         PropertyExecutor::SnapshotIsolation
         | PropertyExecutor::PastStateIsolation
         | PropertyExecutor::DeltaMinimality
         | PropertyExecutor::DeltaReconstruction => {
+            if !scenario.traced {
+                return Ok(None);
+            }
             crate::property_states::check(executor, scenario, subject)
         }
         PropertyExecutor::StepPartition
@@ -49,7 +65,20 @@ pub(crate) fn check(
         | PropertyExecutor::HostRecording
         | PropertyExecutor::StateQuery
         | PropertyExecutor::WireRoundtrip => {
+            if !recorded(executor, scenario) {
+                return Ok(None);
+            }
             crate::property_recording::check(executor, scenario, subject)
+        }
+        PropertyExecutor::LosslessReprint
+        | PropertyExecutor::LosslessRecovery
+        | PropertyExecutor::LoweringValidity
+        | PropertyExecutor::StatementMass
+        | PropertyExecutor::AnalysisSchema => {
+            crate::property_syntax::check(executor, scenario, subject)
+        }
+        PropertyExecutor::FirstTrap | PropertyExecutor::FusedFirstTrap => {
+            crate::property_traps::check(executor, scenario, subject)
         }
         _ => Err("SEE-PROPERTY: executor unavailable".to_owned()),
     }
@@ -124,4 +153,18 @@ fn normative(
     };
     Ok((!crate::comparison::compare(expected, &actual).is_empty())
         .then(|| (expected.clone(), actual)))
+}
+
+fn recorded(executor: PropertyExecutor, scenario: &Scenario) -> bool {
+    let has_inputs = scenario
+        .request
+        .get("inputs")
+        .and_then(Value::as_array)
+        .is_some_and(|inputs| !inputs.is_empty());
+    match executor {
+        PropertyExecutor::InputBatching | PropertyExecutor::HostRecording => {
+            scenario.traced || has_inputs
+        }
+        _ => scenario.traced,
+    }
 }

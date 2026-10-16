@@ -21,6 +21,8 @@ mod property_resources;
 mod property_scenarios;
 mod property_states;
 mod property_steps;
+mod property_syntax;
+mod property_traps;
 
 pub mod target_programs;
 

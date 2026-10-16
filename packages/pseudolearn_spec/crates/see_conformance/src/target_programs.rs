@@ -53,21 +53,22 @@ pub fn format_boundaries(vocabulary: &Vocabulary) -> Result<Vec<(Value, u64)>, S
     for profile in ["es", "en"] {
         for word in words {
             for bits in [word, word | (1_u64 << 63)] {
-                let mut literal = f64::from_bits(bits).to_string();
-                if !literal.contains(['.', 'e', 'E']) {
-                    literal.push_str(".0");
-                }
-                let template = format!(
-                    "{{{{lexema:algorithm}}}} FormatBoundary\n{{{{lexema:write}}}} {literal};\n{{{{lexema:endAlgorithm}}}}\n"
-                );
-                let source = see_translation::lexemes::resolve(&template, profile, vocabulary)?;
-                requests.push((
-                    json!({"kind":"execute","program":source,"profile":profile,
-                    "strictness":"strict","inputs":[],"seed":42,"observe":"none"}),
-                    bits,
-                ));
+                requests.push((format_request(profile, bits, vocabulary)?, bits));
             }
         }
     }
     Ok(requests)
+}
+
+fn format_request(profile: &str, bits: u64, vocabulary: &Vocabulary) -> Result<Value, String> {
+    let mut literal = f64::from_bits(bits).to_string();
+    if !literal.contains(['.', 'e', 'E']) {
+        literal.push_str(".0");
+    }
+    let template = format!(
+        "{{{{lexema:algorithm}}}} FormatBoundary\n{{{{lexema:write}}}} {literal};\n{{{{lexema:endAlgorithm}}}}\n"
+    );
+    let source = see_translation::lexemes::resolve(&template, profile, vocabulary)?;
+    Ok(json!({"kind":"execute","program":source,"profile":profile,
+        "strictness":"strict","inputs":[],"seed":42,"observe":"none"}))
 }

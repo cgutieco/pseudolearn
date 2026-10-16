@@ -7,6 +7,7 @@ use serde_json::{Value, json};
 pub(crate) struct Scenario {
     pub request: Value,
     pub expected: Option<Value>,
+    pub traced: bool,
 }
 
 pub(crate) fn executions(
@@ -18,6 +19,7 @@ pub(crate) fn executions(
         for case in &specification.blocks {
             if case.kind == "caso" && matches!(requests::operation(case), "execute" | "trace") {
                 append_case(case, vocabulary, &mut scenarios)?;
+                mark_traced(case, &mut scenarios);
             }
         }
     }
@@ -47,10 +49,24 @@ fn append_case(
             scenarios.push(Scenario {
                 request: requests::build(case, &selection, vocabulary)?,
                 expected: Some(expected),
+                traced: false,
             });
         }
     }
     Ok(())
+}
+
+fn mark_traced(case: &see_model::Block, scenarios: &mut [Scenario]) {
+    if requests::operation(case) != "trace" {
+        return;
+    }
+    let appended = strings(case.fields.get("perfiles"))
+        .len()
+        .saturating_mul(strings(case.fields.get("rigor")).len());
+    let start = scenarios.len().saturating_sub(appended);
+    for scenario in scenarios.iter_mut().skip(start) {
+        scenario.traced = true;
+    }
 }
 
 pub(crate) fn generated(
@@ -67,6 +83,7 @@ pub(crate) fn generated(
             "observe":"events", "limits":{"micro_steps":100_000},
         }),
         expected: Some(generated_expectation(&program)?),
+        traced: true,
     })
 }
 

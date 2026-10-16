@@ -1,6 +1,6 @@
 [
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 5,
     "measured": "cumple",
     "measurements": [],
@@ -40,7 +40,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 3,
     "measured": "cumple",
     "measurements": [],
@@ -50,7 +50,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 8,
     "measured": "cumple",
     "measurements": [],
@@ -80,7 +80,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -90,7 +90,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -110,7 +110,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -120,7 +120,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -130,7 +130,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 3,
     "measured": "cumple",
     "measurements": [],
@@ -140,7 +140,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -150,7 +150,7 @@
     "subject": "cli"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],

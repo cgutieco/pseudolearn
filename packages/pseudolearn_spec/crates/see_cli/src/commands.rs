@@ -23,14 +23,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
         "impact" => {
             see_graph::impact(&corpus, first(&arguments)?).map(|affected| affected.join("\n"))
         }
-        "lock" => {
-            let lock = see_change::locking::generate(&corpus, &storage::lock(&arguments.root)?)?;
-            storage::artifact(
-                &arguments.root.join("specifications/specifications.lock"),
-                &json!(lock),
-                arguments.options.contains_key("check"),
-            )
-        }
+        "lock" => lock(&arguments, &corpus),
         "export" => crate::resources::export(
             &arguments.root,
             &corpus,
@@ -42,6 +35,15 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
         "feature" => feature(&arguments, &corpus),
         _ => Err(format!("Unknown command: {}", arguments.command)),
     }
+}
+
+fn lock(arguments: &Arguments, corpus: &see_model::Corpus) -> Result<String, String> {
+    let lock = see_change::locking::generate(corpus, &storage::lock(&arguments.root)?)?;
+    storage::artifact(
+        &arguments.root.join("specifications/specifications.lock"),
+        &json!(lock),
+        arguments.options.contains_key("check"),
+    )
 }
 
 pub fn first(arguments: &Arguments) -> Result<&str, String> {

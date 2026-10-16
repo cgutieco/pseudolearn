@@ -123,14 +123,12 @@
     {
       "regla": "API.ANALYZE@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.ANALYZE@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "DIAG.CATALOG@0.5.0#R1",
@@ -145,8 +143,7 @@
     {
       "regla": "DIAG.CLASSES@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
@@ -166,146 +163,122 @@
     {
       "regla": "DIAG.ORDERING@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "DIAG.SEVERITY.POLICY@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.ARRAY.ACCESS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.ARRAY.DIMENSION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.COPY@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.DECLARATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.FIELDS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.INHERITANCE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.METHODS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.OVERRIDE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.FOR@0.3.1#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.IF@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.REPEAT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.SWITCH@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.CONTROL.WHILE@0.2.0#R1",
@@ -315,32 +288,27 @@
     {
       "regla": "LANG.DECL.DESIGNATOR@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.DECL.UNUSED@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.DECL.VARIABLE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.EDITION.MODEL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.IO.INPUT@0.2.0#R1",
@@ -350,62 +318,52 @@
     {
       "regla": "LANG.IO.OUTPUT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.COMMENT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.ERRORS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.OPS.ARITHMETIC@0.2.0#R1",
@@ -415,20 +373,17 @@
     {
       "regla": "LANG.OPS.COMPARISON@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.OPS.CONCATENATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.OPS.DIVISION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.OPS.LOGICAL@0.2.0#R1",
@@ -438,8 +393,7 @@
     {
       "regla": "LANG.OPS.PRECEDENCE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.PROFILE.MODEL@0.2.0#R1",
@@ -449,26 +403,22 @@
     {
       "regla": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SOURCE.ENCODING@0.2.0#R1",
@@ -478,86 +428,72 @@
     {
       "regla": "LANG.SOURCE.ENCODING@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SOURCE.POSITION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.STMT.TERMINATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
@@ -567,20 +503,17 @@
     {
       "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.ARRAY@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.BOOLEAN@0.2.0#R1",
@@ -590,198 +523,169 @@
     {
       "regla": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.CLASS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.INFERENCE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.RELATIONS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.CONVERSION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.COPY@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.MATH@0.3.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.RANDOM@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.ROUNDING@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.MODEL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
-      "verificacion": "codigo",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
-      "verificacion": "codigo",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "exento",
+      "justificacion": "Regla de verificación estructural: la API no expone guarda de tiempo y ninguna petición la configura; la revisión del contrato de límites confirma que la única terminación no determinista queda ausente."
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "exento",
+      "justificacion": "Regla de revisión humana: los valores por omisión son informativos y cada cliente los fija en su propia configuración; no hay observación automática posible."
     },
     {
       "regla": "ENG.EXEC.MODEL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.MODEL@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.MODEL@0.2.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.REAL@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.CHARACTER@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.TEXT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.INTEGER@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.INTEGER@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.TYPES.INTEGER@0.2.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.OPS.POWER@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LIB.CORE.TEXT@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "PERF.VM.STEP-LATENCY@0.2.0#R1",
@@ -798,446 +702,374 @@
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.SNAPSHOT@0.1.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.INCREMENTAL@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.INCREMENTAL@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.STATE.INCREMENTAL@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.STEP@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.STEP@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.STEP@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.STEP@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.INPUT@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.INPUT@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.INPUT@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "ENG.INPUT@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.SOURCE-MAP@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.SOURCE-MAP@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.MODEL@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.MODEL@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.MODEL@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.MODEL@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.OBSERVATION-POINTS@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.OBSERVATION-POINTS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.OBSERVATION-POINTS@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "exento",
+      "justificacion": "Regla estructural del corpus: la cobertura de instrucciones por regla de LANG y LIB la verifica `see validate` sobre los bloques cobertura, no el motor."
     },
     {
       "regla": "IR.TEXT-FORMAT@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.TEXT-FORMAT@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.TEXT-FORMAT@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R5",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R6",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R7",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.WELL-FORMEDNESS@0.1.0#R9",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.LOWERING@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.LOWERING@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "IR.LOWERING@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "RT.HOST.INTERFACE@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.EXECUTE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.EXECUTE@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.EXECUTE@0.2.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.EXECUTE@0.2.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.WIRE-FORMAT@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "exento",
+      "justificacion": "El caso C1 es de operación cli y lo ejecuta el sujeto cli; el motor no recibe argumentos de línea de órdenes y su JSON canónico lo cubre la propiedad de ida y vuelta del formato de eventos."
     },
     {
       "regla": "API.WIRE-FORMAT@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.ERRORS@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.ERRORS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.MODEL@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.MODEL@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.VERSIONING@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.VERSIONING@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.STATE.QUERY@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.STATE.QUERY@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "API.STATE.QUERY@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "PERF.VM.THROUGHPUT@0.1.0#R1",
@@ -1254,62 +1086,52 @@
     {
       "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.VALUE.COPY@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.VALUE.COPY@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.VALUE.COPY@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.VALUE.COPY@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.IDENTITY@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.IDENTITY@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.IDENTITY@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     },
     {
       "regla": "MEM.IDENTITY@0.1.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R5"
+      "estado": "cumple"
     }
   ]
 }

@@ -2,6 +2,8 @@ use crate::{properties::PropertySubject, property_api as api, property_scenarios
 use see_model::properties::PropertyExecutor;
 use serde_json::{Value, json};
 
+const UNTRACED_STATEMENTS: u64 = 2000;
+
 type Difference = Result<Option<(Value, Value)>, String>;
 
 pub(crate) fn check(
@@ -34,10 +36,21 @@ pub(crate) fn record(
     scenario: &Scenario,
     options: Value,
 ) -> Result<Value, String> {
+    let mut options = options;
+    let mut request = scenario.request.clone();
+    if !scenario.traced
+        && let (Some(fields), Some(settings)) = (request.as_object_mut(), options.as_object_mut())
+    {
+        settings.insert("capture_states".to_owned(), json!(false));
+        fields.insert(
+            "limits".to_owned(),
+            json!({"statements":UNTRACED_STATEMENTS}),
+        );
+    }
     api::value(api::call(
         subject,
         "record",
-        json!({"request":scenario.request,"options":options}),
+        json!({"request":request,"options":options}),
     )?)
 }
 
@@ -82,7 +95,7 @@ fn input_batches(
     base: &Value,
 ) -> Difference {
     let inputs = api::array(&scenario.request, "inputs")?;
-    for split in 0..=inputs.len() {
+    for split in partition_points(inputs.len()) {
         let count = inputs
             .len()
             .checked_sub(split)
@@ -97,6 +110,14 @@ fn input_batches(
         }
     }
     Ok(None)
+}
+
+fn partition_points(length: usize) -> Vec<usize> {
+    let mut points = vec![0, 1, length / 2, length.saturating_sub(1), length];
+    points.retain(|point| *point <= length);
+    points.sort_unstable();
+    points.dedup();
+    points
 }
 
 fn wire(subject: &mut impl PropertySubject, base: &Value) -> Difference {

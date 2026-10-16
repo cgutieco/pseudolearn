@@ -144,103 +144,103 @@
   "observations": [],
   "properties": [
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.ANALYZE@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.ERRORS@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.ERRORS@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.EXECUTE@0.2.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.MODEL@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.MODEL@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.STATE.QUERY@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.VERSIONING@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.VERSIONING@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "API.WIRE-FORMAT@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.EXEC.EFFECT-ORDER@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
       "completed": 1068,
@@ -252,85 +252,85 @@
       "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.INPUT@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.STATE.INCREMENTAL@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.STATE.INCREMENTAL@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P3",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.STATE.INCREMENTAL@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.STATE.SNAPSHOT@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.TRACE.STEP@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "ENG.TRACE.STEP@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "IR.INSTRUCTIONS@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "IR.LOWERING@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
       "completed": 1068,
@@ -342,13 +342,13 @@
       "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P3",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "IR.LOWERING@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
       "completed": 1068,
@@ -378,31 +378,31 @@
       "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "RT.HOST.INTERFACE@0.1.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P1",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     },
     {
-      "completed": 0,
+      "completed": 1068,
       "counterexample": null,
       "property": "P2",
-      "samples": 100,
+      "samples": 1068,
       "seed": 42,
       "specification": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0",
-      "verdict": "pendiente"
+      "verdict": "cumple"
     }
   ],
   "protocol": "see-protocol/1",
