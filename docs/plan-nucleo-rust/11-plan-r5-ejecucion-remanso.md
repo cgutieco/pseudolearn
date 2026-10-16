@@ -1665,6 +1665,12 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 - [ ] Ejecutar E-16 completo, incluyendo tests y conformidad por mutante, puntuación ≥85 % por crate,
   clasificación de todos los supervivientes y mutación de expectativas/reglas del corpus.
   **El inventario no es una medición de puntuación**; falta `results/r5-e16.json`.
+  **Primera medición real (2026-10-16), solo `pseudolearn_timeline`** (`cargo-mutants 27.1.0 --in-place`, un job,
+  tests del crate): 181 mutantes, 34 inviables, 65 muertos, 6 por tiempo y **76 supervivientes**; puntuación
+  **71/147 = 48,3 %, por debajo del 85 % exigido**. Supervivientes por archivo: `deltas` 19, `inspect` 17,
+  `thinning` 10, `array_view` 8, `cell_view` 8, `timeline` 7, `replay` 3 y uno en `error`, `model`,
+  `query_views` y `store`. Pendiente: clasificar cada uno (equivalente o hueco), cerrar los huecos con tests
+  espejo, repetir, y medir los otros cinco crates. Las salidas en bruto no se conservaron en el repositorio.
 - [x] Ejecutar comparación nativo/Wasm: **968 peticiones del corpus**, **10 000 programas y sus 10 000
   variantes EMI**, **10⁶ argumentos en cada una de las seis funciones matemáticas** y **48 bordes de
   formato**, sin diferencias observadas. Medir **450 453 bytes Brotli** y ejecutar el trabajador Wasm.
