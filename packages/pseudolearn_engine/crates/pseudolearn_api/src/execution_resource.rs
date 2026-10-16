@@ -9,11 +9,16 @@ use std::sync::{
     atomic::{AtomicBool, Ordering},
 };
 
+const CHECKPOINT_STRIDE: usize = 256;
+const CHECKPOINT_LIMIT: usize = 128;
+
 pub(crate) struct ExecutionResource {
     program: LoadedProgram,
     image: Option<MachineImage>,
     initial: Arc<MachineImage>,
     replay_base: Arc<MachineImage>,
+    checkpoints: Vec<(usize, Arc<MachineImage>)>,
+    checkpoint_stride: usize,
     retained_start: usize,
     options: RunOptions,
     terminal: Option<RunExit>,
@@ -47,6 +52,8 @@ impl ExecutionResource {
             program,
             initial: shared.clone(),
             replay_base: shared,
+            checkpoints: Vec::new(),
+            checkpoint_stride: CHECKPOINT_STRIDE,
             retained_start: 0,
             image: Some(image),
             options,
@@ -84,7 +91,9 @@ impl ExecutionResource {
             .delivered
             .checked_add(take_machine_events(&mut machine).len())
             .ok_or_else(|| usage("event counter exhausted"))?;
-        self.image = Some(suspend_machine(machine));
+        let suspended = suspend_machine(machine);
+        self.record_checkpoint(&suspended);
+        self.image = Some(suspended);
         self.trim_history()?;
         Ok(response)
     }
@@ -149,13 +158,45 @@ impl ExecutionResource {
         self.replay_to_count(event.checked_add(1).ok_or_else(|| usage("invalid event"))?)
     }
 
+    fn record_checkpoint(&mut self, image: &MachineImage) {
+        let last = self
+            .checkpoints
+            .last()
+            .map_or(self.retained_start, |(count, _)| *count);
+        if self.delivered < last.saturating_add(self.checkpoint_stride) {
+            return;
+        }
+        self.checkpoints
+            .push((self.delivered, Arc::new(image.clone())));
+        if self.checkpoints.len() > CHECKPOINT_LIMIT {
+            let mut position = 0_usize;
+            self.checkpoints.retain(|_| {
+                position = position.saturating_add(1);
+                position % 2 == 1
+            });
+            self.checkpoint_stride = self.checkpoint_stride.saturating_mul(2);
+        }
+    }
+
+    fn replay_start(&self, target: usize) -> (usize, Arc<MachineImage>) {
+        self.checkpoints
+            .iter()
+            .rev()
+            .find(|(count, _)| *count < target && *count >= self.retained_start)
+            .map_or_else(
+                || (self.retained_start, self.replay_base.clone()),
+                |(count, image)| (*count, image.clone()),
+            )
+    }
+
     fn replay_to_count(&self, target: usize) -> Result<Machine<'_>, ApiError> {
         let mut options = self.options.clone();
         options.cancelled = None;
-        let mut machine = resume_machine(&self.program, (*self.replay_base).clone(), options)
+        let (start, image) = self.replay_start(target);
+        let mut machine = resume_machine(&self.program, (*image).clone(), options)
             .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
         machine.replace_input_tape(self.options.inputs.clone());
-        let mut count = self.retained_start;
+        let mut count = start;
         while count < target {
             let exit = machine.step_instruction();
             count = count
@@ -175,6 +216,7 @@ impl ExecutionResource {
             let base = suspend_machine(machine);
             self.replay_base = Arc::new(base);
             self.retained_start = first;
+            self.checkpoints.retain(|(count, _)| *count >= first);
         }
         Ok(())
     }

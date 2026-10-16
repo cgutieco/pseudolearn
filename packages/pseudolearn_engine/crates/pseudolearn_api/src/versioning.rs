@@ -11,5 +11,13 @@ pub fn supported_strictness() -> Vec<&'static str> {
 }
 
 pub fn supported_capabilities() -> Vec<&'static str> {
-    vec!["analyze", "ir", "execute", "observe", "seek", "gc_stress"]
+    vec![
+        "analyze",
+        "ir",
+        "execute",
+        "observe",
+        "seek",
+        "gc_stress",
+        "api",
+    ]
 }

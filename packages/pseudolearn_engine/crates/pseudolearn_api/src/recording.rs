@@ -9,28 +9,21 @@ struct Recording {
     initial: Value,
     previous: Value,
     historical: Vec<Value>,
+    capture: bool,
 }
 
 pub(crate) fn record(session: &mut ApiSession, arguments: &Value) -> Result<Value, ApiError> {
-    if arguments
-        .get("options")
-        .and_then(Value::as_object)
-        .is_some_and(|options| {
-            options.keys().any(|key| {
-                !["batch_size", "retention_events", "query_all_events"].contains(&key.as_str())
-            })
-        })
-    {
-        return Err(usage("unsupported recording option"));
-    }
+    let options = arguments.get("options");
+    crate::recording_options::validate(options)?;
     let request = arguments
         .get("request")
         .ok_or_else(|| usage("missing request"))?;
-    let request: ExecuteRequest =
+    let mut request: ExecuteRequest =
         serde_json::from_value(request.clone()).map_err(|error| usage(&error.to_string()))?;
+    let pending = crate::recording_options::apply(&mut request, options)?;
     let analysis = value(session.call("create_analysis", &json!(request)))?;
     let resource = start(session, &analysis, &request)?;
-    let outcome = record_execution(session, &resource, arguments, &request);
+    let outcome = record_execution(session, &resource, arguments, (&request, pending));
     let parent = analysis
         .get("document")
         .or_else(|| analysis.get("resource"))
@@ -40,7 +33,7 @@ pub(crate) fn record(session: &mut ApiSession, arguments: &Value) -> Result<Valu
     outcome
 }
 
-fn start(
+pub(crate) fn start(
     session: &mut ApiSession,
     analysis: &Value,
     request: &ExecuteRequest,
@@ -63,9 +56,15 @@ fn record_execution(
     session: &mut ApiSession,
     resource: &Value,
     arguments: &Value,
-    request: &ExecuteRequest,
+    plan: (&ExecuteRequest, Vec<String>),
 ) -> Result<Value, ApiError> {
-    let initial = value(session.call("initial_state", &json!({"resource":resource})))?;
+    let (request, pending) = plan;
+    let capture = crate::recording_options::capture_states(arguments.get("options"));
+    let initial = if capture {
+        value(session.call("initial_state", &json!({"resource":resource})))?
+    } else {
+        Value::Null
+    };
     let mut recording = Recording {
         events: Vec::new(),
         states: Vec::new(),
@@ -73,21 +72,9 @@ fn record_execution(
         previous: initial.clone(),
         initial,
         historical: Vec::new(),
+        capture,
     };
-    let batch_size = arguments
-        .pointer("/options/batch_size")
-        .and_then(Value::as_u64)
-        .unwrap_or(1);
-    let terminal = loop {
-        let batch = value(session.call(
-            "advance",
-            &json!({"resource":resource,"batch_size":batch_size}),
-        ))?;
-        append(session, resource, &batch, &mut recording)?;
-        if batch.pointer("/termination/kind").and_then(Value::as_str) != Some("running") {
-            break batch;
-        }
-    };
+    let terminal = drive(session, resource, arguments, (&mut recording, pending))?;
     result(
         session,
         resource,
@@ -96,18 +83,52 @@ fn record_execution(
     )
 }
 
+fn drive(
+    session: &mut ApiSession,
+    resource: &Value,
+    arguments: &Value,
+    progress: (&mut Recording, Vec<String>),
+) -> Result<Value, ApiError> {
+    let (recording, mut pending) = progress;
+    let options = arguments.get("options");
+    let seeking = crate::recording_options::seek_every_event(options);
+    let batch_size = arguments
+        .pointer("/options/batch_size")
+        .and_then(Value::as_u64)
+        .unwrap_or(1);
+    loop {
+        let batch = value(session.call(
+            "advance",
+            &json!({"resource":resource,"batch_size":batch_size}),
+        ))?;
+        append(session, resource, &batch, (&mut *recording, seeking))?;
+        let kind = batch.pointer("/termination/kind").and_then(Value::as_str);
+        if kind == Some("awaiting_input") && !pending.is_empty() {
+            let text = pending.remove(0);
+            value(session.call("input", &json!({"resource":resource,"text":text})))?;
+        } else if kind != Some("running") {
+            return Ok(batch);
+        }
+    }
+}
+
 fn append(
     session: &mut ApiSession,
     resource: &Value,
     batch: &Value,
-    recording: &mut Recording,
+    tracking: (&mut Recording, bool),
 ) -> Result<(), ApiError> {
+    let (recording, seeking) = tracking;
     for event in batch
         .get("events")
         .and_then(Value::as_array)
         .ok_or_else(|| usage("missing events"))?
     {
         let index = recording.events.len();
+        if !recording.capture {
+            recording.events.push(event.clone());
+            continue;
+        }
         let state =
             value(session.call("query_state", &json!({"resource":resource,"event":index})))?;
         recording.deltas.push(json!(crate::state_changes::between(
@@ -117,6 +138,9 @@ fn append(
         recording.previous = state.clone();
         recording.events.push(event.clone());
         recording.states.push(state);
+        if seeking {
+            value(session.call("seek", &json!({"resource":resource,"event":0})))?;
+        }
         let historical = value(session.call("seek", &json!({"resource":resource,"event":index})))?;
         recording.historical.push(historical);
     }
@@ -158,7 +182,7 @@ fn result(
     Ok(terminal)
 }
 
-fn value(response: Value) -> Result<Value, ApiError> {
+pub(crate) fn value(response: Value) -> Result<Value, ApiError> {
     response
         .get("value")
         .cloned()

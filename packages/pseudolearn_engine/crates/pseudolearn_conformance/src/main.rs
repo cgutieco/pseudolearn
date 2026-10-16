@@ -34,6 +34,7 @@ fn main() {
             "analyze" => respond_analyze(&parsed),
             "ir" => respond_ir(&parsed),
             "execute" => respond_execute(&parsed),
+            "probe" => send_response(&pseudolearn_api::probe(&parsed)),
             "api" => respond_api(&mut session, &parsed),
             _ => respond_unsupported(),
         }

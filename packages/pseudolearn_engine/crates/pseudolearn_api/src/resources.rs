@@ -36,6 +36,9 @@ impl ApiSession {
     fn dispatch(&mut self, operation: &str, arguments: &Value) -> Result<Value, ApiError> {
         match operation {
             "record" => crate::recording::record(self, arguments),
+            "step" => crate::stepping::step(self, arguments),
+            "fault_stages" => Ok(crate::fault_injection::stages()),
+            "inject_fault" => crate::fault_injection::inject(arguments),
             "encode_events" => crate::event_codec::encode(arguments),
             "decode_events" => crate::event_codec::decode(arguments),
             "negotiate" => negotiate(arguments),

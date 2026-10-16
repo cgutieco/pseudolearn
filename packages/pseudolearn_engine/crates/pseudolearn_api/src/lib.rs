@@ -16,6 +16,7 @@ pub use model::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiPosition, ApiSpan, ApiUnit, IrOutcome,
     IrRequest, IrResponse,
 };
+pub use probes::probe;
 pub use versioning::{
     ENGINE_VERSION, PROTOCOL_VERSION, SUBJECT_NAME, supported_capabilities, supported_profiles,
     supported_strictness,
@@ -28,6 +29,10 @@ mod execution;
 mod execution_model;
 mod execution_state;
 mod execution_wire;
+mod fault_injection;
+mod probes;
+mod recording_options;
+mod stepping;
 pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_program};
 pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
 
