@@ -120,6 +120,7 @@ fn verify_instruction(
     for operand in &instruction.operands {
         verify_operand(context, operand)?;
     }
+    crate::verify_types::verify(context.module, context.function, instruction)?;
     verify_return_point(context, program_counter, instruction)
 }
 
@@ -130,7 +131,7 @@ fn verify_operand(
     match operand {
         BytecodeOperand::Register(register) => verify_register(context.function, *register),
         BytecodeOperand::BlockTarget { target, arguments } => {
-            verify_block_target(context.function, context.variant, *target, arguments)
+            verify_block_target(context, *target, arguments)
         }
         BytecodeOperand::FunctionTarget {
             function_index,
@@ -142,12 +143,12 @@ fn verify_operand(
 }
 
 fn verify_block_target(
-    function: &BytecodeFunction,
-    variant: &CodeVariant,
+    context: &VerifyContext<'_>,
     target: pseudolearn_ir::BlockId,
     arguments: &[Register],
 ) -> Result<(), BytecodeError> {
-    let block = variant
+    let block = context
+        .variant
         .blocks
         .iter()
         .find(|block| block.identifier == target)
@@ -156,8 +157,14 @@ fn verify_block_target(
         return Err(BytecodeError::Verification(VerificationRule::ValueClass));
     }
     for (source, destination) in arguments.iter().zip(&block.parameters) {
-        verify_register(function, *source)?;
-        if source.class != destination.class {
+        verify_register(context.function, *source)?;
+        let actual = context.function.register_type(*source);
+        let expected = context.function.register_type(*destination);
+        if source.class != destination.class
+            || !actual.zip(expected).is_some_and(|(actual, expected)| {
+                crate::class_verification::assignable(context.module, actual, expected)
+            })
+        {
             return Err(BytecodeError::Verification(VerificationRule::ValueClass));
         }
     }
@@ -179,7 +186,13 @@ fn verify_function_target(
     }
     for (source, destination) in arguments.iter().zip(&target.parameters) {
         verify_register(caller, *source)?;
-        if source.class != destination.class {
+        let actual = caller.register_type(*source);
+        let expected = target.register_type(*destination);
+        if source.class != destination.class
+            || !actual.zip(expected).is_some_and(|(actual, expected)| {
+                crate::class_verification::assignable(module, actual, expected)
+            })
+        {
             return Err(BytecodeError::Verification(VerificationRule::ValueClass));
         }
     }

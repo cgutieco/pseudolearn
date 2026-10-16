@@ -35,11 +35,13 @@ Los perfiles de Mandelbrot y Fibonacci eligen comparación-salto; el bucle enter
 la validación fuera de muestra. Los perfiles y el archivo de selección forman parte de la procedencia.
 La captura incluye hashes del motor, del código Dart `reference`, de ambos manifiestos y de la versión
 exacta de Rust antes de compilar; los archivos borrados del árbol de trabajo se omiten de los hashes
-porque ya no forman parte de lo medido. La medición vigente (`rr01-dispatch-form/`, copiada en la raíz de
-`results/r5-vm-tracer/`) se hace sin PGO y da una media geométrica de 76,7× (Mandelbrot 85,9×, bucle
-entero 104,4×, Fibonacci 50,4×) frente al umbral de 30×. Las carpetas `rr01-step-*` y
-`rr01-pgo-profile/` son el historial de la escalera aplicada sobre la representación anterior de la VM,
-que no superó 16,6× ni con PGO; se conservan como fundamento de la decisión y no son evidencia vigente.
+porque ya no forman parte de lo medido. La repetición para cerrar B4 se hizo sin PGO con diez procesos y
+treinta iteraciones por backend y carga: 1.800 muestras emparejadas, cero descartadas y una media
+geométrica de 63,44× frente al umbral de 30×. Mandelbrot obtuvo 69,79× (IC 95 %: 60,94–76,79), el bucle
+entero 80,78× (78,38–84,56) y Fibonacci 45,28× (44,87–45,69). Se cumple el umbral y no fue necesario
+repetir RR-01. Los crudos y el resumen están en `results/r5-vm-tracer/`; la captura B3 anterior, con
+76,72× y la escalera RR-01 completa, se conserva separada en `results/r5-vm-tracer-b3/`. En ambas
+capturas la estacionariedad queda sin demostrar y se conservan todas las muestras.
 El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
 Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
 `results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.

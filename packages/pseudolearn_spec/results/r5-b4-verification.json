@@ -1,25 +1,28 @@
 {
   "format": "r5-b4-verification/1",
-  "status": "in_progress",
-  "phaseClosed": false,
+  "status": "b4_closed",
+  "phaseClosed": true,
   "r5Closed": false,
   "b5Started": false,
-  "capturedUtc": "2026-10-16T05:09:08Z",
+  "capturedUtc": "2026-10-16T05:52:05Z",
   "branch": "feature/agregar-ruta-de-especificacion",
-  "baseHead": "b8e47a55fdaf6658690434d64710d3b30434bb2a",
+  "baseHead": "586c0836dd390a842fa16d7101764568c9deee84",
   "publication": {
     "status": "published",
     "newCommits": 1,
     "localHeadMatchesRemote": true,
     "workingTreeClean": true,
-    "note": "B4.2 was committed and pushed to the sole branch; local and origin heads matched and the checkout was clean after publication. B4 remains open.",
+    "note": "B4.3–B4.6 and the global B4 gate were committed and pushed to the sole authorized branch; local and origin heads matched and the checkout was clean after publication. R5 remains open and B5 was not started.",
     "baseWorkingTreeClean": true
   },
   "acceptanceDecision": {
     "directTestsAndIndependentOracles": true,
     "integratedExecuteConformance": "deferred_to_B7.3_after_API.EXECUTE",
     "fullObservationProperties": "deferred_to_B7.3",
-    "noConformanceStatusAdvanced": true
+    "noConformanceStatusAdvanced": true,
+    "noApiExecuteAdded": true,
+    "runOptionsAndExistingWrappersPreserved": true,
+    "specificationCorpusChanged": false
   },
   "deliverables": [
     {
@@ -27,7 +30,8 @@
       "implementation": "complete",
       "measurement": "complete",
       "selected": "SizeClasses",
-      "globalGate": "pending"
+      "globalGate": "accepted",
+      "closed": true
     },
     {
       "id": "B4.1",
@@ -43,27 +47,27 @@
     },
     {
       "id": "B4.3",
-      "implementation": "written",
-      "acceptance": "partial",
-      "closed": false
+      "implementation": "complete",
+      "acceptance": "accepted",
+      "closed": true
     },
     {
       "id": "B4.4",
-      "implementation": "written",
-      "acceptance": "partial",
-      "closed": false
+      "implementation": "complete",
+      "acceptance": "accepted",
+      "closed": true
     },
     {
       "id": "B4.5",
-      "implementation": "written",
-      "acceptance": "partial",
-      "closed": false
+      "implementation": "complete",
+      "acceptance": "accepted",
+      "closed": true
     },
     {
       "id": "B4.6",
-      "implementation": "written",
-      "acceptance": "partial",
-      "closed": false
+      "implementation": "complete",
+      "acceptance": "accepted",
+      "closed": true
     }
   ],
   "experiment": {
@@ -126,7 +130,13 @@
         "statement-budget requests",
         "trace and replay properties"
       ],
-      "verifiedAfter": "B4.2 finite-real VM boundary change"
+      "verifiedAfter": "B4.3–B4.6 final implementation tree",
+      "collectionPoliciesNames": [
+        "automatic",
+        "forced",
+        "disabled"
+      ],
+      "generatedOracleExactCounts": true
     },
     {
       "name": "current-runtime-tests",
@@ -151,7 +161,9 @@
       "exitCode": 0,
       "testsPassed": 4,
       "log": "r5-b4-checkpoint/api-edges.log",
-      "timing": "before last nominal-assignability refactor"
+      "timing": "before last nominal-assignability refactor",
+      "historical": true,
+      "supersededBy": "api-direct-b4-regressions"
     },
     {
       "name": "new-see-fixture-tests",
@@ -171,7 +183,7 @@
       "log": "r5-b4-checkpoint/bytecode-latest.log",
       "failure": "live_temporaries_expire_after_their_last_use: first root map has one root; test expects zero. Investigate materialized text literal and test actual lifetime rather than elision.",
       "historical": true,
-      "supersededBy": "engine-xtask-verify-b4-2"
+      "supersededBy": "engine-global-b4-verify"
     },
     {
       "name": "latest-clippy",
@@ -229,7 +241,8 @@
         "toolchain",
         "cargo deny"
       ],
-      "log": null
+      "log": null,
+      "supersededBy": "engine-global-b4-verify"
     },
     {
       "name": "spec-xtask-verify-b4-2",
@@ -249,26 +262,153 @@
         "see export --check",
         "transient-document references"
       ],
+      "log": null,
+      "supersededBy": "spec-global-b4-verify"
+    },
+    {
+      "name": "engine-global-b4-verify",
+      "command": "cargo xtask verify",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "steps": [
+        "format",
+        "strict clippy",
+        "workspace tests including 888 corpus executions and 1200 generated graph executions",
+        "rust-checks all",
+        "toolchain",
+        "cargo deny"
+      ],
+      "directApiRegressionTests": 8,
+      "classMetadataVerifierTests": 5,
+      "instructionTypeVerifierTests": 15,
       "log": null
+    },
+    {
+      "name": "spec-global-b4-verify",
+      "command": "cargo xtask verify",
+      "member": "packages/pseudolearn_spec",
+      "exitCode": 0,
+      "validatedSpecifications": 140,
+      "referenceObservations": 1180,
+      "referenceDivergences": 134,
+      "steps": [
+        "workspace tests including memory fixtures",
+        "rust-checks all",
+        "toolchain",
+        "cargo deny",
+        "see validate",
+        "see lock --check",
+        "see export --check",
+        "see conform --subject reference",
+        "transient-document references"
+      ],
+      "environment": "temporary HOME and offline CARGO_HOME with the local RustSec advisory database",
+      "log": null
+    },
+    {
+      "name": "ceiling-global-b4-verify",
+      "command": "cargo xtask verify",
+      "member": "packages/pseudolearn_benchmarks/ceiling",
+      "exitCode": 0,
+      "steps": [
+        "format",
+        "workspace tests",
+        "cargo deny",
+        "rust-checks all",
+        "toolchain"
+      ],
+      "log": null
+    },
+    {
+      "name": "bytecode-verifier-negative-suite",
+      "command": "cargo test -p pseudolearn_bytecode --test class_verification_tests --test verifier_type_tests --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "classMetadataCases": 5,
+      "instructionTypeAndSubtypeCases": 15,
+      "log": null
+    },
+    {
+      "name": "api-direct-b4-regressions",
+      "command": "cargo test -p pseudolearn_api --test runtime_edges --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "testsPassed": 8,
+      "collectionPolicies": [
+        "automatic",
+        "forced",
+        "disabled"
+      ],
+      "log": null
+    },
+    {
+      "name": "runtime-identity-and-limit-tests",
+      "command": "cargo test -p pseudolearn_runtime --test heap_tests --quiet",
+      "member": "packages/pseudolearn_engine",
+      "exitCode": 0,
+      "testsPassed": 8,
+      "collectionPolicies": [
+        "automatic",
+        "forced",
+        "disabled"
+      ],
+      "log": null
+    },
+    {
+      "name": "generated-memory-fixtures",
+      "command": "cargo test -p see_conformance --test memory_fixtures --quiet",
+      "member": "packages/pseudolearn_spec",
+      "exitCode": 0,
+      "testsPassed": 2,
+      "oracle": "see_oracles::cells",
+      "log": null
+    },
+    {
+      "name": "paired-b3-tracer-final-repeat",
+      "command": "dart run tool/r5_vm_tracer.dart",
+      "member": "packages/pseudolearn_benchmarks",
+      "exitCode": 0,
+      "capture": "packages/pseudolearn_benchmarks/results/r5-vm-tracer/capture.json",
+      "raw": "packages/pseudolearn_benchmarks/results/r5-vm-tracer/raw.json",
+      "summary": "packages/pseudolearn_benchmarks/results/r5-vm-tracer/summary.json",
+      "pairedSamples": 1800,
+      "samplesDiscarded": 0,
+      "geometricMeanSpeedup": 63.43755685457018,
+      "targetSpeedup": 30,
+      "targetMet": true,
+      "workloads": {
+        "mandelbrot": {
+          "speedup": 69.79021528869018,
+          "confidence95": [
+            60.93711889006165,
+            76.7875539575439
+          ]
+        },
+        "integerLoop": {
+          "speedup": 80.78102665714641,
+          "confidence95": [
+            78.38014271648412,
+            84.55578612230265
+          ]
+        },
+        "fibonacci": {
+          "speedup": 45.283025951439875,
+          "confidence95": [
+            44.87137172729374,
+            45.69210159448548
+          ]
+        }
+      },
+      "rr01Activated": false,
+      "previousCapturePreserved": "packages/pseudolearn_benchmarks/results/r5-vm-tracer-b3",
+      "log": null,
+      "captureUtc": "2026-10-16T05:52:05.822748Z",
+      "sourceHashes": 577,
+      "sourceHashesVerified": true
     }
   ],
-  "remainingImplementationAudit": [
-    "Exact roots at lexical scope boundaries, CFG joins, live intermediates and expired temporaries",
-    "Negative verifier coverage for instruction types, roots, definitions and class metadata",
-    "Subtype writes through promoted base-typed cells and block parameter compatibility",
-    "Indirect aliases, invalid effectful indices before callee entry, mutual recursion and reused windows",
-    "Escaping receiver before subclass integer initialization; shallow copies with cycles and absence",
-    "Generated oracle scenarios covering arrays and temporary lifetime as well as object graphs",
-    "Canonical layout usage and hot descriptor lookup costs"
-  ],
-  "remainingClosure": [
-    "Run the remaining B4.3-B4.6 gates and verify affected consumers",
-    "Complete global SEE and ceiling closure gates where applicable",
-    "Repeat B3 paired performance tracer and retain distinct raw data: geometric speedup >=30x; apply RR-01 if needed",
-    "Finalize global B4 coverage, exclusions, measurements, negatives and verification inventory",
-    "Accept B4.3-B4.6 only after their acceptance criteria pass",
-    "Keep R5 and B4 open until their remaining gates are complete"
-  ],
+  "remainingImplementationAudit": [],
+  "remainingClosure": [],
   "b4_2_acceptance": {
     "finiteRealFormattingBoundary": {
       "fault": "nonFiniteRealResult",
@@ -315,5 +455,112 @@
       "path": "r5-b4-checkpoint/working-tree-status.txt",
       "reason": "Obsolete working-tree capture from an earlier base HEAD; superseded by the current verification inventory."
     }
-  ]
+  ],
+  "resolvedImplementationAudit": [
+    {
+      "item": "Exact roots, scopes, block joins, live and expired temporaries",
+      "result": "Verified by bytecode metadata tests, runtime corpus cases and generated memory graphs under all three collection policies."
+    },
+    {
+      "item": "Negative verifier coverage for instruction types and class, field and method metadata",
+      "result": "Five class metadata cases and fifteen instruction type and subtype cases pass."
+    },
+    {
+      "item": "Subtype writes through base-typed cells and block parameters",
+      "result": "IR and bytecode verifiers accept related nominal subtypes and reject unrelated types."
+    },
+    {
+      "item": "Reference aliases, effectful indices, mutual recursion and window reuse",
+      "result": "Covered by eight direct API regressions."
+    },
+    {
+      "item": "Escaping receiver, virtual dispatch, shallow copies, cycles and absent fields",
+      "result": "Covered by direct API and runtime tests."
+    },
+    {
+      "item": "Generated oracle scenarios for arrays, subprogram scopes and temporary lifetime",
+      "result": "One hundred reproducible generated graphs compare exact counts with see_oracles::cells."
+    },
+    {
+      "item": "Canonical layout and descriptor lookup costs",
+      "result": "Reviewed; existing BTreeMap descriptor lookups are retained because no applicable gate requires a change."
+    }
+  ],
+  "b4_closure": {
+    "deliverables": [
+      "B4.3",
+      "B4.4",
+      "B4.5",
+      "B4.6"
+    ],
+    "globalGate": "accepted",
+    "runtimeCorpus": {
+      "configurations": 296,
+      "collectionPolicies": [
+        "automatic",
+        "forced",
+        "disabled"
+      ],
+      "executions": 888
+    },
+    "generatedGraphs": {
+      "count": 100,
+      "profiles": 2,
+      "strictnessModes": 2,
+      "collectionPolicies": [
+        "automatic",
+        "forced",
+        "disabled"
+      ],
+      "executions": 1200,
+      "oracle": "see_oracles::cells"
+    },
+    "see": {
+      "validatedSpecifications": 140,
+      "referenceObservations": 1180,
+      "classifiedDivergences": 134,
+      "lockCurrent": true,
+      "exportCurrent": true
+    },
+    "performance": {
+      "captureUtc": "2026-10-16T05:52:05.822748Z",
+      "pairedSamples": 1800,
+      "samplesDiscarded": 0,
+      "sourceHashes": 577,
+      "sourceHashesVerified": true,
+      "geometricMeanSpeedup": 63.43755685457018,
+      "threshold": 30,
+      "targetMet": true,
+      "rr01Activated": false,
+      "workloads": {
+        "mandelbrot": {
+          "speedup": 69.79021528869018,
+          "confidence95": [
+            60.93711889006165,
+            76.7875539575439
+          ]
+        },
+        "integerLoop": {
+          "speedup": 80.78102665714641,
+          "confidence95": [
+            78.38014271648412,
+            84.55578612230265
+          ]
+        },
+        "fibonacci": {
+          "speedup": 45.283025951439875,
+          "confidence95": [
+            44.87137172729374,
+            45.69210159448548
+          ]
+        }
+      }
+    },
+    "deferred": [
+      "API.EXECUTE and integrated execute conformance to B7.3",
+      "full observation properties to B7.3"
+    ],
+    "r5Closed": false,
+    "b5Started": false
+  }
 }

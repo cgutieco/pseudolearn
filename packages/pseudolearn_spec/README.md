@@ -5,12 +5,13 @@
 Sistema de Especificaciones Ejecutables: corpus `see/1`, validación, anclaje, impacto y conformidad
 por procesos. Sirve a quienes redactan contratos y a consumidores de la exportación JSON.
 Responsabilidades: identidad del corpus, integridad de reglas y casos, evidencia por sujeto.
-Fuera de alcance de producto: motor Rust, diferencial entre motores,
-propiedades generativas y observación de memoria; pertenecen a fases posteriores.
+Fuera de alcance de producto: motor Rust y API integrada del motor. El paquete sí incluye conformidad
+generativa con oráculos independientes; no implementa la API de observación de memoria del sujeto.
 Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad, shell para ejecutar sujetos.
 Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisiones, contrastar un sujeto.
-Pendientes declarados: propiedades generativas y reducción de contraejemplos (R2/R3, al incorporar
-propiedades al corpus); sujetos Rust (R4).
+Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE` y
+propiedades completas de observación (B7.3). Los sujetos Rust ya cubren análisis y las pruebas directas
+de B4; no se anticipa la capacidad integrada pendiente.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -171,9 +172,10 @@ La resolución inválida de un símbolo impide diagnosticar inicialización o ar
 
 `SEE.FORMAT`, `SEE.IDENTITY` y `SEE.LIFECYCLE` definen el arranque.
 `SEE.VALIDATION`, `SEE.ORACLE.POLICY` y `SEE.CONFORMANCE.MATRIX` separan validez, origen y evidencia.
-Los contratos del lenguaje conservan expectativas normativas aunque `reference` discrepe.
-El lenguaje está en experimental; escribir el motor Rust requiere completar sus contratos de frontera. El corpus es la fuente de comportamiento;
-este README explica arquitectura y operación.
+Los contratos del lenguaje conservan expectativas normativas aunque `reference` discrepe. El motor Rust
+implementa por bloques los contratos del corpus; R5 y la capacidad integrada `API.EXECUTE` permanecen
+abiertas hasta completar sus puertas. El corpus es la fuente de comportamiento; este README explica
+arquitectura y operación.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

@@ -8,7 +8,7 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Implementación y tests del crate | Corpus validado y capas inferiores | Front-end y motor de ejecución |
+| Conformidad integrada de `API.EXECUTE` | Recursos de ejecución, entrada y observación | B7.3 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -21,7 +21,10 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 La compilación a módulo conserva metadatos laterales de origen que la representación textual no
 transporta. Los tests de integración compilan el corpus exportado y llaman directamente al bytecode y
-la VM; esta vía de pruebas no anuncia una capacidad pública de ejecución ni implementa otro protocolo.
+la VM; `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual, copia y ausencia
+bajo las tres políticas de recolección. Esta vía de pruebas no anuncia una capacidad pública de ejecución
+ni implementa otro protocolo. `RunOptions` y los envoltorios existentes se mantienen; `API.EXECUTE` y su
+conformidad integrada pertenecen a B7.3.
 
 Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.

@@ -9,7 +9,8 @@ use crate::operation::Operation;
 use crate::type_checker::check_instruction_types;
 use crate::types::IrType;
 use crate::verifier_operands::{
-    OperandUsageContext, check_block_targets, check_function_calls, check_operands_dominance,
+    BlockTargetContext, OperandUsageContext, check_block_targets, check_function_calls,
+    check_operands_dominance,
 };
 use std::collections::{HashMap, HashSet};
 
@@ -229,7 +230,12 @@ fn check_targets_and_calls(
     context: &VerificationContext<'_>,
     value_types: &HashMap<ValueId, IrType>,
 ) -> Result<(), &'static str> {
-    check_block_targets(operands, context.function, value_types)?;
+    let block_context = BlockTargetContext {
+        function: context.function,
+        value_types,
+        module: context.module,
+    };
+    check_block_targets(operands, &block_context)?;
     check_function_calls(operands, context.module, value_types)
 }
 

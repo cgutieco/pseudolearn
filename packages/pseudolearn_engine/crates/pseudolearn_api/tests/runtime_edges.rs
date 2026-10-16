@@ -76,3 +76,69 @@ fn constructor_reference_parameters_and_super_calls_share_one_receiver() -> Resu
     let source = "Clase Base\nPublico Definir value Como Entero;\nMetodo Constructor(count Como Entero Por Referencia)\ncount <- count + 1;\nEste.value <- count;\nFinMetodo\nMetodo get() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nMetodo Constructor(count Como Entero Por Referencia)\nSuper.Constructor(count);\ncount <- count + 2;\nFinMetodo\nMetodo get() Como Entero\nRetornar Super.get() + 100;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir result Como Base;\nDefinir count Como Entero;\ncount <- 3;\nresult <- Nuevo Derived(count);\nEscribir result.get(),count;\nFinAlgoritmo\n";
     policies(source, "1046\n")
 }
+
+#[test]
+fn mutually_recursive_subprograms_return_through_reused_windows() -> Result<(), String> {
+    let source = "SubProceso First(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar Second(depth - 1) + 1;\nFinSubProceso\nSubProceso Second(depth Como Entero) Como Entero\nSi depth = 0 Entonces\nRetornar 0;\nFinSi\nRetornar First(depth - 1) + 1;\nFinSubProceso\nSubProceso Increment(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nSubProceso Pair(value Como Entero Por Referencia)\nIncrement(value);\nIncrement(value);\nFinSubProceso\nAlgoritmo P\nDefinir total Como Entero;\ntotal <- First(12);\nPair(total);\nIncrement(total);\nPair(total);\nEscribir total;\nFinAlgoritmo\n";
+    policies(source, "17\n")
+}
+
+#[test]
+fn invalid_reference_index_traps_before_entering_the_callee() -> Result<(), String> {
+    let source = "SubProceso Index() Como Entero\nEscribir \"index\";\nRetornar 2;\nFinSubProceso\nSubProceso Touch(value Como Entero Por Referencia)\nEscribir \"body\";\nvalue <- 1;\nFinSubProceso\nAlgoritmo P\nDimension values[1] Como Entero;\nTouch(values[Index()]);\nFinAlgoritmo\n";
+    for collection in [
+        CollectionPolicy::Automatic,
+        CollectionPolicy::Forced,
+        CollectionPolicy::Disabled,
+    ] {
+        let mut options = RunOptions::default();
+        options.memory.collection = collection;
+        let result = execute(source, options)?;
+        assert!(matches!(
+            result.exit,
+            RunExit::Trap(ref trap) if trap.code == "arrayIndexOutOfRange"
+        ));
+        assert_eq!(result.output, "index\n");
+    }
+    Ok(())
+}
+
+#[test]
+fn receiver_escape_dispatches_before_derived_integer_initialization() -> Result<(), String> {
+    let source = "Clase Base\nMetodo publish(output Como Base Por Referencia)\noutput <- Este;\nEscribir \"base\";\nEscribir output.read();\nFinMetodo\nMetodo read() Como Entero\nRetornar 0;\nFinMetodo\nFinClase\nClase Derived Hereda De Base\nPublico Definir value Como Entero;\nMetodo Constructor(output Como Base Por Referencia)\nEste.publish(output);\nEste.value <- 7;\nFinMetodo\nMetodo read() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir result Como Base;\nresult <- Nuevo Base();\nresult <- Nuevo Derived(result);\nFinAlgoritmo\n";
+    for collection in [
+        CollectionPolicy::Automatic,
+        CollectionPolicy::Forced,
+        CollectionPolicy::Disabled,
+    ] {
+        let mut options = RunOptions::default();
+        options.memory.collection = collection;
+        let result = execute(source, options)?;
+        assert!(matches!(
+            result.exit,
+            RunExit::Trap(ref trap) if trap.code == "uninitializedVariableRead"
+        ));
+        assert_eq!(result.output, "base\n");
+    }
+    Ok(())
+}
+
+#[test]
+fn shallow_copy_keeps_cycles_and_uninitialized_fields() -> Result<(), String> {
+    let source = "Clase Node\nPublico Definir next Como Node;\nPublico Definir value Como Entero;\nFinClase\nAlgoritmo P\nDefinir original, copia Como Node;\noriginal <- Nuevo Node();\noriginal.next <- original;\ncopia <- Copiar(original);\nEscribir copia = original, copia.next = original;\nEscribir copia.value;\nFinAlgoritmo\n";
+    for collection in [
+        CollectionPolicy::Automatic,
+        CollectionPolicy::Forced,
+        CollectionPolicy::Disabled,
+    ] {
+        let mut options = RunOptions::default();
+        options.memory.collection = collection;
+        let result = execute(source, options)?;
+        assert!(matches!(
+            result.exit,
+            RunExit::Trap(ref trap) if trap.code == "uninitializedVariableRead"
+        ));
+        assert_eq!(result.output, "FalsoVerdadero\n");
+    }
+    Ok(())
+}

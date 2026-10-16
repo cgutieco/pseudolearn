@@ -2,9 +2,10 @@
 
 ## Punto de parada y autoridad de este relevo
 
-Este relevo describe el árbol después de aceptar B4.2. **B4 y R5 permanecen abiertas. B4.1 y B4.2 están
-aceptadas; B4.3–B4.6 siguen pendientes. No iniciar B4.3 ni B5 sin autorización nueva.** El [relevo 12](12-relevo-r5.md) es histórico y sus
-indicaciones de que aún no existe backend ya no describen el estado del repositorio.
+Este relevo registra el cierre de B4 el 2026-10-16. **B4.0–B4.6 y la puerta global están aceptadas; R5
+permanece abierta y B5 no se inició.** La autorización de esta iteración cubrió B4.3–B4.6. El [relevo
+12](12-relevo-r5.md) es histórico y sus indicaciones de que aún no existe backend ya no describen el
+estado del repositorio.
 
 La autorización y el alcance son los del [plan 11, B4](11-plan-r5-ejecucion-remanso.md#b4--runtime-biblioteca-arreglos-subprogramas-objetos-y-recolector)
 y el plan de implementación aprobado en la conversación: B4.0–B4.6, incluidos los cambios necesarios en
@@ -16,7 +17,7 @@ Entrada suspendible y cinta siguen en sus bloques propietarios.
 ## Preservar el trabajo
 
 - Rama actual y única autorizada: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-- HEAD base de esta aceptación: `b8e47a5` (`feature/agregar-ruta-de-especificacion`). El commit de B4.2
+- HEAD base de esta aceptación: `586c0836dd390a842fa16d7101764568c9deee84` (`feature/agregar-ruta-de-especificacion`). El commit de B4.2
   está publicado en esta misma rama; al cierre, HEAD local y remoto coinciden y el checkout está limpio.
 - No ejecutar `git reset`, `git clean`, restauraciones generales ni cambiar de checkout. Continuar
   el árbol completo y revisar `git status --short`, incluidos los archivos `??`.
@@ -48,7 +49,7 @@ no certifica la puerta global, el rendimiento o la publicación.
   objeto; se corrigió para empaquetar objetos y se repitió toda la medición. No usar la captura inicial
   para la selección final.
 - [x] Tests, Clippy y `rust-checks all` de ceiling pasaron durante el desarrollo del experimento.
-- [ ] Ejecutar y conservar la puerta final completa `cargo xtask verify` de ceiling.
+- [x] Ejecutar y conservar la puerta final completa `cargo xtask verify` de ceiling.
 - [x] Corregir el enlace relativo al resultado de E-12 en el README de runtime: desde ese crate es
   `../../../pseudolearn_spec/results/r5-e12.json`.
 
@@ -101,7 +102,7 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [x] Los casos exportados pertinentes del corpus pasan con recolección automática, manual y desactivada.
   `cargo xtask verify` pasa en `pseudolearn_engine` y `pseudolearn_spec`.
 
-### B4.3–B4.4 · Subprogramas y objetos: implementados; aceptación pendiente
+### B4.3–B4.4 · Subprogramas y objetos: aceptados
 
 - [x] Ventanas de argumentos solapadas, bancos propios crecientes, continuación y definición conservadas;
   limpieza de referencias y bits al reutilizar ventanas para evitar raíces residuales.
@@ -118,19 +119,16 @@ no certifica la puerta global, el rendimiento o la publicación.
   de inicialización densa, máscara física de enteros y `Copiar` superficial sin constructor con nueva identidad.
 - [x] Trampas con código, tramo y argumentos tipados; falta de retorno usa
   `subroutineEndedWithoutReturn` y relaciona el encabezado de la función.
-- [x] Cuatro regresiones directas recientes pasan en `api/tests/runtime_edges.rs`: alias con índices
-  con efectos; raíces suspendidas durante crecimiento a 150 llamadas; profundidad exacta y uno por
-  encima; constructor por referencia y `Super` sobre el mismo receptor. Las comparaciones usan tres políticas.
-- [ ] Completar negativos y bordes de ventanas/celdas, índice inválido antes de entrar en el cuerpo,
-  recursión mutua, llamadas repetidas que reutilizan ventanas, copia con ciclos/ausencia y escapado de `Este`
-  antes de inicializar campos enteros de una subclase.
-- [ ] La última modificación movió la compatibilidad nominal a `ir/src/assignability.rs` y la reutilizó
-  en `CellStore`. Verificar con una variable de tipo base promovida a celda que recibe un objeto derivado.
-  La compatibilidad de argumentos de bloque aún es igualdad exacta: auditar uniones por ramas de subtipos.
-- [ ] Completar negativos de tipos de las instrucciones nuevas y metadatos de métodos/campos; no
-  deducir corrección solo porque el lowering no produzca entradas inválidas.
+- [x] Ocho regresiones directas pasan en `api/tests/runtime_edges.rs`: alias con índices con efectos,
+  índice inválido antes del cuerpo, raíces suspendidas, profundidad exacta, constructor por referencia,
+  recursión mutua, ventanas reutilizadas, llamada virtual tras escapar el receptor y copia con ciclos y
+  ausencia. Las rutas de recolección automática, forzada y desactivada pasan.
+- [x] La asignabilidad nominal de `ir/src/assignability.rs` permite subtipos en argumentos de bloque y
+  celdas de tipo base, y rechaza tipos no relacionados en uniones y escrituras.
+- [x] Los negativos del verificador cubren tipos de instrucciones, jerarquía de clases, campos heredados,
+  mapas de referencias y objetivos/receptores de métodos.
 
-### B4.5–B4.6 · Recolección, límites y azar: implementados; aceptación pendiente
+### B4.5–B4.6 · Recolección, límites y azar: aceptados
 
 - [x] Recolector elegido integrado: marcado iterativo con bits laterales, listas por tamaño,
   direcciones libres ascendentes, raíces del marco activo y continuaciones suspendidas.
@@ -139,48 +137,46 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [x] Modos automático, forzado y sin recuperación. Comparaciones directas entre los tres modos.
 - [x] xoshiro256** y SplitMix64, semilla con signo reinterpretada en complemento a dos, estado explícito
   copiable/restaurable, sin reloj, entorno o estado global.
-- [x] Generación independiente de cien grafos reproducibles con alias/ciclos/texto usando
-  `see_oracles::cells`, semilla y cantidad del registro de propiedades existente.
+- [x] Generación independiente de cien grafos reproducibles con arreglos raíz, alias, ciclos, texto,
+  ámbito de subprograma y un objeto sin usos posteriores, usando `see_oracles::cells` y el registro
+  existente de semilla y cantidad.
 - [x] SEE materializa fixtures mediante `runtime-fixtures`; API los consume por proceso externo.
   No se creó otro adaptador de conformidad ni se añadieron imports SEE al motor.
-- [ ] Repetir la comparación completa del corpus y grafos sobre el árbol final; atender cualquier
-  contraejemplo de raíces, límites, diagnóstico o política.
-- [ ] Ampliar la comparación generada más allá del grafo de objetos actual: arreglos, alcance de
-  variables sin usos futuros, intermedios vivos y temporales muertos. Revisar identidad al reutilizar asas.
+- [x] La comparación final cubre 296 configuraciones del corpus bajo tres políticas (888 ejecuciones)
+  y 100 grafos bajo dos perfiles, dos rigores y tres políticas (1.200 ejecuciones), con conteos exactos
+  independientes en automático, forzado y desactivado.
+- [x] `heap_tests` demuestra que reutilizar una dirección no reutiliza la identidad ordinal.
 
-## Pruebas y verificaciones: estado tras B4.2
+## Pruebas y verificaciones de cierre de B4
 
-La evidencia de B4.1 corresponde a su aceptación previa. Para B4.2, `cargo test -p pseudolearn_runtime -p
-pseudolearn_library -p pseudolearn_vm` pasó, incluidos los tests de formato finito y la regresión directa
-de reales no finitos. `cargo test -p pseudolearn_api --test runtime_corpus -- --nocapture` pasó: 296
-configuraciones del corpus en tres políticas de recolección. `cargo xtask verify` pasó en el motor (formato,
-Clippy estricto, workspace completo, `rust-checks all`, toolchain y `cargo deny`) y en SEE (validación,
-lock, exportación, referencias documentales y conformidad reference).
+`cargo xtask verify` pasó en `pseudolearn_engine`, `pseudolearn_spec` y `ceiling`. Engine pasó formato,
+Clippy estricto, el workspace completo, negativos, seis verificadores Rust, toolchain y cargo-deny. SEE
+pasó tests, verificadores, validación de 140 especificaciones, lock, exportación y conformidad del sujeto
+congelado: 1.180 observaciones y 134 divergencias ya clasificadas. Ceiling pasó sus tests, verificadores
+y cargo-deny.
+
+El corpus final pasó 296 configuraciones bajo recolección automática, forzada y desactivada (888
+ejecuciones). Los 100 grafos generados pasaron en dos perfiles, dos rigores y las tres políticas (1.200
+ejecuciones) con el conteo independiente exacto. Los casos del corpus incluyen `MEM.*`,
+`RT.HOST.INTERFACE` y `LIB.CORE.RANDOM`. Los tests directos incluyen ocho casos API y negativos de bytecode,
+metadatos y asignabilidad nominal.
 
 Las consultas a descriptores de arreglo y campo mediante `BTreeMap` se revisaron frente a las puertas
 vigentes. Se conservaron por no existir un umbral aplicable que requiera cambiarlas; no se añadió una
 meta de rendimiento.
 
-B4.3–B4.6 conservan la aceptación pendiente enumerada en este documento. Tampoco se ejecutaron para este
-cierre las puertas globales completas de ceiling ni la regresión de rendimiento emparejada. La publicación
-de B4.2 no cierra B4 ni sustituye esos requisitos.
+La trazadora emparejada B3 se repitió con 1.800 muestras y cero descartes: media geométrica 63,44× frente
+al umbral 30×. Mandelbrot obtuvo 69,79× (IC 95 %: 60,94–76,79), el bucle entero 80,78× (78,38–84,56)
+y Fibonacci 45,28× (44,87–45,69). El umbral se cumplió y RR-01 no se activó. Los crudos B3 anteriores y
+los crudos de esta captura están separados en `packages/pseudolearn_benchmarks/results/r5-vm-tracer-b3/` y
+`packages/pseudolearn_benchmarks/results/r5-vm-tracer/`, respectivamente.
 
-## Orden concreto para retomar
+## Cierre y límites de la aceptación
 
-1. B4.1 y B4.2 están aceptadas; no repetir sus cambios ni descartar evidencia existente.
-2. Para cualquier continuación autorizada, leer los contratos dueños y resolver únicamente los
-   criterios aún abiertos de B4.3–B4.6 con casos del corpus y oráculos independientes.
-3. Ejecutar las verificaciones que corresponden a los bloques abiertos y completar la puerta global de
-   B4, incluidos SEE, ceiling, corpus y referencias. No anticipar `execute` ni su estado `cumple`.
-4. Repetir la trazadora emparejada de B3, ≥30×, y aplicar RR-01 si falla. La herramienta
-   `packages/pseudolearn_benchmarks/tool/r5_vm_tracer.dart` escribe por defecto en
-   `results/r5-vm-tracer/` y `packages/pseudolearn_spec/results/r5-vm-tracer.json`:
-   **preservar los crudos de B3 antes de lanzarla**, separar la captura nueva y registrar procedencia
-   antes del build. Esta regresión no sustituye a la medición completa de B7.
-5. La evidencia de B4.2 está en `r5-b4-verification.json`; completar allí la cobertura, exclusiones,
-   mediciones, negativos y verificadores globales antes de aceptar B4.
-6. La aceptación global de B4 requiere sus puertas restantes y publicación coherente en la rama única.
-   R5 y B4 permanecen abiertas; `PHASE-STOP` requiere autorización explícita antes de iniciar B4.3.
+B4 y su puerta global están cerradas. R5 permanece abierta, B5 no empezó y `PHASE-STOP` exige una nueva
+autorización antes de esa fase. `API.EXECUTE`, la conformidad integrada `execute` y las propiedades
+completas de observación siguen diferidas a B7.3; el cierre de B4 no cambia su estado ni añade contratos.
+La evidencia estructurada y las exclusiones están en `packages/pseudolearn_spec/results/r5-b4-verification.json`.
 
 ## Comandos útiles y precauciones del entorno
 
@@ -214,8 +210,8 @@ Desde `packages/pseudolearn_benchmarks/ceiling`, ejecutar `cargo xtask verify`. 
 no repetirla salvo cambios en el experimento o evidencia que lo justifique. Las pruebas API lanzan Cargo
 SEE mediante proceso `--offline`; este uso no es el futuro adaptador `API.EXECUTE`.
 
-El sandbox bloqueó escrituras de la base RustSec bajo `~/.cargo/advisory-dbs` y lecturas de `sysctl`;
-las operaciones correspondientes pueden requerir escalación. La captura E-12 escalada fue autorizada.
-No hubo rechazo de aprobación automática que requiera resolución de la persona. No confundir un fallo
-real de código/test con ese límite ambiental. Los logs en `/private/tmp` son auxiliares; la copia del
-checkpoint y este relevo permiten continuar sin depender de ellos.
+Para verificar `cargo deny` en este entorno, la base RustSec se copió a un `CARGO_HOME` temporal y se
+usó Cargo sin red. La conformidad del sujeto Dart se ejecutó con el binario del SDK en `PATH` y un `HOME`
+temporal. Estas rutas temporales no cambiaron archivos de paquetes ni dependencias del proyecto. La
+captura E-12 conserva sus resultados y procedencia; el `sysctl` restringido no fue necesario para la
+trazadora final.

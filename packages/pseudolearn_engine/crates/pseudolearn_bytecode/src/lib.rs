@@ -13,6 +13,7 @@ mod roots;
 mod verify;
 mod verify_padding;
 mod verify_superinstructions;
+mod verify_types;
 
 pub use compile::{
     compile_module, compile_module_with_superinstructions, compile_text,

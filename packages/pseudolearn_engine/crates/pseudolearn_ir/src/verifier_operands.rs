@@ -65,8 +65,7 @@ fn check_value_dominance(
 
 pub fn check_block_targets(
     operands: &[Operand],
-    function: &Function,
-    value_types: &HashMap<ValueId, IrType>,
+    context: &BlockTargetContext<'_>,
 ) -> Result<(), &'static str> {
     for operand in operands {
         if let Operand::BlockTarget {
@@ -74,29 +73,36 @@ pub fn check_block_targets(
             arguments,
         } = operand
         {
-            verify_block_target(*target_block, arguments, function, value_types)?;
+            verify_block_target(*target_block, arguments, context)?;
         }
     }
     Ok(())
 }
 
+pub struct BlockTargetContext<'context> {
+    pub function: &'context Function,
+    pub value_types: &'context HashMap<ValueId, IrType>,
+    pub module: &'context Module,
+}
+
 fn verify_block_target(
     target_block: BlockId,
     arguments: &[ValueId],
-    function: &Function,
-    value_types: &HashMap<ValueId, IrType>,
+    context: &BlockTargetContext<'_>,
 ) -> Result<(), &'static str> {
-    let target = function
+    let target = context
+        .function
         .block(target_block)
         .ok_or("IR.WELL-FORMEDNESS#R5")?;
     if target.parameters.len() != arguments.len() {
         return Err("IR.WELL-FORMEDNESS#R5");
     }
     for (argument_value, (_, parameter_type)) in arguments.iter().zip(&target.parameters) {
-        let argument_type = value_types
+        let argument_type = context
+            .value_types
             .get(argument_value)
             .ok_or("IR.WELL-FORMEDNESS#R5")?;
-        if argument_type != parameter_type {
+        if !assignable(context.module, argument_type, parameter_type) {
             return Err("IR.WELL-FORMEDNESS#R5");
         }
     }

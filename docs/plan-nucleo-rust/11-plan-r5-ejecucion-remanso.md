@@ -1401,7 +1401,7 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
 
 - [x] **B4.0 E-12.** Prototipos y medición de §7.3 realizados: 10.800 muestras, elección
   `SizeClasses` registrada en el README de `runtime` y `packages/pseudolearn_spec/results/r5-e12.json`.
-  La puerta global de B4 sigue pendiente.
+  La puerta global de B4 quedó cerrada con la aceptación de B4.3–B4.6.
 - [x] **B4.1 Montón y arreglos.** Montón plano, asignación por avance en bloques, cabeceras, ordinales, arreglos
   de una y varias dimensiones con comprobación por dimensión, cota densa y mapas de definición; tamaño cero y
   negativo. Casos `LANG.ARRAY.*`, `LANG.TYPES.ARRAY` y `ENG.LIMITS#D1`; mapas exactos de raíces y de definición
@@ -1413,42 +1413,44 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
   su retorno `String`. Se conserva `compact_text` como operación explícita que devuelve `TextCompaction`;
   la recolección automática descarta ese mapa hasta que exista un consumidor. Suites y verificadores del
   motor y SEE pasan; evidencia en `packages/pseudolearn_spec/results/r5-b4-verification.json`.
-- [ ] **B4.3 Subprogramas.** Llamadas con ventanas solapadas, retorno, falta de retorno, profundidad exacta,
+- [x] **B4.3 Subprogramas.** Llamadas con ventanas solapadas, retorno, falta de retorno, profundidad exacta,
   paso por referencia con celdas (alias a la misma casilla, índice fijado una vez y comprobado antes del
-  cuerpo), marca de agua en escrituras por celda. Casos `LANG.SUBPROGRAM.*`.
-- [ ] **B4.4 Objetos.** Disposición por herencia, mapas de referencias por clase, máscaras de enteros y clases
+  cuerpo), marca de agua en escrituras por celda. Los negativos cubren índices con efectos antes de entrar
+  al cuerpo; las regresiones incluyen recursión mutua y reutilización de ventanas. Casos `LANG.SUBPROGRAM.*`.
+- [x] **B4.4 Objetos.** Disposición por herencia, mapas de referencias por clase, máscaras de enteros y clases
   densas, constructores, `Este`, `Super`, llamadas virtuales y desvirtualizadas, `Copiar`, igualdad por
-  identidad. Casos `LANG.CLASS.*` y `LIB.CORE.COPY`.
-- [ ] **B4.5 Recolector.** Variante elegida en E-12, mapas nocionales, marcado iterativo, disparo determinista,
+  identidad. El verificador rechaza jerarquías, campos, mapas y destinos de método inválidos, y acepta
+  subtipos en bloques y celdas tipadas con una superclase. Casos `LANG.CLASS.*` y `LIB.CORE.COPY`.
+- [x] **B4.5 Recolector.** Variante elegida en E-12, mapas nocionales, marcado iterativo, disparo determinista,
   límite de celdas exacto con el valor nuevo, compactación de la arena de texto y modo de recolección forzada.
-  Casos `MEM.*` y de celdas de `ENG.LIMITS`; `MEM.MANAGED.UNOBSERVABLE#P1` (Q1) y `MEM.IDENTITY#P1` en
-  `cumple`; propiedad «el conteo de celdas del motor coincide con el oráculo nocional en programas
-  generados».
-- [ ] **B4.6 Azar y anfitrión.** xoshiro256\*\* con SplitMix64, semilla por omisión 42; casos de
-  `RT.HOST.INTERFACE` y `LIB.CORE.RANDOM`.
+  Los casos y grafos generados comparan conteos exactos con el oráculo independiente bajo recolección
+  automática, forzada y desactivada; cubren arreglos raíz, límites de ámbito, valores vivos, temporales
+  muertos y reutilización de asas con identidad nueva. Casos `MEM.*` y de celdas de `ENG.LIMITS`.
+- [x] **B4.6 Azar y anfitrión.** xoshiro256** con SplitMix64, semilla por omisión 42 y estado explícito;
+  los casos exportados de `RT.HOST.INTERFACE` y `LIB.CORE.RANDOM` pasan en las tres políticas.
 
-#### Punto de continuación de B4 · 2026-10-16
+#### Cierre de B4 · 2026-10-16
 
-**B4 permanece abierta; B4.1 y B4.2 están aceptadas, y B4.3–B4.6 siguen pendientes.** La aceptación de
-estos bloques no cierra la puerta global de B4 ni autoriza B5. La conformidad integrada `execute`, las
-propiedades completas de observación y la regresión de rendimiento siguen en sus bloques y puertas
-propietarios.
+**B4.0–B4.6 y su puerta global están cerradas. R5 permanece abierta y B5 no se inicia.** La conformidad
+integrada `execute` y las propiedades completas de observación siguen en B7.3; no se adelantó su estado
+ni se añadió `API.EXECUTE`.
 
 - [x] E-12 medido y elegido; montón/arreglos, texto/conversiones, llamadas/celdas/objetos,
   recolección/azar y soporte estático hasta bytecode implementados en el árbol local.
-- [x] Al corte pasan 296 configuraciones del corpus × tres políticas y cien grafos independientes
-  × dos perfiles × dos rigores × tres políticas; cuatro regresiones de integración API y tests runtime.
-- [x] Cerrar la vivacidad exacta de raíces, los negativos de mapas/metadatos, los dos errores de Clippy y
-  `SIZE-FUNCTION`; actualizar el README de runtime y corregir su enlace de E-12.
-- [x] Aceptar B4.2 con la regresión de reales no finitos, el corpus bajo tres políticas y los verificadores
-  de motor y SEE; publicar el commit de cierre y comprobar HEAD local/remoto iguales con el checkout limpio.
-- [ ] Completar la aceptación de B4.3–B4.6 y la puerta global de B4: oráculos y verificadores restantes,
-  rendimiento y sus demás criterios.
+- [x] Pasan 296 configuraciones del corpus × tres políticas (888 ejecuciones) y cien grafos independientes
+  × dos perfiles × dos rigores × tres políticas (1.200 ejecuciones), más ocho regresiones API.
+- [x] Se cerraron raíces exactas, negativos de metadatos y tipos, subtipo nominal, llamadas y objetos,
+  identidad de asas y oráculos generados; los README propietarios reflejan las decisiones.
+- [x] `cargo xtask verify` pasa en engine, spec y ceiling; SEE valida 140 especificaciones, lock y
+  exportación están vigentes y la conformidad congelada ejecuta 1.180 observaciones con sus 134
+  divergencias clasificadas.
+- [x] La repetición B3 alcanza 63,44× frente al umbral 30× sin descartar muestras; RR-01 no se activa.
+- [x] B4.3–B4.6 y la puerta global quedan aceptadas y publicadas en la rama única con HEAD remoto/local
+  coincidente y checkout limpio. B5 permanece pendiente de autorización.
 
-**Continuar desde [13 · Relevo de B4](13-relevo-b4-remanso.md)**, que contiene archivos propietarios,
-evidencia, fallos concretos, auditorías pendientes y comandos. El inventario provisional es
-`packages/pseudolearn_spec/results/r5-b4-verification.json`. El cierre de B4.2 está publicado y el checkout
-queda limpio; B4 sigue abierta. No descartar evidencia ni iniciar B4.3 sin autorización nueva.
+El cierre, sus exclusiones y la evidencia están en [13 · Relevo de B4](13-relevo-b4-remanso.md) y en
+`packages/pseudolearn_spec/results/r5-b4-verification.json`. `API.EXECUTE`, `execute` integrado y
+observación completa permanecen en B7.3; no iniciar B5 sin autorización nueva.
 
 ### B5 · Gemelo sondeado, eventos, combustible y límites
 
@@ -1656,19 +1658,19 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 
 ---
 
-## 14. Estado y relevo — 2026-10-15
+## 14. Estado y relevo — 2026-10-16
 
-R5 está autorizada y **permanece abierta**. B2 y B3 están cerrados; B4 sigue en curso con B4.1 aceptada
-y B4.2–B4.6 pendientes. B5–B8 no están cerrados; no se inicia B5, R6 ni R7 sin autorización nueva.
+R5 está autorizada y **permanece abierta**. B2, B3 y B4 están cerrados; B5–B8 no están cerrados y no
+se inicia B5, R6 ni R7 sin autorización nueva.
 
 B0 y E-02R están publicados; RC-01 está resuelto. BF tiene análisis conforme (524 observaciones sin
 divergencias), recuperación, generación de vistas, HIR tipado y medición E-08. B1.4 y B1.6 están
 completos. BF.4, BF.5 y BF.8 quedan abiertos para su cierre conjunto; B1.5 tiene trabajo parcial.
 
-**Atención al estado del árbol:** las últimas ampliaciones de propiedades de SEE están a medio escribir.
-El `cargo check --workspace` actual falla con E0583 porque `property_steps.rs` no existe y ya está
-declarado desde `see_conformance/src/lib.rs`. Las verificaciones verdes anteriores no certifican ese
-último lote. No se debe marcar B1.5, B1.7 ni la fase como terminados.
+**Estado del árbol tras el cierre de B4:** las ampliaciones de SEE usadas para los grafos de memoria y
+sus oráculos ya están completas y verificadas. El fallo E0583 de una captura anterior, cuando faltaba
+`property_steps.rs`, quedó resuelto antes del cierre; no describe el árbol actual. B1.5, B1.7 y la fase
+siguen abiertos por sus criterios propios.
 
 El inventario de archivos, evidencia, fallos conocidos, decisiones pendientes y orden de continuación
 está en [12 · Relevo de R5](12-relevo-r5.md). Leerlo antes de editar; los cambios posteriores al último
@@ -1680,3 +1682,8 @@ sobre ellos.
 **Actualización 2026-10-15 (B4.1).** B4.1 queda aceptada con pruebas exactas de raíces en gemelos rápido y
 sondeado, cobertura directa de límites y metadatos, contraste de runtime con el corpus y `cargo xtask verify`
 en verde. B4.2–B4.6 y la puerta global de B4 siguen abiertas; R5 permanece abierta y B5 no se inicia.
+
+**Actualización 2026-10-16 (B4.3–B4.6).** B4.3–B4.6 y la puerta global de B4 quedan aceptadas con
+pruebas directas, negativos, oráculos independientes, corpus y grafos bajo tres políticas de recolección,
+`cargo xtask verify` en engine/spec/ceiling y trazadora B3 en 63,44×. El detalle y las exclusiones están
+en [13 · Relevo de B4](13-relevo-b4-remanso.md). R5 permanece abierta y B5 no se inicia.

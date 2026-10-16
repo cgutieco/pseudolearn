@@ -27,6 +27,20 @@ fn generated_graphs_are_reproducible_and_include_translated_programs() -> Result
                 .and_then(serde_json::Value::as_str)
                 .is_some_and(|program| program.contains("class Node"))
         );
+        assert!(
+            fixture
+                .get("arrayElements")
+                .and_then(serde_json::Value::as_u64)
+                .is_some_and(|elements| elements >= 2)
+        );
+        assert!(
+            fixture
+                .get("program")
+                .and_then(serde_json::Value::as_str)
+                .is_some_and(|program| {
+                    program.contains("Dimension links[") && program.contains("links[0] <- root")
+                })
+        );
     }
     Ok(())
 }

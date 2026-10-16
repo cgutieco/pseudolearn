@@ -61,6 +61,46 @@ fn rejects_branch_arity_mismatch_as_rule5() {
 }
 
 #[test]
+fn accepts_derived_values_at_base_typed_block_parameters() {
+    let source = "module P es\nclass Base {}\nclass Derived : Base {}\nclass Other {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new Derived @1:1-1:2\n  jump b1(%0)\nb1(%1: obj<Base>) mass 0:\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Ok(()));
+    }
+}
+
+#[test]
+fn rejects_unrelated_values_at_base_typed_block_parameters() {
+    let source = "module P es\nclass Base {}\nclass Derived : Base {}\nclass Other {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new Other @1:1-1:2\n  jump b1(%0)\nb1(%1: obj<Base>) mass 0:\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Err("IR.WELL-FORMEDNESS#R5"));
+    }
+}
+
+#[test]
+fn accepts_derived_values_stored_through_base_typed_cells() {
+    let source = "module P es\nclass Base {}\nclass Derived : Base {}\nfunc @main(%0: cell<obj<Base>>) -> unit {\nb0() mass 0:\n  %1 = object.new Derived @1:1-1:2\n  cell.store %0, %1\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Ok(()));
+    }
+}
+
+#[test]
+fn rejects_unrelated_values_stored_through_base_typed_cells() {
+    let source = "module P es\nclass Base {}\nclass Other {}\nfunc @main(%0: cell<obj<Base>>) -> unit {\nb0() mass 0:\n  %1 = object.new Other @1:1-1:2\n  cell.store %0, %1\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Err("IR.WELL-FORMEDNESS#R3"));
+    }
+}
+
+#[test]
 fn rejects_mass_mismatch_as_rule6() {
     let source = "module P es\nfunc @main() -> unit {\nb0() mass 2:\n  stmt.enter @1:1-1:2\n  stmt.exit @1:1-1:2\n  return\n}\n";
     let module = parse_module(source);

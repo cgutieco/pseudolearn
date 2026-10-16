@@ -13,6 +13,10 @@ Negocia JSONL por proceso con capacidades explícitas, ejecuta casos en perfiles
 `runtime_fixtures` materializa casos con el mismo constructor de peticiones de conformidad; sus
 programas generados de grafos conservan el resultado independiente de `see_oracles::cells`. Esta
 preparación de datos no anuncia capacidades de ningún sujeto ni produce un veredicto de conformidad.
+Los escenarios de memoria B4 usan un arreglo de referencias como raíz de objetos y texto durante una
+llamada, e incluyen un objeto local sin usos posteriores para comprobar que no se vuelve raíz. El resultado
+esperado incluye el costo del arreglo y la alcanzabilidad calculada por el oráculo independiente; los
+programas se traducen con el vocabulario exportado y consumen la semilla/cantidad ya registradas.
 
 Imports internos permitidos: model, translation, generators, oracles; format solo en tests. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
 

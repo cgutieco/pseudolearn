@@ -9,7 +9,6 @@ span de la instrucción. No añade construcciones del lenguaje, UI ni efectos li
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| `Copiar` | Descriptores de objeto del runtime | B4.4 |
 | Paridad bit a bit nativa/Wasm | Puente Wasm | E-17 |
 
 ## 2. Guía operativa y ciclo de vida
@@ -59,7 +58,9 @@ argumento o uno) se resuelven antes. La potencia sí puede ser exacta o caer en 
 las potencias enteras de hasta 34 de una base impar y las raíces perfectas `2^k`-ésimas con `k ≤ 5`, y
 demuestra que fuera de esos casos el resultado no es representable ni punto medio.
 
-No se agrega una dependencia matemática externa. La copia superficial pertenece a B4.4.
+No se agrega una dependencia matemática externa. `Copiar` está implementado como copia superficial con
+nueva identidad: comparte las referencias, conserva ciclos y valores ausentes y no vuelve a ejecutar el
+constructor. El runtime suministra los descriptores que determinan el contenido copiable.
 
 Invariantes: Mismo resultado binario64 y mismo texto en todas las plataformas. Los dominios inválidos y resultados no finitos atrapan antes de guardar un valor.
 

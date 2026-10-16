@@ -20,7 +20,7 @@ La API pública existente se consume mediante los tipos y funciones exportados p
 
 ## 3. Arquitectura y modelo del sistema
 
-El montón guarda palabras `u64` en un vector plano y registra cada asignación en mapas ordenados por `Handle`. El valor cero representa una referencia ausente; las asas son desplazamientos de 32 bits dentro del vector y las asignaciones de objetos y arreglos reciben una identidad ordinal que no depende de su dirección física.
+El montón guarda palabras `u64` en un vector plano y registra cada asignación en mapas ordenados por `Handle`. El valor cero representa una referencia ausente; las asas son desplazamientos de 32 bits dentro del vector y las asignaciones de objetos y arreglos reciben una identidad ordinal que no depende de su dirección física. Una dirección reutilizada recibe un ordinal nuevo, así que igualdad de asa no implica identidad de objeto.
 
 Los objetos conservan su diseño de campos y mapa de referencias en `ObjectLayout`. Los arreglos conservan rango, dimensiones y clase de elemento; sus datos son contiguos y el mapa de definición de enteros distingue una celda sin inicializar de un entero cuyo valor sea cero. Las celdas auxiliares permiten representar ese mapa sin añadir etiquetas a los valores.
 
@@ -50,7 +50,7 @@ La colección automática puede activarse por presión de límite o asignaciones
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Las pruebas de `tests/heap_tests.rs` y `tests/array_tests.rs` cubren asignación, acceso, límites, errores, identidades, recolección, definición de enteros y crecimiento del almacenamiento. Las pruebas de consumo en `pseudolearn_api` contrastan las operaciones con los casos del corpus.
+Las pruebas de `tests/heap_tests.rs` y `tests/array_tests.rs` cubren asignación, acceso, límites, errores, identidades, recolección, definición de enteros y crecimiento del almacenamiento. La regresión de reutilización verifica que una misma asa conserva una identidad ordinal distinta tras recolectar y reasignar. Las pruebas de consumo en `pseudolearn_api` contrastan las operaciones con los casos del corpus bajo recolección automática, forzada y desactivada.
 
 Para aceptar un cambio, se ejecutan las pruebas dirigidas del crate afectado y `cargo xtask verify` desde la raíz del motor. La conformidad observable del lenguaje se mantiene en el corpus y se contrasta desde `packages/pseudolearn_spec`.
 

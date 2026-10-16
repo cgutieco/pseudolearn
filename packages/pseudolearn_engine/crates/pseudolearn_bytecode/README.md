@@ -17,7 +17,7 @@ Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se de
 
 ## 3. Arquitectura y modelo del sistema
 
-El módulo conserva vocabulario, disposiciones de clase y metadatos de origen por función. Cada variante
+El módulo conserva vocabulario, jerarquía de clases, disposiciones heredadas y metadatos de origen por función. Cada variante
 lleva mapas de raíces en instrucciones que asignan memoria o llaman: ranuras de variables en ámbito más
 temporales vivos de la evaluación actual. La información de variables sobrevive aunque no tengan usos
 futuros; la liveness de registros por sí sola no representa el conteo nocional. Las continuaciones
@@ -31,6 +31,11 @@ asignan en orden estable y se separan por clase de valor. La salida SSA transpor
 como copias paralelas; los gemelos rápido y sondeado comparten registros, constantes, descriptores y puntos
 de retorno.
 
+Los metadatos de clase incluyen superclase, campos aplanados en orden heredado, mapas de referencias y
+objetivos de métodos. El verificador valida nombres únicos, jerarquías acíclicas, prefijos de campos
+heredados y receptores compatibles con cada método. También comprueba las clases de destino y operandos
+de arreglos, celdas, objetos, comparación de referencias y azar antes de cargar la VM.
+
 Cada variante termina acolchada con `unreachable` hasta la siguiente potencia de dos y registra en
 `used_length` cuántas instrucciones son código real. El consumidor indexa con `pc & (longitud − 1)`: un pc
 que se saliera del código cae en una instrucción que atrapa, nunca fuera del vector.
@@ -39,7 +44,7 @@ Invariantes: Los gemelos comparten el mapa de registros, depósitos de constante
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo y PC propio para cada variante. El verificador rechaza registros fuera de ventana, saltos inválidos, incompatibilidades de clase, continuaciones sin identidad y fusiones de opcode incompatibles. El compilador recibe las superinstrucciones elegidas a partir de perfiles de entrenamiento; la fusión de comparación y salto se valida con una carga reservada. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
+Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo y PC propio para cada variante. El verificador rechaza registros fuera de ventana, saltos inválidos, clases incompatibles, continuaciones sin identidad, jerarquías o disposiciones de objeto incoherentes y fusiones de opcode incompatibles. Las aristas de bloque y las escrituras a celdas aceptan un objeto derivado cuando el destino espera una superclase. El compilador recibe las superinstrucciones elegidas a partir de perfiles de entrenamiento; la fusión de comparación y salto se valida con una carga reservada. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
 Los literales escalares usados por operaciones aritméticas, comparaciones y escritura pasan como
 operandos constantes directos; se mantienen registros solo cuando una transferencia de bloque,
 llamada o instrucción sin forma inmediata necesita el valor.

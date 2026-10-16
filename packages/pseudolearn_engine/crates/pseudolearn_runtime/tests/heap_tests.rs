@@ -34,6 +34,18 @@ fn collection_preserves_cycles_and_never_reuses_identity() -> Result<(), MemoryE
 }
 
 #[test]
+fn reused_handle_receives_a_new_identity_ordinal() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let first = new_array(&mut heap, ValueKind::Integer, &[2], &[])?;
+    assert_eq!(heap.identity(first), Ok(1));
+    heap.collect(&[])?;
+    let second = new_array(&mut heap, ValueKind::Integer, &[2], &[])?;
+    assert_eq!(first, second);
+    assert_eq!(heap.identity(second), Ok(2));
+    Ok(())
+}
+
+#[test]
 fn copy_preserves_absence_and_shared_references() -> Result<(), MemoryError> {
     let mut heap = Heap::new(MemoryOptions::default());
     let source = new_object(&mut heap, layout(), &[])?;

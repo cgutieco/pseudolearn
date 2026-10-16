@@ -46,6 +46,7 @@ fn descriptor(
     } else {
         BytecodeClass {
             name: class.name.clone(),
+            superclass: None,
             fields: Vec::new(),
             methods: BTreeMap::new(),
             dense_integers: false,
@@ -53,6 +54,7 @@ fn descriptor(
         }
     };
     descriptor.name = class.name.clone();
+    descriptor.superclass = class.superclass.clone();
     descriptor.dense_integers = class.dense_integers;
     descriptor.fields.extend(
         class

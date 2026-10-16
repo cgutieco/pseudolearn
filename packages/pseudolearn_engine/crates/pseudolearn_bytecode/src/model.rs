@@ -140,6 +140,7 @@ pub struct BytecodeModule {
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytecodeClass {
     pub name: String,
+    pub superclass: Option<String>,
     pub fields: Vec<(String, IrType)>,
     pub methods: BTreeMap<String, u16>,
     pub dense_integers: bool,

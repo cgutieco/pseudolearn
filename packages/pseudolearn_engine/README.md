@@ -42,17 +42,18 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene las capas de análisis estático, RI y lowering procedural, B3 cerrado y los bloques
-de R5 en ejecución. B4.1 está aceptada con evidencia de montón, arreglos y metadatos; B4.2–B4.6 y la puerta
-global de B4 permanecen abiertas. La API pública de ejecución sigue pendiente de su bloque propio.
+El workspace contiene las capas de análisis estático, RI y lowering procedural, B3 y B4 cerradas. R5 sigue
+abierta: B5–B8 y la API pública integrada de ejecución tienen bloques propios pendientes.
 
-La implementación actual cubre bytecode escalar verificado, ejecución de enteros y reales, control,
-llamadas, combustible, trampas tipadas, conversiones, redondeo y raíz cuadrada. El runtime también ofrece
-montón, arreglos y metadatos de raíces/definición aceptados en B4.1; la aceptación del texto, llamadas,
-objetos, recolección, límites y azar corresponde a los bloques restantes de B4. La entrada y el resto de
-la biblioteca matemática conservan sus bloques pendientes. La trazadora B3.3 midió 16,60× tras PGO frente
-al objetivo temprano de 30×; RR-01 se agotó y los resultados se conservan en
-`packages/pseudolearn_benchmarks/results/r5-vm-tracer/`.
+El motor ya ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
+copia superficial, recolección determinista y azar con semilla. Conserva entradas, eventos completos,
+cambio de gemelo y conformidad integrada `execute` para B5/B7.3. `RunOptions` y sus envoltorios actuales
+siguen siendo la configuración de bajo nivel; no se añadió `API.EXECUTE`.
+
+La repetición emparejada de la trazadora B3 sobre el código de cierre de B4 obtuvo 63,44× sin PGO frente
+al umbral de 30×, con cero muestras descartadas. Los crudos actuales están en
+`packages/pseudolearn_benchmarks/results/r5-vm-tracer/`; la captura previa de B3 se conserva por separado
+en `packages/pseudolearn_benchmarks/results/r5-vm-tracer-b3/`.
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
 - Compilación optimizada: `cargo build --release`.
@@ -151,26 +152,28 @@ retorno. El acolchado del código a potencia de dos sigue pendiente.
 Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros. Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
 Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
 
-### runtime (B4.1 aceptada; B4 permanece abierta)
+### runtime (B4 aceptada)
 
 La implementación actual cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición
 de enteros, raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito.
-B4.1 está aceptada tras las pruebas directas y `cargo xtask verify`; B4.2–B4.6 y la puerta global de B4
-siguen pendientes. `#![forbid(unsafe_code)]` rige en este crate.
+B4 cierra tras aceptar subprogramas, objetos, políticas de recolección, límites y anfitrión. Las asas
+pueden reutilizar una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]` rige
+en este crate.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
-### library (implementación parcial de B3)
+### library (B4 aceptada)
 
-La entrega actual implementa conversiones, truncamiento, redondeo, valor absoluto y raíz cuadrada. La
-potencia real y `ln`, `exp`, `sin`, `cos` y `atan` con redondeo correcto siguen pendientes.
+La biblioteca implementa conversiones, truncamiento, redondeo, valor absoluto, raíz cuadrada y las
+trascendentes con redondeo correcto. `Copiar` comparte referencias, conserva ciclos y ausencia y no
+ejecuta constructores; el azar llega por la capacidad sembrada del anfitrión.
 
 Problema: implementa las funciones incorporadas sobre valores del runtime. Elección: Funciones incorporadas sobre los valores del runtime, sin estado global; azar desde la capacidad inyectada.
 Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
 
-### vm (implementación parcial de B3)
+### vm (B4 aceptada; B5 pendiente)
 
-La VM actual cubre operaciones escalares, control, llamadas y salida entera. Entrada, referencias de
-usuario, texto, arreglos y objetos quedan fuera de esta entrega.
+La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos, llamadas virtuales,
+`Copiar`, formato de salida y azar. B5 conserva el gemelo sondeado, eventos, cambio de gemelo y entrada.
 
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.

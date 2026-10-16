@@ -8,16 +8,15 @@ No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Familias de referencias, texto, arreglos, celdas, objetos, copia y azar del anfitrión (hoy `Unsupported` al ejecutarse) | Runtime y biblioteca de B4 | B4 |
 | Gemelo sondeado en ejecución, eventos, cambio de gemelo y entrada | Línea de eventos y API | B5 |
-| Profundidad máxima configurable de marcos | Contrato de límites | B5.3 |
 
 ## 2. Guía operativa y ciclo de vida
 
 Usa la versión exacta de `rust-toolchain.toml` del miembro. El crate está activo en el workspace y
-ejecuta todas las familias escalares de `IR.INSTRUCTIONS` (enteros, reales, lógicos, caracteres e
-intrínsecos matemáticos), constantes, ausencia, control, llamadas recursivas, salida entera y servicio de
-combustible. Comprobación: `cargo xtask verify` del motor, que incluye tests, Clippy y `rust-checks all`.
+ejecuta las familias escalares y de referencia de `IR.INSTRUCTIONS`, texto, arreglos, celdas, objetos,
+llamadas recursivas y virtuales, copia superficial, salida formateada y azar sembrado. B5 conserva la
+entrada, los eventos y el cambio al gemelo sondeado. Comprobación: `cargo xtask verify` del motor, que
+incluye tests, Clippy y `rust-checks all`.
 
 La API pública tiene dos pasos: `load(&VerifiedBytecode) -> LoadedProgram` construye la forma de
 despacho y `run_loaded(&LoadedProgram, Fuel)` la ejecuta con estado nuevo. `run` y `run_profiled` cargan y
@@ -111,8 +110,8 @@ pilas propias. La profundidad no depende de una capacidad fija elegida por plata
   `internalFault`.
 - La VM sale hacia su llamador con `Exit::Service` y no importa timeline ni API. La ejecución devuelve
   `Completed`, `Service` o `Trap`; el llamador interpreta la salida de servicio. La salida del programa se
-  acumula en el resultado de ejecución, sin escribir en el anfitrión; hoy solo se formatean enteros, y
-  escribir otro tipo es `Unsupported` hasta el formato de valores de B4.
+  acumula en el resultado de ejecución, sin escribir en el anfitrión; B4 incorpora el formato de valores
+  primitivos y texto. La entrada del anfitrión permanece en B5.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
