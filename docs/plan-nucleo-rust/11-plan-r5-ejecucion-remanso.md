@@ -1599,8 +1599,9 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 - [x] Añadir pruebas de opciones válidas, malformadas, ausentes y desbordadas.
 - [x] Resolver el conflicto de tramos según la decisión de la persona: conservar el operador `div` y
   corregir `TOOL.CLI.RUN#C5`. Clasificación e impacto registrados; versión del contrato `0.2.0`.
-- [ ] Repetir conformidad CLI tras la corrección de fin de entrada: el artefacto conservado todavía
-  registra **48 `cumple` y 1 `incumple`**. No se acredita 49/49 hasta actualizar la evidencia.
+- [x] Repetir conformidad CLI tras la corrección de fin de entrada: la plantilla `inputExhausted` ya termina en
+  salto de línea y la CLI añadía otro; corregido. `see conform --subject cli`: **49 observaciones, 0 divergencias**
+  (evidencia en `results/cli.json` y `results/matrix-cli.json`, 2026-10-16).
 
 **B7.3 · Conformidad y correcciones semánticas.**
 
@@ -1626,7 +1627,9 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
   independiente detectó el defecto de variables respaldadas por celdas y motivó su corrección/regresión.
 - [ ] Ejecutar y publicar el diferencial completo con `reference`, clasificar sus diferencias y cerrar
   hallazgos/exenciones sin modificar Dart. Falta `results/r5-differential.json`.
-- [ ] Completar **24 propiedades pendientes de las 29 seleccionadas**, con semillas, muestras y
+- [ ] Completar **24 propiedades pendientes de las 29 seleccionadas** (diagnóstico 2026-10-16: anunciar `api` convierte la
+  falta de capacidad en `executor unavailable`; faltan ejecutores en `see_conformance::property_comparison` para
+  `first_trap`, `lossless_reprint`, `lossless_recovery` y otros), con semillas, muestras y
   contraejemplos reproducibles; falta el cierre consolidado `results/r5-properties.json`.
 - [ ] Ejecutar campañas aisladas con límites sobre corpus mutado, RI mutada y bytecode corrupto;
   convertir cada defecto en regresión. Los programas generados de E-17 no sustituyen estas campañas.
@@ -1657,7 +1660,7 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 
 - [x] Ejecutar pruebas completas, formato, Clippy y verificadores Rust en revisiones intermedias;
   ejecutar `cargo deny check` en motor, CLI y SEE: las tres auditorías pasan.
-- [ ] Corregir los dos fallos de la última revisión: `execution_state.rs` usa indexación JSON rechazada por
+- [x] (Resuelto: `cargo xtask verify` del motor pasa en verde el 2026-10-16.) Corregir los dos fallos de la última revisión: `execution_state.rs` usa indexación JSON rechazada por
   `clippy::indexing_slicing` y su función `query` mide **49 líneas frente al máximo de 40** (`SIZE-FUNCTION`).
 - [ ] Repetir `cargo xtask verify` íntegro de los miembros afectados después de las últimas modificaciones;
   los verdes intermedios y las auditorías separadas no acreditan el árbol actual. Verificar también el arnés Dart,

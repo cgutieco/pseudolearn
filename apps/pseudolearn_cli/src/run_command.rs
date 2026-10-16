@@ -97,7 +97,7 @@ fn finish(options: &CliOptions, path: &str, response: &Value) -> Result<i32, Cli
             .and_then(Value::as_str)
             == Some("awaiting_input")
         {
-            eprintln!(
+            eprint!(
                 "{}",
                 messages::render(
                     "inputExhausted",

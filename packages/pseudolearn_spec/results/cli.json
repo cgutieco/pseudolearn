@@ -939,16 +939,14 @@
     },
     {
       "actual": {
-        "error_output": "",
+        "error_output": "p.pseudo: la entrada estándar terminó mientras el programa esperaba un valor\n",
         "exit_code": 1,
         "json": null,
         "kind": "cli",
         "output": ""
       },
       "case": "C6",
-      "differences": [
-        "Mismatch: salida_error"
-      ],
+      "differences": [],
       "expected": {
         "codigo_salida": 1,
         "salida": "",
@@ -958,7 +956,7 @@
       "rule": "R2",
       "specification": "TOOL.CLI.RUN",
       "strictness": "estricto",
-      "verdict": "incumple"
+      "verdict": "cumple"
     },
     {
       "actual": {

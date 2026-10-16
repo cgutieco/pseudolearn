@@ -132,7 +132,7 @@
   {
     "binding": "pendiente",
     "cases": 3,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R2",
