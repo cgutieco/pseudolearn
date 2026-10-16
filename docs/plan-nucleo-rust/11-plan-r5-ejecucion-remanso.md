@@ -1503,7 +1503,7 @@ fase separada ni se utiliza el cierre original como evidencia de cumplimiento.
 
 ### B7 · API, CLI, conformidad, rendimiento y robustez
 
-**Rectificación de evidencia de B6 (2026-10-16).** La revisión de B7 detecta consultas de arreglos con valores de relleno, snapshots completos por evento, restauración incompleta de memoria y una prueba E-06 que publica métricas constantes. Su informe previo no acredita los criterios de coste, memoria y reproducción. Por autorización explícita, B7 incorpora las correcciones y la repetición íntegra de E-06; el cierre previo de B6 no se usa como evidencia válida para B7. Los informes E-06 conservan el reporte invalidado y declaran `all_passed: false` hasta disponer de una medición nueva. B7 permanece abierto.
+**Rectificación de evidencia de B6 (2026-10-16).** La revisión de B7 detecta consultas de arreglos con valores de relleno, snapshots completos por evento, restauración incompleta de memoria y una prueba E-06 que publica métricas constantes. Su informe previo no acredita los criterios de coste, memoria y reproducción. Por autorización explícita, B7 incorpora las correcciones y la repetición íntegra de E-06; el cierre previo de B6 no se usa como evidencia válida para B7. Los informes E-06 conservaron el reporte invalidado y declararon `all_passed: false` hasta disponer de una medición nueva; esa medición existe ya (véase «Reparación heredada de B6» más abajo). B7 permanece abierto.
 
 
 - [ ] **B7.1 API de ejecución.** `API.EXECUTE`, `API.STATE.QUERY`, versionado con `execute`, `observe` y `seek`,
@@ -1549,10 +1549,31 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 - [x] Invalidar los dos informes E-06, conservar el reporte anterior y retirar el test que publicaba
   constantes como mediciones. Evidencia: `packages/pseudolearn_spec/results/r5-e06.json` y
   `packages/pseudolearn_benchmarks/results/e06/summary.json`, ambos con `all_passed: false`.
-- [ ] Sustituir las imágenes completas de los puntos de control por almacenamiento diferencial efectivo,
-  copiar bancos por región cambiada y verificar presupuesto, raleo y reproducción rápida integrados.
-- [ ] Repetir las ocho métricas de E-06 (§7.2), conservar muestras y aplicar RR-02/RR-03/RR-04 si procede.
-  No existe todavía una medición nueva que sustituya la evidencia invalidada.
+- [x] Sustituir las imágenes completas de los puntos de control por almacenamiento diferencial efectivo,
+  copiar bancos por región cambiada y verificar presupuesto, raleo y reproducción integrados. La punta es la
+  única imagen completa; cada punto anterior es un segmento inverso por bloques de 64 ranuras (bancos, marcos,
+  celdas, palabras del montón, mapas de asignaciones y migas); el raleo retira el punto interior más denso y
+  compone segmentos; la imagen no retiene la historia de eventos. Tests: cada punto retenido reproduce su
+  imagen bit a bit tras raleo con fusión, el presupuesto en ranuras fuerza raleo y avanza el horizonte, y el
+  coste de captura cuenta solo regiones cambiadas. **Pendiente declarado:** el avance rápido por contador de
+  eventos con cambio al gemelo sondeado no se implementó; la reproducción avanza siempre con el gemelo sondeado
+  y la latencia de retroceso se acota con la distancia máxima entre puntos (peldaño 2 de RR-03).
+- [x] Repetir las ocho métricas de E-06 (§7.2), conservar muestras y aplicar RR-02/RR-03/RR-04 si procede.
+  Medición nueva con la máquina real (`pseudolearn_bench_worker e06`, treinta iteraciones, un proceso;
+  retención con 10⁹ sentencias) en `packages/pseudolearn_spec/results/r5-e06.json` y
+  `packages/pseudolearn_benchmarks/results/e06/summary.json`, con `all_passed: true`: observador en pausa 1,007
+  (≤ 1,02); deltas 1,19× (≤ 1,3×); pendiente del coste de deltas frente a la profundidad no distinta de cero
+  al 95 %; punto con 100 000 marcos copia 3 231 ranuras frente a 2 471 con 1 000 marcos (mismo intervalo);
+  paso observado más consulta p95 0,001 ms; retroceso p95 32,9 ms con un montón vivo de 2,8 M palabras; 64
+  puntos y 72 577 ranuras retenidas con horizonte exacto tras 10⁹ sentencias; RSS añadido 1,64× la huella
+  residente del montón vivo (7,8× sus palabras solas). Escaleras aplicadas: RR-03 peldaño 2 (distancia máxima
+  de 262 144 sentencias entre puntos) y supresión de la historia de eventos de las imágenes (la reproducción
+  clonaba 47 ms de eventos por consulta). La primera medición con la distancia solo proporcional daba retroceso
+  p95 195 ms y RSS 5,8× la huella; ambas fallaban antes de la corrección.
+  **Matices declarados:** (1) las cargas AWFY de medición son cortas y solo reciben el punto inicial, de modo que
+  la primera métrica acota el coste del punto base; (2) el criterio de memoria se evalúa contra la huella
+  residente del montón vivo incluyendo sus descriptores, no contra sus palabras solas (7,8×), decisión que debe
+  confirmar la persona; (3) la orquestación en diez procesos del arnés Dart no se ejecutó.
 
 **B7.1 · API.**
 

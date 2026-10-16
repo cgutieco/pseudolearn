@@ -2,10 +2,10 @@
 
 ## 1. Qué es y qué no es
 
-Conserva una línea temporal consultable de la ejecución, con vistas inmutables de estado, deltas incrementales, puntos de control con sombra del montón y segmentos de deshacer de 64 palabras, raleo exponencial con fusión y retroceso determinista mediante máquina de reproducción.
+Conserva una línea temporal consultable de la ejecución, con vistas inmutables de estado, deltas incrementales, puntos de control diferenciales (imagen de la punta y segmentos de deshacer por bloques de 64 ranuras), raleo exponencial con fusión de segmentos y retroceso determinista mediante máquina de reproducción.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
-Pendientes técnicos: medición integrada de coste y memoria de puntos, deltas y reproducción; las consultas exactas no sustituyen la evidencia de rendimiento.
+Pendientes técnicos: ninguno propio de este crate; la evidencia de coste y memoria vive en `results/e06` y en el README del trabajador de medición.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -15,15 +15,15 @@ Versión exacta de rust-toolchain.toml del miembro. Manifiesto y código incorpo
 
 Nivel 8. Importa vm, runtime, bytecode y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Sombra del montón y segmentos de deshacer por bloques de 64 palabras, longitud de la arena de texto y segmentos de bancos desde la marca de agua. Puntos con pila, azar, salida, entradas, evento, sentencias, identidad y contadores de recolección. Vistas propias, deltas por evento y tabla ordinal→asa de exposición.
+`CheckpointStore` conserva una única imagen completa, la punta, y por cada punto anterior un segmento de deshacer (`MachineDelta` de `pseudolearn_vm`) que lleva la punta a ese punto. Cada segmento guarda solo los bloques de 64 ranuras que difieren en bancos, marcos, celdas y palabras del montón, las entradas cambiadas de los mapas de asignaciones, bloques libres y migas del texto, y la longitud previa de la salida, los literales, las entradas y los diagnósticos. La historia de eventos no se retiene: la imagen solo recuerda cuántos eventos precedieron al punto. Vistas propias, deltas por evento y tabla ordinal→asa de exposición.
 
-Invariantes: Restaurar un punto reproduce sus bits. Consultar el pasado no altera la continuación presente. El horizonte retenido se declara y las vistas entregadas son inmutables.
+Invariantes: Restaurar un punto reproduce sus bits (imagen ligera, sin eventos). Fusionar segmentos conserva la reconstrucción de los puntos que sobreviven. Consultar el pasado no altera la continuación presente. El horizonte retenido se declara y las vistas entregadas son inmutables.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: una reproducción necesita descriptores del montón y estado de texto, entrada y observación además de palabras. Elección: los puntos conservan una imagen completa restaurable; las consultas usan una máquina independiente y rechazan eventos inalcanzables. Las consultas parciales leen solo la vista pedida. Se descarta conservar snapshots completos por evento. La reducción diferencial de imágenes y la reproducción rápida requieren validación de coste antes de declarar cumplimiento de rendimiento.
+Problema: una reproducción necesita descriptores del montón y estado de texto, entrada y observación además de palabras. Elección: la punta es la única imagen completa y cada punto anterior es un segmento de deshacer; restaurar clona la punta y aplica los segmentos desde el más reciente hasta el punto pedido, y la máquina independiente avanza desde ahí hasta el evento. Las consultas rechazan eventos inalcanzables y las parciales leen solo la vista pedida. Se descarta conservar snapshots completos por evento y conservar la historia de eventos en las imágenes: clonarla costaba más de 40 ms con siete millones de eventos y la línea temporal solo necesita su cuenta. Los segmentos son inversos (deshacer) porque crecer no cuesta nada: el área nueva no guarda contenido previo.
 
-El siguiente punto se programa a max(Q_min, κ·S) en masa de sentencia, con parámetros calibrados por coste y presupuesto. No se usa reloj para decidir puntos. Raleo exponencial fusiona segmentos conservando la imagen más antigua por bloque. Una VM independiente restaura sombra y segmentos, avanza rápido por masa de evento y cambia al sondeado en el bloque objetivo; densifica cerca del evento consultado. La salida se suprime y las entradas se releen de la cinta. La compactación de texto fuerza copia en el siguiente punto. Se rechaza barrera por escritura y copiar un estado completo por evento.
+El siguiente punto se programa a max(Q_min, min(κ·S, T_max)) en masa de sentencia: κ·S mantiene proporcional el coste de grabar frente al de ejecutar, y T_max (262 144 sentencias) acota la distancia de reproducción cuando el montón es grande, de modo que el retroceso no crece sin límite con el estado. No se usa reloj para decidir puntos. El raleo, activado por número de puntos o por ranuras retenidas, retira el punto interior cuyo hueco resultante sea menor respecto a su antigüedad, de modo que el espaciado queda exponencial, y compone su segmento con el del punto anterior; la composición conserva el contenido más antiguo por bloque. Cuando solo quedan dos puntos y aun así se supera el presupuesto, se retira el más antiguo y el horizonte declarado avanza. Una VM independiente restaura sombra y segmentos, avanza rápido por masa de evento y cambia al sondeado en el bloque objetivo; densifica cerca del evento consultado. La salida se suprime y las entradas se releen de la cinta. La compactación de texto fuerza copia en el siguiente punto. Se rechaza barrera por escritura y copiar un estado completo por evento.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.

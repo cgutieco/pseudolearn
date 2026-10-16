@@ -3,7 +3,7 @@
 ## 1. Qué es y qué no es
 
 Mide cargas de la API pública en proceso. Herramienta local; no es una capa del producto ni un sujeto de conformidad.
-El comando `execute` prepara las diez cargas AWFY de medición desde la exportación y emite treinta muestras por carga; valida salida y terminación fuera del intervalo. Pendientes: mediciones integradas de eventos y estado.
+El comando `execute` prepara las diez cargas AWFY de medición desde la exportación y emite treinta muestras por carga; valida salida y terminación fuera del intervalo. El comando `e06` mide las ocho métricas de la línea temporal (observador en pausa, coste de los deltas por evento, independencia de la profundidad, coste de un punto con pila profunda, latencia de paso observado, latencia de retroceso, memoria retenida y memoria residente con grabación) y emite un único documento JSON con muestras crudas, veredicto por métrica y `all_passed` calculado. Pendiente: la orquestación en diez procesos del arnés Dart; hoy cada métrica se toma en un único proceso con treinta iteraciones.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -12,8 +12,8 @@ por configuración como JSONL. `cargo xtask verify` comprueba la herramienta con
 
 ## 3. Arquitectura y modelo del sistema
 
-Tooling. Solo importa `pseudolearn_api`, serde_json y estándar. Prohibido importar internos del motor.
-`src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados.
+Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `pseudolearn_timeline`, serde_json y estándar: `e06` necesita crear máquinas y líneas temporales para medirlas, y el resto de órdenes solo usa la API. Prohibido importar otros internos del motor.
+`src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados. `src/corpus.rs` lee las diez cargas AWFY de medición; `src/e06/` contiene un módulo por métrica, estadística (percentil, media geométrica, pendiente con intervalo al 95 %) y el informe.
 El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dentro del intervalo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
@@ -21,6 +21,8 @@ El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dent
 Problema: el arranque de una CLI y la serialización no son coste de análisis. Elección: llamadas directas
 a la API en un proceso trabajador. Fuentes generadas por vocabulario del corpus, con terminadores y
 validación previa de su análisis. Se descartan programas con lexemas manuales o sin comprobar el resultado.
+
+E-06 se mide con la máquina real, sin constantes: el gemelo rápido se avanza en bloques de 1 024 instrucciones y el anfitrión consulta al planificador solo entre bloques, para no atribuir a la línea temporal el coste de sondear en cada paso. Los deltas por evento son el consumo incremental del búfer de cambios del gemelo sondeado (solo las entradas nuevas desde el evento anterior), y el criterio de independencia de la profundidad regresa la diferencia pareada con y sin deltas, que aísla el coste de los deltas del efecto de caché de una pila mayor. El criterio de memoria compara los bytes residentes añadidos por la grabación con la huella residente del montón vivo (palabras y descriptores), medida en dos procesos hijos; la razón respecto a las palabras solas se publica aparte. El coste de un punto con pila profunda se verifica con el número de ranuras copiadas para un mismo intervalo ejecutado a 1 000 y a 100 000 marcos. Las cargas AWFY de medición son cortas: en ellas solo se toma el punto inicial, de modo que la media geométrica del observador en pausa acota el coste del punto base y no el de una grabación sostenida; la grabación sostenida se ejercita en la métrica de memoria retenida (10⁹ sentencias).
 La captura de procedencia y la orquestación externa preceden a compilar el trabajador final; el trabajador
 solo produce tiempos crudos y conteos para validar muestras. Un perfil del sistema se realiza en una sesión
 separada de la captura normativa para no contaminar las muestras.
@@ -35,7 +37,7 @@ PERF.PROTOCOL y PERF.FRONTEND.THROUGHPUT definen muestras y criterios. Las medic
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests espejo: cargas válidas e incompletas, salida incorrecta rechazada y corpus ausente o malformado.
+Tests espejo: cargas válidas e incompletas, salida incorrecta rechazada y corpus ausente o malformado. La estadística de E-06 y el veredicto del informe tienen casos negativos: un informe con una métrica fallida, ausente o sin veredicto no es verde.
 La conformidad del motor se ejecuta aparte; el trabajador no convierte sus resultados en esperados del lenguaje.
 
 ## 8. Fuentes consultadas y genealogía conceptual

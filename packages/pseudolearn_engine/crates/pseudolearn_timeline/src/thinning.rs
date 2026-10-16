@@ -1,60 +1,78 @@
+use pseudolearn_vm::compose_machine_deltas;
+
 use crate::checkpoint::Checkpoint;
-use crate::shadow::fuse_undo_segments;
+use crate::store::CheckpointStore;
 
-#[derive(Clone, Debug, PartialEq)]
-pub struct ThinningManager {
-    pub checkpoints: Vec<Checkpoint>,
-    pub max_checkpoints: usize,
-    pub declared_horizon: usize,
-}
-
-impl ThinningManager {
-    pub fn new(max_checkpoints: usize) -> Self {
-        Self {
-            checkpoints: Vec::new(),
-            max_checkpoints: max_checkpoints.max(4),
-            declared_horizon: 0,
-        }
-    }
-
-    pub fn checkpoints_count(&self) -> usize {
-        self.checkpoints.len()
-    }
-
-    pub fn horizon(&self) -> usize {
-        self.declared_horizon
-    }
-
-    pub fn find_candidate_checkpoint(&self, target_event: usize) -> Option<&Checkpoint> {
-        let mut candidate = None;
-        for checkpoint in &self.checkpoints {
-            if checkpoint.event_index <= target_event {
-                candidate = Some(checkpoint);
-            } else {
+impl CheckpointStore {
+    pub(crate) fn thin_to_budget(&mut self) {
+        while self.over_budget() {
+            if self.checkpoints.len() > 2 {
+                self.remove_sparsest_interior();
+            } else if !self.drop_oldest() {
                 break;
             }
         }
-        candidate
     }
 
-    pub fn push_checkpoint(&mut self, checkpoint: Checkpoint) {
-        if self.checkpoints.is_empty() {
-            self.declared_horizon = checkpoint.event_index;
-        }
-        if self.checkpoints.len() >= self.max_checkpoints {
-            self.execute_thinning_step();
-        }
-        self.checkpoints.push(checkpoint);
+    fn over_budget(&self) -> bool {
+        self.checkpoints.len() > self.budget.max_checkpoints
+            || (self.checkpoints.len() > 1
+                && self.retained_slots() > self.budget.max_retained_slots)
     }
 
-    fn execute_thinning_step(&mut self) {
-        if self.checkpoints.is_empty() {
+    fn remove_sparsest_interior(&mut self) {
+        let Some(removed) = self.sparsest_interior_position() else {
             return;
-        }
-        let removed = self.checkpoints.remove(0);
-        if let Some(first) = self.checkpoints.first_mut() {
-            first.undo_segment = fuse_undo_segments(&removed.undo_segment, &first.undo_segment);
-            self.declared_horizon = first.event_index;
+        };
+        let Some(older_position) = removed.checked_sub(1) else {
+            return;
+        };
+        let removed_checkpoint = self.checkpoints.remove(removed);
+        if let (Some(removed_undo), Some(older)) = (
+            removed_checkpoint.undo,
+            self.checkpoints.get_mut(older_position),
+        ) {
+            older.undo = match older.undo.take() {
+                Some(older_undo) => Some(compose_machine_deltas(&removed_undo, &older_undo)),
+                None => Some(removed_undo),
+            };
         }
     }
+
+    fn sparsest_interior_position(&self) -> Option<usize> {
+        let newest = self.checkpoints.last()?.event_index;
+        let mut best: Option<(usize, u64, u64)> = None;
+        for position in 1..self.checkpoints.len().saturating_sub(1) {
+            let before = self.checkpoints.get(position.checked_sub(1)?)?;
+            let current = self.checkpoints.get(position)?;
+            let after = self.checkpoints.get(position.checked_add(1)?)?;
+            let gap = event_distance(after, before);
+            let age = u64::try_from(newest.saturating_sub(current.event_index))
+                .unwrap_or(u64::MAX)
+                .saturating_add(1);
+            let better = best.is_none_or(|(_, best_gap, best_age)| {
+                gap.saturating_mul(best_age) < best_gap.saturating_mul(age)
+            });
+            if better {
+                best = Some((position, gap, age));
+            }
+        }
+        best.map(|(position, _, _)| position)
+    }
+
+    fn drop_oldest(&mut self) -> bool {
+        if self.checkpoints.len() < 2 {
+            return false;
+        }
+        self.checkpoints.remove(0);
+        self.declared_horizon = self
+            .checkpoints
+            .first()
+            .map_or(self.declared_horizon, |first| first.event_index);
+        true
+    }
+}
+
+fn event_distance(later: &Checkpoint, earlier: &Checkpoint) -> u64 {
+    u64::try_from(later.event_index.saturating_sub(earlier.event_index)).unwrap_or(u64::MAX)
 }

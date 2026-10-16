@@ -3,6 +3,7 @@
 mod calls;
 mod cells;
 mod control;
+mod delta;
 mod fault_context;
 mod image;
 mod input;
@@ -42,8 +43,10 @@ mod inspection;
 mod query;
 
 pub use cells::Cell;
+pub use delta::{MachineDelta, advance_image, compose_machine_deltas, revert_image};
 pub use image::{
-    MachineImage, restore_machine_image, resume_machine, snapshot_machine, suspend_machine,
+    MachineImage, restore_machine_image, resume_machine, snapshot_machine, snapshot_machine_lean,
+    suspend_machine,
 };
 pub use inspection::*;
 pub use query::*;
@@ -71,6 +74,7 @@ pub struct Machine<'program> {
     pub(crate) memory_counts: Vec<crate::MemoryCount>,
     pub(crate) probed: bool,
     pub(crate) events: Vec<TraceEvent>,
+    pub(crate) events_dropped: usize,
     pub(crate) change_buffer: ChangeBuffer,
     pub(crate) inputs: Vec<String>,
     pub(crate) input_index: usize,
@@ -178,6 +182,7 @@ impl<'program> Machine<'program> {
             memory_counts: Vec::new(),
             probed: is_probed,
             events: Vec::new(),
+            events_dropped: 0,
             change_buffer: ChangeBuffer::new(),
             inputs,
             input_index: 0,

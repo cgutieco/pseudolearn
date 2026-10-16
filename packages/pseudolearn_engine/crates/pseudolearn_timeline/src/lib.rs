@@ -10,20 +10,19 @@ mod model;
 mod query_views;
 mod replay;
 mod scheduler;
-mod shadow;
+mod store;
 mod thinning;
 mod timeline;
 mod views;
 
-pub use checkpoint::{Checkpoint, capture_checkpoint, restore_checkpoint};
+pub use checkpoint::Checkpoint;
 pub use deltas::{
     FieldChange, FrameChange, StateDelta, VariableChange, apply_delta_forward, compute_delta,
 };
 pub use error::TimelineError;
 pub use replay::replay_to_event;
 pub use scheduler::{CostScheduler, SchedulerOptions};
-pub use shadow::{BLOCK_WORDS, ShadowHeap, UndoSegment, fuse_undo_segments};
-pub use thinning::ThinningManager;
+pub use store::{CaptureCost, CheckpointStore, StoreBudget, StoreStats};
 pub use timeline::{
     ArraySliceRange, ExecutionTimeline, timeline_checkpoints_count, timeline_horizon,
 };

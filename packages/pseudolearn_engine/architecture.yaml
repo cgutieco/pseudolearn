@@ -105,7 +105,7 @@ layers:
     unsafe_allowed: false
   - name: pseudolearn_bench_worker
     path: crates/pseudolearn_bench_worker
-    may_import: [pseudolearn_api]
+    may_import: [pseudolearn_api, pseudolearn_bytecode, pseudolearn_timeline, pseudolearn_vm]
     external_dependencies: [serde_json]
     unsafe_allowed: false
     tooling: true

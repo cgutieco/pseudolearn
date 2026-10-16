@@ -45,6 +45,35 @@ pub struct MachineStateRecord {
     pub heap_live_cells: u64,
 }
 
+impl MachineStateRecord {
+    pub(super) fn clone_control(&self) -> Self {
+        Self {
+            cursor_pc: self.cursor_pc,
+            cursor_scalar_base: self.cursor_scalar_base,
+            cursor_reference_base: self.cursor_reference_base,
+            current_function_index: self.current_function_index,
+            frames: Vec::new(),
+            scalar_watermark: self.scalar_watermark,
+            reference_watermark: self.reference_watermark,
+            scalars: Vec::new(),
+            references: Vec::new(),
+            defined: Vec::new(),
+            cells: Vec::new(),
+            random: self.random,
+            arena_used: self.arena_used,
+            output_length: self.output_length,
+            input_index: self.input_index,
+            statements_executed: self.statements_executed,
+            polls_executed: self.polls_executed,
+            event_count: self.event_count,
+            heap_used: self.heap_used,
+            heap_ordinal: self.heap_ordinal,
+            heap_allocated_cells: self.heap_allocated_cells,
+            heap_live_cells: self.heap_live_cells,
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ActiveFrameInspection<'program> {
     pub function_name: &'program str,
@@ -77,28 +106,35 @@ impl<'program> Machine<'program> {
     }
 
     pub fn capture_machine_state(&self) -> MachineStateRecord {
-        let current_function_index = function_index_of(self.program, self.current);
-        let frames = capture_saved_frames(self);
-        let (scalars, references, defined) = capture_saved_banks(self);
+        let mut record = self.capture_control_record();
+        record.frames = capture_saved_frames(self);
+        record.scalars.clone_from(&self.scalars);
+        record.references.clone_from(&self.references);
+        record.defined.clone_from(&self.defined);
+        record.cells = self.cells.clone();
+        record
+    }
+
+    pub(crate) fn capture_control_record(&self) -> MachineStateRecord {
         MachineStateRecord {
             cursor_pc: self.cursor.program_counter,
             cursor_scalar_base: self.cursor.scalar_base,
             cursor_reference_base: self.cursor.reference_base,
-            current_function_index,
-            frames,
+            current_function_index: function_index_of(self.program, self.current),
+            frames: Vec::new(),
             scalar_watermark: self.scalar_watermark,
             reference_watermark: self.reference_watermark,
-            scalars,
-            references,
-            defined,
-            cells: self.cells.clone(),
+            scalars: Vec::new(),
+            references: Vec::new(),
+            defined: Vec::new(),
+            cells: Vec::new(),
             random: self.random,
             arena_used: pseudolearn_runtime::arena_length(&self.heap),
             output_length: self.output.len(),
             input_index: self.input_index,
             statements_executed: self.statements_executed,
             polls_executed: self.polls_executed,
-            event_count: self.events.len(),
+            event_count: self.events_dropped.saturating_add(self.events.len()),
             heap_used: pseudolearn_runtime::heap_used_words(&self.heap),
             heap_ordinal: pseudolearn_runtime::heap_ordinal(&self.heap),
             heap_allocated_cells: pseudolearn_runtime::heap_allocated_cells(&self.heap),
@@ -122,7 +158,8 @@ impl<'program> Machine<'program> {
         self.input_index = record.input_index;
         self.statements_executed = record.statements_executed;
         self.polls_executed = record.polls_executed;
-        self.events.truncate(record.event_count);
+        self.events
+            .truncate(record.event_count.saturating_sub(self.events_dropped));
         pseudolearn_runtime::set_heap_used_words(&mut self.heap, record.heap_used);
         pseudolearn_runtime::set_heap_ordinal(&mut self.heap, record.heap_ordinal);
         pseudolearn_runtime::set_heap_allocated_cells(&mut self.heap, record.heap_allocated_cells);
@@ -223,7 +260,7 @@ fn frame_receiver(machine: &Machine, reference_base: usize) -> Option<Handle> {
     }
 }
 
-fn capture_saved_frames(machine: &Machine) -> Vec<SavedControlFrame> {
+pub(super) fn capture_saved_frames(machine: &Machine) -> Vec<SavedControlFrame> {
     machine
         .frames
         .iter()
@@ -236,20 +273,4 @@ fn capture_saved_frames(machine: &Machine) -> Vec<SavedControlFrame> {
             cell_count: frame.cell_count,
         })
         .collect()
-}
-
-fn capture_saved_banks(machine: &Machine) -> (Vec<u64>, Vec<u32>, Vec<bool>) {
-    let scalars = machine
-        .scalars
-        .get(..machine.scalar_watermark)
-        .map_or_else(Vec::new, <[u64]>::to_vec);
-    let references = machine
-        .references
-        .get(..machine.reference_watermark)
-        .map_or_else(Vec::new, <[u32]>::to_vec);
-    let defined = machine
-        .defined
-        .get(..machine.scalar_watermark)
-        .map_or_else(Vec::new, <[bool]>::to_vec);
-    (scalars, references, defined)
 }

@@ -13,11 +13,31 @@ pub fn machine_events<'machine>(machine: &'machine Machine<'_>) -> &'machine [Tr
 }
 
 pub fn take_machine_events(machine: &mut Machine<'_>) -> Vec<TraceEvent> {
-    std::mem::take(&mut machine.events)
+    let taken = std::mem::take(&mut machine.events);
+    machine.events_dropped = machine.events_dropped.saturating_add(taken.len());
+    taken
+}
+
+pub fn machine_event_count(machine: &Machine<'_>) -> usize {
+    machine.events_dropped.saturating_add(machine.events.len())
 }
 
 pub fn machine_output<'machine>(machine: &'machine Machine<'_>) -> &'machine str {
     &machine.output
+}
+
+pub fn machine_heap_used_words(machine: &Machine) -> usize {
+    pseudolearn_runtime::heap_used_words(&machine.heap)
+}
+
+pub fn machine_remaining_fuel(machine: &Machine) -> Fuel {
+    machine.remaining
+}
+
+pub fn machine_change_buffer<'machine>(
+    machine: &'machine Machine<'_>,
+) -> &'machine crate::ChangeBuffer {
+    &machine.change_buffer
 }
 
 pub fn machine_statements_executed(machine: &Machine) -> u64 {

@@ -1,19 +1,16 @@
-use crate::checkpoint::capture_checkpoint;
 use crate::error::TimelineError;
 use crate::inspect::{build_frame_view, build_single_object_view};
 use crate::replay::{replay_machine_to_event, replay_to_event};
 use crate::scheduler::{CostScheduler, SchedulerOptions};
-use crate::shadow::ShadowHeap;
-use crate::thinning::ThinningManager;
+use crate::store::CheckpointStore;
 use crate::views::{FrameView, ObjectView, StateSnapshot, VariableValue, VariableView};
 use pseudolearn_vm::{LoadedProgram, Machine, RunOptions, machine_statements_executed};
 
 pub struct ExecutionTimeline<'program> {
     pub program: &'program LoadedProgram,
     pub options: RunOptions,
-    pub shadow: ShadowHeap,
     pub scheduler: CostScheduler,
-    pub thinning: ThinningManager,
+    pub store: CheckpointStore,
     latest_event: usize,
 }
 
@@ -33,9 +30,8 @@ impl<'program> ExecutionTimeline<'program> {
         Self {
             program,
             options,
-            shadow: ShadowHeap::new(),
             scheduler: CostScheduler::new(scheduler_options),
-            thinning: ThinningManager::new(max_checkpoints),
+            store: CheckpointStore::new(max_checkpoints),
             latest_event: 0,
         }
     }
@@ -45,28 +41,23 @@ impl<'program> ExecutionTimeline<'program> {
         machine: &Machine,
         event_index: usize,
     ) -> Result<(), TimelineError> {
-        if event_index.checked_add(1) != Some(pseudolearn_vm::machine_events(machine).len()) {
+        if event_index.checked_add(1) != Some(pseudolearn_vm::machine_event_count(machine)) {
             return Err(TimelineError::ReplayFailure);
         }
         self.latest_event = event_index;
         let statements = machine_statements_executed(machine);
-        if self.thinning.checkpoints_count() == 0 || self.scheduler.should_checkpoint(statements) {
-            let checkpoint = capture_checkpoint(machine, event_index, &mut self.shadow);
-            let state = &checkpoint.image.state;
-            let words = state.heap_used.saturating_add(state.scalar_watermark);
-            self.scheduler.record_checkpoint(statements, words);
-            self.thinning.push_checkpoint(checkpoint);
+        if !self.store.has_checkpoints() || self.scheduler.should_checkpoint(statements) {
+            self.store.record(machine, event_index)?;
+            self.scheduler
+                .record_checkpoint(statements, self.store.stats().live_words);
         }
         Ok(())
     }
 
     pub fn query_state(&mut self, event_index: usize) -> Result<StateSnapshot, TimelineError> {
         self.validate_event_boundaries(event_index)?;
-        let checkpoint = self
-            .thinning
-            .find_candidate_checkpoint(event_index)
-            .ok_or(TimelineError::ReplayFailure)?;
-        replay_to_event(self.program, checkpoint, event_index, &self.options)
+        let (image, _) = self.store.image_at(event_index)?;
+        replay_to_event(self.program, image, event_index, &self.options)
     }
 
     pub fn query_frames(&mut self, event_index: usize) -> Result<Vec<FrameView>, TimelineError> {
@@ -120,15 +111,12 @@ impl<'program> ExecutionTimeline<'program> {
 
     fn machine_at(&self, event_index: usize) -> Result<Machine<'program>, TimelineError> {
         self.validate_event_boundaries(event_index)?;
-        let checkpoint = self
-            .thinning
-            .find_candidate_checkpoint(event_index)
-            .ok_or(TimelineError::ReplayFailure)?;
-        replay_machine_to_event(self.program, checkpoint, event_index, &self.options)
+        let (image, _) = self.store.image_at(event_index)?;
+        replay_machine_to_event(self.program, image, event_index, &self.options)
     }
 
     fn validate_event_boundaries(&self, requested: usize) -> Result<(), TimelineError> {
-        let horizon = self.thinning.horizon();
+        let horizon = self.store.stats().horizon;
         if requested < horizon {
             return Err(TimelineError::PastHorizon { requested, horizon });
         }
@@ -143,9 +131,9 @@ impl<'program> ExecutionTimeline<'program> {
 }
 
 pub fn timeline_horizon(timeline: &ExecutionTimeline<'_>) -> usize {
-    timeline.thinning.horizon()
+    timeline.store.stats().horizon
 }
 
 pub fn timeline_checkpoints_count(timeline: &ExecutionTimeline<'_>) -> usize {
-    timeline.thinning.checkpoints_count()
+    timeline.store.stats().checkpoints
 }

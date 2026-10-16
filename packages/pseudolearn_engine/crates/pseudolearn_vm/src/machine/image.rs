@@ -5,22 +5,23 @@ use pseudolearn_runtime::{Handle, Heap};
 #[derive(Clone, Debug, PartialEq)]
 pub struct MachineImage {
     pub state: MachineStateRecord,
-    heap: Heap,
-    remaining: Fuel,
-    output: String,
-    literals: Vec<Handle>,
-    inputs: Vec<String>,
-    diagnostics: Vec<VmTrap>,
-    events: Vec<TraceEvent>,
-    changes: ChangeBuffer,
-    probed: bool,
-    input_requested: bool,
-    output_suppressed: bool,
+    pub(super) heap: Heap,
+    pub(super) remaining: Fuel,
+    pub(super) output: String,
+    pub(super) literals: Vec<Handle>,
+    pub(super) inputs: Vec<String>,
+    pub(super) diagnostics: Vec<VmTrap>,
+    pub(super) events: Vec<TraceEvent>,
+    pub(super) events_dropped: usize,
+    pub(super) changes: ChangeBuffer,
+    pub(super) probed: bool,
+    pub(super) input_requested: bool,
+    pub(super) output_suppressed: bool,
 }
 
 pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
     MachineImage {
-        state: capture_full_banks(machine),
+        state: machine.capture_machine_state(),
         heap: machine.heap.clone(),
         remaining: machine.remaining,
         output: machine.output.clone(),
@@ -28,6 +29,7 @@ pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
         inputs: machine.inputs.clone(),
         diagnostics: machine.diagnostics.clone(),
         events: machine.events.clone(),
+        events_dropped: machine.events_dropped,
         changes: machine.change_buffer.clone(),
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
@@ -35,8 +37,20 @@ pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
     }
 }
 
+pub fn snapshot_machine_lean(machine: &Machine<'_>) -> MachineImage {
+    let mut image = snapshot_machine(machine);
+    image.events_dropped = image.state.event_count;
+    image.events = Vec::new();
+    image
+}
+
 pub fn suspend_machine(machine: Machine<'_>) -> MachineImage {
-    let state = capture_full_banks(&machine);
+    let mut state = machine.capture_control_record();
+    state.frames = super::inspection::capture_saved_frames(&machine);
+    state.cells = machine.cells;
+    state.scalars = machine.scalars;
+    state.references = machine.references;
+    state.defined = machine.defined;
     MachineImage {
         state,
         heap: machine.heap,
@@ -46,6 +60,7 @@ pub fn suspend_machine(machine: Machine<'_>) -> MachineImage {
         inputs: machine.inputs,
         diagnostics: machine.diagnostics,
         events: machine.events,
+        events_dropped: machine.events_dropped,
         changes: machine.change_buffer,
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
@@ -75,6 +90,7 @@ fn restore_payload(machine: &mut Machine<'_>, image: MachineImage) {
     machine.inputs = image.inputs;
     machine.diagnostics = image.diagnostics;
     machine.events = image.events;
+    machine.events_dropped = image.events_dropped;
     machine.change_buffer = image.changes;
     machine.probed = image.probed;
     machine.input_requested_emitted = image.input_requested;
@@ -85,12 +101,4 @@ pub fn restore_machine_image(machine: &mut Machine<'_>, image: &MachineImage) {
     machine.restore_machine_state(&image.state);
     machine.remaining = image.remaining;
     restore_payload(machine, image.clone());
-}
-
-fn capture_full_banks(machine: &Machine<'_>) -> MachineStateRecord {
-    let mut state = machine.capture_machine_state();
-    state.scalars.clone_from(&machine.scalars);
-    state.references.clone_from(&machine.references);
-    state.defined.clone_from(&machine.defined);
-    state
 }

@@ -28,7 +28,7 @@ La recolección es no móvil y marca desde las asas raíz recibidas por la opera
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: restaurar palabras sin descriptores deja asas y texto inconsistentes. Elección: el estado copiable del montón conserva asignaciones, listas libres, arena, identidades y contadores junto con sus palabras. Se descarta restaurar solo el vector físico. La representación diferencial y su coste requieren medición integrada.
+Problema: restaurar palabras sin descriptores deja asas y texto inconsistentes. Elección: el estado copiable del montón conserva asignaciones, listas libres, arena, identidades y contadores junto con sus palabras. Se descarta restaurar solo el vector físico. La representación diferencial (`BlockDelta` por bloques de 64 palabras, `TailDelta` para secuencias que solo crecen, `MapDelta` para mapas ordenados y `HeapDelta` que las agrupa) guarda el contenido anterior de lo que cambió; `advance_heap` actualiza la imagen de la punta y devuelve el segmento inverso, `revert_heap` lo aplica y `compose_heap_deltas` fusiona dos segmentos. Crecer no guarda nada, de modo que su coste es proporcional a la región cambiada.
 
 Las búsquedas de asignaciones y bloques libres usan `BTreeMap`; las consultas de arreglo y campo consultan el mapa de asignaciones para validar el asa y recuperar su descriptor antes de acceder a las palabras. Se conserva esta estructura porque satisface las puertas actuales de corrección y verificación. No se establece un mínimo de rendimiento adicional.
 

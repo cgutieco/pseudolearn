@@ -2,6 +2,7 @@
 pub struct SchedulerOptions {
     pub minimum_distance: u64,
     pub kappa_factor: u64,
+    pub maximum_distance: u64,
 }
 
 impl Default for SchedulerOptions {
@@ -9,6 +10,7 @@ impl Default for SchedulerOptions {
         Self {
             minimum_distance: 131_072,
             kappa_factor: 16,
+            maximum_distance: 262_144,
         }
     }
 }
@@ -38,7 +40,10 @@ impl CostScheduler {
         self.last_checkpoint_statements = current_statements;
         let words_u64 = u64::try_from(state_words).unwrap_or(u64::MAX);
         let proportional_cost = self.options.kappa_factor.saturating_mul(words_u64);
-        let scheduled_distance = self.options.minimum_distance.max(proportional_cost);
+        let scheduled_distance = self
+            .options
+            .minimum_distance
+            .max(proportional_cost.min(self.options.maximum_distance));
         self.next_checkpoint_statements = current_statements.saturating_add(scheduled_distance);
     }
 }

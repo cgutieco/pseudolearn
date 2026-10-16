@@ -12,8 +12,8 @@ use std::sync::{
 pub(crate) struct ExecutionResource {
     program: LoadedProgram,
     image: Option<MachineImage>,
-    initial: MachineImage,
-    replay_base: MachineImage,
+    initial: Arc<MachineImage>,
+    replay_base: Arc<MachineImage>,
     retained_start: usize,
     options: RunOptions,
     terminal: Option<RunExit>,
@@ -42,10 +42,11 @@ impl ExecutionResource {
         let machine = create_machine(&program, Fuel::unlimited(), options.clone())
             .map_err(|trap| usage(trap.code))?;
         let image = suspend_machine(machine);
+        let shared = Arc::new(image.clone());
         Ok(Self {
             program,
-            initial: image.clone(),
-            replay_base: image.clone(),
+            initial: shared.clone(),
+            replay_base: shared,
             retained_start: 0,
             image: Some(image),
             options,
@@ -136,7 +137,7 @@ impl ExecutionResource {
     }
 
     pub(crate) fn initial_state(&self) -> Result<Value, ApiError> {
-        let machine = resume_machine(&self.program, self.initial.clone(), self.options.clone())
+        let machine = resume_machine(&self.program, (*self.initial).clone(), self.options.clone())
             .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
         Ok(crate::execution_state::capture(&machine))
     }
@@ -151,7 +152,7 @@ impl ExecutionResource {
     fn replay_to_count(&self, target: usize) -> Result<Machine<'_>, ApiError> {
         let mut options = self.options.clone();
         options.cancelled = None;
-        let mut machine = resume_machine(&self.program, self.replay_base.clone(), options)
+        let mut machine = resume_machine(&self.program, (*self.replay_base).clone(), options)
             .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
         machine.replace_input_tape(self.options.inputs.clone());
         let mut count = self.retained_start;
@@ -172,7 +173,7 @@ impl ExecutionResource {
         if first > self.retained_start {
             let machine = self.replay_to_count(first)?;
             let base = suspend_machine(machine);
-            self.replay_base = base;
+            self.replay_base = Arc::new(base);
             self.retained_start = first;
         }
         Ok(())

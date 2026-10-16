@@ -156,33 +156,45 @@ pub(crate) fn query(
                 .map_err(|error| usage(&error.to_string()))?;
             let view = frame(&view);
             Ok(if operation == "query_variables" {
-                view["variables"].clone()
+                view.get("variables").cloned().unwrap_or(Value::Null)
             } else {
                 view
             })
         }
-        "query_array_slice" => {
-            let values = pseudolearn_timeline::capture_array_slice(
-                machine,
-                number("reference")?,
-                pseudolearn_timeline::ArraySliceRange {
-                    start_index: index("start")?,
-                    slice_length: index("length")?,
-                },
-            )
-            .map_err(|error| usage(&error.to_string()))?;
-            Ok(json!(values.iter().map(value).collect::<Vec<_>>()))
-        }
-        "query_object" => {
-            let ordinal = number("reference")?;
-            let handle = runtime::live_allocation_handles(machine.heap())
-                .into_iter()
-                .find(|handle| runtime::allocation_ordinal(machine.heap(), *handle) == Ok(ordinal))
-                .ok_or_else(|| usage("invalid object reference"))?;
-            object(machine, handle)
-                .map(|(_, object)| object)
-                .ok_or_else(|| usage("invalid object reference"))
-        }
+        "query_array_slice" => query_array_slice(
+            machine,
+            number("reference")?,
+            (index("start")?, index("length")?),
+        ),
+        "query_object" => query_object(machine, number("reference")?),
         _ => Err(usage("invalid query operation")),
     }
+}
+
+fn query_array_slice(
+    machine: &Machine<'_>,
+    reference: u64,
+    (start_index, slice_length): (usize, usize),
+) -> Result<Value, crate::ApiError> {
+    let values = pseudolearn_timeline::capture_array_slice(
+        machine,
+        reference,
+        pseudolearn_timeline::ArraySliceRange {
+            start_index,
+            slice_length,
+        },
+    )
+    .map_err(|error| crate::execution_resource::usage(&error.to_string()))?;
+    Ok(json!(values.iter().map(value).collect::<Vec<_>>()))
+}
+
+fn query_object(machine: &Machine<'_>, ordinal: u64) -> Result<Value, crate::ApiError> {
+    use crate::execution_resource::usage;
+    let handle = runtime::live_allocation_handles(machine.heap())
+        .into_iter()
+        .find(|handle| runtime::allocation_ordinal(machine.heap(), *handle) == Ok(ordinal))
+        .ok_or_else(|| usage("invalid object reference"))?;
+    object(machine, handle)
+        .map(|(_, object)| object)
+        .ok_or_else(|| usage("invalid object reference"))
 }

@@ -5,6 +5,7 @@ pub use pseudolearn_abi::Handle;
 mod arithmetic;
 mod array;
 mod cell;
+mod delta;
 mod error;
 mod heap;
 mod object;
@@ -15,6 +16,10 @@ mod value;
 
 pub use array::{array_dimensions, new_array, read_element, write_element};
 pub use cell::{MemoryCell, element_cell, field_cell, read_memory_cell, write_memory_cell};
+pub use delta::{
+    BLOCK_WORDS, BlockDelta, DeltaError, HeapDelta, MapDelta, Sequence, TailDelta, advance_heap,
+    compose_heap_deltas, revert_heap,
+};
 pub use heap::{Heap, ObjectLayout};
 pub use object::{
     copy_object, new_object, new_object_shared, object_class, read_field, write_field,
