@@ -40,7 +40,9 @@ pub fn check_instruction_types(
     if let Some(result) = check_texts(operation, operands, &get_type)? {
         return Ok(Some(result));
     }
-    if let Some(result) = check_memory(operation, operands, &get_type, module)? {
+    if let Some(result) = crate::type_checker_memory::check_memory_instruction(
+        operation, operands, &get_type, module,
+    )? {
         return Ok(Some(result));
     }
     if let Some(result) = check_call_result(operation, operands, module)? {
@@ -181,83 +183,4 @@ fn check_texts(
         }
         _ => Ok(None),
     }
-}
-
-fn check_memory(
-    operation: Operation,
-    operands: &[Operand],
-    get_type: &impl Fn(ValueId) -> Option<IrType>,
-    module: &Module,
-) -> Result<Option<IrType>, TypeError> {
-    match operation {
-        Operation::CellLocal => match operands {
-            [Operand::Type(inner_type)] => Ok(Some(IrType::Cell(Box::new(inner_type.clone())))),
-            _ => Err(TypeError),
-        },
-        Operation::CellLoad => match operands {
-            [Operand::Value(value)] => match get_type(*value) {
-                Some(IrType::Cell(inner)) => Ok(Some(*inner)),
-                _ => Err(TypeError),
-            },
-            _ => Err(TypeError),
-        },
-        Operation::CellStore => match operands {
-            [Operand::Value(target), Operand::Value(source)] => {
-                let target_type = get_type(*target).ok_or(TypeError)?;
-                let source_type = get_type(*source).ok_or(TypeError)?;
-                match target_type {
-                    IrType::Cell(inner)
-                        if crate::assignability::assignable(module, &source_type, &inner) =>
-                    {
-                        Ok(Some(IrType::Unit))
-                    }
-                    _ => Err(TypeError),
-                }
-            }
-            _ => Err(TypeError),
-        },
-        Operation::CellField => check_cell_field(operands, get_type, module),
-        Operation::ObjectNew => match operands {
-            [Operand::Identifier(class_name)] if module.find_class(class_name).is_some() => {
-                Ok(Some(IrType::Object(class_name.clone())))
-            }
-            _ => Err(TypeError),
-        },
-        _ => Ok(None),
-    }
-}
-
-fn check_cell_field(
-    operands: &[Operand],
-    get_type: &impl Fn(ValueId) -> Option<IrType>,
-    module: &Module,
-) -> Result<Option<IrType>, TypeError> {
-    match operands {
-        [
-            Operand::Value(object_value),
-            Operand::Identifier(field_name),
-        ] => {
-            let object_type = get_type(*object_value).ok_or(TypeError)?;
-            let class_name = match object_type {
-                IrType::Object(name) => name,
-                _ => return Err(TypeError),
-            };
-            inherited_field(module, &class_name, field_name)
-        }
-        _ => Err(TypeError),
-    }
-}
-
-fn inherited_field(module: &Module, class: &str, name: &str) -> Result<Option<IrType>, TypeError> {
-    let mut current = Some(class);
-    for _ in 0..module.classes.len() {
-        let class = current
-            .and_then(|name| module.find_class(name))
-            .ok_or(TypeError)?;
-        if let Some(field) = class.fields.iter().find(|field| field.name == name) {
-            return Ok(Some(IrType::Cell(Box::new(field.field_type.clone()))));
-        }
-        current = class.superclass.as_deref();
-    }
-    Err(TypeError)
 }

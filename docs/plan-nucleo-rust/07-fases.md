@@ -216,12 +216,13 @@ R0 Fundación
 - **B3 cerrado:** bytecode y VM escalar verificados, despacho generado y biblioteca matemática con
   contraste racional masivo. La trazadora emparejada acredita **76,7×** sin PGO; el cierre y sus crudos
   están registrados en el plan 11. B3 no cierra R5 ni habilita R6 o R7.
-- **B4 en curso, con relevo:** E-12 realizado y `SizeClasses` seleccionado. Código de B4.1–B4.6
-  implementado, con pruebas directas y oráculos parciales; falta completar aceptación, verificadores,
-  rendimiento y publicación. El estado para continuar está en [13 · Relevo de B4](13-relevo-b4-remanso.md).
+- **B4 en curso, con relevo:** E-12 realizado y `SizeClasses` seleccionado. **B4.1 está aceptada** tras
+  pruebas directas, corpus y `cargo xtask verify`; B4.2–B4.6 siguen pendientes de aceptación, y la puerta
+  global de B4 aún requiere sus verificaciones propias, rendimiento y publicación. El estado vigente está
+  en [13 · Relevo de B4](13-relevo-b4-remanso.md).
   La conformidad integrada `execute` y las propiedades completas de observación se acreditan en B7.3,
   después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue abierta; B5 no se ha iniciado.
-- [ ] **Bloques pendientes:** B4–B8.
+- [ ] **Bloques pendientes:** B4 (B4.1 aceptada; B4.2–B4.6 pendientes), B5–B8.
 - [x] **E-12 realizado:** 10.800 muestras y recolector seleccionado; evidencia en el plan 11 y relevo 13.
 - [ ] **Experimentos pendientes:** E-06, E-16 y E-17.
 

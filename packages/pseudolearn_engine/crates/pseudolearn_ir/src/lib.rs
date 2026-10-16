@@ -19,6 +19,7 @@ mod type_checker_collections;
 pub mod type_checker_control;
 pub mod type_checker_helpers;
 pub mod type_checker_intrinsics;
+mod type_checker_memory;
 pub mod type_checker_values;
 pub mod type_parser;
 pub mod types;

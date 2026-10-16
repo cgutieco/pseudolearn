@@ -1,6 +1,6 @@
 use pseudolearn_runtime::{
     CollectionPolicy, Heap, MemoryError, MemoryOptions, ObjectLayout, ValueKind, copy_object,
-    new_object, read_field, write_field,
+    new_array, new_object, read_field, write_field,
 };
 
 fn layout() -> ObjectLayout {
@@ -70,6 +70,40 @@ fn exact_limit_includes_new_value_before_overwrite_in_every_policy() -> Result<(
         assert!(new_object(&mut heap, layout(), &[]).is_ok());
     }
     Ok(())
+}
+
+#[test]
+fn exact_array_limit_counts_the_new_array_before_overwrite() -> Result<(), MemoryError> {
+    for collection in [
+        CollectionPolicy::Automatic,
+        CollectionPolicy::Forced,
+        CollectionPolicy::Disabled,
+    ] {
+        let mut heap = Heap::new(MemoryOptions {
+            cells: 3,
+            collection,
+        });
+        let first = new_array(&mut heap, ValueKind::Integer, &[2], &[])?;
+        assert_eq!(heap.reachable_cells(&[first]), Ok(3));
+        assert_eq!(
+            new_array(&mut heap, ValueKind::Integer, &[0], &[first]),
+            Err(MemoryError::CellLimit)
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn allocation_rejects_addresses_outside_handle_space() {
+    let options = MemoryOptions {
+        cells: u64::MAX,
+        collection: CollectionPolicy::Disabled,
+    };
+    let mut heap = Heap::new(options);
+    assert_eq!(
+        new_array(&mut heap, ValueKind::Reference, &[4_294_967_295], &[]),
+        Err(MemoryError::Resource)
+    );
 }
 
 #[test]

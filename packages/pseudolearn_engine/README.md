@@ -42,15 +42,16 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene las capas de análisis estático, RI y lowering procedural, más la implementación
-parcial de B3 en `pseudolearn_bytecode`, `pseudolearn_runtime`, `pseudolearn_library` y `pseudolearn_vm`.
-Los crates ya están activos en el workspace; la API pública de ejecución permanece pendiente de su bloque
-propio.
+El workspace contiene las capas de análisis estático, RI y lowering procedural, B3 cerrado y los bloques
+de R5 en ejecución. B4.1 está aceptada con evidencia de montón, arreglos y metadatos; B4.2–B4.6 y la puerta
+global de B4 permanecen abiertas. La API pública de ejecución sigue pendiente de su bloque propio.
 
 La implementación actual cubre bytecode escalar verificado, ejecución de enteros y reales, control,
-llamadas, combustible, trampas tipadas, conversiones, redondeo y raíz cuadrada. El heap, texto, arreglos,
-entrada y la biblioteca matemática completa siguen pendientes de sus bloques. La trazadora B3.3 midió
-16,60× tras PGO frente al objetivo temprano de 30×; RR-01 se agotó y los resultados se conservan en
+llamadas, combustible, trampas tipadas, conversiones, redondeo y raíz cuadrada. El runtime también ofrece
+montón, arreglos y metadatos de raíces/definición aceptados en B4.1; la aceptación del texto, llamadas,
+objetos, recolección, límites y azar corresponde a los bloques restantes de B4. La entrada y el resto de
+la biblioteca matemática conservan sus bloques pendientes. La trazadora B3.3 midió 16,60× tras PGO frente
+al objetivo temprano de 30×; RR-01 se agotó y los resultados se conservan en
 `packages/pseudolearn_benchmarks/results/r5-vm-tracer/`.
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
@@ -77,7 +78,7 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 3 | pseudolearn_ir | Define la representación intermedia verificada | source, abi |
 | 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
 | 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
-| 4 | pseudolearn_runtime | Proporciona aritmética primitiva comprobada; el montón es posterior | abi, diagnostics |
+| 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, arreglos, objetos, texto y recolección | abi, diagnostics |
 | 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
@@ -150,11 +151,12 @@ retorno. El acolchado del código a potencia de dos sigue pendiente.
 Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros. Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
 Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
 
-### runtime (implementación parcial de B3)
+### runtime (B4.1 aceptada; B4 permanece abierta)
 
-La implementación actual de B3 cubre aritmética primitiva comprobada, incluido `i64::MIN % -1`.
-El heap, texto, arreglos, recolección y azar descritos a continuación pertenecen a B4 y siguen pendientes.
-El diseño previsto mantiene `#![forbid(unsafe_code)]`.
+La implementación actual cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición
+de enteros, raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito.
+B4.1 está aceptada tras las pruebas directas y `cargo xtask verify`; B4.2–B4.6 y la puerta global de B4
+siguen pendientes. `#![forbid(unsafe_code)]` rige en este crate.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
 ### library (implementación parcial de B3)

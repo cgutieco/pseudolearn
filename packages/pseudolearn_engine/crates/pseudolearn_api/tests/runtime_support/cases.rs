@@ -1,4 +1,4 @@
-use pseudolearn_runtime::CollectionPolicy;
+use pseudolearn_runtime::{CollectionPolicy, MemoryOptions};
 use pseudolearn_vm::{Fuel, RunExit, RunOptions, run_with_options};
 use serde_json::Value;
 
@@ -89,18 +89,22 @@ fn check(case: &Value) -> Result<(), String> {
         CollectionPolicy::Forced,
         CollectionPolicy::Disabled,
     ] {
-        let mut options = RunOptions::default();
-        options.seed = request.get("seed").and_then(Value::as_i64).unwrap_or(42);
-        options.memory.collection = collection;
-        options.depth = request
-            .pointer("/limits/depth")
-            .and_then(Value::as_u64)
-            .and_then(|depth| usize::try_from(depth).ok())
-            .unwrap_or(1000);
-        options.memory.cells = request
-            .pointer("/limits/cells")
-            .and_then(Value::as_u64)
-            .unwrap_or(1 << 22);
+        let options = RunOptions {
+            seed: request.get("seed").and_then(Value::as_i64).unwrap_or(42),
+            depth: request
+                .pointer("/limits/depth")
+                .and_then(Value::as_u64)
+                .and_then(|depth| usize::try_from(depth).ok())
+                .unwrap_or(1000),
+            memory: MemoryOptions {
+                cells: request
+                    .pointer("/limits/cells")
+                    .and_then(Value::as_u64)
+                    .unwrap_or(1 << 22),
+                collection,
+            },
+            ..RunOptions::default()
+        };
         let result = run_with_options(
             &loaded,
             Fuel {

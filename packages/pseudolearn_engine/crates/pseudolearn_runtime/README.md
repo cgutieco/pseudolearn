@@ -2,74 +2,58 @@
 
 ## 1. Qué es y qué no es
 
-Gestiona los valores de ejecución en un montón plano determinista. La primera entrega implementa la
-aritmética primitiva comprobada que consumen los intrínsecos y la VM.
-No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
+`pseudolearn_runtime` proporciona las operaciones comprobadas de memoria y valores que comparten la VM y los consumidores del motor. Incluye aritmética primitiva, montón, objetos, arreglos, texto y estado aleatorio determinista.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Heap, texto, arreglos, recolección, azar y operaciones de sus tipos | ABI y contratos de B4 | B4 |
+No ejecuta bytecode, no conoce el lenguaje fuente y no traduce errores a mensajes localizados. Las fallas esperables se expresan con `Result` y `MemoryError` o `ArithmeticError`.
 
 ## 2. Guía operativa y ciclo de vida
 
-Usa la versión exacta de rust-toolchain.toml del miembro. El crate ya está activo en el workspace y
-contiene aritmética primitiva comprobada de B3. El heap permanece para B4. Comprobación: `cargo xtask verify`
-y `rust-checks layers` del miembro. No se despliega por separado.
+El crate forma parte del workspace de `pseudolearn_engine`. Sus dependencias de código son `pseudolearn_abi` y `pseudolearn_diagnostics`; no necesita servicios externos ni archivos generados.
+
+Desde `packages/pseudolearn_engine`:
+
+- Compilar: `cargo check -p pseudolearn_runtime`.
+- Ejecutar sus pruebas de integración: `cargo test -p pseudolearn_runtime`.
+- Ejecutar todas las verificaciones del motor: `cargo xtask verify`.
+
+La API pública existente se consume mediante los tipos y funciones exportados por `src/lib.rs`. Los límites de memoria y la política de recolección se entregan en `MemoryOptions` al crear `Heap`.
 
 ## 3. Arquitectura y modelo del sistema
 
-El montón separa palabras físicas, descriptores de asignación y celdas nocionales. Las operaciones reciben
-raíces exactas del consumidor; no inspeccionan marcos ni importan bytecode. Los fallos son tipados:
-reserva del anfitrión, límite de celdas del programa, dominio inválido y defecto interno.
-Los tipos primitivos compartidos del runtime describen la clase de palabra, no etiquetan cada valor.
+El montón guarda palabras `u64` en un vector plano y registra cada asignación en mapas ordenados por `Handle`. El valor cero representa una referencia ausente; las asas son desplazamientos de 32 bits dentro del vector y las asignaciones de objetos y arreglos reciben una identidad ordinal que no depende de su dirección física.
 
-Nivel 6. Importa abi y diagnostics; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
+Los objetos conservan su diseño de campos y mapa de referencias en `ObjectLayout`. Los arreglos conservan rango, dimensiones y clase de elemento; sus datos son contiguos y el mapa de definición de enteros distingue una celda sin inicializar de un entero cuyo valor sea cero. Las celdas auxiliares permiten representar ese mapa sin añadir etiquetas a los valores.
 
-Vec<u64> plano con asas directas, crecimiento por duplicación y avance en bloques de 4096 palabras puestos a cero. Recolector no móvil con marcado iterativo, bits laterales y raíces nocionales; reutilización determinista elegida mediante medición de prototipos. Arena UTF-8 de solo apéndice, cabeceras inmutables por prefijo, indicador ASCII y migas cada 64 puntos. La aritmética primitiva es comprobada; `int.mod` produce cero para el entero mínimo módulo −1. El montón, la arena de texto, la recolección y xoshiro256** con SplitMix64 permanecen en bloques posteriores.
-
-Invariantes: La recolección no cambia observables. La identidad es un ordinal que no se reutiliza. Ninguna escritura rápida paga una barrera. El estado interno se reproduce determinísticamente.
+La recolección es no móvil y marca desde las asas raíz recibidas por la operación. Los bloques liberados se agrupan por tamaño físico para reutilizar direcciones. El texto usa un arena propio con migas de caracteres y una operación explícita de compactación. El generador pseudoaleatorio recibe una semilla y mantiene su estado dentro de `RandomState`.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: validar UTF-8 en cada lectura vuelve lineales Longitud y el acceso indexado con migas.
-Elección: `String` posee el vector UTF-8 y conserva su invariante al añadir fragmentos válidos; sus
-subrangos se consultan sin validar toda la cadena. El indicador ASCII se deriva de bytes y puntos.
-Las migas pertenecen al tramo compartido y crecen por apéndice; las cabeceras apuntan a almacenamiento
-auxiliar del montón que no consume celdas. La compactación construye el búfer vivo con reserva
-comprobada, devuelve la correspondencia de tramos e invalida migas derivadas. Se descartan validación
-UTF-8 repetida, copias del índice por concatenación y acceso inseguro al vector de un `String`.
+Las búsquedas de asignaciones y bloques libres usan `BTreeMap`; las consultas de arreglo y campo consultan el mapa de asignaciones para validar el asa y recuperar su descriptor antes de acceder a las palabras. Se conserva esta estructura porque satisface las puertas actuales de corrección y verificación. No se establece un mínimo de rendimiento adicional.
 
-Problema: la recuperación debe conservar identidad y minimizar cambios de bloques observados.
-Elección: marcado y barrido no móvil con listas por tamaño, seleccionada en la comparación local de
-10.800 muestras; evidencia en `../../pseudolearn_spec/results/r5-e12.json`. Las líneas no móviles y el
-conteo de referencias diferido exceden guardas de pausa o perturbación de bloques. El motor no conserva
-esas alternativas. Se reutilizan direcciones ascendentes dentro de cada tamaño; el ordinal nunca se
-reutiliza. El disparo usa `max(4096, vivas)` celdas asignadas y el límite se decide con alcanzabilidad
-exacta incluyendo el valor nuevo. Los modos automático, forzado y sin recuperación son datos internos.
-Los literales y metadatos auxiliares no consumen celdas nocionales. El texto creado cuenta por cabecera,
-aunque comparta bytes. Los puntos de compactación devuelven su desplazamiento de tramos al consumidor.
+El montón no mueve objetos: así, una recolección no altera identidades ni asas visibles. El ordinal identifica la asignación lógica, mientras el asa permite llegar a su almacenamiento actual. Los errores de capacidad, tamaño negativo, límite de celdas, índice, valor no inicializado e invariantes internos son variantes tipadas, no pánicos.
 
-El montón paginado y su copia en escritura no superaron el criterio de coste; la medición de memoria plana y combustible está en results/r5-e02r.json del sistema de especificaciones. El límite de celdas usa raíces exactas y cuenta el valor nuevo antes de sobrescribir. La ausencia usa centinelas, cota densa en arreglos enteros y máscara en objetos. Compartir apéndice conserva prefijos anteriores; una bifurcación del tramo obliga a copiar. La compactación de texto actualiza cabeceras y avisa a la línea temporal. Un fallo de reserva es un recurso de API, no un observable del programa. La aritmética convierte overflow y división por cero en errores tipados; no depende de pánicos de Rust. Cada operación primitiva está marcada `#[inline]` para que el manejador de la VM la integre a través del límite del crate; sin la marca la trazadora medía una llamada por operación aritmética.
-
-La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
-de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+Las dimensiones se convierten y multiplican con comprobación de rango; una dimensión cero produce un arreglo de cero elementos, mientras el rango vacío no representa un arreglo válido. El límite de celdas cuenta el costo lógico exacto y se comprueba con las celdas vivas antes de aceptar la asignación.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
-funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
-Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
+El código y sus identificadores están en inglés. No se permiten comentarios, documentación Rust ni atributos de supresión. Los errores esperables se devuelven como valores tipados; el crate declara `#![forbid(unsafe_code)]`.
+
+Los módulos de `src/` separan aritmética, arreglos, celdas, heap, objetos, azar y texto. Las pruebas de caja negra están en `tests/` y reflejan estas responsabilidades.
 
 ## 6. Decisiones de producto que condicionan el código
 
-MEM.*, RT.HOST.INTERFACE y ejecución de tipos, operadores, arreglos y celdas de ENG.LIMITS. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
-literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
+El runtime conserva valores sin etiquetas dinámicas: `ValueKind` y los mapas de definición describen cómo interpretar cada palabra. Las representaciones compartidas se declaran en `pseudolearn_abi` para mantener iguales los contratos de VM y AOT.
+
+La colección automática puede activarse por presión de límite o asignaciones acumuladas; `Forced` permite solicitarla al asignar y `Disabled` impide recolectar. La semilla explícita hace reproducible el azar. La asignación de texto y la memoria de observación se mantienen fuera de las garantías de identidad de objetos.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Recolección forzada, ciclos, alias, temporales muertos, conteo frente al oráculo, cero y bordes, bifurcación de apéndice, cota densa y medición de los candidatos del recolector. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
-con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
+Las pruebas de `tests/heap_tests.rs` y `tests/array_tests.rs` cubren asignación, acceso, límites, errores, identidades, recolección, definición de enteros y crecimiento del almacenamiento. Las pruebas de consumo en `pseudolearn_api` contrastan las operaciones con los casos del corpus.
+
+Para aceptar un cambio, se ejecutan las pruebas dirigidas del crate afectado y `cargo xtask verify` desde la raíz del motor. La conformidad observable del lenguaje se mantiene en el corpus y se contrasta desde `packages/pseudolearn_spec`.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-Se toman mapas de pila por punto seguro de HotSpot y LLVM; se rechazan mapas para tipos. Go y CPython inspiran apéndice, sin condición por conteo de referencias. Swift inspira migas, conservando UTF-8. Immix aporta un candidato no móvil; se rechaza evacuación por dispersar la sombra.
+La representación de asas comprimidas toma como referencia los diseños de V8 y la JVM. La compactación de texto y sus migas se inspiran en técnicas de arenas de texto empleadas por Swift. Estas referencias orientan alternativas de implementación; el contrato del runtime pertenece a PseudoLearn.
+
+El contraste E-12 de la fase se conserva en [r5-e12.json](../../../pseudolearn_spec/results/r5-e12.json). La decisión de usar consultas ordenadas en los descriptores y el estado actual de rendimiento se documentan junto con la arquitectura del motor.

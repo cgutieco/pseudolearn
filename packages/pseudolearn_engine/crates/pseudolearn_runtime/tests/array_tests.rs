@@ -70,11 +70,62 @@ fn zero_extents_override_product_overflow_but_not_negative_dimensions() -> Resul
 }
 
 #[test]
+fn integer_definition_masks_track_word_boundaries() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let array = new_array(&mut heap, ValueKind::Integer, &[130], &[])?;
+    for index in [0, 63, 64, 127, 128, 129] {
+        assert_eq!(
+            read_element(&heap, array, &[index]),
+            Err(MemoryError::Uninitialized)
+        );
+    }
+    for index in [0, 63, 64, 127, 128, 129] {
+        let value = u64::try_from(index).map_err(|_| MemoryError::Internal)?;
+        write_element(&mut heap, array, (&[index], value))?;
+        assert_eq!(read_element(&heap, array, &[index]), Ok(value));
+    }
+    assert_eq!(
+        read_element(&heap, array, &[65]),
+        Err(MemoryError::Uninitialized)
+    );
+    Ok(())
+}
+
+#[test]
+fn array_access_rejects_wrong_rank_and_preserves_reference_absence() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let matrix = new_array(&mut heap, ValueKind::Integer, &[2, 3], &[])?;
+    assert_eq!(
+        read_element(&heap, matrix, &[0]),
+        Err(MemoryError::Internal)
+    );
+    assert_eq!(
+        write_element(&mut heap, matrix, (&[0, 1, 2], 1)),
+        Err(MemoryError::Internal)
+    );
+    let target = new_array(&mut heap, ValueKind::Integer, &[1], &[matrix])?;
+    let references = new_array(&mut heap, ValueKind::Reference, &[1], &[matrix, target])?;
+    assert_eq!(
+        read_element(&heap, references, &[0]),
+        Err(MemoryError::Uninitialized)
+    );
+    write_element(&mut heap, references, (&[0], u64::from(target.0)))?;
+    assert_eq!(
+        read_element(&heap, references, &[0]),
+        Ok(u64::from(target.0))
+    );
+    Ok(())
+}
+
+#[test]
 fn stable_element_cells_survive_growth_and_dense_transition() -> Result<(), MemoryError> {
     let mut heap = Heap::new(MemoryOptions::default());
     let array = new_array(&mut heap, ValueKind::Integer, &[65], &[])?;
+    assert_eq!(heap.identity(array), Ok(1));
     let cell = pseudolearn_runtime::element_cell(&heap, array, &[64])?;
     let other = new_array(&mut heap, ValueKind::Real, &[20000], &[array])?;
+    assert_eq!(heap.identity(array), Ok(1));
+    assert_eq!(heap.identity(other), Ok(2));
     assert_eq!(
         pseudolearn_runtime::read_memory_cell(&heap, cell),
         Err(MemoryError::Uninitialized)

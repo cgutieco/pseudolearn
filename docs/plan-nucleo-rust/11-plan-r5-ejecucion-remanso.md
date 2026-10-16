@@ -1402,9 +1402,10 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
 - [x] **B4.0 E-12.** Prototipos y medición de §7.3 realizados: 10.800 muestras, elección
   `SizeClasses` registrada en el README de `runtime` y `packages/pseudolearn_spec/results/r5-e12.json`.
   La puerta global de B4 sigue pendiente.
-- [ ] **B4.1 Montón y arreglos.** Montón plano, asignación por avance en bloques, cabeceras, ordinales, arreglos
+- [x] **B4.1 Montón y arreglos.** Montón plano, asignación por avance en bloques, cabeceras, ordinales, arreglos
   de una y varias dimensiones con comprobación por dimensión, cota densa y mapas de definición; tamaño cero y
-  negativo. Casos `LANG.ARRAY.*` y `LANG.TYPES.ARRAY`.
+  negativo. Casos `LANG.ARRAY.*`, `LANG.TYPES.ARRAY` y `ENG.LIMITS#D1`; mapas exactos de raíces y de definición
+  validados en ambos gemelos, pruebas directas de montón/arreglos, corpus y `cargo xtask verify` en verde.
 - [ ] **B4.2 Texto y conversiones.** Arena, cabeceras, apéndice compartido (test: dos concatenaciones desde el
   mismo prefijo no se pisan), migas, comparación por puntos de código, `Longitud`, `CaracterEn`, `CodigoDe`,
   `CaracterDesde`, `ATexto`, `AEntero`, `AReal`, formato de valores. Casos `LANG.TYPES.TEXT`,
@@ -1425,18 +1426,19 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
 
 #### Punto de continuación de B4 · 2026-10-15
 
-**B4 abierta, implementación detenida por petición de la persona para continuar en otra sesión.**
-El código de B4.1–B4.6 ya está escrito, con aceptación parcial; las casillas superiores permanecen
-abiertas hasta satisfacer sus pruebas, verificadores, regresión de rendimiento y publicación.
+**B4 permanece abierta; B4.1 está aceptada y B4.2–B4.6 siguen pendientes de aceptación.** La aceptación
+de B4.1 no cierra la puerta global de B4 ni autoriza B5. Sus pruebas dirigidas y `cargo xtask verify` pasan;
+la conformidad integrada `execute`, las propiedades completas de observación, la regresión de rendimiento y
+la publicación siguen en sus bloques y puertas propietarios.
 
 - [x] E-12 medido y elegido; montón/arreglos, texto/conversiones, llamadas/celdas/objetos,
   recolección/azar y soporte estático hasta bytecode implementados en el árbol local.
 - [x] Al corte pasan 296 configuraciones del corpus × tres políticas y cien grafos independientes
   × dos perfiles × dos rigores × tres políticas; cuatro regresiones de integración API y tests runtime.
-- [ ] Resolver un test de vivacidad de raíces, dos errores de Clippy y `SIZE-FUNCTION` en
-  `ir/src/type_checker.rs` (43 líneas, máximo 40); completar negativos y bordes del relevo.
-- [ ] Actualizar README finales, ejecutar puertas completas de motor/SEE/ceiling, comprobar corpus,
-  lock/export/referencias, repetir trazadora ≥30× y publicar commits con HEAD local/remoto idénticos.
+- [x] Cerrar la vivacidad exacta de raíces, los negativos de mapas/metadatos, los dos errores de Clippy y
+  `SIZE-FUNCTION`; actualizar el README de runtime y corregir su enlace de E-12.
+- [ ] Completar la aceptación de B4.2–B4.6 y la puerta global de B4: oráculos y verificadores restantes,
+  rendimiento, publicación y comprobación de HEAD local/remoto.
 
 **Continuar desde [13 · Relevo de B4](13-relevo-b4-remanso.md)**, que contiene archivos propietarios,
 evidencia, fallos concretos, auditorías pendientes y comandos. El inventario provisional es
@@ -1651,8 +1653,8 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 
 ## 14. Estado y relevo — 2026-10-15
 
-R5 está autorizada y **permanece abierta**. La persona solicita detener esta sesión y entregar el trabajo
-para continuar con otra IA. No se inicia R6 ni R7. B2–B8 no están implementados.
+R5 está autorizada y **permanece abierta**. B2 y B3 están cerrados; B4 sigue en curso con B4.1 aceptada
+y B4.2–B4.6 pendientes. B5–B8 no están cerrados; no se inicia B5, R6 ni R7 sin autorización nueva.
 
 B0 y E-02R están publicados; RC-01 está resuelto. BF tiene análisis conforme (524 observaciones sin
 divergencias), recuperación, generación de vistas, HIR tipado y medición E-08. B1.4 y B1.6 están
@@ -1668,5 +1670,8 @@ está en [12 · Relevo de R5](12-relevo-r5.md). Leerlo antes de editar; los camb
 commit están en el árbol local, incluidos archivos sin seguimiento. No descartarlos ni restaurar HEAD
 sobre ellos.
 
-**Actualización 2026-10-15 (B3).** B3 queda cerrado con evidencia: ver «Cierre de B3» en §8. El siguiente
-bloque es B4.
+**Actualización 2026-10-15 (B3).** B3 quedó cerrado con evidencia: ver «Cierre de B3» en §8.
+
+**Actualización 2026-10-15 (B4.1).** B4.1 queda aceptada con pruebas exactas de raíces en gemelos rápido y
+sondeado, cobertura directa de límites y metadatos, contraste de runtime con el corpus y `cargo xtask verify`
+en verde. B4.2–B4.6 y la puerta global de B4 siguen abiertas; R5 permanece abierta y B5 no se inicia.

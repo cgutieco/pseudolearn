@@ -2,9 +2,8 @@
 
 ## Punto de parada y autoridad de este relevo
 
-La persona pidió registrar lo culminado y lo pendiente para continuar en otra sesión. Se detiene la
-implementación en este punto. **B4 permanece abierta y R5 permanece abierta. No iniciar B5.**
-Este documento describe el árbol local actual; el [relevo 12](12-relevo-r5.md) es histórico y sus
+Este relevo describe el árbol después de aceptar B4.1. **B4 y R5 permanecen abiertas. B4.2–B4.6
+siguen pendientes de aceptación; no iniciar B5 sin autorización nueva.** El [relevo 12](12-relevo-r5.md) es histórico y sus
 indicaciones de que aún no existe backend ya no describen el estado del repositorio.
 
 La autorización y el alcance son los del [plan 11, B4](11-plan-r5-ejecucion-remanso.md#b4--runtime-biblioteca-arreglos-subprogramas-objetos-y-recolector)
@@ -17,7 +16,7 @@ Entrada suspendible y cinta siguen en sus bloques propietarios.
 ## Preservar el trabajo
 
 - Rama actual y única autorizada: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-- HEAD al detenerse: `5505d4f` (`feat(padding): add padding verification and related functionality for code variants`).
+- HEAD al registrar B4.1: `8993d89` (`feat(padding): add padding verification and related functionality for code variants`).
 - **Todos los cambios de esta implementación de B4 siguen locales, sin commit ni push**, incluidos
   numerosos archivos nuevos sin seguimiento. El HEAD anterior no contiene este trabajo.
 - No ejecutar `git reset`, `git clean`, restauraciones generales ni cambiar de checkout. Continuar
@@ -51,10 +50,10 @@ no certifica la puerta global, el rendimiento o la publicación.
   para la selección final.
 - [x] Tests, Clippy y `rust-checks all` de ceiling pasaron durante el desarrollo del experimento.
 - [ ] Ejecutar y conservar la puerta final completa `cargo xtask verify` de ceiling.
-- [ ] Corregir el enlace relativo al resultado de E-12 en el README de runtime: desde ese crate es
-  `../../../pseudolearn_spec/results/r5-e12.json`, no `../../pseudolearn_spec/...`.
+- [x] Corregir el enlace relativo al resultado de E-12 en el README de runtime: desde ese crate es
+  `../../../pseudolearn_spec/results/r5-e12.json`.
 
-### B4.1 · Montón, arreglos y metadatos: implementados; aceptación pendiente
+### B4.1 · Montón, arreglos y metadatos: aceptados
 
 - [x] `runtime/src/heap/`: `Vec<u64>`, asas `u32`, cero reservado, crecimiento comprobado por
   duplicación desde bloques de 4096 palabras, listas libres deterministas y ordinales monotónicos.
@@ -71,13 +70,15 @@ no certifica la puerta global, el rendimiento o la publicación.
   por punto, conservados en los gemelos rápido y sondeado.
 - [x] `root_liveness.rs`: vivacidad por CFG; los parámetros de bloque se sustituyen por argumentos
   de la arista. Los orígenes de variables se conservan mientras vive su marco.
-- [x] Verificación de ausencia de mapas, raíces fuera de ventana o de clase incorrecta, mapas de
-  definición inválidos y metadatos de clases inconsistentes; negativos iniciales añadidos.
-- [ ] Resolver el test nuevo de vivacidad que falla y ampliar negativos de metadatos (ver abajo).
-- [ ] Auditar exactitud de raíces, ámbitos, temporales muertos e intermedios vivos en bucles/ramas.
-  El modelo actual conserva orígenes por función; contrastarlo con los ámbitos normativos antes del cierre.
-- [ ] Revisar el camino caliente de acceso: las palabras son directas, pero `position`, campos y
-  definición aún consultan descriptores en `BTreeMap`. No afirmar que se acreditó el coste mínimo del diseño.
+- [x] Negativos de mapas ausentes, raíces fuera de ventana o de clase incorrecta, mapas de definición
+  inválidos, posiciones inválidas, duplicados y metadatos de definición mal formados.
+- [x] Raíces exactas verificadas por punto seguro en ambos gemelos: literales e intermedios vivos,
+  temporales tras su última lectura, argumentos de bloque, ramas y retrocesos de bucle.
+- [x] La auditoría conserva las consultas de descriptor en `BTreeMap`: las palabras se acceden directamente
+  después de validar el asa; no hay una puerta de rendimiento que exija reemplazar esas consultas ni se
+  introduce un umbral nuevo.
+- [x] Pruebas dirigidas de `ir`, `bytecode`, `runtime` y `api`, contraste de `LANG.ARRAY.*`,
+  `LANG.TYPES.ARRAY` y `ENG.LIMITS#D1` mediante el corpus, y `cargo xtask verify` completados en verde.
 
 ### B4.2 · Texto, conversiones y salida: implementados; aceptación pendiente
 
@@ -146,70 +147,44 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [ ] Ampliar la comparación generada más allá del grafo de objetos actual: arreglos, alcance de
   variables sin usos futuros, intermedios vivos y temporales muertos. Revisar identidad al reutilizar asas.
 
-## Pruebas y verificaciones: qué se sabe realmente
+## Pruebas y verificaciones: estado tras B4.1
 
-Las salidas portables se conservan en `packages/pseudolearn_spec/results/r5-b4-checkpoint/` y el
-inventario en `packages/pseudolearn_spec/results/r5-b4-verification.json`. Ese JSON es **provisional**,
-no una certificación de B4. Los logs anteriores a los últimos cambios se identifican como tales.
+La evidencia de B4.1 corresponde al árbol que parte del HEAD indicado arriba y conserva estos cambios
+locales. `cargo test -p pseudolearn_ir -p pseudolearn_bytecode -p pseudolearn_runtime -p pseudolearn_api`
+pasó, incluido el corpus exportado bajo las tres políticas de recolección. `cargo xtask verify` pasó
+formato, Clippy estricto, todos los tests del workspace, `rust-checks all`, verificación de toolchain y
+`cargo deny check` (advisories, bans, licenses y sources).
 
-- Hubo una ejecución completa de tests del motor en verde antes de las últimas ampliaciones de
-  verificación de raíces, compatibilidad y tests adicionales. **No acredita el árbol actual.**
-- La selección directa del corpus llegó a pasar **296 configuraciones de perfil/rigor × tres políticas**;
-  los cien grafos independientes se comprobaron en dos perfiles, dos rigores y tres políticas.
-  La batería omite deliberadamente entrada y presupuesto de sentencias, pertenecientes a otros bloques.
-  La repetición al corte de esta batería **pasó**; salida en `checkpoint-corpus.log`.
-- Tests recientes de runtime: 16 pasan (arreglos, montón/objetos, aritmética, azar y texto).
-  Tests nuevos de generación SEE: cuatro pasan. Regresiones API `runtime_edges`: cuatro pasan.
-- `rust-checks all .` del motor pasó antes de los últimos tests y cambio de compatibilidad;
-  su repetición al corte **falla** en `ir/src/type_checker.rs:186`, `SIZE-FUNCTION`: `check_memory`
-  mide 43 líneas frente al máximo de 40. Extraer una responsabilidad coherente sin relajar umbrales.
-  La salida está en `checkpoint-limits.log`; no sustituye a las tres puertas completas.
-- **La última prueba dirigida de bytecode falla:**
-  `live_temporaries_expire_after_their_last_use` espera cero raíces en el primer punto y obtiene una.
-  Los otros dos tests de `memory_metadata_tests` pasan. Investigar el registro de la constante de
-  texto: el literal puede materializarse en un registro y ser una raíz necesaria. No ajustar la expectativa
-  a ciegas; probar explícitamente la desaparición del temporal después de su último uso.
-- Una ejecución anterior de toda la batería encontró dos negativos antiguos con regla `RootMap`
-  en vez de `OperandWindow`/`ValueClass`. Se cambió el orden para verificar operandos antes de mapas;
-  La repetición aislada al corte **pasó los cinco negativos antiguos** (`checkpoint-negative.log`);
-  falta repetir toda la batería tras resolver el nuevo test de vivacidad.
-- **El último Clippy falla** por `field_reassign_with_default` en
-  `api/tests/runtime_support/cases.rs:93` y `memory.rs:50`. Construir `RunOptions` en el inicializador;
-  no usar `allow`/`expect`. Repetir Clippy también para detectar los tests recién añadidos.
-- Se corrigió la regresión `rejects_output_without_a_value`: la RI vuelve a rechazar salida vacía.
-  Se retiró el `eprintln!` temporal de diagnóstico en `api/src/ir_execution.rs`.
-- Aún no se ejecutaron las puertas finales completas del motor, SEE y ceiling sobre este árbol;
-  tampoco la regresión de rendimiento emparejada ni la igualdad HEAD local/remoto.
+Las consultas a descriptores de arreglo y campo mediante `BTreeMap` se revisaron frente a las puertas
+vigentes. Se conservaron por no existir un umbral aplicable que requiera cambiarlas; no se añadió una
+meta de rendimiento.
+
+B4.2–B4.6 conservan la aceptación pendiente enumerada en este documento. Tampoco se ejecutaron para este
+cierre las puertas completas de SEE y ceiling ni la regresión de rendimiento emparejada; la igualdad entre
+HEAD local y remoto requiere publicación. La aceptación de B4.1 no sustituye esos requisitos de B4.
 
 ## Orden concreto para retomar
 
-1. Leer este relevo, AGENTS, README y reglas de cada miembro afectado. Inspeccionar el inventario y
-   preservar todos los archivos sin seguimiento. No ejecutar scripts temporales de refactorización.
-2. Resolver el test de raíces, los errores actuales de Clippy y la función de 43 líneas; ejecutar
-   juntos los negativos antiguos de bytecode y los nuevos. Repetir compilación y `rust-checks all` después de cualquier edición.
-3. Completar las auditorías y pruebas pendientes enumeradas arriba. Usar corpus exportado y oráculos,
-   no copiar casos normativos como tests Rust. Registrar contraejemplos y correcciones.
-4. Actualizar README propietarios para describir la implementación final. Hay texto histórico
-   contradictorio, especialmente en runtime: tabla y párrafos que aún dicen que heap/texto/azar
-   quedan pendientes o mencionan B3/B4. Limpiar referencias transitorias de los README tocados;
-   mantener decisiones autosustentables en español y corregir el enlace de E-12.
-5. Ejecutar `cargo xtask verify` en motor, SEE y ceiling; comprobar corpus, lock, exportación,
-   referencias documentales y consumidores afectados. No cambiar manifiestos de conformidad para
-   anticipar `execute`. Conservar logs y códigos de salida.
-6. Repetir la trazadora emparejada de B3, ≥30×, y aplicar RR-01 si falla. La herramienta
+1. B4.1 está aceptada; no repetir sus cambios ni descartar los archivos locales sin seguimiento.
+2. Para cualquier continuación autorizada, leer los contratos dueños y resolver únicamente los
+   criterios aún abiertos de B4.2–B4.6 con casos del corpus y oráculos independientes.
+3. Ejecutar las verificaciones que corresponden a los bloques abiertos y completar la puerta global de
+   B4, incluidos SEE, ceiling, corpus y referencias. No anticipar `execute` ni su estado `cumple`.
+4. Repetir la trazadora emparejada de B3, ≥30×, y aplicar RR-01 si falla. La herramienta
    `packages/pseudolearn_benchmarks/tool/r5_vm_tracer.dart` escribe por defecto en
    `results/r5-vm-tracer/` y `packages/pseudolearn_spec/results/r5-vm-tracer.json`:
    **preservar los crudos de B3 antes de lanzarla**, separar la captura nueva y registrar procedencia
    antes del build. Esta regresión no sustituye a la medición completa de B7.
-7. Completar `r5-b4-verification.json` con cobertura, exclusiones justificadas, mediciones, negativos
-   y verificadores finales. Solo entonces marcar B4.1–B4.6 y actualizar 07 y 11 con cierre acreditado.
-8. Commits coherentes en inglés, push ordinario a la rama única y comparación de HEAD local/remoto.
-   Informar implementación, pruebas, verificadores, decisiones y publicación; detenerse sin B5 ni cierre de R5.
+5. Completar `r5-b4-verification.json` con cobertura, exclusiones justificadas, mediciones, negativos
+   y verificadores finales antes de aceptar B4.
+6. La publicación de B4 requiere commits coherentes en inglés, push ordinario a la rama única y comparación
+   de HEAD local/remoto. R5 y B4 permanecen abiertas hasta cumplir sus puertas; `PHASE-STOP` requiere
+   autorización explícita antes de iniciar el siguiente bloque.
 
 ## Comandos útiles y precauciones del entorno
 
-Cada miembro tiene su workspace; no hay Cargo en la raíz. En esta sesión se necesitó anteponer
-`$HOME/.cargo/bin` al PATH. No sobrescribir HOME o CODEX_HOME.
+Cada miembro tiene su workspace; no hay Cargo en la raíz. Los comandos se ejecutan desde el workspace
+indicado y usan la toolchain fijada por `rust-toolchain.toml`.
 
 Desde `packages/pseudolearn_engine`:
 

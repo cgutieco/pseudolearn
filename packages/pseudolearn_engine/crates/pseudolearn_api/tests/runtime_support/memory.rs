@@ -1,4 +1,4 @@
-use pseudolearn_runtime::CollectionPolicy;
+use pseudolearn_runtime::{CollectionPolicy, MemoryOptions};
 use pseudolearn_vm::{Fuel, RunExit, RunOptions, run_with_options};
 use serde_json::Value;
 
@@ -46,9 +46,14 @@ fn check(scenario: &Value, (profile, field, strictness): (&str, &str, &str)) -> 
         CollectionPolicy::Forced,
         CollectionPolicy::Disabled,
     ] {
-        let mut options = RunOptions::default();
-        options.inspect_memory = true;
-        options.memory.collection = collection;
+        let options = RunOptions {
+            inspect_memory: true,
+            memory: MemoryOptions {
+                collection,
+                ..MemoryOptions::default()
+            },
+            ..RunOptions::default()
+        };
         let result = run_with_options(
             &loaded,
             Fuel {
