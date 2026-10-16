@@ -80,6 +80,8 @@ pub(crate) struct LoadedFunction {
     pub name: String,
     pub declaration_span: Option<SourceSpan>,
     pub names: std::collections::BTreeMap<Register, String>,
+    pub scalar_types: Vec<pseudolearn_bytecode::ValueType>,
+    pub reference_types: Vec<pseudolearn_bytecode::ValueType>,
     pub code: Vec<Op>,
     pub mask: usize,
     pub spans: Vec<Option<SourceSpan>>,

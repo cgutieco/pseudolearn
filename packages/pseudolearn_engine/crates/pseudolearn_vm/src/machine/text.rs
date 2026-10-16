@@ -163,11 +163,13 @@ impl Machine<'_> {
         if newline {
             text.push('\n');
         }
-        self.emit_output(&text);
-        self.output
-            .try_reserve(text.len())
-            .map_err(|_| "resourceLimit")?;
-        self.output.push_str(&text);
+        if !self.output_suppressed {
+            self.emit_output(&text);
+            self.output
+                .try_reserve(text.len())
+                .map_err(|_| "resourceLimit")?;
+            self.output.push_str(&text);
+        }
         Ok(Flow::Continue)
     }
 }

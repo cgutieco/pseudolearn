@@ -37,50 +37,58 @@ pub(crate) enum Flow {
     LimitReached(LimitKind),
 }
 
+mod inspection;
+mod query;
+
+pub use cells::Cell;
+pub use inspection::*;
+pub use query::*;
+
 #[derive(Clone, Copy, Default)]
-struct Cursor {
-    program_counter: usize,
-    scalar_base: usize,
-    reference_base: usize,
+pub(crate) struct Cursor {
+    pub(crate) program_counter: usize,
+    pub(crate) scalar_base: usize,
+    pub(crate) reference_base: usize,
 }
 
 #[derive(Clone, Copy)]
-struct ControlFrame<'program> {
-    function: &'program LoadedFunction,
-    return_point: usize,
-    destination: Option<Register>,
-    scalar_base: usize,
-    reference_base: usize,
-    cell_count: usize,
+pub(crate) struct ControlFrame<'program> {
+    pub(crate) function: &'program LoadedFunction,
+    pub(crate) return_point: usize,
+    pub(crate) destination: Option<Register>,
+    pub(crate) scalar_base: usize,
+    pub(crate) reference_base: usize,
+    pub(crate) cell_count: usize,
 }
 
-pub(crate) struct Machine<'program> {
-    program: &'program LoadedProgram,
-    current: &'program LoadedFunction,
-    cursor: Cursor,
-    scalars: Vec<u64>,
-    defined: Vec<bool>,
-    references: Vec<u32>,
-    frames: Vec<ControlFrame<'program>>,
-    remaining: Fuel,
-    output: String,
-    heap: Heap,
-    literals: Vec<Handle>,
-    random: RandomState,
-    options: RunOptions,
-    cells: Vec<cells::Cell>,
-    reference_watermark: usize,
-    scalar_watermark: usize,
-    memory_counts: Vec<crate::MemoryCount>,
-    probed: bool,
-    events: Vec<TraceEvent>,
-    change_buffer: ChangeBuffer,
-    inputs: Vec<String>,
-    input_index: usize,
-    diagnostics: Vec<VmTrap>,
-    statements_executed: u64,
-    polls_executed: u64,
-    input_requested_emitted: bool,
+pub struct Machine<'program> {
+    pub(crate) program: &'program LoadedProgram,
+    pub(crate) current: &'program LoadedFunction,
+    pub(crate) cursor: Cursor,
+    pub(crate) scalars: Vec<u64>,
+    pub(crate) defined: Vec<bool>,
+    pub(crate) references: Vec<u32>,
+    pub(crate) frames: Vec<ControlFrame<'program>>,
+    pub(crate) remaining: Fuel,
+    pub(crate) output: String,
+    pub(crate) heap: Heap,
+    pub(crate) literals: Vec<Handle>,
+    pub(crate) random: RandomState,
+    pub(crate) options: RunOptions,
+    pub(crate) cells: Vec<cells::Cell>,
+    pub(crate) reference_watermark: usize,
+    pub(crate) scalar_watermark: usize,
+    pub(crate) memory_counts: Vec<crate::MemoryCount>,
+    pub(crate) probed: bool,
+    pub(crate) events: Vec<TraceEvent>,
+    pub(crate) change_buffer: ChangeBuffer,
+    pub(crate) inputs: Vec<String>,
+    pub(crate) input_index: usize,
+    pub(crate) diagnostics: Vec<VmTrap>,
+    pub(crate) statements_executed: u64,
+    pub(crate) polls_executed: u64,
+    pub(crate) input_requested_emitted: bool,
+    pub(crate) output_suppressed: bool,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -187,6 +195,7 @@ impl<'program> Machine<'program> {
             statements_executed: 0,
             polls_executed: 0,
             input_requested_emitted: false,
+            output_suppressed: false,
         }
     }
 

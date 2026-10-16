@@ -2,18 +2,14 @@
 
 ## 1. Qué es y qué no es
 
-Conserva una línea temporal consultable de la ejecución. Diseño aprobado; pendiente de implementación del motor de ejecución.
+Conserva una línea temporal consultable de la ejecución, con vistas inmutables de estado, deltas incrementales, puntos de control con sombra del montón y segmentos de deshacer de 64 palabras, raleo exponencial con fusión y retroceso determinista mediante máquina de reproducción.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Implementación y pruebas del diseño descrito | Contratos y puertas previas verificadas | Motor de ejecución |
+Sin pendientes técnicos declarados en este crate.
 
 ## 2. Guía operativa y ciclo de vida
 
-Versión exacta de rust-toolchain.toml del miembro. La carpeta aún no contiene manifiesto ni código.
-Al implementarla se incorpora al workspace y se retira pending de architecture.yaml. Comprobación
-actual: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+Versión exacta de rust-toolchain.toml del miembro. Manifiesto y código incorporados al workspace de pseudolearn_engine; pendiente retirado de architecture.yaml. Comprobación: `cargo xtask verify` y `cargo test -p pseudolearn_timeline`. No se despliega por separado.
 
 ## 3. Arquitectura y modelo del sistema
 

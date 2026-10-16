@@ -4,8 +4,8 @@ use crate::{Fault, evaluate::INVALID_BYTECODE, load::memory::MemoryOp};
 use pseudolearn_bytecode::{Register, RegisterClass};
 use pseudolearn_runtime::{self as runtime, Handle, MemoryCell, ValueKind};
 
-#[derive(Clone, Copy)]
-pub(super) enum Cell {
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Cell {
     Local {
         slot: Register,
         absolute: usize,

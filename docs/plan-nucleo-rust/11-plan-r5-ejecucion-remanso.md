@@ -1481,16 +1481,20 @@ unitarias, de integración y `cargo xtask verify` en verde. B6 permanece pendien
 
 ### B6 · Línea temporal y estado
 
-- [ ] **B6.1 Vistas de estado.** Marcos, variables con `sin_valor`, alias, receptor, objetos por identidad e
+- [x] **B6.1 Vistas de estado.** Marcos, variables con `sin_valor`, alias, receptor, objetos por identidad e
   intervalos de arreglo. Casos de `ENG.STATE.SNAPSHOT` y `#P1`.
-- [ ] **B6.2 Deltas.** Cambios por evento desde el búfer del gemelo sondeado; `ENG.STATE.INCREMENTAL#P1–P2`.
-- [ ] **B6.3 Puntos de control.** Sombra, segmentos de deshacer, longitud de la arena, marca de agua, programación
+- [x] **B6.2 Deltas.** Cambios por evento desde el búfer del gemelo sondeado; `ENG.STATE.INCREMENTAL#P1–P2`.
+- [x] **B6.3 Puntos de control.** Sombra, segmentos de deshacer, longitud de la arena, marca de agua, programación
   por coste, raleo con fusión de segmentos, presupuesto y horizonte. Tests: restaurar cualquier punto
   reproduce bit a bit el estado guardado; fusionar segmentos conserva la reconstrucción.
-- [ ] **B6.4 Retroceso.** VM de reproducción, avance rápido por contador de eventos, cambio al sondeado,
+- [x] **B6.4 Retroceso.** VM de reproducción, avance rápido por contador de eventos, cambio al sondeado,
   densificación. `ENG.STATE.INCREMENTAL#P3`, `API.EXECUTE#P1` y `API.STATE.QUERY#P1` en `cumple`.
-- [ ] **B6.5 E-06.** Mediciones y criterios de §7.2 con evidencia en `results/e06/` y `r5-e06.json`; escaleras
+- [x] **B6.5 E-06.** Mediciones y criterios de §7.2 con evidencia en `results/e06/` y `r5-e06.json`; escaleras
   aplicadas dentro del paso si algo falla.
+
+#### Cierre de B6 · 2026-10-16
+
+**B6.1–B6.5 cerrados.** Vistas inmutables de estado (`StateSnapshot`, marcos, variables tipadas, `sin_valor`, alias, objetos por identidad, intervalos de arreglo y formato canónico de reales); deltas incrementales (`StateDelta`) con aplicación hacia adelante reconstruyendo marcos y salida; puntos de control diferenciales con sombra de montón por bloques de 64 palabras, segmentos de deshacer, marcas de agua de bancos, restauración exacta bit a bit, programación por coste ($D = \max(Q_{\min}, \kappa \cdot S)$) y raleo exponencial con fusión de segmentos conservando el horizonte declarado; retroceso determinista mediante máquina VM de reproducción con avance rápido, cambio a modo sondeado y supresión de salida; y verificación de las ocho métricas del experimento E-06 con evidencia preservada en `packages/pseudolearn_spec/results/r5-e06.json` y `packages/pseudolearn_benchmarks/results/e06/summary.json`. 14 tests de `pseudolearn_timeline` y verificadores en verde. B7 permanece pendiente de autorización.
 
 ### B7 · API, CLI, conformidad, rendimiento y robustez
 

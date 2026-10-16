@@ -202,7 +202,7 @@ R0 Fundación
 > R5 autorizada el 2026-10-15 y en ejecución. Por decisión D-R5-01, la deuda encontrada en la evidencia de
 > R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. El estado de implementación vigente
 > se contrasta con el plan detallado y el árbol actual; el relevo 12 conserva únicamente valor histórico.
-> B1, B2, B3, B4 y B5 están cerrados según la evidencia registrada en el plan 11. Las casillas de
+> B1, B2, B3, B4, B5 y B6 están cerrados según la evidencia registrada en el plan 11. Las casillas de
 > R5 y la fase solo se marcan en el cierre B8.
 
 - **Bloques cerrados:**
@@ -219,16 +219,20 @@ R0 Fundación
   - [x] B5: gemelo sondeado, eventos estructurados, formato columnar PLEV, alternancia de gemelos en O(1),
     servicio de combustible y límites de anfitrión, entrada interactiva y suspendible, y superinstrucciones
     puras fusionadas en bytecode y VM.
+  - [x] B6: vistas inmutables de estado, deltas incrementales, puntos de control diferenciales con sombra de montón de 64 palabras y segmentos de deshacer, programación por coste, raleo exponencial con fusión, retroceso determinista con VM de reproducción y experimento E-06.
 
-- **B4 y B5 cerrados:** B4 completó memoria, recolector y modelo de ejecución. B5 implementó los gemelos
+- **B4, B5 y B6 cerrados:** B4 completó memoria, recolector y modelo de ejecución. B5 implementó los gemelos
   emparejados rápido y sondeado con formato columnar PLEV y búfer de deltas, alternancia en O(1), combustible
   exacto con retrocesos de sondeo, límites de tiempo, memoria y pila de llamadas, entrada interactiva
   suspendible y cinta por lotes, y superinstrucciones puras fusionadas con preservación estricta del orden de
-  efectos. La conformidad integrada `execute` y las propiedades completas de observación se acreditan en B7.3,
-  después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue abierta; B6 permanece pendiente de autorización.
-- [ ] **Bloques pendientes:** B6–B8.
+  efectos. B6 implementó la línea temporal consultable con vistas de estado inmutables, deltas, puntos de control,
+  raleo con fusión, retroceso determinista y E-06 aprobado. La conformidad integrada `execute` y las propiedades
+  completas de observación se acreditan en B7.3, después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue
+  abierta; B7 permanece pendiente de autorización.
+- [ ] **Bloques pendientes:** B7–B8.
 - [x] **E-12 realizado:** 10.800 muestras y recolector seleccionado; evidencia en el plan 11 y relevo 13.
-- [ ] **Experimentos pendientes:** E-06, E-16 y E-17.
+- [x] **E-06 realizado:** 8 métricas de línea temporal y retroceso verificadas; evidencia en el plan 11 y `results/r5-e06.json`.
+- [ ] **Experimentos pendientes:** E-16 y E-17.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 

@@ -93,7 +93,6 @@ layers:
     may_import: [pseudolearn_vm, pseudolearn_runtime, pseudolearn_bytecode, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
-    pending: true
   - name: pseudolearn_api
     path: crates/pseudolearn_api
     may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline]

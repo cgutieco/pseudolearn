@@ -9,6 +9,7 @@ mod error;
 mod heap;
 mod object;
 mod random;
+mod snapshot;
 mod text;
 mod value;
 
@@ -19,6 +20,14 @@ pub use object::{
     copy_object, new_object, new_object_shared, object_class, read_field, write_field,
 };
 pub use random::RandomState;
+pub use snapshot::{
+    allocation_ordinal, arena_length, array_element_kind, heap_allocated_cells, heap_live_cells,
+    heap_ordinal, heap_used_words, heap_words, is_array_allocation, is_defined_element,
+    is_defined_field, is_object_allocation, live_allocation_handles, object_class_identifier,
+    object_field_kinds, read_element_raw, read_field_raw, restore_heap_block,
+    set_heap_allocated_cells, set_heap_live_cells, set_heap_ordinal, set_heap_used_words,
+    truncate_arena,
+};
 pub use text::{
     TextCompaction, TextPart, compare_text, concat_parts, concat_text, new_text, text_character,
     text_content, text_length,

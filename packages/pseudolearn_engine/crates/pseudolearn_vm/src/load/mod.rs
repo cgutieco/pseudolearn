@@ -81,6 +81,8 @@ fn init_loaded_function(function: &BytecodeFunction) -> Result<LoadedFunction, V
         name: function.name.clone(),
         declaration_span: function.declaration_span,
         names: function.names.clone(),
+        scalar_types: function.scalar_types.clone(),
+        reference_types: function.reference_types.clone(),
         code: Vec::with_capacity(function.fast.instructions.len()),
         mask: function.fast.instructions.len().saturating_sub(1),
         spans: metadata::spans(function, false),
