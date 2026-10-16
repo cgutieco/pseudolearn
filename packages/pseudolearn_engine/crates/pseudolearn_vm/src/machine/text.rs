@@ -8,6 +8,10 @@ use pseudolearn_bytecode::Opcode;
 use pseudolearn_library::{self as library, PrimitiveValue};
 use pseudolearn_runtime::{self as runtime, Handle, ValueKind};
 
+#[cfg(test)]
+#[path = "text_tests.rs"]
+mod tests;
+
 impl Machine<'_> {
     pub(super) fn memory_text(&mut self, operation: &MemoryOp) -> Result<Flow, Fault> {
         if let MemoryOp::Output { sources, newline } = operation {
@@ -130,7 +134,7 @@ impl Machine<'_> {
         let word = self.read_value(source.source)?;
         let primitive = match source.kind {
             ValueKind::Integer => PrimitiveValue::Integer(crate::evaluate::integer_of(word)),
-            ValueKind::Real => PrimitiveValue::Real(f64::from_bits(word)),
+            ValueKind::Real => PrimitiveValue::Real(finite_real(f64::from_bits(word))?),
             ValueKind::Boolean => PrimitiveValue::Boolean(word != 0),
             ValueKind::Character => PrimitiveValue::Character(
                 u32::try_from(word)
@@ -164,6 +168,14 @@ impl Machine<'_> {
             .map_err(|_| "resourceLimit")?;
         self.output.push_str(&text);
         Ok(Flow::Continue)
+    }
+}
+
+fn finite_real(value: f64) -> Result<f64, Fault> {
+    if value.is_finite() {
+        Ok(value)
+    } else {
+        Err("nonFiniteRealResult")
     }
 }
 

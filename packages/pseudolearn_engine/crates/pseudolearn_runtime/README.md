@@ -24,11 +24,13 @@ El montón guarda palabras `u64` en un vector plano y registra cada asignación 
 
 Los objetos conservan su diseño de campos y mapa de referencias en `ObjectLayout`. Los arreglos conservan rango, dimensiones y clase de elemento; sus datos son contiguos y el mapa de definición de enteros distingue una celda sin inicializar de un entero cuyo valor sea cero. Las celdas auxiliares permiten representar ese mapa sin añadir etiquetas a los valores.
 
-La recolección es no móvil y marca desde las asas raíz recibidas por la operación. Los bloques liberados se agrupan por tamaño físico para reutilizar direcciones. El texto usa un arena propio con migas de caracteres y una operación explícita de compactación. El generador pseudoaleatorio recibe una semilla y mantiene su estado dentro de `RandomState`.
+La recolección es no móvil y marca desde las asas raíz recibidas por la operación. Los bloques liberados se agrupan por tamaño físico para reutilizar direcciones. El texto usa un arena propio con migas de caracteres y una operación explícita de compactación que devuelve los desplazamientos movidos. La recolección compacta el arena automáticamente. El generador pseudoaleatorio recibe una semilla y mantiene su estado dentro de `RandomState`.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Las búsquedas de asignaciones y bloques libres usan `BTreeMap`; las consultas de arreglo y campo consultan el mapa de asignaciones para validar el asa y recuperar su descriptor antes de acceder a las palabras. Se conserva esta estructura porque satisface las puertas actuales de corrección y verificación. No se establece un mínimo de rendimiento adicional.
+
+`compact_text` devuelve un `TextCompaction` con los rangos movidos. La compactación disparada por una recolección automática no conserva ni publica ese mapa: el runtime actual no tiene un consumidor de los desplazamientos del arena. Un consumidor que necesite observarlos debe añadir su contrato de notificación junto con su integración; el runtime no acumula mapas sin lector.
 
 El montón no mueve objetos: así, una recolección no altera identidades ni asas visibles. El ordinal identifica la asignación lógica, mientras el asa permite llegar a su almacenamiento actual. Los errores de capacidad, tamaño negativo, límite de celdas, índice, valor no inicializado e invariantes internos son variantes tipadas, no pánicos.
 

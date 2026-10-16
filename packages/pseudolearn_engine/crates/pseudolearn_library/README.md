@@ -9,7 +9,7 @@ span de la instrucción. No añade construcciones del lenguaje, UI ni efectos li
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Texto, conversiones de texto, formato de valores y `Copiar` | Montón y arena de texto | B4 |
+| `Copiar` | Descriptores de objeto del runtime | B4.4 |
 | Paridad bit a bit nativa/Wasm | Puente Wasm | E-17 |
 
 ## 2. Guía operativa y ciclo de vida
@@ -59,8 +59,7 @@ argumento o uno) se resuelven antes. La potencia sí puede ser exacta o caer en 
 las potencias enteras de hasta 34 de una base impar y las raíces perfectas `2^k`-ésimas con `k ≤ 5`, y
 demuestra que fuera de esos casos el resultado no es representable ni punto medio.
 
-No se agrega una dependencia matemática externa. El formato decimal mínimo de ida y vuelta y la copia
-superficial pertenecen a bloques posteriores.
+No se agrega una dependencia matemática externa. La copia superficial pertenece a B4.4.
 
 Invariantes: Mismo resultado binario64 y mismo texto en todas las plataformas. Los dominios inválidos y resultados no finitos atrapan antes de guardar un valor.
 

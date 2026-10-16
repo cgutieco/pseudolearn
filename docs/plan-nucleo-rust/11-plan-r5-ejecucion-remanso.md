@@ -1406,10 +1406,13 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
   de una y varias dimensiones con comprobación por dimensión, cota densa y mapas de definición; tamaño cero y
   negativo. Casos `LANG.ARRAY.*`, `LANG.TYPES.ARRAY` y `ENG.LIMITS#D1`; mapas exactos de raíces y de definición
   validados en ambos gemelos, pruebas directas de montón/arreglos, corpus y `cargo xtask verify` en verde.
-- [ ] **B4.2 Texto y conversiones.** Arena, cabeceras, apéndice compartido (test: dos concatenaciones desde el
-  mismo prefijo no se pisan), migas, comparación por puntos de código, `Longitud`, `CaracterEn`, `CodigoDe`,
-  `CaracterDesde`, `ATexto`, `AEntero`, `AReal`, formato de valores. Casos `LANG.TYPES.TEXT`,
-  `LANG.OPS.CONCATENATION`, `LANG.IO.VALUE-FORMAT`, `LIB.CORE.TEXT` y `LIB.CORE.CONVERSION`.
+- [x] **B4.2 Texto y conversiones.** Arena, cabeceras, apéndice compartido, migas, comparación por puntos de
+  código, `Longitud`, `CaracterEn`, `CodigoDe`, `CaracterDesde`, `ATexto`, `AEntero`, `AReal` y formato de
+  valores. Los casos exportados de texto y conversión pasan en las tres políticas de recolección. La VM
+  rechaza reales no finitos con `nonFiniteRealResult` antes de llamar al formateador; `format_value` conserva
+  su retorno `String`. Se conserva `compact_text` como operación explícita que devuelve `TextCompaction`;
+  la recolección automática descarta ese mapa hasta que exista un consumidor. Suites y verificadores del
+  motor y SEE pasan; evidencia en `packages/pseudolearn_spec/results/r5-b4-verification.json`.
 - [ ] **B4.3 Subprogramas.** Llamadas con ventanas solapadas, retorno, falta de retorno, profundidad exacta,
   paso por referencia con celdas (alias a la misma casilla, índice fijado una vez y comprobado antes del
   cuerpo), marca de agua en escrituras por celda. Casos `LANG.SUBPROGRAM.*`.
@@ -1424,12 +1427,12 @@ completas de observación se verifican en B7.3, después de `API.EXECUTE`; no se
 - [ ] **B4.6 Azar y anfitrión.** xoshiro256\*\* con SplitMix64, semilla por omisión 42; casos de
   `RT.HOST.INTERFACE` y `LIB.CORE.RANDOM`.
 
-#### Punto de continuación de B4 · 2026-10-15
+#### Punto de continuación de B4 · 2026-10-16
 
-**B4 permanece abierta; B4.1 está aceptada y B4.2–B4.6 siguen pendientes de aceptación.** La aceptación
-de B4.1 no cierra la puerta global de B4 ni autoriza B5. Sus pruebas dirigidas y `cargo xtask verify` pasan;
-la conformidad integrada `execute`, las propiedades completas de observación, la regresión de rendimiento y
-la publicación siguen en sus bloques y puertas propietarios.
+**B4 permanece abierta; B4.1 y B4.2 están aceptadas, y B4.3–B4.6 siguen pendientes.** La aceptación de
+estos bloques no cierra la puerta global de B4 ni autoriza B5. La conformidad integrada `execute`, las
+propiedades completas de observación y la regresión de rendimiento siguen en sus bloques y puertas
+propietarios.
 
 - [x] E-12 medido y elegido; montón/arreglos, texto/conversiones, llamadas/celdas/objetos,
   recolección/azar y soporte estático hasta bytecode implementados en el árbol local.
@@ -1437,13 +1440,15 @@ la publicación siguen en sus bloques y puertas propietarios.
   × dos perfiles × dos rigores × tres políticas; cuatro regresiones de integración API y tests runtime.
 - [x] Cerrar la vivacidad exacta de raíces, los negativos de mapas/metadatos, los dos errores de Clippy y
   `SIZE-FUNCTION`; actualizar el README de runtime y corregir su enlace de E-12.
-- [ ] Completar la aceptación de B4.2–B4.6 y la puerta global de B4: oráculos y verificadores restantes,
-  rendimiento, publicación y comprobación de HEAD local/remoto.
+- [x] Aceptar B4.2 con la regresión de reales no finitos, el corpus bajo tres políticas y los verificadores
+  de motor y SEE; publicar el commit de cierre y comprobar HEAD local/remoto iguales con el checkout limpio.
+- [ ] Completar la aceptación de B4.3–B4.6 y la puerta global de B4: oráculos y verificadores restantes,
+  rendimiento y sus demás criterios.
 
 **Continuar desde [13 · Relevo de B4](13-relevo-b4-remanso.md)**, que contiene archivos propietarios,
 evidencia, fallos concretos, auditorías pendientes y comandos. El inventario provisional es
-`packages/pseudolearn_spec/results/r5-b4-verification.json`. Todos los cambios de B4 siguen locales,
-incluidos los nuevos archivos sin seguimiento. No descartar el árbol ni iniciar B5.
+`packages/pseudolearn_spec/results/r5-b4-verification.json`. El cierre de B4.2 está publicado y el checkout
+queda limpio; B4 sigue abierta. No descartar evidencia ni iniciar B4.3 sin autorización nueva.
 
 ### B5 · Gemelo sondeado, eventos, combustible y límites
 

@@ -1,9 +1,9 @@
-# Relevo de implementación de B4 · 2026-10-15
+# Relevo de implementación de B4 · 2026-10-16
 
 ## Punto de parada y autoridad de este relevo
 
-Este relevo describe el árbol después de aceptar B4.1. **B4 y R5 permanecen abiertas. B4.2–B4.6
-siguen pendientes de aceptación; no iniciar B5 sin autorización nueva.** El [relevo 12](12-relevo-r5.md) es histórico y sus
+Este relevo describe el árbol después de aceptar B4.2. **B4 y R5 permanecen abiertas. B4.1 y B4.2 están
+aceptadas; B4.3–B4.6 siguen pendientes. No iniciar B4.3 ni B5 sin autorización nueva.** El [relevo 12](12-relevo-r5.md) es histórico y sus
 indicaciones de que aún no existe backend ya no describen el estado del repositorio.
 
 La autorización y el alcance son los del [plan 11, B4](11-plan-r5-ejecucion-remanso.md#b4--runtime-biblioteca-arreglos-subprogramas-objetos-y-recolector)
@@ -16,9 +16,8 @@ Entrada suspendible y cinta siguen en sus bloques propietarios.
 ## Preservar el trabajo
 
 - Rama actual y única autorizada: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-- HEAD al registrar B4.1: `8993d89` (`feat(padding): add padding verification and related functionality for code variants`).
-- **Todos los cambios de esta implementación de B4 siguen locales, sin commit ni push**, incluidos
-  numerosos archivos nuevos sin seguimiento. El HEAD anterior no contiene este trabajo.
+- HEAD base de esta aceptación: `b8e47a5` (`feature/agregar-ruta-de-especificacion`). El commit de B4.2
+  está publicado en esta misma rama; al cierre, HEAD local y remoto coinciden y el checkout está limpio.
 - No ejecutar `git reset`, `git clean`, restauraciones generales ni cambiar de checkout. Continuar
   el árbol completo y revisar `git status --short`, incluidos los archivos `??`.
 - No hay subagentes ni procesos de implementación que deban continuar trabajando en segundo plano.
@@ -80,14 +79,16 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [x] Pruebas dirigidas de `ir`, `bytecode`, `runtime` y `api`, contraste de `LANG.ARRAY.*`,
   `LANG.TYPES.ARRAY` y `ENG.LIMITS#D1` mediante el corpus, y `cargo xtask verify` completados en verde.
 
-### B4.2 · Texto, conversiones y salida: implementados; aceptación pendiente
+### B4.2 · Texto, conversiones y salida: aceptación completa
 
 - [x] `runtime/src/text/{create,parts,indexed,compact}.rs`: arena UTF-8 por apéndice, cabeceras
   independientes e inmutables por prefijo, apéndice compartido al final y copia en bifurcaciones.
 - [x] `String` mantiene el invariante UTF-8 sin revalidar todo el texto al leer; indicador ASCII,
   longitud en puntos, migas cada 64 puntos calculadas perezosamente y compartidas por tramo.
 - [x] Migas auxiliares en el montón sin coste nocional; compactación ordenada de tramos vivos,
-  actualización de cabeceras e invalidación de índices. `TextCompaction` expone el mapa de movimientos.
+  actualización de cabeceras e invalidación de índices. `compact_text` expone explícitamente
+  `TextCompaction`; la recolección automática descarta el mapa porque aún no existe un consumidor, y su
+  notificación queda diferida hasta que lo haya. No se añade una API anticipada ni se implementa la línea temporal.
 - [x] `library/src/{decimal,format}.rs`: conversiones y formato primitivo común; real posicional,
   decimal obligatorio, ida y vuelta y cero negativo; vocabulario lógico suministrado por el consumidor.
 - [x] VM: constantes de texto precargadas, concatenación texto/carácter en las cuatro combinaciones,
@@ -95,10 +96,10 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [x] Vocabulario lógico generado a partir de la exportación; no se copian lexemas manualmente.
 - [x] Tests runtime recientes pasan: Unicode suplementario/descompuesto, límites de migas,
   dos concatenaciones desde un prefijo, auto-concatenación y extensión/compactación de índices compartidos.
-- [ ] Auditar el contrato de `format_value` ante reales no finitos (actualmente devuelve `String`;
-  la VM debe impedir que un valor fuera del dominio llegue a ese formateador).
-- [ ] Revisar cómo notificar el mapa de compactación automática al futuro consumidor: el método
-  público lo devuelve, pero la recolección automática actual descarta el resultado. No implementar timeline.
+- [x] Regresión directa de VM: finitos (incluido cero negativo) conservan el formato y `NaN` e infinitos
+  producen `nonFiniteRealResult` antes de llegar a `format_value`; su retorno público `String` no cambia.
+- [x] Los casos exportados pertinentes del corpus pasan con recolección automática, manual y desactivada.
+  `cargo xtask verify` pasa en `pseudolearn_engine` y `pseudolearn_spec`.
 
 ### B4.3–B4.4 · Subprogramas y objetos: implementados; aceptación pendiente
 
@@ -147,27 +148,28 @@ no certifica la puerta global, el rendimiento o la publicación.
 - [ ] Ampliar la comparación generada más allá del grafo de objetos actual: arreglos, alcance de
   variables sin usos futuros, intermedios vivos y temporales muertos. Revisar identidad al reutilizar asas.
 
-## Pruebas y verificaciones: estado tras B4.1
+## Pruebas y verificaciones: estado tras B4.2
 
-La evidencia de B4.1 corresponde al árbol que parte del HEAD indicado arriba y conserva estos cambios
-locales. `cargo test -p pseudolearn_ir -p pseudolearn_bytecode -p pseudolearn_runtime -p pseudolearn_api`
-pasó, incluido el corpus exportado bajo las tres políticas de recolección. `cargo xtask verify` pasó
-formato, Clippy estricto, todos los tests del workspace, `rust-checks all`, verificación de toolchain y
-`cargo deny check` (advisories, bans, licenses y sources).
+La evidencia de B4.1 corresponde a su aceptación previa. Para B4.2, `cargo test -p pseudolearn_runtime -p
+pseudolearn_library -p pseudolearn_vm` pasó, incluidos los tests de formato finito y la regresión directa
+de reales no finitos. `cargo test -p pseudolearn_api --test runtime_corpus -- --nocapture` pasó: 296
+configuraciones del corpus en tres políticas de recolección. `cargo xtask verify` pasó en el motor (formato,
+Clippy estricto, workspace completo, `rust-checks all`, toolchain y `cargo deny`) y en SEE (validación,
+lock, exportación, referencias documentales y conformidad reference).
 
 Las consultas a descriptores de arreglo y campo mediante `BTreeMap` se revisaron frente a las puertas
 vigentes. Se conservaron por no existir un umbral aplicable que requiera cambiarlas; no se añadió una
 meta de rendimiento.
 
-B4.2–B4.6 conservan la aceptación pendiente enumerada en este documento. Tampoco se ejecutaron para este
-cierre las puertas completas de SEE y ceiling ni la regresión de rendimiento emparejada; la igualdad entre
-HEAD local y remoto requiere publicación. La aceptación de B4.1 no sustituye esos requisitos de B4.
+B4.3–B4.6 conservan la aceptación pendiente enumerada en este documento. Tampoco se ejecutaron para este
+cierre las puertas globales completas de ceiling ni la regresión de rendimiento emparejada. La publicación
+de B4.2 no cierra B4 ni sustituye esos requisitos.
 
 ## Orden concreto para retomar
 
-1. B4.1 está aceptada; no repetir sus cambios ni descartar los archivos locales sin seguimiento.
+1. B4.1 y B4.2 están aceptadas; no repetir sus cambios ni descartar evidencia existente.
 2. Para cualquier continuación autorizada, leer los contratos dueños y resolver únicamente los
-   criterios aún abiertos de B4.2–B4.6 con casos del corpus y oráculos independientes.
+   criterios aún abiertos de B4.3–B4.6 con casos del corpus y oráculos independientes.
 3. Ejecutar las verificaciones que corresponden a los bloques abiertos y completar la puerta global de
    B4, incluidos SEE, ceiling, corpus y referencias. No anticipar `execute` ni su estado `cumple`.
 4. Repetir la trazadora emparejada de B3, ≥30×, y aplicar RR-01 si falla. La herramienta
@@ -175,11 +177,10 @@ HEAD local y remoto requiere publicación. La aceptación de B4.1 no sustituye e
    `results/r5-vm-tracer/` y `packages/pseudolearn_spec/results/r5-vm-tracer.json`:
    **preservar los crudos de B3 antes de lanzarla**, separar la captura nueva y registrar procedencia
    antes del build. Esta regresión no sustituye a la medición completa de B7.
-5. Completar `r5-b4-verification.json` con cobertura, exclusiones justificadas, mediciones, negativos
-   y verificadores finales antes de aceptar B4.
-6. La publicación de B4 requiere commits coherentes en inglés, push ordinario a la rama única y comparación
-   de HEAD local/remoto. R5 y B4 permanecen abiertas hasta cumplir sus puertas; `PHASE-STOP` requiere
-   autorización explícita antes de iniciar el siguiente bloque.
+5. La evidencia de B4.2 está en `r5-b4-verification.json`; completar allí la cobertura, exclusiones,
+   mediciones, negativos y verificadores globales antes de aceptar B4.
+6. La aceptación global de B4 requiere sus puertas restantes y publicación coherente en la rama única.
+   R5 y B4 permanecen abiertas; `PHASE-STOP` requiere autorización explícita antes de iniciar B4.3.
 
 ## Comandos útiles y precauciones del entorno
 
