@@ -1,6 +1,9 @@
-use super::{Allocation, AllocationRequest, Heap, Shape};
+use super::{AllocationRequest, BlockRecord, Heap, Shape};
 use crate::{CollectionPolicy, MemoryError, ValueKind};
-use pseudolearn_abi::{COMMON_HEADER_WORDS, Handle};
+use pseudolearn_abi::{
+    ARRAY_KIND_STATUS_SHIFT, ARRAY_RANK_STATUS_SHIFT, COMMON_HEADER_WORDS, CommonHeader, Handle,
+    LITERAL_STATUS_MASK,
+};
 
 impl Heap {
     pub(crate) fn allocate(
@@ -8,25 +11,53 @@ impl Heap {
         request: AllocationRequest,
         roots: &[Handle],
     ) -> Result<Handle, MemoryError> {
+        let (shape_tag, status_flags) = header_shape(&request)?;
         if !matches!(request.shape, Shape::Auxiliary) {
             self.prepare(request.cells, roots)?;
         }
-        let physical = request
-            .payload
-            .checked_add(request.elements)
-            .and_then(|count| count.checked_add(request.auxiliary))
-            .ok_or(MemoryError::Resource)?;
+        self.prepare_metadata(&request.shape)?;
+        let physical = allocation_size(&request)?;
+        self.blocks
+            .try_reserve(1)
+            .map_err(|_| MemoryError::Resource)?;
         let address = self.reserve(physical)?;
         let handle = Handle(u32::try_from(address).map_err(|_| MemoryError::Resource)?);
         if !matches!(request.shape, Shape::Text | Shape::Auxiliary) {
             self.ordinal = self.ordinal.checked_add(1).ok_or(MemoryError::Resource)?;
         }
         self.initialize_words(address, physical, &request)?;
-        let shape_tag = shape_tag(&request.shape)?;
-        self.store(handle, 0, shape_tag)?;
-        self.store(handle, 1, self.ordinal)?;
-        self.register_allocation(handle, request, physical)?;
+        let identity = if matches!(request.shape, Shape::Text | Shape::Auxiliary) {
+            0
+        } else {
+            self.ordinal
+        };
+        write_header(
+            self,
+            handle,
+            CommonHeader::new(shape_tag, status_flags, identity),
+        )?;
+        self.register_block(handle, request.cells, physical)?;
+        if let Shape::Object(layout) = request.shape {
+            self.store_layout((*layout).clone())?;
+        }
         Ok(handle)
+    }
+
+    fn prepare_metadata(&mut self, shape: &Shape) -> Result<(), MemoryError> {
+        let Shape::Object(layout) = shape else {
+            return Ok(());
+        };
+        self.ensure_layout_capacity(layout.class)?;
+        let index = usize::try_from(layout.class).map_err(|_| MemoryError::Resource)?;
+        if self
+            .layouts
+            .get(index)
+            .and_then(Option::as_ref)
+            .is_some_and(|existing| existing != layout.as_ref())
+        {
+            return Err(MemoryError::Internal);
+        }
+        Ok(())
     }
 
     fn initialize_words(
@@ -52,27 +83,20 @@ impl Heap {
         Ok(())
     }
 
-    fn register_allocation(
+    fn register_block(
         &mut self,
         handle: Handle,
-        request: AllocationRequest,
+        cells: u64,
         physical: usize,
     ) -> Result<(), MemoryError> {
-        self.allocations.insert(
+        self.add_block(BlockRecord {
             handle,
-            Allocation {
-                physical,
-                elements: request.elements,
-                cells: request.cells,
-                shape: request.shape,
-                assigned: 0,
-                payload: request.payload,
-                literal: request.literal,
-            },
-        );
+            physical: u32::try_from(physical).map_err(|_| MemoryError::Resource)?,
+            cells,
+        })?;
         self.allocated_cells = self
             .allocated_cells
-            .checked_add(request.cells)
+            .checked_add(cells)
             .ok_or(MemoryError::Resource)?;
         Ok(())
     }
@@ -114,19 +138,23 @@ impl Heap {
             .ok_or(MemoryError::Resource)?;
         u32::try_from(end).map_err(|_| MemoryError::Resource)?;
         if end > self.words.len() {
-            let capacity = end
-                .max(4096)
-                .checked_next_power_of_two()
-                .ok_or(MemoryError::Resource)?;
             self.words
-                .try_reserve_exact(capacity.saturating_sub(self.words.len()))
+                .try_reserve_exact(end.saturating_sub(self.words.len()))
                 .map_err(|_| MemoryError::Resource)?;
-            self.words.resize(capacity, 0);
+            self.words.resize(end, 0);
         }
         let address = self.used;
         self.used = end;
         Ok(address)
     }
+}
+
+fn allocation_size(request: &AllocationRequest) -> Result<usize, MemoryError> {
+    request
+        .payload
+        .checked_add(request.elements)
+        .and_then(|count| count.checked_add(request.auxiliary))
+        .ok_or(MemoryError::Resource)
 }
 
 fn initial_kind(shape: &Shape) -> ValueKind {
@@ -136,13 +164,52 @@ fn initial_kind(shape: &Shape) -> ValueKind {
     }
 }
 
-fn shape_tag(shape: &Shape) -> Result<u64, MemoryError> {
-    match shape {
-        Shape::Array { .. } => Ok(1),
-        Shape::Object(layout) => u64::from(layout.class)
-            .checked_add(3)
-            .ok_or(MemoryError::Resource),
-        Shape::Text => Ok(2),
-        Shape::Auxiliary => Ok(u64::from(u32::MAX)),
+fn header_shape(request: &AllocationRequest) -> Result<(u32, u32), MemoryError> {
+    let literal = if request.literal {
+        LITERAL_STATUS_MASK
+    } else {
+        0
+    };
+    match &request.shape {
+        Shape::Array {
+            element,
+            dimensions,
+        } => {
+            let rank = u32::try_from(dimensions.len()).map_err(|_| MemoryError::Resource)?;
+            if rank == 0 || rank > u32::from(u8::MAX) {
+                return Err(MemoryError::Resource);
+            }
+            Ok((
+                1,
+                encode_value_kind(*element)? | rank.wrapping_shl(ARRAY_RANK_STATUS_SHIFT) | literal,
+            ))
+        }
+        Shape::Object(layout) => {
+            let tag = layout.class.checked_add(3).ok_or(MemoryError::Resource)?;
+            if tag == u32::MAX {
+                return Err(MemoryError::Resource);
+            }
+            let payload = u16::try_from(request.payload).map_err(|_| MemoryError::Resource)?;
+            Ok((tag, u32::from(payload) | literal))
+        }
+        Shape::Text => Ok((2, literal)),
+        Shape::Auxiliary => Ok((u32::MAX, 0)),
     }
+}
+
+fn encode_value_kind(kind: ValueKind) -> Result<u32, MemoryError> {
+    let code: u32 = match kind {
+        ValueKind::Integer => 0,
+        ValueKind::Real => 1,
+        ValueKind::Boolean => 2,
+        ValueKind::Character => 3,
+        ValueKind::Reference => 4,
+    };
+    Ok(code.wrapping_shl(ARRAY_KIND_STATUS_SHIFT))
+}
+
+fn write_header(heap: &mut Heap, handle: Handle, header: CommonHeader) -> Result<(), MemoryError> {
+    let [shape_and_flags, identity] = header.to_words();
+    heap.store(handle, 0, shape_and_flags.as_u64())?;
+    heap.store(handle, 1, identity.as_u64())
 }

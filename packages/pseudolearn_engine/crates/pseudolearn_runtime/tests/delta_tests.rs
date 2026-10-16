@@ -2,7 +2,8 @@ use std::collections::BTreeMap;
 
 use pseudolearn_runtime::{
     BLOCK_WORDS, BlockDelta, DeltaError, Heap, MapDelta, MemoryOptions, TailDelta, ValueKind,
-    advance_heap, compose_heap_deltas, new_array, revert_heap, write_element,
+    advance_heap, compose_heap_deltas, heap_used_words, heap_words, live_allocation_handles,
+    new_array, revert_heap, write_element,
 };
 
 fn words(count: usize, seed: u64) -> Vec<u64> {
@@ -130,5 +131,28 @@ fn heap_delta_round_trips_and_composes() -> Result<(), String> {
     let mut restored = live.clone();
     revert_heap(&mut restored, &fused).map_err(|error| format!("{error:?}"))?;
     assert_eq!(restored, first);
+    Ok(())
+}
+
+#[test]
+fn heap_delta_reverts_block_removal_and_keeps_only_used_words() -> Result<(), String> {
+    let mut live = Heap::new(MemoryOptions::default());
+    let retained = new_array(&mut live, ValueKind::Integer, &[160], &[])
+        .map_err(|error| format!("{error:?}"))?;
+    let discarded = new_array(&mut live, ValueKind::Reference, &[32], &[retained])
+        .map_err(|error| format!("{error:?}"))?;
+    let before_collection = live.clone();
+    live.collect(&[retained])
+        .map_err(|error| format!("{error:?}"))?;
+    assert!(!live_allocation_handles(&live).contains(&discarded));
+    assert_eq!(heap_words(&live).len(), heap_used_words(&live));
+
+    let mut tip = before_collection.clone();
+    let delta = advance_heap(&mut tip, &live);
+    assert_eq!(tip, live);
+    let mut restored = live.clone();
+    revert_heap(&mut restored, &delta).map_err(|error| format!("{error:?}"))?;
+    assert_eq!(restored, before_collection);
+    assert!(live_allocation_handles(&restored).contains(&discarded));
     Ok(())
 }

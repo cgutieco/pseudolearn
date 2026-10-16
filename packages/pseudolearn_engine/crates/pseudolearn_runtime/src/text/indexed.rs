@@ -1,6 +1,7 @@
 use super::{Breadcrumbs, text_content, text_length};
 use crate::heap::{AllocationRequest, Shape};
 use crate::{Handle, Heap, MemoryError};
+use pseudolearn_abi::TEXT_ASCII_STATUS_MASK;
 
 pub fn text_character(heap: &mut Heap, handle: Handle, position: i64) -> Result<char, MemoryError> {
     let length = text_length(heap, handle)?;
@@ -10,7 +11,8 @@ pub fn text_character(heap: &mut Heap, handle: Handle, position: i64) -> Result<
     }
     let position = usize::try_from(position).map_err(|_| MemoryError::Resource)?;
     let start = usize::try_from(heap.word(handle, 2)?).map_err(|_| MemoryError::Internal)?;
-    if heap.word(handle, 0)? & 1_u64.wrapping_shl(32) != 0 {
+    let ascii_mask = u64::from(TEXT_ASCII_STATUS_MASK).wrapping_shl(32);
+    if heap.word(handle, 0)? & ascii_mask != 0 {
         let index = start.checked_add(position).ok_or(MemoryError::Internal)?;
         return heap
             .arena
@@ -108,30 +110,20 @@ fn publish(heap: &mut Heap, owner: Handle, crumbs: &mut Breadcrumbs) -> Result<(
 impl Heap {
     pub(super) fn discard_breadcrumbs(&mut self) -> Result<(), MemoryError> {
         self.arena.breadcrumbs.clear();
-        let headers = self
-            .allocations
-            .iter()
-            .filter(|(_, entry)| entry.shape == Shape::Text)
-            .map(|(handle, _)| *handle)
-            .collect::<Vec<_>>();
-        for handle in headers {
-            self.store(handle, 4, 0)?;
+        let mut headers = Vec::new();
+        let mut auxiliary = Vec::new();
+        for block in &self.blocks {
+            if self.is_text(block.handle)? {
+                headers.push(block.handle);
+            } else if self.is_auxiliary(block.handle)? {
+                auxiliary.push(block.handle);
+            }
         }
-        let auxiliary = self
-            .allocations
-            .iter()
-            .filter(|(_, entry)| entry.shape == Shape::Auxiliary)
-            .map(|(handle, _)| *handle)
-            .collect::<Vec<_>>();
+        for handle in headers {
+            self.clear_text_index(handle)?;
+        }
         for handle in auxiliary {
-            let entry = self
-                .allocations
-                .remove(&handle)
-                .ok_or(MemoryError::Internal)?;
-            self.free
-                .entry(entry.physical)
-                .or_default()
-                .insert(usize::try_from(handle.0).map_err(|_| MemoryError::Internal)?);
+            self.release_block(handle)?;
         }
         Ok(())
     }

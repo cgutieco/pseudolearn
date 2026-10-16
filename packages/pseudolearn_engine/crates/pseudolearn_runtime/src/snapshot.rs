@@ -1,5 +1,5 @@
-use crate::heap::Shape;
 use crate::{Handle, Heap, MemoryError, ValueKind};
+use pseudolearn_abi::ARRAY_TOTAL_ELEMENTS_WORD_OFFSET;
 
 pub fn heap_words(heap: &Heap) -> &[u64] {
     &heap.words
@@ -10,6 +10,10 @@ pub fn heap_used_words(heap: &Heap) -> usize {
 }
 
 pub fn set_heap_used_words(heap: &mut Heap, used_words: usize) {
+    heap.words.truncate(used_words);
+    if heap.words.len() < used_words {
+        heap.words.resize(used_words, 0);
+    }
     heap.used = used_words;
 }
 
@@ -40,6 +44,9 @@ pub fn restore_heap_block(
         .checked_add(words.len())
         .ok_or(MemoryError::Resource)?;
     if heap.words.len() < target_end {
+        heap.words
+            .try_reserve_exact(target_end.saturating_sub(heap.words.len()))
+            .map_err(|_| MemoryError::Resource)?;
         heap.words.resize(target_end, 0);
     }
     let destination = heap
@@ -51,47 +58,33 @@ pub fn restore_heap_block(
 }
 
 pub fn live_allocation_handles(heap: &Heap) -> Vec<Handle> {
-    heap.allocations.keys().copied().collect()
+    heap.blocks.iter().map(|block| block.handle).collect()
 }
 
 pub fn is_object_allocation(heap: &Heap, handle: Handle) -> bool {
-    heap.allocations
-        .get(&handle)
-        .is_some_and(|entry| matches!(entry.shape, Shape::Object(_)))
+    heap.header(handle)
+        .is_ok_and(|header| header.shape_tag > 2 && header.shape_tag < u32::MAX)
 }
 
 pub fn is_array_allocation(heap: &Heap, handle: Handle) -> bool {
-    heap.allocations
-        .get(&handle)
-        .is_some_and(|entry| matches!(entry.shape, Shape::Array { .. }))
+    heap.header(handle)
+        .is_ok_and(|header| header.shape_tag == 1)
 }
 
 pub fn allocation_ordinal(heap: &Heap, handle: Handle) -> Result<u64, MemoryError> {
-    heap.word(handle, 1)
+    heap.identity(handle)
 }
 
 pub fn object_class_identifier(heap: &Heap, handle: Handle) -> Result<u32, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    match &entry.shape {
-        Shape::Object(layout) => Ok(layout.class),
-        _ => Err(MemoryError::Internal),
-    }
+    crate::object::object_class(heap, handle)
 }
 
 pub fn object_field_kinds(heap: &Heap, handle: Handle) -> Result<Vec<ValueKind>, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    match &entry.shape {
-        Shape::Object(layout) => Ok(layout.fields.clone()),
-        _ => Err(MemoryError::Internal),
-    }
+    Ok(heap.layout(handle)?.fields.clone())
 }
 
 pub fn array_element_kind(heap: &Heap, handle: Handle) -> Result<ValueKind, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    match &entry.shape {
-        Shape::Array { element, .. } => Ok(*element),
-        _ => Err(MemoryError::Internal),
-    }
+    heap.array_element_kind(handle)
 }
 
 pub fn is_defined_element(
@@ -99,18 +92,13 @@ pub fn is_defined_element(
     handle: Handle,
     element_index: usize,
 ) -> Result<bool, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    let (element_kind, payload) = match entry.shape {
-        Shape::Array { element, .. } => (element, entry.payload),
-        _ => return Err(MemoryError::Internal),
-    };
-    if element_index >= entry.elements {
+    let element_kind = heap.array_element_kind(handle)?;
+    let total = usize::try_from(heap.word(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)?)
+        .map_err(|_| MemoryError::Internal)?;
+    if element_index >= total {
         return Err(MemoryError::IndexOutOfRange);
     }
-    let target_offset = payload
-        .checked_add(element_index)
-        .ok_or(MemoryError::Internal)?;
-    let stored_word = heap.word(handle, target_offset)?;
+    let stored_word = read_element_raw(heap, handle, element_index)?;
     match element_kind {
         ValueKind::Integer => heap.integer_defined(handle, element_index),
         ValueKind::Real => Ok(!f64::from_bits(stored_word).is_nan()),
@@ -123,26 +111,16 @@ pub fn is_defined_field(
     handle: Handle,
     field_index: usize,
 ) -> Result<bool, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    let (field_kind, payload) = match &entry.shape {
-        Shape::Object(layout) => {
-            let kind = layout
-                .fields
-                .get(field_index)
-                .copied()
-                .ok_or(MemoryError::Internal)?;
-            (kind, entry.payload)
-        }
-        _ => return Err(MemoryError::Internal),
-    };
-    let target_offset = payload
-        .checked_add(field_index)
+    let kind = *heap
+        .layout(handle)?
+        .fields
+        .get(field_index)
         .ok_or(MemoryError::Internal)?;
-    let stored_word = heap.word(handle, target_offset)?;
-    match field_kind {
+    let stored_word = read_field_raw(heap, handle, field_index)?;
+    match kind {
         ValueKind::Integer => heap.integer_defined(handle, field_index),
         ValueKind::Real => Ok(!f64::from_bits(stored_word).is_nan()),
-        _ => Ok(stored_word != field_kind.absent()),
+        _ => Ok(stored_word != kind.absent()),
     }
 }
 
@@ -151,27 +129,35 @@ pub fn read_element_raw(
     handle: Handle,
     element_index: usize,
 ) -> Result<u64, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    if !matches!(entry.shape, Shape::Array { .. }) || element_index >= entry.elements {
+    if !is_array_allocation(heap, handle) {
         return Err(MemoryError::IndexOutOfRange);
     }
-    let target_offset = entry
-        .payload
-        .checked_add(element_index)
-        .ok_or(MemoryError::Internal)?;
-    heap.word(handle, target_offset)
+    let total = usize::try_from(heap.word(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)?)
+        .map_err(|_| MemoryError::Internal)?;
+    if element_index >= total {
+        return Err(MemoryError::IndexOutOfRange);
+    }
+    heap.word(
+        handle,
+        heap.array_payload(handle)?
+            .checked_add(element_index)
+            .ok_or(MemoryError::Internal)?,
+    )
 }
 
 pub fn read_field_raw(heap: &Heap, handle: Handle, field_index: usize) -> Result<u64, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    if !matches!(entry.shape, Shape::Object(_)) || field_index >= entry.elements {
+    if !is_object_allocation(heap, handle) {
         return Err(MemoryError::IndexOutOfRange);
     }
-    let target_offset = entry
-        .payload
-        .checked_add(field_index)
-        .ok_or(MemoryError::Internal)?;
-    heap.word(handle, target_offset)
+    if field_index >= heap.layout(handle)?.fields.len() {
+        return Err(MemoryError::IndexOutOfRange);
+    }
+    heap.word(
+        handle,
+        heap.object_payload(handle)?
+            .checked_add(field_index)
+            .ok_or(MemoryError::Internal)?,
+    )
 }
 
 pub fn heap_allocated_cells(heap: &Heap) -> u64 {

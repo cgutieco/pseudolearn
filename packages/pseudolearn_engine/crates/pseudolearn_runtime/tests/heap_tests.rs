@@ -147,6 +147,28 @@ fn integer_masks_span_multiple_words_without_changing_field_offsets() -> Result<
 }
 
 #[test]
+fn object_layouts_are_indexed_and_class_shapes_cannot_conflict() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let source = new_object(&mut heap, layout(), &[])?;
+    assert_eq!(pseudolearn_runtime::object_class(&heap, source), Ok(0));
+    let conflicting = ObjectLayout {
+        class: 0,
+        fields: vec![ValueKind::Real],
+        dense: true,
+        references: Vec::new(),
+    };
+    assert_eq!(
+        new_object(&mut heap, conflicting, &[source]),
+        Err(MemoryError::Internal)
+    );
+    assert_eq!(
+        read_field(&heap, source, 0),
+        Err(MemoryError::Uninitialized)
+    );
+    Ok(())
+}
+
+#[test]
 fn text_and_derived_indices_do_not_consume_identity_ordinals() -> Result<(), MemoryError> {
     let mut heap = Heap::new(MemoryOptions::default());
     let text = pseudolearn_runtime::new_text(&mut heap, &"é".repeat(130), true, &[])?;
@@ -157,6 +179,10 @@ fn text_and_derived_indices_do_not_consume_identity_ordinals() -> Result<(), Mem
     let object = new_object(&mut heap, layout(), &[text])?;
     assert_eq!(heap.identity(object), Ok(1));
     heap.collect(&[text])?;
+    assert_eq!(
+        pseudolearn_runtime::text_character(&mut heap, text, 129),
+        Ok('é')
+    );
     let next = new_object(&mut heap, layout(), &[text])?;
     assert_eq!(heap.identity(next), Ok(2));
     Ok(())

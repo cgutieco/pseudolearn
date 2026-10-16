@@ -154,11 +154,13 @@ Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verifica
 
 ### runtime (B4 aceptada)
 
-La implementación actual cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición
-de enteros, raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito.
-B4 cierra tras aceptar subprogramas, objetos, políticas de recolección, límites y anfitrión. Las asas
-pueden reutilizar una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]` rige
-en este crate.
+El runtime cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición de enteros,
+raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito. Cada asignación
+guarda forma y metadatos en una cabecera común en banda; `BlockRecord` conserva dirección, tamaño físico
+y celdas lógicas para recolección y diferenciales. Las lecturas y escrituras obtienen sus metadatos de la
+cabecera y del diseño de clase indexado. Los diferenciales del montón cubren solo palabras usadas. Las
+asas pueden reutilizar una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]`
+rige en este crate.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
 ### library (B4 aceptada)

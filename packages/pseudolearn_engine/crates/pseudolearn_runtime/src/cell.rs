@@ -1,4 +1,3 @@
-use crate::heap::Shape;
 use crate::{Heap, MemoryError, ValueKind};
 use pseudolearn_abi::Handle;
 
@@ -21,11 +20,10 @@ pub fn field_cell(heap: &Heap, owner: Handle, index: usize) -> Result<MemoryCell
     if owner.is_absent() {
         return Err(MemoryError::Uninitialized);
     }
-    let entry = heap.allocations.get(&owner).ok_or(MemoryError::Internal)?;
-    let Shape::Object(layout) = &entry.shape else {
-        return Err(MemoryError::Internal);
-    };
-    layout.fields.get(index).ok_or(MemoryError::Internal)?;
+    heap.layout(owner)?
+        .fields
+        .get(index)
+        .ok_or(MemoryError::Internal)?;
     Ok(MemoryCell { owner, index })
 }
 
@@ -52,36 +50,29 @@ pub fn write_memory_cell(heap: &mut Heap, cell: MemoryCell, word: u64) -> Result
     if kind == ValueKind::Integer {
         heap.define_integer(cell.owner, cell.index)?;
     }
-    let entry = heap
-        .allocations
-        .get(&cell.owner)
-        .ok_or(MemoryError::Internal)?;
-    if matches!(
-        entry.shape,
-        Shape::Array {
-            element: ValueKind::Integer,
-            ..
-        }
-    ) && entry.assigned == entry.elements
-    {
-        heap.store(
-            cell.owner,
-            3,
-            u64::try_from(entry.assigned).map_err(|_| MemoryError::Internal)?,
-        )?;
-    }
     Ok(())
 }
 
 fn describe(heap: &Heap, cell: MemoryCell) -> Result<(usize, ValueKind), MemoryError> {
-    let entry = heap
-        .allocations
-        .get(&cell.owner)
-        .ok_or(MemoryError::Internal)?;
-    let kind = match &entry.shape {
-        Shape::Array { element, .. } if cell.index < entry.elements => *element,
-        Shape::Object(layout) => *layout.fields.get(cell.index).ok_or(MemoryError::Internal)?,
-        _ => return Err(MemoryError::Internal),
-    };
-    Ok((entry.payload, kind))
+    let header = heap.header(cell.owner)?;
+    if header.shape_tag == 1 {
+        let total =
+            usize::try_from(heap.word(cell.owner, 2)?).map_err(|_| MemoryError::Internal)?;
+        if cell.index >= total {
+            return Err(MemoryError::IndexOutOfRange);
+        }
+        return Ok((
+            heap.array_payload(cell.owner)?,
+            heap.array_element_kind(cell.owner)?,
+        ));
+    }
+    if header.shape_tag > 2 && header.shape_tag < u32::MAX {
+        let layout = heap.layout(cell.owner)?;
+        let kind = *layout
+            .fields
+            .get(cell.index)
+            .ok_or(MemoryError::IndexOutOfRange)?;
+        return Ok((heap.object_payload(cell.owner)?, kind));
+    }
+    Err(MemoryError::Internal)
 }

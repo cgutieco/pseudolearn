@@ -6,6 +6,13 @@ pub const COMMON_HEADER_WORDS: usize = 2;
 pub const COMMON_HEADER_BYTES: usize = 16;
 pub const SHAPE_FLAGS_WORD_OFFSET: usize = 0;
 pub const IDENTITY_ORDINAL_WORD_OFFSET: usize = 1;
+pub const ARRAY_KIND_STATUS_SHIFT: u32 = 0;
+pub const ARRAY_KIND_STATUS_MASK: u32 = 0x0000_00FF;
+pub const ARRAY_RANK_STATUS_SHIFT: u32 = 8;
+pub const ARRAY_RANK_STATUS_MASK: u32 = 0x0000_FF00;
+pub const TEXT_ASCII_STATUS_MASK: u32 = 0x0000_0001;
+pub const LITERAL_STATUS_MASK: u32 = 0x0001_0000;
+pub const OBJECT_PAYLOAD_STATUS_MASK: u32 = 0x0000_FFFF;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CommonHeader {

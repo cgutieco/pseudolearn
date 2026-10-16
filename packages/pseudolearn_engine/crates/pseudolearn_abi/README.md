@@ -18,13 +18,17 @@ Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se de
 
 Nivel 0. Sin imports internos ni dependencias externas. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Palabra u64; Handle(u32) con cero reservado; cabeceras de dos palabras; ordinal u64 para objetos y arreglos. Objetos con máscara de enteros solo cuando necesitan definición (una palabra por cada 64 campos, sin límite de 64 campos), campos heredados antes que propios y mapa estático de desplazamientos de referencias. Arreglos con longitud, cota densa, dimensiones, mapa de definición y celdas por filas. Cadenas con puntos de código, desplazamiento y longitud en la arena, y asa de migas. Marco con función, identificador de retorno y bases de los dos bancos.
+Palabra u64; Handle(u32) con cero reservado; cabecera común de dos palabras. La palabra 0 empaqueta `shape_tag` en los 32 bits bajos y `status_flags` en los altos; la palabra 1 contiene el ordinal de objetos/arreglos o la cantidad de puntos de código del texto. En arreglos, `status_flags` guarda `ValueKind` en bits 0–7, rango en bits 8–15 y literal en bit 16. En objetos, `shape_tag = 3 + class_id` y bits 0–15 guardan el desplazamiento de los campos; bit 16 marca literales. En texto, bit 0 identifica contenido ASCII y bit 16 marca literales. Los mapas de referencias por clase y la forma del marco bicameral también son datos compartidos.
+
+Los arreglos guardan total de elementos en la palabra 2, cantidad de elementos enteros definidos en la palabra 3 y la dirección absoluta del mapa de definición en la palabra 4. El rango 1 reutiliza la palabra 2 como su dimensión; rangos mayores guardan dimensiones desde la palabra 5 y los datos desde `5 + rango`. Objetos colocan máscaras enteras desde la palabra 2 cuando su diseño no es denso y los campos en el desplazamiento de la cabecera. Los objetos conservan campos heredados antes que propios y el mapa estático de desplazamientos de referencias. Cadenas guardan desplazamiento y longitud en palabras 2 y 3, más el asa de migas en la palabra 4. El marco guarda función, identificador de retorno y bases de los dos bancos.
 
 Invariantes: Una sola disposición para runtime, VM, línea temporal y futuros consumidores nativos. NaN representa real ausente, 2 lógico ausente, 0xFFFFFFFF carácter ausente y asa cero referencia ausente.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-El prefijo contiguo de referencias no compone con herencia sin mover campos heredados. El mapa por clase conserva desplazamientos y solo se consulta al recolectar. Se rechazan punteros, páginas persistentes y disposiciones diferentes por motor.
+Problema: runtime, VM, línea temporal y consumidores nativos necesitan interpretar el mismo bloque sin descriptores de asignación externos. Elección: `CommonHeader` fija forma y banderas en la primera palabra y ordinal o cantidad de puntos en la segunda; los offsets de arreglos, objetos y cadenas completan una disposición única. Se rechazan punteros, páginas persistentes y disposiciones diferentes por motor.
+
+El prefijo contiguo de referencias no compone con herencia sin mover campos heredados. El mapa por clase conserva desplazamientos y solo se consulta al recolectar. Se rechazan datos de referencias duplicados por objeto.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.

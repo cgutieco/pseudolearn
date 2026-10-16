@@ -1,7 +1,9 @@
+use super::Heap;
 use super::markset::MarkSet;
-use super::{Heap, Shape};
 use crate::{MemoryError, ValueKind};
-use pseudolearn_abi::Handle;
+use pseudolearn_abi::{
+    ARRAY_TOTAL_ELEMENTS_WORD_OFFSET, Handle, STRING_BREADCRUMBS_HANDLE_WORD_OFFSET,
+};
 
 impl Heap {
     pub fn reachable_cells(&self, roots: &[Handle]) -> Result<u64, MemoryError> {
@@ -10,33 +12,21 @@ impl Heap {
             .iter()
             .try_fold(0_u64, |total, handle| {
                 total
-                    .checked_add(
-                        self.allocations
-                            .get(handle)
-                            .ok_or(MemoryError::Internal)?
-                            .cells,
-                    )
+                    .checked_add(self.block(*handle)?.cells)
                     .ok_or(MemoryError::Resource)
             })
     }
 
     pub fn collect(&mut self, roots: &[Handle]) -> Result<(), MemoryError> {
         let reachable = self.reachable(roots)?;
-        let dead = self
-            .allocations
-            .iter()
-            .filter(|(handle, entry)| !entry.literal && !reachable.contains(**handle))
-            .map(|(handle, _)| *handle)
-            .collect::<Vec<_>>();
+        let mut dead = Vec::new();
+        for block in &self.blocks {
+            if !reachable.contains(block.handle) && !self.is_literal(block.handle)? {
+                dead.push(block.handle);
+            }
+        }
         for handle in dead {
-            let entry = self
-                .allocations
-                .remove(&handle)
-                .ok_or(MemoryError::Internal)?;
-            self.free
-                .entry(entry.physical)
-                .or_default()
-                .insert(usize::try_from(handle.0).map_err(|_| MemoryError::Internal)?);
+            self.release_block(handle)?;
         }
         self.compact_text()?;
         self.live_cells = self.reachable_cells(roots)?;
@@ -51,29 +41,46 @@ impl Heap {
             if handle.is_absent() || !marked.insert(handle)? {
                 continue;
             }
-            let entry = self.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-            match &entry.shape {
-                Shape::Array {
-                    element: ValueKind::Reference,
-                    ..
-                } => {
-                    self.reference_elements(handle, entry.elements, &mut pending)?;
-                }
-                Shape::Object(layout) => {
-                    self.reference_fields(handle, &layout.references, &mut pending)?;
-                }
-                Shape::Text => {
-                    let auxiliary = self.word(handle, 4)?;
-                    if auxiliary != 0 {
-                        pending.push(Handle(
-                            u32::try_from(auxiliary).map_err(|_| MemoryError::Internal)?,
-                        ));
-                    }
-                }
-                _ => {}
-            }
+            self.block(handle)?;
+            self.visit_references(handle, &mut pending)?;
         }
         Ok(marked)
+    }
+
+    fn visit_references(
+        &self,
+        handle: Handle,
+        pending: &mut Vec<Handle>,
+    ) -> Result<(), MemoryError> {
+        let header = self.header(handle)?;
+        if header.shape_tag == 1 {
+            if self.array_element_kind(handle)? == ValueKind::Reference {
+                let count = usize::try_from(self.word(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)?)
+                    .map_err(|_| MemoryError::Internal)?;
+                self.reference_elements(handle, count, pending)?;
+            }
+        } else if header.shape_tag > 2 && header.shape_tag < u32::MAX {
+            let references = self.layout(handle)?.references.clone();
+            self.reference_fields(handle, &references, pending)?;
+        } else if header.shape_tag == 2 {
+            self.visit_text_index(handle, pending)?;
+        }
+        Ok(())
+    }
+
+    fn visit_text_index(
+        &self,
+        handle: Handle,
+        pending: &mut Vec<Handle>,
+    ) -> Result<(), MemoryError> {
+        let auxiliary = self.word(handle, STRING_BREADCRUMBS_HANDLE_WORD_OFFSET)?;
+        if auxiliary == 0 {
+            return Ok(());
+        }
+        pending.push(Handle(
+            u32::try_from(auxiliary).map_err(|_| MemoryError::Internal)?,
+        ));
+        Ok(())
     }
 
     fn reference_elements(
@@ -82,11 +89,7 @@ impl Heap {
         count: usize,
         pending: &mut Vec<Handle>,
     ) -> Result<(), MemoryError> {
-        let offset = self
-            .allocations
-            .get(&handle)
-            .ok_or(MemoryError::Internal)?
-            .payload;
+        let offset = self.array_payload(handle)?;
         for index in 0..count {
             let bits = self.word(
                 handle,
@@ -105,11 +108,7 @@ impl Heap {
         fields: &[usize],
         pending: &mut Vec<Handle>,
     ) -> Result<(), MemoryError> {
-        let offset = self
-            .allocations
-            .get(&handle)
-            .ok_or(MemoryError::Internal)?
-            .payload;
+        let offset = self.object_payload(handle)?;
         for index in fields {
             let bits = self.word(
                 handle,
@@ -119,6 +118,15 @@ impl Heap {
                 u32::try_from(bits).map_err(|_| MemoryError::Internal)?,
             ));
         }
+        Ok(())
+    }
+
+    pub(crate) fn release_block(&mut self, handle: Handle) -> Result<(), MemoryError> {
+        let block = self.remove_block(handle)?;
+        self.store(handle, 0, 0)?;
+        let physical = usize::try_from(block.physical).map_err(|_| MemoryError::Internal)?;
+        let address = usize::try_from(handle.0).map_err(|_| MemoryError::Internal)?;
+        self.free.entry(physical).or_default().insert(address);
         Ok(())
     }
 }

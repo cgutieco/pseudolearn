@@ -1,6 +1,8 @@
 use crate::heap::{AllocationRequest, Shape};
 use crate::{Heap, MemoryError};
-use pseudolearn_abi::{Handle, STRING_FIXED_WORDS_COUNT};
+use pseudolearn_abi::{
+    CommonHeader, Handle, LITERAL_STATUS_MASK, STRING_FIXED_WORDS_COUNT, TEXT_ASCII_STATUS_MASK,
+};
 
 pub fn new_text(
     heap: &mut Heap,
@@ -75,8 +77,16 @@ pub(super) fn finish_header(
     points: u64,
 ) -> Result<(), MemoryError> {
     let ascii = u64::try_from(range.1).map_err(|_| MemoryError::Resource)? == points;
-    heap.store(handle, 0, 2 | u64::from(ascii).wrapping_shl(32))?;
-    heap.store(handle, 1, points)?;
+    let ascii_status = if ascii { TEXT_ASCII_STATUS_MASK } else { 0 };
+    let literal_status = if heap.is_literal(handle)? {
+        LITERAL_STATUS_MASK
+    } else {
+        0
+    };
+    let status = ascii_status | literal_status;
+    let [shape_and_flags, identity] = CommonHeader::new(2, status, points).to_words();
+    heap.store(handle, 0, shape_and_flags.as_u64())?;
+    heap.store(handle, 1, identity.as_u64())?;
     heap.store(
         handle,
         2,

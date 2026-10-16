@@ -1,4 +1,3 @@
-use crate::heap::Shape;
 use crate::{Heap, MemoryError};
 use pseudolearn_abi::Handle;
 
@@ -12,12 +11,12 @@ pub struct TextCompaction {
 impl Heap {
     pub fn compact_text(&mut self) -> Result<TextCompaction, MemoryError> {
         let previous_length = self.arena.text.len();
-        let handles = self
-            .allocations
-            .iter()
-            .filter(|(_, entry)| entry.shape == Shape::Text)
-            .map(|(handle, _)| *handle)
-            .collect::<Vec<_>>();
+        let mut handles = Vec::new();
+        for block in &self.blocks {
+            if self.is_text(block.handle)? {
+                handles.push(block.handle);
+            }
+        }
         let mut intervals = handles
             .iter()
             .map(|handle| self.text_range(*handle))

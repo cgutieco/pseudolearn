@@ -15,6 +15,9 @@ pub fn new_array(
     if dimensions.is_empty() {
         return Err(MemoryError::Internal);
     }
+    if dimensions.len() > usize::from(u8::MAX) {
+        return Err(MemoryError::Resource);
+    }
     let dimensions = dimensions
         .iter()
         .map(|dimension| u64::try_from(*dimension).map_err(|_| MemoryError::NegativeSize))
@@ -30,20 +33,23 @@ pub fn new_array(
         },
         payload,
         elements,
-        auxiliary: if element == ValueKind::Integer {
-            elements
-                .checked_add(63)
-                .and_then(|count| count.checked_div(64))
-                .ok_or(MemoryError::Resource)?
-        } else {
-            0
-        },
+        auxiliary: integer_mask_words(element, elements)?,
         cells: total.checked_add(1).ok_or(MemoryError::Resource)?,
         literal: false,
     };
     let handle = heap.allocate(request, roots)?;
     initialize_array(heap, handle, (element, elements, payload), &dimensions)?;
     Ok(handle)
+}
+
+fn integer_mask_words(element: ValueKind, elements: usize) -> Result<usize, MemoryError> {
+    if element != ValueKind::Integer || elements == 0 {
+        return Ok(0);
+    }
+    elements
+        .checked_add(63)
+        .and_then(|count| count.checked_div(64))
+        .ok_or(MemoryError::Resource)
 }
 
 fn initialize_array(
@@ -53,9 +59,17 @@ fn initialize_array(
     dimensions: &[u64],
 ) -> Result<(), MemoryError> {
     let total = u64::try_from(elements).map_err(|_| MemoryError::Internal)?;
-    let rank = dimensions.len();
     heap.store(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET, total)?;
-    if element == ValueKind::Integer && elements != 0 {
+    heap.store(
+        handle,
+        ARRAY_DENSE_BOUNDARY_WORD_OFFSET,
+        if element == ValueKind::Integer && elements > 0 {
+            0
+        } else {
+            total
+        },
+    )?;
+    if element == ValueKind::Integer && elements > 0 {
         let offset = payload.checked_add(elements).ok_or(MemoryError::Resource)?;
         heap.store(
             handle,
@@ -65,19 +79,26 @@ fn initialize_array(
                 .ok_or(MemoryError::Resource)?,
         )?;
     }
-    if element != ValueKind::Integer {
-        heap.store(handle, ARRAY_DENSE_BOUNDARY_WORD_OFFSET, total)?;
+    store_dimensions(heap, handle, dimensions)?;
+    Ok(())
+}
+
+fn store_dimensions(
+    heap: &mut Heap,
+    handle: Handle,
+    dimensions: &[u64],
+) -> Result<(), MemoryError> {
+    if dimensions.len() <= 1 {
+        return Ok(());
     }
-    if rank > 1 {
-        for (index, extent) in dimensions.iter().enumerate() {
-            heap.store(
-                handle,
-                ARRAY_DIMENSION_EXTENTS_START_OFFSET
-                    .checked_add(index)
-                    .ok_or(MemoryError::Internal)?,
-                *extent,
-            )?;
-        }
+    for (index, extent) in dimensions.iter().enumerate() {
+        heap.store(
+            handle,
+            ARRAY_DIMENSION_EXTENTS_START_OFFSET
+                .checked_add(index)
+                .ok_or(MemoryError::Internal)?,
+            *extent,
+        )?;
     }
     Ok(())
 }
@@ -89,8 +110,8 @@ pub fn read_element(heap: &Heap, handle: Handle, indices: &[i64]) -> Result<u64,
         payload.checked_add(index).ok_or(MemoryError::Internal)?,
     )?;
     if element == ValueKind::Integer
-        && u64::try_from(index).map_err(|_| MemoryError::Internal)?
-            < heap.word(handle, ARRAY_DENSE_BOUNDARY_WORD_OFFSET)?
+        && heap.word(handle, ARRAY_DENSE_BOUNDARY_WORD_OFFSET)?
+            == heap.word(handle, ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)?
     {
         return Ok(word);
     }
@@ -98,12 +119,19 @@ pub fn read_element(heap: &Heap, handle: Handle, indices: &[i64]) -> Result<u64,
 }
 
 pub fn array_dimensions(heap: &Heap, handle: Handle) -> Result<&[u64], MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    if let Shape::Array { dimensions, .. } = &entry.shape {
-        Ok(dimensions)
+    let rank = heap.array_rank(handle)?;
+    let address = usize::try_from(handle.0).map_err(|_| MemoryError::Internal)?;
+    let start = if rank == 1 {
+        address
+            .checked_add(ARRAY_TOTAL_ELEMENTS_WORD_OFFSET)
+            .ok_or(MemoryError::Internal)?
     } else {
-        Err(MemoryError::Internal)
-    }
+        address
+            .checked_add(ARRAY_DIMENSION_EXTENTS_START_OFFSET)
+            .ok_or(MemoryError::Internal)?
+    };
+    let end = start.checked_add(rank).ok_or(MemoryError::Internal)?;
+    heap.words.get(start..end).ok_or(MemoryError::Internal)
 }
 
 pub fn write_element(
@@ -119,11 +147,6 @@ pub fn write_element(
     )?;
     if element == ValueKind::Integer {
         heap.define_integer(handle, index)?;
-        let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-        if entry.assigned == entry.elements {
-            let length = u64::try_from(entry.assigned).map_err(|_| MemoryError::Internal)?;
-            heap.store(handle, ARRAY_DENSE_BOUNDARY_WORD_OFFSET, length)?;
-        }
     }
     Ok(())
 }
@@ -136,14 +159,7 @@ pub(crate) fn position(
     if handle.is_absent() {
         return Err(MemoryError::Uninitialized);
     }
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    let Shape::Array {
-        element,
-        dimensions,
-    } = &entry.shape
-    else {
-        return Err(MemoryError::Internal);
-    };
+    let dimensions = array_dimensions(heap, handle)?;
     if indices.len() != dimensions.len() {
         return Err(MemoryError::Internal);
     }
@@ -160,8 +176,8 @@ pub(crate) fn position(
     }
     Ok((
         usize::try_from(linear).map_err(|_| MemoryError::Internal)?,
-        entry.payload,
-        *element,
+        heap.array_payload(handle)?,
+        heap.array_element_kind(handle)?,
     ))
 }
 

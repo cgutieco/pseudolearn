@@ -31,17 +31,27 @@ pub fn new_object_shared(
         literal: false,
     };
     let handle = heap.allocate(request, roots)?;
+    initialize_fields(heap, handle, fields.as_ref(), payload)?;
+    Ok(handle)
+}
+
+fn initialize_fields(
+    heap: &mut Heap,
+    handle: Handle,
+    layout: &ObjectLayout,
+    payload: usize,
+) -> Result<(), MemoryError> {
     for offset in 2..payload {
         heap.store(handle, offset, u64::MAX)?;
     }
-    for (index, kind) in fields.fields.iter().enumerate() {
+    for (index, kind) in layout.fields.iter().enumerate() {
         heap.store(
             handle,
             payload.checked_add(index).ok_or(MemoryError::Internal)?,
             kind.absent(),
         )?;
     }
-    Ok(handle)
+    Ok(())
 }
 
 pub fn read_field(heap: &Heap, handle: Handle, index: usize) -> Result<u64, MemoryError> {
@@ -75,52 +85,49 @@ pub fn copy_object(
     handle: Handle,
     roots: &[Handle],
 ) -> Result<Handle, MemoryError> {
-    let source = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    let Shape::Object(layout) = &source.shape else {
-        return Err(MemoryError::Internal);
-    };
-    let layout = layout.clone();
-    let payload = source.payload;
-    let assigned = source.assigned;
+    let layout = heap.layout(handle)?.clone();
+    let payload = heap.object_payload(handle)?;
     let mut retained = roots.to_vec();
     retained.push(handle);
-    let target = new_object_shared(heap, layout.clone(), &retained)?;
-    for offset in 2..payload {
-        let mask = heap.word(handle, offset)?;
-        heap.store(target, offset, mask)?;
-    }
-    for index in 0..layout.fields.len() {
-        let offset = payload.checked_add(index).ok_or(MemoryError::Internal)?;
-        let word = heap.word(handle, offset)?;
-        heap.store(target, offset, word)?;
-    }
-    let entry = heap
-        .allocations
-        .get_mut(&target)
-        .ok_or(MemoryError::Internal)?;
-    entry.assigned = assigned;
+    let target = new_object_shared(heap, std::sync::Arc::new(layout.clone()), &retained)?;
+    copy_words(heap, (handle, target), (layout.fields.len(), payload))?;
     Ok(target)
 }
 
-pub fn object_class(heap: &Heap, handle: Handle) -> Result<u32, MemoryError> {
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    if let Shape::Object(layout) = &entry.shape {
-        Ok(layout.class)
-    } else {
-        Err(MemoryError::Internal)
+fn copy_words(
+    heap: &mut Heap,
+    handles: (Handle, Handle),
+    layout: (usize, usize),
+) -> Result<(), MemoryError> {
+    let (source, target) = handles;
+    let (fields, payload) = layout;
+    for offset in 2..payload {
+        let word = heap.word(source, offset)?;
+        heap.store(target, offset, word)?;
     }
+    for index in 0..fields {
+        let offset = payload.checked_add(index).ok_or(MemoryError::Internal)?;
+        let word = heap.word(source, offset)?;
+        heap.store(target, offset, word)?;
+    }
+    Ok(())
+}
+
+pub fn object_class(heap: &Heap, handle: Handle) -> Result<u32, MemoryError> {
+    let shape_tag = heap.header(handle)?.shape_tag;
+    if shape_tag <= 2 || shape_tag == u32::MAX {
+        return Err(MemoryError::Internal);
+    }
+    shape_tag.checked_sub(3).ok_or(MemoryError::Internal)
 }
 
 fn field(heap: &Heap, handle: Handle, index: usize) -> Result<(usize, ValueKind), MemoryError> {
     if handle.is_absent() {
         return Err(MemoryError::Uninitialized);
     }
-    let entry = heap.allocations.get(&handle).ok_or(MemoryError::Internal)?;
-    let Shape::Object(layout) = &entry.shape else {
-        return Err(MemoryError::Internal);
-    };
+    let layout = heap.layout(handle)?;
     Ok((
-        entry.payload,
+        heap.object_payload(handle)?,
         *layout.fields.get(index).ok_or(MemoryError::Internal)?,
     ))
 }

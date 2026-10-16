@@ -1,5 +1,6 @@
 use pseudolearn_runtime::{
-    Heap, MemoryError, MemoryOptions, ValueKind, new_array, read_element, write_element,
+    Heap, MemoryError, MemoryOptions, ValueKind, array_dimensions, new_array, read_element,
+    write_element,
 };
 
 #[test]
@@ -86,6 +87,40 @@ fn integer_definition_masks_track_word_boundaries() -> Result<(), MemoryError> {
     }
     assert_eq!(
         read_element(&heap, array, &[65]),
+        Err(MemoryError::Uninitialized)
+    );
+    Ok(())
+}
+
+#[test]
+fn in_band_dimensions_cover_rank_one_empty_and_multiple_dimensions() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let single = new_array(&mut heap, ValueKind::Real, &[4], &[])?;
+    let matrix = new_array(&mut heap, ValueKind::Integer, &[2, 3], &[])?;
+    let empty = new_array(&mut heap, ValueKind::Integer, &[0], &[])?;
+    assert_eq!(array_dimensions(&heap, single), Ok(&[4][..]));
+    assert_eq!(array_dimensions(&heap, matrix), Ok(&[2, 3][..]));
+    assert_eq!(array_dimensions(&heap, empty), Ok(&[0][..]));
+    assert_eq!(
+        array_dimensions(&heap, pseudolearn_runtime::Handle(0)),
+        Err(MemoryError::Internal)
+    );
+    let excessive_rank = vec![1; 256];
+    assert_eq!(
+        new_array(&mut heap, ValueKind::Integer, &excessive_rank, &[]),
+        Err(MemoryError::Resource)
+    );
+    Ok(())
+}
+
+#[test]
+fn sparse_integer_writes_do_not_define_lower_indices() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let array = new_array(&mut heap, ValueKind::Integer, &[4], &[])?;
+    write_element(&mut heap, array, (&[3], 91))?;
+    assert_eq!(read_element(&heap, array, &[3]), Ok(91));
+    assert_eq!(
+        read_element(&heap, array, &[0]),
         Err(MemoryError::Uninitialized)
     );
     Ok(())
