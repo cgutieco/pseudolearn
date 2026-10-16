@@ -1536,8 +1536,9 @@ fase separada ni se utiliza el cierre original como evidencia de cumplimiento.
 
 **B7 permanece abierto.** Las casillas principales anteriores exigen cumplimiento íntegro y evidencia
 vigente. Las casillas marcadas debajo registran trabajo concreto realizado, no el cierre de su apartado.
-Los cambios están en el árbol de trabajo de `feature/agregar-ruta-de-especificacion`; todavía no se han
-publicado commits ni push de esta iteración. B8 no se ha iniciado.
+La implementación de las Etapas 2 y 3 se publicó en `42150f7` de
+`feature/agregar-ruta-de-especificacion`; el cierre de Etapa 3 conserva las desviaciones E-06 descritas
+en RFC-014. B8 no se ha iniciado.
 
 **Reparación heredada de B6.**
 
@@ -1729,13 +1730,10 @@ respuestas de decenas de MB (hasta 34 MB y 543 985 eventos por caso); el adaptad
 6. Un bucle sin progreso en un lexer/parser es un defecto: cualquier otro tokenizador con rama por omisión debe
    revisarse con la misma guarda (`pseudolearn_ir` ya; revisar los de bytecode textual si existen).
 
-**Estado del árbol de trabajo (último push: `d402ea3`, rama única).** Commiteado y empujado: `1fc869b` (IR),
-`212e156` (API), `d402ea3` (spec, matriz, propiedades, vínculos). **Sin commit:** guarda del lexer de RI y sus
-tests; arnés `robustness/` y su registro en `pseudolearn_bench_worker/src/main.rs` (incluye un volcado de depuración
-bajo `PSEUDOLEARN_ROBUST_DUMP` que debe eliminarse antes de commit); `see differential` con su registro de
-exenciones y `results/r5-differential.json`. Antes de commitear: `cargo xtask verify` en motor y spec
-(en ambos miembros pasó por última vez antes de estos cambios), y `rust-checks` rechaza comentarios, nombres
-no semánticos y funciones de más de 40 líneas.
+**Estado de publicación (último push: `42150f7`, rama única).** La implementación de Etapas 2 y 3, los
+README afectados y los resultados de `macos-r5-vm` se publicaron en ese commit. El árbol de trabajo está
+limpio y los HEAD local y remoto coinciden. B7 permanece abierto por sus casillas restantes y por los
+criterios E-06 no alcanzados; B8 no se ha iniciado.
 
 **Pasos restantes de B7, en orden (especificación aprobada en [14 · RFC-014](14-rfc-cierre-b7-arquitectura-y-rendimiento.md)).**
 
@@ -1743,7 +1741,7 @@ no semánticos y funciones de más de 40 líneas.
 
 1. **Etapa 1 (RFC-014 §4):** Montón plano en banda (`pseudolearn_abi` + `pseudolearn_runtime`), eliminando `BTreeMap<Handle, Allocation>` del camino crítico y acotando `HeapDelta` a `words[..used]`.
 2. **Etapa 2 (RFC-014 §4):** `object.load` (`O49`) y `object.store` (`O50`) directos en `ir`, `lowering`, `bytecode` y `vm`; accesos 1D a arreglos sin `Vec<i64>`; `SuperInstruction::CompareBranch` activa por omisión; despacho virtual por índice `O(1)` y raíces de GC perezosas. Cierre de `B7.7` (`AWFY-core` ≥ 30×).
-3. **Etapa 3 (RFC-014 §4, D1; cerrada localmente el 2026-10-16):** Unificación de
+3. **Etapa 3 (RFC-014 §4, D1; cerrada y publicada en `42150f7` el 2026-10-16):** Unificación de
    `pseudolearn_api::ExecutionResource` sobre `CheckpointStore` de `pseudolearn_timeline`, poda de
    superficie duplicada en `timeline`, ventana sucia en `MachineDelta` y reproducción híbrida `Fast`
    $\to$ `Probed`. `B7.1` quedó implementado; el cierre de etapa fue autorizado con desviaciones

@@ -257,7 +257,8 @@ Cumplir `IR.INSTRUCTIONS#O49` (`object.load`) y `#O50` (`object.store`), elimina
 - **Umbral de salida:** Media geométrica **≥ 30,0×** y mínimo por programa **≥ 10,0×** (umbral normativo M2 ≥ 5×, M3 ≥ 30×).
 
 #### Resultado de ejecución de la Etapa 2
-**Estado: completada localmente el 2026-10-16; sin publicar.**
+**Estado: completada y publicada el 2026-10-16.** La implementación se incluyó en el commit
+`42150f7` de `feature/agregar-ruta-de-especificacion`, junto con la Etapa 3.
 
 Se añadieron la verificación de tipos y el lowering directo de `object.load` y `object.store`,
 manteniendo celdas para los argumentos por referencia. `CompareBranch` quedó habilitada por omisión.
@@ -340,10 +341,10 @@ cargo run --manifest-path packages/pseudolearn_spec/Cargo.toml --bin see -- \
     - `E06-RSS` `rss_ratio_to_heap <= 2.0`.
 
 #### Resultado de ejecución de la Etapa 3
-**Estado: cerrada localmente el 2026-10-16 por instrucción explícita de la persona responsable, con
-desviaciones E-06 aceptadas; sin publicar.** La implementación de B7.1 quedó integrada. El cierre no
-cambia los umbrales: E-06 se midió con `all_passed: false` y no alcanza todos los criterios de salida
-de esta etapa.
+**Estado: cerrada y publicada el 2026-10-16 en el commit `42150f7`, por instrucción explícita de la
+persona responsable y con desviaciones E-06 aceptadas.** La implementación de B7.1 quedó integrada.
+El cierre no cambia los umbrales: E-06 se midió con `all_passed: false` y no alcanza todos los
+criterios de salida de esta etapa.
 
 **Qué se construyó.** `ExecutionResource` conserva la máquina viva y usa `CheckpointStore` con
 capacidad de 128 puntos de control. `MachineDelta` registra las ventanas vivas de los bancos y los
