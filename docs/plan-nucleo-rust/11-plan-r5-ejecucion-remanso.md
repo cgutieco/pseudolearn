@@ -1734,18 +1734,16 @@ exenciones y `results/r5-differential.json`. Antes de commitear: `cargo xtask ve
 (en ambos miembros pasó por última vez antes de estos cambios), y `rust-checks` rechaza comentarios, nombres
 no semánticos y funciones de más de 40 líneas.
 
-**Pasos restantes de B7, en orden.**
+**Pasos restantes de B7, en orden (especificación aprobada en [14 · RFC-014](14-rfc-cierre-b7-arquitectura-y-rendimiento.md)).**
 
-1. `cargo test -p pseudolearn_ir` (guarda del lexer) y repetir `robust source` pequeño.
-2. Implementar el vigilante de RSS del punto 1; ejecutar `robust ir` y `robust bytecode` por pasos; cada hallazgo
-   pasa a test espejo y corrección. Publicar resultado en `packages/pseudolearn_spec/results/r5-robustness.json`
-   y añadir programas generados al corpus mutado si se exige.
-3. Confirmar con la persona el alcance del diferencial; commitear `see differential`.
-4. B7.7: repetir AWFY sobre fuentes finales, M4 y latencias; B7.1 coste físico (imágenes y reproducción).
-5. B7.8: E-16 (`cargo-mutants 27.1.0`, puntuación ≥ 85 % por crate; muy costoso: ejecutar por crate, en segundo
-   plano, con `--jobs 2` como máximo y vigilando memoria y disco) y E-17 sobre binarios finales.
-6. `cargo xtask verify` íntegro de los miembros afectados, README al día, commits sin coautoría de IA
-   (regla del repositorio) y push ordinario con comprobación de HEAD. B8 no se inicia sin autorización nueva.
+> **Obligatorio antes de tocar código:** Leer completo [14-rfc-cierre-b7-arquitectura-y-rendimiento.md](14-rfc-cierre-b7-arquitectura-y-rendimiento.md), cuyas decisiones **D1, D2 y D3-a** y sus **Etapas 1 a 6** fueron aprobadas el 2026-10-16 y sustituyen la lista preliminar siguiente como guía exacta de implementación archivo por archivo.
+
+1. **Etapa 1 (RFC-014 §4):** Montón plano en banda (`pseudolearn_abi` + `pseudolearn_runtime`), eliminando `BTreeMap<Handle, Allocation>` del camino crítico y acotando `HeapDelta` a `words[..used]`.
+2. **Etapa 2 (RFC-014 §4):** `object.load` (`O49`) y `object.store` (`O50`) directos en `ir`, `lowering`, `bytecode` y `vm`; accesos 1D a arreglos sin `Vec<i64>`; `SuperInstruction::CompareBranch` activa por omisión; despacho virtual por índice `O(1)` y raíces de GC perezosas. Cierre de `B7.7` (`AWFY-core` ≥ 30×).
+3. **Etapa 3 (RFC-014 §4, D1):** Unificación de `pseudolearn_api::ExecutionResource` sobre `CheckpointStore` de `pseudolearn_timeline`, poda de superficie duplicada en `timeline`, ventana sucia en `MachineDelta` y reproducción híbrida `Fast` $\to$ `Probed`. Cierre de `B7.1` y `E-06`.
+4. **Etapa 4 (RFC-014 §4, D2):** Tests de frontera y propiedades en `pseudolearn_timeline` y campaña `cargo-mutants` crate por crate (`--in-place --timeout 30`) con ≥ 85 % en los 6 crates (`E-16`).
+5. **Etapa 5 (RFC-014 §4, D3-a):** Conservar advertencias de análisis en `execute` (`B7.4`) y reejecutar `E-17` sobre binarios finales (`status: passed`).
+6. **Etapa 6 (RFC-014 §4):** Actualización de `README.md` (`DOC-README-TRUTH`) y `cargo xtask verify` íntegro en `pseudolearn_engine` y `pseudolearn_spec`. B8 no se inicia sin autorización nueva.
 
 ### B8 · Cierre (`phase-gate`)
 

@@ -35,8 +35,9 @@
 | 11 | [Plan de R5 · «Remanso»](11-plan-r5-ejecucion-remanso.md) | Diagnóstico de E-02 y resolución de RC-01; RI, VM, runtime, biblioteca, línea temporal, experimentos y ejecución verificable de R5 |
 | 12 | [Relevo histórico de R5](12-relevo-r5.md) | Estado anterior a B2/B3; conservado como historial |
 | 13 | [Relevo de B4 · Remanso](13-relevo-b4-remanso.md) | Estado actual por bloque, evidencia parcial, fallos pendientes y comandos para continuar B4 |
+| 14 | [RFC-014 · Diagnóstico arquitectónico y especificación ejecutable de cierre de B7](14-rfc-cierre-b7-arquitectura-y-rendimiento.md) | Evidencia medida de B7, causas raíz, decisiones aprobadas (D1, D2, D3-a) y especificación paso a paso de las 6 etapas de cierre |
 
-Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. El resto se consulta.
+Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para cerrar B7 en R5, seguir **14**.
 
 ---
 
