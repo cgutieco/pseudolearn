@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::VmTrap;
+use crate::events::TraceEvent;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Fuel {
@@ -24,6 +25,12 @@ pub enum ServiceReason {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum LimitKind {
+    Statements,
+    Time,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RuntimeValue {
     Scalar(u64),
     Reference(u32),
@@ -32,6 +39,9 @@ pub enum RuntimeValue {
 #[derive(Clone, Debug, PartialEq)]
 pub enum RunExit {
     Completed(Option<RuntimeValue>),
+    AwaitingInput,
+    Cancelled,
+    LimitReached { kind: LimitKind },
     Service(ServiceReason),
     Trap(VmTrap),
 }
@@ -43,6 +53,9 @@ pub struct RunResult {
     pub consumed_statements: u64,
     pub consumed_probes: u64,
     pub memory_counts: Vec<MemoryCount>,
+    pub events: Vec<TraceEvent>,
+    pub inputs_consumed: usize,
+    pub diagnostics: Vec<VmTrap>,
 }
 
 #[derive(Clone, Debug, PartialEq)]

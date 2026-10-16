@@ -8,7 +8,7 @@ No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Superinstrucciones adicionales seleccionadas con el perfil del corpus y AWFY-core | Gemelo sondeado y corpus `execute` | B5.5 |
+| Ninguno | — | — |
 
 ## 2. Guía operativa y ciclo de vida
 

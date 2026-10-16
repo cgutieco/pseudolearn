@@ -202,7 +202,7 @@ R0 Fundación
 > R5 autorizada el 2026-10-15 y en ejecución. Por decisión D-R5-01, la deuda encontrada en la evidencia de
 > R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. El estado de implementación vigente
 > se contrasta con el plan detallado y el árbol actual; el relevo 12 conserva únicamente valor histórico.
-> B1, B2 y B3 están cerrados según la evidencia registrada en el plan 11. Las casillas de
+> B1, B2, B3, B4 y B5 están cerrados según la evidencia registrada en el plan 11. Las casillas de
 > R5 y la fase solo se marcan en el cierre B8.
 
 - **Bloques cerrados:**
@@ -212,17 +212,21 @@ R0 Fundación
   - [x] B1: RC-01, contratos, extensiones de SEE, generadores/oráculos y documentación de capas.
   - [x] B2: ABI, RI, verificador, lowering procedural y órdenes `pseudo ri`/`ir`; 19/19 observaciones
     `ir` en verde y verificaciones locales registradas en el plan 11.
+  - [x] B3: bytecode y VM escalar verificados, despacho generado y biblioteca matemática con
+    contraste racional masivo; trazadora emparejada a 76,7× sin PGO.
+  - [x] B4: memoria y modelo de ejecución cerrados; montón plano, arena de texto, recolector SizeClasses,
+    llamadas solapadas, celdas y herencia; evidencia en el relevo 13 y plan 11.
+  - [x] B5: gemelo sondeado, eventos estructurados, formato columnar PLEV, alternancia de gemelos en O(1),
+    servicio de combustible y límites de anfitrión, entrada interactiva y suspendible, y superinstrucciones
+    puras fusionadas en bytecode y VM.
 
-- **B3 cerrado:** bytecode y VM escalar verificados, despacho generado y biblioteca matemática con
-  contraste racional masivo. La trazadora emparejada acredita **76,7×** sin PGO; el cierre y sus crudos
-  están registrados en el plan 11. B3 no cierra R5 ni habilita R6 o R7.
-- **B4 en curso, con relevo:** E-12 realizado y `SizeClasses` seleccionado. **B4.1 está aceptada** tras
-  pruebas directas, corpus y `cargo xtask verify`; B4.2–B4.6 siguen pendientes de aceptación, y la puerta
-  global de B4 aún requiere sus verificaciones propias, rendimiento y publicación. El estado vigente está
-  en [13 · Relevo de B4](13-relevo-b4-remanso.md).
-  La conformidad integrada `execute` y las propiedades completas de observación se acreditan en B7.3,
-  después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue abierta; B5 no se ha iniciado.
-- [ ] **Bloques pendientes:** B4 (B4.1 aceptada; B4.2–B4.6 pendientes), B5–B8.
+- **B4 y B5 cerrados:** B4 completó memoria, recolector y modelo de ejecución. B5 implementó los gemelos
+  emparejados rápido y sondeado con formato columnar PLEV y búfer de deltas, alternancia en O(1), combustible
+  exacto con retrocesos de sondeo, límites de tiempo, memoria y pila de llamadas, entrada interactiva
+  suspendible y cinta por lotes, y superinstrucciones puras fusionadas con preservación estricta del orden de
+  efectos. La conformidad integrada `execute` y las propiedades completas de observación se acreditan en B7.3,
+  después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue abierta; B6 permanece pendiente de autorización.
+- [ ] **Bloques pendientes:** B6–B8.
 - [x] **E-12 realizado:** 10.800 muestras y recolector seleccionado; evidencia en el plan 11 y relevo 13.
 - [ ] **Experimentos pendientes:** E-06, E-16 y E-17.
 

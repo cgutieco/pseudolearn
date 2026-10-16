@@ -1,8 +1,9 @@
 #![forbid(unsafe_code)]
 
-use pseudolearn_bytecode::RegisterClass;
+use pseudolearn_bytecode::{Register, RegisterClass};
 
 use crate::evaluate::INVALID_BYTECODE;
+use crate::events::{EventPayload, TraceClass, TraceEvent};
 use crate::load::{CallSite, Definition, LoadedFunction, Move};
 use crate::machine::{ControlFrame, Cursor, Flow, Machine};
 use crate::{Fault, RuntimeValue};
@@ -24,6 +25,15 @@ impl<'program> Machine<'program> {
         let caller = self.cursor;
         let callee_cursor = self.callee_cursor(callee)?;
         self.pass_arguments(&site, caller, callee_cursor)?;
+        self.push_control_frame(&site, caller)?;
+        if self.probed {
+            self.record_call_event(&callee.name);
+        }
+        self.enter_callee(callee, callee_cursor);
+        Ok(self.charge_entry(callee.entry_mass, 0))
+    }
+
+    fn push_control_frame(&mut self, site: &CallSite, caller: Cursor) -> Result<(), Fault> {
         self.frames.try_reserve(1).map_err(|_| RESOURCE_LIMIT)?;
         self.frames.push(ControlFrame {
             function: self.current,
@@ -33,9 +43,33 @@ impl<'program> Machine<'program> {
             reference_base: caller.reference_base,
             cell_count: self.cells.len(),
         });
+        Ok(())
+    }
+
+    fn enter_callee(&mut self, callee: &'program LoadedFunction, callee_cursor: Cursor) {
         self.current = callee;
-        self.cursor = callee_cursor;
-        Ok(self.charge_entry(callee.entry_mass))
+        let entry_target = if self.probed {
+            callee.fast_to_probed_blocks.first().copied().unwrap_or(0)
+        } else {
+            0
+        };
+        self.cursor = Cursor {
+            program_counter: entry_target,
+            scalar_base: callee_cursor.scalar_base,
+            reference_base: callee_cursor.reference_base,
+        };
+    }
+
+    fn record_call_event(&mut self, callee_name: &str) {
+        let line = self.current_line();
+        let depth = self.current_depth();
+        let name = callee_name.trim_start_matches('@').to_owned();
+        self.events.push(TraceEvent {
+            class: TraceClass::Call,
+            line,
+            depth,
+            payload: Some(EventPayload::Call { nombre: name }),
+        });
     }
 
     fn resolve_callee(&self, site: &CallSite) -> Result<&'program LoadedFunction, Fault> {
@@ -191,67 +225,75 @@ impl<'program> Machine<'program> {
     }
 
     fn finish_call(&mut self, value: Option<RuntimeValue>) -> Result<Flow, Fault> {
+        let callee_name = self.current.name.trim_start_matches('@').to_owned();
         let Some(frame) = self.frames.pop() else {
             return Ok(Flow::Completed(value));
         };
         self.cells.truncate(frame.cell_count);
         self.current = frame.function;
+        let continuation = self.resolve_continuation(&frame)?;
         self.cursor = Cursor {
-            program_counter: frame
-                .function
-                .continuations
-                .get(frame.return_point)
-                .copied()
-                .ok_or(INVALID_BYTECODE)?,
+            program_counter: continuation,
             scalar_base: frame.scalar_base,
             reference_base: frame.reference_base,
         };
-        match (frame.destination, value) {
+        if self.probed {
+            self.record_return_event(callee_name);
+        }
+        self.store_return_value(frame.destination, value)?;
+        Ok(Flow::Continue)
+    }
+
+    fn resolve_continuation(&self, frame: &ControlFrame<'_>) -> Result<usize, Fault> {
+        let fast = frame
+            .function
+            .continuations
+            .get(frame.return_point)
+            .copied()
+            .ok_or(INVALID_BYTECODE)?;
+        if self.probed {
+            Ok(frame
+                .function
+                .fast_to_probed_returns
+                .get(fast)
+                .copied()
+                .unwrap_or(fast))
+        } else {
+            Ok(fast)
+        }
+    }
+
+    fn record_return_event(&mut self, callee_name: String) {
+        let line = self.current_line();
+        let depth = self.current_depth();
+        self.events.push(TraceEvent {
+            class: TraceClass::Return,
+            line,
+            depth,
+            payload: Some(EventPayload::Return {
+                nombre: callee_name,
+            }),
+        });
+    }
+
+    fn store_return_value(
+        &mut self,
+        destination: Option<Register>,
+        value: Option<RuntimeValue>,
+    ) -> Result<(), Fault> {
+        match (destination, value) {
             (Some(register), Some(RuntimeValue::Scalar(word)))
                 if register.class == RegisterClass::Scalar =>
             {
-                self.set_scalar(register.index, word)?;
+                self.set_scalar(register.index, word)
             }
             (Some(register), Some(RuntimeValue::Reference(handle)))
                 if register.class == RegisterClass::Reference =>
             {
-                self.set_reference(register.index, handle)?;
+                self.set_reference(register.index, handle)
             }
-            (Some(_), Some(_)) => return Err(INVALID_BYTECODE),
-            (None | Some(_), None) | (None, Some(_)) => {}
+            (Some(_), Some(_)) => Err(INVALID_BYTECODE),
+            (None | Some(_), None) | (None, Some(_)) => Ok(()),
         }
-        Ok(Flow::Continue)
-    }
-
-    pub(crate) fn ensure_capacity(
-        &mut self,
-        scalar_end: usize,
-        reference_end: usize,
-    ) -> Result<(), Fault> {
-        if scalar_end > self.scalars.len() {
-            let length = scalar_end
-                .checked_next_power_of_two()
-                .ok_or(RESOURCE_LIMIT)?;
-            let additional = length.saturating_sub(self.scalars.len());
-            self.scalars
-                .try_reserve_exact(additional)
-                .map_err(|_| RESOURCE_LIMIT)?;
-            self.defined
-                .try_reserve_exact(additional)
-                .map_err(|_| RESOURCE_LIMIT)?;
-            self.scalars.resize(length, 0);
-            self.defined.resize(length, false);
-        }
-        if reference_end > self.references.len() {
-            let length = reference_end
-                .checked_next_power_of_two()
-                .ok_or(RESOURCE_LIMIT)?;
-            let additional = length.saturating_sub(self.references.len());
-            self.references
-                .try_reserve_exact(additional)
-                .map_err(|_| RESOURCE_LIMIT)?;
-            self.references.resize(length, 0);
-        }
-        Ok(())
     }
 }

@@ -6,6 +6,7 @@ use crate::load::{Definition, Move, Sentinel};
 use crate::machine::{Flow, Machine};
 
 const UNINITIALIZED: Fault = "uninitializedVariableRead";
+const RESOURCE_LIMIT: Fault = "resourceLimit";
 
 impl Machine<'_> {
     #[inline(always)]
@@ -29,6 +30,9 @@ impl Machine<'_> {
                 .wrapping_add(usize::from(register))
                 .saturating_add(1),
         );
+        if self.probed {
+            self.change_buffer.record_scalar(register, word);
+        }
         Ok(())
     }
 
@@ -61,6 +65,9 @@ impl Machine<'_> {
                 .wrapping_add(usize::from(register))
                 .saturating_add(1),
         );
+        if self.probed {
+            self.change_buffer.record_reference(register, handle);
+        }
         Ok(())
     }
 
@@ -176,7 +183,35 @@ impl Machine<'_> {
         Err(UNINITIALIZED)
     }
 
-    pub(crate) fn observe(&mut self) -> Result<Flow, Fault> {
-        Ok(Flow::Continue)
+    pub(crate) fn ensure_capacity(
+        &mut self,
+        scalar_end: usize,
+        reference_end: usize,
+    ) -> Result<(), Fault> {
+        if scalar_end > self.scalars.len() {
+            let length = scalar_end
+                .checked_next_power_of_two()
+                .ok_or(RESOURCE_LIMIT)?;
+            let additional = length.saturating_sub(self.scalars.len());
+            self.scalars
+                .try_reserve_exact(additional)
+                .map_err(|_| RESOURCE_LIMIT)?;
+            self.defined
+                .try_reserve_exact(additional)
+                .map_err(|_| RESOURCE_LIMIT)?;
+            self.scalars.resize(length, 0);
+            self.defined.resize(length, false);
+        }
+        if reference_end > self.references.len() {
+            let length = reference_end
+                .checked_next_power_of_two()
+                .ok_or(RESOURCE_LIMIT)?;
+            let additional = length.saturating_sub(self.references.len());
+            self.references
+                .try_reserve_exact(additional)
+                .map_err(|_| RESOURCE_LIMIT)?;
+            self.references.resize(length, 0);
+        }
+        Ok(())
     }
 }

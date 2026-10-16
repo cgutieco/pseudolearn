@@ -43,22 +43,21 @@ pub(crate) fn verify_coverage(
 }
 
 pub(crate) fn render_kinds(names: &[String], categories: &[serde_json::Value]) -> String {
-    let kinds = categories
+    let arms_list: Vec<(String, String)> = names
         .iter()
-        .filter_map(|category| text_field(category, "kind").ok())
-        .chain(std::iter::once("Other"))
+        .map(|name| (pascal_case(name), dispatch_category(name, categories)))
+        .collect();
+    let kinds = arms_list
+        .iter()
+        .map(|(_, kind)| kind.as_str())
         .collect::<std::collections::BTreeSet<_>>()
         .into_iter()
         .collect::<Vec<_>>()
         .join(", ");
-    let arms = names
+    let arms = arms_list
         .iter()
-        .map(|name| {
-            let kind = dispatch_category(name, categories);
-            format!(
-                "pseudolearn_bytecode::Opcode::{} => DispatchKind::{kind},",
-                pascal_case(name)
-            )
+        .map(|(pascal, kind)| {
+            format!("pseudolearn_bytecode::Opcode::{pascal} => DispatchKind::{kind},")
         })
         .collect::<Vec<_>>()
         .join(" ");

@@ -88,5 +88,8 @@ fn validate_result(workload: &Workload, result: RunResult) -> Result<(), String>
             "workload output {:?} differs from expected {:?}",
             result.output, workload.expected_output
         )),
+        RunExit::AwaitingInput => Err("workload awaited input".to_owned()),
+        RunExit::Cancelled => Err("workload was cancelled".to_owned()),
+        RunExit::LimitReached { .. } => Err("workload reached execution limit".to_owned()),
     }
 }

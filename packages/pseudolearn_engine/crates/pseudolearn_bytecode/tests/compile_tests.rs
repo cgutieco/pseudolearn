@@ -132,3 +132,24 @@ fn selects_profiled_compare_branch_superinstructions_only_for_fast_code() {
     assert!(!function.fast.superinstructions.is_empty());
     assert!(function.probed.superinstructions.is_empty());
 }
+
+#[test]
+fn selects_fused_arithmetic_superinstructions() {
+    let source = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 2\n  %1 = const.i64 3\n  %2 = int.add %0, %1 @1:1-1:5\n  %3 = int.mul %2, %0 @1:6-1:10\n  return\n}\n";
+    let parsed = parse_module(source);
+    assert!(parsed.is_ok());
+    let Some(module) = parsed.ok() else {
+        return;
+    };
+    let compiled =
+        compile_module_with_superinstructions(&module, &[SuperInstruction::FusedArithmetic]);
+    assert!(compiled.is_ok(), "{compiled:?}");
+    let Some(verified) = compiled.ok() else {
+        return;
+    };
+    let Some(function) = verified.module().functions.first() else {
+        return;
+    };
+    assert!(!function.fast.superinstructions.is_empty());
+    assert!(function.probed.superinstructions.is_empty());
+}

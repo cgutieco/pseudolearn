@@ -24,6 +24,10 @@ fn check_io(
 ) -> Result<Option<IrType>, TypeError> {
     match operation {
         Operation::OutWrite => check_output(operands, get_type),
+        Operation::InRead => match operands {
+            [Operand::Type(target_type)] => Ok(Some(target_type.clone())),
+            _ => Err(TypeError),
+        },
         _ => Ok(None),
     }
 }
@@ -93,6 +97,13 @@ fn check_statements(
             }
             _ => Err(TypeError),
         },
+        Operation::DecideDefault | Operation::DecideNone => {
+            if operands.is_empty() {
+                Ok(Some(()))
+            } else {
+                Err(TypeError)
+            }
+        }
         _ => Ok(None),
     }
 }

@@ -16,6 +16,9 @@ fn execute_source(source_text: &str, fuel: Fuel) -> pseudolearn_vm::RunResult {
             consumed_statements: 0,
             consumed_probes: 0,
             memory_counts: Vec::new(),
+            events: Vec::new(),
+            inputs_consumed: 0,
+            diagnostics: Vec::new(),
         };
     };
     run(&bytecode, fuel)

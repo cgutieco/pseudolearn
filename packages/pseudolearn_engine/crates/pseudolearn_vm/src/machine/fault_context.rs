@@ -13,43 +13,61 @@ type Arguments = BTreeMap<&'static str, DiagnosticArgument>;
 
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
-        let mut trap = VmTrap::new(fault, self.current.span(position));
+        let mut trap = VmTrap::new(fault, self.current.span(position, self.probed));
         match fault {
-            "cellLimitExceeded" => {
-                trap.arguments.insert(
-                    "limit",
-                    DiagnosticArgument::Number(self.options.memory.cells.into()),
-                );
-            }
-            "recursionDepthExceeded" => {
-                trap.arguments.insert(
-                    "limit",
-                    DiagnosticArgument::Number(
-                        u64::try_from(self.options.depth).unwrap_or(u64::MAX).into(),
-                    ),
-                );
+            "cellLimitExceeded" | "recursionDepthExceeded" | "statementBudgetExhausted" => {
+                self.limit_arguments(fault, &mut trap.arguments);
             }
             "subroutineEndedWithoutReturn" => {
-                if let Some(header) = self.current.declaration_span {
-                    trap.related.push(header);
-                }
-                let name = self
-                    .current
-                    .name
-                    .trim_start_matches('@')
-                    .rsplit('.')
-                    .next()
-                    .unwrap_or("");
-                trap.arguments
-                    .insert("lexeme", DiagnosticArgument::Lexeme(name.to_owned()));
+                self.subroutine_arguments(&mut trap);
             }
             _ => self.operation_arguments(fault, position, &mut trap.arguments),
         }
         trap
     }
 
+    fn limit_arguments(&self, fault: Fault, arguments: &mut Arguments) {
+        match fault {
+            "cellLimitExceeded" => {
+                arguments.insert(
+                    "limit",
+                    DiagnosticArgument::Number(self.options.memory.cells.into()),
+                );
+            }
+            "recursionDepthExceeded" => {
+                arguments.insert(
+                    "limit",
+                    DiagnosticArgument::Number(
+                        u64::try_from(self.options.depth).unwrap_or(u64::MAX).into(),
+                    ),
+                );
+            }
+            "statementBudgetExhausted" => {
+                if let Some(limit) = self.options.statement_limit {
+                    arguments.insert("limit", DiagnosticArgument::Number(limit.into()));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn subroutine_arguments(&self, trap: &mut VmTrap) {
+        if let Some(header) = self.current.declaration_span {
+            trap.related.push(header);
+        }
+        let name = self
+            .current
+            .name
+            .trim_start_matches('@')
+            .rsplit('.')
+            .next()
+            .unwrap_or("");
+        trap.arguments
+            .insert("lexeme", DiagnosticArgument::Lexeme(name.to_owned()));
+    }
+
     fn operation_arguments(&self, fault: Fault, position: usize, arguments: &mut Arguments) {
-        match self.current.operation(position) {
+        match self.current.operation(position, self.probed) {
             Op::Memory { site } => {
                 if let Some(operation) = usize::try_from(site)
                     .ok()

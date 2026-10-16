@@ -54,7 +54,7 @@ impl Machine<'_> {
             self.apply_moves(edge.moves_start, edge.moves_end)?;
         }
         self.cursor.program_counter = edge.target;
-        Ok(self.charge_entry(edge.mass))
+        Ok(self.charge_entry(edge.mass, edge.target))
     }
 
     fn apply_moves(&mut self, start: usize, end: usize) -> Result<(), Fault> {
@@ -66,7 +66,16 @@ impl Machine<'_> {
     }
 
     #[inline(always)]
-    pub(crate) fn charge_entry(&mut self, mass: u64) -> Flow {
+    pub(crate) fn charge_entry(&mut self, mass: u64, target_pc: usize) -> Flow {
+        if let Some(limit) = self.options.statement_limit
+            && !self.probed
+            && self.statements_executed.saturating_add(mass) > limit
+        {
+            self.probed = true;
+            if let Some(&probed_pc) = self.current.fast_to_probed_blocks.get(target_pc) {
+                self.cursor.program_counter = probed_pc;
+            }
+        }
         match self.remaining.statements.checked_sub(mass) {
             Some(remaining) => {
                 self.remaining.statements = remaining;

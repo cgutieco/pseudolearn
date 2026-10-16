@@ -65,6 +65,7 @@ pub struct BasicBlock {
     pub start_pc: u32,
     pub parameters: Vec<Register>,
     pub mass: u32,
+    pub event_mass: u32,
 }
 
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -87,6 +88,7 @@ pub enum DefinitionState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SuperInstruction {
     CompareBranch,
+    FusedArithmetic,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

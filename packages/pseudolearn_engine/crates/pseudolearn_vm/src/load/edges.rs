@@ -10,15 +10,18 @@ use crate::VmTrap;
 pub(super) fn add_edge(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
-    source_pc: u32,
+    (source_pc, probed): (u32, bool),
     operand: Option<&BytecodeOperand>,
 ) -> Result<u32, VmTrap> {
     let Some(BytecodeOperand::BlockTarget { target, arguments }) = operand else {
         return Err(invalid_bytecode());
     };
-    let block = context
-        .function
-        .fast
+    let variant = if probed {
+        &context.function.probed
+    } else {
+        &context.function.fast
+    };
+    let block = variant
         .blocks
         .iter()
         .find(|block| block.identifier == *target)
@@ -26,13 +29,13 @@ pub(super) fn add_edge(
     if block.parameters.len() != arguments.len() {
         return Err(invalid_bytecode());
     }
-    let pairs = arguments
-        .iter()
-        .copied()
-        .zip(block.parameters.iter().copied())
-        .collect::<Vec<_>>();
     let moves_start = loaded.moves.len();
-    append_moves(context, loaded, &pairs, source_pc)?;
+    append_block_moves(
+        context,
+        loaded,
+        (arguments, &block.parameters),
+        (source_pc, probed),
+    )?;
     let edge = Edge {
         target: usize::try_from(block.start_pc).map_err(|_| invalid_bytecode())?,
         mass: u64::from(block.mass),
@@ -45,14 +48,28 @@ pub(super) fn add_edge(
     Ok(index)
 }
 
+fn append_block_moves(
+    context: &DecodeContext<'_>,
+    loaded: &mut LoadedFunction,
+    (arguments, parameters): (&[Register], &[Register]),
+    (source_pc, probed): (u32, bool),
+) -> Result<(), VmTrap> {
+    let pairs = arguments
+        .iter()
+        .copied()
+        .zip(parameters.iter().copied())
+        .collect::<Vec<_>>();
+    append_moves(context, loaded, &pairs, (source_pc, probed))
+}
+
 fn append_moves(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
     pairs: &[(Register, Register)],
-    source_pc: u32,
+    (source_pc, probed): (u32, bool),
 ) -> Result<(), VmTrap> {
     for class in [RegisterClass::Scalar, RegisterClass::Reference] {
-        let pending = class_moves(context, pairs, (class, source_pc));
+        let pending = class_moves(context, pairs, (class, source_pc), probed);
         let scratch = scratch_register(context.function, class)?;
         loaded.moves.extend(sequentialize(pending, scratch));
     }
@@ -63,6 +80,7 @@ fn class_moves(
     context: &DecodeContext<'_>,
     pairs: &[(Register, Register)],
     (class, source_pc): (RegisterClass, u32),
+    probed: bool,
 ) -> Vec<Move> {
     pairs
         .iter()
@@ -71,7 +89,7 @@ fn class_moves(
             source: source.index,
             destination: destination.index,
             class,
-            definition: block_definition(context, *source, (*destination, source_pc)),
+            definition: block_definition(context, *source, (*destination, source_pc), probed),
         })
         .collect()
 }
@@ -80,11 +98,17 @@ fn block_definition(
     context: &DecodeContext<'_>,
     source: Register,
     (destination, source_pc): (Register, u32),
+    probed: bool,
 ) -> Definition {
     let tracked = context.definedness.is_tracked(destination);
+    let variant = if probed {
+        &context.function.probed
+    } else {
+        &context.function.fast
+    };
     let instruction = usize::try_from(source_pc)
         .ok()
-        .and_then(|position| context.function.fast.instructions.get(position));
+        .and_then(|position| variant.instructions.get(position));
     instruction.map_or(Definition::Untracked, |instruction| {
         super::definitions::source_definition(context, (instruction, source), tracked)
     })

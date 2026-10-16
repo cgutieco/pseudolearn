@@ -14,7 +14,7 @@ use crate::load::{CallSite, LoadedFunction, Move, Source, invalid_bytecode};
 pub(super) fn decode(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
-    program_counter: u32,
+    (program_counter, probed): (u32, bool),
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
     match instruction.opcode {
@@ -22,12 +22,12 @@ pub(super) fn decode(
             let edge = add_edge(
                 context,
                 loaded,
-                program_counter,
+                (program_counter, probed),
                 instruction.operands.first(),
             )?;
             Ok(Op::Jump { edge })
         }
-        Opcode::Branch => decode_branch(context, loaded, program_counter, instruction),
+        Opcode::Branch => decode_branch(context, loaded, (program_counter, probed), instruction),
         Opcode::Call | Opcode::CallVirtual => decode_call(context, loaded, instruction),
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),
@@ -40,7 +40,7 @@ pub(super) fn decode(
 fn decode_branch(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
-    program_counter: u32,
+    (program_counter, probed): (u32, bool),
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
     let condition = first_register(instruction)?;
@@ -50,13 +50,13 @@ fn decode_branch(
     let then_edge = add_edge(
         context,
         loaded,
-        program_counter,
+        (program_counter, probed),
         instruction.operands.get(1),
     )?;
     let else_edge = add_edge(
         context,
         loaded,
-        program_counter,
+        (program_counter, probed),
         instruction.operands.get(2),
     )?;
     Ok(Op::Branch {
@@ -71,6 +71,11 @@ fn decode_call(
     loaded: &mut LoadedFunction,
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
+    let return_point = instruction.return_point.ok_or_else(invalid_bytecode)?;
+    let return_point_index = usize::try_from(return_point).map_err(|_| invalid_bytecode())?;
+    if let Some(existing_site) = existing_call_site(loaded, return_point_index)? {
+        return Ok(existing_site);
+    }
     let Some(BytecodeOperand::FunctionTarget {
         function_index,
         arguments,
@@ -88,18 +93,49 @@ fn decode_call(
     }
     let arguments_start = loaded.moves.len();
     append_arguments(context, loaded, arguments, (callee, instruction))?;
-    let return_point = instruction.return_point.ok_or_else(invalid_bytecode)?;
+    register_call_site(
+        loaded,
+        instruction,
+        (
+            usize::from(*function_index),
+            return_point_index,
+            arguments_start,
+        ),
+    )
+}
+
+fn existing_call_site(
+    loaded: &LoadedFunction,
+    return_point_index: usize,
+) -> Result<Option<Op>, VmTrap> {
+    if let Some(existing_index) = loaded
+        .calls
+        .iter()
+        .position(|call| call.return_point == return_point_index)
+    {
+        let site = u32::try_from(existing_index).map_err(|_| invalid_bytecode())?;
+        return Ok(Some(Op::Call { site }));
+    }
+    Ok(None)
+}
+
+fn register_call_site(
+    loaded: &mut LoadedFunction,
+    instruction: &Instruction,
+    (function_index, return_point_index, arguments_start): (usize, usize, usize),
+) -> Result<Op, VmTrap> {
+    let receiver = if instruction.opcode == Opcode::CallVirtual {
+        Some(first_register(instruction)?.index)
+    } else {
+        None
+    };
     let site = CallSite {
-        function: usize::from(*function_index),
+        function: function_index,
         destination: instruction.destination,
-        return_point: usize::try_from(return_point).map_err(|_| invalid_bytecode())?,
+        return_point: return_point_index,
         arguments_start,
         arguments_end: loaded.moves.len(),
-        receiver: if instruction.opcode == Opcode::CallVirtual {
-            Some(first_register(instruction)?.index)
-        } else {
-            None
-        },
+        receiver,
     };
     let index = u32::try_from(loaded.calls.len()).map_err(|_| invalid_bytecode())?;
     loaded.calls.push(site);

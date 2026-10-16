@@ -70,9 +70,16 @@ pub(super) fn roots(
         .collect()
 }
 
-pub(super) fn spans(function: &BytecodeFunction) -> Vec<Option<pseudolearn_bytecode::SourceSpan>> {
-    function
-        .fast
+pub(super) fn spans(
+    function: &BytecodeFunction,
+    probed: bool,
+) -> Vec<Option<pseudolearn_bytecode::SourceSpan>> {
+    let variant = if probed {
+        &function.probed
+    } else {
+        &function.fast
+    };
+    variant
         .instructions
         .iter()
         .map(|instruction| instruction.span)

@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use super::memory;
 use crate::dispatch::Op;
 use pseudolearn_bytecode::{Opcode, Register, RegisterClass, SourceSpan};
@@ -57,6 +59,22 @@ pub(crate) struct Origin {
     pub second: Option<Opcode>,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum ObservationKind {
+    StatementEnter,
+    StatementExit,
+    DecideBool { condition: u16 },
+    DecideCase { index: u16 },
+    DecideDefault,
+    DecideNone,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct ObservationSite {
+    pub kind: ObservationKind,
+    pub line: u32,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct LoadedFunction {
     pub name: String,
@@ -66,6 +84,15 @@ pub(crate) struct LoadedFunction {
     pub mask: usize,
     pub spans: Vec<Option<SourceSpan>>,
     pub origins: Vec<Origin>,
+    pub probed_code: Vec<Op>,
+    pub probed_mask: usize,
+    pub probed_spans: Vec<Option<SourceSpan>>,
+    pub probed_origins: Vec<Origin>,
+    pub observations: Vec<ObservationSite>,
+    pub fast_to_probed_blocks: Vec<usize>,
+    pub probed_to_fast_blocks: Vec<usize>,
+    pub fast_to_probed_returns: Vec<usize>,
+    pub probed_to_fast_returns: Vec<usize>,
     pub edges: Vec<Edge>,
     pub moves: Vec<Move>,
     pub calls: Vec<CallSite>,
@@ -81,15 +108,26 @@ pub(crate) struct LoadedFunction {
 
 impl LoadedFunction {
     #[inline(always)]
-    pub(crate) fn operation(&self, program_counter: usize) -> Op {
-        self.code
-            .get(program_counter & self.mask)
-            .copied()
-            .unwrap_or(Op::Unreachable)
+    pub(crate) fn operation(&self, program_counter: usize, probed: bool) -> Op {
+        if probed && !self.probed_code.is_empty() {
+            self.probed_code
+                .get(program_counter & self.probed_mask)
+                .copied()
+                .unwrap_or(Op::Unreachable)
+        } else {
+            self.code
+                .get(program_counter & self.mask)
+                .copied()
+                .unwrap_or(Op::Unreachable)
+        }
     }
 
-    pub(crate) fn span(&self, program_counter: usize) -> Option<SourceSpan> {
-        self.spans.get(program_counter).copied().flatten()
+    pub(crate) fn span(&self, program_counter: usize, probed: bool) -> Option<SourceSpan> {
+        if probed && !self.probed_spans.is_empty() {
+            self.probed_spans.get(program_counter).copied().flatten()
+        } else {
+            self.spans.get(program_counter).copied().flatten()
+        }
     }
 }
 

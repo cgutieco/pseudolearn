@@ -29,7 +29,23 @@ pub(crate) fn verify(
         Opcode::ObjectCopy => references::verify_object_copy(function, instruction),
         Opcode::RefCmp => references::verify_reference_compare(function, instruction),
         Opcode::HostRandom => references::verify_host_random(function, instruction),
+        Opcode::InRead => verify_in_read(function, instruction),
         _ => Ok(()),
+    }
+}
+
+fn verify_in_read(
+    function: &BytecodeFunction,
+    instruction: &Instruction,
+) -> Result<(), BytecodeError> {
+    let target = destination_type(function, instruction).ok_or(TYPE_ERROR)?;
+    let Some(BytecodeOperand::Type(expected)) = instruction.operands.first() else {
+        return Err(TYPE_ERROR);
+    };
+    if target == expected {
+        Ok(())
+    } else {
+        Err(TYPE_ERROR)
     }
 }
 

@@ -132,48 +132,7 @@ fn lower_assign_whole_array(
     context.environment.mark_assigned(local_id);
     record_origin_entry(local_id, value, context);
 }
-
-pub fn lower_read(
-    places: &[HirPlace],
-    statement_span: Span,
-    context: &mut StatementContext<'_, '_>,
-) {
-    let span = resolve_span(statement_span, context.expression_context.source);
-    context
-        .builder
-        .emit_void(Operation::StmtEnter, vec![], span);
-    for place in places {
-        if let HirPlace::Local(local_id) = place {
-            lower_read_local(*local_id, span, context);
-        }
-    }
-    context.builder.emit_void(Operation::StmtExit, vec![], span);
-}
-
-fn lower_read_local(
-    local_id: LocalId,
-    span: Option<IrSpan>,
-    context: &mut StatementContext<'_, '_>,
-) {
-    let local_type = get_local_ir_type(local_id, context.expression_context.module);
-    let read_value = context.builder.next_value();
-    context.builder.emit_with_target(
-        Operation::InRead,
-        vec![Operand::Type(local_type)],
-        (Some(read_value), span),
-    );
-    if let Some(cell) = context.environment.get_cell(local_id) {
-        context.builder.emit_void(
-            Operation::CellStore,
-            vec![Operand::Value(cell), Operand::Value(read_value)],
-            span,
-        );
-    } else {
-        context.environment.bind_value(local_id, read_value);
-        context.environment.mark_assigned(local_id);
-        record_origin_entry(local_id, read_value, context);
-    }
-}
+pub use crate::statements_read::lower_read;
 
 pub fn lower_dimension(
     dimensions: &[HirDimension],
@@ -215,7 +174,11 @@ fn lower_single_dimension(
     record_origin_entry(dimension.local, origin, context);
 }
 
-fn record_origin_entry(local_id: LocalId, value: ValueId, context: &mut StatementContext<'_, '_>) {
+pub(crate) fn record_origin_entry(
+    local_id: LocalId,
+    value: ValueId,
+    context: &mut StatementContext<'_, '_>,
+) {
     let local_name = usize::try_from(local_id.0)
         .ok()
         .and_then(|local_index| context.expression_context.module.locals.get(local_index))
@@ -229,7 +192,7 @@ fn record_origin_entry(local_id: LocalId, value: ValueId, context: &mut Statemen
     });
 }
 
-fn resolve_field_name(field_number: u32, context: &StatementContext<'_, '_>) -> String {
+pub(crate) fn resolve_field_name(field_number: u32, context: &StatementContext<'_, '_>) -> String {
     usize::try_from(field_number)
         .ok()
         .and_then(|_field_position| {

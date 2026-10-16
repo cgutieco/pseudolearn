@@ -47,6 +47,12 @@
       ]
     },
     {
+      "kind": "Input",
+      "prefixes": [
+        "in."
+      ]
+    },
+    {
       "kind": "Control",
       "names": [
         "jump",
@@ -710,8 +716,63 @@
     },
     {
       "form": "Observe",
-      "fields": [],
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
       "handler": "observe"
+    },
+    {
+      "form": "InReadInteger",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "in_read_integer"
+    },
+    {
+      "form": "InReadReal",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "in_read_real"
+    },
+    {
+      "form": "InReadBoolean",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "in_read_boolean"
+    },
+    {
+      "form": "InReadCharacter",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "in_read_character"
+    },
+    {
+      "form": "InReadString",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        }
+      ],
+      "handler": "in_read_string"
     },
     {
       "form": "Unsupported",

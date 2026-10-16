@@ -8,19 +8,23 @@ No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Gemelo sondeado en ejecución, eventos, cambio de gemelo y entrada | Línea de eventos y API | B5 |
+| Ninguno | — | — |
 
 ## 2. Guía operativa y ciclo de vida
 
 Usa la versión exacta de `rust-toolchain.toml` del miembro. El crate está activo en el workspace y
 ejecuta las familias escalares y de referencia de `IR.INSTRUCTIONS`, texto, arreglos, celdas, objetos,
-llamadas recursivas y virtuales, copia superficial, salida formateada y azar sembrado. B5 conserva la
-entrada, los eventos y el cambio al gemelo sondeado. Comprobación: `cargo xtask verify` del motor, que
-incluye tests, Clippy y `rust-checks all`.
+llamadas recursivas y virtuales, copia superficial, salida formateada y azar sembrado. Incorpora
+soporte completo para el gemelo rápido y sondeado (`TwinMode`), eventos estructurados de traza, formato
+binario columnar `PLEV`, operaciones de paso (`step_into`, `step_over`, `step_out`, `step_to_line`),
+servicio de combustible y límites de anfitrión con retroceso exacto (`statement_limit`), cancelación
+cooperativa y por bandera atómica, y flujo de entrada con suspensión y reintento. Comprobación:
+`cargo xtask verify` del motor, que incluye tests, Clippy y `rust-checks all`.
 
 La API pública tiene dos pasos: `load(&VerifiedBytecode) -> LoadedProgram` construye la forma de
-despacho y `run_loaded(&LoadedProgram, Fuel)` la ejecuta con estado nuevo. `run` y `run_profiled` cargan y
-ejecutan en una sola llamada. Una carga se puede ejecutar cualquier número de veces.
+despacho y `run_loaded(&LoadedProgram, Fuel)` la ejecuta con estado nuevo. `run`, `run_profiled` y
+`run_with_options` cargan y ejecutan con opciones configurables. Una carga se puede ejecutar cualquier
+número de veces.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -37,12 +41,15 @@ Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones c
 | Módulo | Responsabilidad |
 |---|---|
 | `dispatch.rs` | Incluye el código generado: familias de opcode, `enum Op`, selección de forma y paso |
-| `load/` | Traduce el gemelo rápido verificado a la forma de despacho de cada función |
+| `events.rs` | Clases de traza, eventos estructurados, búfer de cambios y cargas útiles de eventos |
+| `wire/` | Codificación y decodificación columnar binaria del formato de transporte PLEV |
+| `step.rs` | Controlador de navegación y avance de pasos sobre trazas de ejecución |
+| `load/` | Traduce los gemelos rápido y sondeado a la forma de despacho de cada función |
 | `load/definedness.rs` | Decide qué registros enteros necesitan bit de definición en ejecución |
 | `load/edges.rs`, `load/parallel_copy.rs` | Aristas con destino, masa, sondeo y copias de parámetros secuenciadas |
-| `load/instructions/` | Decodificación de operaciones escalares, de valor, salida y control |
+| `load/instructions/` | Decodificación de operaciones escalares, valor, salida, entrada, control y observación |
 | `evaluate/` | Evaluadores puros palabra a palabra por familia, con trampas como `Fault` |
-| `machine/` | Estado de ejecución, registros, control, llamadas, salida y perfil de opcodes |
+| `machine/` | Estado de ejecución, bancos, control, llamadas, entrada, observación, salida y perfiles |
 
 **Forma de despacho.** Cada función cargada tiene un `Vec<Op>` de longitud potencia de dos (el bytecode ya
 llega acolchado con `unreachable`), una tabla lateral de spans, otra de opcodes de origen para el perfil,
@@ -109,9 +116,23 @@ pilas propias. La profundidad no depende de una capacidad fija elegida por plata
   `nonFiniteRealResult` (`LIB.CORE.MATH#R1`); un defecto interno de precisión de la biblioteca atrapa con
   `internalFault`.
 - La VM sale hacia su llamador con `Exit::Service` y no importa timeline ni API. La ejecución devuelve
-  `Completed`, `Service` o `Trap`; el llamador interpreta la salida de servicio. La salida del programa se
-  acumula en el resultado de ejecución, sin escribir en el anfitrión; B4 incorpora el formato de valores
-  primitivos y texto. La entrada del anfitrión permanece en B5.
+  `Completed`, `Service`, `AwaitingInput`, `Cancelled` o `LimitReached`; el llamador interpreta la salida. La salida
+  del programa se acumula en el resultado de ejecución, sin escribir en el anfitrión; la entrada se alimenta por
+  secuencias estructuradas o se suspende hasta recibir más valores.
+- **Formato binario columnar PLEV:** La serialización de eventos de traza organiza columnas contiguas de
+  ancho fijo (`clase: u8`, `linea: u32`, `profundidad: u32`, `offset: u32`) seguidas de un depósito de texto
+  UTF-8 con cadenas deduplicadas. Permite acceso aleatorio en O(1) a cualquier evento sin coste de varints.
+- **Modelo de gemelos simétricos y retroceso exacto de combustible:** El gemelo rápido ejecuta sin
+  marcadores de observación; el sondeado registra eventos de traza y mutaciones en el búfer de cambios.
+  Cuando el límite de sentencias del anfitrión se aproxima al remanente de un bloque, la VM cae en O(1) al
+  gemelo sondeado para cobrar sentencias de forma exacta y reportar `statementBudgetExhausted` en la
+  sentencia exacta infractora.
+- **Suspensión y reintento de entrada:** Si la secuencia de entrada está vacía, la ejecución se suspende con
+  `AwaitingInput`. Si el elemento no coincide con el tipo esperado, se consume sin alterar el registro
+  destino, garantizando reintentos sin efectos colaterales espurios (`ENG.INPUT`).
+- **Expresiones aritméticas puras fusionadas:** Las superinstrucciones aritméticas puras operan en código
+  rápido y garantizan equivalencia estricta con la evaluación escalar y atribución exacta del span de la
+  primera instrucción infractora en caso de fallo (`ENG.EXEC.EFFECT-ORDER#P1`).
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
@@ -136,8 +157,17 @@ su código y span, `i64::MIN mod -1`, ceros con signo, intrínsecos matemáticos
 `registers_tests` (definición por parámetros de bloque, centinelas, copias cruzadas), `calls_tests`
 (recursión de 20 000 marcos con crecimiento de bancos, argumentos sin valor, trampas en el llamado),
 `load_tests` (carga reutilizable, entrada ausente, operación no soportada no alcanzada),
-`profile_tests` y `output_tests`; `load/parallel_copy_tests.rs` cubre la secuenciación de copias. La
-trazadora de `pseudolearn_vm_tracer` mide la aceleración frente a `reference`. No se cierran pendientes
+`profile_tests` y `output_tests`; `load/parallel_copy_tests.rs` cubre la secuenciación de copias.
+Las suites añadidas en B5 verifican exhaustivamente el comportamiento observable:
+`execution_model_tests` (cancelación en sentencias y sondeos, bandera atómica),
+`fused_expression_tests` (superinstrucciones aritméticas, atribución precisa de trampas y spans),
+`input_tests` (suspensión, reintento ante disparidad de tipo sin mutación, lectura tipada),
+`limits_tests` (presupuesto exacto de sentencias con retroceso al gemelo sondeado, límite de profundidad),
+`step_tests` (navegación de paso a nivel de sentencia, salto de llamadas y salida de marcos),
+`trace_tests` (emisión de eventos estructurados en modo sondeado y pureza en modo rápido),
+`twin_switching_tests` (conmutación en O(1) entre gemelos rápido y sondeado y equivalencia estricta),
+y `wire_format_tests` (codificación y decodificación columnar binaria PLEV y casos negativos).
+La trazadora de `pseudolearn_vm_tracer` mide la aceleración frente a `reference`. No se cierran pendientes
 hasta tener `cargo xtask verify` y conformidad en verde.
 
 ## 8. Fuentes consultadas y genealogía conceptual

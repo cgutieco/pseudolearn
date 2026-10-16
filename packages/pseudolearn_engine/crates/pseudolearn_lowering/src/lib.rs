@@ -24,6 +24,7 @@ pub mod statements_conditional;
 pub mod statements_declare;
 pub mod statements_for;
 pub mod statements_for_condition;
+pub mod statements_read;
 pub mod statements_repeat;
 pub mod statements_switch;
 pub mod statements_while;

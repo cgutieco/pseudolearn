@@ -31,16 +31,39 @@ pub(super) fn append_block(
         .iter()
         .map(|(value, _)| register_for(&plan.registers, *value))
         .collect::<Result<Vec<_>, _>>()?;
+    let event_mass = calculate_event_mass(plan, &block.instructions, fast)?;
     variant.blocks.push(BasicBlock {
         identifier: block.identifier,
         start_pc,
         parameters,
         mass: block.mass,
+        event_mass,
     });
     for identifier in &block.instructions {
         append_instruction(plan, *identifier, variant, fast)?;
     }
     Ok(())
+}
+
+fn calculate_event_mass(
+    plan: &FunctionPlan<'_>,
+    instructions: &[InstructionId],
+    fast: bool,
+) -> Result<u32, BytecodeError> {
+    if fast {
+        return Ok(0);
+    }
+    let count = instructions
+        .iter()
+        .filter(|id| {
+            plan.source
+                .columns
+                .operation(**id)
+                .map(is_observation)
+                .unwrap_or(false)
+        })
+        .count();
+    u32::try_from(count).map_err(|_| BytecodeError::InvalidModule)
 }
 
 fn append_instruction(
@@ -227,51 +250,11 @@ pub(super) fn return_points(plan: &FunctionPlan<'_>) -> Result<Vec<ReturnPoint>,
 fn is_observation(operation: Operation) -> bool {
     matches!(
         operation,
-        Operation::StmtEnter | Operation::StmtExit | Operation::DecideBool
+        Operation::StmtEnter
+            | Operation::StmtExit
+            | Operation::DecideBool
+            | Operation::DecideCase
+            | Operation::DecideDefault
+            | Operation::DecideNone
     )
-}
-
-pub(super) fn select_compare_branches(variant: &mut CodeVariant) -> Result<(), BytecodeError> {
-    let mut ranges = variant
-        .blocks
-        .iter()
-        .map(|block| usize::try_from(block.start_pc).map_err(|_| BytecodeError::InvalidModule))
-        .collect::<Result<Vec<_>, _>>()?;
-    ranges.push(variant.instructions.len());
-    for pair in ranges.windows(2) {
-        let start = pair.first().copied().ok_or(BytecodeError::InvalidModule)?;
-        let end = pair.get(1).copied().ok_or(BytecodeError::InvalidModule)?;
-        select_block_compare_branches(variant, start, end)?;
-    }
-    Ok(())
-}
-
-fn select_block_compare_branches(
-    variant: &mut CodeVariant,
-    start: usize,
-    end: usize,
-) -> Result<(), BytecodeError> {
-    if end.saturating_sub(start) < 2 {
-        return Ok(());
-    }
-    for first in start..end.saturating_sub(1) {
-        let second = first.checked_add(1).ok_or(BytecodeError::InvalidModule)?;
-        let pair = (
-            variant.instructions.get(first),
-            variant.instructions.get(second),
-        );
-        let (Some(compare), Some(branch)) = pair else {
-            return Err(BytecodeError::InvalidModule);
-        };
-        if matches!(compare.opcode.as_name(), "int.cmp" | "real.cmp")
-            && branch.opcode.as_name() == "branch"
-        {
-            let compare_pc = u32::try_from(first).map_err(|_| BytecodeError::InvalidModule)?;
-            let branch_pc = compare_pc
-                .checked_add(1)
-                .ok_or(BytecodeError::InvalidModule)?;
-            variant.superinstructions.insert(compare_pc, branch_pc);
-        }
-    }
-    Ok(())
 }

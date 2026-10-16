@@ -4,7 +4,9 @@ mod calls;
 mod cells;
 mod control;
 mod fault_context;
+mod input;
 mod memory;
+mod observation;
 mod output;
 mod profile;
 mod registers;
@@ -14,10 +16,11 @@ mod traps;
 
 use pseudolearn_bytecode::{Register, VerifiedBytecode};
 
-use crate::RunOptions;
 use crate::dispatch::step;
+use crate::events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
 use crate::load::{LoadedFunction, LoadedProgram, load};
-use crate::{Fuel, RunExit, RunResult, RuntimeValue, ServiceReason, VmTrap};
+use crate::model::LimitKind;
+use crate::{Fuel, RunExit, RunOptions, RunResult, RuntimeValue, ServiceReason, TwinMode, VmTrap};
 use pseudolearn_runtime::{Handle, Heap, RandomState};
 
 pub use profile::OpcodeProfile;
@@ -29,9 +32,12 @@ pub(crate) enum Flow {
     Continue,
     Completed(Option<RuntimeValue>),
     Service(ServiceReason),
+    AwaitingInput,
+    Cancelled,
+    LimitReached(LimitKind),
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 struct Cursor {
     program_counter: usize,
     scalar_base: usize,
@@ -66,6 +72,15 @@ pub(crate) struct Machine<'program> {
     reference_watermark: usize,
     scalar_watermark: usize,
     memory_counts: Vec<crate::MemoryCount>,
+    probed: bool,
+    events: Vec<TraceEvent>,
+    change_buffer: ChangeBuffer,
+    inputs: Vec<String>,
+    input_index: usize,
+    diagnostics: Vec<VmTrap>,
+    statements_executed: u64,
+    polls_executed: u64,
+    input_requested_emitted: bool,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -99,6 +114,9 @@ fn trapped(trap: VmTrap) -> RunResult {
         consumed_statements: 0,
         consumed_probes: 0,
         memory_counts: Vec::new(),
+        events: Vec::new(),
+        inputs_consumed: 0,
+        diagnostics: Vec::new(),
     }
 }
 
@@ -129,14 +147,23 @@ impl<'program> Machine<'program> {
             .functions
             .get(program.entry)
             .ok_or_else(|| VmTrap::new("missingEntryPoint", None))?;
-        let mut machine = Self {
+        let mut machine = Self::new_instance(program, current, fuel, options);
+        machine.initialize_storage()?;
+        Ok(machine)
+    }
+
+    fn new_instance(
+        program: &'program LoadedProgram,
+        current: &'program LoadedFunction,
+        fuel: Fuel,
+        options: RunOptions,
+    ) -> Self {
+        let is_probed = options.twin_mode == TwinMode::Probed;
+        let inputs = options.inputs.clone();
+        Self {
             program,
             current,
-            cursor: Cursor {
-                program_counter: 0,
-                scalar_base: 0,
-                reference_base: 0,
-            },
+            cursor: Cursor::default(),
             scalars: Vec::new(),
             defined: Vec::new(),
             references: Vec::new(),
@@ -151,9 +178,16 @@ impl<'program> Machine<'program> {
             reference_watermark: 0,
             scalar_watermark: 0,
             memory_counts: Vec::new(),
-        };
-        machine.initialize_storage()?;
-        Ok(machine)
+            probed: is_probed,
+            events: Vec::new(),
+            change_buffer: ChangeBuffer::new(),
+            inputs,
+            input_index: 0,
+            diagnostics: Vec::new(),
+            statements_executed: 0,
+            polls_executed: 0,
+            input_requested_emitted: false,
+        }
     }
 
     fn initialize_storage(&mut self) -> Result<(), VmTrap> {
@@ -170,9 +204,19 @@ impl<'program> Machine<'program> {
     }
 
     fn enter_entry(&mut self) -> Option<RunExit> {
-        match self.charge_entry(self.current.entry_mass) {
+        if self.probed {
+            if let Some(&probed_start) = self.current.fast_to_probed_blocks.first() {
+                self.cursor.program_counter = probed_start;
+            }
+            return None;
+        }
+        match self.charge_entry(self.current.entry_mass, 0) {
             Flow::Service(reason) => Some(RunExit::Service(reason)),
-            Flow::Continue | Flow::Completed(_) => None,
+            Flow::Continue
+            | Flow::Completed(_)
+            | Flow::AwaitingInput
+            | Flow::Cancelled
+            | Flow::LimitReached(_) => None,
         }
     }
 
@@ -182,12 +226,50 @@ impl<'program> Machine<'program> {
             let position = self.cursor.program_counter;
             observer.record(function, position);
             self.cursor.program_counter = position.wrapping_add(1);
-            match step(self, function.operation(position)) {
+            match step(self, function.operation(position, self.probed)) {
                 Ok(Flow::Continue) => {}
                 Ok(Flow::Completed(value)) => return RunExit::Completed(value),
                 Ok(Flow::Service(reason)) => return RunExit::Service(reason),
-                Err(fault) => return RunExit::Trap(self.trap_context(fault, position)),
+                Ok(Flow::AwaitingInput) => return RunExit::AwaitingInput,
+                Ok(Flow::Cancelled) => return RunExit::Cancelled,
+                Ok(Flow::LimitReached(kind)) => return RunExit::LimitReached { kind },
+                Err(fault) => {
+                    let trap = self.trap_context(fault, position);
+                    self.record_failure(&trap);
+                    return RunExit::Trap(trap);
+                }
             }
+        }
+    }
+
+    pub(crate) fn current_line(&self) -> u32 {
+        let position = self.cursor.program_counter.saturating_sub(1);
+        self.current
+            .span(position, self.probed)
+            .or(self.current.declaration_span)
+            .map(|span| span.start_line)
+            .unwrap_or(1)
+    }
+
+    pub(crate) fn current_depth(&self) -> u32 {
+        u32::try_from(self.frames.len().saturating_add(1)).unwrap_or(1)
+    }
+
+    fn record_failure(&mut self, trap: &VmTrap) {
+        if self.probed {
+            let line = trap
+                .span
+                .map(|span| span.start_line)
+                .unwrap_or_else(|| self.current_line());
+            let depth = self.current_depth();
+            self.events.push(TraceEvent {
+                class: TraceClass::Failure,
+                line,
+                depth,
+                payload: Some(EventPayload::Failure {
+                    codigo: trap.code.to_owned(),
+                }),
+            });
         }
     }
 
@@ -198,6 +280,9 @@ impl<'program> Machine<'program> {
             consumed_statements: initial.statements.saturating_sub(self.remaining.statements),
             consumed_probes: initial.probes.saturating_sub(self.remaining.probes),
             memory_counts: self.memory_counts,
+            events: self.events,
+            inputs_consumed: self.input_index,
+            diagnostics: self.diagnostics,
         }
     }
 }

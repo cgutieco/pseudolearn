@@ -34,15 +34,33 @@ fn verify_superinstruction(
                 .iter()
                 .any(|candidate| compare_pc < candidate.start_pc && candidate.start_pc <= branch_pc)
     });
-    if branch_pc == expected_branch_pc
-        && matches!(compare.opcode.as_name(), "int.cmp" | "real.cmp")
-        && branch.opcode.as_name() == "branch"
-        && same_block
-    {
+    let compare_branch = matches!(compare.opcode.as_name(), "int.cmp" | "real.cmp")
+        && branch.opcode.as_name() == "branch";
+    let arithmetic = is_pure_arithmetic(compare.opcode) && is_pure_arithmetic(branch.opcode);
+    if branch_pc == expected_branch_pc && same_block && (compare_branch || arithmetic) {
         Ok(())
     } else {
         Err(BytecodeError::InvalidModule)
     }
+}
+
+fn is_pure_arithmetic(opcode: crate::Opcode) -> bool {
+    matches!(
+        opcode.as_name(),
+        "int.add"
+            | "int.sub"
+            | "int.mul"
+            | "int.div"
+            | "int.mod"
+            | "int.pow"
+            | "int.neg"
+            | "real.add"
+            | "real.sub"
+            | "real.mul"
+            | "real.div"
+            | "real.pow"
+            | "real.neg"
+    )
 }
 
 fn instruction_at(

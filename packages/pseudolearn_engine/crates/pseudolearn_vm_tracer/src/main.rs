@@ -79,6 +79,7 @@ fn load_superinstructions(path: &str) -> Result<Vec<SuperInstruction>, String> {
         .iter()
         .map(|value| match value.as_str() {
             Some("compareBranch") => Ok(SuperInstruction::CompareBranch),
+            Some("fusedArithmetic") => Ok(SuperInstruction::FusedArithmetic),
             _ => Err("profile contains an unknown superinstruction".to_owned()),
         })
         .collect()

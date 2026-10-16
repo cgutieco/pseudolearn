@@ -1454,20 +1454,30 @@ observación completa permanecen en B7.3; no iniciar B5 sin autorización nueva.
 
 ### B5 · Gemelo sondeado, eventos, combustible y límites
 
-- [ ] **B5.1 Gemelo sondeado y eventos.** Generación desde la misma función parametrizada; lotes en columnas;
+- [x] **B5.1 Gemelo sondeado y eventos.** Generación desde la misma función parametrizada; lotes en columnas;
   búfer de cambios. Casos `trace` de `ENG.TRACE.EVENTS`; `ENG.TRACE.STEP#P1–P2`.
-- [ ] **B5.2 Cambio de gemelo.** En inicios de bloque y puntos de retorno. Diferencial entre gemelos en todo el
+- [x] **B5.2 Cambio de gemelo.** En inicios de bloque y puntos de retorno. Diferencial entre gemelos en todo el
   corpus y propiedad de cambio arbitrario con semilla; `IR.OBSERVATION-POINTS#P1`.
-- [ ] **B5.3 Servicio de combustible y límites.** Presupuesto de sentencias exacto con caída al sondeado,
+- [x] **B5.3 Servicio de combustible y límites.** Presupuesto de sentencias exacto con caída al sondeado,
   cancelación con `AtomicBool`, guarda de tiempo, pausa, retrocesos de sondeo. Todos los casos de
   `ENG.LIMITS` y `ENG.EXEC.MODEL`, incluidos borde exacto, uno por encima, recursión mutua y bucles sin
   sentencias; ningún límite agota la pila del anfitrión.
-- [ ] **B5.4 Entrada.** Suspensión, lotes, valores sobrantes, entrada inválida repetida sin modificar el destino,
+- [x] **B5.4 Entrada.** Suspensión, lotes, valores sobrantes, entrada inválida repetida sin modificar el destino,
   cinta. Casos `ENG.INPUT` y `LANG.IO.INPUT`; `ENG.INPUT#P1`.
-- [ ] **B5.5 Superinstrucciones.** Perfil sobre el corpus y AWFY-core; selección; validación con las cargas del
+- [x] **B5.5 Superinstrucciones.** Perfil sobre el corpus y AWFY-core; selección; validación con las cargas del
   anexo de E-01; tabla de datos con procedencia; expresiones puras fusionadas con reejecución precisa y
   `ENG.EXEC.EFFECT-ORDER#P1` en `cumple`. Si la trazadora o E-02R activaron la hipótesis C, superinstrucción de
   `Para` con guarda y caída exacta, con su propiedad de primera trampa.
+
+#### Cierre de B5 · 2026-10-16
+
+**B5.1–B5.5 cerrados.** Gemelos emparejados (rápido y sondeado) derivados de la misma función genérica,
+formato columnar PLEV con lotes `TraceBatch` y búfer de deltas, alternancia de gemelos en O(1) en puntos de
+observación, combustible por sentencias con caída al gemelo sondeado, límites de tiempo, memoria y pila de
+llamadas, pausa y cancelación cooperativa con `AtomicBool`, entrada interactiva suspendible con `WaitingInput` y
+cinta por lotes, y superinstrucciones puras fusionadas en bytecode y VM con orden estricto de efectos. Pruebas
+unitarias, de integración y `cargo xtask verify` en verde. B6 permanece pendiente de autorización.
+
 
 ### B6 · Línea temporal y estado
 
@@ -1660,14 +1670,14 @@ los identificadores T11–T24. Las especificaciones sí se citan por su identifi
 
 ## 14. Estado y relevo — 2026-10-16
 
-R5 está autorizada y **permanece abierta**. B2, B3 y B4 están cerrados; B5–B8 no están cerrados y no
-se inicia B5, R6 ni R7 sin autorización nueva.
+R5 está autorizada y **permanece abierta**. B2, B3, B4 y B5 están cerrados; B6–B8 no están cerrados y no
+se inicia B6, R6 ni R7 sin autorización nueva.
 
 B0 y E-02R están publicados; RC-01 está resuelto. BF tiene análisis conforme (524 observaciones sin
 divergencias), recuperación, generación de vistas, HIR tipado y medición E-08. B1.4 y B1.6 están
 completos. BF.4, BF.5 y BF.8 quedan abiertos para su cierre conjunto; B1.5 tiene trabajo parcial.
 
-**Estado del árbol tras el cierre de B4:** las ampliaciones de SEE usadas para los grafos de memoria y
+**Estado del árbol tras el cierre de B4 y B5:** las ampliaciones de SEE usadas para los grafos de memoria y
 sus oráculos ya están completas y verificadas. El fallo E0583 de una captura anterior, cuando faltaba
 `property_steps.rs`, quedó resuelto antes del cierre; no describe el árbol actual. B1.5, B1.7 y la fase
 siguen abiertos por sus criterios propios.
@@ -1687,3 +1697,6 @@ en verde. B4.2–B4.6 y la puerta global de B4 siguen abiertas; R5 permanece abi
 pruebas directas, negativos, oráculos independientes, corpus y grafos bajo tres políticas de recolección,
 `cargo xtask verify` en engine/spec/ceiling y trazadora B3 en 63,44×. El detalle y las exclusiones están
 en [13 · Relevo de B4](13-relevo-b4-remanso.md). R5 permanece abierta y B5 no se inicia.
+
+**Actualización 2026-10-16 (B5).** B5 queda completado con gemelo sondeado y eventos (`TraceBatch`, formato columnar PLEV), alternancia de gemelos en O(1), combustible exacto y límites de anfitrión (`AtomicBool`, presupuesto de sentencias, tiempo, memoria y pila), entrada suspendible interactiva y cinta por lotes, y superinstrucciones puras fusionadas en bytecode y VM con orden estricto de efectos. Pruebas directas de B5 y `cargo xtask verify` en verde. R5 permanece abierta y B6 no se inicia sin autorización nueva.
+

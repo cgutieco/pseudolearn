@@ -6,6 +6,7 @@ mod compile_constants;
 mod compile_instructions;
 mod compile_operands;
 mod compile_padding;
+mod compile_superinstructions;
 mod registers;
 use registers::{assign_registers, collect_value_types};
 
@@ -188,7 +189,10 @@ fn compile_variant(
         compile_instructions::append_block(plan, block, &mut variant, fast)?;
     }
     if fast && selected.contains(&SuperInstruction::CompareBranch) {
-        compile_instructions::select_compare_branches(&mut variant)?;
+        compile_superinstructions::select_compare_branches(&mut variant)?;
+    }
+    if fast && selected.contains(&SuperInstruction::FusedArithmetic) {
+        compile_superinstructions::select_arithmetic_superinstructions(&mut variant)?;
     }
     compile_padding::pad_variant(&mut variant)?;
     Ok(variant)
