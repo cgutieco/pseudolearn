@@ -46,6 +46,31 @@ fn block_delta_handles_growth_shrink_and_empty_vectors() -> Result<(), DeltaErro
 }
 
 #[test]
+fn dirty_block_delta_skips_clean_prefix_and_restores_truncated_tail() -> Result<(), DeltaError> {
+    let original = words(BLOCK_WORDS.saturating_mul(16), 1);
+    let mut extended = original.clone();
+    if let Some(word) = extended.get_mut(1_000) {
+        *word = 9_999;
+    }
+    let mut tip = original.clone();
+    let delta = BlockDelta::advance_from(&mut tip, &extended, 1_000);
+    assert_eq!(delta.blocks.len(), 1);
+    assert_eq!(delta.copied_slots(), BLOCK_WORDS);
+    let mut restored = extended;
+    delta.revert(&mut restored)?;
+    assert_eq!(restored, original);
+
+    let mut tip = original.clone();
+    let truncated = original.get(..900).unwrap_or_default().to_vec();
+    let delta = BlockDelta::advance_from(&mut tip, &truncated, 900);
+    assert_eq!(tip, truncated);
+    assert_eq!(delta.copied_slots(), BLOCK_WORDS.saturating_mul(2));
+    delta.revert(&mut tip)?;
+    assert_eq!(tip, original);
+    Ok(())
+}
+
+#[test]
 fn block_delta_revert_without_fill_content_is_rejected() {
     let delta: BlockDelta<u64> = BlockDelta::empty(10);
     let mut current = Vec::new();

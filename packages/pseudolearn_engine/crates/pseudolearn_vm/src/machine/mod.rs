@@ -6,8 +6,10 @@ mod control;
 mod delta;
 mod fault_context;
 mod image;
+mod initialization;
 mod input;
 mod memory;
+mod memory_arrays;
 mod observation;
 mod output;
 mod profile;
@@ -16,19 +18,21 @@ mod roots;
 mod text;
 mod traps;
 
+use std::cell::Cell as DirtyIndex;
+use std::marker::PhantomData;
+use std::sync::Arc;
+
 use pseudolearn_bytecode::VerifiedBytecode;
 
 use crate::dispatch::step;
 use crate::events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
 use crate::load::{LoadedFunction, LoadedProgram, load};
 use crate::model::LimitKind;
-use crate::{Fuel, RunExit, RunOptions, RunResult, RuntimeValue, ServiceReason, TwinMode, VmTrap};
+use crate::{Fuel, RunExit, RunOptions, RunResult, RuntimeValue, ServiceReason, VmTrap};
 use pseudolearn_runtime::{Handle, Heap, RandomState};
 
 pub use profile::OpcodeProfile;
 use profile::{NoOpcodeObserver, OpcodeObserver};
-
-const INITIAL_BANK_WORDS: usize = 64;
 
 pub(crate) enum Flow {
     Continue,
@@ -39,15 +43,20 @@ pub(crate) enum Flow {
     LimitReached(LimitKind),
 }
 
+mod active_frames;
+mod bank_tracking;
 mod inspection;
 mod query;
 
+pub use active_frames::*;
 pub use cells::Cell;
 pub use delta::{MachineDelta, advance_image, compose_machine_deltas, revert_image};
 pub use image::{
     MachineImage, restore_machine_image, resume_machine, snapshot_machine, snapshot_machine_lean,
     suspend_machine,
 };
+pub use initialization::create_owned_machine;
+use initialization::execute_with;
 pub use inspection::*;
 pub use query::*;
 
@@ -55,13 +64,17 @@ mod control_state;
 pub(crate) use control_state::{ControlFrame, Cursor};
 
 pub struct Machine<'program> {
-    pub(crate) program: &'program LoadedProgram,
-    pub(crate) current: &'program LoadedFunction,
+    pub(crate) program: LoadedProgram,
+    pub(crate) current: Arc<LoadedFunction>,
+    pub(crate) current_function_index: usize,
+    pub(crate) program_lifetime: PhantomData<&'program LoadedProgram>,
     pub(crate) cursor: Cursor,
+    pub(crate) scalar_limit: usize,
+    pub(crate) reference_limit: usize,
     pub(crate) scalars: Vec<u64>,
     pub(crate) defined: Vec<bool>,
     pub(crate) references: Vec<u32>,
-    pub(crate) frames: Vec<ControlFrame<'program>>,
+    pub(crate) frames: Vec<ControlFrame>,
     pub(crate) remaining: Fuel,
     pub(crate) output: String,
     pub(crate) heap: Heap,
@@ -83,6 +96,11 @@ pub struct Machine<'program> {
     pub(crate) polls_executed: u64,
     pub(crate) input_requested_emitted: bool,
     pub(crate) output_suppressed: bool,
+    pub(crate) frame_dirty_from: DirtyIndex<usize>,
+    pub(crate) bank_delta_tracking: DirtyIndex<bool>,
+    pub(crate) scalar_dirty_from: DirtyIndex<usize>,
+    pub(crate) reference_dirty_from: DirtyIndex<usize>,
+    pub(crate) defined_dirty_from: DirtyIndex<usize>,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -122,111 +140,10 @@ fn trapped(trap: VmTrap) -> RunResult {
     }
 }
 
-fn execute_with<Observer: OpcodeObserver>(
-    program: &LoadedProgram,
-    fuel: Fuel,
-    options: RunOptions,
-    observer: &mut Observer,
-) -> RunResult {
-    match Machine::start(program, fuel, options) {
-        Ok(mut machine) => {
-            let exit = machine
-                .enter_entry()
-                .unwrap_or_else(|| machine.execute(observer));
-            machine.finish(exit, fuel)
-        }
-        Err(trap) => trapped(trap),
-    }
-}
-
 impl<'program> Machine<'program> {
-    fn start(
-        program: &'program LoadedProgram,
-        fuel: Fuel,
-        options: RunOptions,
-    ) -> Result<Self, VmTrap> {
-        let current = program
-            .functions
-            .get(program.entry)
-            .ok_or_else(|| VmTrap::new("missingEntryPoint", None))?;
-        let mut machine = Self::new_instance(program, current, fuel, options);
-        machine.initialize_storage()?;
-        Ok(machine)
-    }
-
-    fn new_instance(
-        program: &'program LoadedProgram,
-        current: &'program LoadedFunction,
-        fuel: Fuel,
-        options: RunOptions,
-    ) -> Self {
-        let is_probed = options.twin_mode == TwinMode::Probed;
-        let inputs = options.inputs.clone();
-        Self {
-            program,
-            current,
-            cursor: Cursor::default(),
-            scalars: Vec::new(),
-            defined: Vec::new(),
-            references: Vec::new(),
-            frames: Vec::new(),
-            remaining: fuel,
-            output: String::new(),
-            heap: Heap::new(options.memory),
-            literals: Vec::new(),
-            random: RandomState::seeded(options.seed),
-            options,
-            cells: Vec::new(),
-            reference_watermark: 0,
-            scalar_watermark: 0,
-            memory_counts: Vec::new(),
-            probed: is_probed,
-            events: Vec::new(),
-            events_dropped: 0,
-            change_buffer: ChangeBuffer::new(),
-            inputs,
-            input_index: 0,
-            diagnostics: Vec::new(),
-            statements_executed: 0,
-            polls_executed: 0,
-            input_requested_emitted: false,
-            output_suppressed: false,
-        }
-    }
-
-    fn initialize_storage(&mut self) -> Result<(), VmTrap> {
-        if self.options.depth == 0 {
-            return Err(self.trap_context("recursionDepthExceeded", 0));
-        }
-        let scalar_end = self.current.scalar_window.max(INITIAL_BANK_WORDS);
-        let reference_end = self.current.reference_window.max(INITIAL_BANK_WORDS);
-        self.ensure_capacity(scalar_end, reference_end)
-            .map_err(|fault| VmTrap::new(fault, None))?;
-        self.initialize_literals()
-            .map_err(|fault| VmTrap::new(fault, None))?;
-        Ok(())
-    }
-
-    fn enter_entry(&mut self) -> Option<RunExit> {
-        if self.probed {
-            if let Some(&probed_start) = self.current.fast_to_probed_blocks.first() {
-                self.cursor.program_counter = probed_start;
-            }
-            return None;
-        }
-        match self.charge_entry(self.current.entry_mass, 0) {
-            Flow::Service(reason) => Some(RunExit::Service(reason)),
-            Flow::Continue
-            | Flow::Completed(_)
-            | Flow::AwaitingInput
-            | Flow::Cancelled
-            | Flow::LimitReached(_) => None,
-        }
-    }
-
     fn execute<Observer: OpcodeObserver>(&mut self, observer: &mut Observer) -> RunExit {
         loop {
-            let function = self.current;
+            let function = self.current.as_ref();
             let position = self.cursor.program_counter;
             observer.record(function, position);
             self.cursor.program_counter = position.wrapping_add(1);

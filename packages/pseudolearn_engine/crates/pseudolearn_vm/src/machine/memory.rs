@@ -7,70 +7,32 @@ use pseudolearn_runtime::{self as runtime, Handle, MemoryError};
 
 impl Machine<'_> {
     pub(crate) fn memory_operation(&mut self, site: u32) -> Result<Flow, Fault> {
-        let operation = self
-            .current
+        let function = std::sync::Arc::clone(&self.current);
+        let operation = function
             .memory
             .get(usize::try_from(site).map_err(|_| INVALID_BYTECODE)?)
             .ok_or(INVALID_BYTECODE)?;
-        match operation {
-            MemoryOp::ArrayNew {
-                destination,
-                element,
-                dimensions,
-            } => {
-                self.allocate_array(*destination, *element, dimensions)?;
-            }
-            MemoryOp::ArrayRead {
-                destination,
-                array,
-                indices,
-            } => {
-                let handle = Handle(self.reference(*array)?);
-                let indices = self.read_indices(indices)?;
-                let word =
-                    runtime::read_element(&self.heap, handle, &indices).map_err(memory_fault)?;
-                self.write_result(*destination, word)?;
-            }
-            MemoryOp::ArrayWrite {
-                array,
-                indices,
-                source,
-            } => {
-                let handle = Handle(self.reference(*array)?);
-                let indices = self.read_indices(indices)?;
-                let word = self.read_value(source.source)?;
-                runtime::write_element(&mut self.heap, handle, (&indices, word))
-                    .map_err(memory_fault)?;
-            }
-            _ => return self.memory_object(operation),
+        if self.array_operation(operation)? {
+            return Ok(Flow::Continue);
         }
-        Ok(Flow::Continue)
+        self.memory_object(operation)
     }
 
     fn memory_object(&mut self, operation: &MemoryOp) -> Result<Flow, Fault> {
         match operation {
             MemoryOp::ObjectNew { destination, class } => {
-                self.allocate_object(*destination, *class)?;
+                self.allocate_object(*destination, *class)?
             }
             MemoryOp::ObjectCopy {
                 destination,
                 source,
-            } => {
-                let handle = Handle(self.reference(*source)?);
-                let roots = self.memory_roots()?;
-                let copy =
-                    runtime::copy_object(&mut self.heap, handle, &roots).map_err(memory_fault)?;
-                self.set_reference(*destination, copy.0)?;
-            }
+            } => self.copy_object(*destination, *source)?,
             MemoryOp::ReferenceCompare {
                 destination,
                 left,
                 right,
                 equal,
-            } => {
-                let comparison = self.reference(*left)? == self.reference(*right)?;
-                self.set_scalar(*destination, u64::from(comparison == *equal))?;
-            }
+            } => self.compare_references(*destination, (*left, *right), *equal)?,
             MemoryOp::Random { destination } => {
                 let value = self.random.next_real();
                 self.set_scalar(*destination, value.to_bits())?;
@@ -81,27 +43,66 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
-    fn allocate_array(
+    pub(crate) fn read_object_field(
+        &mut self,
+        destination: Register,
+        receiver: u16,
+        offset: usize,
+    ) -> Result<Flow, Fault> {
+        let handle = Handle(self.reference(receiver)?);
+        let word = runtime::read_field(&self.heap, handle, offset).map_err(memory_fault)?;
+        self.write_result(destination, word)?;
+        Ok(Flow::Continue)
+    }
+
+    pub(crate) fn write_object_field(
+        &mut self,
+        receiver: u16,
+        offset: usize,
+        source: crate::load::memory::ValueSource,
+    ) -> Result<Flow, Fault> {
+        let handle = Handle(self.reference(receiver)?);
+        let word = self.read_value(source)?;
+        runtime::write_field(&mut self.heap, handle, (offset, word)).map_err(memory_fault)?;
+        if self.probed {
+            self.change_buffer
+                .record_object_field(handle.0, offset, word);
+        }
+        Ok(Flow::Continue)
+    }
+
+    fn copy_object(&mut self, destination: u16, source: u16) -> Result<(), Fault> {
+        let handle = Handle(self.reference(source)?);
+        let cells = runtime::object_allocation_cells(&self.heap, handle).map_err(memory_fault)?;
+        let roots = self.collection_roots(cells)?;
+        let copy = runtime::copy_object(&mut self.heap, handle, &roots).map_err(memory_fault)?;
+        self.set_reference(destination, copy.0)
+    }
+
+    fn compare_references(
         &mut self,
         destination: u16,
-        element: runtime::ValueKind,
-        dimensions: &[Source],
+        sources: (u16, u16),
+        equal: bool,
     ) -> Result<(), Fault> {
-        let dimensions = self.read_indices(dimensions)?;
-        let roots = self.memory_roots()?;
-        let handle = runtime::new_array(&mut self.heap, element, &dimensions, &roots)
-            .map_err(memory_fault)?;
-        self.set_reference(destination, handle.0)
+        let (left, right) = sources;
+        let comparison = self.reference(left)? == self.reference(right)?;
+        self.set_scalar(destination, u64::from(comparison == equal))
     }
 
     fn allocate_object(&mut self, destination: u16, class: usize) -> Result<(), Fault> {
         let layout = self
             .program
+            .inner
             .layouts
             .get(class)
             .ok_or(INVALID_BYTECODE)?
             .clone();
-        let roots = self.memory_roots()?;
+        let cells = u64::try_from(layout.fields.len())
+            .map_err(|_| "resourceLimit")?
+            .checked_add(1)
+            .ok_or("resourceLimit")?;
+        let roots = self.collection_roots(cells)?;
         let handle =
             runtime::new_object_shared(&mut self.heap, layout, &roots).map_err(memory_fault)?;
         self.set_reference(destination, handle.0)?;
@@ -113,6 +114,14 @@ impl Machine<'_> {
             .iter()
             .map(|source| self.source_word(*source).map(integer_of))
             .collect()
+    }
+
+    pub(super) fn collection_roots(&mut self, cells: u64) -> Result<Vec<Handle>, Fault> {
+        if self.heap.needs_collection(cells) || self.options.inspect_memory {
+            self.memory_roots()
+        } else {
+            Ok(Vec::new())
+        }
     }
 
     pub(super) fn source_word(&self, source: Source) -> Result<u64, Fault> {
@@ -150,7 +159,7 @@ impl Machine<'_> {
     }
 
     pub(super) fn initialize_literals(&mut self) -> Result<(), Fault> {
-        for text in &self.program.literals {
+        for text in &self.program.inner.literals {
             self.literals
                 .push(runtime::new_text(&mut self.heap, text, true, &[]).map_err(memory_fault)?);
         }

@@ -22,6 +22,8 @@ pub(crate) fn verify(
         Opcode::ArrayStore => arrays::verify_array_access(function, instruction, true),
         Opcode::CellElement => references::verify_cell_element(function, instruction),
         Opcode::CellField => references::verify_cell_field(module, function, instruction),
+        Opcode::ObjectLoad => references::verify_object_load(module, function, instruction),
+        Opcode::ObjectStore => references::verify_object_store(module, function, instruction),
         Opcode::CellLocal => references::verify_cell_local(function, instruction),
         Opcode::CellLoad => references::verify_cell_load(function, instruction),
         Opcode::CellStore => references::verify_cell_store(module, function, instruction),

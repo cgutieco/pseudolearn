@@ -11,6 +11,8 @@ use std::collections::BTreeMap;
 
 type Arguments = BTreeMap<&'static str, DiagnosticArgument>;
 
+mod arrays;
+
 impl Machine<'_> {
     pub(super) fn trap_context(&self, fault: Fault, position: usize) -> VmTrap {
         let mut trap = VmTrap::new(fault, self.current.span(position, self.probed));
@@ -68,6 +70,14 @@ impl Machine<'_> {
 
     fn operation_arguments(&self, fault: Fault, position: usize, arguments: &mut Arguments) {
         match self.current.operation(position, self.probed) {
+            Op::ArrayRead1D { array, index, .. } | Op::ArrayWrite1D { array, index, .. } => {
+                self.array_arguments(fault, (array, std::slice::from_ref(&index)), arguments)
+            }
+            Op::ObjectRead {
+                receiver, offset, ..
+            } if fault == "uninitializedVariableRead" => {
+                self.object_field_name(receiver, offset, arguments);
+            }
             Op::Memory { site } => {
                 if let Some(operation) = usize::try_from(site)
                     .ok()
@@ -101,18 +111,10 @@ impl Machine<'_> {
             MemoryOp::ArrayRead { array, indices, .. }
             | MemoryOp::ArrayWrite { array, indices, .. }
             | MemoryOp::CellElement { array, indices, .. } => {
-                if fault == "arrayIndexOutOfRange" {
-                    self.index_arguments(*array, indices, arguments);
-                } else if fault == "uninitializedVariableRead" {
-                    self.variable_argument(*array, RegisterClass::Reference, arguments);
-                }
+                self.array_arguments(fault, (*array, indices), arguments)
             }
             MemoryOp::ArrayNew { dimensions, .. } => {
-                if let Ok(dimensions) = self.read_indices(dimensions)
-                    && let Some(size) = dimensions.into_iter().find(|size| *size < 0)
-                {
-                    number(arguments, "size", size);
-                }
+                self.array_creation_arguments(dimensions, arguments)
             }
             MemoryOp::Text {
                 opcode, sources, ..
@@ -131,6 +133,21 @@ impl Machine<'_> {
                 arguments.insert("lexeme", DiagnosticArgument::Lexeme(name));
             }
             _ => {}
+        }
+    }
+
+    fn object_field_name(&self, receiver: u16, offset: usize, arguments: &mut Arguments) {
+        let field_name = self
+            .reference(receiver)
+            .ok()
+            .map(Handle)
+            .and_then(|handle| runtime::object_class(&self.heap, handle).ok())
+            .and_then(|class| usize::try_from(class).ok())
+            .and_then(|class| self.program.inner.classes.get(class))
+            .and_then(|class| class.fields.get(offset))
+            .map(|(name, _)| name.clone());
+        if let Some(name) = field_name {
+            arguments.insert("lexeme", DiagnosticArgument::Lexeme(name));
         }
     }
 
@@ -199,6 +216,7 @@ impl Machine<'_> {
             Cell::Managed(cell) => {
                 let class = runtime::object_class(&self.heap, cell.owner).ok()?;
                 self.program
+                    .inner
                     .classes
                     .get(usize::try_from(class).ok()?)?
                     .fields
@@ -207,14 +225,14 @@ impl Machine<'_> {
             }
             Cell::Local { absolute, slot, .. } => self
                 .local_cell_name(
-                    self.current,
+                    self.current.as_ref(),
                     (self.cursor.scalar_base, self.cursor.reference_base),
                     (absolute, slot.class),
                 )
                 .or_else(|| {
                     self.frames.iter().rev().find_map(|frame| {
                         self.local_cell_name(
-                            frame.function,
+                            frame.function.as_ref(),
                             (frame.scalar_base, frame.reference_base),
                             (absolute, slot.class),
                         )

@@ -1,6 +1,6 @@
 use crate::heap::{AllocationRequest, Shape};
 use crate::{Heap, MemoryError, ObjectLayout, ValueKind};
-use pseudolearn_abi::{Handle, object_fields_start_offset};
+use pseudolearn_abi::{Handle, OBJECT_PAYLOAD_STATUS_MASK, object_fields_start_offset};
 
 pub fn new_object(
     heap: &mut Heap,
@@ -87,11 +87,25 @@ pub fn copy_object(
 ) -> Result<Handle, MemoryError> {
     let layout = heap.layout(handle)?.clone();
     let payload = heap.object_payload(handle)?;
-    let mut retained = roots.to_vec();
-    retained.push(handle);
+    let cells = object_allocation_cells(heap, handle)?;
+    let mut retained = Vec::new();
+    if heap.needs_collection(cells) {
+        retained
+            .try_reserve_exact(roots.len().checked_add(1).ok_or(MemoryError::Resource)?)
+            .map_err(|_| MemoryError::Resource)?;
+        retained.extend_from_slice(roots);
+        retained.push(handle);
+    }
     let target = new_object_shared(heap, std::sync::Arc::new(layout.clone()), &retained)?;
     copy_words(heap, (handle, target), (layout.fields.len(), payload))?;
     Ok(target)
+}
+
+pub fn object_allocation_cells(heap: &Heap, handle: Handle) -> Result<u64, MemoryError> {
+    u64::try_from(heap.layout(handle)?.fields.len())
+        .map_err(|_| MemoryError::Resource)?
+        .checked_add(1)
+        .ok_or(MemoryError::Resource)
 }
 
 fn copy_words(
@@ -125,9 +139,26 @@ fn field(heap: &Heap, handle: Handle, index: usize) -> Result<(usize, ValueKind)
     if handle.is_absent() {
         return Err(MemoryError::Uninitialized);
     }
-    let layout = heap.layout(handle)?;
+    let header = heap.header(handle)?;
+    let class = header
+        .shape_tag
+        .checked_sub(3)
+        .filter(|_| header.shape_tag > 2 && header.shape_tag < u32::MAX)
+        .ok_or(MemoryError::Internal)?;
+    let layout = heap
+        .layouts
+        .get(usize::try_from(class).map_err(|_| MemoryError::Internal)?)
+        .and_then(Option::as_ref)
+        .ok_or(MemoryError::Internal)?;
+    let payload = usize::try_from(header.status_flags & OBJECT_PAYLOAD_STATUS_MASK)
+        .map_err(|_| MemoryError::Internal)?;
+    let expected = object_fields_start_offset(layout.fields.len(), layout.dense)
+        .ok_or(MemoryError::Internal)?;
+    if payload != expected {
+        return Err(MemoryError::Internal);
+    }
     Ok((
-        heap.object_payload(handle)?,
+        payload,
         *layout.fields.get(index).ok_or(MemoryError::Internal)?,
     ))
 }

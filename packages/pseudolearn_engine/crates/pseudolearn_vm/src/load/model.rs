@@ -51,6 +51,8 @@ pub(crate) struct CallSite {
     pub arguments_start: usize,
     pub arguments_end: usize,
     pub receiver: Option<u16>,
+    pub targets_start: usize,
+    pub targets_end: usize,
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -98,6 +100,7 @@ pub(crate) struct LoadedFunction {
     pub edges: Vec<Edge>,
     pub moves: Vec<Move>,
     pub calls: Vec<CallSite>,
+    pub virtual_targets: Vec<Option<u16>>,
     pub continuations: Vec<usize>,
     pub scalar_window: usize,
     pub reference_window: usize,
@@ -136,8 +139,13 @@ impl LoadedFunction {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct LoadedProgram {
+    pub(crate) inner: std::sync::Arc<LoadedProgramInner>,
+}
+
+#[derive(Debug, PartialEq)]
+pub(crate) struct LoadedProgramInner {
     pub(crate) name: String,
-    pub(crate) functions: Vec<LoadedFunction>,
+    pub(crate) functions: Vec<std::sync::Arc<LoadedFunction>>,
     pub(crate) entry: usize,
     pub(crate) literals: Vec<String>,
     pub(crate) classes: Vec<pseudolearn_bytecode::BytecodeClass>,
@@ -146,7 +154,13 @@ pub struct LoadedProgram {
 }
 
 impl LoadedProgram {
+    pub(crate) fn new(inner: LoadedProgramInner) -> Self {
+        Self {
+            inner: std::sync::Arc::new(inner),
+        }
+    }
+
     pub fn class_schema(&self, identifier: u32) -> Option<&pseudolearn_bytecode::BytecodeClass> {
-        self.classes.get(usize::try_from(identifier).ok()?)
+        self.inner.classes.get(usize::try_from(identifier).ok()?)
     }
 }

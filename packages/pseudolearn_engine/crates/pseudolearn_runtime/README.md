@@ -32,6 +32,8 @@ Problema: consultar un mapa de descriptores en cada lectura y escritura añade u
 
 Problema: diferenciar la capacidad reservada del vector de palabras retiene datos no usados en cada punto de control. Elección: `Heap.words.len()` coincide con `Heap.used`; la capacidad interna de `Vec` no forma parte del estado. `HeapDelta` compara solo el prefijo usado, aplica deltas por bloques a palabras y `BlockRecord`, y conserva el sufijo de diseños registrados junto con las listas libres y el estado del arena de texto. `advance_heap` actualiza la imagen de la punta y devuelve el segmento inverso; `revert_heap` lo aplica y `compose_heap_deltas` fusiona segmentos contiguos. Se descarta capturar palabras reservadas fuera del montón lógico.
 
+`BlockDelta::advance_from` recibe el primer índice modificado para omitir los bloques anteriores al cambio. El propietario registra ese índice al escribir y lo restablece después de capturar; el crecimiento y el truncado siguen detectando el borde común entre el estado anterior y el nuevo.
+
 `compact_text` devuelve un `TextCompaction` con los rangos movidos. La compactación disparada por una recolección automática no conserva ni publica ese mapa: el runtime actual no tiene un consumidor de los desplazamientos del arena. Un consumidor que necesite observarlos debe añadir su contrato de notificación junto con su integración; el runtime no acumula mapas sin lector.
 
 El montón no mueve objetos: así, una recolección no altera identidades ni asas visibles. El ordinal identifica la asignación lógica, mientras el asa permite llegar a su almacenamiento actual. Los errores de capacidad, tamaño negativo, límite de celdas, índice, valor no inicializado e invariantes internos son variantes tipadas, no pánicos.

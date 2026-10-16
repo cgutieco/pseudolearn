@@ -172,6 +172,61 @@ fn lowers_read_targets_and_verifies_ir() {
     verify_lowered_counts(&target_module);
 }
 
+#[test]
+fn lowers_value_field_reads_and_writes_to_direct_operations() {
+    let mut module = create_read_test_module();
+    let integer_type = module.types.intern(Type::Integer);
+    module
+        .expressions
+        .kinds
+        .push(HirExpression::Literal(Literal::Integer(7)));
+    module.expressions.types.push(integer_type);
+    module.expressions.spans.push(Span::new(61, 62));
+    module.expressions.kinds.push(HirExpression::Field {
+        receiver: ExpressionId(2),
+        field: FieldId(0),
+    });
+    module.expressions.types.push(integer_type);
+    module.expressions.spans.push(Span::new(63, 72));
+    module.statements.kinds.push(HirStatement::Assign {
+        destination: HirPlace::Field {
+            receiver: ExpressionId(2),
+            field: FieldId(0),
+        },
+        value: ExpressionId(4),
+    });
+    module.statements.spans.push(Span::new(61, 72));
+    module.statements.kinds.push(HirStatement::Write {
+        values: vec![ExpressionId(5)],
+        newline: true,
+    });
+    module.statements.spans.push(Span::new(73, 83));
+    if let Some(function) = module.functions.first_mut() {
+        function.body.extend([StatementId(3), StatementId(4)]);
+    }
+    let source = SourceText::new(
+        "Algoritmo P\nDimension arr[1];\nobj <- Nuevo Point();\nLeer num, arr[0], obj.x;\nobj.x <- 7;\nEscribir obj.x;\nFinAlgoritmo\n".to_owned(),
+    );
+    let lowered = lower_module(&module, &source);
+    assert!(lowered.is_ok());
+    let Some(target_module) = lowered.ok() else {
+        return;
+    };
+    assert_eq!(verify_module(&target_module), Ok(()));
+    let Some(function) = target_module.find_function("main") else {
+        return;
+    };
+    let operations = function
+        .blocks
+        .iter()
+        .flat_map(|block| &block.instructions)
+        .filter_map(|instruction| function.columns.operation(*instruction))
+        .collect::<Vec<_>>();
+    assert!(operations.contains(&Operation::ObjectLoad));
+    assert!(operations.contains(&Operation::ObjectStore));
+    assert!(operations.contains(&Operation::CellField));
+}
+
 fn verify_lowered_counts(target_module: &pseudolearn_ir::Module) {
     let target_function = match target_module.find_function("main") {
         Some(function) => function,

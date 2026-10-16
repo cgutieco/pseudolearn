@@ -1,5 +1,5 @@
 use pseudolearn_runtime::{self as runtime, Handle, ValueKind};
-use pseudolearn_timeline::{VariableValue, capture_frame};
+use pseudolearn_timeline::{VariableValue, capture_frame, format_real};
 use pseudolearn_vm::Machine;
 use serde_json::{Map, Value, json};
 
@@ -25,7 +25,31 @@ fn value(value: &VariableValue) -> Value {
             identity_ordinal, ..
         } => json!({"ref":identity_ordinal}),
         VariableValue::NullReference => json!({"nulo":true}),
-        other => json!({"valor":other.display_representation()}),
+        other => json!({"valor":display_value(other)}),
+    }
+}
+
+fn display_value(value: &VariableValue) -> String {
+    match value {
+        VariableValue::Undefined => "sin_valor".to_owned(),
+        VariableValue::Integer(number) => number.to_string(),
+        VariableValue::Real(number) => format_real(*number),
+        VariableValue::Boolean(flag) => {
+            if *flag {
+                "Verdadero".to_owned()
+            } else {
+                "Falso".to_owned()
+            }
+        }
+        VariableValue::Character(symbol) => symbol.to_string(),
+        VariableValue::Text(content) => content.clone(),
+        VariableValue::ObjectReference {
+            identity_ordinal, ..
+        } => format!("objeto({identity_ordinal})"),
+        VariableValue::ArrayReference {
+            identity_ordinal, ..
+        } => format!("arreglo({identity_ordinal})"),
+        VariableValue::NullReference => "nulo".to_owned(),
     }
 }
 

@@ -30,9 +30,7 @@ impl Machine<'_> {
                 indices,
             } => {
                 let array = Handle(self.reference(*array)?);
-                let indices = self.read_indices(indices)?;
-                let cell =
-                    runtime::element_cell(&self.heap, array, &indices).map_err(memory_fault)?;
+                let cell = self.array_cell(array, indices)?;
                 self.save_cell(*destination, Cell::Managed(cell))?;
             }
             MemoryOp::CellField {
@@ -54,6 +52,23 @@ impl Machine<'_> {
             _ => return Err(INVALID_BYTECODE),
         }
         Ok(Flow::Continue)
+    }
+
+    fn array_cell(
+        &self,
+        array: Handle,
+        sources: &[crate::load::Source],
+    ) -> Result<MemoryCell, Fault> {
+        if sources.len() <= 8 {
+            let mut values = [0_i64; 8];
+            let count = self.read_indices_into(sources, &mut values)?;
+            let indices = values.get(..count).ok_or(INVALID_BYTECODE)?;
+            return runtime::element_cell(&self.heap, array, indices).map_err(memory_fault);
+        }
+        let mut values = [0_i64; 255];
+        let count = self.read_indices_into(sources, &mut values)?;
+        let indices = values.get(..count).ok_or(INVALID_BYTECODE)?;
+        runtime::element_cell(&self.heap, array, indices).map_err(memory_fault)
     }
 
     fn local_cell(
@@ -140,12 +155,14 @@ impl Machine<'_> {
                 runtime::write_memory_cell(&mut self.heap, cell, word).map_err(memory_fault)
             }
             Cell::Local { slot, absolute, .. } if slot.class == RegisterClass::Reference => {
+                self.mark_reference_dirty(absolute);
                 *self.references.get_mut(absolute).ok_or(INVALID_BYTECODE)? =
                     u32::try_from(word).map_err(|_| INVALID_BYTECODE)?;
                 self.reference_watermark = self.reference_watermark.max(absolute.saturating_add(1));
                 Ok(())
             }
             Cell::Local { absolute, .. } => {
+                self.mark_scalar_dirty(absolute);
                 *self.scalars.get_mut(absolute).ok_or(INVALID_BYTECODE)? = word;
                 self.scalar_watermark = self.scalar_watermark.max(absolute.saturating_add(1));
                 self.set_defined(absolute, true)

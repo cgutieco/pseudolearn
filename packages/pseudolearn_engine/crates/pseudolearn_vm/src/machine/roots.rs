@@ -7,7 +7,7 @@ impl Machine<'_> {
     pub(super) fn memory_roots(&mut self) -> Result<Vec<Handle>, Fault> {
         let mut roots = Vec::new();
         self.frame_roots(
-            self.current,
+            self.current.as_ref(),
             (
                 self.cursor.program_counter.saturating_sub(1),
                 self.cursor.reference_base,
@@ -44,7 +44,7 @@ impl Machine<'_> {
                     .ok_or(INVALID_BYTECODE)?;
             }
             self.frame_roots(
-                frame.function,
+                frame.function.as_ref(),
                 (continuation.saturating_sub(1), frame.reference_base),
                 roots,
             )?;

@@ -1,9 +1,9 @@
 use crate::error::TimelineError;
-use crate::inspect::{build_frame_view, build_single_object_view};
+use crate::inspect::build_frame_view;
 use crate::replay::{replay_machine_to_event, replay_to_event};
 use crate::scheduler::{CostScheduler, SchedulerOptions};
 use crate::store::CheckpointStore;
-use crate::views::{FrameView, ObjectView, StateSnapshot, VariableValue, VariableView};
+use crate::views::{FrameView, StateSnapshot, VariableValue, VariableView};
 use pseudolearn_vm::{LoadedProgram, Machine, RunOptions, machine_statements_executed};
 
 pub struct ExecutionTimeline<'program> {
@@ -85,18 +85,6 @@ impl<'program> ExecutionTimeline<'program> {
                 total_frames: machine.active_frames_count(),
             })?;
         Ok(build_frame_view(&machine, frame_position, &frame).variables)
-    }
-
-    pub fn query_object(
-        &mut self,
-        event_index: usize,
-        identity_ordinal: u64,
-    ) -> Result<ObjectView, TimelineError> {
-        let machine = self.machine_at(event_index)?;
-        let handle = crate::array_view::find_identity(&machine, identity_ordinal)
-            .ok_or(TimelineError::InvalidObject { identity_ordinal })?;
-        build_single_object_view(&machine, handle)
-            .ok_or(TimelineError::InvalidObject { identity_ordinal })
     }
 
     pub fn query_array_slice(

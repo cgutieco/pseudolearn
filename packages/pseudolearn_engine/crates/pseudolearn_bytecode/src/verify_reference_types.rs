@@ -41,10 +41,66 @@ pub(super) fn verify_cell_field(
     let Some(BytecodeOperand::Identifier(field_name)) = instruction.operands.get(1) else {
         return Err(TYPE_ERROR);
     };
-    let field_type = module
+    let field_type = object_field_type(module, class_name, field_name)?;
+    require_destination(
+        instruction,
+        function,
+        &ValueType::Cell(Box::new(field_type.clone())),
+    )
+}
+
+pub(super) fn verify_object_load(
+    module: &BytecodeModule,
+    function: &BytecodeFunction,
+    instruction: &Instruction,
+) -> Result<(), BytecodeError> {
+    if instruction.operands.len() != 2 {
+        return Err(TYPE_ERROR);
+    }
+    let (class_name, field_name) = object_field_operands(function, instruction)?;
+    let field_type = object_field_type(module, class_name, field_name)?;
+    require_destination(instruction, function, field_type)
+}
+
+pub(super) fn verify_object_store(
+    module: &BytecodeModule,
+    function: &BytecodeFunction,
+    instruction: &Instruction,
+) -> Result<(), BytecodeError> {
+    if instruction.operands.len() != 3 {
+        return Err(TYPE_ERROR);
+    }
+    let (class_name, field_name) = object_field_operands(function, instruction)?;
+    let field_type = object_field_type(module, class_name, field_name)?;
+    let source = instruction.operands.get(2).ok_or(TYPE_ERROR)?;
+    require_assignable(module, operand_type(function, source).as_ref(), field_type)
+}
+
+fn object_field_operands<'function>(
+    function: &'function BytecodeFunction,
+    instruction: &'function Instruction,
+) -> Result<(&'function String, &'function String), BytecodeError> {
+    let Some(BytecodeOperand::Register(receiver)) = instruction.operands.first() else {
+        return Err(TYPE_ERROR);
+    };
+    let Some(ValueType::Object(class_name)) = function.register_type(*receiver) else {
+        return Err(TYPE_ERROR);
+    };
+    let Some(BytecodeOperand::Identifier(field_name)) = instruction.operands.get(1) else {
+        return Err(TYPE_ERROR);
+    };
+    Ok((class_name, field_name))
+}
+
+fn object_field_type<'module>(
+    module: &'module BytecodeModule,
+    class_name: &str,
+    field_name: &str,
+) -> Result<&'module ValueType, BytecodeError> {
+    module
         .classes
         .iter()
-        .find(|class| &class.name == class_name)
+        .find(|class| class.name == class_name)
         .and_then(|class| {
             class
                 .fields
@@ -52,12 +108,7 @@ pub(super) fn verify_cell_field(
                 .find(|(name, _)| name == field_name)
                 .map(|(_, field_type)| field_type)
         })
-        .ok_or(TYPE_ERROR)?;
-    require_destination(
-        instruction,
-        function,
-        &ValueType::Cell(Box::new(field_type.clone())),
-    )
+        .ok_or(TYPE_ERROR)
 }
 
 pub(super) fn verify_cell_local(

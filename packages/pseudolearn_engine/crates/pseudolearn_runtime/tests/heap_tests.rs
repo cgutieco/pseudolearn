@@ -13,6 +13,22 @@ fn layout() -> ObjectLayout {
 }
 
 #[test]
+fn collection_need_matches_heap_policy_and_budget() {
+    let automatic = Heap::new(MemoryOptions::default());
+    assert!(!automatic.needs_collection(3));
+    let forced = Heap::new(MemoryOptions {
+        cells: 8,
+        collection: CollectionPolicy::Forced,
+    });
+    assert!(forced.needs_collection(1));
+    let over_budget = Heap::new(MemoryOptions {
+        cells: 2,
+        collection: CollectionPolicy::Disabled,
+    });
+    assert!(over_budget.needs_collection(3));
+}
+
+#[test]
 fn collection_preserves_cycles_and_never_reuses_identity() -> Result<(), MemoryError> {
     let mut heap = Heap::new(MemoryOptions::default());
     let first = new_object(&mut heap, layout(), &[])?;

@@ -54,7 +54,7 @@ struct CompileOptions<'module> {
 }
 
 pub fn compile_module(module: &Module) -> Result<VerifiedBytecode, BytecodeError> {
-    compile_module_with_superinstructions(module, &[])
+    compile_module_with_superinstructions(module, &[SuperInstruction::CompareBranch])
 }
 
 pub fn compile_module_with_superinstructions(
@@ -79,7 +79,8 @@ pub fn compile_module_with_superinstructions(
 }
 
 pub fn compile_text(source_text: &str) -> Result<VerifiedBytecode, BytecodeError> {
-    compile_text_with_superinstructions(source_text, &[])
+    let module = pseudolearn_ir::parse_module(source_text).map_err(BytecodeError::InvalidText)?;
+    compile_module(&module)
 }
 
 pub fn compile_text_with_superinstructions(

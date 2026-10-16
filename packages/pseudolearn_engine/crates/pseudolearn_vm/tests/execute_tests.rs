@@ -42,6 +42,21 @@ fn executes_checked_integer_and_real_operations() {
 }
 
 #[test]
+fn executes_direct_object_field_load_and_store() {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = const.i64 42\n  object.store %0, value, %1\n  %2 = object.load %0, value @4:1-4:2\n  return %2\n}\n";
+    assert_eq!(
+        execute_source(source, Fuel::unlimited()).exit,
+        RunExit::Completed(Some(RuntimeValue::Scalar(42)))
+    );
+}
+
+#[test]
+fn direct_object_field_read_traps_when_the_field_is_uninitialized() {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = object.load %0, value @3:1-3:2\n  return %1\n}\n";
+    assert_eq!(trap_of(source), Some("uninitializedVariableRead"));
+}
+
+#[test]
 fn reports_integer_trap_with_the_instruction_span() {
     let source_text = "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = const.i64 0\n  %2 = int.div %0, %1 @5:3-5:8\n  return %2\n}\n";
     let result = execute_source(source_text, Fuel::unlimited());
@@ -57,16 +72,28 @@ fn reports_integer_trap_with_the_instruction_span() {
 #[test]
 fn fused_compare_branch_preserves_result_and_profile_counts() {
     let source = "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.i64 2\n  %1 = const.i64 3\n  %2 = int.cmp lt, %0, %1 @2:1-2:4\n  branch %2, b1(), b2()\nb1() mass 0:\n  %3 = const.i64 42\n  return %3\nb2() mass 0:\n  %4 = const.i64 0\n  return %4\n}\n";
-    let baseline = compile_text(source);
+    let baseline = compile_text_with_superinstructions(source, &[]);
+    let default = compile_text(source);
     let fused = compile_text_with_superinstructions(source, &[SuperInstruction::CompareBranch]);
     assert!(baseline.is_ok());
+    assert!(default.is_ok());
     assert!(fused.is_ok());
-    let (Some(baseline), Some(fused)) = (baseline.ok(), fused.ok()) else {
+    let (Some(baseline), Some(default), Some(fused)) = (baseline.ok(), default.ok(), fused.ok())
+    else {
         return;
     };
     let baseline_result = run(&baseline, Fuel::unlimited());
+    let default_result = run(&default, Fuel::unlimited());
     let (fused_result, profile) = run_profiled(&fused, Fuel::unlimited());
     assert_eq!(baseline_result, fused_result);
+    assert_eq!(default_result, fused_result);
+    assert!(
+        default
+            .module()
+            .functions
+            .first()
+            .is_some_and(|function| !function.fast.superinstructions.is_empty())
+    );
     assert_eq!(
         fused_result.exit,
         RunExit::Completed(Some(RuntimeValue::Scalar(42)))

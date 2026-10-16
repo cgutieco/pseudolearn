@@ -1589,10 +1589,13 @@ publicado commits ni push de esta iteración. B8 no se ha iniciado.
 - [x] Completar avance por condición y las operaciones necesarias para todas las propiedades de API,
   incluida grabación/reproducción del anfitrión y partición de entrada; ninguna opción se ignora
   (`record_options`, `stepping`, `fault_injection`, `probes` en `pseudolearn_api`, con tests espejo).
-- [ ] Verificar coste y retención física completos: las imágenes de suspensión todavía copian bancos y
-  las consultas históricas reproducen instrucciones. Se añadieron puntos de control esparcidos (zancada 256,
-  tope 128, duplicación de zancada) en `execution_resource.rs` que acotan la reproducción por consulta; el
-  coste físico sigue sin medirse. La corrección funcional no acredita los objetivos de coste.
+- [ ] Acreditar todos los umbrales de coste y retención física de E-06. La Etapa 3 ya mantiene una máquina
+  viva, delega los checkpoints a `CheckpointStore` (tope 128) y reproduce desde el punto más cercano; M2
+  pasa con p95 de 0,001084 ms y M3 pasa el límite de 50 ms en las diez cargas, aunque `storage-10` queda
+  en 35,596084 ms frente al objetivo de diseño < 35 ms. E06-STACK midió 66,708 µs en una captura profunda
+  y no produjo `capture_p95_us`; E06-RSS midió 2,342× respecto de palabras vivas frente al límite 2,0×.
+  Se autorizó cerrar la Etapa 3 con estas desviaciones, sin declarar E-06 aprobado; véase el resultado de
+  RFC-014 §4.
 - [x] Propiedades cerradas (véase B7.5); la capacidad genérica `api` ya puede anunciarse con evidencia.
 
 **B7.2 · CLI.**
@@ -1740,7 +1743,12 @@ no semánticos y funciones de más de 40 líneas.
 
 1. **Etapa 1 (RFC-014 §4):** Montón plano en banda (`pseudolearn_abi` + `pseudolearn_runtime`), eliminando `BTreeMap<Handle, Allocation>` del camino crítico y acotando `HeapDelta` a `words[..used]`.
 2. **Etapa 2 (RFC-014 §4):** `object.load` (`O49`) y `object.store` (`O50`) directos en `ir`, `lowering`, `bytecode` y `vm`; accesos 1D a arreglos sin `Vec<i64>`; `SuperInstruction::CompareBranch` activa por omisión; despacho virtual por índice `O(1)` y raíces de GC perezosas. Cierre de `B7.7` (`AWFY-core` ≥ 30×).
-3. **Etapa 3 (RFC-014 §4, D1):** Unificación de `pseudolearn_api::ExecutionResource` sobre `CheckpointStore` de `pseudolearn_timeline`, poda de superficie duplicada en `timeline`, ventana sucia en `MachineDelta` y reproducción híbrida `Fast` $\to$ `Probed`. Cierre de `B7.1` y `E-06`.
+3. **Etapa 3 (RFC-014 §4, D1; cerrada localmente el 2026-10-16):** Unificación de
+   `pseudolearn_api::ExecutionResource` sobre `CheckpointStore` de `pseudolearn_timeline`, poda de
+   superficie duplicada en `timeline`, ventana sucia en `MachineDelta` y reproducción híbrida `Fast`
+   $\to$ `Probed`. `B7.1` quedó implementado; el cierre de etapa fue autorizado con desviaciones
+   E-06 aceptadas. Los criterios no alcanzados y la evidencia están en el
+   [resultado de ejecución de RFC-014 §4](14-rfc-cierre-b7-arquitectura-y-rendimiento.md#resultado-de-ejecución-de-la-etapa-3).
 4. **Etapa 4 (RFC-014 §4, D2):** Tests de frontera y propiedades en `pseudolearn_timeline` y campaña `cargo-mutants` crate por crate (`--in-place --timeout 30`) con ≥ 85 % en los 6 crates (`E-16`).
 5. **Etapa 5 (RFC-014 §4, D3-a):** Conservar advertencias de análisis en `execute` (`B7.4`) y reejecutar `E-17` sobre binarios finales (`status: passed`).
 6. **Etapa 6 (RFC-014 §4):** Actualización de `README.md` (`DOC-README-TRUTH`) y `cargo xtask verify` íntegro en `pseudolearn_engine` y `pseudolearn_spec`. B8 no se inicia sin autorización nueva.

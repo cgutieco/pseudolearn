@@ -5,7 +5,7 @@ use pseudolearn_vm::{
     machine_scalar, machine_statements_executed,
 };
 
-use crate::model::{FrameView, ObjectView, StateSnapshot, VariableValue, VariableView};
+use crate::model::{FrameView, StateSnapshot, VariableValue, VariableView};
 
 pub fn capture_snapshot(machine: &Machine, event_index: usize) -> StateSnapshot {
     let statement_index = machine_statements_executed(machine);
@@ -17,13 +17,11 @@ pub fn capture_snapshot(machine: &Machine, event_index: usize) -> StateSnapshot 
             frames.push(build_frame_view(machine, position, &inspection));
         }
     }
-    let objects = build_object_views(machine);
     StateSnapshot {
         event_index,
         statement_index,
         output_text,
         frames,
-        objects,
     }
 }
 
@@ -179,53 +177,6 @@ fn decode_reference_value(machine: &Machine, handle_word: u32) -> VariableValue 
     }
 }
 
-fn build_object_views(machine: &Machine) -> Vec<ObjectView> {
-    let heap = machine.heap();
-    let mut views = Vec::new();
-    for handle in pseudolearn_runtime::live_allocation_handles(heap) {
-        if !pseudolearn_runtime::is_object_allocation(heap, handle) {
-            continue;
-        }
-        if let Some(object_view) = build_single_object_view(machine, handle) {
-            views.push(object_view);
-        }
-    }
-    views
-}
-
-pub(crate) fn build_single_object_view(machine: &Machine, handle: Handle) -> Option<ObjectView> {
-    let heap = machine.heap();
-    let identity_ordinal = pseudolearn_runtime::allocation_ordinal(heap, handle).ok()?;
-    let class_identifier = pseudolearn_runtime::object_class_identifier(heap, handle).ok()?;
-    let field_kinds = pseudolearn_runtime::object_field_kinds(heap, handle).ok()?;
-    let mut fields = Vec::new();
-    for (field_index, kind) in field_kinds.iter().enumerate() {
-        let is_defined =
-            pseudolearn_runtime::is_defined_field(heap, handle, field_index).unwrap_or(false);
-        let variable_type = format_kind_type(*kind);
-        let field_name = format!("campo_{field_index}");
-        let value = if !is_defined {
-            VariableValue::Undefined
-        } else {
-            let raw_word =
-                pseudolearn_runtime::read_field_raw(heap, handle, field_index).unwrap_or(0);
-            decode_field_value(machine, *kind, raw_word)
-        };
-        fields.push(VariableView {
-            name: field_name,
-            variable_type,
-            value,
-            alias: None,
-        });
-    }
-    Some(ObjectView {
-        handle_word: handle.0,
-        identity_ordinal,
-        class_identifier,
-        fields,
-    })
-}
-
 pub(crate) fn decode_field_value(
     machine: &Machine,
     kind: ValueKind,
@@ -268,15 +219,5 @@ fn format_value_type(value_type: &ValueType) -> String {
         ValueType::Array { .. } => "Arreglo".to_string(),
         ValueType::Cell(_) => "Celda".to_string(),
         ValueType::Unit => "Nulo".to_string(),
-    }
-}
-
-fn format_kind_type(kind: ValueKind) -> String {
-    match kind {
-        ValueKind::Integer => "Entero".to_string(),
-        ValueKind::Real => "Real".to_string(),
-        ValueKind::Boolean => "Logico".to_string(),
-        ValueKind::Character => "Caracter".to_string(),
-        ValueKind::Reference => "Referencia".to_string(),
     }
 }

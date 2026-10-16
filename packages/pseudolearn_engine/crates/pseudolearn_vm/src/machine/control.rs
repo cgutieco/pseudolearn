@@ -58,7 +58,8 @@ impl Machine<'_> {
     }
 
     fn apply_moves(&mut self, start: usize, end: usize) -> Result<(), Fault> {
-        let moves = self.current.moves.get(start..end).ok_or(INVALID_BYTECODE)?;
+        let function = std::sync::Arc::clone(&self.current);
+        let moves = function.moves.get(start..end).ok_or(INVALID_BYTECODE)?;
         for entry in moves {
             self.move_within(entry)?;
         }

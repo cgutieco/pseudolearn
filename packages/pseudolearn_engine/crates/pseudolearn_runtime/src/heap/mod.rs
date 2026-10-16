@@ -11,7 +11,7 @@ use pseudolearn_abi::{
 use std::collections::{BTreeMap, BTreeSet};
 
 use crate::text::TextArena;
-use crate::{MemoryError, MemoryOptions, ValueKind};
+use crate::{CollectionPolicy, MemoryError, MemoryOptions, ValueKind};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ObjectLayout {
@@ -76,6 +76,16 @@ impl Heap {
             allocated_cells: 0,
             live_cells: 0,
         }
+    }
+
+    pub fn needs_collection(&self, cells: u64) -> bool {
+        self.options.collection == CollectionPolicy::Forced
+            || self
+                .live_cells
+                .saturating_add(self.allocated_cells)
+                .saturating_add(cells)
+                > self.options.cells
+            || self.allocated_cells >= self.live_cells.max(4096)
     }
 
     pub fn identity(&self, handle: Handle) -> Result<u64, MemoryError> {

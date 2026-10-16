@@ -187,6 +187,40 @@ fn rejects_field_cell_with_incompatible_field_type() -> Result<(), BytecodeError
 }
 
 #[test]
+fn rejects_object_load_with_a_destination_type_that_differs_from_the_field()
+-> Result<(), BytecodeError> {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = object.load %0, value @2:1-2:2\n  return\n}\n";
+    let mut candidate = module(source)?;
+    set_destination_type(
+        &mut candidate,
+        Opcode::ObjectLoad,
+        pseudolearn_bytecode::ValueType::Bool,
+    )?;
+    assert_eq!(
+        verify_bytecode(&candidate),
+        Err(BytecodeError::Verification(VerificationRule::ValueClass))
+    );
+    Ok(())
+}
+
+#[test]
+fn rejects_object_store_with_a_value_that_differs_from_the_field() -> Result<(), BytecodeError> {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = const.bool true\n  %2 = const.i64 7\n  object.store %0, value, %2\n  return\n}\n";
+    let mut candidate = module(source)?;
+    replace_register_operand(
+        &mut candidate,
+        Opcode::ObjectStore,
+        2,
+        reference_register(0),
+    )?;
+    assert_eq!(
+        verify_bytecode(&candidate),
+        Err(BytecodeError::Verification(VerificationRule::ValueClass))
+    );
+    Ok(())
+}
+
+#[test]
 fn rejects_local_cell_with_incompatible_value_type() -> Result<(), BytecodeError> {
     let source =
         "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = cell.local i64\n  return\n}\n";

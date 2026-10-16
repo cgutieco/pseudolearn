@@ -1,7 +1,7 @@
 use crate::error::TimelineError;
 use crate::views::{StateSnapshot, capture_snapshot};
 use pseudolearn_vm::{
-    LoadedProgram, Machine, MachineImage, RunExit, RunOptions, machine_event_count, resume_machine,
+    LoadedProgram, Machine, MachineImage, RunOptions, machine_event_count, resume_machine,
 };
 
 pub fn replay_to_event(
@@ -14,7 +14,7 @@ pub fn replay_to_event(
     Ok(capture_snapshot(&machine, target_event))
 }
 
-pub(crate) fn replay_machine_to_event<'program>(
+pub fn replay_machine_to_event<'program>(
     program: &'program LoadedProgram,
     image: MachineImage,
     target_event: usize,
@@ -28,12 +28,16 @@ pub(crate) fn replay_machine_to_event<'program>(
     }
     let mut machine = resume_machine(program, image, options.clone())
         .map_err(|_| TimelineError::ReplayFailure)?;
+    machine.replace_input_tape(options.inputs.clone());
     while machine_event_count(&machine) < target_count {
-        match machine.step_instruction() {
-            None => {}
-            Some(RunExit::Service(_)) => return Err(TimelineError::ReplayFailure),
-            Some(_) if machine_event_count(&machine) >= target_count => break,
-            Some(_) => return Err(TimelineError::ReplayFailure),
+        let exit = machine.step_instruction();
+        let reached_target = machine_event_count(&machine) >= target_count;
+        pseudolearn_vm::take_machine_events(&mut machine);
+        if reached_target {
+            break;
+        }
+        if exit.is_some() {
+            return Err(TimelineError::ReplayFailure);
         }
     }
     if machine_event_count(&machine) != target_count {

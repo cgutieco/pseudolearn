@@ -20,7 +20,7 @@ pub struct MachineImage {
 }
 
 pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
-    MachineImage {
+    let image = MachineImage {
         state: machine.capture_machine_state(),
         heap: machine.heap.clone(),
         remaining: machine.remaining,
@@ -34,11 +34,17 @@ pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
         probed: machine.probed,
         input_requested: machine.input_requested_emitted,
         output_suppressed: machine.output_suppressed,
-    }
+    };
+    machine.frame_dirty_from.set(machine.frames.len());
+    machine.begin_bank_delta_tracking();
+    image
 }
 
 pub fn snapshot_machine_lean(machine: &Machine<'_>) -> MachineImage {
     let mut image = snapshot_machine(machine);
+    image.state.scalars.truncate(image.state.scalar_limit);
+    image.state.defined.truncate(image.state.scalar_limit);
+    image.state.references.truncate(image.state.reference_limit);
     image.events_dropped = image.state.event_count;
     image.events = Vec::new();
     image
@@ -73,11 +79,20 @@ pub fn resume_machine<'program>(
     image: MachineImage,
     options: RunOptions,
 ) -> Result<Machine<'program>, VmTrap> {
+    let current_function_index = image.state.current_function_index;
     let current = program
+        .inner
         .functions
-        .get(image.state.current_function_index)
+        .get(current_function_index)
+        .cloned()
         .ok_or_else(|| VmTrap::new("invalidBytecode", None))?;
-    let mut machine = Machine::new_instance(program, current, image.remaining, options);
+    let mut machine = Machine::new_instance(super::initialization::MachineInitialization {
+        program: program.clone(),
+        current,
+        current_function_index,
+        fuel: image.remaining,
+        options,
+    });
     machine.restore_machine_state(&image.state);
     restore_payload(&mut machine, image);
     Ok(machine)

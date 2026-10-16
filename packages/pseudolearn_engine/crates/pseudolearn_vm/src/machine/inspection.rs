@@ -1,11 +1,10 @@
-use std::collections::BTreeMap;
+use std::sync::Arc;
 
-use pseudolearn_bytecode::{Register, ValueType};
-use pseudolearn_runtime::{Handle, Heap, RandomState};
+use pseudolearn_bytecode::Register;
+use pseudolearn_runtime::{Heap, RandomState};
 
 use crate::RunExit;
 use crate::dispatch::step;
-use crate::load::{LoadedFunction, LoadedProgram};
 use crate::machine::cells::Cell;
 use crate::machine::{ControlFrame, Flow, Machine};
 
@@ -16,6 +15,8 @@ pub struct SavedControlFrame {
     pub destination: Option<Register>,
     pub scalar_base: usize,
     pub reference_base: usize,
+    pub scalar_limit: usize,
+    pub reference_limit: usize,
     pub cell_count: usize,
 }
 
@@ -28,6 +29,8 @@ pub struct MachineStateRecord {
     pub frames: Vec<SavedControlFrame>,
     pub scalar_watermark: usize,
     pub reference_watermark: usize,
+    pub scalar_limit: usize,
+    pub reference_limit: usize,
     pub scalars: Vec<u64>,
     pub references: Vec<u32>,
     pub defined: Vec<bool>,
@@ -55,6 +58,8 @@ impl MachineStateRecord {
             frames: Vec::new(),
             scalar_watermark: self.scalar_watermark,
             reference_watermark: self.reference_watermark,
+            scalar_limit: self.scalar_limit,
+            reference_limit: self.reference_limit,
             scalars: Vec::new(),
             references: Vec::new(),
             defined: Vec::new(),
@@ -74,20 +79,9 @@ impl MachineStateRecord {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct ActiveFrameInspection<'program> {
-    pub function_name: &'program str,
-    pub names: &'program BTreeMap<Register, String>,
-    pub scalar_base: usize,
-    pub reference_base: usize,
-    pub receiver_handle: Option<Handle>,
-    pub scalar_types: &'program [ValueType],
-    pub reference_types: &'program [ValueType],
-}
-
 impl<'program> Machine<'program> {
     pub fn step_instruction(&mut self) -> Option<RunExit> {
-        let function = self.current;
+        let function = self.current.as_ref();
         let position = self.cursor.program_counter;
         self.cursor.program_counter = position.wrapping_add(1);
         match step(self, function.operation(position, self.probed)) {
@@ -120,10 +114,12 @@ impl<'program> Machine<'program> {
             cursor_pc: self.cursor.program_counter,
             cursor_scalar_base: self.cursor.scalar_base,
             cursor_reference_base: self.cursor.reference_base,
-            current_function_index: function_index_of(self.program, self.current),
+            current_function_index: self.current_function_index,
             frames: Vec::new(),
             scalar_watermark: self.scalar_watermark,
             reference_watermark: self.reference_watermark,
+            scalar_limit: self.scalar_limit,
+            reference_limit: self.reference_limit,
             scalars: Vec::new(),
             references: Vec::new(),
             defined: Vec::new(),
@@ -146,8 +142,16 @@ impl<'program> Machine<'program> {
         self.cursor.program_counter = record.cursor_pc;
         self.cursor.scalar_base = record.cursor_scalar_base;
         self.cursor.reference_base = record.cursor_reference_base;
-        if let Some(function) = self.program.functions.get(record.current_function_index) {
-            self.current = function;
+        self.current_function_index = record.current_function_index;
+        self.scalar_limit = record.scalar_limit;
+        self.reference_limit = record.reference_limit;
+        if let Some(function) = self
+            .program
+            .inner
+            .functions
+            .get(record.current_function_index)
+        {
+            self.current = Arc::clone(function);
         }
         self.restore_frames_from_record(&record.frames);
         self.restore_banks_from_record(record);
@@ -169,69 +173,51 @@ impl<'program> Machine<'program> {
     fn restore_frames_from_record(&mut self, frames: &[SavedControlFrame]) {
         self.frames.clear();
         for saved in frames {
-            if let Some(function) = self.program.functions.get(saved.function_index) {
+            if let Some(function) = self.program.inner.functions.get(saved.function_index) {
                 self.frames.push(ControlFrame {
-                    function,
+                    function: Arc::clone(function),
+                    function_index: saved.function_index,
                     return_point: saved.return_point,
                     destination: saved.destination,
                     scalar_base: saved.scalar_base,
                     reference_base: saved.reference_base,
+                    scalar_limit: saved.scalar_limit,
+                    reference_limit: saved.reference_limit,
                     cell_count: saved.cell_count,
                 });
             }
         }
+        self.frame_dirty_from.set(self.frames.len());
     }
 
     fn restore_banks_from_record(&mut self, record: &MachineStateRecord) {
         self.scalar_watermark = record.scalar_watermark;
         self.reference_watermark = record.reference_watermark;
-        self.scalars.resize(record.scalars.len(), 0);
-        self.scalars.copy_from_slice(&record.scalars);
-        self.references.resize(record.references.len(), 0);
-        self.references.copy_from_slice(&record.references);
-        self.defined.resize(record.defined.len(), false);
-        self.defined.copy_from_slice(&record.defined);
-    }
-
-    pub fn active_frames_count(&self) -> usize {
-        self.frames.len().saturating_add(1)
-    }
-
-    pub fn active_frame(&self, frame_position: usize) -> Option<ActiveFrameInspection<'program>> {
-        let total_frames = self.active_frames_count();
-        if frame_position >= total_frames {
-            return None;
+        self.scalars.resize(record.scalar_limit, 0);
+        let scalar_count = self.scalars.len().min(record.scalars.len());
+        if let (Some(destination), Some(source)) = (
+            self.scalars.get_mut(..scalar_count),
+            record.scalars.get(..scalar_count),
+        ) {
+            destination.copy_from_slice(source);
         }
-        if frame_position < self.frames.len() {
-            let frame = self.frames.get(frame_position)?;
-            Some(ActiveFrameInspection {
-                function_name: if frame.function.name.trim_start_matches('@') == "main" {
-                    &self.program.name
-                } else {
-                    &frame.function.name
-                },
-                names: &frame.function.names,
-                scalar_base: frame.scalar_base,
-                reference_base: frame.reference_base,
-                receiver_handle: frame_receiver(self, frame.reference_base),
-                scalar_types: &frame.function.scalar_types,
-                reference_types: &frame.function.reference_types,
-            })
-        } else {
-            Some(ActiveFrameInspection {
-                function_name: if self.current.name.trim_start_matches('@') == "main" {
-                    &self.program.name
-                } else {
-                    &self.current.name
-                },
-                names: &self.current.names,
-                scalar_base: self.cursor.scalar_base,
-                reference_base: self.cursor.reference_base,
-                receiver_handle: frame_receiver(self, self.cursor.reference_base),
-                scalar_types: &self.current.scalar_types,
-                reference_types: &self.current.reference_types,
-            })
+        self.references.resize(record.reference_limit, 0);
+        let reference_count = self.references.len().min(record.references.len());
+        if let (Some(destination), Some(source)) = (
+            self.references.get_mut(..reference_count),
+            record.references.get(..reference_count),
+        ) {
+            destination.copy_from_slice(source);
         }
+        self.defined.resize(record.scalar_limit, false);
+        let defined_count = self.defined.len().min(record.defined.len());
+        if let (Some(destination), Some(source)) = (
+            self.defined.get_mut(..defined_count),
+            record.defined.get(..defined_count),
+        ) {
+            destination.copy_from_slice(source);
+        }
+        self.reset_bank_delta_tracking();
     }
 
     pub fn heap(&self) -> &Heap {
@@ -243,33 +229,18 @@ impl<'program> Machine<'program> {
     }
 }
 
-fn function_index_of(program: &LoadedProgram, target: &LoadedFunction) -> usize {
-    program
-        .functions
-        .iter()
-        .position(|function| std::ptr::eq(function, target))
-        .unwrap_or(0)
-}
-
-fn frame_receiver(machine: &Machine, reference_base: usize) -> Option<Handle> {
-    let handle_word = machine.references.get(reference_base).copied()?;
-    if handle_word == 0 {
-        None
-    } else {
-        Some(Handle(handle_word))
-    }
-}
-
 pub(super) fn capture_saved_frames(machine: &Machine) -> Vec<SavedControlFrame> {
     machine
         .frames
         .iter()
         .map(|frame| SavedControlFrame {
-            function_index: function_index_of(machine.program, frame.function),
+            function_index: frame.function_index,
             return_point: frame.return_point,
             destination: frame.destination,
             scalar_base: frame.scalar_base,
             reference_base: frame.reference_base,
+            scalar_limit: frame.scalar_limit,
+            reference_limit: frame.reference_limit,
             cell_count: frame.cell_count,
         })
         .collect()

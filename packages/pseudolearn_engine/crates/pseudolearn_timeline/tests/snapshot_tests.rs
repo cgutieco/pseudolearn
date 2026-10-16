@@ -1,5 +1,5 @@
 use pseudolearn_bytecode::compile_text;
-use pseudolearn_timeline::{VariableValue, capture_snapshot, format_real};
+use pseudolearn_timeline::{capture_snapshot, format_real};
 use pseudolearn_vm::{Fuel, RunOptions, create_machine, load};
 
 fn build_program(source_text: &str) -> Option<pseudolearn_vm::LoadedProgram> {
@@ -12,51 +12,6 @@ fn format_real_ensures_at_least_one_decimal() {
     assert_eq!(format_real(42.0), "42.0");
     assert_eq!(format_real(12.345), "12.345");
     assert_eq!(format_real(0.0), "0.0");
-}
-
-#[test]
-fn variable_value_display_representation_matches_specification() {
-    assert_eq!(
-        VariableValue::Undefined.display_representation(),
-        "sin_valor"
-    );
-    assert_eq!(VariableValue::Integer(42).display_representation(), "42");
-    assert_eq!(VariableValue::Real(2.5).display_representation(), "2.5");
-    assert_eq!(
-        VariableValue::Boolean(true).display_representation(),
-        "Verdadero"
-    );
-    assert_eq!(
-        VariableValue::Boolean(false).display_representation(),
-        "Falso"
-    );
-    assert_eq!(VariableValue::Character('z').display_representation(), "z");
-    assert_eq!(
-        VariableValue::Text("texto".to_string()).display_representation(),
-        "texto"
-    );
-    assert_eq!(
-        VariableValue::NullReference.display_representation(),
-        "nulo"
-    );
-    assert_eq!(
-        VariableValue::ObjectReference {
-            handle_word: 1,
-            identity_ordinal: 7,
-            class_identifier: 3,
-        }
-        .display_representation(),
-        "objeto(7)"
-    );
-    assert_eq!(
-        VariableValue::ArrayReference {
-            handle_word: 2,
-            identity_ordinal: 9,
-            dimensions: vec![5],
-        }
-        .display_representation(),
-        "arreglo(9)"
-    );
 }
 
 #[test]

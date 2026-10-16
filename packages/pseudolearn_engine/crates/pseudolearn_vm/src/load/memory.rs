@@ -7,14 +7,21 @@ use pseudolearn_bytecode::{
 };
 use pseudolearn_runtime::ValueKind;
 
+mod arrays;
 mod model;
+mod objects;
+use arrays::{array_access, direct_array_access};
 pub(crate) use model::{MemoryOp, TypedSource, ValueSource};
+use objects::{field_cell, object_new, object_read, object_write};
 
 pub(super) fn decode(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
+    if let Some(operation) = direct_operation(context, instruction)? {
+        return Ok(operation);
+    }
     let operation = match instruction.opcode {
         Opcode::ArrayNew => array_new(context, instruction)?,
         Opcode::ArrayLoad | Opcode::ArrayStore | Opcode::CellElement => {
@@ -47,6 +54,18 @@ pub(super) fn decode(
     Ok(Op::Memory { site })
 }
 
+fn direct_operation(
+    context: &DecodeContext<'_>,
+    instruction: &Instruction,
+) -> Result<Option<Op>, VmTrap> {
+    match instruction.opcode {
+        Opcode::ObjectLoad => object_read(context, instruction).map(Some),
+        Opcode::ObjectStore => object_write(context, instruction).map(Some),
+        Opcode::ArrayLoad | Opcode::ArrayStore => direct_array_access(context, instruction),
+        _ => Ok(None),
+    }
+}
+
 fn array_new(context: &DecodeContext<'_>, instruction: &Instruction) -> Result<MemoryOp, VmTrap> {
     let Some(BytecodeOperand::Type(kind)) = instruction.operands.first() else {
         return Err(invalid_bytecode());
@@ -62,52 +81,6 @@ fn array_new(context: &DecodeContext<'_>, instruction: &Instruction) -> Result<M
             context,
             instruction.operands.get(1..).ok_or_else(invalid_bytecode)?,
         )?,
-    })
-}
-
-fn array_access(
-    context: &DecodeContext<'_>,
-    instruction: &Instruction,
-) -> Result<MemoryOp, VmTrap> {
-    let array = reference(instruction.operands.first())?;
-    let operands = instruction.operands.get(1..).ok_or_else(invalid_bytecode)?;
-    match instruction.opcode {
-        Opcode::ArrayLoad => Ok(MemoryOp::ArrayRead {
-            destination: destination(instruction)?,
-            array,
-            indices: indices(context, operands)?,
-        }),
-        Opcode::CellElement => Ok(MemoryOp::CellElement {
-            destination: destination(instruction)?.index,
-            array,
-            indices: indices(context, operands)?,
-        }),
-        _ => Ok(MemoryOp::ArrayWrite {
-            array,
-            indices: indices(
-                context,
-                operands
-                    .get(..operands.len().saturating_sub(1))
-                    .ok_or_else(invalid_bytecode)?,
-            )?,
-            source: typed(context, operands.last())?,
-        }),
-    }
-}
-
-fn object_new(context: &DecodeContext<'_>, instruction: &Instruction) -> Result<MemoryOp, VmTrap> {
-    let Some(BytecodeOperand::Identifier(name)) = instruction.operands.first() else {
-        return Err(invalid_bytecode());
-    };
-    let class = context
-        .module
-        .classes
-        .iter()
-        .position(|class| &class.name == name)
-        .ok_or_else(invalid_bytecode)?;
-    Ok(MemoryOp::ObjectNew {
-        destination: destination(instruction)?.index,
-        class,
     })
 }
 
@@ -127,34 +100,6 @@ fn local_cell(loaded: &mut LoadedFunction, instruction: &Instruction) -> Result<
         destination: destination(instruction)?.index,
         kind,
         slot: Register { class, index },
-    })
-}
-
-fn field_cell(context: &DecodeContext<'_>, instruction: &Instruction) -> Result<MemoryOp, VmTrap> {
-    let Some(BytecodeOperand::Register(receiver)) = instruction.operands.first() else {
-        return Err(invalid_bytecode());
-    };
-    let Some(ValueType::Object(name)) = context.function.register_type(*receiver) else {
-        return Err(invalid_bytecode());
-    };
-    let Some(BytecodeOperand::Identifier(field)) = instruction.operands.get(1) else {
-        return Err(invalid_bytecode());
-    };
-    let class = context
-        .module
-        .classes
-        .iter()
-        .find(|class| &class.name == name)
-        .ok_or_else(invalid_bytecode)?;
-    let offset = class
-        .fields
-        .iter()
-        .position(|(name, _)| name == field)
-        .ok_or_else(invalid_bytecode)?;
-    Ok(MemoryOp::CellField {
-        destination: destination(instruction)?.index,
-        receiver: receiver.index,
-        offset,
     })
 }
 

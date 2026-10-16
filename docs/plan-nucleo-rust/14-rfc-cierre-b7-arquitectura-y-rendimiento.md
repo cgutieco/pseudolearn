@@ -248,17 +248,42 @@ Cumplir `IR.INSTRUCTIONS#O49` (`object.load`) y `#O50` (`object.store`), elimina
 
 #### Verificación obligatoria al cerrar la Etapa 2 (`B7.7`)
 ```bash
-cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml
-cargo run --manifest-path packages/pseudolearn_spec/Cargo.toml --bin see -- check --subject engine
-cargo run --manifest-path packages/pseudolearn_benchmarks/Cargo.toml -- run \
-  --suite awfy-core \
-  --worker packages/pseudolearn_engine/target/release/pseudolearn_bench_worker \
-  --output packages/pseudolearn_benchmarks/results/macos-r5-vm/summary.json
-cargo run --manifest-path packages/pseudolearn_benchmarks/Cargo.toml -- compare \
-  packages/pseudolearn_benchmarks/results/macos-r3-awfy/summary.json \
-  packages/pseudolearn_benchmarks/results/macos-r5-vm/summary.json
+(cd packages/pseudolearn_engine && cargo test --jobs 1 -- --test-threads=1)
+(cd packages/pseudolearn_engine && cargo xtask verify)
+(cd packages/pseudolearn_spec && cargo run --manifest-path Cargo.toml --bin see -- conform --subject engine)
+(cd packages/pseudolearn_engine && cargo build --release -p pseudolearn_bench_worker --jobs 1)
+(cd packages/pseudolearn_benchmarks && dart run tool/collect_execution.dart)
 ```
 - **Umbral de salida:** Media geométrica **≥ 30,0×** y mínimo por programa **≥ 10,0×** (umbral normativo M2 ≥ 5×, M3 ≥ 30×).
+
+#### Resultado de ejecución de la Etapa 2
+**Estado: completada localmente el 2026-10-16; sin publicar.**
+
+Se añadieron la verificación de tipos y el lowering directo de `object.load` y `object.store`,
+manteniendo celdas para los argumentos por referencia. `CompareBranch` quedó habilitada por omisión.
+El cargador genera formas de despacho directo para acceso a campos y a arreglos 1D; los arreglos de
+mayor rango usan búferes de pila acotados. El runtime resuelve campos con una sola lectura validada
+de cabecera y conserva las rutas comprobadas para arreglos 1D. Las llamadas virtuales consultan una
+tabla plana por clase y la VM difiere el recorrido de raíces hasta que puede ocurrir GC.
+
+`cargo xtask verify` pasó: formato, Clippy, suite completa del workspace, doctests, `rust-checks all`,
+`rust-checks toolchain` y auditorías de `cargo deny` (advisories, bans, licenses y sources). La caché
+advisory de Cargo del usuario era de solo lectura; la auditoría se completó sin red con una caché
+temporal local. La conformidad se ejecutó desde `packages/pseudolearn_spec` con
+`cargo run --manifest-path Cargo.toml --bin see -- conform --subject engine`: **1512 observaciones,
+0 divergencias**.
+
+La campaña ejecutada desde `packages/pseudolearn_benchmarks` con
+`dart run tool/collect_execution.dart` midió 10 procesos × 300 muestras por carga, sin descartar
+muestras, en un Apple M2 de 16 GiB. Frente a `macos-r3-awfy`, la media geométrica fue **30,026×** y
+el mínimo **19,866×** (`storage`); los diez programas superaron 10×. El veredicto del colector fue
+`targetReached: true`. La evidencia cruda, la captura de fuentes, los procesos y el resumen están en
+`packages/pseudolearn_benchmarks/results/macos-r5-vm/`.
+
+Durante la verificación se reemplazaron los comandos inexistentes `see check` y `cargo run` para
+`pseudolearn_benchmarks`: SEE expone `conform`, y benchmarks es un paquete Dart. La sección de
+verificación contiene ahora los comandos ejecutables; el colector calcula las razones contra la
+referencia en el mismo resumen.
 
 ---
 
@@ -313,6 +338,43 @@ cargo run --manifest-path packages/pseudolearn_spec/Cargo.toml --bin see -- \
     - `rewind_p95_ms <= 50.0` en los 10 programas (incluido `storage-10`);
     - `E06-STACK` `capture_p95_us < 50.0`;
     - `E06-RSS` `rss_ratio_to_heap <= 2.0`.
+
+#### Resultado de ejecución de la Etapa 3
+**Estado: cerrada localmente el 2026-10-16 por instrucción explícita de la persona responsable, con
+desviaciones E-06 aceptadas; sin publicar.** La implementación de B7.1 quedó integrada. El cierre no
+cambia los umbrales: E-06 se midió con `all_passed: false` y no alcanza todos los criterios de salida
+de esta etapa.
+
+**Qué se construyó.** `ExecutionResource` conserva la máquina viva y usa `CheckpointStore` con
+capacidad de 128 puntos de control. `MachineDelta` registra las ventanas vivas de los bancos y los
+marcos sucios de forma incremental. La reproducción restaura desde el punto más cercano, evita avanzar
+si el destino coincide con él y drena los eventos por instrucción. `pseudolearn_timeline` ya no
+contiene el diferencial duplicado ni las vistas de objeto con campos inventados; los README de los
+crates afectados describen las decisiones implementadas.
+
+**Tests y verificadores.** La suite completa del workspace de `pseudolearn_engine` terminó sin fallos,
+incluidas las pruebas de `pseudolearn_vm`, `pseudolearn_timeline` y `pseudolearn_api`. Formato,
+Clippy, `rust-checks all` y `rust-checks toolchain` pasaron. La ejecución final de `cargo xtask verify`
+no pudo terminar con código cero porque `cargo deny` no pudo abrir su bloqueo de caché advisory en el
+entorno aislado; `cargo deny check` se ejecutó luego con acceso a esa caché y pasó en advisories,
+bans, licenses y sources. `git diff --check` pasó.
+
+**Medición E-06 y desviaciones.** El worker reportó `status: measured`, `all_passed: false`, con un
+proceso y 30 iteraciones. M2 alcanzó p95 de **0,001084 ms** y pasó en los diez programas. M3 obtuvo
+p95 agregado de **16,40625 ms** y pasó el límite de **50 ms** en los diez; `storage-10` midió
+**35,596084 ms**, por lo que no alcanza el objetivo de diseño más exigente de **< 35 ms** por
+**0,596084 ms**. En E06-STACK se copiaron 121 ranuras tanto con 1 222 como con 100 222 marcos, pero
+la captura profunda medida fue **66,708 µs**, superior a 50 µs; además, el reporte no produce el
+campo exigido `capture_p95_us`, así que esa puerta no queda acreditada. En E06-RSS el cociente
+respecto de palabras vivas fue **2,342×** (52 396 032 bytes extra), por encima del máximo **2,0×**;
+con el denominador de huella residente del propio worker, el cociente fue **3,163×** y también
+excedió su criterio de **2,5×**.
+
+El comando de verificación documentado (`see experiment r5-e06`) no existe en la CLI actual de
+`pseudolearn_spec`. La medición se hizo con el worker y se conservó como reporte no canónico; no se
+sustituyó ni se modificó `packages/pseudolearn_spec/results/r5-e06.json`, y no se afirma que E-06
+haya pasado. La persona responsable autorizó cerrar la etapa con estas desviaciones registradas. La
+aceptación deja constancia de la decisión y no convierte las puertas fallidas en cumplimiento.
 
 ---
 

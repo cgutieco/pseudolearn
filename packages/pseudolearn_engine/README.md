@@ -180,10 +180,30 @@ La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos,
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
 
+Los accesos a campos por valor se bajan a `object.load` y `object.store`; los argumentos por
+referencia conservan celdas administradas. El cargador resuelve los desplazamientos de campo y
+decodifica los accesos directos a campos y arreglos 1D como formas de operación propias, evitando
+la búsqueda de `MemoryOp` por instrucción. Los arreglos de rango mayor usan búferes de pila para los
+índices, dentro del rango máximo del bytecode. El runtime valida de una vez la cabecera de objetos y
+arreglos 1D para reutilizar el tipo, rango y desplazamiento ya comprobados durante cada acceso.
+
+Las llamadas virtuales guardan los destinos por clase en una tabla plana calculada al cargar el
+programa. La VM consulta `Heap::needs_collection` antes de construir raíces; solo recorre los bancos
+cuando la política o el presupuesto pueden iniciar una recolección. `CompareBranch` está activa por
+omisión al compilar bytecode. `LoadedProgram` comparte su contenido inmutable con `Arc`; la máquina
+posee ese contenido y permanece viva entre lotes de API sin referencias autorreferenciales. Las
+imágenes conservan solo los bancos de ventanas activas, los límites se mantienen al entrar y retornar
+llamadas, y los deltas de bancos y marcos comparan desde el primer índice modificado. Estas decisiones
+mantienen comprobaciones de límites y tipos sin reservas dinámicas
+por acceso normal. En la campaña `AWFY-core` de macOS ARM64, el motor obtuvo
+30,026× de media geométrica y 19,866× de mínimo frente a `macos-r3-awfy`, con cero muestras
+descartadas; los detalles por programa se guardan en
+`packages/pseudolearn_benchmarks/results/macos-r5-vm/`.
+
 ### timeline
 
-Problema: reconstruye el estado observable de cualquier instante mediante puntos de control. Elección: Cinta de entradas; puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos por marca de agua, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas; deltas desde el búfer de escrituras del gemelo sondeado.
-Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento y tope fijo de pasos.
+Problema: reconstruye el estado observable de cualquier instante mediante puntos de control. Elección: Cinta de entradas; puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos de ventanas activas, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas de marcos, variables y cortes de arreglos.
+Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento, deltas de vista duplicados y tope fijo de pasos.
 
 ### matemática y memoria observables
 
@@ -198,8 +218,8 @@ Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 
 ### api
 
-Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
-Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
+Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
+Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
 
 ### conformance
 

@@ -1,6 +1,6 @@
 use pseudolearn_runtime::{
     Heap, MemoryError, MemoryOptions, ValueKind, array_dimensions, new_array, read_element,
-    write_element,
+    read_element_1d, write_element, write_element_1d,
 };
 
 #[test]
@@ -31,6 +31,32 @@ fn arrays_validate_each_dimension_and_track_integer_definition() -> Result<(), M
     assert_eq!(
         new_array(&mut heap, ValueKind::Integer, &[-1], &[array]),
         Err(MemoryError::NegativeSize)
+    );
+    Ok(())
+}
+
+#[test]
+fn direct_one_dimensional_access_checks_definition_and_bounds() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let array = new_array(&mut heap, ValueKind::Integer, &[2], &[])?;
+    assert_eq!(
+        read_element_1d(&heap, array, 0),
+        Err(MemoryError::Uninitialized)
+    );
+    assert_eq!(write_element_1d(&mut heap, array, 1, 42), Ok(()));
+    assert_eq!(read_element_1d(&heap, array, 1), Ok(42));
+    assert_eq!(
+        read_element_1d(&heap, array, -1),
+        Err(MemoryError::IndexOutOfRange)
+    );
+    assert_eq!(
+        write_element_1d(&mut heap, array, 2, 42),
+        Err(MemoryError::IndexOutOfRange)
+    );
+    let matrix = new_array(&mut heap, ValueKind::Integer, &[1, 2], &[array])?;
+    assert_eq!(
+        read_element_1d(&heap, matrix, 0),
+        Err(MemoryError::Internal)
     );
     Ok(())
 }

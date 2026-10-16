@@ -12,6 +12,8 @@ mod parallel_copy;
 #[cfg(test)]
 mod parallel_copy_tests;
 
+use std::sync::Arc;
+
 use pseudolearn_bytecode::{
     BasicBlock, BytecodeFunction, BytecodeModule, RegisterClass, ReturnPoint, VerifiedBytecode,
 };
@@ -36,17 +38,17 @@ pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
     let functions = module
         .functions
         .iter()
-        .map(|function| load_function(module, function, &literals))
+        .map(|function| load_function(module, function, &literals).map(Arc::new))
         .collect::<Result<Vec<_>, _>>()?;
-    Ok(LoadedProgram {
+    Ok(LoadedProgram::new(model::LoadedProgramInner {
         name: module.name.clone(),
         functions,
         entry,
         literals,
         classes: module.classes.clone(),
-        layouts: metadata::layouts(module)?,
         vocabulary: module.vocabulary.clone(),
-    })
+        layouts: metadata::layouts(module)?,
+    }))
 }
 
 pub(crate) fn invalid_bytecode() -> VmTrap {
@@ -100,6 +102,7 @@ fn init_loaded_function(function: &BytecodeFunction) -> Result<LoadedFunction, V
         edges: Vec::new(),
         moves: Vec::new(),
         calls: Vec::new(),
+        virtual_targets: Vec::new(),
         continuations: continuations(function)?,
         scalar_window: window(function.scalar_types.len())?,
         reference_window: window(function.reference_types.len())?,

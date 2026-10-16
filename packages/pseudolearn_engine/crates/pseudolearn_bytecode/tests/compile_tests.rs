@@ -23,6 +23,7 @@ fn compiles_verified_ir_to_shared_bytecode_twins() {
         assert_eq!(function.fast.blocks.len(), 4);
         assert_eq!(function.fast.blocks.len(), function.probed.blocks.len());
         assert!(function.fast.used_length < function.probed.used_length);
+        assert!(!function.fast.superinstructions.is_empty());
         assert!(function.fast.instructions.len().is_power_of_two());
         assert!(function.fast.instructions.iter().all(|instruction| {
             !matches!(

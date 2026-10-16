@@ -79,18 +79,13 @@ fn lower_assign_field(
         context.builder,
     );
     let field_name = resolve_field_name(field_number, context);
-    let cell = context.builder.next_value();
-    context.builder.emit_with_target(
-        Operation::CellField,
+    context.builder.emit_void(
+        Operation::ObjectStore,
         vec![
             Operand::Value(receiver_value),
             Operand::Identifier(field_name),
+            Operand::Value(value),
         ],
-        (Some(cell), span),
-    );
-    context.builder.emit_void(
-        Operation::CellStore,
-        vec![Operand::Value(cell), Operand::Value(value)],
         span,
     );
 }

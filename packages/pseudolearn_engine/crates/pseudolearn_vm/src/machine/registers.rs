@@ -19,22 +19,12 @@ impl Machine<'_> {
 
     #[inline(always)]
     pub(crate) fn set_scalar(&mut self, register: u16, word: u64) -> Result<(), Fault> {
-        let slot = self
-            .scalars
-            .get_mut(self.cursor.scalar_base.wrapping_add(usize::from(register)))
-            .ok_or(INVALID_BYTECODE)?;
+        let absolute = self.cursor.scalar_base.wrapping_add(usize::from(register));
+        self.mark_scalar_dirty(absolute);
+        let slot = self.scalars.get_mut(absolute).ok_or(INVALID_BYTECODE)?;
         *slot = word;
-        self.scalar_watermark = self.scalar_watermark.max(
-            self.cursor
-                .scalar_base
-                .wrapping_add(usize::from(register))
-                .saturating_add(1),
-        );
+        self.scalar_watermark = self.scalar_watermark.max(absolute.saturating_add(1));
         if self.probed {
-            let absolute = self
-                .cursor
-                .scalar_base
-                .saturating_add(usize::from(register));
             self.set_defined(absolute, true)?;
             self.change_buffer.record_scalar(register, word);
         }
@@ -55,21 +45,14 @@ impl Machine<'_> {
 
     #[inline(always)]
     pub(crate) fn set_reference(&mut self, register: u16, handle: u32) -> Result<(), Fault> {
-        let slot = self
-            .references
-            .get_mut(
-                self.cursor
-                    .reference_base
-                    .wrapping_add(usize::from(register)),
-            )
-            .ok_or(INVALID_BYTECODE)?;
+        let absolute = self
+            .cursor
+            .reference_base
+            .wrapping_add(usize::from(register));
+        self.mark_reference_dirty(absolute);
+        let slot = self.references.get_mut(absolute).ok_or(INVALID_BYTECODE)?;
         *slot = handle;
-        self.reference_watermark = self.reference_watermark.max(
-            self.cursor
-                .reference_base
-                .wrapping_add(usize::from(register))
-                .saturating_add(1),
-        );
+        self.reference_watermark = self.reference_watermark.max(absolute.saturating_add(1));
         if self.probed {
             self.change_buffer.record_reference(register, handle);
         }
@@ -84,6 +67,7 @@ impl Machine<'_> {
     }
 
     pub(crate) fn set_defined(&mut self, position: usize, value: bool) -> Result<(), Fault> {
+        self.mark_defined_dirty(position);
         let slot = self.defined.get_mut(position).ok_or(INVALID_BYTECODE)?;
         *slot = value;
         Ok(())

@@ -472,6 +472,78 @@
       "handler": "memory_operation"
     },
     {
+      "form": "ArrayRead1D",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "pseudolearn_bytecode::Register"
+        },
+        {
+          "name": "array",
+          "type": "u16"
+        },
+        {
+          "name": "index",
+          "type": "crate::load::Source"
+        }
+      ],
+      "handler": "read_array_1d"
+    },
+    {
+      "form": "ArrayWrite1D",
+      "fields": [
+        {
+          "name": "array",
+          "type": "u16"
+        },
+        {
+          "name": "index",
+          "type": "crate::load::Source"
+        },
+        {
+          "name": "source",
+          "type": "crate::load::memory::ValueSource"
+        }
+      ],
+      "handler": "write_array_1d"
+    },
+    {
+      "form": "ObjectRead",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "pseudolearn_bytecode::Register"
+        },
+        {
+          "name": "receiver",
+          "type": "u16"
+        },
+        {
+          "name": "offset",
+          "type": "usize"
+        }
+      ],
+      "handler": "read_object_field"
+    },
+    {
+      "form": "ObjectWrite",
+      "fields": [
+        {
+          "name": "receiver",
+          "type": "u16"
+        },
+        {
+          "name": "offset",
+          "type": "usize"
+        },
+        {
+          "name": "source",
+          "type": "crate::load::memory::ValueSource"
+        }
+      ],
+      "handler": "write_object_field"
+    },
+    {
       "form": "LoadText",
       "fields": [
         {

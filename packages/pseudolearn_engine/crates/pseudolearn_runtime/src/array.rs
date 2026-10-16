@@ -6,6 +6,9 @@ use pseudolearn_abi::{
     array_elements_start_offset,
 };
 
+mod one_dimensional;
+pub use one_dimensional::{read_element_1d, write_element_1d};
+
 pub fn new_array(
     heap: &mut Heap,
     element: ValueKind,
@@ -105,6 +108,14 @@ fn store_dimensions(
 
 pub fn read_element(heap: &Heap, handle: Handle, indices: &[i64]) -> Result<u64, MemoryError> {
     let (index, payload, element) = position(heap, handle, indices)?;
+    read_position(heap, handle, (index, payload, element))
+}
+
+fn read_position(
+    heap: &Heap,
+    handle: Handle,
+    (index, payload, element): (usize, usize, ValueKind),
+) -> Result<u64, MemoryError> {
     let word = heap.word(
         handle,
         payload.checked_add(index).ok_or(MemoryError::Internal)?,

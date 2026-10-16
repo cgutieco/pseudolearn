@@ -148,7 +148,7 @@ impl Machine<'_> {
         };
         Ok(library::format_value(
             primitive,
-            crate::dispatch::boolean_lexemes(&self.program.vocabulary),
+            crate::dispatch::boolean_lexemes(&self.program.inner.vocabulary),
         ))
     }
 

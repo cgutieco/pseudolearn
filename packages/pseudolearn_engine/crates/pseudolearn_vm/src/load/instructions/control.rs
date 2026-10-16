@@ -11,6 +11,13 @@ use crate::load::edges::add_edge;
 use crate::load::operands::{first_register, scalar_source};
 use crate::load::{CallSite, LoadedFunction, Move, Source, invalid_bytecode};
 
+struct CallSiteDefinition {
+    function: usize,
+    return_point: usize,
+    arguments_start: usize,
+    targets_by_class: Vec<Option<u16>>,
+}
+
 pub(super) fn decode(
     context: &DecodeContext<'_>,
     loaded: &mut LoadedFunction,
@@ -76,6 +83,16 @@ fn decode_call(
     if let Some(existing_site) = existing_call_site(loaded, return_point_index)? {
         return Ok(existing_site);
     }
+    let definition = call_site_definition(context, loaded, instruction, return_point_index)?;
+    register_call_site(loaded, instruction, definition)
+}
+
+fn call_site_definition(
+    context: &DecodeContext<'_>,
+    loaded: &mut LoadedFunction,
+    instruction: &Instruction,
+    return_point: usize,
+) -> Result<CallSiteDefinition, VmTrap> {
     let Some(BytecodeOperand::FunctionTarget {
         function_index,
         arguments,
@@ -93,15 +110,18 @@ fn decode_call(
     }
     let arguments_start = loaded.moves.len();
     append_arguments(context, loaded, arguments, (callee, instruction))?;
-    register_call_site(
-        loaded,
-        instruction,
-        (
-            usize::from(*function_index),
-            return_point_index,
-            arguments_start,
-        ),
-    )
+    let function_index = usize::from(*function_index);
+    let targets_by_class = if instruction.opcode == Opcode::CallVirtual {
+        virtual_targets(context, function_index)?
+    } else {
+        Vec::new()
+    };
+    Ok(CallSiteDefinition {
+        function: function_index,
+        return_point,
+        arguments_start,
+        targets_by_class,
+    })
 }
 
 fn existing_call_site(
@@ -122,24 +142,51 @@ fn existing_call_site(
 fn register_call_site(
     loaded: &mut LoadedFunction,
     instruction: &Instruction,
-    (function_index, return_point_index, arguments_start): (usize, usize, usize),
+    definition: CallSiteDefinition,
 ) -> Result<Op, VmTrap> {
     let receiver = if instruction.opcode == Opcode::CallVirtual {
         Some(first_register(instruction)?.index)
     } else {
         None
     };
+    let targets_start = loaded.virtual_targets.len();
+    loaded.virtual_targets.extend(definition.targets_by_class);
+    let targets_end = loaded.virtual_targets.len();
     let site = CallSite {
-        function: function_index,
+        function: definition.function,
         destination: instruction.destination,
-        return_point: return_point_index,
-        arguments_start,
+        return_point: definition.return_point,
+        arguments_start: definition.arguments_start,
         arguments_end: loaded.moves.len(),
         receiver,
+        targets_start,
+        targets_end,
     };
     let index = u32::try_from(loaded.calls.len()).map_err(|_| invalid_bytecode())?;
     loaded.calls.push(site);
     Ok(Op::Call { site: index })
+}
+
+fn virtual_targets(
+    context: &DecodeContext<'_>,
+    function_index: usize,
+) -> Result<Vec<Option<u16>>, VmTrap> {
+    let function = context
+        .module
+        .functions
+        .get(function_index)
+        .ok_or_else(invalid_bytecode)?;
+    let method = function
+        .name
+        .rsplit_once('.')
+        .map(|(_, method)| method)
+        .ok_or_else(invalid_bytecode)?;
+    Ok(context
+        .module
+        .classes
+        .iter()
+        .map(|class| class.methods.get(method).copied())
+        .collect())
 }
 
 fn append_arguments(

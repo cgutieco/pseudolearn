@@ -143,6 +143,7 @@ pub struct TraceEvent {
 pub struct ChangeBuffer {
     pub modified_scalars: Vec<(u16, u64)>,
     pub modified_references: Vec<(u16, u32)>,
+    pub modified_object_fields: Vec<(u32, usize, u64)>,
 }
 
 impl ChangeBuffer {
@@ -153,6 +154,7 @@ impl ChangeBuffer {
     pub fn clear(&mut self) {
         self.modified_scalars.clear();
         self.modified_references.clear();
+        self.modified_object_fields.clear();
     }
 
     pub fn record_scalar(&mut self, register: u16, value: u64) {
@@ -161,5 +163,9 @@ impl ChangeBuffer {
 
     pub fn record_reference(&mut self, register: u16, handle: u32) {
         self.modified_references.push((register, handle));
+    }
+
+    pub fn record_object_field(&mut self, handle: u32, offset: usize, value: u64) {
+        self.modified_object_fields.push((handle, offset, value));
     }
 }

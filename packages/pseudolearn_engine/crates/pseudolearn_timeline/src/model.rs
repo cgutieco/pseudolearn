@@ -25,36 +25,6 @@ pub enum VariableValue {
     NullReference,
 }
 
-impl VariableValue {
-    pub fn display_representation(&self) -> String {
-        match self {
-            Self::Undefined => "sin_valor".to_string(),
-            Self::Integer(number) => number.to_string(),
-            Self::Real(number) => format_real(*number),
-            Self::Boolean(flag) => {
-                if *flag {
-                    "Verdadero".to_string()
-                } else {
-                    "Falso".to_string()
-                }
-            }
-            Self::Character(symbol) => symbol.to_string(),
-            Self::Text(content) => content.clone(),
-            Self::ObjectReference {
-                identity_ordinal, ..
-            } => {
-                format!("objeto({identity_ordinal})")
-            }
-            Self::ArrayReference {
-                identity_ordinal, ..
-            } => {
-                format!("arreglo({identity_ordinal})")
-            }
-            Self::NullReference => "nulo".to_string(),
-        }
-    }
-}
-
 pub fn format_real(number: f64) -> String {
     let representation = number.to_string();
     if representation.contains('.') || representation.contains('e') || representation.contains('E')
@@ -82,18 +52,9 @@ pub struct FrameView {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct ObjectView {
-    pub handle_word: u32,
-    pub identity_ordinal: u64,
-    pub class_identifier: u32,
-    pub fields: Vec<VariableView>,
-}
-
-#[derive(Clone, Debug, PartialEq)]
 pub struct StateSnapshot {
     pub event_index: usize,
     pub statement_index: u64,
     pub output_text: String,
     pub frames: Vec<FrameView>,
-    pub objects: Vec<ObjectView>,
 }

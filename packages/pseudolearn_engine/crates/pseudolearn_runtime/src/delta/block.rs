@@ -26,13 +26,18 @@ impl<Element: Clone + PartialEq> BlockDelta<Element> {
     }
 
     pub fn advance(tip: &mut Vec<Element>, live: &[Element]) -> Self {
+        Self::advance_from(tip, live, 0)
+    }
+
+    pub fn advance_from(tip: &mut Vec<Element>, live: &[Element], dirty_from: usize) -> Self {
         let old_length = tip.len();
         let live_length = live.len();
         let common = old_length.min(live_length);
         let mut delta = Self::empty(old_length);
         let mut changed = Vec::new();
         let block_count = old_length.max(live_length).div_ceil(BLOCK_WORDS);
-        for block_index in 0..block_count {
+        let first_block = dirty_from.min(common) / BLOCK_WORDS;
+        for block_index in first_block..block_count {
             let start = block_index.saturating_mul(BLOCK_WORDS);
             let old_slice = slice_of(tip, start, old_length);
             if old_slice != slice_of(live, start, live_length) {

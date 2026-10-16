@@ -1,7 +1,8 @@
 use crate::{ApiError, ExecuteRequest};
+use pseudolearn_timeline::{CheckpointStore, replay_machine_to_event};
 use pseudolearn_vm::{
-    Fuel, LoadedProgram, Machine, MachineImage, RunExit, RunOptions, TwinMode, create_machine,
-    load, machine_events, machine_output, resume_machine, suspend_machine, take_machine_events,
+    Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine, load,
+    machine_event_count, machine_events, machine_output, take_machine_events,
 };
 use serde_json::{Value, json};
 use std::sync::{
@@ -9,16 +10,20 @@ use std::sync::{
     atomic::{AtomicBool, Ordering},
 };
 
+#[cfg(test)]
+#[path = "execution_resource_tests.rs"]
+mod execution_resource_tests;
+
 const CHECKPOINT_STRIDE: usize = 256;
 const CHECKPOINT_LIMIT: usize = 128;
 
 pub(crate) struct ExecutionResource {
     program: LoadedProgram,
-    image: Option<MachineImage>,
-    initial: Arc<MachineImage>,
-    replay_base: Arc<MachineImage>,
-    checkpoints: Vec<(usize, Arc<MachineImage>)>,
+    machine: Machine<'static>,
+    initial_state: Value,
+    store: CheckpointStore,
     checkpoint_stride: usize,
+    last_checkpoint_count: usize,
     retained_start: usize,
     options: RunOptions,
     terminal: Option<RunExit>,
@@ -44,18 +49,21 @@ impl ExecutionResource {
         let mut options = crate::execution::options(request);
         options.twin_mode = TwinMode::Probed;
         options.cancelled = Some(cancelled.clone());
-        let machine = create_machine(&program, Fuel::unlimited(), options.clone())
+        let machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
             .map_err(|trap| usage(trap.code))?;
-        let image = suspend_machine(machine);
-        let shared = Arc::new(image.clone());
+        let initial_state = crate::execution_state::capture(&machine);
+        let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
+        store
+            .record(&machine, 0)
+            .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
         Ok(Self {
             program,
-            initial: shared.clone(),
-            replay_base: shared,
-            checkpoints: Vec::new(),
+            machine,
+            initial_state,
+            store,
             checkpoint_stride: CHECKPOINT_STRIDE,
+            last_checkpoint_count: 0,
             retained_start: 0,
-            image: Some(image),
             options,
             terminal: None,
             delivered: 0,
@@ -69,31 +77,23 @@ impl ExecutionResource {
         if maximum == 0 {
             return Err(usage("batch size must be positive"));
         }
-        let image = self
-            .image
-            .take()
-            .ok_or_else(|| usage("execution unavailable"))?;
-        let mut machine = resume_machine(&self.program, image, self.options.clone())
-            .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
         if self.terminal.is_none() {
+            let initial_count = machine_event_count(&self.machine);
             loop {
-                if let Some(exit) = machine.step_instruction() {
+                if let Some(exit) = self.machine.step_instruction() {
                     self.terminal = Some(exit);
                     break;
                 }
-                if machine_events(&machine).len() >= maximum {
+                let emitted = machine_event_count(&self.machine).saturating_sub(initial_count);
+                if emitted >= maximum {
                     break;
                 }
             }
         }
-        let response = advance_response(&machine, 0, self.terminal.as_ref(), &self.profile);
-        self.delivered = self
-            .delivered
-            .checked_add(take_machine_events(&mut machine).len())
-            .ok_or_else(|| usage("event counter exhausted"))?;
-        let suspended = suspend_machine(machine);
-        self.record_checkpoint(&suspended);
-        self.image = Some(suspended);
+        let response = advance_response(&self.machine, 0, self.terminal.as_ref(), &self.profile);
+        self.delivered = machine_event_count(&self.machine);
+        take_machine_events(&mut self.machine);
+        self.record_checkpoint()?;
         self.trim_history()?;
         Ok(response)
     }
@@ -103,14 +103,7 @@ impl ExecutionResource {
             return Err(usage("execution is not awaiting input"));
         }
         self.options.inputs.push(text.clone());
-        let image = self
-            .image
-            .take()
-            .ok_or_else(|| usage("execution unavailable"))?;
-        let mut machine = resume_machine(&self.program, image, self.options.clone())
-            .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
-        machine.supply_input(text);
-        self.image = Some(suspend_machine(machine));
+        self.machine.supply_input(text);
         self.terminal = None;
         Ok(())
     }
@@ -134,7 +127,8 @@ impl ExecutionResource {
     }
 
     pub(crate) fn horizon(&self) -> Value {
-        json!({"first":self.retained_start,"last":self.delivered.saturating_sub(1)})
+        let first = self.retained_start.max(self.store.stats().horizon);
+        json!({"first":first,"last":self.delivered.saturating_sub(1)})
     }
 
     pub(crate) fn configure_retention(&mut self, events: usize) -> Result<(), ApiError> {
@@ -146,77 +140,58 @@ impl ExecutionResource {
     }
 
     pub(crate) fn initial_state(&self) -> Result<Value, ApiError> {
-        let machine = resume_machine(&self.program, (*self.initial).clone(), self.options.clone())
-            .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
-        Ok(crate::execution_state::capture(&machine))
+        Ok(self.initial_state.clone())
+    }
+
+    fn record_checkpoint(&mut self) -> Result<(), ApiError> {
+        let event_count = machine_event_count(&self.machine);
+        if event_count
+            < self
+                .last_checkpoint_count
+                .saturating_add(self.checkpoint_stride)
+        {
+            return Ok(());
+        }
+        self.store
+            .record(&self.machine, event_count.saturating_sub(1))
+            .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
+        self.last_checkpoint_count = event_count;
+        self.retained_start = self.retained_start.max(self.store.stats().horizon);
+        Ok(())
     }
 
     fn machine_at(&self, event: usize) -> Result<Machine<'_>, ApiError> {
-        if event >= self.delivered || event < self.retained_start {
+        if event >= self.delivered || event < self.retained_start.max(self.store.stats().horizon) {
             return Err(usage("event outside retained horizon"));
         }
-        self.replay_to_count(event.checked_add(1).ok_or_else(|| usage("invalid event"))?)
-    }
-
-    fn record_checkpoint(&mut self, image: &MachineImage) {
-        let last = self
-            .checkpoints
-            .last()
-            .map_or(self.retained_start, |(count, _)| *count);
-        if self.delivered < last.saturating_add(self.checkpoint_stride) {
-            return;
-        }
-        self.checkpoints
-            .push((self.delivered, Arc::new(image.clone())));
-        if self.checkpoints.len() > CHECKPOINT_LIMIT {
-            let mut position = 0_usize;
-            self.checkpoints.retain(|_| {
-                position = position.saturating_add(1);
-                position % 2 == 1
-            });
-            self.checkpoint_stride = self.checkpoint_stride.saturating_mul(2);
-        }
-    }
-
-    fn replay_start(&self, target: usize) -> (usize, Arc<MachineImage>) {
-        self.checkpoints
-            .iter()
-            .rev()
-            .find(|(count, _)| *count < target && *count >= self.retained_start)
-            .map_or_else(
-                || (self.retained_start, self.replay_base.clone()),
-                |(count, image)| (*count, image.clone()),
-            )
-    }
-
-    fn replay_to_count(&self, target: usize) -> Result<Machine<'_>, ApiError> {
+        let (image, _) = self
+            .store
+            .image_at(event)
+            .map_err(|_| usage("event outside retained horizon"))?;
         let mut options = self.options.clone();
         options.cancelled = None;
-        let (start, image) = self.replay_start(target);
-        let mut machine = resume_machine(&self.program, (*image).clone(), options)
-            .map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
-        machine.replace_input_tape(self.options.inputs.clone());
-        let mut count = start;
-        while count < target {
-            let exit = machine.step_instruction();
-            count = count
-                .checked_add(take_machine_events(&mut machine).len())
-                .ok_or_else(|| usage("event counter exhausted"))?;
-            if exit.is_some() && count < target {
-                return Err(usage("unreachable event"));
-            }
-        }
+        let machine = replay_machine_to_event(&self.program, image, event, &options)
+            .map_err(|_| usage("unreachable event"))?;
         Ok(machine)
     }
 
     fn trim_history(&mut self) -> Result<(), ApiError> {
         let first = self.delivered.saturating_sub(self.retained_events);
         if first > self.retained_start {
-            let machine = self.replay_to_count(first)?;
-            let base = suspend_machine(machine);
-            self.replay_base = Arc::new(base);
+            let base = self.machine_at(first)?;
+            let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
+            store
+                .record(&base, first)
+                .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
+            let latest = self.delivered.saturating_sub(1);
+            if latest > first {
+                store
+                    .record(&self.machine, latest)
+                    .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
+            }
+            self.store = store;
             self.retained_start = first;
-            self.checkpoints.retain(|(count, _)| *count >= first);
+            self.last_checkpoint_count = self.delivered;
         }
         Ok(())
     }

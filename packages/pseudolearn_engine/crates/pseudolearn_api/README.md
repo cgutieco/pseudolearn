@@ -39,7 +39,7 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 Problema: medir ejecución no debe incluir compilación. Elección: `PreparedProgram` conserva un programa cargado inmutable; `prepare_program` compila y `execute_prepared` crea una ejecución nueva con semilla, límites y entradas explícitos. Se descarta medir el arranque del adaptador o la serialización. El trabajador valida cada salida fuera del intervalo.
 
-Problema: ejecutar y suspender deben compartir semántica sin exponer estado mutable interno. Elección: la API posee programas e imágenes de ejecución independientes, administra identificadores de recursos y devuelve errores tipados. El adaptador y la CLI solo consumen esta frontera. Se descartan implementaciones de ejecución independientes en consumidores.
+Problema: una ejecución por lotes no debe copiar ni suspender la máquina al final de cada lote. Elección: `ExecutionResource` conserva una `Machine` viva, `LoadedProgram` comparte sus datos inmutables mediante `Arc`, y `CheckpointStore` recibe checkpoints diferenciales. Una consulta restaura desde el punto más cercano y reproduce en una máquina temporal. La API elimina sus snapshots completos paralelos y conserva los límites de retención mediante un checkpoint base. El adaptador y la CLI solo consumen esta frontera. Se descartan implementaciones de ejecución independientes en consumidores.
 
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo respetando los observables del corpus.
 Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.

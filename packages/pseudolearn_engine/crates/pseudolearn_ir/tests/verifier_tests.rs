@@ -41,6 +41,26 @@ fn rejects_operand_type_mismatch_as_rule3() {
 }
 
 #[test]
+fn verifies_direct_object_field_reads_and_writes() {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = const.i64 42\n  object.store %0, value, %1\n  %2 = object.load %0, value @4:1-4:2\n  return %2\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Ok(()));
+    }
+}
+
+#[test]
+fn rejects_direct_object_field_writes_with_incompatible_values() {
+    let source = "module P es\nclass C { value: i64 }\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = object.new C @1:1-1:2\n  %1 = const.bool true\n  object.store %0, value, %1\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Err("IR.WELL-FORMEDNESS#R3"));
+    }
+}
+
+#[test]
 fn rejects_missing_terminator_as_rule4() {
     let source = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n}\n";
     let module = parse_module(source);

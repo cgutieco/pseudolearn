@@ -4,8 +4,8 @@ use crate::machine::Machine;
 use crate::machine::cells::Cell;
 use crate::{Fuel, RunOptions, VmTrap};
 
-pub fn machine_program<'program>(machine: &Machine<'program>) -> &'program LoadedProgram {
-    machine.program
+pub fn machine_program<'machine>(machine: &'machine Machine<'_>) -> &'machine LoadedProgram {
+    &machine.program
 }
 
 pub fn machine_events<'machine>(machine: &'machine Machine<'_>) -> &'machine [TraceEvent] {

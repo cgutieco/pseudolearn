@@ -142,19 +142,13 @@ pub fn lower_field(
         })
         .map(|field| field.name.clone())
         .unwrap_or_else(|| "field".to_owned());
-    let cell_value = state.builder.next_value();
+    let result = state.builder.next_value();
     state.builder.emit_with_target(
-        Operation::CellField,
+        Operation::ObjectLoad,
         vec![
             Operand::Value(receiver_value),
             Operand::Identifier(field_name),
         ],
-        (Some(cell_value), span),
-    );
-    let result = state.builder.next_value();
-    state.builder.emit_with_target(
-        Operation::CellLoad,
-        vec![Operand::Value(cell_value)],
         (Some(result), span),
     );
     result
