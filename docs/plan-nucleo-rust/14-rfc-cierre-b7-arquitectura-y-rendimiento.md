@@ -193,6 +193,15 @@ cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn
 cargo run --manifest-path packages/pseudolearn_engine/Cargo.toml -p xtask -- verify
 ```
 
+#### Resultado de ejecución de la Etapa 1
+**Estado: completada y publicada el 2026-10-16.**
+
+Se sustituyó `allocations: BTreeMap<Handle, Allocation>` por metadatos en banda y un `Vec<BlockRecord>` ordenado, con los diseños de objetos indexados por clase. El runtime obtiene de la cabecera el tipo, rango, literal, desplazamiento de campos e identidad; la recolección, los snapshots y `HeapDelta` recorren los bloques vivos. `HeapDelta` conserva solo las palabras usadas. Se actualizaron también los consumidores de texto y se añadieron pruebas espejo para el ABI, los arreglos, los diseños de objetos, la recolección y la restauración de deltas.
+
+La verificación dirigida de `pseudolearn_abi`, `pseudolearn_runtime`, `pseudolearn_vm` y `pseudolearn_timeline` pasó con **129 pruebas**. `cargo xtask verify` pasó con formato, Clippy, pruebas y doctests del workspace, `rust-checks all`, `rust-checks toolchain` y `cargo deny` (advisories, bans, licenses y sources). `cargo deny` se ejecutó sin red contra la base de avisos local porque la caché Cargo predeterminada no permitía escribir su archivo de bloqueo.
+
+La implementación se publicó en `feature/agregar-ruta-de-especificacion`, commit `fe6364247129ff5304496a997556d1b5b880a4fc` (`perf(engine): store runtime allocation metadata in-band`). El árbol de trabajo quedó limpio y `HEAD` coincide con el upstream. La Etapa 2 permanece pendiente de autorización explícita.
+
 ---
 
 ### Etapa 2 · `object.load`/`object.store` directos, arreglos sin `Vec<i64>`, llamadas `O(1)` y GC perezoso (`ir`, `lowering`, `bytecode`, `vm`)
