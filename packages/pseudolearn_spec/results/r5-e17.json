@@ -1,6 +1,6 @@
 {
-  "all_passed": false,
-  "brotliBytes": 450453,
+  "all_passed": true,
+  "brotliBytes": 480752,
   "corpusRequests": 968,
   "differences": [],
   "emiPairs": 10000,
@@ -52,11 +52,8 @@
     }
   },
   "nativeStderr": "",
-  "remaining": [
-    "full experiment acceptance review"
-  ],
   "seed": 20261016,
-  "status": "partial",
-  "wasmBytes": 1998812,
+  "status": "passed",
+  "wasmBytes": 2179619,
   "wasmStderr": ""
 }

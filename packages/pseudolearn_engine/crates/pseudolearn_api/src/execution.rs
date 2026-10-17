@@ -1,4 +1,5 @@
-use crate::{ExecuteRequest, ExecuteResponse, compile_source_to_module};
+use crate::ir_execution::compile_source_with_warnings;
+use crate::{ApiDiagnostic, ExecuteRequest, ExecuteResponse};
 use pseudolearn_runtime::{CollectionPolicy, MemoryOptions};
 use pseudolearn_vm::{
     Fuel, Machine, RunExit, RunOptions, TwinMode, create_machine, load, machine_events,
@@ -23,33 +24,44 @@ fn execute(request: &ExecuteRequest) -> ExecuteResponse {
 
 pub struct PreparedProgram {
     program: pseudolearn_vm::LoadedProgram,
+    warnings: Vec<ApiDiagnostic>,
 }
 
 pub fn prepare_program(
     request: &ExecuteRequest,
 ) -> Result<PreparedProgram, Vec<crate::ApiDiagnostic>> {
-    let module = compile_source_to_module(&request.program, &request.profile, &request.strictness)?;
+    let (module, warnings) =
+        compile_source_with_warnings(&request.program, &request.profile, &request.strictness)?;
     let bytecode = pseudolearn_bytecode::compile_module(&module)
         .map_err(|_| crate::diagnostic_conversion::internal_fault().diagnostics)?;
     let program =
         load(&bytecode).map_err(|_| crate::diagnostic_conversion::internal_fault().diagnostics)?;
-    Ok(PreparedProgram { program })
+    Ok(PreparedProgram { program, warnings })
 }
 
 pub fn execute_prepared(prepared: &PreparedProgram, request: &ExecuteRequest) -> ExecuteResponse {
     let program = &prepared.program;
+    let warnings = &prepared.warnings;
     if request.state_at.is_none() {
-        return execute_bulk(program, request);
+        return execute_bulk(program, warnings, request);
     }
     let options = options(request);
     let mut machine = match create_machine(program, Fuel::unlimited(), options) {
         Ok(machine) => machine,
-        Err(trap) => return failure(&trap, &request.profile),
+        Err(trap) => {
+            let mut response = failure(&trap, &request.profile);
+            response.diagnostics = with_compile_warnings(warnings, response.diagnostics);
+            return response;
+        }
     };
-    run_request(&mut machine, request)
+    run_request(&mut machine, request, warnings)
 }
 
-pub(crate) fn run_request(machine: &mut Machine<'_>, request: &ExecuteRequest) -> ExecuteResponse {
+pub(crate) fn run_request(
+    machine: &mut Machine<'_>,
+    request: &ExecuteRequest,
+    warnings: &[ApiDiagnostic],
+) -> ExecuteResponse {
     let mut state_at = None;
     let maximum = u64::MAX;
     let mut exit = RunExit::LimitReached {
@@ -72,7 +84,7 @@ pub(crate) fn run_request(machine: &mut Machine<'_>, request: &ExecuteRequest) -
         kind: "execute".to_owned(),
         output: machine_output(machine).to_owned(),
         termination: crate::execution_wire::termination(&exit),
-        diagnostics: diagnostics(machine, &exit, &request.profile),
+        diagnostics: with_compile_warnings(warnings, diagnostics(machine, &exit, &request.profile)),
         events: if request.observe == "events" {
             machine_events(machine)
                 .iter()
@@ -129,6 +141,15 @@ fn diagnostics(machine: &Machine<'_>, exit: &RunExit, locale: &str) -> Vec<crate
     diagnostics
 }
 
+fn with_compile_warnings(
+    warnings: &[ApiDiagnostic],
+    diagnostics: Vec<ApiDiagnostic>,
+) -> Vec<ApiDiagnostic> {
+    let mut combined = warnings.to_vec();
+    combined.extend(diagnostics);
+    combined
+}
+
 fn rejected(diagnostics: Vec<crate::ApiDiagnostic>) -> ExecuteResponse {
     ExecuteResponse {
         kind: "execute".to_owned(),
@@ -149,6 +170,7 @@ fn failure(trap: &pseudolearn_vm::VmTrap, locale: &str) -> ExecuteResponse {
 
 fn execute_bulk(
     program: &pseudolearn_vm::LoadedProgram,
+    warnings: &[ApiDiagnostic],
     request: &ExecuteRequest,
 ) -> ExecuteResponse {
     let result = pseudolearn_vm::run_with_options(program, Fuel::unlimited(), options(request));
@@ -160,6 +182,7 @@ fn execute_bulk(
     if let RunExit::Trap(trap) = &result.exit {
         diagnostics.push(crate::execution_wire::diagnostic(trap, &request.profile));
     }
+    let diagnostics = with_compile_warnings(warnings, diagnostics);
     ExecuteResponse {
         kind: "execute".to_owned(),
         output: result.output,

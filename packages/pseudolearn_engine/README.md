@@ -35,25 +35,24 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| ir y verificador → lowering procedural → bytecode rápido → vm → runtime → library → arreglos → subprogramas → objetos y recolector → gemelo sondeado → límites → timeline → api ejecución → CLI ejecutar/ri | Análisis conforme | Motor de ejecución |
+| Diferencias B7.4 fuera de `end_col`; terminar la campaña E-16 de VM y `library` | E-16 y B7.4 | Cierre R5 |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene las capas de análisis estático, RI y lowering procedural, B3 y B4 cerradas. R5 sigue
-abierta: B5–B8 y la API pública integrada de ejecución tienen bloques propios pendientes.
+El workspace contiene el motor de ejecución completo de R5. B7 permanece abierto mientras la revisión
+diferencial de diagnósticos tenga diferencias fuera de precisión de columna; B8 no se ha iniciado.
 
-El motor ya ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
-copia superficial, recolección determinista y azar con semilla. Conserva entradas, eventos completos,
-cambio de gemelo y conformidad integrada `execute` para B5/B7.3. `RunOptions` y sus envoltorios actuales
-siguen siendo la configuración de bajo nivel; no se añadió `API.EXECUTE`.
+El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
+copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,
+cambia entre los gemelos rápido y sondeado, y expone `execute` mediante `ExecutionResource` y
+`CheckpointStore`.
 
-La repetición emparejada de la trazadora B3 sobre el código de cierre de B4 obtuvo 63,44× sin PGO frente
-al umbral de 30×, con cero muestras descartadas. Los crudos actuales están en
-`packages/pseudolearn_benchmarks/results/r5-vm-tracer/`; la captura previa de B3 se conserva por separado
-en `packages/pseudolearn_benchmarks/results/r5-vm-tracer-b3/`.
+La medición final de AWFY-core en macOS ARM64 obtuvo media geométrica de 30,026× y mínimo de 19,866×,
+con cero muestras descartadas. El resumen y los resultados por carga están en
+[`macos-r5-vm`](../pseudolearn_benchmarks/results/macos-r5-vm/summary.json).
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
 - Compilación optimizada: `cargo build --release`.
@@ -146,8 +145,8 @@ Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpu
 
 ### bytecode
 
-La implementación actual compila RI verificada en los gemelos y valida sus destinos, clases y puntos de
-retorno. El acolchado del código a potencia de dos sigue pendiente.
+La implementación compila RI verificada en los gemelos y valida sus destinos, clases y puntos de retorno.
+El código se rellena a potencia de dos, y `SuperInstruction::CompareBranch` se activa por omisión.
 
 Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros. Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
 Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
@@ -156,11 +155,11 @@ Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verifica
 
 El runtime cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición de enteros,
 raíces exactas por punto seguro, texto, recolección no móvil y azar con estado explícito. Cada asignación
-guarda forma y metadatos en una cabecera común en banda; `BlockRecord` conserva dirección, tamaño físico
-y celdas lógicas para recolección y diferenciales. Las lecturas y escrituras obtienen sus metadatos de la
-cabecera y del diseño de clase indexado. Los diferenciales del montón cubren solo palabras usadas. Las
-asas pueden reutilizar una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]`
-rige en este crate.
+guarda forma y metadatos en una cabecera común en banda; no consulta `BTreeMap<Handle, Allocation>` en
+el camino de lectura y escritura. `BlockRecord` conserva dirección, tamaño físico y celdas lógicas para
+recolección y diferenciales. Las lecturas y escrituras obtienen sus metadatos de la cabecera y del diseño
+de clase indexado. Los diferenciales del montón cubren solo palabras usadas. Las asas pueden reutilizar
+una dirección física sin reutilizar su identidad ordinal. `#![forbid(unsafe_code)]` rige en este crate.
 Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
 
 ### library (B4 aceptada)
@@ -172,7 +171,7 @@ ejecuta constructores; el azar llega por la capacidad sembrada del anfitrión.
 Problema: implementa las funciones incorporadas sobre valores del runtime. Elección: Funciones incorporadas sobre los valores del runtime, sin estado global; azar desde la capacidad inyectada.
 Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
 
-### vm (B4 aceptada; B5 pendiente)
+### vm (B7)
 
 La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos, llamadas virtuales,
 `Copiar`, formato de salida y azar. B5 conserva el gemelo sondeado, eventos, cambio de gemelo y entrada.
@@ -180,7 +179,7 @@ La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos,
 Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
 Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
 
-Los accesos a campos por valor se bajan a `object.load` y `object.store`; los argumentos por
+Los accesos a campos por valor usan `object.load` (`O49`) y `object.store` (`O50`); los argumentos por
 referencia conservan celdas administradas. El cargador resuelve los desplazamientos de campo y
 decodifica los accesos directos a campos y arreglos 1D como formas de operación propias, evitando
 la búsqueda de `MemoryOp` por instrucción. Los arreglos de rango mayor usan búferes de pila para los
@@ -219,6 +218,9 @@ Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 ### api
 
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
+
+La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
+la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
 Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
 
 ### conformance
@@ -243,8 +245,9 @@ Problema: el recolector y la consulta de estado no pueden contar temporales muer
 Elección: mapas nocionales por punto seguro, ranuras de origen por variable y definición de enteros
 separada del valor. Reales, lógicos, caracteres y referencias usan centinelas fuera de su dominio.
 Los puntos de retorno identifican una continuación canónica con posición en cada gemelo; cambiar
-la observación no reescribe marcos suspendidos. La VM entrega una salida de servicio al agotar
-combustible; la capa superior decide cancelación, punto de control o reproducción.
+la observación no reescribe marcos suspendidos. La reproducción empieza en modo `Fast` y cae a
+`Probed` solo cuando necesita reconstruir estado o eventos. La VM entrega una salida de servicio al
+agotar combustible; la capa superior decide cancelación, punto de control o reproducción.
 Alternativas descartadas: raíces como prefijo completo del banco, retorno ligado a un gemelo y
 acumulación de banderas de trampa fuera de expresiones puras fusionadas.
 
@@ -253,6 +256,81 @@ La trazadora de la VM es una herramienta interna distinta: compila antes de medi
 directamente para ejecutar las mismas cargas que `reference`; no llama a la API de ejecución ni se mezcla
 con el trabajador público. Ambas conservan procedencia, muestras por proceso y validación de resultados
 según el protocolo de rendimiento.
+
+### Resultados de cierre de B7
+
+AWFY-core se midió contra `macos-r3-awfy` con diez cargas y sin PGO.
+
+| Carga | Aceleración |
+|---|---:|
+| `sieve` | 35,178× |
+| `permute` | 30,440× |
+| `queens` | 20,449× |
+| `towers` | 35,338× |
+| `list` | 33,393× |
+| `storage` | 19,866× |
+| `bounce` | 25,971× |
+| `mandelbrot` | 60,261× |
+| `nbody` | 23,372× |
+| `richards` | 31,726× |
+| **Media geométrica** | **30,026×** |
+
+E-06 pasó sus criterios registrados. El agregado de retroceso cumple aunque una carga individual
+excede el presupuesto:
+
+| Métrica | Resultado | Criterio | Estado |
+|---|---:|---|---|
+| M2 paso observado y consulta | p95 0,001125 ms | ≤ 0,1 ms | Pasa |
+| M3 retroceso | p95 agregado 32,868 ms; `storage-10` 59,020 ms | ≤ 50 ms | Pasa agregado; carga individual excedida |
+| M4 sobrecoste en pausa | 1,007× | ≤ 1,02× | Pasa |
+| E06-DELTA | 1,191× | ≤ 1,3× | Pasa |
+| E06-DEPTH | 3,34×10⁻⁶ ns/marco | Dentro del margen de 4,46×10⁻⁶ | Pasa |
+| E06-STACK | 3 231 ranuras con 100 222 marcos | ≤ 1,5× el caso superficial más un bloque | Pasa |
+| E06-RETENTION | 72 577 ranuras, 64 puntos, horizonte 1 024 | ≤ 1 048 576 ranuras; 64 puntos | Pasa |
+| E06-RSS | 1,637× de huella viva; 173 817 856 bytes extra | ≤ 2,5× | Pasa |
+
+Evidencia: [`r5-e06.json`](../pseudolearn_spec/results/r5-e06.json).
+
+E-16 sigue parcial; el puntaje mide mutantes viables cazados y no es un puntaje final de cada crate.
+
+| Crate | Cazados / encontrados | Estado |
+|---|---:|---|
+| `pseudolearn_timeline` | 124 / 151 (100 % viables) | Completo |
+| `pseudolearn_lowering` | 311 / 330 (100 % viables) | Completo |
+| `pseudolearn_bytecode` | 337 / 384 (100 % viables) | Completo |
+| `pseudolearn_runtime` | 563 / 607 (100 % viables) | Completo |
+| `pseudolearn_vm` | 198 / 201 ejecutados viables; 820 sin probar; 3 expiraciones | Parcial |
+| `pseudolearn_library` | Sin campaña | No iniciada |
+
+Evidencia: [`r5-e16.json`](../pseudolearn_spec/results/r5-e16.json).
+
+E-17 pasó sobre binarios nativos y Wasm finales: 968 peticiones del corpus, 10 000 programas generados,
+10 000 pares EMI, 48 casos de frontera de formato y cero diferencias en seis funciones matemáticas con
+un millón de argumentos cada una. El módulo Wasm mide 2 179 619 bytes y 480 752 bytes con Brotli.
+Evidencia: [`r5-e17.json`](../pseudolearn_spec/results/r5-e17.json).
+
+| B7.4 diferencial | Resultado |
+|---|---:|
+| Observaciones comparadas | 1 180 |
+| Coincidencias | 888 |
+| Diferencias exentas | 94 |
+| Diferencias de span o avisos sin contratar | 198 |
+| Diferencias no resueltas en salida, terminación o códigos de error | 0 |
+
+La clasificación de las 198 observaciones sin contratar separa cambios de span y cambios en diagnósticos
+no error (presencia, código, severidad o span):
+
+| Clase | Observaciones |
+|---|---:|
+| Solo span | 154 |
+| Solo diagnósticos no error | 24 |
+| Ambos | 20 |
+| **Total** | **198** |
+
+En total, 174 observaciones tienen spans distintos y 44 cambian diagnósticos no error. Solo 12 difieren
+exclusivamente en `end_col`; las demás diferencias de span también alcanzan columnas de inicio o líneas.
+La clasificación descarta que las diferencias restantes sean únicamente precisión benigna de columna,
+por lo que B7.4 permanece abierto. Evidencia: [`r5-differential.json`](../pseudolearn_spec/results/r5-differential.json).
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

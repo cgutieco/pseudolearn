@@ -1730,10 +1730,11 @@ respuestas de decenas de MB (hasta 34 MB y 543 985 eventos por caso); el adaptad
 6. Un bucle sin progreso en un lexer/parser es un defecto: cualquier otro tokenizador con rama por omisión debe
    revisarse con la misma guarda (`pseudolearn_ir` ya; revisar los de bytecode textual si existen).
 
-**Estado de publicación (último push: `42150f7`, rama única).** La implementación de Etapas 2 y 3, los
-README afectados y los resultados de `macos-r5-vm` se publicaron en ese commit. El árbol de trabajo está
-limpio y los HEAD local y remoto coinciden. B7 permanece abierto por sus casillas restantes y por los
-criterios E-06 no alcanzados; B8 no se ha iniciado.
+**Estado de publicación histórico (último push: `42150f7`, rama única).** La implementación de Etapas 2 y 3,
+los README afectados y los resultados de `macos-r5-vm` se publicaron en ese commit. Ese dato describe el
+último push, no el árbol de trabajo actual. E-06 pasó sus criterios registrados, aunque `storage-10`
+supera individualmente el p95 de 50 ms; el agregado M3 es 32,868 ms. B7 permanece abierto por E-16
+parcial y por diferencias de B7.4 fuera del rango `end_col`. B8 no se ha iniciado.
 
 **Pasos restantes de B7, en orden (especificación aprobada en [14 · RFC-014](14-rfc-cierre-b7-arquitectura-y-rendimiento.md)).**
 
@@ -1748,8 +1749,25 @@ criterios E-06 no alcanzados; B8 no se ha iniciado.
    E-06 aceptadas. Los criterios no alcanzados y la evidencia están en el
    [resultado de ejecución de RFC-014 §4](14-rfc-cierre-b7-arquitectura-y-rendimiento.md#resultado-de-ejecución-de-la-etapa-3).
 4. **Etapa 4 (RFC-014 §4, D2):** Tests de frontera y propiedades en `pseudolearn_timeline` y campaña `cargo-mutants` crate por crate (`--in-place --timeout 30`) con ≥ 85 % en los 6 crates (`E-16`).
-5. **Etapa 5 (RFC-014 §4, D3-a):** Conservar advertencias de análisis en `execute` (`B7.4`) y reejecutar `E-17` sobre binarios finales (`status: passed`).
-6. **Etapa 6 (RFC-014 §4):** Actualización de `README.md` (`DOC-README-TRUTH`) y `cargo xtask verify` íntegro en `pseudolearn_engine` y `pseudolearn_spec`. B8 no se inicia sin autorización nueva.
+5. **Etapa 5 (RFC-014 §4, D3-a), implementación aplicada; B7.4 sigue abierto.** `execute` conserva
+   advertencias de análisis y `E-17` pasó sobre binarios nativos y Wasm finales: cero diferencias en
+   968 peticiones del corpus, 10 000 programas generados, 10 000 pares EMI, 48 límites de formato y seis
+   funciones matemáticas con un millón de argumentos cada una. La conformidad del motor ejecutó 1 512
+   observaciones sin divergencias. El diferencial B7.4 comparó 1 180 observaciones: 888 coincidieron,
+   94 quedaron exentas y hubo cero diferencias contractuales no resueltas; persistieron 198 diferencias
+   sin contratar. La clasificación separa 154 observaciones con cambios solo de span, 24 con cambios solo
+   en diagnósticos no error y 20 con ambos tipos. En total, 174 observaciones difieren en spans y 44 en
+   diagnósticos no error; solo 12 difieren exclusivamente en `end_col`. El RFC espera únicamente precisión
+   de `end_col`, así que la Etapa 5 no se cierra y B7.4 permanece abierto hasta resolver las diferencias
+   adicionales.
+6. [x] **Etapa 6 (RFC-014 §4):** README del paquete actualizado con las decisiones de runtime, bytecode,
+   timeline, API y los resultados de AWFY-core, E-06, E-16, E-17 y B7.4. `cargo run -p xtask -- verify`
+   terminó con código 0 en engine, con `cargo deny check` en modo offline sobre la base local porque
+   el lock predeterminado está bajo una ruta de solo lectura. En spec, `cargo run -p xtask -- verify`
+   terminó con código 0: tests, Clippy, verificadores
+   Rust, 140 especificaciones validadas, lock/export sin cambios y conformidad `reference` ejecutada
+   (1 180 observaciones, 134 divergencias históricas). El motor registró 1 512 observaciones sin
+   divergencias. B8 no se inicia sin autorización nueva.
 
 ### B8 · Cierre (`phase-gate`)
 

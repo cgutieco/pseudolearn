@@ -5651,7 +5651,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 6
+              },
+              "start": {
+                "column": 9,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -5674,7 +5695,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 6
+              },
+              "start": {
+                "column": 9,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -5697,7 +5739,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 6
+              },
+              "start": {
+                "column": 8,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -5720,7 +5783,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 6
+              },
+              "start": {
+                "column": 8,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -9734,6 +9818,26 @@
         "diagnostics": [
           {
             "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {
               "limit": 9
             },
             "class": "runtime",
@@ -9781,6 +9885,26 @@
         "diagnostics": [
           {
             "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {
               "limit": 9
             },
             "class": "runtime",
@@ -9826,6 +9950,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {
               "limit": 9
@@ -9873,6 +10017,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {
               "limit": 9
@@ -19282,6 +19446,26 @@
       "actual": {
         "diagnostics": [
           {
+            "arguments": {
+              "lexeme": "z"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: z",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 2
+              },
+              "start": {
+                "column": 12,
+                "line": 2
+              }
+            }
+          },
+          {
             "arguments": {},
             "class": "runtime",
             "code": "negativeIntegerExponent",
@@ -19326,6 +19510,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "z"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: z",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 2
+              },
+              "start": {
+                "column": 12,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {},
             "class": "runtime",
@@ -19372,6 +19576,26 @@
       "actual": {
         "diagnostics": [
           {
+            "arguments": {
+              "lexeme": "z"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: z",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
+          {
             "arguments": {},
             "class": "runtime",
             "code": "negativeIntegerExponent",
@@ -19416,6 +19640,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "z"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: z",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {},
             "class": "runtime",
@@ -21578,7 +21822,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -21601,7 +21866,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -21624,7 +21910,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -21647,7 +21954,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -21671,6 +21999,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {
               "size": -1
@@ -21719,6 +22067,26 @@
         "diagnostics": [
           {
             "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {
               "size": -1
             },
             "class": "runtime",
@@ -21763,6 +22131,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {
               "size": -1
@@ -21809,6 +22197,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            }
+          },
           {
             "arguments": {
               "size": -1
@@ -22270,7 +22678,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -22293,7 +22722,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -22316,7 +22766,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 4
+              },
+              "start": {
+                "column": 8,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -22339,7 +22810,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 4
+              },
+              "start": {
+                "column": 8,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -22982,7 +23474,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23005,7 +23518,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 4
+              },
+              "start": {
+                "column": 9,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23028,7 +23562,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 4
+              },
+              "start": {
+                "column": 8,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23051,7 +23606,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 4
+              },
+              "start": {
+                "column": 8,
+                "line": 4
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23930,7 +24506,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 6
+              },
+              "start": {
+                "column": 9,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23953,7 +24550,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 6
+              },
+              "start": {
+                "column": 9,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23976,7 +24594,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 6
+              },
+              "start": {
+                "column": 8,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -23999,7 +24638,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: x",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 6
+              },
+              "start": {
+                "column": 8,
+                "line": 6
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -31385,6 +32045,26 @@
             "arguments": {
               "lexeme": "x"
             },
+            "class": "semantic",
+            "code": "variableUsedUninitialized",
+            "message": "La variable x se usa sin haber sido inicializada",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 11,
+                "line": 3
+              },
+              "start": {
+                "column": 10,
+                "line": 3
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
             "message": "La variable x se lee sin haber sido inicializada",
@@ -31427,6 +32107,26 @@
     {
       "actual": {
         "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "x"
+            },
+            "class": "semantic",
+            "code": "variableUsedUninitialized",
+            "message": "Variable x is used without being initialized",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 8,
+                "line": 3
+              },
+              "start": {
+                "column": 7,
+                "line": 3
+              }
+            }
+          },
           {
             "arguments": {
               "lexeme": "x"
@@ -64964,7 +65664,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "value"
+            },
+            "class": "semantic",
+            "code": "undeclaredVariable",
+            "message": "Variable no declarada: value",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 6,
+                "line": 2
+              },
+              "start": {
+                "column": 1,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -64987,7 +65708,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "value"
+            },
+            "class": "semantic",
+            "code": "undeclaredVariable",
+            "message": "Undeclared variable: value",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 6,
+                "line": 2
+              },
+              "start": {
+                "column": 1,
+                "line": 2
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -71276,7 +72018,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 5
+              },
+              "start": {
+                "column": 9,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: b",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 5
+              },
+              "start": {
+                "column": 12,
+                "line": 5
+              }
+            }
+          }
+        ],
         "events": [
           {
             "class": "statement_entered",
@@ -71399,7 +72182,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 10,
+                "line": 5
+              },
+              "start": {
+                "column": 9,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: b",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 5
+              },
+              "start": {
+                "column": 12,
+                "line": 5
+              }
+            }
+          }
+        ],
         "events": [
           {
             "class": "statement_entered",
@@ -71522,7 +72346,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 5
+              },
+              "start": {
+                "column": 8,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: b",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 5
+              },
+              "start": {
+                "column": 11,
+                "line": 5
+              }
+            }
+          }
+        ],
         "events": [
           {
             "class": "statement_entered",
@@ -71645,7 +72510,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 5
+              },
+              "start": {
+                "column": 8,
+                "line": 5
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "b"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: b",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 5
+              },
+              "start": {
+                "column": 11,
+                "line": 5
+              }
+            }
+          }
+        ],
         "events": [
           {
             "class": "statement_entered",
@@ -72320,7 +73226,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 17,
+                "line": 1
+              },
+              "start": {
+                "column": 16,
+                "line": 1
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -72343,7 +73270,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 17,
+                "line": 1
+              },
+              "start": {
+                "column": 16,
+                "line": 1
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -72366,7 +73314,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 17,
+                "line": 1
+              },
+              "start": {
+                "column": 16,
+                "line": 1
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -72389,7 +73358,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "a"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: a",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 17,
+                "line": 1
+              },
+              "start": {
+                "column": 16,
+                "line": 1
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -73332,7 +74322,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 31
+              },
+              "start": {
+                "column": 9,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73355,7 +74366,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 31
+              },
+              "start": {
+                "column": 9,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73378,7 +74410,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 31
+              },
+              "start": {
+                "column": 8,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73401,7 +74454,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 31
+              },
+              "start": {
+                "column": 8,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73424,7 +74498,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 31
+              },
+              "start": {
+                "column": 9,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73447,7 +74542,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 31
+              },
+              "start": {
+                "column": 9,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73470,7 +74586,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 31
+              },
+              "start": {
+                "column": 8,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -73493,7 +74630,28 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "raiz"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable assigned but never read: raiz",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 12,
+                "line": 31
+              },
+              "start": {
+                "column": 8,
+                "line": 31
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74068,7 +75226,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74091,7 +75290,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74114,7 +75354,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74137,7 +75418,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74160,7 +75482,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74183,7 +75546,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74206,7 +75610,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
@@ -74229,7 +75674,48 @@
     },
     {
       "actual": {
-        "diagnostics": [],
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 121
+              },
+              "start": {
+                "column": 17,
+                "line": 121
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "paquete"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parameter never used: paquete",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 24,
+                "line": 231
+              },
+              "start": {
+                "column": 17,
+                "line": 231
+              }
+            }
+          }
+        ],
         "events": [],
         "inputs_consumed": 1,
         "kind": "execute",
