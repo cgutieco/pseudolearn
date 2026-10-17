@@ -1,5 +1,5 @@
 {
-  "coincide": 888,
+  "coincide": 898,
   "compared": 1180,
   "contract_scope": "output, termination and error diagnostic codes",
   "engine_observations": 1512,
@@ -3303,42 +3303,6 @@
       "strictness": "flexible"
     },
     {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "en",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.ARRAY.DIMENSION",
-      "strictness": "estricto"
-    },
-    {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "en",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.ARRAY.DIMENSION",
-      "strictness": "flexible"
-    },
-    {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "es",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.ARRAY.DIMENSION",
-      "strictness": "estricto"
-    },
-    {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "es",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.ARRAY.DIMENSION",
-      "strictness": "flexible"
-    },
-    {
       "case": "C2",
       "engine_verdict": "cumple",
       "profile": "en",
@@ -4491,24 +4455,6 @@
       "strictness": "flexible"
     },
     {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "en",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.TYPES.INFERENCE",
-      "strictness": "flexible"
-    },
-    {
-      "case": "C1",
-      "engine_verdict": "cumple",
-      "profile": "es",
-      "reference_verdict": "cumple",
-      "rule": "R1",
-      "specification": "LANG.TYPES.INFERENCE",
-      "strictness": "flexible"
-    },
-    {
       "case": "C2",
       "engine_verdict": "cumple",
       "profile": "en",
@@ -4704,45 +4650,9 @@
       "reference_verdict": "cumple",
       "rule": "R1",
       "specification": "LIB.MODEL",
-      "strictness": "flexible"
-    },
-    {
-      "case": "C4",
-      "engine_verdict": "cumple",
-      "profile": "en",
-      "reference_verdict": "cumple",
-      "rule": "R4",
-      "specification": "MEM.VALUE.COPY",
-      "strictness": "estricto"
-    },
-    {
-      "case": "C4",
-      "engine_verdict": "cumple",
-      "profile": "en",
-      "reference_verdict": "cumple",
-      "rule": "R4",
-      "specification": "MEM.VALUE.COPY",
-      "strictness": "flexible"
-    },
-    {
-      "case": "C4",
-      "engine_verdict": "cumple",
-      "profile": "es",
-      "reference_verdict": "cumple",
-      "rule": "R4",
-      "specification": "MEM.VALUE.COPY",
-      "strictness": "estricto"
-    },
-    {
-      "case": "C4",
-      "engine_verdict": "cumple",
-      "profile": "es",
-      "reference_verdict": "cumple",
-      "rule": "R4",
-      "specification": "MEM.VALUE.COPY",
       "strictness": "flexible"
     }
   ],
-  "uncontracted_span_or_notice_differences": 198,
+  "uncontracted_span_or_notice_differences": 188,
   "unresolved_differences": []
 }

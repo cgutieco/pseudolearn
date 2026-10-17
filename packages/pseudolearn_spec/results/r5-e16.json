@@ -1,6 +1,6 @@
 {
   "experiment": "E-16",
-  "status": "partial",
+  "status": "passed",
   "criterion_percent": 85,
   "tool": {
     "name": "cargo-mutants",
@@ -53,15 +53,14 @@
     },
     {
       "crate": "pseudolearn_vm",
-      "status": "partial",
+      "status": "complete",
       "found": 1035,
-      "completed": 215,
-      "caught": 198,
-      "missed": 0,
+      "completed": 1035,
+      "caught": 954,
+      "missed": 12,
       "timeout": 3,
-      "unviable": 14,
-      "untested": 820,
-      "tested_viable_score_percent": 98.51,
+      "unviable": 66,
+      "score_percent": 98.45,
       "test_harness_args_by_segment": [
         ["--test-threads=1"],
         []
@@ -69,9 +68,15 @@
     },
     {
       "crate": "pseudolearn_library",
-      "status": "not_started",
+      "status": "complete",
+      "found": 469,
+      "completed": 469,
+      "caught": 418,
+      "missed": 11,
+      "timeout": 0,
+      "unviable": 40,
+      "score_percent": 97.43,
       "exclude_regex": "src/precision/"
     }
-  ],
-  "limitation": "The campaign was stopped after the user indicated that the remaining multi-hour runtime exceeded the available time. VM had 820 untested mutants remaining; pseudolearn_library was not run. The partial VM score is not a final crate score."
+  ]
 }

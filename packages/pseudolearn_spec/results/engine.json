@@ -9821,8 +9821,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -9888,8 +9888,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -9955,8 +9955,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -10022,8 +10022,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -21828,8 +21828,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -21872,8 +21872,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -21916,8 +21916,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -21960,8 +21960,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -22004,8 +22004,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -22070,8 +22070,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable asignada pero nunca leída: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declarada y nunca usada: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -22136,8 +22136,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -22202,8 +22202,8 @@
               "lexeme": "a"
             },
             "class": "semantic",
-            "code": "variableAssignedNeverRead",
-            "message": "Variable assigned but never read: a",
+            "code": "variableDeclaredNeverUsed",
+            "message": "Variable declared but never used: a",
             "related": [],
             "severity": "warning",
             "span": {
@@ -65684,6 +65684,27 @@
                 "line": 2
               }
             }
+          },
+          {
+            "arguments": {
+              "lexeme": "value",
+              "type": "Entero"
+            },
+            "class": "semantic",
+            "code": "inferredVariableType",
+            "message": "Tipo inferido para value: Entero",
+            "related": [],
+            "severity": "info",
+            "span": {
+              "end": {
+                "column": 11,
+                "line": 2
+              },
+              "start": {
+                "column": 1,
+                "line": 2
+              }
+            }
           }
         ],
         "events": [],
@@ -65721,6 +65742,27 @@
             "span": {
               "end": {
                 "column": 6,
+                "line": 2
+              },
+              "start": {
+                "column": 1,
+                "line": 2
+              }
+            }
+          },
+          {
+            "arguments": {
+              "lexeme": "value",
+              "type": "integer"
+            },
+            "class": "semantic",
+            "code": "inferredVariableType",
+            "message": "Inferred type for value: integer",
+            "related": [],
+            "severity": "info",
+            "span": {
+              "end": {
+                "column": 11,
                 "line": 2
               },
               "start": {
@@ -73226,28 +73268,7 @@
     },
     {
       "actual": {
-        "diagnostics": [
-          {
-            "arguments": {
-              "lexeme": "a"
-            },
-            "class": "semantic",
-            "code": "unusedParameter",
-            "message": "Parámetro nunca usado: a",
-            "related": [],
-            "severity": "warning",
-            "span": {
-              "end": {
-                "column": 17,
-                "line": 1
-              },
-              "start": {
-                "column": 16,
-                "line": 1
-              }
-            }
-          }
-        ],
+        "diagnostics": [],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -73270,28 +73291,7 @@
     },
     {
       "actual": {
-        "diagnostics": [
-          {
-            "arguments": {
-              "lexeme": "a"
-            },
-            "class": "semantic",
-            "code": "unusedParameter",
-            "message": "Parámetro nunca usado: a",
-            "related": [],
-            "severity": "warning",
-            "span": {
-              "end": {
-                "column": 17,
-                "line": 1
-              },
-              "start": {
-                "column": 16,
-                "line": 1
-              }
-            }
-          }
-        ],
+        "diagnostics": [],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -73314,28 +73314,7 @@
     },
     {
       "actual": {
-        "diagnostics": [
-          {
-            "arguments": {
-              "lexeme": "a"
-            },
-            "class": "semantic",
-            "code": "unusedParameter",
-            "message": "Parameter never used: a",
-            "related": [],
-            "severity": "warning",
-            "span": {
-              "end": {
-                "column": 17,
-                "line": 1
-              },
-              "start": {
-                "column": 16,
-                "line": 1
-              }
-            }
-          }
-        ],
+        "diagnostics": [],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
@@ -73358,28 +73337,7 @@
     },
     {
       "actual": {
-        "diagnostics": [
-          {
-            "arguments": {
-              "lexeme": "a"
-            },
-            "class": "semantic",
-            "code": "unusedParameter",
-            "message": "Parameter never used: a",
-            "related": [],
-            "severity": "warning",
-            "span": {
-              "end": {
-                "column": 17,
-                "line": 1
-              },
-              "start": {
-                "column": 16,
-                "line": 1
-              }
-            }
-          }
-        ],
+        "diagnostics": [],
         "events": [],
         "inputs_consumed": 0,
         "kind": "execute",
