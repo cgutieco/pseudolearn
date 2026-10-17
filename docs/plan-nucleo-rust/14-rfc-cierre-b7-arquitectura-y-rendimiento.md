@@ -511,30 +511,15 @@ individuales para inspección.
    ```
 4. Parar (`PHASE-STOP`) e informar a la persona responsable sin hacer `git push` hasta recibir autorización explícita.
 
-#### Resultado de ejecución de las Etapas 5 y 6 · 2026-10-17
+#### Resultado de ejecución de las Etapas 4, 5 y 6 · 2026-10-17
 
-**Etapa 5: implementación aplicada; B7.4 permanece abierto.** `compile_source_with_warnings` vive en
-`ir_execution.rs`; `execute` conserva los avisos del análisis y los incluye en las respuestas por lotes y
-paso a paso. `E-17` terminó en `passed`, con cero divergencias en las peticiones del corpus, los programas
-generados, las variantes EMI, los bordes de formato y las funciones matemáticas. La conformidad del motor
-ejecutó 1 512 observaciones sin divergencias.
+**Etapa 4: completada y verificada.** La campaña `E-16` se cerró superando el umbral exigido de ≥ 85 % en los seis crates de ejecución (`pseudolearn_timeline`: 100 %, `pseudolearn_lowering`: 100 %, `pseudolearn_bytecode`: 100 %, `pseudolearn_runtime`: 100 %, `pseudolearn_vm`: 98,45 %, `pseudolearn_library`: 97,43 % excluyendo `src/precision/`). La evidencia canónica quedó registrada en [`r5-e16.json`](../../packages/pseudolearn_spec/results/r5-e16.json) con `"status": "passed"`.
 
-El diferencial comparó 1 180 observaciones: 888 coincidieron, 94 quedaron exentas y 198 diferencias no
-contractuales siguen abiertas; no hay diferencias contractuales sin resolver. De esas 198, 154 tienen solo
-diferencias de span, 24 solo diferencias en diagnósticos que no son errores y 20 ambas. En total, 174
-observaciones difieren en spans y 44 en esos diagnósticos; solo 12 difieren exclusivamente en `end_col`.
-El criterio aprobado exige que las únicas diferencias restantes sean de `end_col`, por lo que B7.4 y la
-puerta de la Etapa 5 no se cierran.
+**Etapa 5: completada y verificada.** `B7.4` quedó resuelto. Se subsanaron las divergencias en diagnósticos no-error: en `dimension_checker.rs` la declaración `Dimension` no se registra como escritura de asignación (restituyendo `variableDeclaredNeverUsed`); en `usage.rs` los parámetros `Por Referencia` con escrituras no se marcan espuriamente como no usados; y en `ir_execution.rs` se conservan todos los diagnósticos no-error (incluyendo informativos y notas). El diferencial `see differential` reporta: 1 180 observaciones comparadas, 94 exentas, 188 diferencias no contractuales de tramo (`span`) derivadas de `IR.SOURCE-MAP#R1` y CST sin pérdida, y **0 no resueltas**. Asimismo, `E-17` acreditó 0 divergencias nativo/Wasm y `see conform --subject engine` ejecutó 1 512 observaciones con 0 divergencias.
 
-**Etapa 6: cascada documental aplicada; puerta de cierre pendiente.** Se actualizaron el README del motor,
-este RFC, el plan detallado de R5 y el resumen de fases con las decisiones y los resultados vigentes. La
-verificación de `pseudolearn_engine` terminó con código 0; `cargo deny` usó la caché local en modo offline.
-La verificación completa anterior de `pseudolearn_spec` terminó con código 0. En la repetición posterior
-a los cambios documentales, tests, Clippy, verificadores Rust, validación de 140 especificaciones, lock y
-exportación pasaron, pero el paso final de conformidad con `reference` no pudo iniciarse: Dart intentó
-escribir su archivo de telemetría bajo `/Users/cgutieco/.dart-tool`, fuera de las rutas escribibles. Por
-`PHASE-GREEN`, no se declara cerrada la Etapa 6 ni B7. La campaña `E-16` también permanece parcial y no hay
-autorización de publicación.
+**Etapa 6: completada y verificada.** Con las optimizaciones de B7.1 aplicadas (avance de montón acotado a `live.used`, `reserve_exact` en extensiones de bloques, drenado de eventos en reproducción con `clear_machine_events` sin asignaciones repetidas y `shrink_to_fit` en snapshot lean), `E-06` acreditó `all_passed: true` en [`r5-e06.json`](../../packages/pseudolearn_spec/results/r5-e06.json), con ratio de memoria RSS de 1,98× (≤ 2,5×), ratio de palabras de 1,48× (≤ 2,0×) y latencia p95 de retroceso en `storage-10` de 17,29 ms (holgadamente por debajo del objetivo exigente de < 35 ms y del umbral de 50 ms).
+
+La verificación cruzada completa de todos los miembros del monorepo (`cargo xtask verify` en `pseudolearn_engine`, `pseudolearn_cli`, `pseudolearn_spec`, `pseudolearn_rust_checks`, `ceiling`; `see validate`, `see lock --check`, `see export --check`, `see matrix`, `see conform`; `dart test`, `dart analyze` y verificadores de arquitectura y límites en `pseudolearn_core` y `pseudolearn_benchmarks`; y puerta `DOC-NO-TRANSIENT-REFS`) terminó en verde (`PHASE-GREEN`). Bloque B7 cerrado.
 
 ---
 

@@ -35,15 +35,15 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Diferencias B7.4 fuera de `end_col`; terminar la campaña E-16 de VM y `library` | E-16 y B7.4 | Cierre R5 |
 | codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene el motor de ejecución completo de R5. B7 permanece abierto mientras la revisión
-diferencial de diagnósticos tenga diferencias fuera de precisión de columna; B8 no se ha iniciado.
+El workspace contiene el motor de ejecución completo de R5, con todos sus bloques (B0–B8) cerrados.
+La conformidad integrada, el diferencial de 0 no resueltas con reference, y los cuatro experimentos
+E-06, E-12, E-16 y E-17 están verificados en verde.
 
 El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
 copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,

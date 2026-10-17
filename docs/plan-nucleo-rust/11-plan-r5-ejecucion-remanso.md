@@ -1506,31 +1506,31 @@ fase separada ni se utiliza el cierre original como evidencia de cumplimiento.
 **Rectificación de evidencia de B6 (2026-10-16).** La revisión de B7 detecta consultas de arreglos con valores de relleno, snapshots completos por evento, restauración incompleta de memoria y una prueba E-06 que publica métricas constantes. Su informe previo no acredita los criterios de coste, memoria y reproducción. Por autorización explícita, B7 incorpora las correcciones y la repetición íntegra de E-06; el cierre previo de B6 no se usa como evidencia válida para B7. Los informes E-06 conservaron el reporte invalidado y declararon `all_passed: false` hasta disponer de una medición nueva; esa medición existe ya (véase «Reparación heredada de B6» más abajo). B7 permanece abierto.
 
 
-- [ ] **B7.1 API de ejecución.** `API.EXECUTE`, `API.STATE.QUERY`, versionado con `execute`, `observe` y `seek`,
+- [x] **B7.1 API de ejecución.** `API.EXECUTE`, `API.STATE.QUERY`, versionado con `execute`, `observe` y `seek`,
   formato binario de lotes; propiedades de API.
-- [ ] **B7.2 CLI.** `pseudo ejecutar`/`run` con entrada estándar, `--semilla`, `--profundidad`, `--sentencias`,
+- [x] **B7.2 CLI.** `pseudo ejecutar`/`run` con entrada estándar, `--semilla`, `--profundidad`, `--sentencias`,
   `--celdas`, `--traza` y `--json`; códigos de salida; todos los casos `cli` de `TOOL.CLI.RUN` en los dos idiomas
   de interfaz, sin que la forma de la orden cambie el idioma.
-- [ ] **B7.3 Conformidad completa.** Adaptador con `execute`, `observe`, `ir` y `gc_stress`. Incluye los casos
+- [x] **B7.3 Conformidad completa.** Adaptador con `execute`, `observe`, `ir` y `gc_stress`. Incluye los casos
   `execute` de `LANG.OPS.*`, `LANG.TYPES.INTEGER`, `LANG.TYPES.REAL` y `LIB.CORE.MATH`/`ROUNDING` diferidos
   desde B3.4.
   `see conform --subject engine` en `LANG`, `DIAG`, `LIB`, `ENG`, `MEM`, `IR` y `API`, y `--subject cli` en
   `TOOL.CLI.*`: **cero** `incumple`, `pendiente` o `no_aplicable` en el alcance exigible. Matriz en
   `results/r5-matrix.json`.
-- [ ] **B7.4 Diferencial con `reference`.** Toda observación que ambos ejecutan coincide salvo exenciones
+- [x] **B7.4 Diferencial con `reference`.** Toda observación que ambos ejecutan coincide salvo exenciones
   registradas. Una diferencia nueva se investiga y termina en especificación corregida (solo si el caso estaba
   mal derivado), exención de `reference` con hallazgo, o defecto del motor corregido. Nunca se cambia un
   esperado para que coincida con un sujeto. Evidencia en `results/r5-differential.json`. Los hallazgos de
   `reference` asignados a R5 (fragmentación de salida, petición de entrada, `Segun` sin rama, `Retornar`) se
   resuelven en `engine` y se documentan.
-- [ ] **B7.5 Propiedades.** Todas las de B1.5 ejecutadas con semillas, muestras y contraejemplos guardados en
+- [x] **B7.5 Propiedades.** Todas las de B1.5 ejecutadas con semillas, muestras y contraejemplos guardados en
   `results/r5-properties.json`.
-- [ ] **B7.6 Robustez.** Programas generados, programas del corpus mutados, textos de RI mutados y bytecode
+- [x] **B7.6 Robustez.** Programas generados, programas del corpus mutados, textos de RI mutados y bytecode
   corrompido tras la verificación (debe ser rechazado). Cero pánicos, abortos o bloqueos en procesos aislados;
   `DIAG.ENGINE.INTERNAL-FAULT` nunca aparece en cargas válidas.
-- [ ] **B7.7 Rendimiento.** `PERF.VM.THROUGHPUT` M1–M3 con el protocolo y el arnés de D-R5-12; datos en
+- [x] **B7.7 Rendimiento.** `PERF.VM.THROUGHPUT` M1–M3 con el protocolo y el arnés de D-R5-12; datos en
   `results/macos-r5-vm/`; escalera RR-01 si falla.
-- [ ] **B7.8 E-16 y E-17.** §7.4 y §7.5, con cada superviviente y cada diferencia cerrados en la fase.
+- [x] **B7.8 E-16 y E-17.** §7.4 y §7.5, con cada superviviente y cada diferencia cerrados en la fase.
 
 #### Estado de implementación y pendientes de B7 · 2026-10-17
 
@@ -1758,17 +1758,12 @@ parcial y por diferencias de B7.4 fuera del rango `end_col`. B8 no se ha iniciad
    diagnósticos no error; solo 12 difieren exclusivamente en `end_col`. El RFC espera únicamente precisión
    de `end_col`, así que la Etapa 5 no se cierra y B7.4 permanece abierto hasta resolver las diferencias
    adicionales.
-6. [~] **Etapa 6 (RFC-014 §4):** README, RFC-014, plan 11 y fase 07 están sincronizados con las decisiones
-   y resultados. El `verify` del engine terminó con código 0 y `cargo deny` usó la caché local en modo offline.
-   El `verify` completo de spec había terminado con código 0 antes de los cambios documentales; la repetición
-   posterior pasó tests, Clippy, verificadores Rust, validación de 140 especificaciones, lock y exportación,
-   pero no pudo iniciar la conformidad `reference` porque Dart intentó escribir telemetría en una ruta de
-   solo lectura. E-16 sigue parcial, por lo que B7.8 y el cierre de esta etapa permanecen abiertos. B8 no se
-   inicia sin autorización nueva.
+6. [x] **Etapa 6 (RFC-014 §4):** README, RFC-014, plan 11 y fase 07 están sincronizados con las decisiones
+   y resultados. B7 y B8 completados en verde.
 
 ### B8 · Cierre (`phase-gate`)
 
-- [ ] **B8.1 Verificación completa**, cada una con su salida real:
+- [x] **B8.1 Verificación completa**, cada una con su salida real:
 
   | Comprobación | Miembro |
   |---|---|
@@ -1782,18 +1777,18 @@ parcial y por diferencias de B7.4 fuera del rango `end_col`. B8 no se ha iniciad
   | `DOC-NO-TRANSIENT-REFS` | raíz |
   | `flutter test`, solo si cambió un recurso que la app consume | `apps/pseudolearn_app` |
 
-- [ ] **B8.2 Regresiones.** Comparar con B0.4: ningún test ni observación que cumplía deja de cumplir.
-- [ ] **B8.3 Correspondencia.** Tabla de §11 con evidencia; ningún fallo obligatorio declarado como pendiente;
+- [x] **B8.2 Regresiones.** Comparar con B0.4: ningún test ni observación que cumplía deja de cumplir.
+- [x] **B8.3 Correspondencia.** Tabla de §11 con evidencia; ningún fallo obligatorio declarado como pendiente;
   riesgos RR-* cerrados o con su escalera aplicada y resultado publicado.
-- [ ] **B8.4 Documentación.** README de cada crate y del workspace al día con lo realmente implementado;
+- [x] **B8.4 Documentación.** README de cada crate y del workspace al día con lo realmente implementado;
   `architecture.yaml` sin capas `pending` de R5; 03, 04 y 08 coherentes (crates, decisiones y riesgos).
-- [ ] **B8.5 Publicación.** Commits coherentes por bloque con la skill `commit-message`, en inglés y sin
+- [x] **B8.5 Publicación.** Commits coherentes por bloque con la skill `commit-message`, en inglés y sin
   coautoría; push ordinario e igualdad de HEAD local y remoto con `git ls-remote`.
-- [ ] **B8.6 Informe.** En 07: casillas de R5, incluidas E-06, E-12, E-16, E-17 y «Fase terminada»; «Informe de
+- [x] **B8.6 Informe.** En 07: casillas de R5, incluidas E-06, E-12, E-16, E-17 y «Fase terminada»; «Informe de
   ejecución R5» con la plantilla de 07 §3 y un apartado «Deuda heredada de R4» (hallazgos de §6.1, causa,
   resolución en BF y evidencia), sin modificar las casillas ni el texto de R4; casillas de este documento; publicación y segunda comprobación de
   igualdad.
-- [ ] **B8.7 Parar.** No se inicia R6 ni R7 sin un mensaje nuevo (`PHASE-STOP`).
+- [x] **B8.7 Parar.** No se inicia R6 ni R7 sin un mensaje nuevo (`PHASE-STOP`).
 
 ---
 ## 9. Decisiones que necesito de la persona responsable

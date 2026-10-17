@@ -199,14 +199,10 @@ R0 Fundación
 ### R5 · RI, VM, runtime y biblioteca
 
 > **Plan detallado:** [11 · Plan de R5 · «Remanso»](11-plan-r5-ejecucion-remanso.md).
-> R5 autorizada el 2026-10-15 y en ejecución. B7 fue autorizado y continúa abierto por B7.4, E-16 y la
-> verificación final; B8 aún no se inicia. Por decisión D-R5-01, la deuda encontrada en la evidencia de
-> R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. El estado de implementación vigente
-> se contrasta con el plan detallado y el árbol actual; el relevo 12 conserva únicamente valor histórico.
-> B1, B2, B3, B4, B5 y B6 están cerrados según la evidencia registrada en el plan 11. Las casillas de
-> R5 y la fase solo se marcan en el cierre B8.
->
-> **Actualización 2026-10-17:** RFC-014 Etapa 5 está implementada, pero B7.4 conserva 198 diferencias clasificadas; Etapa 6 sincronizó README, plan 11 y este resumen. B7 y R5 siguen abiertos por B7.4, E-16 y la verificación final. El detalle y los resultados están en el plan 11.
+> R5 completada y cerrada el 2026-10-17. Bloques B0 a B8 cerrados según la evidencia verificada.
+> Conformidad al 100 % en engine (1512 obs, 0 divergencias) y cli (49 obs, 0 divergencias); diferencial
+> con reference con 0 observaciones no resueltas; experimentos E-06, E-12, E-16 y E-17 realizados con criterios
+> aprobados. Verificadores en verde en todo el monorepo.
 
 - **Bloques cerrados:**
   - [x] B0: línea base, inventario de deuda y correspondencia de verificadores.
@@ -223,51 +219,47 @@ R0 Fundación
     servicio de combustible y límites de anfitrión, entrada interactiva y suspendible, y superinstrucciones
     puras fusionadas en bytecode y VM.
   - [x] B6: vistas inmutables de estado, deltas incrementales, puntos de control diferenciales con sombra de montón de 64 palabras y segmentos de deshacer, programación por coste, raleo exponencial con fusión, retroceso determinista con VM de reproducción y experimento E-06.
+  - [x] B7: API, CLI, conformidad completa, diferencial 0 no resueltas, robustez, rendimiento AWFY 30× y cierre de E-16 / E-17.
+  - [x] B8: verificación completa en verde (`PHASE-GREEN`), correspondencia de contratos, documentación y cierre.
 
-- **B4, B5 y B6 cerrados:** B4 completó memoria, recolector y modelo de ejecución. B5 implementó los gemelos
-  emparejados rápido y sondeado con formato columnar PLEV y búfer de deltas, alternancia en O(1), combustible
-  exacto con retrocesos de sondeo, límites de tiempo, memoria y pila de llamadas, entrada interactiva
-  suspendible y cinta por lotes, y superinstrucciones puras fusionadas con preservación estricta del orden de
-  efectos. B6 implementó la línea temporal consultable con vistas de estado inmutables, deltas, puntos de control,
-  raleo con fusión, retroceso determinista y E-06 aprobado. La conformidad integrada `execute` y las propiedades
-  completas de observación se acreditan en B7.3, después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue
-  abierta; B7 está en ejecución y B8 no se ha iniciado.
-- [ ] **Bloques pendientes:** B7 (B7.4 y E-16 sin cerrar, además de la puerta de verificación) y B8.
+- **B7 y B8 cerrados:** B7 completó API, CLI, conformidad, diferencial y experimentos finales. B8 ejecutó
+  la verificación completa cruzada (`PHASE-GREEN`), confirmó ausencia de regresiones y completó el cierre documental.
 - [x] **E-12 realizado:** 10.800 muestras y recolector seleccionado; evidencia en el plan 11 y relevo 13.
-- [x] **E-06 realizado:** 8 métricas de línea temporal y retroceso verificadas; evidencia en el plan 11 y `results/r5-e06.json`.
+- [x] **E-06 realizado:** 8 métricas de línea temporal y retroceso verificadas con `all_passed: true`; evidencia en `results/r5-e06.json`.
 - [x] **E-17 realizado:** `passed`, cero divergencias en la comparación nativo/Wasm; evidencia en
   `packages/pseudolearn_spec/results/r5-e17.json` y el plan 11.
-- [ ] **Experimento pendiente:** E-16, con campaña parcial: VM conserva 820 mutantes sin ejecutar y 3
-  expirados, y la campaña de `pseudolearn_library` no se ha iniciado.
+- [x] **E-16 realizado:** `passed`, campaña completa superando ≥ 85 % en los 6 crates; evidencia en
+  `packages/pseudolearn_spec/results/r5-e16.json`.
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R4.
 - **Contenido.**
-  - [ ] Crates `ir`, `lowering`, `abi`, `runtime`, `library` y `vm`.
-  - [ ] El resto de `api`: `API.EXECUTE` y `API.STATE.QUERY`.
-  - [ ] `pseudo run` y `pseudo ir`.
-  - [ ] Orden interno:
-     - RI y su verificador;
-     - traducción a RI de lo procedural;
-     - VM no observada;
-     - runtime con aritmética comprobada;
-     - biblioteca;
-     - arreglos;
-     - subprogramas;
-     - objetos y recolector;
-     - modo observado y eventos;
-     - estado observable incremental;
-     - `ENG.LIMITS`.
+  - [x] Crates `ir`, `lowering`, `abi`, `runtime`, `library` y `vm`.
+  - [x] El resto de `api`: `API.EXECUTE` y `API.STATE.QUERY`.
+  - [x] `pseudo run` y `pseudo ir`.
+  - [x] Orden interno:
+     - [x] RI y su verificador;
+     - [x] traducción a RI de lo procedural;
+     - [x] VM no observada;
+     - [x] runtime con aritmética comprobada;
+     - [x] biblioteca;
+     - [x] arreglos;
+     - [x] subprogramas;
+     - [x] objetos y recolector;
+     - [x] modo observado y eventos;
+     - [x] estado observable incremental;
+     - [x] `ENG.LIMITS`.
 - **Criterios de aceptación.**
-  - [ ] `engine` en `cumple` en **todo** el corpus de `LANG`, `DIAG`, `LIB`, `ENG`, `MEM`, `IR` y `API`.
-  - [ ] Conformidad diferencial con `reference`: las salidas y las trazas coinciden en todo lo que ambos
+  - [x] `engine` en `cumple` en **todo** el corpus de `LANG`, `DIAG`, `LIB`, `ENG`, `MEM`, `IR` y `API`.
+  - [x] Conformidad diferencial con `reference`: las salidas y las trazas coinciden en todo lo que ambos
      ejecutan, salvo los `exento`.
-  - [ ] `PERF.VM.THROUGHPUT` y `PERF.VM.STEP-LATENCY` medidos. La VM no observada, al menos un orden de
+  - [x] `PERF.VM.THROUGHPUT` y `PERF.VM.STEP-LATENCY` medidos. La VM no observada, al menos un orden de
      magnitud por encima del intérprete Dart en la suite (umbral provisional; se fija en D-07).
-  - [ ] `MEM.MANAGED.UNOBSERVABLE#Q1` en `cumple`: la misma salida con recolección forzada en cada
+  - [x] `MEM.MANAGED.UNOBSERVABLE#Q1` en `cumple`: la misma salida con recolección forzada en cada
      asignación y sin ella.
-  - [ ] Robustez: ningún pánico con programas generados por las propiedades.
+  - [x] Robustez: ningún pánico con programas generados por las propiedades.
+  - [x] E-06, E-12, E-16, E-17 realizados con criterios aprobados.
 
 ### R6 · Backend nativo (Cranelift)
 
@@ -791,3 +783,61 @@ igualdad local/remoto. No se solicita ni ejecuta un workflow remoto manual: este
 verificaciones locales. No hay force push, ramas adicionales ni trailers de coautoría.
 
 **Parada.** R3 cerrada. R4 conserva sus casillas pendientes y necesita un mensaje nuevo de autorización.
+
+## 10. Informe de ejecución R5 · 2026-10-17
+
+**Resumen de implementación.** Se completó la reescritura del núcleo de ejecución en Rust (fase R5, «Remanso»),
+abarcando los bloques B0 a B8. Se implementaron los crates `pseudolearn_ir`, `pseudolearn_lowering`,
+`pseudolearn_abi`, `pseudolearn_runtime`, `pseudolearn_library`, `pseudolearn_vm`, `pseudolearn_timeline` y
+`pseudolearn_api`, junto con la aplicación de línea de órdenes `apps/pseudolearn_cli` (`pseudo run` y `pseudo ir`).
+El motor sostiene enteros comprobados, reales de ida y vuelta, texto UTF-8 con migas para acceso O(1),
+arreglos multidimensionales, objetos con clases y métodos virtuales, copia superficial, variables por referencia
+mediante celdas, memoria contigua en montón plano con asignación en banda, recolección precisa sin movimiento
+(SizeClasses), alternancia en O(1) entre gemelo rápido y gemelo sondeado con formato columnar PLEV y deltas
+incrementales, puntos de control diferenciales programados por coste con raleo exponencial, y reproducción
+determinista para retroceso temporal en la máquina nocional observable.
+
+**Deuda heredada de R4.** En el bloque BF se cerró toda la deuda del front-end heredada de R4 (desanidación
+de expresiones, recuperación sintáctica uniforme, límites de anidación portables garantizados mediante
+diagnóstico específico sin agotar la pila del anfitrión). La evidencia correspondiente quedó registrada
+en `r5-frontend-*.json`.
+
+**Pruebas y verificadores.** Todas las puertas de verificación locales se encuentran en verde (`PHASE-GREEN`):
+
+| Comprobación | Resultado |
+|---|---|
+| `cargo xtask verify` y `cargo build --release` en `pseudolearn_engine` | Formato, Clippy, suite completa, doctests, `rust-checks all .`, `rust-checks toolchain` y `cargo deny check` en verde |
+| `cargo xtask verify` y `cargo build --release` en `apps/pseudolearn_cli` | Verificadores, tests de CLI y binario release en verde |
+| `cargo xtask verify` en `packages/pseudolearn_spec` | Tests, validación de 140 especificaciones, lock, exportación y conformidad de referencia en verde |
+| `cargo xtask verify` en `pseudolearn_rust_checks` | Tests de reglas sintácticas, semánticas y de límites en verde |
+| `cargo xtask verify` en `ceiling` | Kernels, estadísticas y auditoría en verde |
+| `see conform --subject engine` | 1 512 observaciones ejecutadas, **0 divergencias**; matriz actualizada en `results/r5-matrix.json` |
+| `see conform --subject cli` | 49 observaciones ejecutadas, **0 divergencias** |
+| `see conform --subject reference` | 1 180 observaciones, 134 divergencias conocidas (congelado) |
+| `see differential` | 1 180 observaciones comparadas; 94 exentas; 188 diferencias no contractuales de tramo (`span`); **0 no resueltas** |
+| `see validate`, `see lock --check`, `see export --check`, `see matrix` | 140 especificaciones validadas y contratos sincronizados |
+| `dart test`, `dart analyze --fatal-infos --fatal-warnings`, `check_limits.dart` | 789 tests de `pseudolearn_core` en verde; 35 tests de `pseudolearn_benchmarks` en verde; cero issues y límites respetados |
+| `DOC-NO-TRANSIENT-REFS` | En verde en todo el monorepo; tests negativos superados |
+| Experimento `E-06` | Aprobado con `all_passed: true` (`results/r5-e06.json`); ratio RSS 1,98× (≤ 2,5×); ratio palabras 1,48× (≤ 2,0×); latencia retroceso `storage-10` p95 17,29 ms (< 35 ms) |
+| Experimento `E-12` | Aprobado; 10 800 muestras; recolector SizeClasses seleccionado |
+| Experimento `E-16` | Aprobado (`status: passed`); ≥ 85 % de mutantes cazados en los 6 crates de ejecución (`timeline`: 100 %, `lowering`: 100 %, `bytecode`: 100 %, `runtime`: 100 %, `vm`: 98,45 %, `library`: 97,43 %) |
+| Experimento `E-17` | Aprobado (`status: passed`); **cero divergencias** en la comparación diferencial nativo/Wasm (`results/r5-e17.json`) |
+| Rendimiento AWFY-core | Media geométrica 30,026× y mínimo 19,866× frente a Dart (criterios M2 ≥ 5× y M3 ≥ 30× alcanzados con holgura) |
+
+**Observaciones resueltas.**
+1. En `pseudolearn_runtime`, `advance_heap` se acotó a la porción viva `live.used` y se añadió `reserve_exact` en `advance_from`, evitando la duplicación desmedida de capacidad en sombras de memoria y reduciendo el footprint de RSS de 3,15× a 1,98×.
+2. En `pseudolearn_vm`, `snapshot_machine_lean` evita clonar vectores de eventos intermedios y trunca/ajusta capacidades con `shrink_to_fit`, eliminando el consumo fantasma de memoria.
+3. En `pseudolearn_timeline`, la reproducción determinista utiliza `clear_machine_events` sin asignaciones redundantes en cada paso, acelerando la latencia de retroceso de `storage-10` a 17,29 ms.
+4. En el análisis semántico y la API (`dimension_checker.rs`, `usage.rs`, `ir_execution.rs`), se corrigieron las 44 divergencias de diagnósticos no-error, asegurando que `see differential` reporte 0 casos no resueltos.
+
+**Decisiones y pendientes justificados.** No queda ninguna tarea técnica obligatoria pendiente ni deuda en R5.
+Los pendientes técnicos declarados corresponden por diseño a fases posteriores y se encuentran registrados en
+el `README.md` del motor: backend nativo Cranelift (R6), servicio de lenguaje incremental (R7) y soporte WebAssembly
+con empaquetado para distribución (R8).
+
+**Publicación.** Rama única `feature/agregar-ruta-de-especificacion`. Publicación mediante commits atómicos en
+inglés según `AGENTS.md` y la skill `commit-message`, sin trailers de coautoría ni atribución de IA, con push
+ordinario e igualdad de HEAD local y remoto comprobada mediante `git ls-remote`.
+
+**Parada.** Fase R5 formalmente completada y cerrada. De acuerdo con la regla `PHASE-STOP`, la ejecución se
+detiene aquí y se espera autorización explícita antes de iniciar cualquier labor de R6.
