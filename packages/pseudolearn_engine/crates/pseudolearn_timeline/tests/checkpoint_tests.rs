@@ -61,6 +61,25 @@ fn record_every_step(
     Ok(saved)
 }
 
+fn store_after_initial_state_change(max_retained_slots: usize) -> Result<CheckpointStore, String> {
+    let program = program()?;
+    let mut machine = machine(&program)?;
+    let array = new_array(machine.heap_mut(), ValueKind::Integer, &[1], &[])
+        .map_err(|error| format!("{error:?}"))?;
+    let mut store = CheckpointStore::with_budget(StoreBudget {
+        max_checkpoints: 8,
+        max_retained_slots,
+    });
+    store
+        .record(&machine, 0)
+        .map_err(|error| error.to_string())?;
+    write_element(machine.heap_mut(), array, (&[0], 17)).map_err(|error| format!("{error:?}"))?;
+    store
+        .record(&machine, 1)
+        .map_err(|error| error.to_string())?;
+    Ok(store)
+}
+
 #[test]
 fn every_retained_checkpoint_reproduces_its_saved_image_bit_for_bit() -> Result<(), String> {
     let program = program()?;
@@ -111,6 +130,24 @@ fn slot_budget_forces_thinning_and_advances_horizon_when_exhausted() -> Result<(
     assert_eq!(store.stats().checkpoints, 1);
     assert!(store.stats().horizon > 0);
     assert_eq!(store.stats().retained_slots, 0);
+    Ok(())
+}
+
+#[test]
+fn slot_budget_thins_only_after_the_exact_retained_slot_limit() -> Result<(), String> {
+    let baseline = store_after_initial_state_change(usize::MAX)?;
+    let exact_limit = baseline.stats().retained_slots;
+    assert!(exact_limit > 0);
+    assert_eq!(baseline.stats().checkpoints, 2);
+
+    let exact = store_after_initial_state_change(exact_limit)?;
+    assert_eq!(exact.stats().retained_slots, exact_limit);
+    assert_eq!(exact.stats().checkpoints, 2);
+
+    let over = store_after_initial_state_change(exact_limit.saturating_sub(1))?;
+    assert_eq!(over.stats().checkpoints, 1);
+    assert_eq!(over.stats().horizon, 1);
+    assert_eq!(over.stats().retained_slots, 0);
     Ok(())
 }
 

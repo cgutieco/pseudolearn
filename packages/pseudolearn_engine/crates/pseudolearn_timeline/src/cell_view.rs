@@ -7,16 +7,23 @@ use pseudolearn_vm::{
 
 pub(crate) fn inspect_cell(machine: &Machine<'_>, word: u32, name: &str) -> Option<VariableView> {
     let index = usize::try_from(word.checked_sub(1)?).ok()?;
-    let Cell::Local {
-        slot,
-        absolute,
-        kind,
-    } = machine_cell(machine, index)?
-    else {
-        return None;
-    };
-    let owner = find_owner(machine, word)?;
-    let alias = (owner.target_name != name).then_some(owner);
+    let cell = machine_cell(machine, index)?;
+    let alias = find_owner(machine, word).filter(|owner| owner.target_name != name);
+    match cell {
+        Cell::Local {
+            slot,
+            absolute,
+            kind,
+        } => inspect_local_cell(machine, (slot, absolute, kind), (name, alias)),
+        Cell::Managed(cell) => inspect_managed_cell(machine, cell, (name, alias)),
+    }
+}
+
+fn inspect_local_cell(
+    machine: &Machine<'_>,
+    (slot, absolute, kind): (pseudolearn_bytecode::Register, usize, ValueKind),
+    (name, alias): (&str, Option<AliasDestination>),
+) -> Option<VariableView> {
     let raw = match slot.class {
         RegisterClass::Scalar => machine_scalar(machine, absolute)?,
         RegisterClass::Reference => u64::from(machine_reference(machine, absolute)?),
@@ -24,13 +31,48 @@ pub(crate) fn inspect_cell(machine: &Machine<'_>, word: u32, name: &str) -> Opti
     let defined = kind != ValueKind::Integer || machine_defined(machine, absolute)?;
     Some(VariableView {
         name: name.to_owned(),
-        variable_type: format!("{kind:?}"),
+        variable_type: crate::inspect::format_kind_type(kind),
         alias,
         value: if defined {
             crate::inspect::decode_field_value(machine, kind, raw)
         } else {
             VariableValue::Undefined
         },
+    })
+}
+
+fn inspect_managed_cell(
+    machine: &Machine<'_>,
+    cell: pseudolearn_runtime::MemoryCell,
+    (name, alias): (&str, Option<AliasDestination>),
+) -> Option<VariableView> {
+    let heap = machine.heap();
+    let (kind, defined) = if pseudolearn_runtime::is_array_allocation(heap, cell.owner) {
+        (
+            pseudolearn_runtime::array_element_kind(heap, cell.owner).ok()?,
+            pseudolearn_runtime::is_defined_element(heap, cell.owner, cell.index).ok()?,
+        )
+    } else {
+        let kind = pseudolearn_runtime::object_field_kinds(heap, cell.owner)
+            .ok()?
+            .get(cell.index)
+            .copied()?;
+        (
+            kind,
+            pseudolearn_runtime::is_defined_field(heap, cell.owner, cell.index).ok()?,
+        )
+    };
+    let value = if defined {
+        let raw = pseudolearn_runtime::read_memory_cell(heap, cell).ok()?;
+        crate::inspect::decode_field_value(machine, kind, raw)
+    } else {
+        VariableValue::Undefined
+    };
+    Some(VariableView {
+        name: name.to_owned(),
+        variable_type: crate::inspect::format_kind_type(kind),
+        value,
+        alias,
     })
 }
 
@@ -60,3 +102,7 @@ fn find_owner(machine: &Machine<'_>, word: u32) -> Option<AliasDestination> {
     }
     None
 }
+
+#[cfg(test)]
+#[path = "cell_view_tests.rs"]
+mod cell_view_tests;

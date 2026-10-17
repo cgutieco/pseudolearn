@@ -41,7 +41,7 @@ impl CheckpointStore {
 
     fn sparsest_interior_position(&self) -> Option<usize> {
         let newest = self.checkpoints.last()?.event_index;
-        let mut best: Option<(usize, u64, u64)> = None;
+        let mut best: Option<(usize, u64, u64, usize)> = None;
         for position in 1..self.checkpoints.len().saturating_sub(1) {
             let before = self.checkpoints.get(position.checked_sub(1)?)?;
             let current = self.checkpoints.get(position)?;
@@ -50,14 +50,33 @@ impl CheckpointStore {
             let age = u64::try_from(newest.saturating_sub(current.event_index))
                 .unwrap_or(u64::MAX)
                 .saturating_add(1);
-            let better = best.is_none_or(|(_, best_gap, best_age)| {
-                gap.saturating_mul(best_age) < best_gap.saturating_mul(age)
+            let combined_slots = self.combined_retained_slots(position);
+            let better = best.is_none_or(|(_, best_gap, best_age, best_slots)| {
+                is_better_victim((gap, age, combined_slots), (best_gap, best_age, best_slots))
             });
             if better {
-                best = Some((position, gap, age));
+                best = Some((position, gap, age, combined_slots));
             }
         }
-        best.map(|(position, _, _)| position)
+        best.map(|(position, _, _, _)| position)
+    }
+
+    fn combined_retained_slots(&self, position: usize) -> usize {
+        let Some(removed) = self.checkpoints.get(position) else {
+            return usize::MAX;
+        };
+        let Some(older_position) = position.checked_sub(1) else {
+            return usize::MAX;
+        };
+        let Some(older) = self.checkpoints.get(older_position) else {
+            return usize::MAX;
+        };
+        match (removed.undo.as_ref(), older.undo.as_ref()) {
+            (Some(removed), Some(older)) => compose_machine_deltas(removed, older).copied_slots(),
+            _ => removed
+                .retained_slots()
+                .saturating_add(older.retained_slots()),
+        }
     }
 
     fn drop_oldest(&mut self) -> bool {
@@ -73,6 +92,16 @@ impl CheckpointStore {
     }
 }
 
+fn is_better_victim(candidate: (u64, u64, usize), current: (u64, u64, usize)) -> bool {
+    let candidate_score = candidate.0.saturating_mul(candidate.1);
+    let current_score = current.0.saturating_mul(current.1);
+    candidate_score < current_score || (candidate_score == current_score && candidate.2 < current.2)
+}
+
 fn event_distance(later: &Checkpoint, earlier: &Checkpoint) -> u64 {
     u64::try_from(later.event_index.saturating_sub(earlier.event_index)).unwrap_or(u64::MAX)
 }
+
+#[cfg(test)]
+#[path = "thinning_tests.rs"]
+mod thinning_tests;

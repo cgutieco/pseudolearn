@@ -221,3 +221,17 @@ fn format_value_type(value_type: &ValueType) -> String {
         ValueType::Unit => "Nulo".to_string(),
     }
 }
+
+pub(crate) fn format_kind_type(kind: ValueKind) -> String {
+    match kind {
+        ValueKind::Integer => "Entero".to_owned(),
+        ValueKind::Real => "Real".to_owned(),
+        ValueKind::Boolean => "Logico".to_owned(),
+        ValueKind::Character => "Caracter".to_owned(),
+        ValueKind::Reference => "Referencia".to_owned(),
+    }
+}
+
+#[cfg(test)]
+#[path = "inspect_tests.rs"]
+mod inspect_tests;

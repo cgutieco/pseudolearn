@@ -420,6 +420,47 @@ Alcanzar **≥ 85 %** de mutantes cazados en cada uno de los 6 crates de ejecuci
    - Si algún crate queda por debajo del 85 %, inspeccionar `mutants.out/missed.txt`, añadir los casos límite faltantes en `tests/` de ese crate y reejecutar hasta superar el **85 %** en los 6 crates.
    - Borrar `mutants.out` tras registrar los resultados en `packages/pseudolearn_spec/results/r5-e16.json` para liberar espacio en disco.
 
+#### Resultado de ejecución y pendientes
+
+La persona responsable autorizó cerrar esta etapa con los pendientes siguientes registrados. Este
+cierre administrativo no declara `E-16` aprobado ni convierte los crates incompletos en cumplimiento
+del umbral del 85 %.
+
+Se ampliaron las pruebas de `pseudolearn_timeline` para vistas de celdas locales y administradas,
+formato de tipos, desempate de adelgazamiento, límites de presupuesto, horizonte de replay, índices
+de marco y consultas históricas. También se actualizó el README del crate con las decisiones de
+inspección y selección de víctimas. Las pruebas dirigidas pasaron: 11 unitarias, 8 de checkpoint,
+4 de replay y 4 de snapshot (27 en total).
+
+Los resultados de mutación quedaron registrados en
+[`r5-e16.json`](../../packages/pseudolearn_spec/results/r5-e16.json):
+
+| Crate | Mutantes encontrados | Cazados | Inviables | Pendientes | Resultado |
+|---|---:|---:|---:|---:|---|
+| `pseudolearn_timeline` | 151 | 124 | 27 | 0 | 100 % de viables |
+| `pseudolearn_lowering` | 330 | 311 | 19 | 0 | 100 % de viables |
+| `pseudolearn_bytecode` | 384 | 337 | 47 | 0 | 100 % de viables |
+| `pseudolearn_runtime` | 607 | 563 | 44 | 0 | 100 % de viables |
+| `pseudolearn_vm` | 1 035 | 198 | 14 | 820 sin ejecutar; 3 expiraron | Parcial; 98,51 % de los viables ejecutados |
+| `pseudolearn_library` | — | — | — | Campaña no iniciada | Pendiente |
+
+Queda pendiente ejecutar los 820 mutantes restantes de `pseudolearn_vm`, resolver o clasificar sus
+3 expiraciones y ejecutar la campaña de `pseudolearn_library` excluyendo `src/precision/`. La campaña
+se detuvo porque el tiempo restante estimado era de varias horas y excedía el tiempo disponible. El
+porcentaje parcial de VM no es un resultado final del crate.
+
+`cargo fmt --manifest-path packages/pseudolearn_engine/Cargo.toml --all -- --check`,
+`git diff --check` y la validación sintáctica de `r5-e16.json` pasaron. `cargo xtask verify` del
+engine pasó formato y Clippy estricto, y compiló el workspace. Se interrumpió durante los tests del
+workspace, al terminar las 31 pruebas unitarias de `pseudolearn_library` y comenzar
+`tests/conversion_tests.rs`; por ello no se ejecutaron el resto de tests, los seis verificadores Rust,
+la comprobación de cadena ni `cargo deny check`. `cargo xtask verify` de `pseudolearn_spec` tampoco se
+ejecutó. La puerta `PHASE-GREEN` queda pendiente y su incumplimiento forma parte de la aceptación
+explícita de cierre con pendientes.
+
+`mutants.out` se eliminó después de conservar el resumen; por tanto, no quedaron listas de mutantes
+individuales para inspección.
+
 ---
 
 ### Etapa 5 · Cierre de `E-17` y `B7.4` (Decisión D3-a)
