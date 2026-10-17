@@ -269,6 +269,13 @@ impl Heap {
             .ok_or(MemoryError::Internal)? = word;
         Ok(())
     }
+
+    pub fn shrink_to_fit(&mut self) {
+        self.words.truncate(self.used);
+        self.words.shrink_to_fit();
+        self.blocks.shrink_to_fit();
+        self.layouts.shrink_to_fit();
+    }
 }
 
 pub(crate) fn value_kind(code: u32) -> Result<ValueKind, MemoryError> {

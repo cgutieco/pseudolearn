@@ -49,6 +49,7 @@ impl<Element: Clone + PartialEq> BlockDelta<Element> {
         }
         tip.truncate(live_length);
         if let Some(extension) = live.get(old_length..live_length) {
+            tip.reserve_exact(extension.len());
             tip.extend_from_slice(extension);
         }
         for start in changed {

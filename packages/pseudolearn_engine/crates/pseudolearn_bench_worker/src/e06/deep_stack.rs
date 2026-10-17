@@ -40,7 +40,7 @@ struct PointCost {
     nanoseconds: f64,
 }
 
-fn cost_at(depth: usize) -> Result<PointCost, String> {
+fn cost_at(depth: usize, repetitions: usize) -> Result<(PointCost, f64), String> {
     let case = depth_case(PROGRAM_DEPTH)?;
     let mut machine = machine_for(&case, TwinMode::Probed)?;
     descend(&mut machine, depth)?;
@@ -49,18 +49,28 @@ fn cost_at(depth: usize) -> Result<PointCost, String> {
         .record(&machine, 0)
         .map_err(|error| error.to_string())?;
     advance(&mut machine)?;
-    let started = Instant::now();
-    store
-        .record(&machine, 1)
-        .map_err(|error| error.to_string())?;
-    let nanoseconds = nanoseconds(started);
-    let cost = store.stats().last_cost;
-    Ok(PointCost {
-        frames: machine.active_frames_count(),
-        copied_slots: cost.copied_slots,
-        copied_bank_slots: cost.copied_bank_slots,
-        nanoseconds,
-    })
+    let mut samples = Vec::with_capacity(repetitions);
+    let mut recorded_cost = None;
+    for index in 0..repetitions {
+        let started = Instant::now();
+        store
+            .record(&machine, index.saturating_add(1))
+            .map_err(|error| error.to_string())?;
+        samples.push(nanoseconds(started));
+        recorded_cost = Some(store.stats().last_cost);
+    }
+    let p95_ns = super::stats::percentile(&samples, 0.95);
+    let cost = recorded_cost.ok_or_else(|| "No measurements".to_owned())?;
+    let p95_us = p95_ns / 1_000.0;
+    Ok((
+        PointCost {
+            frames: machine.active_frames_count(),
+            copied_slots: cost.copied_slots,
+            copied_bank_slots: cost.copied_bank_slots,
+            nanoseconds: p95_ns,
+        },
+        p95_us,
+    ))
 }
 
 fn document(cost: &PointCost) -> Value {
@@ -69,16 +79,17 @@ fn document(cost: &PointCost) -> Value {
 }
 
 pub fn measure() -> Result<Value, String> {
-    let shallow = cost_at(SHALLOW_FRAMES)?;
-    let deep = cost_at(FRAMES)?;
+    let (shallow, _) = cost_at(SHALLOW_FRAMES, 5)?;
+    let (deep, capture_p95_us) = cost_at(FRAMES, 30)?;
     let allowance = shallow
         .copied_slots
         .saturating_add(shallow.copied_slots / 2)
         .saturating_add(BLOCK_WORDS);
     Ok(
         json!({"id":"E06-STACK","name":"checkpoint cost with deep stack",
-        "criterion":"slots copied with 100000 frames <= 1.5x slots copied with 1000 frames plus one block, for the same executed interval",
+        "criterion":"slots copied with 100000 frames <= 1.5x slots copied with 1000 frames plus one block, for the same executed interval; capture p95 <= 50 µs",
         "stepsBetweenPoints":STEPS_BETWEEN_POINTS,"shallow":document(&shallow),
-        "deep":document(&deep),"passed":deep.copied_slots <= allowance}),
+        "deep":document(&deep),"capture_p95_us":capture_p95_us,
+        "passed":deep.copied_slots <= allowance && capture_p95_us <= 50.0}),
     )
 }

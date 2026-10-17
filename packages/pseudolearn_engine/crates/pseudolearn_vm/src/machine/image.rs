@@ -41,12 +41,32 @@ pub fn snapshot_machine(machine: &Machine<'_>) -> MachineImage {
 }
 
 pub fn snapshot_machine_lean(machine: &Machine<'_>) -> MachineImage {
-    let mut image = snapshot_machine(machine);
-    image.state.scalars.truncate(image.state.scalar_limit);
-    image.state.defined.truncate(image.state.scalar_limit);
-    image.state.references.truncate(image.state.reference_limit);
-    image.events_dropped = image.state.event_count;
-    image.events = Vec::new();
+    let mut state = machine.capture_machine_state();
+    state.scalars.truncate(state.scalar_limit);
+    state.scalars.shrink_to_fit();
+    state.defined.truncate(state.scalar_limit);
+    state.defined.shrink_to_fit();
+    state.references.truncate(state.reference_limit);
+    state.references.shrink_to_fit();
+    let mut heap = machine.heap.clone();
+    heap.shrink_to_fit();
+    let image = MachineImage {
+        events_dropped: state.event_count,
+        events: Vec::new(),
+        state,
+        heap,
+        remaining: machine.remaining,
+        output: machine.output.clone(),
+        literals: machine.literals.clone(),
+        inputs: machine.inputs.clone(),
+        diagnostics: machine.diagnostics.clone(),
+        changes: machine.change_buffer.clone(),
+        probed: machine.probed,
+        input_requested: machine.input_requested_emitted,
+        output_suppressed: machine.output_suppressed,
+    };
+    machine.frame_dirty_from.set(machine.frames.len());
+    machine.begin_bank_delta_tracking();
     image
 }
 

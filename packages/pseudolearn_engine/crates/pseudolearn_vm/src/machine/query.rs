@@ -18,6 +18,11 @@ pub fn take_machine_events(machine: &mut Machine<'_>) -> Vec<TraceEvent> {
     taken
 }
 
+pub fn clear_machine_events(machine: &mut Machine<'_>) {
+    machine.events_dropped = machine.events_dropped.saturating_add(machine.events.len());
+    machine.events.clear();
+}
+
 pub fn machine_event_count(machine: &Machine<'_>) -> usize {
     machine.events_dropped.saturating_add(machine.events.len())
 }

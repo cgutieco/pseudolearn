@@ -31,8 +31,9 @@ impl HeapDelta {
 }
 
 pub fn advance_heap(tip: &mut Heap, live: &Heap) -> HeapDelta {
+    let live_words = live.words.get(..live.used).unwrap_or(&live.words);
     let delta = HeapDelta {
-        words: BlockDelta::advance(&mut tip.words, &live.words),
+        words: BlockDelta::advance(&mut tip.words, live_words),
         used: tip.used,
         blocks: BlockDelta::advance(&mut tip.blocks, &live.blocks),
         layouts: TailDelta::advance(&mut tip.layouts, &live.layouts),
@@ -44,6 +45,7 @@ pub fn advance_heap(tip: &mut Heap, live: &Heap) -> HeapDelta {
         live_cells: tip.live_cells,
     };
     tip.used = live.used;
+    tip.words.truncate(live.used);
     tip.ordinal = live.ordinal;
     tip.allocated_cells = live.allocated_cells;
     tip.live_cells = live.live_cells;

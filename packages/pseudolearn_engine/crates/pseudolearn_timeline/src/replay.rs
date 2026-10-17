@@ -32,7 +32,7 @@ pub fn replay_machine_to_event<'program>(
     while machine_event_count(&machine) < target_count {
         let exit = machine.step_instruction();
         let reached_target = machine_event_count(&machine) >= target_count;
-        pseudolearn_vm::take_machine_events(&mut machine);
+        pseudolearn_vm::clear_machine_events(&mut machine);
         if reached_target {
             break;
         }
