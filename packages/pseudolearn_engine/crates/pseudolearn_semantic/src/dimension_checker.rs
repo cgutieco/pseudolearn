@@ -34,7 +34,6 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
         {
             *initialized = true;
         }
-        session.writes.insert(local);
         declarations.push(HirDimension { local, dimensions });
     }
     Some(session.statement(HirStatement::Dimension(declarations), session.span(node)))

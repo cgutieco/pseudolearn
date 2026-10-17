@@ -1,4 +1,4 @@
-use crate::hir::FunctionKind;
+use crate::hir::{FunctionKind, Passing};
 use crate::identities::{FunctionId, LocalId};
 use crate::session::AnalysisSession;
 use pseudolearn_diagnostics::{DiagnosticCode, DiagnosticSeverity};
@@ -21,7 +21,12 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
             continue;
         };
         let identifier = LocalId(u32::try_from(index).unwrap_or(u32::MAX));
-        if session.invalid.contains(&identifier) || session.reads.contains(&identifier) {
+        if session.invalid.contains(&identifier)
+            || session.reads.contains(&identifier)
+            || (local.parameter
+                && local.passing == Passing::Reference
+                && session.writes.contains(&identifier))
+        {
             continue;
         }
         let code = if local.parameter {

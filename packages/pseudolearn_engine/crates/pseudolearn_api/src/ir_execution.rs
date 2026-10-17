@@ -137,7 +137,7 @@ fn convert_warnings(
 ) -> Vec<ApiDiagnostic> {
     let warnings = diagnostics
         .into_iter()
-        .filter(|diagnostic| diagnostic.severity == DiagnosticSeverity::Warning)
+        .filter(|diagnostic| diagnostic.severity != DiagnosticSeverity::Error)
         .collect();
     convert_diagnostics(warnings, source_text, profile)
 }
