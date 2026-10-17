@@ -1532,7 +1532,7 @@ fase separada ni se utiliza el cierre original como evidencia de cumplimiento.
   `results/macos-r5-vm/`; escalera RR-01 si falla.
 - [ ] **B7.8 E-16 y E-17.** §7.4 y §7.5, con cada superviviente y cada diferencia cerrados en la fase.
 
-#### Estado de implementación y pendientes de B7 · 2026-10-16
+#### Estado de implementación y pendientes de B7 · 2026-10-17
 
 **B7 permanece abierto.** Las casillas principales anteriores exigen cumplimiento íntegro y evidencia
 vigente. Las casillas marcadas debajo registran trabajo concreto realizado, no el cierre de su apartado.
@@ -1634,13 +1634,14 @@ en RFC-014. B8 no se ha iniciado.
   Evidencia: `packages/pseudolearn_spec/results/properties-engine.json`, semilla `42`.
 - [x] Ejecutar programas generados y variantes EMI durante la comparación de objetivos; una expectativa
   independiente detectó el defecto de variables respaldadas por celdas y motivó su corrección/regresión.
-- [~] Diferencial con `reference` (**sin commitear**): comando nuevo `see differential`
+- [~] Diferencial con `reference`: comando `see differential`
   (`see_cli/src/differential.rs`, registro `differential-exemptions.json`, salida
-  `results/r5-differential.json`). Compara salida, terminación y códigos de error: 1180 observaciones, 0 sin
-  resolver, 94 exentas por los vínculos `exento` del núcleo, 3 exenciones registradas de `reference`
-  (duplicado de `expectedExpression`, y `missingStatementTerminator` en flexible). Hay 208 diferencias solo de
-  tramo o aviso, **fuera del contrato** (el corpus no fija tramos); se publican como informativas. Pendiente
-  decisión de la persona: confirmar ese alcance de comparación (salida/terminación/códigos de error).
+  `results/r5-differential.json`). Compara salida, terminación y códigos de error: 1 180 observaciones,
+  888 coincidencias, 94 exentas por vínculos `exento` del núcleo y cero diferencias contractuales sin
+  resolver. Persisten 198 diferencias fuera del criterio de cierre: 154 observaciones con cambios solo de
+  span, 24 con cambios solo en diagnósticos que no son errores y 20 con ambos. En total, 174 observaciones
+  difieren en spans y 44 en diagnósticos; solo 12 difieren exclusivamente en `end_col`. El criterio aprobado
+  permite únicamente diferencias de `end_col`, por lo que B7.4 sigue abierto.
 - [x] Las **29 de 29 propiedades** ejecutadas en `cumple` (semilla 42, 978–1068 muestras), cierre en
   `packages/pseudolearn_spec/results/r5-properties.json`. Ejecutores nuevos: `property_syntax.rs`,
   `property_traps.rs`; las propiedades de grabación solo usan casos `trace` y, para el resto, recortan por
@@ -1659,44 +1660,41 @@ en RFC-014. B8 no se ha iniciado.
 
 - [x] Ampliar el trabajador para medir la API en proceso, preparar antes del cronómetro y validar salida;
   incorporar recogida Dart, muestras crudas y validación estadística con tests.
-- [x] Obtener una captura AWFY de diez procesos y treinta iteraciones por programa:
-  **16,4394×** de media geométrica y **7,5317×** de mínimo, frente a `macos-r3-awfy`.
-  Supera 10×/5×; el objetivo de 30× no se alcanza. Evidencia:
-  `packages/pseudolearn_benchmarks/results/macos-r5-vm/`.
-- [ ] Repetir AWFY sobre las fuentes finales: hubo cambios posteriores a la captura. Completar M4 y
-  las latencias con E-06; el rendimiento global de B7 todavía no está acreditado.
+- [x] Repetir AWFY sobre las fuentes finales: diez procesos y 300 muestras por carga, **30,026×** de
+  media geométrica y **19,866×** de mínimo frente a `macos-r3-awfy`; los diez programas superaron 10×.
+  Evidencia: `packages/pseudolearn_benchmarks/results/macos-r5-vm/`. E-06 cumple el criterio agregado
+  registrado (32,868 ms en M3), aunque `storage-10` supera individualmente el p95 de 50 ms; la excepción
+  queda documentada y no se presenta como cumplimiento individual.
 - [x] Instalar localmente `cargo-mutants 27.1.0` e inventariar **2845 mutantes** en los seis crates exigidos.
-- [ ] Ejecutar E-16 completo, incluyendo tests y conformidad por mutante, puntuación ≥85 % por crate,
-  clasificación de todos los supervivientes y mutación de expectativas/reglas del corpus.
-  **El inventario no es una medición de puntuación**; falta `results/r5-e16.json`.
-  **Primera medición real (2026-10-16), solo `pseudolearn_timeline`** (`cargo-mutants 27.1.0 --in-place`, un job,
-  tests del crate): 181 mutantes, 34 inviables, 65 muertos, 6 por tiempo y **76 supervivientes**; puntuación
-  **71/147 = 48,3 %, por debajo del 85 % exigido**. Supervivientes por archivo: `deltas` 19, `inspect` 17,
-  `thinning` 10, `array_view` 8, `cell_view` 8, `timeline` 7, `replay` 3 y uno en `error`, `model`,
-  `query_views` y `store`. Pendiente: clasificar cada uno (equivalente o hueco), cerrar los huecos con tests
-  espejo, repetir, y medir los otros cinco crates. Las salidas en bruto no se conservaron en el repositorio.
+- [ ] Completar E-16: el resultado actualizado en `packages/pseudolearn_spec/results/r5-e16.json` es parcial.
+  `pseudolearn_timeline` (151 mutantes encontrados), `pseudolearn_lowering` (330),
+  `pseudolearn_bytecode` (384) y `pseudolearn_runtime` (607) alcanzaron 100 % de mutantes viables cazados.
+  `pseudolearn_vm` encontró 1 035: 198 cazados, 14 inviables, 820 sin ejecutar y 3 expirados; la biblioteca
+  todavía no se ejecutó. Faltan los 820 de VM, clasificar o resolver las tres expiraciones y ejecutar la
+  campaña de `pseudolearn_library` sin `src/precision/`; no se alcanza aún el umbral exigido ≥85 % por crate.
 - [x] Ejecutar comparación nativo/Wasm: **968 peticiones del corpus**, **10 000 programas y sus 10 000
   variantes EMI**, **10⁶ argumentos en cada una de las seis funciones matemáticas** y **48 bordes de
   formato**, sin diferencias observadas. Medir **450 453 bytes Brotli** y ejecutar el trabajador Wasm.
   Evidencia: `packages/pseudolearn_spec/results/r5-e17.json`.
-- [ ] Finalizar procedencia, conservación de muestras y repetición de E-17 sobre los binarios finales.
-  El reporte conservado sigue declarado `partial`, con `all_passed: false`; no constituye un cierre.
-  La ejecución WASI requiere `--no-incremental-marking` en el Node local por un aborto reproducido del anfitrión.
+- [x] Finalizar procedencia, conservar muestras y repetir E-17 sobre los binarios finales. El reporte
+  `packages/pseudolearn_spec/results/r5-e17.json` está en `passed`, con cero divergencias. La ejecución
+  WASI requiere `--no-incremental-marking` en el Node local por un aborto reproducido del anfitrión.
 
-**Verificadores y publicación que faltan antes del cierre.**
+**Estado de verificadores y publicación · 2026-10-17.**
 
 - [x] Ejecutar pruebas completas, formato, Clippy y verificadores Rust en revisiones intermedias;
   ejecutar `cargo deny check` en motor, CLI y SEE: las tres auditorías pasan.
-- [x] (Resuelto: `cargo xtask verify` del motor pasa en verde el 2026-10-16.) Corregir los dos fallos de la última revisión: `execution_state.rs` usa indexación JSON rechazada por
+- [x] (Resuelto: `cargo run -p xtask -- verify` del motor termina con código 0.) Corregir los dos fallos de la última revisión: `execution_state.rs` usa indexación JSON rechazada por
   `clippy::indexing_slicing` y su función `query` mide **49 líneas frente al máximo de 40** (`SIZE-FUNCTION`).
-- [ ] Repetir `cargo xtask verify` íntegro de los miembros afectados después de las últimas modificaciones;
-  los verdes intermedios y las auditorías separadas no acreditan el árbol actual. Verificar también el arnés Dart,
-  anclaje/exportación y ausencia de regresiones respecto de la línea base.
-- [ ] Actualizar README y relevo con el resultado final, guardar comandos/procedencia/muestras y actualizar
-  casillas únicamente con evidencia verificada.
+- [ ] Repetir la verificación completa de spec sobre el estado documental actual. La verificación completa
+  anterior terminó con código 0; en la última repetición pasaron tests, Clippy, verificadores Rust, las 140
+  especificaciones, lock y exportación, pero la conformidad final `reference` no pudo iniciar porque Dart
+  intentó escribir telemetría en `/Users/cgutieco/.dart-tool`, fuera de las rutas escribibles.
+- [x] Actualizar README y relevo con los resultados y la clasificación de B7.4; sincronizar RFC-014,
+  plan 11 y fases 07, y mantener abiertas las casillas sin evidencia de cierre.
 - [ ] Crear commits coherentes, realizar push ordinario a la rama autorizada y comprobar HEAD local/remoto.
 
-#### Relevo de B7 · 2026-10-16 · estado para quien continúe
+#### Relevo de B7 · 2026-10-17 · estado para quien continúe
 
 **Incidente de memoria.** Una sesión llegó a ocupar más de 30 GB y congeló el equipo. Causa más probable,
 reproducida: la campaña `ir` del arnés de robustez alimentó al lexer de RI (`pseudolearn_ir/src/lexer.rs`,
@@ -1760,14 +1758,13 @@ parcial y por diferencias de B7.4 fuera del rango `end_col`. B8 no se ha iniciad
    diagnósticos no error; solo 12 difieren exclusivamente en `end_col`. El RFC espera únicamente precisión
    de `end_col`, así que la Etapa 5 no se cierra y B7.4 permanece abierto hasta resolver las diferencias
    adicionales.
-6. [x] **Etapa 6 (RFC-014 §4):** README del paquete actualizado con las decisiones de runtime, bytecode,
-   timeline, API y los resultados de AWFY-core, E-06, E-16, E-17 y B7.4. `cargo run -p xtask -- verify`
-   terminó con código 0 en engine, con `cargo deny check` en modo offline sobre la base local porque
-   el lock predeterminado está bajo una ruta de solo lectura. En spec, `cargo run -p xtask -- verify`
-   terminó con código 0: tests, Clippy, verificadores
-   Rust, 140 especificaciones validadas, lock/export sin cambios y conformidad `reference` ejecutada
-   (1 180 observaciones, 134 divergencias históricas). El motor registró 1 512 observaciones sin
-   divergencias. B8 no se inicia sin autorización nueva.
+6. [~] **Etapa 6 (RFC-014 §4):** README, RFC-014, plan 11 y fase 07 están sincronizados con las decisiones
+   y resultados. El `verify` del engine terminó con código 0 y `cargo deny` usó la caché local en modo offline.
+   El `verify` completo de spec había terminado con código 0 antes de los cambios documentales; la repetición
+   posterior pasó tests, Clippy, verificadores Rust, validación de 140 especificaciones, lock y exportación,
+   pero no pudo iniciar la conformidad `reference` porque Dart intentó escribir telemetría en una ruta de
+   solo lectura. E-16 sigue parcial, por lo que B7.8 y el cierre de esta etapa permanecen abiertos. B8 no se
+   inicia sin autorización nueva.
 
 ### B8 · Cierre (`phase-gate`)
 

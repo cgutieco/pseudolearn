@@ -199,11 +199,14 @@ R0 Fundación
 ### R5 · RI, VM, runtime y biblioteca
 
 > **Plan detallado:** [11 · Plan de R5 · «Remanso»](11-plan-r5-ejecucion-remanso.md).
-> R5 autorizada el 2026-10-15 y en ejecución. Por decisión D-R5-01, la deuda encontrada en la evidencia de
+> R5 autorizada el 2026-10-15 y en ejecución. B7 fue autorizado y continúa abierto por B7.4, E-16 y la
+> verificación final; B8 aún no se inicia. Por decisión D-R5-01, la deuda encontrada en la evidencia de
 > R4 se resuelve como tareas de R5 (bloque BF) y R4 se mantiene cerrada. El estado de implementación vigente
 > se contrasta con el plan detallado y el árbol actual; el relevo 12 conserva únicamente valor histórico.
 > B1, B2, B3, B4, B5 y B6 están cerrados según la evidencia registrada en el plan 11. Las casillas de
 > R5 y la fase solo se marcan en el cierre B8.
+>
+> **Actualización 2026-10-17:** RFC-014 Etapa 5 está implementada, pero B7.4 conserva 198 diferencias clasificadas; Etapa 6 sincronizó README, plan 11 y este resumen. B7 y R5 siguen abiertos por B7.4, E-16 y la verificación final. El detalle y los resultados están en el plan 11.
 
 - **Bloques cerrados:**
   - [x] B0: línea base, inventario de deuda y correspondencia de verificadores.
@@ -228,11 +231,14 @@ R0 Fundación
   efectos. B6 implementó la línea temporal consultable con vistas de estado inmutables, deltas, puntos de control,
   raleo con fusión, retroceso determinista y E-06 aprobado. La conformidad integrada `execute` y las propiedades
   completas de observación se acreditan en B7.3, después de `API.EXECUTE`, sin anticipar `cumple`. R5 sigue
-  abierta; B7 permanece pendiente de autorización.
-- [ ] **Bloques pendientes:** B7–B8.
+  abierta; B7 está en ejecución y B8 no se ha iniciado.
+- [ ] **Bloques pendientes:** B7 (B7.4 y E-16 sin cerrar, además de la puerta de verificación) y B8.
 - [x] **E-12 realizado:** 10.800 muestras y recolector seleccionado; evidencia en el plan 11 y relevo 13.
 - [x] **E-06 realizado:** 8 métricas de línea temporal y retroceso verificadas; evidencia en el plan 11 y `results/r5-e06.json`.
-- [ ] **Experimentos pendientes:** E-16 y E-17.
+- [x] **E-17 realizado:** `passed`, cero divergencias en la comparación nativo/Wasm; evidencia en
+  `packages/pseudolearn_spec/results/r5-e17.json` y el plan 11.
+- [ ] **Experimento pendiente:** E-16, con campaña parcial: VM conserva 820 mutantes sin ejecutar y 3
+  expirados, y la campaña de `pseudolearn_library` no se ha iniciado.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 

@@ -1,6 +1,7 @@
 # RFC-014 · Diagnóstico arquitectónico de Remanso (R5) y especificación ejecutable de cierre de B7
 
 **Estado:** **Aprobado** por la persona responsable el 2026-10-16 (listo para ejecución etapa por etapa con `PHASE-STOP`)
+**Ejecución · 2026-10-17:** Etapa 5 implementada, con B7.4 aún abierto; documentación de Etapa 6 sincronizada, con su puerta de cierre pendiente de verificación final y E-16.
 **Fecha:** 2026-10-16
 **Rama:** `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`)
 **Ámbito:** `packages/pseudolearn_engine`, `packages/pseudolearn_spec`, `packages/pseudolearn_benchmarks`
@@ -45,8 +46,8 @@ Al llegar al bloque de cierre **B7** de la fase R5 («Remanso»), el motor ejecu
    - La campaña sobre `pseudolearn_timeline` arrojó **71/147 mutantes cazados (48,3 %)** frente al umbral de **≥ 85 %**, con **76 supervivientes** concentrados en código duplicado o desconectado de `pseudolearn_api`.
    - Los 6 crates de la campaña suman **2 845 mutantes** (`lowering` 400, `bytecode` 442, `runtime` 618, `vm` 624, `library` 614, `timeline` 147), cuya ejecución ingenua sin acotar paquetes ni podar código muerto desborda el tiempo de campaña.
 4. **Cierres pendientes de puerta (`E-17` y `B7.4`):**
-   - `E-17` ([`r5-e17.json`](../../packages/pseudolearn_spec/results/r5-e17.json)) sigue en `"status": "partial"` porque se midió antes de integrar objetos y cadenas completas.
-   - `B7.4` ([`r5-differential.json`](../../packages/pseudolearn_spec/results/r5-differential.json)) registra 208 diferencias residuales con `reference` (rangos léxicos finos frente a rangos de línea completa en Dart y advertencias de análisis en `execute`).
+   - En el diagnóstico inicial, `E-17` ([`r5-e17.json`](../../packages/pseudolearn_spec/results/r5-e17.json)) seguía en `"status": "partial"` porque se midió antes de integrar objetos y cadenas completas.
+   - En ese mismo diagnóstico, `B7.4` ([`r5-differential.json`](../../packages/pseudolearn_spec/results/r5-differential.json)) registraba 208 diferencias con `reference`; el resultado vigente tras Etapa 5 se detalla en su informe de ejecución más abajo.
 
 ### 1.1. Desglose medido de `AWFY-core` (`macos-r5-vm` frente a `macos-r3-awfy`)
 
@@ -473,11 +474,11 @@ individuales para inspección.
 
 1. **Conservar advertencias de análisis en `execute` (`pseudolearn_api`, Decisión D3-a):**
    - Archivos:
-     - [`packages/pseudolearn_engine/crates/pseudolearn_api/src/compile_pipeline.rs`](../../packages/pseudolearn_engine/crates/pseudolearn_api/src/compile_pipeline.rs)
+     - [`packages/pseudolearn_engine/crates/pseudolearn_api/src/ir_execution.rs`](../../packages/pseudolearn_engine/crates/pseudolearn_api/src/ir_execution.rs)
      - [`packages/pseudolearn_engine/crates/pseudolearn_api/src/execution.rs`](../../packages/pseudolearn_engine/crates/pseudolearn_api/src/execution.rs)
-   - En `compile_pipeline.rs`, añadir una función `pub(crate) fn compile_source_with_warnings(source: &str, profile_name: &str, strictness_name: &str) -> Result<(pseudolearn_ir::Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>>` que, cuando el análisis no tiene errores (`!has_errors`), convierte y devuelve también las advertencias (`Severity::Warning`) junto con el `Module`.
+   - En `ir_execution.rs`, añadir una función `pub(crate) fn compile_source_with_warnings(source: &str, profile_name: &str, strictness_name: &str) -> Result<(pseudolearn_ir::Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>>` que, cuando el análisis no tiene errores (`!has_errors`), convierte y devuelve también las advertencias (`Severity::Warning`) junto con el `Module`.
    - En `PreparedProgram` (`execution.rs`), guardar `warnings: Vec<ApiDiagnostic>` y anteponer `prepared.warnings` al vector `diagnostics` de `ExecuteResponse` tanto en `execute_bulk` como en `run_request`.
-   - Verificar que `see check --subject engine` mantiene **325/325** casos en verde.
+   - Verificar la conformidad con `(cd packages/pseudolearn_spec && cargo run --manifest-path Cargo.toml --bin see -- conform --subject engine)`.
 
 2. **Reejecutar `E-17` y el diferencial `B7.4`:**
    ```bash
@@ -501,14 +502,39 @@ individuales para inspección.
    - la activación por omisión de `SuperInstruction::CompareBranch` en `pseudolearn_bytecode`;
    - la delegación de `ExecutionResource` sobre `CheckpointStore` de `pseudolearn_timeline` y la reproducción híbrida `Fast` $\to$ `Probed`;
    - las tablas de resultados finales de `AWFY-core`, `E-06`, `E-16`, `E-17` y `B7.4`.
-2. Actualizar la sección «Relevo de B7» en [`docs/plan-nucleo-rust/11-plan-r5-ejecucion-remanso.md`](../../packages/pseudolearn_rust/11-plan-r5-ejecucion-remanso.md) marcando `[x]` en los puntos cerrados.
+2. Actualizar la sección «Relevo de B7» en [`11-plan-r5-ejecucion-remanso.md`](11-plan-r5-ejecucion-remanso.md) y el estado de R5 en [`07-fases.md`](07-fases.md), marcando `[x]` solo en los criterios cerrados.
 3. Ejecutar la puerta mecánica completa de ambos paquetes:
    ```bash
-   cargo run --manifest-path packages/pseudolearn_engine/Cargo.toml -p xtask -- verify
-   cargo run --manifest-path packages/pseudolearn_spec/Cargo.toml -p xtask -- verify
-   cargo run --manifest-path packages/pseudolearn_spec/Cargo.toml --bin see -- check --subject engine
+   (cd packages/pseudolearn_engine && cargo run -p xtask -- verify)
+   (cd packages/pseudolearn_spec && cargo run -p xtask -- verify)
+   (cd packages/pseudolearn_spec && cargo run --manifest-path Cargo.toml --bin see -- conform --subject engine)
    ```
 4. Parar (`PHASE-STOP`) e informar a la persona responsable sin hacer `git push` hasta recibir autorización explícita.
+
+#### Resultado de ejecución de las Etapas 5 y 6 · 2026-10-17
+
+**Etapa 5: implementación aplicada; B7.4 permanece abierto.** `compile_source_with_warnings` vive en
+`ir_execution.rs`; `execute` conserva los avisos del análisis y los incluye en las respuestas por lotes y
+paso a paso. `E-17` terminó en `passed`, con cero divergencias en las peticiones del corpus, los programas
+generados, las variantes EMI, los bordes de formato y las funciones matemáticas. La conformidad del motor
+ejecutó 1 512 observaciones sin divergencias.
+
+El diferencial comparó 1 180 observaciones: 888 coincidieron, 94 quedaron exentas y 198 diferencias no
+contractuales siguen abiertas; no hay diferencias contractuales sin resolver. De esas 198, 154 tienen solo
+diferencias de span, 24 solo diferencias en diagnósticos que no son errores y 20 ambas. En total, 174
+observaciones difieren en spans y 44 en esos diagnósticos; solo 12 difieren exclusivamente en `end_col`.
+El criterio aprobado exige que las únicas diferencias restantes sean de `end_col`, por lo que B7.4 y la
+puerta de la Etapa 5 no se cierran.
+
+**Etapa 6: cascada documental aplicada; puerta de cierre pendiente.** Se actualizaron el README del motor,
+este RFC, el plan detallado de R5 y el resumen de fases con las decisiones y los resultados vigentes. La
+verificación de `pseudolearn_engine` terminó con código 0; `cargo deny` usó la caché local en modo offline.
+La verificación completa anterior de `pseudolearn_spec` terminó con código 0. En la repetición posterior
+a los cambios documentales, tests, Clippy, verificadores Rust, validación de 140 especificaciones, lock y
+exportación pasaron, pero el paso final de conformidad con `reference` no pudo iniciarse: Dart intentó
+escribir su archivo de telemetría bajo `/Users/cgutieco/.dart-tool`, fuera de las rutas escribibles. Por
+`PHASE-GREEN`, no se declara cerrada la Etapa 6 ni B7. La campaña `E-16` también permanece parcial y no hay
+autorización de publicación.
 
 ---
 
