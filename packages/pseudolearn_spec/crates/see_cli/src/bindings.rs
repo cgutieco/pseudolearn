@@ -12,7 +12,7 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
             "see" => root.join("conformance.yaml"),
             "reference" => root.join("../pseudolearn_core/conformance.yaml"),
             "engine" => root.join("../pseudolearn_engine/conformance.yaml"),
-            "aot" => root.join("../pseudolearn_aot/conformance.yaml"),
+            "aot" => root.join("../pseudolearn_engine/conformance-aot.yaml"),
             "service" => root.join("../pseudolearn_service/conformance.yaml"),
             "cli" => root.join("../../apps/pseudolearn_cli/conformance.yaml"),
             "app" => root.join("../../apps/pseudolearn_app/conformance.yaml"),

@@ -3320,6 +3320,23 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "PERF.AOT.LEVEL@0.1.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "PERF.ARTIFACT.SIZE@0.1.0": {
       "edition": {},
       "elements": {
@@ -3456,6 +3473,38 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "RT.ABI@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f0c3b14a622b0bb22cde9c2c9f848be0228134b34e33f322da252dd712498933",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.FAULT.REPORTING@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "17b13503a0472920f46d483948eaee72c1f9483273fb8d5e43e85bdb9d0bcb20",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "RT.HOST.INTERFACE@0.1.0": {
       "edition": {},
       "elements": {
@@ -3469,6 +3518,35 @@
         "R3": "regla"
       },
       "hash": "c5936707440b9df36abec983355646f0ff6f5906646908c4e45bfdd96e081e9c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.LINKING@0.1.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "578bc1ed410cb31e5f42d7d85b257a433b23842c2a7071b6864982326a32f80a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.PROCESS@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "cbce5305400cabe217d2efb42642f8f4a6641431ceaa4a1058cffe37d2a63869",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -3711,6 +3789,25 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "TOOL.CLI.BUILD@0.1.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "40807da29b406fb1912c1aa7080b71f0547cdfbad7dd2f540cf7743daa04e4e3",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "TOOL.CLI.CHECK@0.1.0": {
       "edition": {},
       "elements": {
@@ -3770,6 +3867,46 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "TOOL.CLI.CONVENTIONS@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C21": "caso",
+        "C22": "caso",
+        "C23": "caso",
+        "C24": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla",
+        "R5": "regla",
+        "R6": "regla",
+        "R7": "regla"
+      },
+      "hash": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
     "TOOL.CLI.IR@0.1.0": {
       "edition": {},
       "elements": {
@@ -3795,6 +3932,20 @@
       "hash": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "TOOL.CLI.MESSAGES@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "D1": "definicion",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "TOOL.CLI.RUN@0.1.0": {
       "edition": {},
@@ -5704,6 +5855,23 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "PERF.AOT.LEVEL": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "PERF.ARTIFACT.SIZE": {
       "edition": {},
       "elements": {
@@ -5813,6 +5981,38 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "RT.ABI": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f0c3b14a622b0bb22cde9c2c9f848be0228134b34e33f322da252dd712498933",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.FAULT.REPORTING": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "P1": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "17b13503a0472920f46d483948eaee72c1f9483273fb8d5e43e85bdb9d0bcb20",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "RT.HOST.INTERFACE": {
       "edition": {},
       "elements": {
@@ -5826,6 +6026,35 @@
         "R3": "regla"
       },
       "hash": "c5936707440b9df36abec983355646f0ff6f5906646908c4e45bfdd96e081e9c",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.LINKING": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "P3": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "578bc1ed410cb31e5f42d7d85b257a433b23842c2a7071b6864982326a32f80a",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
+    "RT.PROCESS": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "cbce5305400cabe217d2efb42642f8f4a6641431ceaa4a1058cffe37d2a63869",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -5979,6 +6208,25 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "TOOL.CLI.BUILD": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla",
+        "R4": "regla"
+      },
+      "hash": "40807da29b406fb1912c1aa7080b71f0547cdfbad7dd2f540cf7743daa04e4e3",
+      "state": "experimental",
+      "version": "0.1.0"
+    },
     "TOOL.CLI.CHECK": {
       "edition": {},
       "elements": {
@@ -6034,9 +6282,9 @@
         "R6": "regla",
         "R7": "regla"
       },
-      "hash": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+      "hash": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "TOOL.CLI.IR": {
       "edition": {},
@@ -6060,9 +6308,9 @@
         "R1": "regla",
         "R2": "regla"
       },
-      "hash": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+      "hash": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "TOOL.CLI.RUN": {
       "edition": {},

@@ -787,7 +787,7 @@ flowchart LR
     B6 --> B7["B7: Estabilidad de LANG.*,\nverificadores y cierre R6"]
 ```
 
-### Bloque B0 — Especificaciones de R6 y validación del corpus (`SPEC-FIRST`)
+### [x] Bloque B0 — Especificaciones de R6 y validación del corpus (`SPEC-FIRST`)
 
 - **Objetivo:** Redactar y validar las 6 especificaciones nuevas de R6 y las actualizaciones de CLI en
   `packages/pseudolearn_spec`.
@@ -805,7 +805,15 @@ flowchart LR
 - **Criterio de aceptación verificable:** `cargo run -p see_cli -- validate` y `cargo test` en
   `packages/pseudolearn_spec` en verde con 0 advertencias.
 
-### Bloque B1 — Frontera `RT.ABI` y puntos de entrada en `pseudolearn_runtime`
+> **Estado de B0 (completado):** los archivos del corpus siguen la convención de nombres vigente
+> (`rt/rt.abi.md`, `rt/rt.fault-reporting.md`, `rt/rt.process.md`, `rt/rt.linking.md`, `tool/tool.cli.build.md`,
+> `perf/perf.aot.level.md`). `RT.FAULT.REPORTING`, `RT.PROCESS` y `RT.LINKING` declaran solo el sujeto `aot`;
+> `RT.PROCESS` no tiene `#D1` porque el validador no admite términos nuevos; el permiso de ejecución pasó a
+> `RT.LINKING#R3` y el fallo del enlazador a `TOOL.CLI.BUILD#R4` con código 3. `TOOL.CLI.CONVENTIONS` y
+> `TOOL.CLI.MESSAGES` suben a 0.2.0 con bloque `cambio`. Los 7 casos de `TOOL.CLI.BUILD` divergen en
+> `see conform --subject cli` hasta B4.
+
+### [ ] Bloque B1 — Frontera `RT.ABI` y puntos de entrada en `pseudolearn_runtime`
 
 - **Objetivo:** Implementar `AotRuntimeContext` y los puntos de entrada `extern "C"` (`rt_aot_*`) en
   `pseudolearn_runtime`, manteniendo toda la lógica de negocio en funciones seguras.
@@ -824,7 +832,7 @@ flowchart LR
   infeliz (desbordamiento de `instruction_remaining`, `frame_depth > 1000`, `cells > 16_777_216`,
   `output_chars > 1_048_576`).
 
-### Bloque B2 — Núcleo de `pseudolearn_codegen` (bloques SSA, escalares, trampas frías y llamadas)
+### [ ] Bloque B2 — Núcleo de `pseudolearn_codegen` (bloques SSA, escalares, trampas frías y llamadas)
 
 - **Objetivo:** Implementar la estructura base de `pseudolearn_codegen` sobre `cranelift-codegen`, `cranelift-frontend`,
   `cranelift-module` y `cranelift-object`.
@@ -840,7 +848,7 @@ flowchart LR
   tiene todas las relocalizaciones resueltas y comprueban trampas exactas en `i64::MAX + 1`, `i64::MIN - 1`,
   `i64::MIN * -1`, `i64::MIN / -1` y `x / 0`.
 
-### Bloque B3 — Acceso en línea a memoria, clases, celdas, biblioteca y E/S
+### [ ] Bloque B3 — Acceso en línea a memoria, clases, celdas, biblioteca y E/S
 
 - **Objetivo:** Completar las 74 operaciones de `IR.INSTRUCTIONS` en `pseudolearn_codegen` con los caminos rápidos en
   línea necesarios para cumplir `N3`.
@@ -856,7 +864,7 @@ flowchart LR
 - **Criterio de aceptación verificable:** Cobertura de las 74 operaciones (`O1`–`O74`) en `pseudolearn_codegen`,
   verificada con tests de caja negra por familia de instrucción.
 
-### Bloque B4 — Enlazador nativo (`RT.LINKING`) y subcomando `pseudo compilar` / `pseudo build` (`TOOL.CLI.BUILD`)
+### [ ] Bloque B4 — Enlazador nativo (`RT.LINKING`) y subcomando `pseudo compilar` / `pseudo build` (`TOOL.CLI.BUILD`)
 
 - **Objetivo:** Exponer la compilación nativa completa en `pseudolearn_api` y `apps/pseudolearn_cli`.
 - **Tareas:**
@@ -874,7 +882,7 @@ flowchart LR
     - Comprobación de `PERF.ARTIFACT.SIZE#R1`: tamaño de `target/release/pseudo` $\le 8\text{ MiB}$ (techo
       duro $\le 15\text{ MiB}$).
 
-### Bloque B5 — Sujeto `aot` en `see`, conformidad del corpus y pruebas de propiedades (`E-17`)
+### [ ] Bloque B5 — Sujeto `aot` en `see`, conformidad del corpus y pruebas de propiedades (`E-17`)
 
 - **Objetivo:** Conectar `aot` como sujeto de primer nivel en `packages/pseudolearn_spec` y validar las 82
   especificaciones con operación `execute` más las pruebas de propiedades diferenciales.
@@ -892,7 +900,7 @@ flowchart LR
       `RT.PROCESS`, `PERF.AOT.LEVEL`).
     - `see properties --subject aot` y comparación diferencial `reference` vs `engine` vs `aot`: **0 divergencias**.
 
-### Bloque B6 — Experimento de rendimiento `E-NR1` (`PERF.AOT.LEVEL`, meta `N3`)
+### [ ] Bloque B6 — Experimento de rendimiento `E-NR1` (`PERF.AOT.LEVEL`, meta `N3`)
 
 - **Objetivo:** Medir formalmente el rendimiento del código nativo generado por `pseudolearn_codegen` sobre las 10
   cargas de `PERF.SUITE.AWFY-CORE` siguiendo `PERF.PROTOCOL`.
@@ -920,7 +928,7 @@ flowchart LR
         - `RR-R6-04` (*Si persiste tras `RR-R6-01..03`*): Activar `opt_level = speed` con GVN/LICM de
           `cranelift-codegen` sobre valores escalares puros entre barreras de efecto.
 
-### Bloque B7 — Transición de `LANG` a `estable`, actualización de `README.md` y puerta de cierre (`PHASE-GATE`)
+### [ ] Bloque B7 — Transición de `LANG` a `estable`, actualización de `README.md` y puerta de cierre (`PHASE-GATE`)
 
 - **Objetivo:** Promover las especificaciones de `LANG.*` a `estable`, actualizar todos los artefactos de resultados
   (`results/aot.json`, `results/matrix-aot.json`, `results/properties-aot.json`) y ejecutar todos los verificadores del

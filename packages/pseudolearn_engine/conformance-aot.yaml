@@ -1,0 +1,123 @@
+{
+  "sujeto": "aot",
+  "paquete": "packages/pseudolearn_engine",
+  "activadas": [
+    "PERF.AOT.LEVEL",
+    "RT.ABI",
+    "RT.FAULT.REPORTING",
+    "RT.HOST.INTERFACE",
+    "RT.LINKING",
+    "RT.PROCESS"
+  ],
+  "fases_cerradas": [],
+  "vinculos": [
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.HOST.INTERFACE@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.ABI@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.ABI@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.ABI@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.FAULT.REPORTING@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.FAULT.REPORTING@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.FAULT.REPORTING@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.PROCESS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.PROCESS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.PROCESS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.LINKING@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.LINKING@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "RT.LINKING@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
+    }
+  ]
+}

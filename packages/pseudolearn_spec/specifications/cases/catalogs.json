@@ -16,6 +16,18 @@
     }
   },
   "cliMessages": {
+    "buildSucceeded": {
+      "argumentos": [
+        "path"
+      ],
+      "mensajes": {
+        "en": "pseudo: executable generated: {path}",
+        "es": "pseudo: ejecutable generado: {path}"
+      },
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
     "diagnosticError": {
       "argumentos": [
         "path",
@@ -117,6 +129,14 @@
         "option": "lexema",
         "value": "lexema"
       }
+    },
+    "linkerFailed": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "pseudo: the system linker is unavailable or failed",
+        "es": "pseudo: el enlazador del sistema no está disponible o falló"
+      },
+      "tipos_argumentos": {}
     },
     "missingCommand": {
       "argumentos": [],

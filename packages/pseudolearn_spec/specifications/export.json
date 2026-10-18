@@ -203,6 +203,9 @@
     "MEM.VALUE": [
       "MEM.VALUE.COPY"
     ],
+    "PERF.AOT": [
+      "PERF.AOT.LEVEL"
+    ],
     "PERF.ARTIFACT": [
       "PERF.ARTIFACT.SIZE"
     ],
@@ -222,8 +225,20 @@
       "PERF.VM.STEP-LATENCY",
       "PERF.VM.THROUGHPUT"
     ],
+    "RT.ABI": [
+      "RT.ABI"
+    ],
+    "RT.FAULT": [
+      "RT.FAULT.REPORTING"
+    ],
     "RT.HOST": [
       "RT.HOST.INTERFACE"
+    ],
+    "RT.LINKING": [
+      "RT.LINKING"
+    ],
+    "RT.PROCESS": [
+      "RT.PROCESS"
     ],
     "SEE.ADAPTER": [
       "SEE.ADAPTER.PROTOCOL"
@@ -269,6 +284,7 @@
       "SEE.VERSIONING"
     ],
     "TOOL.CLI": [
+      "TOOL.CLI.BUILD",
       "TOOL.CLI.CHECK",
       "TOOL.CLI.CONVENTIONS",
       "TOOL.CLI.IR",
@@ -298,6 +314,18 @@
       }
     },
     "cliMessages": {
+      "buildSucceeded": {
+        "argumentos": [
+          "path"
+        ],
+        "mensajes": {
+          "en": "pseudo: executable generated: {path}",
+          "es": "pseudo: ejecutable generado: {path}"
+        },
+        "tipos_argumentos": {
+          "path": "lexema"
+        }
+      },
       "diagnosticError": {
         "argumentos": [
           "path",
@@ -399,6 +427,14 @@
           "option": "lexema",
           "value": "lexema"
         }
+      },
+      "linkerFailed": {
+        "argumentos": [],
+        "mensajes": {
+          "en": "pseudo: the system linker is unavailable or failed",
+          "es": "pseudo: el enlazador del sistema no está disponible o falló"
+        },
+        "tipos_argumentos": {}
       },
       "missingCommand": {
         "argumentos": [],
@@ -29406,6 +29442,179 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "La media geométrica de la razón entre el tiempo mediano del código nativo generado y el del techo nativo con marcos es como máximo 1,30 en cada familia de PERF.SUITE.AWFY-CORE: numérica, recursiva, de objetos y de arreglos.",
+            "verificacion": [
+              "M1",
+              "M2",
+              "M3",
+              "M4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M1",
+            "metrica": "razon_aot_techo_numeric",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M2",
+            "metrica": "razon_aot_techo_recursive",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M3",
+            "metrica": "razon_aot_techo_objects",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M4",
+            "metrica": "razon_aot_techo_arrays",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Antes de medir, cada carga verifica que el ejecutable produce exactamente la salida esperada, y el código nativo supera en rendimiento a la máquina virtual en las diez cargas.",
+            "verificacion": [
+              "M5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "comparador": ">=",
+            "id": "M5",
+            "metrica": "aceleracion_minima_sobre_vm",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "La emisión del objeto en memoria, sin contar el enlazador del sistema, tarda como máximo 15 ms de mediana para cada carga de la suite.",
+            "verificacion": [
+              "M6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M6",
+            "metrica": "tiempo_emision_objeto",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 15,
+            "unidad": "ms"
+          },
+          "kind": "medicion"
+        }
+      ],
+      "hash": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "PERF.PROTOCOL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "PERF.SUITE.AWFY-CORE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "rendimiento",
+        "duenos": [
+          "responsable-rendimiento"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "PERF.AOT.LEVEL",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Razón por familia frente al techo nativo, aceleración sobre la VM y tiempo de emisión.",
+        "revisado_por": [],
+        "sujetos": [
+          "aot"
+        ],
+        "titulo": "Nivel del código nativo",
+        "titulo_en": "Native code level",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "La biblioteca móvil del núcleo ocupa como máximo 3 MiB por ABI y el módulo Wasm como máximo 600 KiB comprimido con brotli.",
             "verificacion": [
               "M1",
@@ -30739,6 +30948,371 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "Toda función del código nativo generado y todo punto de entrada del runtime reciben como primer parámetro un puntero no nulo al contexto de ejecución, que contiene el montón, la arena de textos, la fuente aleatoria, la pila de raíces y los contadores de los límites de ENG.LIMITS. Los puntos de entrada del runtime devuelven 0 si el cómputo continúa, 1 si el programa falló y 2 si se agotó un límite; ante un valor distinto de 0 el código nativo propaga el retorno sin ejecutar más efectos.",
+            "verificacion": [
+              "P1",
+              "C1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "divisionByZero"
+              },
+              "salida": "1\n",
+              "terminacion": "failed"
+            },
+            "id": "C1",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nEscribir 1;\nEscribir 1 div 0;\nEscribir 2;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos de ejecución del corpus con fallos y límites"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Terminación observada del sujeto engine.",
+            "propiedad": "El código de retorno de la ejecución es 0 si y solo si la terminación es completed, 1 si es failed y 2 si es limit_reached, y no se observa ningún efecto posterior al primer retorno distinto de 0.",
+            "regla": "R1"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Los valores cruzan la frontera con la codificación exacta del runtime: entero como entero con signo de 64 bits, real como binary64 IEEE-754, lógico como 0 o 1, carácter como valor escalar Unicode y texto, arreglo, objeto y celda como asa de 32 bits. Una celda sin definir se distingue de cualquier valor definido sin reservar bits de un entero o un real.",
+            "verificacion": [
+              "P2",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "uninitializedRead"
+              },
+              "salida": "",
+              "terminacion": "failed"
+            },
+            "id": "C2",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDimension a[2] Como Entero;\nEscribir a[1];\nFinAlgoritmo\n",
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos con enteros extremos, reales no finitos y celdas sin definir"
+            },
+            "id": "P2",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Semántica de MEM.VALUE.COPY y LANG.ARRAY.ACCESS en el sujeto engine.",
+            "propiedad": "Cada valor escrito en una celda se lee de vuelta idéntico bit a bit y una celda nunca escrita se lee como sin definir.",
+            "regla": "R2"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Todo asa viva que deba sobrevivir a una llamada al runtime capaz de recolectar se registra en la pila de raíces del marco antes de la llamada y se libera al salir del marco. El recolector solo examina las raíces registradas, de modo que ningún objeto alcanzable se pierde ni se conserva un objeto inalcanzable.",
+            "verificacion": [
+              "P3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos de asignación intensiva con arreglos, objetos y celdas"
+            },
+            "id": "P3",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Salida observada del sujeto engine.",
+            "propiedad": "Tras recolectar, todo objeto alcanzable desde una variable del programa conserva su contenido y la salida coincide con la del sujeto engine.",
+            "regla": "R3"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "f0c3b14a622b0bb22cde9c2c9f848be0228134b34e33f322da252dd712498933",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "ENG.LIMITS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "MEM.IDENTITY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "motor",
+        "duenos": [
+          "responsable-motor"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "RT.ABI",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Contexto, retornos, valores y raíces entre el código nativo generado y el runtime.",
+        "revisado_por": [],
+        "sujetos": [
+          "aot"
+        ],
+        "titulo": "Frontera binaria del código nativo",
+        "titulo_en": "Native code binary boundary",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Ningún fallo semántico del lenguaje, ni de los límites de ENG.LIMITS, se manifiesta como una señal del sistema operativo ni como un pánico del lenguaje anfitrión: se detecta, se informa con su diagnóstico y el proceso termina de forma ordenada.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "divisionByZero"
+              },
+              "salida": "",
+              "terminacion": "failed"
+            },
+            "id": "C1",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "indexOutOfBounds"
+              },
+              "salida": "",
+              "terminacion": "failed"
+            },
+            "id": "C2",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDimension a[3] Como Entero;\na[4] <- 1;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "integerOverflow"
+              },
+              "salida": "",
+              "terminacion": "failed"
+            },
+            "id": "C3",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 9223372036854775807;\nEscribir x + 1;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "El diagnóstico de un fallo conserva el mismo código, los mismos argumentos y la misma posición de origen que produce la ejecución observada del mismo programa.",
+            "verificacion": [
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos de ejecución del corpus que terminan en failed"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Diagnóstico del sujeto engine.",
+            "propiedad": "El código, los argumentos y la posición del diagnóstico coinciden con los del sujeto engine.",
+            "regla": "R2"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "La salida que el programa produjo antes del fallo se conserva en la salida estándar, en el orden de ENG.EXEC.EFFECT-ORDER, antes de informar el fallo en la salida de error.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "fallo": {
+                "codigo": "divisionByZero"
+              },
+              "salida": "1\n2\n",
+              "terminacion": "failed"
+            },
+            "id": "C4",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nEscribir 1;\nEscribir 2;\nEscribir 1 div 0;\nFinAlgoritmo\n",
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "17b13503a0472920f46d483948eaee72c1f9483273fb8d5e43e85bdb9d0bcb20",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "RT.ABI",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "DIAG.CATALOG",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.EXEC.EFFECT-ORDER",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "motor",
+        "duenos": [
+          "responsable-motor"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "RT.FAULT.REPORTING",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Los fallos del programa nunca son señales ni pánicos y conservan código, posición y salida previa.",
+        "revisado_por": [],
+        "sujetos": [
+          "aot"
+        ],
+        "titulo": "Informe de fallos del ejecutable",
+        "titulo_en": "Executable fault reporting",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "Las únicas capacidades del anfitrión que usa un programa son la salida, la entrada y la semilla, inyectadas al iniciar. No hay reloj, variables de entorno, archivos, red ni fuente aleatoria implícitos.",
             "verificacion": [
               "C1"
@@ -30914,6 +31488,269 @@
         ],
         "titulo": "Interfaz con el anfitrión",
         "titulo_en": "Host interface",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El ejecutable producido es un objeto relocalizable del sistema anfitrión enlazado de forma estática con el runtime de PseudoLearn, sin bibliotecas dinámicas propias, y se inicia sin el binario pseudo ni la fuente.",
+            "verificacion": [
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos de ejecución del corpus compilados"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Inspección de las dependencias del ejecutable.",
+            "propiedad": "El ejecutable se inicia en un directorio sin el binario pseudo ni la fuente y no declara bibliotecas dinámicas de PseudoLearn.",
+            "regla": "R1"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Los archivos intermedios creados durante la compilación y el enlace se eliminan siempre al terminar, con éxito o con fallo.",
+            "verificacion": [
+              "P2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "compilaciones exitosas y con fallo de enlace"
+            },
+            "id": "P2",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Listado del directorio de salida y del temporal.",
+            "propiedad": "Tras la compilación no queda ningún archivo intermedio fuera de la salida pedida.",
+            "regla": "R2"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "En los sistemas Unix el ejecutable queda con permiso de ejecución, respetando la máscara de creación de archivos.",
+            "verificacion": [
+              "P3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "compilaciones exitosas en Linux y macOS"
+            },
+            "id": "P3",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Permisos del archivo según el sistema.",
+            "propiedad": "El archivo de salida tiene el permiso de ejecución del propietario.",
+            "regla": "R3"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "578bc1ed410cb31e5f42d7d85b257a433b23842c2a7071b6864982326a32f80a",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "RT.ABI",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "motor",
+        "duenos": [
+          "responsable-motor"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "RT.LINKING",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Ejecutable autónomo, limpieza de intermedios y permiso de ejecución.",
+        "revisado_por": [],
+        "sujetos": [
+          "aot"
+        ],
+        "titulo": "Enlace del ejecutable",
+        "titulo_en": "Executable linking",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El ejecutable lee la entrada estándar en UTF-8 con las reglas de ENG.INPUT, escribe la salida del programa en la salida estándar y los diagnósticos en la salida de error.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "entradas": [
+              "21"
+            ],
+            "espera": {
+              "salida": "42\n",
+              "terminacion": "completed"
+            },
+            "id": "C1",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "salida": "",
+              "terminacion": "awaiting_input"
+            },
+            "id": "C2",
+            "operacion": "execute",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "programa": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "El código de salida del ejecutable, distinto del de la orden pseudo, es: 0 si el programa terminó, 3 si falló en ejecución, 4 si agotó un límite o la entrada, y 5 si el runtime sufrió un fallo interno.",
+            "verificacion": [
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos de ejecución del corpus con cada tipo de terminación"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Terminación observada del sujeto engine.",
+            "propiedad": "El código de salida del proceso es 0 para completed, 3 para failed, 4 para limit_reached o entrada agotada y 5 solo ante un fallo interno del runtime.",
+            "regla": "R2"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "El ejecutable no depende de variables de entorno, del directorio de trabajo, del binario pseudo ni del código fuente: su comportamiento solo depende de su entrada estándar y de la semilla fijada al compilar.",
+            "verificacion": [
+              "P2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "casos del corpus con entrada y azar"
+            },
+            "id": "P2",
+            "justificacion": "La ejecuta el sujeto aot en R6.",
+            "oraculo": "Ejecución con el entorno de compilación.",
+            "propiedad": "Ejecutar con entorno vacío y desde otro directorio produce las mismas observaciones.",
+            "regla": "R3"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "cbce5305400cabe217d2efb42642f8f4a6641431ceaa4a1058cffe37d2a63869",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "RT.FAULT.REPORTING",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.INPUT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "RT.HOST.INTERFACE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "motor",
+        "duenos": [
+          "responsable-motor"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "RT.PROCESS",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Flujos estándar, códigos de salida e independencia del entorno del ejecutable nativo.",
+        "revisado_por": [],
+        "sujetos": [
+          "aot"
+        ],
+        "titulo": "Proceso del ejecutable",
+        "titulo_en": "Executable process",
         "version": "0.1.0"
       }
     },
@@ -31719,6 +32556,308 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "pseudo compilar <archivo> (alias build) analiza el programa y, si no hay errores, genera un ejecutable nativo en la ruta de salida e informa su ruta. La opción -o (alias --salida y --output) fija la ruta; si se omite, se usa el nombre del archivo sin la extensión .pseudo en el directorio actual, con .exe en Windows.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "compilar",
+                "-o",
+                "salida",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "pseudo: ejecutable generado: salida\n",
+              "salida_error": ""
+            },
+            "id": "C1",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "build",
+                "--output",
+                "salida",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "pseudo: ejecutable generado: salida\n",
+              "salida_error": ""
+            },
+            "id": "C2",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "compilar",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "pseudo: ejecutable generado: p\n",
+              "salida_error": ""
+            },
+            "id": "C3",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Si el programa tiene errores léxicos, sintácticos o semánticos, no se genera ni se sobrescribe ningún archivo de salida, los diagnósticos van a la salida de error y el código de salida es 1.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nEscribir total;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "compilar",
+                "-o",
+                "salida",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 1,
+              "salida": "",
+              "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+            },
+            "id": "C4",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Un archivo de entrada ausente es un uso incorrecto (código 2) y uno ilegible un error operativo (código 3), con los mensajes de TOOL.CLI.MESSAGES.",
+            "verificacion": [
+              "C5",
+              "C6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "argumentos": [
+                "compilar"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 2,
+              "salida": "",
+              "salida_error": "pseudo: falta el archivo de entrada\n"
+            },
+            "id": "C5",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "argumentos": [
+                "compilar",
+                "falta.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 3,
+              "salida": "",
+              "salida_error": "pseudo: no se puede leer falta.pseudo\n"
+            },
+            "id": "C6",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Si el enlazador del sistema no está disponible o falla, la orden informa el fallo operativo con el código de salida 3 y no crea ni sobrescribe el archivo de salida.",
+            "verificacion": [
+              "C7"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "compilar",
+                "-o",
+                "salida",
+                "p.pseudo"
+              ],
+              "entorno": {
+                "PATH": ""
+              }
+            },
+            "espera": {
+              "codigo_salida": 3,
+              "salida": "",
+              "salida_error": "pseudo: el enlazador del sistema no está disponible o falló\n"
+            },
+            "id": "C7",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "40807da29b406fb1912c1aa7080b71f0547cdfbad7dd2f540cf7743daa04e4e3",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.CLI.MESSAGES",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "RT.LINKING",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.CLI.BUILD",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "pseudo compilar produce un ejecutable nativo desde un programa válido.",
+        "revisado_por": [],
+        "sujetos": [
+          "cli"
+        ],
+        "titulo": "Orden compilar",
+        "titulo_en": "Build command",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "pseudo comprobar analiza cada archivo indicado y cada archivo .pseudo de los directorios indicados, recursivamente y en orden lexicográfico de ruta. Escribe en la salida estándar una línea por diagnóstico, en el orden de DIAG.ORDERING, con la plantilla de su severidad y el mensaje de DIAG.MESSAGES en el idioma de interfaz. Sin diagnósticos no escribe nada.",
             "verificacion": [
               "C1",
@@ -32078,7 +33217,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "El binario es pseudo. Sus órdenes canónicas son en español: comprobar, ejecutar, ri y preferencias; check, run, ir y preferences son alias que se aceptan siempre, con cualquier idioma de interfaz, y producen exactamente el mismo resultado que la forma canónica.",
+            "texto": "El binario es pseudo. Sus órdenes canónicas son en español: comprobar, ejecutar, compilar, ri y preferencias; check, run, build, ir y preferences son alias que se aceptan siempre, con cualquier idioma de interfaz, y producen exactamente el mismo resultado que la forma canónica.",
             "verificacion": [
               "C1",
               "C2",
@@ -32195,7 +33334,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
-            "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --rigor (--strictness) con estricto o flexible y alias strict o flexible, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells) y --json. Los alias se aceptan siempre. El rigor por omisión es estricto. Una opción desconocida o un valor no válido es un uso incorrecto.",
+            "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --rigor (--strictness) con estricto o flexible y alias strict o flexible, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. El rigor por omisión es estricto. Una opción desconocida o un valor no válido es un uso incorrecto.",
             "verificacion": [
               "C5",
               "C6",
@@ -32873,9 +34012,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+      "hash": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Aceptar la orden compilar y la opción -o en el analizador de argumentos al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
+          "impacto_usuarios": "La orden compilar (build) y la opción --salida (--output, -o) pasan a formar parte de las convenciones de la CLI; las órdenes existentes no cambian.",
+          "justificacion": "R6 añade pseudo compilar y sus convenciones deben nombrarlo.",
+          "revisado_por": "pendiente de revisión humana durante el cierre de R6"
+        },
         "depende_de": [
           {
             "id": "API.WIRE-FORMAT",
@@ -32905,7 +34050,7 @@
         ],
         "titulo": "Convenciones de la CLI",
         "titulo_en": "CLI conventions",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {
@@ -33040,6 +34185,18 @@
             "termino": "cliMessages",
             "texto": "Plantillas bilingües de la CLI con argumentos tipados. lexema no se traduce nunca; numero se escribe en decimal; texto es prosa ya presentada en el idioma de interfaz.",
             "valor": {
+              "buildSucceeded": {
+                "argumentos": [
+                  "path"
+                ],
+                "mensajes": {
+                  "en": "pseudo: executable generated: {path}",
+                  "es": "pseudo: ejecutable generado: {path}"
+                },
+                "tipos_argumentos": {
+                  "path": "lexema"
+                }
+              },
               "diagnosticError": {
                 "argumentos": [
                   "path",
@@ -33141,6 +34298,14 @@
                   "option": "lexema",
                   "value": "lexema"
                 }
+              },
+              "linkerFailed": {
+                "argumentos": [],
+                "mensajes": {
+                  "en": "pseudo: the system linker is unavailable or failed",
+                  "es": "pseudo: el enlazador del sistema no está disponible o falló"
+                },
+                "tipos_argumentos": {}
               },
               "missingCommand": {
                 "argumentos": [],
@@ -33531,9 +34696,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+      "hash": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Incorporar las dos plantillas al catálogo de mensajes de la CLI al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
+          "impacto_usuarios": "Se añaden los mensajes buildSucceeded y linkerFailed; las plantillas existentes no cambian.",
+          "justificacion": "TOOL.CLI.BUILD necesita mensajes bilingües de éxito y de fallo del enlazador.",
+          "revisado_por": "pendiente de revisión humana durante el cierre de R6"
+        },
         "depende_de": [
           {
             "id": "TOOL.CLI.CONVENTIONS",
@@ -33563,7 +34734,7 @@
         ],
         "titulo": "Mensajes de la CLI",
         "titulo_en": "CLI messages",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {

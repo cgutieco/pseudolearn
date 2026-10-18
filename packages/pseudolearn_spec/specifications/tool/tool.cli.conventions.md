@@ -5,7 +5,7 @@
   "titulo": "Convenciones de la CLI",
   "dominio": "herramienta",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-herramientas"
   ],
@@ -25,7 +25,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "CLI conventions"
+  "titulo_en": "CLI conventions",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "La orden compilar (build) y la opción --salida (--output, -o) pasan a formar parte de las convenciones de la CLI; las órdenes existentes no cambian.",
+    "impacto_implementaciones": "Aceptar la orden compilar y la opción -o en el analizador de argumentos al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
+    "justificacion": "R6 añade pseudo compilar y sus convenciones deben nombrarlo.",
+    "revisado_por": "pendiente de revisión humana durante el cierre de R6"
+  }
 }
 ---
 
@@ -57,7 +64,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El binario es pseudo. Sus órdenes canónicas son en español: comprobar, ejecutar, ri y preferencias; check, run, ir y preferences son alias que se aceptan siempre, con cualquier idioma de interfaz, y producen exactamente el mismo resultado que la forma canónica.",
+  "texto": "El binario es pseudo. Sus órdenes canónicas son en español: comprobar, ejecutar, compilar, ri y preferencias; check, run, build, ir y preferences son alias que se aceptan siempre, con cualquier idioma de interfaz, y producen exactamente el mismo resultado que la forma canónica.",
   "verificacion": [
     "C1",
     "C2",
@@ -174,7 +181,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --rigor (--strictness) con estricto o flexible y alias strict o flexible, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells) y --json. Los alias se aceptan siempre. El rigor por omisión es estricto. Una opción desconocida o un valor no válido es un uso incorrecto.",
+  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --rigor (--strictness) con estricto o flexible y alias strict o flexible, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. El rigor por omisión es estricto. Una opción desconocida o un valor no válido es un uso incorrecto.",
   "verificacion": [
     "C5",
     "C6",

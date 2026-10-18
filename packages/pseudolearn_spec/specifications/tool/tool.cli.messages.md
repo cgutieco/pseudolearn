@@ -5,7 +5,7 @@
   "titulo": "Mensajes de la CLI",
   "dominio": "herramienta",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-herramientas"
   ],
@@ -25,7 +25,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "CLI messages"
+  "titulo_en": "CLI messages",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se añaden los mensajes buildSucceeded y linkerFailed; las plantillas existentes no cambian.",
+    "impacto_implementaciones": "Incorporar las dos plantillas al catálogo de mensajes de la CLI al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
+    "justificacion": "TOOL.CLI.BUILD necesita mensajes bilingües de éxito y de fallo del enlazador.",
+    "revisado_por": "pendiente de revisión humana durante el cierre de R6"
+  }
 }
 ---
 
@@ -111,6 +118,26 @@
       "mensajes": {
         "es": "pseudo: falta el archivo de entrada",
         "en": "pseudo: missing input file"
+      },
+      "argumentos": [],
+      "tipos_argumentos": {}
+    },
+    "buildSucceeded": {
+      "mensajes": {
+        "es": "pseudo: ejecutable generado: {path}",
+        "en": "pseudo: executable generated: {path}"
+      },
+      "argumentos": [
+        "path"
+      ],
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "linkerFailed": {
+      "mensajes": {
+        "es": "pseudo: el enlazador del sistema no está disponible o falló",
+        "en": "pseudo: the system linker is unavailable or failed"
       },
       "argumentos": [],
       "tipos_argumentos": {}
