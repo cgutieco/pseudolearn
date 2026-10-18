@@ -5,6 +5,7 @@ mod call_tests;
 mod cell_tests;
 mod control_tests;
 mod definition_tests;
+mod executable_tests;
 mod integer_tests;
 mod io_tests;
 mod math_tests;

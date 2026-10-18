@@ -11,6 +11,7 @@ pub struct CliOptions {
     pub positional_arguments: Vec<String>,
     pub strictness: Option<String>,
     pub vocabulary: Option<String>,
+    pub output: Option<String>,
     pub json_output: bool,
     pub help_requested: bool,
     pub execution: crate::execution_options::ExecutionArguments,
@@ -22,6 +23,7 @@ struct ParsedArguments {
     positional_arguments: Vec<String>,
     strictness: Option<String>,
     vocabulary: Option<String>,
+    output: Option<String>,
     json_output: bool,
     help_requested: bool,
     execution: crate::execution_options::ExecutionArguments,
@@ -41,6 +43,7 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
         positional_arguments: parsed.positional_arguments,
         strictness: parsed.strictness,
         vocabulary: parsed.vocabulary,
+        output: parsed.output,
         json_output: parsed.json_output,
         help_requested: parsed.help_requested,
         execution: parsed.execution,
@@ -70,12 +73,27 @@ fn handle_argument_step(
             *index = index.saturating_add(1);
             Ok(())
         }
+        _ => handle_valued_option(raw_arguments, index, locale, parsed),
+    }
+}
+
+fn handle_valued_option(
+    raw_arguments: &[String],
+    index: &mut usize,
+    locale: &str,
+    parsed: &mut ParsedArguments,
+) -> Result<(), CliError> {
+    let current = raw_arguments.get(*index).map_or("", String::as_str);
+    match current {
         "--idioma" | "--language" => handle_language_option(raw_arguments, index, locale),
         "--rigor" | "--strictness" => {
             handle_strictness_option(raw_arguments, index, locale, &mut parsed.strictness)
         }
         "--vocabulario" | "--vocabulary" => {
             handle_vocabulary_option(raw_arguments, index, locale, &mut parsed.vocabulary)
+        }
+        "-o" | "--salida" | "--output" => {
+            handle_output_option(raw_arguments, index, locale, &mut parsed.output)
         }
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
         | "--celdas" | "--cells" => crate::execution_options::parse_numeric(
@@ -132,6 +150,23 @@ fn handle_vocabulary_option(
     *index = index.saturating_add(1);
     let choice = raw_arguments.get(*index).map_or("", String::as_str);
     if choice != "es" && choice != "en" {
+        return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
+    }
+    *target = Some(choice.to_owned());
+    *index = index.saturating_add(1);
+    Ok(())
+}
+
+fn handle_output_option(
+    raw_arguments: &[String],
+    index: &mut usize,
+    locale: &str,
+    target: &mut Option<String>,
+) -> Result<(), CliError> {
+    let flag = raw_arguments.get(*index).map_or("", String::as_str);
+    *index = index.saturating_add(1);
+    let choice = raw_arguments.get(*index).map_or("", String::as_str);
+    if choice.is_empty() || choice.starts_with("--") {
         return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
     }
     *target = Some(choice.to_owned());

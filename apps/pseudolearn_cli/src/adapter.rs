@@ -165,7 +165,9 @@ fn spawn_sandbox_process(
     for (name, variable_value) in environment {
         command.env(name, variable_value);
     }
-    if let Ok(system_path) = std::env::var("PATH") {
+    if !environment.contains_key("PATH")
+        && let Ok(system_path) = std::env::var("PATH")
+    {
         command.env("PATH", system_path);
     }
     command.stdin(Stdio::piped());

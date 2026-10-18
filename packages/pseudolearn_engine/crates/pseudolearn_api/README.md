@@ -19,6 +19,14 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
+Construcción nativa: `build_native_object(&NativeBuildRequest)` analiza y baja el programa con el mismo camino que la
+ejecución, genera el objeto ejecutable con `pseudolearn_codegen` y devuelve sus bytes con los avisos del análisis, o
+`Rejected` con los diagnósticos si hay errores y `Backend` si el generador falla. Fija en los metadatos del ejecutable
+la semilla, los límites (profundidad, sentencias, celdas), el idioma, el nombre de la fuente, las plantillas de línea
+de diagnóstico y de entrada agotada que la CLI entrega, y las palabras lógicas del perfil que
+`pseudolearn_vm::boolean_words` expone desde la misma tabla generada que usa la VM. La API no enlaza ni toca el disco:
+el enlace es una capacidad del adaptador.
+
 La compilación a módulo conserva metadatos laterales de origen que la representación textual no
 transporta. Los tests de integración compilan el corpus exportado y llaman directamente al bytecode y
 la VM; `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual, copia y ausencia
@@ -26,7 +34,7 @@ bajo las tres políticas de recolección. Esta vía de pruebas no anuncia una ca
 ni implementa otro protocolo. `RunOptions` y los envoltorios existentes se mantienen; `API.EXECUTE` y su
 conformidad integrada pertenecen a B7.3.
 
-Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline. Externas: serde, serde_json.
+Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_codegen, pseudolearn_aot_rt. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.

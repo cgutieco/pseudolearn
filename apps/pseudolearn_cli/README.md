@@ -2,12 +2,11 @@
 
 ## 1. Qué es y qué no es
 
-Binario pseudo para comprobar, ejecutar e inspeccionar programas. Análisis, preferencias, ejecución e inspección de RI implementados sobre la API pública.
+Binario pseudo para comprobar, ejecutar, compilar e inspeccionar programas. Análisis, preferencias, ejecución, compilación nativa e inspección de RI implementados sobre la API pública.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| compilar/build | Backend nativo | R6 |
 | formatear/format, traducir/translate, lsp | Servicio de lenguaje | R7 |
 
 ## 2. Guía operativa y ciclo de vida
@@ -20,6 +19,8 @@ Comandos de compilación y verificación:
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.
 - Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`.
 Distribución nativa en macOS, Linux y Windows. Sin secretos.
+
+`cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Compilar un programa requiere además el driver `cc` del sistema en el `PATH`.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -43,6 +44,18 @@ La sustitución de argumentos recorre la plantilla una sola vez, preservando lla
 Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
 La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
 
+compilar/build: lee y analiza la fuente con la API (`build_native_object`), y solo si no hay errores enlaza el objeto con
+la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el driver `cc`, en un directorio temporal que se
+elimina siempre. El resultado se copia junto al destino con un nombre provisional y se renombra, de modo que un fallo
+nunca crea ni sobrescribe la salida. Informa `buildSucceeded` con la ruta tal como se pidió. Sin `-o`/`--salida`/`--output`
+la salida es el nombre del archivo sin `.pseudo` (más `.exe` en Windows) en el directorio actual; si eso coincidiera con la
+fuente se usa `.out` para no sobrescribirla. `--semilla`, `--profundidad`, `--sentencias`, `--celdas`, `--rigor`,
+`--vocabulario` e `--idioma` se fijan en el ejecutable al compilar: el idioma de interfaz elige el idioma de los
+diagnósticos del ejecutable y sus plantillas de línea. Errores del programa: diagnósticos y código 1; fuente ausente: 2;
+ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o 5 según su propio protocolo.
+Los fallos del generador de código (sin diagnóstico de usuario) se informan con `linkerFailed`, porque
+`TOOL.CLI.MESSAGES` no define un mensaje propio.
+
 La ejecución de ejecutar/run usa únicamente la API pública con entrada estándar, semilla, límites
 de profundidad, sentencias y celdas. La traza se narra con las plantillas trace* del catálogo generado;
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
@@ -50,6 +63,16 @@ de la primera violación. No se introduce semántica propia ni se accede a capas
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
+
+Problema: la CLI debe producir ejecutables autónomos sin que el usuario instale el runtime. Elección: incrustar la biblioteca
+estática depurada (~1,2 MiB) en `pseudo`, que queda en 7,2 MiB en `release` frente al objetivo de 8 MiB. Descartado: buscar
+la biblioteca junto al binario o en una variable de entorno, que rompe la distribución de un solo archivo; invocar
+`rustc` o `clang` sobre código fuente generado, que exige un compilador completo en la máquina de la persona.
+
+Problema: `build.rs` necesita compilar el runtime para la plataforma anfitriona sin disputar el bloqueo del directorio de
+destino del `cargo build` en curso. Elección: un directorio de destino propio bajo `OUT_DIR` y `--locked`, de modo que
+el motor no cambia su `Cargo.lock`. Descartado: añadir `staticlib` a los tipos de crate de `pseudolearn_aot_rt`, que
+generaría la biblioteca en cada compilación del motor.
 
 Código inglés sin comentarios. Mensajes desde TOOL.CLI.MESSAGES y DIAG.MESSAGES generados; sin copias ni prosa en la lógica.
 Errores como valores y códigos de salida de TOOL.CLI.CONVENTIONS; ningún pánico cruza la frontera.
@@ -63,6 +86,10 @@ Contratos TOOL.CLI.CONVENTIONS, MESSAGES, CHECK, RUN e IR; límites por defecto 
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
+`tests/build_tests.rs` cubre compilar y ejecutar con entrada estándar en un entorno vacío y otro directorio, la salida por
+omisión, la fuente sin extensión, el permiso de ejecución, el fallo de ejecución del binario generado (código 3, salida previa
+y posición), el programa inválido sin salida, entrada ausente e ilegible, `-o` sin valor, enlazador ausente (`PATH` vacío) sin
+salida ni temporales (se redirige `TMPDIR` y se comprueba vacío) y una salida previa que un fallo no sustituye.
 Tests de precedencia de cada fuente de idioma, alias equivalentes, aperturas bilingües, BOM, trivia, texto vacío, argumentos inválidos y error operativo.
 Conformidad contra casos cli del corpus en ambos idiomas; --json estable al cambiar idioma.
 Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify al implementar.

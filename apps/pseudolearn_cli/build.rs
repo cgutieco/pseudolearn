@@ -2,10 +2,16 @@ use serde_json::Value;
 use std::fmt::Write;
 use std::path::Path;
 
+mod build_runtime_archive;
+
 fn main() {
     println!("cargo:rerun-if-changed=../../packages/pseudolearn_spec/specifications/export.json");
     if let Err(error) = generate() {
         eprintln!("CLI generation failed: {error}");
+        std::process::exit(1);
+    }
+    if let Err(error) = build_runtime_archive::build() {
+        eprintln!("Runtime archive build failed: {error}");
         std::process::exit(1);
     }
 }

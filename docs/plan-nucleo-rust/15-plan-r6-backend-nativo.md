@@ -903,7 +903,7 @@ flowchart LR
 > Los literales se guardan como datos locales del objeto y los diseños de clase salen en `CompiledObject.classes`; el
 > registro de ambos al arrancar el ejecutable pasa a B4. Verificado con `cargo xtask verify`.
 
-### [ ] Bloque B4 — Enlazador nativo (`RT.LINKING`) y subcomando `pseudo compilar` / `pseudo build` (`TOOL.CLI.BUILD`)
+### [x] Bloque B4 — Enlazador nativo (`RT.LINKING`) y subcomando `pseudo compilar` / `pseudo build` (`TOOL.CLI.BUILD`)
 
 - **Objetivo:** Exponer la compilación nativa completa en `pseudolearn_api` y `apps/pseudolearn_cli`.
 - **Tareas:**
@@ -920,6 +920,21 @@ flowchart LR
       `RT.FAULT.REPORTING`.
     - Comprobación de `PERF.ARTIFACT.SIZE#R1`: tamaño de `target/release/pseudo` $\le 8\text{ MiB}$ (techo
       duro $\le 15\text{ MiB}$).
+
+> **Estado de B4 (completado):** `pseudolearn_aot_rt` aloja `pseudolearn_aot_main`, el formato de metadatos `PLM1`
+> (codificador y decodificador) y el proceso del ejecutable (códigos 0/3/4/5, salida vaciada antes del fallo, plantillas
+> de diagnóstico y de entrada agotada); `pseudolearn_codegen` añade `compile_module_to_executable_object`, que define el
+> `main` de C y el dato `__pl_metadata`; `pseudolearn_api` expone `build_native_object` y `pseudolearn_vm::boolean_words`;
+> la CLI añade `compilar`/`build` con `-o`/`--salida`/`--output`. Divergencias con el texto del bloque, resueltas así:
+> `pseudolearn_aot_main` vive en `pseudolearn_aot_rt` y no en `pseudolearn_runtime`; el archivo del runtime lo construye
+> `build.rs` de la CLI con `cargo rustc --crate-type staticlib` (sin tocar `Cargo.toml` del runtime) en un directorio de
+> destino propio y lo depura con `strip`, y se incrusta en `pseudo` con `include_bytes!`; el enlazador es siempre el
+> driver `cc` con `-Wl,-dead_strip -lm` en macOS y `-Wl,--gc-sections` más las bibliotecas del sistema en Linux, sin
+> rama para Windows; el adaptador de la CLI ya no pisa un `PATH` recibido en la petición, necesario para el caso `C7`.
+> `deny.toml` de la CLI adopta la política de licencias y la exención de `hashbrown@0.16.1` del motor. Medido con el
+> perfil `release` por omisión: `pseudo` ocupa 7 552 528 bytes (7,2 MiB) y `see conform --subject cli` ejecuta 56
+> observaciones con 0 divergencias. Las reglas `RT.*` siguen pendientes en `conformance-aot.yaml` hasta que B5 cree el
+> sujeto `aot`. Verificado con `cargo xtask verify` en el motor y en la CLI.
 
 ### [ ] Bloque B5 — Sujeto `aot` en `see`, conformidad del corpus y pruebas de propiedades (`E-17`)
 

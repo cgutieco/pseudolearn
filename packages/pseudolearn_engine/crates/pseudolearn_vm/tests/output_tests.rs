@@ -20,3 +20,10 @@ fn rejects_output_without_a_value() {
     let bytecode = compile_text(source_text);
     assert!(bytecode.is_err());
 }
+
+#[test]
+fn boolean_words_follow_the_profile_and_default_to_spanish() {
+    assert_eq!(pseudolearn_vm::boolean_words("en"), ("true", "false"));
+    assert_eq!(pseudolearn_vm::boolean_words("es"), ("Verdadero", "Falso"));
+    assert_eq!(pseudolearn_vm::boolean_words("zz"), ("Verdadero", "Falso"));
+}

@@ -89,7 +89,7 @@ pub fn build_object_with(module_text: &str, patch: Patch) -> Result<CompiledObje
     compile_module_to_object(&module, &TargetConfig::host()).map_err(failure)
 }
 
-fn work_directory() -> Result<PathBuf, Failure> {
+pub(crate) fn work_directory() -> Result<PathBuf, Failure> {
     let number = COUNTER.fetch_add(1, Ordering::SeqCst);
     let directory = Path::new(env!("CARGO_TARGET_TMPDIR"))
         .join(format!("harness-{}-{number}", std::process::id()));
@@ -97,7 +97,7 @@ fn work_directory() -> Result<PathBuf, Failure> {
     Ok(directory)
 }
 
-fn newest_rlib(dependencies: &Path, crate_name: &str) -> Result<PathBuf, Failure> {
+pub(crate) fn newest_rlib(dependencies: &Path, crate_name: &str) -> Result<PathBuf, Failure> {
     let prefix = format!("lib{crate_name}-");
     std::fs::read_dir(dependencies)
         .map_err(failure)?
@@ -235,7 +235,7 @@ fn link(directory: &Path, source: &Path, object: &Path) -> Result<Harness, Failu
     })
 }
 
-fn extern_argument(dependencies: &Path, crate_name: &str) -> Result<String, Failure> {
+pub(crate) fn extern_argument(dependencies: &Path, crate_name: &str) -> Result<String, Failure> {
     let path = newest_rlib(dependencies, crate_name)?;
     Ok(format!("{crate_name}={}", path.display()))
 }

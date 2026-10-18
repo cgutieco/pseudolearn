@@ -21,7 +21,6 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Cabecera `main`, registro de las clases de `CompiledObject.classes` en el motor al arrancar y metadatos del ejecutable | Punto de entrada del ejecutable; el objeto ya exporta los diseños y los literales como datos locales | Enlace nativo |
 | Celdas, texto y matemática de biblioteca se resuelven por entradas del runtime y el despacho virtual usa una tabla de saltos sin caché monomórfica; no hay fijación de `instruction_remaining` en registro | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
 | Nivel de optimización de Cranelift fijado en `none` | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
 
@@ -33,7 +32,8 @@ Desde `packages/pseudolearn_engine`, con la cadena `cargo` fijada por `rust-tool
 - Probar: `cargo test -p pseudolearn_codegen -- --test-threads=1`.
 - Verificar todo el motor: `cargo xtask verify`.
 
-Los tests de ejecución enlazan el objeto emitido con un arnés de `rustc` y las `rlib` de `pseudolearn_aot_rt` y
+Los tests de ejecución (`tests/execution/executable_tests.rs` para el modo ejecutable: salida, fallo con sitio y código 3,
+entrada estándar, entrada agotada con código 4 y módulo sin `main`) enlazan el objeto emitido con un arnés de `rustc` y las `rlib` de `pseudolearn_aot_rt` y
 `pseudolearn_diagnostics` de `target/<perfil>/deps`, y ejecutan el binario resultante. Requieren `rustc` y un
 enlazador del sistema en el `PATH`. Los artefactos de cada ejecución se escriben bajo `CARGO_TARGET_TMPDIR`.
 
@@ -46,6 +46,13 @@ crate del motor lo importa salvo el enlazador y el adaptador `aot`.
 Fachada: `compile_module_to_object(&Module, &TargetConfig) -> Result<CompiledObject, CodegenError>`. Verifica el módulo
 con `verify_module` antes de emitir. `CompiledObject` contiene los bytes del objeto, la tabla `fault_sites` que la sesión
 de `pseudolearn_aot_rt` recibe tal cual y la lista `function_symbols` (nombre en la RI y símbolo).
+
+Modo ejecutable: `compile_module_to_executable_object(&Module, &TargetConfig, &ExecutableSettings)` emite además un
+`main` de C que llama a `pseudolearn_aot_main(@main, __pl_metadata, longitud)` y devuelve su resultado, y guarda como dato
+local los metadatos que `pseudolearn_aot_rt::encode_metadata` produce con los ajustes, la tabla de sitios y los diseños de
+clase. La función de entrada es la de nombre `main` de la RI; un módulo sin ella es un `InvalidModule`. El objeto sigue
+sin resolver únicamente `rt_aot_*` y `pseudolearn_aot_main`. El modo objeto (`compile_module_to_object`) no define `main`,
+que es lo que usa el arnés de pruebas.
 
 Convención de las funciones generadas: `extern "C"`, primer parámetro `*mut AotRuntimeContext`, luego un parámetro por
 parámetro de la RI. `CompiledObject.classes` entrega un `ClassDescriptor` por clase, en el orden de `Module.classes`, con los
@@ -70,6 +77,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `runtime_calls`, `abi_signatures` | Tabla de entradas `rt_aot_*` e invocación con propagación de fallo |
 | `fault_table` | Tabla de sitios (`DiagnosticCode` y tramo fuente) |
 | `context_layout` | Desplazamientos del contexto como `i32` |
+| `entry_point` | En modo ejecutable, define `main` y el dato local `__pl_metadata` |
 | `type_mapping`, `target` | Tipos CLIF y configuración del ISA |
 
 Protocolo de fallo: toda trampa en línea salta a un bloque frío propio que llama a `rt_aot_fault(contexto, sitio)` y
@@ -169,6 +177,11 @@ argumento negativo y usa la instrucción IEEE de Cranelift, que está correctame
 `-0.0`; `abs` borra el signo. `ln`, `exp`, `sin`, `cos` y `atan` llaman a la biblioteca.
 
 Problema: `cranelift-object` activa siempre `gimli`, que arrastra una segunda versión de `hashbrown`, y Cranelift usa `Apache-2.0 WITH LLVM-exception`. Elección: la política de `deny.toml` admite esa licencia y `Zlib` y exime únicamente `hashbrown@0.16.1` de la regla de versiones duplicadas.
+
+Problema: el ejecutable necesita arrancar el runtime sin que codegen conozca su estado. Elección: codegen solo emite el
+`main` de C y los bytes de metadatos, y el runtime los decodifica; el único acoplamiento es el formato de
+`pseudolearn_aot_rt`, que codifica y decodifica. Descartado: emitir en Cranelift el registro de clases y literales al
+arrancar, porque duplicaría en código generado lo que el decodificador hace una vez en Rust seguro.
 
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.

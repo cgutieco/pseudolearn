@@ -1,12 +1,160 @@
 {
   "corpus_hashes": {
+    "TOOL.CLI.BUILD": "40807da29b406fb1912c1aa7080b71f0547cdfbad7dd2f540cf7743daa04e4e3",
     "TOOL.CLI.CHECK": "20b97d4dad48bbb348fc15172d5936098bda438bc0bfa52b13bf84ada11e2f2e",
-    "TOOL.CLI.CONVENTIONS": "4755d205fb41d2a6751d8680c18298ffa6f3de4c7e9e533732ed2ce8d851dc4e",
+    "TOOL.CLI.CONVENTIONS": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
     "TOOL.CLI.IR": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
-    "TOOL.CLI.MESSAGES": "1dc66d6e7d8758ef40dcd4d4886fedcaf8b82ae87f5d587c759604896d75d5d7",
+    "TOOL.CLI.MESSAGES": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
     "TOOL.CLI.RUN": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca"
   },
   "observations": [
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "pseudo: ejecutable generado: salida\n"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "pseudo: ejecutable generado: salida\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "pseudo: ejecutable generado: salida\n"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "pseudo: ejecutable generado: salida\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "pseudo: ejecutable generado: p\n"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "pseudo: ejecutable generado: p\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta el archivo de entrada\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta el archivo de entrada\n"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: no se puede leer falta.pseudo\n",
+        "exit_code": 3,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 3,
+        "salida": "",
+        "salida_error": "pseudo: no se puede leer falta.pseudo\n"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: el enlazador del sistema no está disponible o falló\n",
+        "exit_code": 3,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 3,
+        "salida": "",
+        "salida_error": "pseudo: el enlazador del sistema no está disponible o falló\n"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.CLI.BUILD",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
     {
       "actual": {
         "error_output": "",

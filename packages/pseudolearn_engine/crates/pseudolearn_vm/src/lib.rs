@@ -9,6 +9,7 @@ mod model;
 mod options;
 mod step;
 mod trap;
+mod vocabulary;
 mod wire;
 
 pub use events::{ChangeBuffer, EventPayload, TraceClass, TraceEvent};
@@ -29,6 +30,7 @@ pub use model::{Fuel, LimitKind, RunExit, RunResult, RuntimeValue, ServiceReason
 pub use options::{RunOptions, TwinMode};
 pub use step::{StepAction, advance_step, step_into, step_next, step_out, step_over, step_to_line};
 pub use trap::VmTrap;
+pub use vocabulary::boolean_words;
 pub use wire::{decode_plev, encode_plev};
 
 pub(crate) use trap::Fault;

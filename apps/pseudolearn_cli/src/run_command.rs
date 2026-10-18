@@ -133,7 +133,7 @@ fn render_rejected(
     Ok(1)
 }
 
-fn render_diagnostics(options: &CliOptions, path: &str, diagnostics: &[ApiDiagnostic]) {
+pub(crate) fn render_diagnostics(options: &CliOptions, path: &str, diagnostics: &[ApiDiagnostic]) {
     for diagnostic in diagnostics {
         let position = (diagnostic.span.start.line, diagnostic.span.start.column);
         eprint!(

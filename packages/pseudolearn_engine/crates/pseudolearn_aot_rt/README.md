@@ -10,21 +10,17 @@ con su sitio de origen. Toda la lógica vive en funciones seguras de `pseudolear
 este crate solo convierte punteros en referencias y traduce errores tipados a diagnósticos.
 
 Responsabilidades exclusivas: layout del contexto y sus desplazamientos, códigos de retorno, pila de raíces, tabla
-de sitios de fallo, formateo de fallos, flujos de entrada y salida del programa.
+de sitios de fallo, formateo de fallos, flujos de entrada y salida del programa, formato binario de los metadatos del
+ejecutable y proceso del ejecutable (arranque, vaciado de salida, informe de fallo y código de salida).
 
 Fuera de alcance de producto: trazas, instantáneas e inspección paso a paso (el sujeto `aot` está exento de
 `ENG.TRACE.*` y `ENG.STATE.*`); desoptimización hacia la VM; límite de caracteres de salida (`ENG.LIMITS` no lo
 define).
 
-Fuera de alcance técnico: generación de código máquina, enlace, formato de metadatos y función `main` del
-ejecutable (viven en `pseudolearn_codegen` y en el enlazador); acceso en línea a memoria y aritmética entera
+Fuera de alcance técnico: generación de código máquina, enlace y la función `main` del ejecutable (la emite
+`pseudolearn_codegen`; el enlazador vive en la CLI); acceso en línea a memoria y aritmética entera
 (las emite el código generado); dependencias externas; `unsafe` fuera de las dos funciones de la tabla de la
 sección 5.
-
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Punto de entrada `pseudolearn_aot_main` y decodificación de metadatos (literales, clases, tabla de sitios) | Formato de metadatos emitido por codegen | Enlace nativo (`RT.LINKING`) |
-| Salida a `stdout` con vaciado previo al fallo y proyección de estado a códigos de salida 0, 3, 4 y 5 | Proceso del ejecutable | `RT.PROCESS` |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -105,6 +101,21 @@ partir de un `ClassDescriptor` (códigos de tipo por campo y densidad), que es l
 
 Códigos de tipo: `KIND_INTEGER` 0, `KIND_REAL` 1, `KIND_BOOLEAN` 2, `KIND_CHARACTER` 3, `KIND_REFERENCE` 4.
 
+Proceso del ejecutable: `pseudolearn_aot_main(entrada, metadatos, longitud) -> i32` es el único símbolo que enlaza el
+`main` generado. Decodifica los metadatos (`decode_metadata`), crea la `AotSession` con entrada estándar con búfer, salida
+estándar con búfer y los límites y la semilla fijados al compilar, registra las clases, llama a la función de entrada,
+vacía la salida y proyecta el estado: `0` completado, `3` fallo del programa, `4` límite (`statementBudgetExhausted` o
+entrada agotada) y `5` fallo interno (`internalFault`, clases inválidas, metadatos corruptos o fallo sin registro). Ante
+un fallo, la salida del programa ya está vaciada y el diagnóstico se escribe en la salida de error con la plantilla de
+línea que trae el metadato; la entrada agotada usa su propia plantilla. `run_executable` es la misma lógica con flujos
+inyectados, que es lo que prueban los tests sin lanzar procesos.
+
+Metadatos (`ExecutableMetadata`, magia `PLM1`): nombre de la fuente, idioma, semilla, límites (marcos, unidades opcionales,
+celdas, capacidad de raíces), palabras lógicas, las dos plantillas, la tabla de sitios (código por nombre y rango) y los
+diseños de clase. Codificación little-endian con prefijos de longitud; el decodificador rechaza prefijos truncados, bytes
+sobrantes, magia ajena y nombres de diagnóstico desconocidos. Codegen codifica con `encode_metadata`, de modo que el
+formato vive en un solo lugar (`GEN-NO-HAND-COPY`).
+
 Fallos: el primer fallo queda en `AotEngine::fault()` con sitio, código y rango fuente; los siguientes solo actualizan
 `fault_site` y `fault_status`. `status_of` clasifica `statementBudgetExhausted` y el agotamiento de entrada como
 límite (`2`) y todo lo demás como fallo del programa (`1`). El agotamiento de entrada no tiene diagnóstico:
@@ -147,6 +158,14 @@ Problema: las entradas necesitan identificar su sitio sin ampliar la aridad más
 Elección: `site` es siempre el segundo parámetro; descriptores y banderas se empaquetan en las palabras de operando
 (`tipo | rango << 8`, `NEWLINE_FLAG`, `CHARACTER_OPERAND_FLAG`).
 
+Problema: el ejecutable no puede depender del entorno (`RT.PROCESS`) y debe informar en el idioma elegido al compilar.
+Elección: la CLI fija idioma, semilla, límites, palabras lógicas y plantillas al compilar y el runtime solo las lee de los
+metadatos; ningún texto de interfaz vive aquí. Descartado: leer variables de entorno o la configuración de usuario al
+arrancar, porque el comportamiento dejaría de depender solo de la entrada estándar.
+
+Problema: `std` solo vacía la salida estándar al volver de su propio `main`, y el `main` generado es el de C. Elección:
+`run_executable` vacía explícitamente el flujo de salida antes de informar el fallo y de devolver el código.
+
 Problema: una entrada nunca debe propagar un pánico a través de la frontera `extern "C"`. Elección: ninguna ruta
 usa `unwrap`, indexación ni aritmética sin comprobar (lo exige Clippy); un puntero de contexto nulo devuelve el estado
 de fallo sin escribir nada.
@@ -183,7 +202,10 @@ arreglos vacíos, asa ausente, buffers nulos, campos sin valor, clases con tipos
 elemento y de campo, incluido el enraizamiento del texto que solo una celda conserva.
 `tests/memory_tests.rs` cubre asignación, extensiones negativas y cero, extensiones ausentes, tipo desconocido,
 agotamiento de celdas con todo enraizado, recolección con raíces, diseños y copia, y contexto nulo. `tests/text_tests.rs`,
-`tests/math_tests.rs`, `tests/random_tests.rs`, `tests/output_tests.rs`, `tests/input_tests.rs`, `tests/trap_tests.rs` y
+`tests/math_tests.rs`, `tests/random_tests.rs`, `tests/output_tests.rs`, `tests/input_tests.rs`, `tests/trap_tests.rs`,
+`tests/metadata_tests.rs` (ida y vuelta, rechazo de cada prefijo truncado, magia y nombres corruptos, `pseudolearn_aot_main` con
+metadatos nulos o basura), `tests/process_tests.rs` (códigos 0, 3, 4 y 5, salida previa al fallo, entrada agotada, clases
+inválidas y plantillas) y
 `tests/fault_tests.rs` cubren camino feliz e infeliz de cada familia: literales inválidos, conversiones fallidas,
 posiciones fuera de rango, dominios matemáticos, flujo de salida cerrado, lecturas con tipo incorrecto, entrada
 agotada, sitios inexistentes, conservación del primer fallo y renderizado por idioma.

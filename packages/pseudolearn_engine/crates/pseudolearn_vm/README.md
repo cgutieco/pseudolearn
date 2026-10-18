@@ -28,6 +28,9 @@ número de veces.
 
 ## 3. Arquitectura y modelo del sistema
 
+`boolean_words(perfil)` publica las palabras lógicas del perfil desde la misma tabla generada que formatea la salida de la VM,
+para que el ejecutable nativo imprima los mismos lexemas sin copiarlos.
+
 La ejecución configurable recibe semilla, límites de profundidad y celdas, política de recolección y
 lexemas de formato. Las entradas existentes delegan con valores predeterminados. El montón pertenece
 a una ejecución; el programa cargado es inmutable y reutilizable. Las instrucciones de memoria se

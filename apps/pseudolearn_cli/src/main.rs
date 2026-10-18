@@ -1,14 +1,17 @@
 #![forbid(unsafe_code)]
 
 mod adapter;
+mod build_command;
 mod check_command;
 mod error;
 mod execution_options;
 mod ir_command;
 mod messages;
+mod native_linker;
 mod options;
 mod preferences_command;
 mod run_command;
+mod runtime_archive;
 mod trace_output;
 
 use check_command::execute_check;
@@ -62,6 +65,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         }
         "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
         "ejecutar" | "run" => run_command::execute_run(&options),
+        "compilar" | "build" => build_command::execute_build(&options),
         other => Err(CliError::Usage(unknown_command(
             &options.interface_language,
             other,

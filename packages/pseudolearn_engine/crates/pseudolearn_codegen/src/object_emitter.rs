@@ -3,6 +3,7 @@
 use crate::abi_signatures::RuntimeImports;
 use crate::class_table::ClassTable;
 use crate::context_layout::ContextLayout;
+use crate::entry_point::{EntryPoint, define_entry_point};
 use crate::error::CodegenError;
 use crate::fault_table::FaultTable;
 use crate::function_compiler::compile_function;
@@ -15,9 +16,13 @@ use cranelift_module::{
     DataDescription, DataId, FuncId, Linkage, Module as ClifModule, default_libcall_names,
 };
 use cranelift_object::{ObjectBuilder, ObjectModule};
-use pseudolearn_aot_rt::{ClassDescriptor, FaultSite};
+use pseudolearn_aot_rt::{
+    ClassDescriptor, ExecutableMetadata, ExecutableSettings, FaultSite, encode_metadata,
+};
 use pseudolearn_ir::{Module, Operand, Operation};
 use std::collections::{BTreeSet, HashMap};
+
+const ENTRY_FUNCTION_NAME: &str = "main";
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionSymbol {
@@ -40,6 +45,7 @@ pub fn function_symbol(index: usize) -> String {
 pub(crate) fn emit_module(
     module: &Module,
     target: &TargetConfig,
+    executable: Option<&ExecutableSettings>,
 ) -> Result<CompiledObject, CodegenError> {
     let isa = target.build_isa()?;
     let builder = ObjectBuilder::new(isa, module.name.clone(), default_libcall_names())
@@ -50,9 +56,60 @@ pub(crate) fn emit_module(
     let identifiers = declare_functions(&mut object, module)?;
     let classes = ClassTable::build(module)?;
     let literals = define_literals(&mut object, module)?;
+    let declarations = Declarations {
+        imports: &imports,
+        identifiers: &identifiers,
+        literals: &literals,
+        classes: &classes,
+    };
+    let faults = define_functions(&mut object, module, &declarations)?;
+    let fault_sites = faults.into_sites();
+    let descriptors = classes.descriptors()?;
+    if let Some(settings) = executable {
+        let metadata = ExecutableMetadata {
+            settings: settings.clone(),
+            sites: fault_sites.clone(),
+            classes: descriptors.clone(),
+        };
+        attach_entry_point(&mut object, module, &identifiers, &metadata)?;
+    }
+    let bytes = object.finish().emit().map_err(CodegenError::backend)?;
+    Ok(CompiledObject {
+        bytes,
+        fault_sites,
+        function_symbols: symbols_of(module),
+        classes: descriptors,
+    })
+}
+
+fn attach_entry_point(
+    object: &mut ObjectModule,
+    module: &Module,
+    identifiers: &[FuncId],
+    metadata: &ExecutableMetadata,
+) -> Result<(), CodegenError> {
+    let function = *identifiers
+        .get(entry_index(module)?)
+        .ok_or(CodegenError::InvalidModule("undeclared entry function"))?;
+    let encoded = encode_metadata(metadata);
+    define_entry_point(
+        object,
+        &EntryPoint {
+            function,
+            metadata: &encoded,
+        },
+    )
+}
+
+fn define_functions(
+    object: &mut ObjectModule,
+    module: &Module,
+    declarations: &Declarations<'_>,
+) -> Result<FaultTable, CodegenError> {
     let mut faults = FaultTable::default();
     for (index, function) in module.functions.iter().enumerate() {
-        let identifier = *identifiers
+        let identifier = *declarations
+            .identifiers
             .get(index)
             .ok_or(CodegenError::InvalidModule("undeclared function"))?;
         let unit = FunctionUnit {
@@ -61,21 +118,17 @@ pub(crate) fn emit_module(
             index,
             identifier,
         };
-        let declarations = Declarations {
-            imports: &imports,
-            identifiers: &identifiers,
-            literals: &literals,
-            classes: &classes,
-        };
-        define_function(&mut object, &declarations, &unit, &mut faults)?;
+        define_function(object, declarations, &unit, &mut faults)?;
     }
-    let bytes = object.finish().emit().map_err(CodegenError::backend)?;
-    Ok(CompiledObject {
-        bytes,
-        fault_sites: faults.into_sites(),
-        function_symbols: symbols_of(module),
-        classes: classes.descriptors()?,
-    })
+    Ok(faults)
+}
+
+fn entry_index(module: &Module) -> Result<usize, CodegenError> {
+    module
+        .functions
+        .iter()
+        .position(|function| function.name.trim_start_matches('@') == ENTRY_FUNCTION_NAME)
+        .ok_or(CodegenError::InvalidModule("module without main function"))
 }
 
 struct FunctionUnit<'program> {

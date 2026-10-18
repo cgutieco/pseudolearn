@@ -42,5 +42,8 @@ pub use resources::ApiSession;
 
 mod event_codec;
 
+mod native_build;
+pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
+
 mod recording;
 mod state_changes;

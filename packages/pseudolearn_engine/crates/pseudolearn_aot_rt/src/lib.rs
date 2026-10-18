@@ -4,6 +4,7 @@ mod class_layout;
 mod config;
 mod context;
 mod engine;
+mod entry;
 mod fault;
 mod format;
 mod guard;
@@ -11,7 +12,11 @@ mod input;
 mod kinds;
 mod math;
 mod memory;
+mod metadata;
+mod metadata_codec;
 mod output;
+mod process;
+mod process_report;
 mod random;
 mod session;
 mod text;
@@ -30,6 +35,7 @@ pub use context::{
     CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
 };
 pub use engine::AotEngine;
+pub use entry::pseudolearn_aot_main;
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
 pub use input::rt_aot_read;
 pub use kinds::{
@@ -41,7 +47,13 @@ pub use math::{
     MATH_TRUNCATE, rt_aot_integer_power, rt_aot_math_unary, rt_aot_real_power,
 };
 pub use memory::{rt_aot_array_new, rt_aot_object_copy, rt_aot_object_new};
+pub use metadata::{ExecutableMetadata, ExecutableSettings};
+pub use metadata_codec::{decode_metadata, encode_metadata};
 pub use output::rt_aot_write;
+pub use process::{
+    EXIT_COMPLETED, EXIT_FAILED, EXIT_INTERNAL, EXIT_LIMIT, EntryFunction, ProcessStreams,
+    run_executable,
+};
 pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::rt_aot_random_real;
 pub use session::AotSession;

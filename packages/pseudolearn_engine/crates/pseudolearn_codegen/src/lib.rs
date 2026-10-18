@@ -7,6 +7,7 @@ mod block_order;
 mod class_table;
 mod context_layout;
 mod definition;
+mod entry_point;
 mod error;
 mod fault_table;
 mod function_compiler;
@@ -38,6 +39,7 @@ mod word_conversion;
 pub use abi_signatures::{
     FAULT_SYMBOL, INTEGER_POWER_SYMBOL, MATH_UNARY_SYMBOL, REAL_POWER_SYMBOL,
 };
+pub use entry_point::{MAIN_SYMBOL, METADATA_SYMBOL, RUNTIME_MAIN_SYMBOL};
 pub use error::CodegenError;
 pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};
 pub use target::TargetConfig;
@@ -47,5 +49,14 @@ pub fn compile_module_to_object(
     target: &TargetConfig,
 ) -> Result<CompiledObject, CodegenError> {
     pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
-    object_emitter::emit_module(module, target)
+    object_emitter::emit_module(module, target, None)
+}
+
+pub fn compile_module_to_executable_object(
+    module: &pseudolearn_ir::Module,
+    target: &TargetConfig,
+    settings: &pseudolearn_aot_rt::ExecutableSettings,
+) -> Result<CompiledObject, CodegenError> {
+    pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
+    object_emitter::emit_module(module, target, Some(settings))
 }
