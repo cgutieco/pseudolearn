@@ -21,6 +21,10 @@ fn live_handles(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> V
         .unwrap_or_default()
 }
 
+pub(crate) fn live_count(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> usize {
+    live_handles(lowering, instruction).len()
+}
+
 pub(crate) fn push_roots(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,

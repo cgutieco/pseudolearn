@@ -168,3 +168,5 @@ THE SOFTWARE.
 El recolector guarda revisión, hashes de cada fuente y configuración antes de compilar y medir; dirty se refiere solo a fuentes y configuración
 del arnés, no a sus salidas. El resumen puede recalcularse sobre los mismos datos crudos sin cambiar
 las mediciones, conservando su entorno original.
+
+`results/r6-paired-inline-allocator/` conserva la campaña posterior a la asignación de objetos en línea, la escritura de celdas locales en línea y el crecimiento amortizado del montón. Las medianas por familia son 2,124× en arreglos, 2,393× en numérica, 2,566× en objetos y 2,253× en recursión; `PERF.AOT.LEVEL#R1` sigue incumplido. Storage pasa de 17,10× a 7,12×. La emisión máxima es 15,296 ms (Richards, 15,30 ms), por lo que `PERF.AOT.LEVEL#R3` incumple en esta captura; las capturas con 14,1–14,6 ms se conservan y no la compensan. La asignación en línea se desactiva tras la primera recolección que libere bloques de su tamaño, de modo que los programas con mucha basura recuperan el camino anterior.

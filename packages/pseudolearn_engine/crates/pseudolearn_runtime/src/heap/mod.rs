@@ -1,9 +1,11 @@
 mod allocate;
 mod collect;
 mod definition;
+mod inline_window;
 mod layouts;
 mod markset;
 
+pub use inline_window::{InlineBlock, InlineWindow};
 use pseudolearn_abi::{
     ARRAY_KIND_STATUS_MASK, ARRAY_KIND_STATUS_SHIFT, ARRAY_RANK_STATUS_MASK,
     ARRAY_RANK_STATUS_SHIFT, CommonHeader, Handle, LITERAL_STATUS_MASK, OBJECT_PAYLOAD_STATUS_MASK,

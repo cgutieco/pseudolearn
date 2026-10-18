@@ -29,8 +29,19 @@ impl AotSession {
             engine_state: &mut *engine,
             cells_pointer: engine.cells.as_ptr().cast(),
             cells_length: 0,
+            heap_used: 0,
+            heap_limit: 0,
+            heap_ordinal: 0,
+            room_cells: 0,
+            room_threshold: 0,
+            free_size_mask: 0,
+            pending_pointer: std::ptr::null_mut(),
+            pending_length: 0,
+            pending_capacity: 0,
         });
-        Self { engine, context }
+        let mut session = Self { engine, context };
+        session.engine.publish_inline(&mut session.context);
+        session
     }
 
     pub fn context_pointer(&mut self) -> *mut AotRuntimeContext {
@@ -64,4 +75,8 @@ impl AotSession {
     pub fn pop_roots(&mut self, count: u32) {
         self.context.root_top = self.context.root_top.saturating_sub(count);
     }
+}
+
+pub fn settle_session(session: &mut AotSession) -> bool {
+    session.engine.settle_inline(&mut session.context).is_ok()
 }

@@ -72,14 +72,21 @@ fn lower_new(
     let Some(Operand::Identifier(name)) = instruction.operands.first() else {
         return Err(CodegenError::InvalidModule("object.new without class"));
     };
-    let class = lowering
+    let index = lowering
         .environment
         .classes
         .class_index(name)
-        .and_then(|index| u32::try_from(index).ok())
         .ok_or(CodegenError::InvalidModule("unknown class"))?;
+    let class = u32::try_from(index).map_err(|_| CodegenError::InvalidModule("unknown class"))?;
     let class_value = lowering.builder.ins().iconst(types::I32, i64::from(class));
-    allocate(lowering, instruction, (Entry::ObjectNew, class_value))
+    let handle = match lowering.environment.classes.object_image(index) {
+        Some(image) => {
+            crate::object_allocation::allocate_inline(lowering, instruction, (&image, class_value))?
+        }
+        None => allocate_handle(lowering, instruction, (Entry::ObjectNew, class_value))?,
+    };
+    bind_result(lowering, instruction, handle);
+    Ok(())
 }
 
 fn lower_copy(
@@ -95,6 +102,16 @@ fn allocate(
     instruction: &Instruction<'_>,
     (target, operand): (Entry, Value),
 ) -> Result<(), CodegenError> {
+    let handle = allocate_handle(lowering, instruction, (target, operand))?;
+    bind_result(lowering, instruction, handle);
+    Ok(())
+}
+
+pub(crate) fn allocate_handle(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    (target, operand): (Entry, Value),
+) -> Result<Value, CodegenError> {
     let frame = push_roots(lowering, instruction)?;
     let operands = [operand];
     let call = RuntimeCall {
@@ -105,9 +122,7 @@ fn allocate(
     };
     let word = call_runtime(lowering, &call)?;
     pop_roots(lowering, frame);
-    let handle = lowering.builder.ins().ireduce(types::I32, word);
-    bind_result(lowering, instruction, handle);
-    Ok(())
+    Ok(lowering.builder.ins().ireduce(types::I32, word))
 }
 
 fn payload_slot(lowering: &mut Lowering<'_, '_>, base: Value, index: u32) -> (Value, Value) {

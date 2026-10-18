@@ -1,0 +1,164 @@
+module Listas es
+class Elemento { valor: i64, siguiente: obj<Elemento>, vacio: bool }
+func @Crear(%0: i64) -> obj<Elemento> {
+b0() mass 3:
+  stmt.enter @13:1-13:31
+  %1 = value.undefined obj<Elemento> @13:1-13:31
+  stmt.exit @13:1-13:31
+  stmt.enter @14:1-14:29
+  %2 = object.new Elemento @14:13-14:29
+  %3 = value.require %2 @14:1-14:29
+  stmt.exit @14:1-14:29
+  stmt.enter @15:1-18:6
+  %4 = const.i64 0 @15:15-15:16
+  %5 = int.cmp eq, %0, %4 @15:13-15:14
+  decide.bool %5 @15:1-18:6
+  branch %5, b1(), b2()
+b1() mass 2:
+  stmt.enter @16:1-16:28
+  %6 = const.bool true @16:19-16:28
+  object.store %3, vacio, %6 @16:1-16:28
+  stmt.exit @16:1-16:28
+  stmt.enter @17:1-17:18
+  stmt.exit @17:1-17:18
+  return %3 @17:1-17:18
+b2() mass 0:
+  jump b3()
+b3() mass 4:
+  stmt.exit @15:1-18:6
+  stmt.enter @19:1-19:24
+  %7 = const.bool false @19:19-19:24
+  object.store %3, vacio, %7 @19:1-19:24
+  stmt.exit @19:1-19:24
+  stmt.enter @20:1-20:27
+  object.store %3, valor, %0 @20:1-20:27
+  stmt.exit @20:1-20:27
+  stmt.enter @21:1-21:42
+  %8 = const.i64 1 @21:40-21:41
+  %9 = int.sub %0, %8 @21:38-21:39
+  %10 = call @Crear(%9) @21:23-21:42
+  object.store %3, siguiente, %10 @21:1-21:42
+  stmt.exit @21:1-21:42
+  stmt.enter @22:1-22:18
+  stmt.exit @22:1-22:18
+  return %3 @22:1-22:18
+}
+func @MasCorta(%0: obj<Elemento>, %1: obj<Elemento>) -> bool {
+b0() mass 4:
+  stmt.enter @25:1-25:37
+  %2 = value.undefined obj<Elemento> @25:1-25:37
+  %3 = value.undefined obj<Elemento> @25:1-25:37
+  stmt.exit @25:1-25:37
+  stmt.enter @26:1-26:18
+  %4 = value.require %0 @26:1-26:18
+  stmt.exit @26:1-26:18
+  stmt.enter @27:1-27:18
+  %5 = value.require %1 @27:1-27:18
+  stmt.exit @27:1-27:18
+  stmt.enter @28:1-34:12
+  jump b1(%4, %5)
+b1(%6: obj<Elemento>, %7: obj<Elemento>) mass 0:
+  %8 = object.load %7, vacio @28:13-28:26
+  %9 = bool.not %8 @28:10-28:12
+  decide.bool %9 @28:1-34:12
+  branch %9, b2(), b3()
+b2() mass 1:
+  stmt.enter @29:1-31:6
+  %10 = object.load %6, vacio @29:4-29:17
+  decide.bool %10 @29:1-31:6
+  branch %10, b4(), b5()
+b3() mass 1:
+  stmt.exit @28:1-34:12
+  stmt.enter @35:1-35:15
+  %11 = const.bool false @35:10-35:15
+  stmt.exit @35:1-35:15
+  return %11 @35:1-35:15
+b4() mass 1:
+  stmt.enter @30:1-30:19
+  %12 = const.bool true @30:10-30:19
+  stmt.exit @30:1-30:19
+  return %12 @30:1-30:19
+b5() mass 0:
+  jump b6()
+b6() mass 2:
+  stmt.exit @29:1-31:6
+  stmt.enter @32:1-32:27
+  %13 = object.load %6, siguiente @32:11-32:27
+  %14 = value.require %13 @32:1-32:27
+  stmt.exit @32:1-32:27
+  stmt.enter @33:1-33:27
+  %15 = object.load %7, siguiente @33:11-33:27
+  %16 = value.require %15 @33:1-33:27
+  stmt.exit @33:1-33:27
+  jump b1(%14, %16)
+}
+func @Cola(%0: obj<Elemento>, %1: obj<Elemento>, %2: obj<Elemento>) -> obj<Elemento> {
+b0() mass 1:
+  stmt.enter @38:1-40:6
+  %3 = call @MasCorta(%1, %0) @38:4-38:30
+  decide.bool %3 @38:1-40:6
+  branch %3, b1(), b2()
+b1() mass 1:
+  stmt.enter @39:1-39:143
+  %4 = object.load %0, siguiente @39:20-39:37
+  %5 = call @Cola(%4, %1, %2) @39:15-39:56
+  %6 = object.load %1, siguiente @39:63-39:80
+  %7 = call @Cola(%6, %2, %0) @39:58-39:99
+  %8 = object.load %2, siguiente @39:106-39:123
+  %9 = call @Cola(%8, %0, %1) @39:101-39:142
+  %10 = call @Cola(%5, %7, %9) @39:10-39:143
+  stmt.exit @39:1-39:143
+  return %10 @39:1-39:143
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @38:1-40:6
+  stmt.enter @41:1-41:17
+  stmt.exit @41:1-41:17
+  return %2 @41:1-41:17
+}
+func @main() -> unit {
+b0() mass 3:
+  stmt.enter @44:1-44:22
+  %0 = value.undefined i64 @44:1-44:22
+  stmt.exit @44:1-44:22
+  stmt.enter @45:1-45:7
+  %1 = in.read i64 @45:1-45:7
+  stmt.exit @45:1-45:7
+  stmt.enter @46:1-46:60
+  %2 = call @Crear(%1) @46:15-46:23
+  %3 = const.i64 5 @46:35-46:36
+  %4 = int.sub %1, %3 @46:33-46:34
+  %5 = call @Crear(%4) @46:25-46:37
+  %6 = const.i64 9 @46:49-46:50
+  %7 = int.sub %1, %6 @46:47-46:48
+  %8 = call @Crear(%7) @46:39-46:51
+  %9 = call @Cola(%2, %5, %8) @46:10-46:52
+  %10 = call @Elemento.medir(%9) @46:10-46:60
+  out.write %10, newline @46:1-46:60
+  stmt.exit @46:1-46:60
+  return @47:1-47:13
+}
+func @Elemento.medir(%0: obj<Elemento>) -> i64 {
+b0() mass 1:
+  stmt.enter @6:1-8:6
+  %1 = object.load %0, vacio @6:4-6:15
+  decide.bool %1 @6:1-8:6
+  branch %1, b1(), b2()
+b1() mass 1:
+  stmt.enter @7:1-7:11
+  %2 = const.i64 0 @7:10-7:11
+  stmt.exit @7:1-7:11
+  return %2 @7:1-7:11
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @6:1-8:6
+  stmt.enter @9:1-9:36
+  %3 = const.i64 1 @9:10-9:11
+  %4 = object.load %0, siguiente @9:14-9:28
+  %5 = call @Elemento.medir(%4) @9:14-9:36
+  %6 = int.add %3, %5 @9:12-9:13
+  stmt.exit @9:1-9:36
+  return %6 @9:1-9:36
+}

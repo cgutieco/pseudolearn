@@ -48,6 +48,9 @@ pub fn run_executable(
         return EXIT_INTERNAL;
     }
     entry(session.context_pointer());
+    if !crate::session::settle_session(&mut session) {
+        return EXIT_INTERNAL;
+    }
     let _flushed = session.engine_mut().flush_output();
     let code = exit_code(&session);
     report_diagnostics(&session, &settings, &mut errors);

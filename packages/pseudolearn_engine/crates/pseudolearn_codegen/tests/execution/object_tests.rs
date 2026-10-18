@@ -243,3 +243,19 @@ fn a_linked_list_survives_collections_while_garbage_is_reclaimed() -> Result<(),
     exhausted.cells = Some(250);
     expect_fault(&run(&exhausted)?, 1, "cellLimitExceeded", "32:1-32:5")
 }
+
+#[test]
+fn thousands_of_inline_allocations_survive_repeated_automatic_collections() -> Result<(), Failure> {
+    expect_value(&run(&Call::with(LIST_SUM, &["3000"]))?, "4498500")?;
+    expect_value(&run(&Call::with(LIST_SUM, &["300"]))?, "44850")
+}
+
+#[test]
+fn the_cell_limit_boundary_is_exact_for_inline_allocations() -> Result<(), Failure> {
+    let mut fits = Call::with(LIST_SUM, &["100"]);
+    fits.cells = Some(300);
+    expect_value(&run(&fits)?, "4950")?;
+    let mut exhausted = Call::with(LIST_SUM, &["100"]);
+    exhausted.cells = Some(30);
+    expect_fault(&run(&exhausted)?, 1, "cellLimitExceeded", "32:1-32:5")
+}

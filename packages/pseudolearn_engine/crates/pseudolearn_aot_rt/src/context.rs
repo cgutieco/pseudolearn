@@ -20,6 +20,15 @@ pub struct AotRuntimeContext {
     pub engine_state: *mut AotEngine,
     pub cells_pointer: *const u8,
     pub cells_length: u64,
+    pub heap_used: u64,
+    pub heap_limit: u64,
+    pub heap_ordinal: u64,
+    pub room_cells: i64,
+    pub room_threshold: i64,
+    pub free_size_mask: u64,
+    pub pending_pointer: *mut u64,
+    pub pending_length: u64,
+    pub pending_capacity: u64,
 }
 
 pub const CONTEXT_HEAP_WORDS_OFFSET: usize = offset_of!(AotRuntimeContext, heap_words_pointer);
@@ -35,3 +44,12 @@ pub const CONTEXT_RESULT_WORD_OFFSET: usize = offset_of!(AotRuntimeContext, resu
 pub const CONTEXT_ROOT_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, root_capacity);
 pub const CONTEXT_CELLS_POINTER_OFFSET: usize = offset_of!(AotRuntimeContext, cells_pointer);
 pub const CONTEXT_CELLS_LENGTH_OFFSET: usize = offset_of!(AotRuntimeContext, cells_length);
+pub const CONTEXT_HEAP_USED_OFFSET: usize = offset_of!(AotRuntimeContext, heap_used);
+pub const CONTEXT_HEAP_LIMIT_OFFSET: usize = offset_of!(AotRuntimeContext, heap_limit);
+pub const CONTEXT_HEAP_ORDINAL_OFFSET: usize = offset_of!(AotRuntimeContext, heap_ordinal);
+pub const CONTEXT_ROOM_CELLS_OFFSET: usize = offset_of!(AotRuntimeContext, room_cells);
+pub const CONTEXT_ROOM_THRESHOLD_OFFSET: usize = offset_of!(AotRuntimeContext, room_threshold);
+pub const CONTEXT_FREE_SIZE_MASK_OFFSET: usize = offset_of!(AotRuntimeContext, free_size_mask);
+pub const CONTEXT_PENDING_POINTER_OFFSET: usize = offset_of!(AotRuntimeContext, pending_pointer);
+pub const CONTEXT_PENDING_LENGTH_OFFSET: usize = offset_of!(AotRuntimeContext, pending_length);
+pub const CONTEXT_PENDING_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, pending_capacity);

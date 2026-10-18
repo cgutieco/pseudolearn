@@ -31,6 +31,7 @@ mod lower_scalars;
 mod lower_text;
 mod lower_virtual;
 mod lowering;
+mod object_allocation;
 mod object_emitter;
 mod object_fast_path;
 mod runtime_calls;

@@ -22,7 +22,7 @@ pub use delta::{
     BLOCK_WORDS, BlockDelta, DeltaError, HeapDelta, MapDelta, Sequence, TailDelta, advance_heap,
     compose_heap_deltas, revert_heap,
 };
-pub use heap::{Heap, ObjectLayout};
+pub use heap::{Heap, InlineBlock, InlineWindow, ObjectLayout};
 pub use object::{
     copy_object, new_object, new_object_shared, object_allocation_cells, object_class,
     object_layout_cells, read_field, write_field,

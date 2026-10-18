@@ -17,6 +17,7 @@ pub struct AotEngine {
     pub(crate) sites: Vec<FaultSite>,
     pub(crate) roots: Vec<u32>,
     pub(crate) cells: Vec<CellSlot>,
+    pub(crate) pending: Vec<u64>,
     pub(crate) boolean_words: BooleanWords,
     pub(crate) streams: AotStreams,
     fault: Option<FaultRecord>,
@@ -38,6 +39,11 @@ impl AotEngine {
             sites,
             roots: vec![0; capacity],
             cells: Vec::new(),
+            pending: vec![
+                0;
+                crate::inline_allocation::INLINE_PENDING_CAPACITY
+                    .saturating_mul(crate::inline_allocation::INLINE_RECORD_WORDS)
+            ],
             boolean_words: config.boolean_words,
             streams,
             fault: None,

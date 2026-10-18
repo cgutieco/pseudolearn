@@ -166,7 +166,7 @@ impl Heap {
                 statistics.heap_growths = statistics.heap_growths.saturating_add(1)
             });
             self.words
-                .try_reserve_exact(end.saturating_sub(self.words.len()))
+                .try_reserve(end.saturating_sub(self.words.len()))
                 .map_err(|_| MemoryError::Resource)?;
             self.words.resize(end, 0);
         }

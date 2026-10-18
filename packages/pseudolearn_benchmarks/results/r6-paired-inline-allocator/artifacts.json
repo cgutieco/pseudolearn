@@ -1,0 +1,11 @@
+{
+  "preflight": "one validated execution in a separate process per workload before measured executions",
+  "profile": "release",
+  "runtimeArchiveGitBlob": "0b1e07f0a248d1024da9f8ae99264254618f8984",
+  "runtimeFeatures": [],
+  "rustflagsRemovedForRuntime": [
+    "RUSTFLAGS",
+    "CARGO_ENCODED_RUSTFLAGS"
+  ],
+  "workerGitBlob": "cc4b64b9079e8e75b58a7490edff8d7d40cef541"
+}

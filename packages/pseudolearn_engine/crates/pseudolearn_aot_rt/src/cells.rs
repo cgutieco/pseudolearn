@@ -28,12 +28,14 @@ pub(crate) enum CellTarget {
 pub(crate) struct CellSlot {
     word: u64,
     readable: u64,
+    local: u64,
     target: CellTarget,
 }
 
 pub const CELL_SLOT_BYTES: usize = size_of::<CellSlot>();
 pub const CELL_SLOT_WORD_OFFSET: usize = offset_of!(CellSlot, word);
 pub const CELL_SLOT_READABLE_OFFSET: usize = offset_of!(CellSlot, readable);
+pub const CELL_SLOT_LOCAL_OFFSET: usize = offset_of!(CellSlot, local);
 
 impl CellSlot {
     fn new(target: CellTarget) -> Self {
@@ -43,16 +45,32 @@ impl CellSlot {
                 word,
                 defined,
                 ..
-            } if local_value(kind, word, defined).is_ok() => Self {
+            } => Self {
                 word,
-                readable: 1,
+                readable: u64::from(local_value(kind, word, defined).is_ok()),
+                local: 1,
                 target,
             },
-            _ => Self {
+            CellTarget::Managed { .. } => Self {
                 word: 0,
                 readable: 0,
+                local: 0,
                 target,
             },
+        }
+    }
+
+    fn resolved(&self) -> CellTarget {
+        match self.target {
+            CellTarget::Local {
+                kind, origin_site, ..
+            } => CellTarget::Local {
+                kind,
+                word: self.word,
+                defined: self.readable == 1,
+                origin_site,
+            },
+            managed => managed,
         }
     }
 }
@@ -198,7 +216,7 @@ fn target(entry: &Entry<'_>, cell: u32) -> Result<CellTarget, Trap> {
         .engine
         .cells
         .get(slot_of(cell)?)
-        .map(|slot| slot.target)
+        .map(CellSlot::resolved)
         .ok_or_else(|| Trap::named("internalFault"))
 }
 
@@ -218,12 +236,13 @@ fn local_value(kind: ValueKind, word: u64, defined: bool) -> Result<u64, Trap> {
 pub(crate) fn rooted_handles(cells: &[CellSlot]) -> impl Iterator<Item = Handle> + '_ {
     cells
         .iter()
-        .filter_map(|slot| match &slot.target {
+        .map(CellSlot::resolved)
+        .filter_map(|cell| match cell {
             CellTarget::Local {
                 kind: ValueKind::Reference,
                 word,
                 ..
-            } => u32::try_from(*word).ok().filter(|handle| *handle != 0),
+            } => u32::try_from(word).ok().filter(|handle| *handle != 0),
             CellTarget::Managed { cell, .. } => Some(cell.owner.0).filter(|handle| *handle != 0),
             _ => None,
         })

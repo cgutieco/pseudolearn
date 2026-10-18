@@ -41,7 +41,7 @@ Los flujos de entrada y salida y la tabla de sitios se inyectan al crear la sesi
 Nivel 6, hoja del grafo. Importa `pseudolearn_source` (tramo vacío para renderizar), `pseudolearn_abi` (`Handle`),
 `pseudolearn_diagnostics`, `pseudolearn_runtime` y `pseudolearn_library`. Solo `pseudolearn_codegen` (desplazamientos, tipos de sitio y selectores) y el enlazador del ejecutable lo importan.
 
-Contexto `AotRuntimeContext` (`#[repr(C)]`, 80 bytes; el código generado conoce los desplazamientos exportados como
+Contexto `AotRuntimeContext` (`#[repr(C)]`, 152 bytes; el código generado conoce los desplazamientos exportados como
 `CONTEXT_*_OFFSET`):
 
 | Desplazamiento | Campo | Tipo | Contenido |
@@ -59,6 +59,15 @@ Contexto `AotRuntimeContext` (`#[repr(C)]`, 80 bytes; el código generado conoce
 | 56 | `engine_state` | `*mut AotEngine` | Estado propietario: montón, azar, diseños, sitios, flujos, fallo y avisos |
 | 64 | `cells_pointer` | `*const u8` | Base de la tabla de celdas; se refresca tras toda entrada junto con `cells_length` |
 | 72 | `cells_length` | `u64` | Número de celdas vivas; el código generado trata como inválido todo identificador fuera de rango |
+| 80 | `heap_used` | `u64` | Primera palabra libre del montón; la avanza el código generado al asignar en línea |
+| 88 | `heap_limit` | `u64` | Palabras utilizables antes de pedir crecimiento al runtime |
+| 96 | `heap_ordinal` | `u64` | Último ordinal de identidad entregado |
+| 104 | `room_cells` | `i64` | Celdas que caben antes del límite de `ENG.LIMITS` |
+| 112 | `room_threshold` | `i64` | Celdas asignables antes del próximo umbral de recolección; 0 con recolección forzada |
+| 120 | `free_size_mask` | `u64` | Bit por tamaño físico con bloques libres (el 63 agrupa los mayores) |
+| 128 | `pending_pointer` | `*mut u64` | Búfer de registros de asignación aún no conciliados |
+| 136 | `pending_length` | `u64` | Registros pendientes |
+| 144 | `pending_capacity` | `u64` | Capacidad del búfer (256 registros de dos palabras) |
 
 Protocolo de toda entrada: `rt_aot_*(context, site, operandos…) -> u32`. `site` indexa la tabla de sitios de fallo.
 El retorno es `0` si el cómputo continúa (el valor queda en `result_word`), `1` si el programa falló y `2` si se agotó
@@ -248,3 +257,5 @@ Wasmtime. Se rechaza el mecanismo de señales del sistema para trampas aritméti
 diagnóstico de PseudoLearn. El contrato del crate pertenece a PseudoLearn.
 
 Problema: cada lectura de una celda local cuesta una llamada protegida al runtime, y Permute, Queens y Towers leen celdas decenas de miles de veces. Elección: cada entrada de la tabla es un `CellSlot` `#[repr(C)]` con una cabecera de dos palabras (`word`, `readable`) seguida del destino original; `readable` vale 1 solo cuando la celda es local y su lectura tendría éxito. El código generado lee la palabra en línea cuando `readable` vale 1 y llama a `rt_aot_cell_load` en cualquier otro caso (celda administrada, indefinida o fuera de rango), de modo que los diagnósticos no cambian. Las escrituras siguen pasando por el runtime, que recalcula la cabecera. Se descarta inlinear la escritura, porque decidir si un valor es legible depende del tipo y mezclaría reglas de presencia en el generador.
+
+Problema: la asignación de objetos y la escritura en celdas locales llamaban al runtime una vez por operación, y Storage gasta casi todo su tiempo ahí. Elección: el contexto publica una ventana de asignación (`heap_used`, `heap_limit`, `heap_ordinal`, `room_cells`, `room_threshold`, `free_size_mask`) y un búfer plano de 256 registros pendientes (`pending_*`; 152 bytes en total). El código generado asigna en línea una clase de hasta 64 palabras solo cuando no hay bloques libres de ese tamaño, caben sus celdas antes de la próxima recolección y del límite, queda espacio en el vector y en el búfer, y la pila de raíces no se desbordaría; escribe la cabecera, la identidad y la imagen de campos (constantes que `inline_object_image` calcula con las mismas funciones que el asignador) y anota un registro. Cualquier otro caso llama a `rt_aot_object_new`. Cada entrada al runtime concilia primero los registros (`AotEngine::settle_inline`) y publica al terminar una ventana nueva; `settle_session` hace lo mismo al volver del código generado. La cabecera `local`/`word`/`readable` de cada `CellSlot` pasa a ser la fuente de verdad de las celdas locales, de modo que su escritura también se hace en línea. Se descarta asignar tras la primera recolección con bloques libres de ese tamaño, que conserva el camino lento, y asignar arreglos o copias en línea.

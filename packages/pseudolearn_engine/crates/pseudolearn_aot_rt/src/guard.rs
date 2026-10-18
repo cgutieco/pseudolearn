@@ -40,6 +40,9 @@ pub(crate) fn run_entry(
     let Some(mut entry) = open_entry(context, site) else {
         return STATUS_FAILED;
     };
+    if entry.engine.settle_inline(entry.context).is_err() {
+        return entry.fail(crate::inline_allocation::settle_failure());
+    }
     match operation(&mut entry) {
         Ok(word) => {
             entry.context.result_word = word;
@@ -52,7 +55,7 @@ pub(crate) fn run_entry(
 
 impl Entry<'_> {
     pub(crate) fn refresh(&mut self) {
-        self.context.heap_words_pointer = self.engine.heap.words_pointer();
+        self.engine.publish_inline(self.context);
         self.context.cells_pointer = self.engine.cells.as_ptr().cast();
         self.context.cells_length = u64::try_from(self.engine.cells.len()).unwrap_or(0);
     }

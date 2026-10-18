@@ -284,7 +284,7 @@ R0 Fundación
      decisión de conservar Cranelift durante el diagnóstico y comparar alternativas según perfiles y costes medidos.
   - [ ] `PERF.AOT.LEVEL#R1` alcanza N3: razón geométrica por familia `aot / V1F` ≤ 1,30×. E-NR1 registró 5,8× global;
      las campañas emparejadas conservadas siguen incumpliendo las cuatro familias. La técnica siguiente se selecciona por evidencia.
-  - [ ] `PERF.AOT.LEVEL#R3`: emisión ≤ 15 ms de mediana por carga; `r6-paired-runtime` mide 15,79 ms en Richards y `r6-paired-validated` 14,57 ms. Se conserva como pendiente hasta que la medición final posterior a las mejoras de `R1` lo confirme.
+  - [ ] `PERF.AOT.LEVEL#R3`: emisión ≤ 15 ms de mediana por carga; `r6-paired-runtime` mide 15,79 ms en Richards y `r6-paired-validated` 14,57 ms y `r6-paired-inline-allocator` 15,30 ms. Se conserva como pendiente hasta que la medición final posterior a las mejoras de `R1` lo confirme.
   - [ ] Vínculos de conformidad pendientes, argumentos y posiciones de diagnósticos, propiedades RT y puerta local final verificados.
   - [ ] Los builds móviles y Wasm no incluyen Cranelift: verificado por el tamaño y por las *features*
      activadas.

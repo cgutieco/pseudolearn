@@ -13,6 +13,9 @@ pub(crate) fn native(
     let started = Instant::now();
     entry(session.context_pointer());
     let elapsed = started.elapsed();
+    if !pseudolearn_aot_rt::settle_session(&mut session) {
+        return Err("Native allocation state could not be settled".to_owned());
+    }
     if session.context().fault_status != 0
         || output.text().map_err(|error| error.to_string())? != configuration.expected
     {

@@ -2,7 +2,7 @@
 
 use crate::error::CodegenError;
 use crate::type_mapping::kind_code;
-use pseudolearn_aot_rt::ClassDescriptor;
+use pseudolearn_aot_rt::{ClassDescriptor, InlineObjectImage, inline_object_image};
 use pseudolearn_ir::{IrType, Module};
 use std::collections::HashMap;
 
@@ -54,6 +54,16 @@ impl ClassTable {
             .enumerate()
             .filter_map(|(class, shape)| Some((class, *shape.methods.get(method)?)))
             .collect()
+    }
+
+    pub(crate) fn object_image(&self, class: usize) -> Option<InlineObjectImage> {
+        let shape = self.classes.get(class)?;
+        let fields = shape
+            .fields
+            .iter()
+            .map(|(_, field_type)| kind_code(field_type))
+            .collect::<Option<Vec<_>>>()?;
+        inline_object_image(u32::try_from(class).ok()?, &fields, shape.dense)
     }
 
     pub(crate) fn descriptors(&self) -> Result<Vec<ClassDescriptor>, CodegenError> {
