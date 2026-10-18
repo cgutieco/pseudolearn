@@ -843,7 +843,7 @@ flowchart LR
 > las entradas es 0/1/2 según `RT.ABI#R1`, y 3/4/5 son códigos de proceso de B4. `pseudolearn_aot_main` y los metadatos
 > pasan a B4. Verificado con `cargo xtask verify` y `rust-checks all`.
 
-### [ ] Bloque B2 — Núcleo de `pseudolearn_codegen` (bloques SSA, escalares, trampas frías y llamadas)
+### [x] Bloque B2 — Núcleo de `pseudolearn_codegen` (bloques SSA, escalares, trampas frías y llamadas)
 
 - **Objetivo:** Implementar la estructura base de `pseudolearn_codegen` sobre `cranelift-codegen`, `cranelift-frontend`,
   `cranelift-module` y `cranelift-object`.
@@ -858,6 +858,18 @@ flowchart LR
   funciones aritméticas, bucles y recursión (`towers`, `fibonacci`), verifican que el `.o` Mach-O/ELF/COFF generado
   tiene todas las relocalizaciones resueltas y comprueban trampas exactas en `i64::MAX + 1`, `i64::MIN - 1`,
   `i64::MIN * -1`, `i64::MIN / -1` y `x / 0`.
+
+> **Estado de B2 (completado):** `pseudolearn_codegen` existe con la fachada `compile_module_to_object` y emite el objeto
+> nativo del anfitrión con `cranelift-*` 0.136. La numeración `O1`–`O74` de este plan no coincide con el catálogo real de
+> `IR.INSTRUCTIONS`; B2 cubre las constantes numéricas, lógicas y de carácter, `value.undefined`/`value.require` de
+> `bool`, `char` y `f64`, la aritmética entera y real, las comparaciones, `bool.*`, `char.*`, `int.pow`, `real.pow`,
+> `real.trunc`, `real.round`, `call`, el control de flujo, `loop.check_step` y la contabilidad de `block.mass`. El resto
+> devuelve `CodegenError::Unsupported` con el nombre de la operación y pasa a B3 (incluidos `const.str`, `math.*`,
+> `value.undefined` de `i64` y de referencias). Divergencias resueltas: el contexto real es el de `pseudolearn_aot_rt`
+> (sin `heap_defined_ptr`); el fallo se propaga leyendo `fault_status` y retornando cero, y el resultado de las entradas
+> del runtime se lee de `result_word`; `rt_aot_integer_power` se añadió a `pseudolearn_aot_rt` porque `int.pow` no tenía
+> entrada; `deny.toml` admite `Apache-2.0 WITH LLVM-exception` y `Zlib` y exime `hashbrown@0.16.1`. Los tests enlazan el
+> objeto con el runtime real mediante `rustc` y ejecutan el binario. Verificado con `cargo xtask verify`.
 
 ### [ ] Bloque B3 — Acceso en línea a memoria, clases, celdas, biblioteca y E/S
 

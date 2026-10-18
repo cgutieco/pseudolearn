@@ -117,3 +117,23 @@ fn power_matches_exact_integers_and_rejects_non_finite_results() {
     );
     assert_eq!(overflow, STATUS_FAILED);
 }
+
+#[test]
+fn integer_power_is_exact_and_traps_on_negative_exponents_and_overflow() {
+    let mut session = session();
+    let status = rt_aot_integer_power(session.context_pointer(), 0, 3, 4);
+    assert_eq!(status, STATUS_CONTINUE);
+    assert_eq!(session.context().result_word, 81);
+    assert_eq!(
+        rt_aot_integer_power(session.context_pointer(), 0, 2, -1),
+        STATUS_FAILED
+    );
+    assert_eq!(
+        fault_code(&session),
+        Some(DiagnosticCode::NegativeIntegerExponent)
+    );
+    assert_eq!(
+        rt_aot_integer_power(session.context_pointer(), 0, 2, 64),
+        STATUS_FAILED
+    );
+}

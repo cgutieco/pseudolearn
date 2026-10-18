@@ -30,10 +30,11 @@ pub use kinds::{
 };
 pub use math::{
     MATH_ARCTANGENT, MATH_COSINE, MATH_EXPONENTIAL, MATH_LOGARITHM, MATH_ROUND, MATH_SINE,
-    MATH_TRUNCATE, rt_aot_math_unary, rt_aot_real_power,
+    MATH_TRUNCATE, rt_aot_integer_power, rt_aot_math_unary, rt_aot_real_power,
 };
 pub use memory::{rt_aot_array_new, rt_aot_object_copy, rt_aot_object_new};
 pub use output::rt_aot_write;
+pub use pseudolearn_diagnostics::DiagnosticCode;
 pub use random::rt_aot_random_real;
 pub use session::AotSession;
 pub use text::{

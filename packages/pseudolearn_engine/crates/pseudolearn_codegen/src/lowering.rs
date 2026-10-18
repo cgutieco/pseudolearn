@@ -1,0 +1,146 @@
+#![forbid(unsafe_code)]
+
+use crate::abi_signatures::RuntimeRefs;
+use crate::context_layout::ContextLayout;
+use crate::error::CodegenError;
+use crate::fault_table::FaultTable;
+use crate::type_mapping::{clif_type, zero_value};
+use cranelift_codegen::ir::{Block, FuncRef, InstBuilder, Value, types};
+use cranelift_codegen::isa::TargetFrontendConfig;
+use cranelift_frontend::FunctionBuilder;
+use pseudolearn_ir::{BlockId, Function, IrSpan, Module, Operand, Operation, ValueId};
+use std::collections::HashMap;
+
+pub(crate) struct FunctionEnvironment<'program> {
+    pub(crate) module: &'program Module,
+    pub(crate) layout: ContextLayout,
+    pub(crate) runtime: RuntimeRefs,
+    pub(crate) callees: Vec<FuncRef>,
+    pub(crate) frontend: TargetFrontendConfig,
+}
+
+pub(crate) struct Instruction<'program> {
+    pub(crate) operation: Operation,
+    pub(crate) operands: &'program [Operand],
+    pub(crate) result: Option<ValueId>,
+    pub(crate) span: Option<IrSpan>,
+}
+
+pub(crate) struct Lowering<'func, 'program> {
+    pub(crate) builder: FunctionBuilder<'func>,
+    pub(crate) environment: &'program FunctionEnvironment<'program>,
+    pub(crate) function: &'program Function,
+    pub(crate) faults: &'program mut FaultTable,
+    pub(crate) context: Value,
+    pub(crate) values: HashMap<ValueId, Value>,
+    pub(crate) blocks: HashMap<BlockId, Block>,
+    pub(crate) cold_blocks: Vec<(Block, u32)>,
+    pub(crate) propagate_block: Option<Block>,
+}
+
+pub(crate) fn operand_value(
+    lowering: &Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    position: usize,
+) -> Result<Value, CodegenError> {
+    match instruction.operands.get(position) {
+        Some(Operand::Value(identifier)) => lowering
+            .values
+            .get(identifier)
+            .copied()
+            .ok_or(CodegenError::InvalidModule("operand value is not defined")),
+        _ => Err(CodegenError::InvalidModule("operand is not a value")),
+    }
+}
+
+pub(crate) fn bind_result(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    value: Value,
+) {
+    if let Some(identifier) = instruction.result {
+        lowering.values.insert(identifier, value);
+    }
+}
+
+pub(crate) fn cold_block(
+    lowering: &mut Lowering<'_, '_>,
+    code_name: &'static str,
+    span: Option<IrSpan>,
+) -> Result<Block, CodegenError> {
+    let site = lowering.faults.register(code_name, span)?;
+    let block = lowering.builder.create_block();
+    lowering.builder.set_cold_block(block);
+    lowering.cold_blocks.push((block, site));
+    Ok(block)
+}
+
+pub(crate) fn guard_trap(
+    lowering: &mut Lowering<'_, '_>,
+    condition: Value,
+    code_name: &'static str,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    let cold = cold_block(lowering, code_name, span)?;
+    let next = lowering.builder.create_block();
+    lowering.builder.ins().brif(condition, cold, &[], next, &[]);
+    lowering.builder.switch_to_block(next);
+    Ok(())
+}
+
+pub(crate) fn jump_to_trap(
+    lowering: &mut Lowering<'_, '_>,
+    code_name: &'static str,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    let cold = cold_block(lowering, code_name, span)?;
+    lowering.builder.ins().jump(cold, &[]);
+    Ok(())
+}
+
+pub(crate) fn propagate_if_failed(lowering: &mut Lowering<'_, '_>, status: Value) {
+    let propagate = match lowering.propagate_block {
+        Some(block) => block,
+        None => {
+            let block = lowering.builder.create_block();
+            lowering.builder.set_cold_block(block);
+            lowering.propagate_block = Some(block);
+            block
+        }
+    };
+    let next = lowering.builder.create_block();
+    lowering
+        .builder
+        .ins()
+        .brif(status, propagate, &[], next, &[]);
+    lowering.builder.switch_to_block(next);
+}
+
+pub(crate) fn emit_return_zero(lowering: &mut Lowering<'_, '_>) {
+    match clif_type(&lowering.function.return_type) {
+        Some(value_type) => {
+            let zero = zero_value(&mut lowering.builder, value_type);
+            lowering.builder.ins().return_(&[zero]);
+        }
+        None => {
+            lowering.builder.ins().return_(&[]);
+        }
+    }
+}
+
+pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) {
+    let fault = lowering.environment.runtime.fault;
+    for (block, site) in std::mem::take(&mut lowering.cold_blocks) {
+        lowering.builder.switch_to_block(block);
+        let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
+        lowering
+            .builder
+            .ins()
+            .call(fault, &[lowering.context, site_value]);
+        emit_return_zero(lowering);
+    }
+    if let Some(block) = lowering.propagate_block {
+        lowering.builder.switch_to_block(block);
+        emit_return_zero(lowering);
+    }
+}

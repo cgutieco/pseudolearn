@@ -8,7 +8,7 @@ generated_sources:
   - crates/pseudolearn_ir/generated
   - crates/pseudolearn_bytecode/generated
   - crates/pseudolearn_vm/generated
-deterministic_output_crates: [pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_api]
+deterministic_output_crates: [pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_api, pseudolearn_codegen]
 layers:
   - name: pseudolearn_source
     path: crates/pseudolearn_source
@@ -70,6 +70,11 @@ layers:
     may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library]
     external_dependencies: []
     unsafe_allowed: true
+  - name: pseudolearn_codegen
+    path: crates/pseudolearn_codegen
+    may_import: [pseudolearn_ir, pseudolearn_diagnostics, pseudolearn_aot_rt]
+    external_dependencies: [cranelift-codegen, cranelift-frontend, cranelift-module, cranelift-object, target-lexicon, object]
+    unsafe_allowed: false
   - name: pseudolearn_math_probe
     path: crates/pseudolearn_math_probe
     may_import: [pseudolearn_library]

@@ -4,6 +4,7 @@ use crate::trap::Trap;
 use pseudolearn_library::{
     arctangent, cosine, exponential, natural_logarithm, real_power, round_real, sine, truncate_real,
 };
+use pseudolearn_runtime::int_power;
 
 pub const MATH_SINE: u32 = 0;
 pub const MATH_COSINE: u32 = 1;
@@ -33,6 +34,19 @@ pub extern "C" fn rt_aot_real_power(
     run_entry(context, site, |_| {
         let value = real_power(f64::from_bits(base), f64::from_bits(exponent))?;
         Ok(value.to_bits())
+    })
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn rt_aot_integer_power(
+    context: *mut AotRuntimeContext,
+    site: u32,
+    base: i64,
+    exponent: i64,
+) -> u32 {
+    run_entry(context, site, |_| {
+        let value = int_power(base, exponent)?;
+        Ok(u64::from_ne_bytes(value.to_ne_bytes()))
     })
 }
 

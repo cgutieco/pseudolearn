@@ -39,13 +39,12 @@ Desde `packages/pseudolearn_engine`:
 El crate es una biblioteca Rust (`rlib`). Los símbolos `rt_aot_*` llevan `#[unsafe(no_mangle)]` y quedan disponibles
 para el enlazador cuando el crate se empaquete como biblioteca estática. Una `AotSession` crea el motor y el contexto
 y los mantiene en cajas de dirección estable; `context_pointer()` entrega el puntero que recibe el código nativo.
-Los flujos de entrada y salida y la tabla de sitios se inyectan al crear la sesión.
+Los flujos de entrada y salida y la tabla de sitios se inyectan al crear la sesión. El crate reexporta `DiagnosticCode`, tipo del campo `FaultSite.code`.
 
 ## 3. Arquitectura y modelo del sistema
 
 Nivel 6, hoja del grafo. Importa `pseudolearn_source` (tramo vacío para renderizar), `pseudolearn_abi` (`Handle`),
-`pseudolearn_diagnostics`, `pseudolearn_runtime` y `pseudolearn_library`. Ningún otro crate del motor lo importa
-salvo el enlazador del ejecutable.
+`pseudolearn_diagnostics`, `pseudolearn_runtime` y `pseudolearn_library`. Solo `pseudolearn_codegen` (desplazamientos, tipos de sitio y selectores) y el enlazador del ejecutable lo importan.
 
 Contexto `AotRuntimeContext` (`#[repr(C)]`, 64 bytes; el código generado conoce los desplazamientos exportados como
 `CONTEXT_*_OFFSET`):
@@ -83,6 +82,7 @@ a través de ninguna llamada.
 | `rt_aot_text_compare` | dos asas | `-1`, `0` o `1` como `i64` |
 | `rt_aot_math_unary` | `MATH_*`, binario64 | binario64 o entero con signo |
 | `rt_aot_real_power` | base, exponente | binario64 |
+| `rt_aot_integer_power` | base, exponente (`i64`) | entero con signo; traps `negativeIntegerExponent` o `integerOverflow` |
 | `rt_aot_random_real` | — | binario64 en `[0, 1)` |
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |

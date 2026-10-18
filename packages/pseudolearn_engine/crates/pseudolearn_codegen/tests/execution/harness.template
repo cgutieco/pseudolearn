@@ -1,0 +1,66 @@
+use pseudolearn_aot_rt::*;
+use std::io::Cursor;
+
+unsafe extern "C" {
+@@DECLARATIONS@@
+}
+
+fn parse_site(line: &str) -> FaultSite {
+    let fields: Vec<&str> = line.split(',').collect();
+    FaultSite {
+        code: DiagnosticCode::from_name(fields[0]).unwrap(),
+        range: SourceRange {
+            start_line: fields[1].parse().unwrap(),
+            start_column: fields[2].parse().unwrap(),
+            end_line: fields[3].parse().unwrap(),
+            end_column: fields[4].parse().unwrap(),
+        },
+    }
+}
+
+fn main() {
+    let arguments: Vec<String> = std::env::args().collect();
+    let sites_text = std::fs::read_to_string(&arguments[1]).unwrap();
+    let sites: Vec<FaultSite> = sites_text.lines().map(parse_site).collect();
+    let function: usize = arguments[2].parse().unwrap();
+    let frames: u32 = arguments[3].parse().unwrap();
+    let budget: i64 = arguments[4].parse().unwrap();
+    let limits = AotLimits {
+        frames,
+        instruction_units: u64::try_from(budget).ok(),
+        ..AotLimits::default()
+    };
+    let config = AotConfig {
+        limits,
+        seed: 1,
+        boolean_words: BooleanWords {
+            truth: "true".to_owned(),
+            falsity: "false".to_owned(),
+        },
+    };
+    let streams = AotStreams {
+        input: Box::new(Cursor::new(Vec::new())),
+        output: Box::new(std::io::sink()),
+    };
+    let mut session = AotSession::new(config, sites, streams);
+    let context = session.context_pointer();
+    let value = match function {
+@@DISPATCH@@
+        _ => String::from("unknown"),
+    };
+    let record = session.engine().fault();
+    let code = record.and_then(|entry| entry.code).map(|code| code.as_str().to_owned());
+    let range = record.map(|entry| entry.range).unwrap_or_default();
+    println!(
+        "status={}|value={}|code={}|range={}:{}-{}:{}|depth={}|remaining={}",
+        session.context().fault_status,
+        value,
+        code.unwrap_or_default(),
+        range.start_line,
+        range.start_column,
+        range.end_line,
+        range.end_column,
+        session.context().frame_depth,
+        session.context().instruction_remaining,
+    );
+}

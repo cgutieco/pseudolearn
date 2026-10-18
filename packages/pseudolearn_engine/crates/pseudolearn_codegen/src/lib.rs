@@ -1,0 +1,35 @@
+#![forbid(unsafe_code)]
+
+mod abi_signatures;
+mod block_accounting;
+mod block_order;
+mod context_layout;
+mod error;
+mod fault_table;
+mod function_compiler;
+mod instruction_dispatch;
+mod lower_arithmetic;
+mod lower_calls;
+mod lower_control;
+mod lower_real;
+mod lower_scalars;
+mod lowering;
+mod object_emitter;
+mod runtime_calls;
+mod target;
+mod type_mapping;
+
+pub use abi_signatures::{
+    FAULT_SYMBOL, INTEGER_POWER_SYMBOL, MATH_UNARY_SYMBOL, REAL_POWER_SYMBOL,
+};
+pub use error::CodegenError;
+pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};
+pub use target::TargetConfig;
+
+pub fn compile_module_to_object(
+    module: &pseudolearn_ir::Module,
+    target: &TargetConfig,
+) -> Result<CompiledObject, CodegenError> {
+    pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
+    object_emitter::emit_module(module, target)
+}
