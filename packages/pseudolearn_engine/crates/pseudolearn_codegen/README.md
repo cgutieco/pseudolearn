@@ -68,7 +68,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
 | `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
 | `lower_text`, `lower_io` | Literales, texto, entrada, salida y azar por las entradas del runtime |
-| `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; celdas por el runtime |
+| `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; lectura de celdas locales en línea con camino lento por el runtime |
 | `array_fast_path`, `object_fast_path`, `inline_memory` | Comprobaciones y accesos en línea sobre las palabras del montón |
 | `lower_calls`, `lower_virtual`, `class_table` | Llamadas directas, despacho virtual por clase real y tabla de clases y métodos |
 | `value_types`, `liveness`, `shadow_stack`, `definition` | Tipo de cada valor, valores de referencia vivos por punto seguro, pila de raíces y definición de enteros |
@@ -247,3 +247,5 @@ Aceptación de un cambio: `cargo xtask verify` desde la raíz del motor.
 Cranelift (`cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object`): se toman el modelo de
 bloques con parámetros, las instrucciones de desbordamiento y el escritor de objetos; se rechazan `cranelift-jit` y el
 mecanismo de trampas de CLIF. El contrato de bajada pertenece a PseudoLearn.
+
+Problema: las operaciones enteras con operandos constantes y las comprobaciones de finitud reales emitían comparaciones y bloques que el optimizador no eliminaba. Elección: `constant_folding` pliega suma, resta, multiplicación y negación cuando ambos operandos son constantes y no desbordan, y devuelve el otro operando cuando uno es la identidad; si el resultado desbordaría, se conserva el camino con trampa en tiempo de ejecución. La comprobación de finitud real compara `r - r` con cero (falso solo para finitos) y se fusiona con el salto. Las medidas aisladas muestran mejoras de NBody (3,96 a 3,55) y Sieve (1,92 a 1,68), no suficientes por sí solas. Se descarta plegar sin conservar la trampa, que cambiaría los diagnósticos de desbordamiento constante.

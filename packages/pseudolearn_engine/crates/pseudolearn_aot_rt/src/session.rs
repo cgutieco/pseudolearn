@@ -27,6 +27,8 @@ impl AotSession {
             fault_status: 0,
             result_word: 0,
             engine_state: &mut *engine,
+            cells_pointer: engine.cells.as_ptr().cast(),
+            cells_length: 0,
         });
         Self { engine, context }
     }

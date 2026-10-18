@@ -1,4 +1,4 @@
-use crate::cells::CellTarget;
+use crate::cells::CellSlot;
 use crate::config::{AotConfig, AotStreams, BooleanWords};
 use crate::fault::{FaultRecord, FaultSite, SourceRange};
 use crate::trap::Trap;
@@ -16,7 +16,7 @@ pub struct AotEngine {
     pub(crate) layouts: Vec<Option<Arc<ObjectLayout>>>,
     pub(crate) sites: Vec<FaultSite>,
     pub(crate) roots: Vec<u32>,
-    pub(crate) cells: Vec<CellTarget>,
+    pub(crate) cells: Vec<CellSlot>,
     pub(crate) boolean_words: BooleanWords,
     pub(crate) streams: AotStreams,
     fault: Option<FaultRecord>,

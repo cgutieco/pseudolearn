@@ -36,7 +36,11 @@ fn layout_offsets_are_the_contract_the_generated_code_reads() {
     assert_eq!(CONTEXT_FAULT_SITE_OFFSET, 40);
     assert_eq!(CONTEXT_FAULT_STATUS_OFFSET, 44);
     assert_eq!(CONTEXT_RESULT_WORD_OFFSET, 48);
-    assert_eq!(std::mem::size_of::<AotRuntimeContext>(), 64);
+    assert_eq!(CONTEXT_CELLS_POINTER_OFFSET, 64);
+    assert_eq!(CONTEXT_CELLS_LENGTH_OFFSET, 72);
+    assert_eq!(std::mem::size_of::<AotRuntimeContext>(), 80);
+    assert_eq!(CELL_SLOT_WORD_OFFSET, 0);
+    assert_eq!(CELL_SLOT_READABLE_OFFSET, 8);
 }
 
 #[test]

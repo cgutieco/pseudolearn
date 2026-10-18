@@ -2,9 +2,10 @@
 
 use crate::error::CodegenError;
 use pseudolearn_aot_rt::{
-    CONTEXT_FAULT_STATUS_OFFSET, CONTEXT_FRAME_DEPTH_OFFSET, CONTEXT_FRAME_LIMIT_OFFSET,
-    CONTEXT_HEAP_WORDS_OFFSET, CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_RESULT_WORD_OFFSET,
-    CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET,
+    CONTEXT_CELLS_LENGTH_OFFSET, CONTEXT_CELLS_POINTER_OFFSET, CONTEXT_FAULT_STATUS_OFFSET,
+    CONTEXT_FRAME_DEPTH_OFFSET, CONTEXT_FRAME_LIMIT_OFFSET, CONTEXT_HEAP_WORDS_OFFSET,
+    CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET,
+    CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET,
 };
 
 #[derive(Clone, Copy, Debug)]
@@ -18,6 +19,8 @@ pub(crate) struct ContextLayout {
     pub(crate) root_top: i32,
     pub(crate) root_capacity: i32,
     pub(crate) roots_pointer: i32,
+    pub(crate) cells_pointer: i32,
+    pub(crate) cells_length: i32,
 }
 
 impl ContextLayout {
@@ -32,6 +35,8 @@ impl ContextLayout {
             root_top: offset(CONTEXT_ROOT_TOP_OFFSET)?,
             root_capacity: offset(CONTEXT_ROOT_CAPACITY_OFFSET)?,
             roots_pointer: offset(CONTEXT_ROOTS_OFFSET)?,
+            cells_pointer: offset(CONTEXT_CELLS_POINTER_OFFSET)?,
+            cells_length: offset(CONTEXT_CELLS_LENGTH_OFFSET)?,
         })
     }
 }

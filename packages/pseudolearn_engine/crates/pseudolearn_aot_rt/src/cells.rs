@@ -7,6 +7,7 @@ use pseudolearn_abi::Handle;
 use pseudolearn_runtime::{
     MemoryCell, ValueKind, element_cell, field_cell, read_memory_cell, write_memory_cell,
 };
+use std::mem::offset_of;
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) enum CellTarget {
@@ -20,6 +21,40 @@ pub(crate) enum CellTarget {
         cell: MemoryCell,
         origin_site: u32,
     },
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct CellSlot {
+    word: u64,
+    readable: u64,
+    target: CellTarget,
+}
+
+pub const CELL_SLOT_BYTES: usize = size_of::<CellSlot>();
+pub const CELL_SLOT_WORD_OFFSET: usize = offset_of!(CellSlot, word);
+pub const CELL_SLOT_READABLE_OFFSET: usize = offset_of!(CellSlot, readable);
+
+impl CellSlot {
+    fn new(target: CellTarget) -> Self {
+        match target {
+            CellTarget::Local {
+                kind,
+                word,
+                defined,
+                ..
+            } if local_value(kind, word, defined).is_ok() => Self {
+                word,
+                readable: 1,
+                target,
+            },
+            _ => Self {
+                word: 0,
+                readable: 0,
+                target,
+            },
+        }
+    }
 }
 
 #[unsafe(no_mangle)]
@@ -131,7 +166,7 @@ pub extern "C" fn rt_aot_cell_store(
                     .engine
                     .cells
                     .get_mut(slot)
-                    .ok_or_else(|| Trap::named("internalFault"))? = stored;
+                    .ok_or_else(|| Trap::named("internalFault"))? = CellSlot::new(stored);
             }
         }
         Ok(0)
@@ -148,7 +183,7 @@ fn publish(entry: &mut Entry<'_>, target: CellTarget) -> Result<u64, Trap> {
         .cells
         .try_reserve(1)
         .map_err(|_| Trap::named("internalFault"))?;
-    entry.engine.cells.push(target);
+    entry.engine.cells.push(CellSlot::new(target));
     u64::try_from(entry.engine.cells.len()).map_err(|_| Trap::named("internalFault"))
 }
 
@@ -163,7 +198,7 @@ fn target(entry: &Entry<'_>, cell: u32) -> Result<CellTarget, Trap> {
         .engine
         .cells
         .get(slot_of(cell)?)
-        .copied()
+        .map(|slot| slot.target)
         .ok_or_else(|| Trap::named("internalFault"))
 }
 
@@ -180,10 +215,10 @@ fn local_value(kind: ValueKind, word: u64, defined: bool) -> Result<u64, Trap> {
     }
 }
 
-pub(crate) fn rooted_handles(cells: &[CellTarget]) -> impl Iterator<Item = Handle> + '_ {
+pub(crate) fn rooted_handles(cells: &[CellSlot]) -> impl Iterator<Item = Handle> + '_ {
     cells
         .iter()
-        .filter_map(|cell| match cell {
+        .filter_map(|slot| match &slot.target {
             CellTarget::Local {
                 kind: ValueKind::Reference,
                 word,

@@ -26,15 +26,17 @@ mod trap;
 
 pub use access::{rt_aot_array_load, rt_aot_array_store, rt_aot_object_load, rt_aot_object_store};
 pub use cells::{
-    rt_aot_cell_element, rt_aot_cell_field, rt_aot_cell_load, rt_aot_cell_local, rt_aot_cell_store,
+    CELL_SLOT_BYTES, CELL_SLOT_READABLE_OFFSET, CELL_SLOT_WORD_OFFSET, rt_aot_cell_element,
+    rt_aot_cell_field, rt_aot_cell_load, rt_aot_cell_local, rt_aot_cell_store,
 };
 pub use class_layout::ClassDescriptor;
 pub use config::{AotConfig, AotLimits, AotStreams, BooleanWords};
 pub use context::{
-    AotRuntimeContext, CONTEXT_FAULT_SITE_OFFSET, CONTEXT_FAULT_STATUS_OFFSET,
-    CONTEXT_FRAME_DEPTH_OFFSET, CONTEXT_FRAME_LIMIT_OFFSET, CONTEXT_HEAP_WORDS_OFFSET,
-    CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET,
-    CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
+    AotRuntimeContext, CONTEXT_CELLS_LENGTH_OFFSET, CONTEXT_CELLS_POINTER_OFFSET,
+    CONTEXT_FAULT_SITE_OFFSET, CONTEXT_FAULT_STATUS_OFFSET, CONTEXT_FRAME_DEPTH_OFFSET,
+    CONTEXT_FRAME_LIMIT_OFFSET, CONTEXT_HEAP_WORDS_OFFSET, CONTEXT_INSTRUCTION_REMAINING_OFFSET,
+    CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET, CONTEXT_ROOT_TOP_OFFSET,
+    CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
 };
 pub use engine::AotEngine;
 pub use entry::pseudolearn_aot_main;

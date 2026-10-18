@@ -48,13 +48,9 @@ fn require_finite(
     instruction: &Instruction<'_>,
     result: Value,
 ) -> Result<(), CodegenError> {
-    let magnitude = lowering.builder.ins().fabs(result);
-    let infinity = lowering.builder.ins().f64const(f64::INFINITY);
-    let finite = lowering
-        .builder
-        .ins()
-        .fcmp(FloatCC::LessThan, magnitude, infinity);
-    let non_finite = lowering.builder.ins().bxor_imm_u(finite, 1);
+    let spread = lowering.builder.ins().fsub(result, result);
+    let zero = lowering.builder.ins().f64const(0.0);
+    let non_finite = lowering.builder.ins().fcmp(FloatCC::NotEqual, spread, zero);
     guard_trap(
         lowering,
         non_finite,

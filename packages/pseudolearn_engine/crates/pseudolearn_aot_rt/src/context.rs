@@ -18,6 +18,8 @@ pub struct AotRuntimeContext {
     pub fault_status: u32,
     pub result_word: u64,
     pub engine_state: *mut AotEngine,
+    pub cells_pointer: *const u8,
+    pub cells_length: u64,
 }
 
 pub const CONTEXT_HEAP_WORDS_OFFSET: usize = offset_of!(AotRuntimeContext, heap_words_pointer);
@@ -31,3 +33,5 @@ pub const CONTEXT_FAULT_SITE_OFFSET: usize = offset_of!(AotRuntimeContext, fault
 pub const CONTEXT_FAULT_STATUS_OFFSET: usize = offset_of!(AotRuntimeContext, fault_status);
 pub const CONTEXT_RESULT_WORD_OFFSET: usize = offset_of!(AotRuntimeContext, result_word);
 pub const CONTEXT_ROOT_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, root_capacity);
+pub const CONTEXT_CELLS_POINTER_OFFSET: usize = offset_of!(AotRuntimeContext, cells_pointer);
+pub const CONTEXT_CELLS_LENGTH_OFFSET: usize = offset_of!(AotRuntimeContext, cells_length);

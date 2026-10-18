@@ -41,7 +41,7 @@ Los flujos de entrada y salida y la tabla de sitios se inyectan al crear la sesi
 Nivel 6, hoja del grafo. Importa `pseudolearn_source` (tramo vacío para renderizar), `pseudolearn_abi` (`Handle`),
 `pseudolearn_diagnostics`, `pseudolearn_runtime` y `pseudolearn_library`. Solo `pseudolearn_codegen` (desplazamientos, tipos de sitio y selectores) y el enlazador del ejecutable lo importan.
 
-Contexto `AotRuntimeContext` (`#[repr(C)]`, 64 bytes; el código generado conoce los desplazamientos exportados como
+Contexto `AotRuntimeContext` (`#[repr(C)]`, 80 bytes; el código generado conoce los desplazamientos exportados como
 `CONTEXT_*_OFFSET`):
 
 | Desplazamiento | Campo | Tipo | Contenido |
@@ -57,6 +57,8 @@ Contexto `AotRuntimeContext` (`#[repr(C)]`, 64 bytes; el código generado conoce
 | 44 | `fault_status` | `u32` | `0` continúa, `1` fallo del programa, `2` límite |
 | 48 | `result_word` | `u64` | Resultado de la última entrada con estado `0` |
 | 56 | `engine_state` | `*mut AotEngine` | Estado propietario: montón, azar, diseños, sitios, flujos, fallo y avisos |
+| 64 | `cells_pointer` | `*const u8` | Base de la tabla de celdas; se refresca tras toda entrada junto con `cells_length` |
+| 72 | `cells_length` | `u64` | Número de celdas vivas; el código generado trata como inválido todo identificador fuera de rango |
 
 Protocolo de toda entrada: `rt_aot_*(context, site, operandos…) -> u32`. `site` indexa la tabla de sitios de fallo.
 El retorno es `0` si el cómputo continúa (el valor queda en `result_word`), `1` si el programa falló y `2` si se agotó
@@ -244,3 +246,5 @@ El patrón de contexto con campos de desplazamiento fijo, pila de raíces explí
 inspira en los puntos seguros de las máquinas virtuales gestionadas y en los helpers fuera de línea de Cranelift y
 Wasmtime. Se rechaza el mecanismo de señales del sistema para trampas aritméticas, porque no transporta el sitio ni el
 diagnóstico de PseudoLearn. El contrato del crate pertenece a PseudoLearn.
+
+Problema: cada lectura de una celda local cuesta una llamada protegida al runtime, y Permute, Queens y Towers leen celdas decenas de miles de veces. Elección: cada entrada de la tabla es un `CellSlot` `#[repr(C)]` con una cabecera de dos palabras (`word`, `readable`) seguida del destino original; `readable` vale 1 solo cuando la celda es local y su lectura tendría éxito. El código generado lee la palabra en línea cuando `readable` vale 1 y llama a `rt_aot_cell_load` en cualquier otro caso (celda administrada, indefinida o fuera de rango), de modo que los diagnósticos no cambian. Las escrituras siguen pasando por el runtime, que recalcula la cabecera. Se descarta inlinear la escritura, porque decidir si un valor es legible depende del tipo y mezclaría reglas de presencia en el generador.

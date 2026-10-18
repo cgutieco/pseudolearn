@@ -53,6 +53,8 @@ pub(crate) fn run_entry(
 impl Entry<'_> {
     pub(crate) fn refresh(&mut self) {
         self.context.heap_words_pointer = self.engine.heap.words_pointer();
+        self.context.cells_pointer = self.engine.cells.as_ptr().cast();
+        self.context.cells_length = u64::try_from(self.engine.cells.len()).unwrap_or(0);
     }
 
     pub(crate) fn allocation_roots(&self, cells: u64) -> Result<Vec<Handle>, Trap> {

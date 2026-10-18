@@ -1,0 +1,252 @@
+{
+  "changePointCandidates": [
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 23,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 24,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 25,
+      "workload": "bounce"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 21,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 22,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 23,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 24,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 25,
+      "workload": "nbody"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 2,
+      "split": 22,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 2,
+      "split": 23,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 2,
+      "split": 24,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 2,
+      "split": 25,
+      "workload": "richards"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 17,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 19,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 17,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 19,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 20,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "permute"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 20,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 21,
+      "workload": "nbody"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 9,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 10,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 11,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 8,
+      "split": 6,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 8,
+      "split": 7,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "bounce"
+    }
+  ],
+  "samplesDiscarded": 0,
+  "stationarityDemonstrated": false
+}

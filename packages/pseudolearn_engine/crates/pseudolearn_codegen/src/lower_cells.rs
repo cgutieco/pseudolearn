@@ -9,7 +9,9 @@ use crate::lowering::{Instruction, Lowering, bind_result, operand_value};
 use crate::runtime_calls::{RuntimeCall, call_runtime};
 use crate::type_mapping::kind_code;
 use crate::word_conversion::{from_word, to_word};
-use cranelift_codegen::ir::{InstBuilder, Value, types};
+use cranelift_codegen::ir::condcodes::IntCC;
+use cranelift_codegen::ir::{Block, InstBuilder, MemFlagsData, Value, types};
+use pseudolearn_aot_rt::{CELL_SLOT_BYTES, CELL_SLOT_READABLE_OFFSET, CELL_SLOT_WORD_OFFSET};
 use pseudolearn_ir::{IrType, Operand, Operation};
 
 pub(crate) const OPERATIONS: &[Operation] = &[
@@ -116,10 +118,79 @@ fn lower_load(
 ) -> Result<(), CodegenError> {
     let content = cell_content(lowering, instruction)?;
     let cell = operand_value(lowering, instruction, 0)?;
-    let word = call_cell(lowering, instruction, (Entry::CellLoad, &[cell]))?;
+    let word = load_cell_word(lowering, instruction, cell)?;
     let value = from_word(lowering, word, &content)?;
     bind_result(lowering, instruction, value);
     Ok(())
+}
+
+fn cell_slot_address(
+    lowering: &mut Lowering<'_, '_>,
+    cell: Value,
+    slow: Block,
+) -> Result<Value, CodegenError> {
+    let layout = lowering.environment.layout;
+    let flags = MemFlagsData::trusted();
+    let slot_bytes = i64::try_from(CELL_SLOT_BYTES)
+        .map_err(|_| CodegenError::InvalidModule("cell slot size out of range"))?;
+    let in_table = lowering.builder.create_block();
+    let wide = lowering.builder.ins().uextend(types::I64, cell);
+    let index = lowering.builder.ins().iadd_imm_s(wide, -1);
+    let length =
+        lowering
+            .builder
+            .ins()
+            .load(types::I64, flags, lowering.context, layout.cells_length);
+    let within = lowering
+        .builder
+        .ins()
+        .icmp(IntCC::UnsignedLessThan, index, length);
+    lowering
+        .builder
+        .ins()
+        .brif(within, in_table, &[], slow, &[]);
+    lowering.builder.switch_to_block(in_table);
+    let table =
+        lowering
+            .builder
+            .ins()
+            .load(types::I64, flags, lowering.context, layout.cells_pointer);
+    let scaled = lowering.builder.ins().imul_imm_s(index, slot_bytes);
+    Ok(lowering.builder.ins().iadd(table, scaled))
+}
+
+fn load_cell_word(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    cell: Value,
+) -> Result<Value, CodegenError> {
+    let flags = MemFlagsData::trusted();
+    let readable_offset = i32::try_from(CELL_SLOT_READABLE_OFFSET)
+        .map_err(|_| CodegenError::InvalidModule("cell slot offset out of range"))?;
+    let word_offset = i32::try_from(CELL_SLOT_WORD_OFFSET)
+        .map_err(|_| CodegenError::InvalidModule("cell slot offset out of range"))?;
+    let fast = lowering.builder.create_block();
+    let slow = lowering.builder.create_block();
+    let merge = lowering.builder.create_block();
+    lowering.builder.set_cold_block(slow);
+    let word = lowering.builder.append_block_param(merge, types::I64);
+    let slot = cell_slot_address(lowering, cell, slow)?;
+    let readable = lowering
+        .builder
+        .ins()
+        .load(types::I64, flags, slot, readable_offset);
+    lowering.builder.ins().brif(readable, fast, &[], slow, &[]);
+    lowering.builder.switch_to_block(fast);
+    let direct = lowering
+        .builder
+        .ins()
+        .load(types::I64, flags, slot, word_offset);
+    lowering.builder.ins().jump(merge, &[direct.into()]);
+    lowering.builder.switch_to_block(slow);
+    let fallback = call_cell(lowering, instruction, (Entry::CellLoad, &[cell]))?;
+    lowering.builder.ins().jump(merge, &[fallback.into()]);
+    lowering.builder.switch_to_block(merge);
+    Ok(word)
 }
 
 fn lower_store(

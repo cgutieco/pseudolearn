@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::abi_signatures::Entry;
+use crate::constant_folding::{Folded, fold_checked};
 use crate::error::CodegenError;
 use crate::lower_scalars::{predicate_of, signed_condition};
 use crate::lowering::{Instruction, Lowering, bind_result, guard_trap, operand_value};
@@ -42,11 +43,27 @@ fn lower_checked(
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
     let left = operand_value(lowering, instruction, 0)?;
+    let right = match instruction.operation {
+        Operation::IntNeg => None,
+        _ => Some(operand_value(lowering, instruction, 1)?),
+    };
+    match fold_checked(lowering, instruction.operation, left, right) {
+        Some(Folded::Constant(number)) => {
+            let folded = lowering.builder.ins().iconst(types::I64, number);
+            bind_result(lowering, instruction, folded);
+            return Ok(());
+        }
+        Some(Folded::Passthrough(value)) => {
+            bind_result(lowering, instruction, value);
+            return Ok(());
+        }
+        None => {}
+    }
     let (result, overflow) = if instruction.operation == Operation::IntNeg {
         let zero = lowering.builder.ins().iconst(types::I64, 0);
         lowering.builder.ins().ssub_overflow(zero, left)
     } else {
-        let right = operand_value(lowering, instruction, 1)?;
+        let right = right.ok_or(CodegenError::InvalidModule("operand is not a value"))?;
         match instruction.operation {
             Operation::IntAdd => lowering.builder.ins().sadd_overflow(left, right),
             Operation::IntSub => lowering.builder.ins().ssub_overflow(left, right),

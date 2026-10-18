@@ -3,6 +3,7 @@
 mod array_tests;
 mod call_tests;
 mod cell_tests;
+mod constant_folding_tests;
 mod control_tests;
 mod definition_tests;
 mod executable_tests;

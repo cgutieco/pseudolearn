@@ -6,6 +6,7 @@ mod block_accounting;
 mod block_order;
 mod cell_frames;
 mod class_table;
+mod constant_folding;
 mod context_layout;
 mod definition;
 mod entry_point;

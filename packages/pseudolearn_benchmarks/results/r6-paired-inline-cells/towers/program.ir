@@ -1,0 +1,197 @@
+module Torres es
+class Disco { medida: i64, siguiente: obj<Disco> }
+func @Apilar(%0: cell<array<obj<Disco>, 1>>, %1: i64, %2: obj<Disco>) -> unit {
+b0() mass 2:
+  stmt.enter @9:1-9:31
+  %3 = cell.load %0 @9:20-9:25
+  %4 = array.load %3, %1 @9:20-9:31
+  object.store %2, siguiente, %4 @9:1-9:31
+  stmt.exit @9:1-9:31
+  stmt.enter @10:1-10:21
+  %5 = cell.load %0 @10:1-10:6
+  array.store %5, %1, %2 @10:1-10:21
+  stmt.exit @10:1-10:21
+  return @11:1-11:14
+}
+func @Desapilar(%0: cell<array<obj<Disco>, 1>>, %1: i64) -> obj<Disco> {
+b0() mass 4:
+  stmt.enter @13:1-13:26
+  %2 = value.undefined obj<Disco> @13:1-13:26
+  stmt.exit @13:1-13:26
+  stmt.enter @14:1-14:22
+  %3 = cell.load %0 @14:11-14:16
+  %4 = array.load %3, %1 @14:11-14:22
+  %5 = value.require %4 @14:1-14:22
+  stmt.exit @14:1-14:22
+  stmt.enter @15:1-15:32
+  %6 = object.load %5, siguiente @15:16-15:32
+  %7 = cell.load %0 @15:1-15:6
+  array.store %7, %1, %6 @15:1-15:32
+  stmt.exit @15:1-15:32
+  stmt.enter @16:1-16:16
+  stmt.exit @16:1-16:16
+  return %5 @16:1-16:16
+}
+func @Mover(%0: cell<array<obj<Disco>, 1>>, %1: i64, %2: i64, %3: cell<i64>) -> unit {
+b0() mass 2:
+  stmt.enter @19:1-19:46
+  %4 = call @Desapilar(%0, %1) @19:22-19:45
+  %5 = call @Apilar(%0, %2, %4) @19:1-19:46
+  stmt.exit @19:1-19:46
+  stmt.enter @20:1-20:31
+  %6 = cell.load %3 @20:16-20:27
+  %7 = const.i64 1 @20:30-20:31
+  %8 = int.add %6, %7 @20:28-20:29
+  cell.store %3, %8 @20:1-20:31
+  stmt.exit @20:1-20:31
+  return @21:1-21:14
+}
+func @MoverDiscos(%0: cell<array<obj<Disco>, 1>>, %1: i64, %2: i64, %3: i64, %4: cell<i64>) -> unit {
+b0() mass 2:
+  stmt.enter @23:1-23:25
+  %5 = value.undefined i64 @23:1-23:25
+  stmt.exit @23:1-23:25
+  stmt.enter @24:1-31:6
+  %6 = const.i64 1 @24:13-24:14
+  %7 = int.cmp eq, %1, %6 @24:11-24:12
+  decide.bool %7 @24:1-31:6
+  branch %7, b1(), b2()
+b1() mass 1:
+  stmt.enter @25:1-25:40
+  %8 = call @Mover(%0, %2, %3, %4) @25:1-25:40
+  stmt.exit @25:1-25:40
+  jump b3(%5)
+b2() mass 4:
+  stmt.enter @27:1-27:26
+  %9 = const.i64 3 @27:9-27:10
+  %10 = int.sub %9, %2 @27:11-27:12
+  %11 = int.sub %10, %3 @27:19-27:20
+  %12 = value.require %11 @27:1-27:26
+  stmt.exit @27:1-27:26
+  stmt.enter @28:1-28:57
+  %13 = const.i64 1 @28:29-28:30
+  %14 = int.sub %1, %13 @28:27-28:28
+  %15 = call @MoverDiscos(%0, %14, %2, %12, %4) @28:1-28:57
+  stmt.exit @28:1-28:57
+  stmt.enter @29:1-29:40
+  %16 = call @Mover(%0, %2, %3, %4) @29:1-29:40
+  stmt.exit @29:1-29:40
+  stmt.enter @30:1-30:57
+  %17 = const.i64 1 @30:29-30:30
+  %18 = int.sub %1, %17 @30:27-30:28
+  %19 = call @MoverDiscos(%0, %18, %12, %3, %4) @30:1-30:57
+  stmt.exit @30:1-30:57
+  jump b3(%12)
+b3(%20: i64) mass 0:
+  stmt.exit @24:1-31:6
+  return @32:1-32:14
+}
+func @main() -> unit {
+b0() mass 4:
+  stmt.enter @34:1-34:30
+  %0 = const.i64 3 @34:17-34:18
+  %1 = array.new array<obj<Disco>, 1>, %0 @34:1-34:30
+  %2 = cell.local array<obj<Disco>, 1> @34:1-34:30
+  cell.store %2, %1 @34:1-34:30
+  stmt.exit @34:1-34:30
+  stmt.enter @35:1-35:49
+  %3 = value.undefined i64 @35:1-35:49
+  %4 = value.undefined i64 @35:1-35:49
+  %5 = value.undefined i64 @35:1-35:49
+  %6 = cell.local i64 @35:1-35:49
+  stmt.exit @35:1-35:49
+  stmt.enter @36:1-36:7
+  %7 = in.read i64 @36:1-36:7
+  stmt.exit @36:1-36:7
+  stmt.enter @37:1-39:8
+  %8 = const.i64 0 @37:14-37:15
+  %9 = const.i64 2 @37:22-37:23
+  %10 = const.i64 0
+  %11 = int.add %9, %10 @37:1-39:8
+  %12 = const.i64 1 @37:33-37:34
+  %13 = const.i64 0
+  %14 = int.add %12, %13 @37:1-39:8
+  loop.check_step %14 @37:1-39:8
+  jump b1(%8)
+b1(%15: i64) mass 0:
+  %16 = const.i64 0
+  %17 = int.cmp ge, %14, %16
+  branch %17, b2(), b3()
+b2() mass 0:
+  %18 = int.cmp le, %15, %11 @37:1-39:8
+  jump b4(%18)
+b3() mass 0:
+  %19 = int.cmp ge, %15, %11 @37:1-39:8
+  jump b4(%19)
+b4(%20: bool) mass 0:
+  decide.bool %20 @37:1-39:8
+  branch %20, b5(), b6()
+b5() mass 1:
+  stmt.enter @38:1-38:34
+  %21 = const.i64 1 @38:32-38:33
+  %22 = int.add %7, %21 @38:30-38:31
+  %23 = object.new Disco @38:16-38:34
+  %24 = call @Disco.Constructor(%23, %22) @38:16-38:34
+  %25 = cell.load %2 @38:1-38:6
+  array.store %25, %15, %23 @38:1-38:34
+  stmt.exit @38:1-38:34
+  %26 = int.add %15, %14 @37:1-39:8
+  jump b1(%26)
+b6() mass 1:
+  stmt.exit @37:1-39:8
+  stmt.enter @40:1-42:8
+  %27 = const.i64 1 @40:24-40:25
+  %28 = const.i64 0
+  %29 = int.add %27, %28 @40:1-42:8
+  %30 = const.i64 1 @40:36-40:37
+  %31 = int.neg %30 @40:35-40:36
+  %32 = const.i64 0
+  %33 = int.add %31, %32 @40:1-42:8
+  loop.check_step %33 @40:1-42:8
+  jump b7(%7)
+b7(%34: i64) mass 0:
+  %35 = const.i64 0
+  %36 = int.cmp ge, %33, %35
+  branch %36, b8(), b9()
+b8() mass 0:
+  %37 = int.cmp le, %34, %29 @40:1-42:8
+  jump b10(%37)
+b9() mass 0:
+  %38 = int.cmp ge, %34, %29 @40:1-42:8
+  jump b10(%38)
+b10(%39: bool) mass 0:
+  decide.bool %39 @40:1-42:8
+  branch %39, b11(), b12()
+b11() mass 1:
+  stmt.enter @41:1-41:38
+  %40 = const.i64 0 @41:15-41:16
+  %41 = object.new Disco @41:18-41:37
+  %42 = call @Disco.Constructor(%41, %34) @41:18-41:37
+  %43 = call @Apilar(%2, %40, %41) @41:1-41:38
+  stmt.exit @41:1-41:38
+  %44 = int.add %34, %33 @40:1-42:8
+  jump b7(%44)
+b12() mass 3:
+  stmt.exit @40:1-42:8
+  stmt.enter @43:1-43:17
+  %45 = const.i64 0 @43:16-43:17
+  cell.store %6, %45 @43:1-43:17
+  stmt.exit @43:1-43:17
+  stmt.enter @44:1-44:41
+  %46 = const.i64 0 @44:23-44:24
+  %47 = const.i64 1 @44:26-44:27
+  %48 = call @MoverDiscos(%2, %7, %46, %47, %6) @44:1-44:41
+  stmt.exit @44:1-44:41
+  stmt.enter @45:1-45:21
+  %49 = cell.load %6 @45:10-45:21
+  out.write %49, newline @45:1-45:21
+  stmt.exit @45:1-45:21
+  return @46:1-46:13
+}
+func @Disco.Constructor(%0: obj<Disco>, %1: i64) -> unit {
+b0() mass 1:
+  stmt.enter @5:1-5:22
+  object.store %0, medida, %1 @5:1-5:22
+  stmt.exit @5:1-5:22
+  return @6:1-6:10
+}
