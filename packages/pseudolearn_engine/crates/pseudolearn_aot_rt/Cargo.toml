@@ -1,0 +1,28 @@
+[package]
+name = "pseudolearn_aot_rt"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+pseudolearn_abi = { path = "../pseudolearn_abi", version = "=0.1.0" }
+pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+pseudolearn_runtime = { path = "../pseudolearn_runtime", version = "=0.1.0" }
+pseudolearn_library = { path = "../pseudolearn_library", version = "=0.1.0" }
+
+[lints.rust]
+unsafe_code = "allow"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+indexing_slicing = "deny"
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+too_many_arguments = "deny"
+too_many_lines = "deny"

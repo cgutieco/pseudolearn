@@ -270,6 +270,10 @@ impl Heap {
         Ok(())
     }
 
+    pub fn words_pointer(&mut self) -> *mut u64 {
+        self.words.as_mut_ptr()
+    }
+
     pub fn shrink_to_fit(&mut self) {
         self.words.truncate(self.used);
         self.words.shrink_to_fit();

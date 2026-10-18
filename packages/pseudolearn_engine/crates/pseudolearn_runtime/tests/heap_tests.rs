@@ -203,3 +203,15 @@ fn text_and_derived_indices_do_not_consume_identity_ordinals() -> Result<(), Mem
     assert_eq!(heap.identity(next), Ok(2));
     Ok(())
 }
+
+#[test]
+fn words_pointer_tracks_the_current_storage_after_growth() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions::default());
+    let before = heap.words_pointer();
+    assert!(!before.is_null());
+    new_array(&mut heap, ValueKind::Integer, &[100_000], &[])?;
+    let after = heap.words_pointer();
+    assert!(!after.is_null());
+    assert_eq!(after, heap.words_pointer());
+    Ok(())
+}

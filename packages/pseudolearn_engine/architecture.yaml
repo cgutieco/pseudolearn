@@ -1,6 +1,6 @@
 package: pseudolearn_engine
 declarative: false
-unsafe_allowed: [pseudolearn_wasm]
+unsafe_allowed: [pseudolearn_wasm, pseudolearn_aot_rt]
 generated_sources:
   - crates/pseudolearn_diagnostics/generated
   - crates/pseudolearn_lexicon/generated
@@ -65,6 +65,11 @@ layers:
     may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
     external_dependencies: []
     unsafe_allowed: false
+  - name: pseudolearn_aot_rt
+    path: crates/pseudolearn_aot_rt
+    may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library]
+    external_dependencies: []
+    unsafe_allowed: true
   - name: pseudolearn_math_probe
     path: crates/pseudolearn_math_probe
     may_import: [pseudolearn_library]

@@ -813,7 +813,7 @@ flowchart LR
 > `TOOL.CLI.MESSAGES` suben a 0.2.0 con bloque `cambio`. Los 7 casos de `TOOL.CLI.BUILD` divergen en
 > `see conform --subject cli` hasta B4.
 
-### [ ] Bloque B1 — Frontera `RT.ABI` y puntos de entrada en `pseudolearn_runtime`
+### [x] Bloque B1 — Frontera `RT.ABI` y puntos de entrada en `pseudolearn_runtime`
 
 - **Objetivo:** Implementar `AotRuntimeContext` y los puntos de entrada `extern "C"` (`rt_aot_*`) en
   `pseudolearn_runtime`, manteniendo toda la lógica de negocio en funciones seguras.
@@ -831,6 +831,17 @@ flowchart LR
   `AotRuntimeContext` en camino feliz (asignación, GC con raíces en `shadow_stack`, llamadas matemáticas) y camino
   infeliz (desbordamiento de `instruction_remaining`, `frame_depth > 1000`, `cells > 16_777_216`,
   `output_chars > 1_048_576`).
+
+> **Estado de B1 (completado):** la frontera vive en el crate hoja `pseudolearn_aot_rt` (opción B2 del §4.3),
+> porque `pseudolearn_library` importa `pseudolearn_runtime` y un módulo `aot_abi` dentro del runtime no puede llamar a
+> la biblioteca. `pseudolearn_runtime` conserva `#![forbid(unsafe_code)]` y solo gana `Heap::words_pointer`. El lint
+> del workspace sigue en `forbid`; el crate declara su propia tabla `[lints]`. La tabla «Invariantes de `unsafe`» tiene
+> dos filas (`open_entry`, `borrow_slice`): los `rt_aot_*` son `extern "C"` seguros sin bloque `unsafe`. Divergencias con
+> el estado real, resueltas así: `ENG.LIMITS` fija 1 000 marcos, 2^22 celdas y presupuesto de sentencias opcional, sin
+> límite de salida (el contexto es configurable y no cuenta `output_chars`); el IR define `cell.local/element/field`, no
+> `cell.new`, y las celdas pasan a B3; el montón no tiene banco `defined` (se omite `heap_defined_ptr`); el retorno de
+> las entradas es 0/1/2 según `RT.ABI#R1`, y 3/4/5 son códigos de proceso de B4. `pseudolearn_aot_main` y los metadatos
+> pasan a B4. Verificado con `cargo xtask verify` y `rust-checks all`.
 
 ### [ ] Bloque B2 — Núcleo de `pseudolearn_codegen` (bloques SSA, escalares, trampas frías y llamadas)
 

@@ -19,8 +19,8 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 5. **Una sola disciplina para todos los motores.** VM y AOT comparten RI, disposición de marco,
    disposición de objetos y raíces del recolector. Una diferencia de representación entre motores es
    una divergencia esperando a ocurrir.
-6. **Seguridad estructural.** Cero `unsafe` fuera de los puentes generados. La velocidad sale del diseño,
-   no de saltarse las comprobaciones de Rust.
+6. **Seguridad estructural.** Cero `unsafe` fuera de los puentes generados y de la frontera ABI del backend
+   nativo (`pseudolearn_aot_rt`). La velocidad sale del diseño, no de saltarse las comprobaciones de Rust.
 7. **Lo que no se mide no se afirma.** Cada técnica nombra la métrica de `PERF.*` que la
    valida, y el resultado se publica aunque la refute.
 8. **Las escrituras no pagan la observación.** Las diferencias se calculan en los puntos de control;
@@ -31,11 +31,11 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
     observables del contenido accidental de los registros.
 
 Fuera de alcance de producto: construcciones nuevas, concurrencia, reloj libre, efectos no grabables y JIT.
-Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados.
+Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| codegen: Cranelift, trampas diferidas y transferencia AOT → VM mediante marco canónico; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
+| codegen: Cranelift, trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
@@ -80,6 +80,7 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
 | 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, arreglos, objetos, texto y recolección | abi, diagnostics |
 | 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
+| 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline |
@@ -95,7 +96,7 @@ El backend nativo consume la misma RI. diagnostics y lexicon suministran datos g
 `crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
 Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; el anfitrión orquesta ejecuciones independientes.
-codegen, service y wasm se declaran con sus carpetas al empezar sus fases; no son capas presentes del modo declarativo.
+`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. codegen, service y wasm se declaran con sus carpetas al empezar sus fases; no son capas presentes del modo declarativo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -335,7 +336,7 @@ por lo que B7.4 permanece abierto. Evidencia: [`r5-differential.json`](../pseudo
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios ni atributos doc/allow/expect. Cada archivo tiene una responsabilidad; los límites y nombres viven en architecture.yaml.
-Todos los crates presentes prohíben unsafe. Solo pseudolearn_wasm generado está autorizado por la política del miembro al incorporarse.
+Todos los crates presentes prohíben unsafe salvo `pseudolearn_aot_rt`, que lo confina a dos funciones auditadas en su README. `pseudolearn_wasm` generado queda autorizado por la política del miembro al incorporarse. Como `[workspace.lints.rust] unsafe_code = "forbid"` no admite excepciones por crate, `pseudolearn_aot_rt` declara su propia tabla `[lints]` con `unsafe_code = "allow"` y la misma lista de lints de Clippy que el workspace.
 Errores esperables como Result; DIAG.ENGINE.INTERNAL-FAULT captura defectos internos en la frontera.
 No se copian datos del corpus: build.rs genera vocabulario, gramática, diagnósticos y despacho desde la exportación verificada.
 Las carpetas generated son salidas del generador; los límites no justifican dividir lógica arbitrariamente ni modificar generados a mano.

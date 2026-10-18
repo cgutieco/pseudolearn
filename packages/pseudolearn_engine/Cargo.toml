@@ -11,6 +11,7 @@ members = [
     "crates/pseudolearn_bytecode",
     "crates/pseudolearn_runtime",
     "crates/pseudolearn_library",
+    "crates/pseudolearn_aot_rt",
     "crates/pseudolearn_math_probe",
     "crates/pseudolearn_vm_dispatch",
     "crates/pseudolearn_vm",
