@@ -15869,13 +15869,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.ARRAY.ACCESS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Acceso a arreglos.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16027,13 +16029,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.ARRAY.DIMENSION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Dimensionamiento de arreglos.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16158,13 +16162,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.CONSTRUCTOR",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Constructores.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16263,13 +16269,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.COPY",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Copia superficial.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16399,13 +16407,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.DECLARATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Declaración de clases.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16504,13 +16514,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.FIELDS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Atributos y visibilidad.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16609,13 +16621,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.INHERITANCE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Herencia simple.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16745,13 +16759,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.INSTANTIATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Instanciación explícita.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16855,13 +16871,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.MEMBER-ACCESS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Acceso a miembros.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -16965,13 +16983,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.METHODS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Métodos de instancia.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -17149,13 +17169,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.OUT-OF-SCOPE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Diagnósticos de construcciones ajenas a la edición.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -17259,13 +17281,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.OVERRIDE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Sobrescritura y despacho.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -17395,13 +17419,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CLASS.SELF-AND-SUPER",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Objeto actual y superclase.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -17923,13 +17949,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CONTROL.FOR",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Bucle contado.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18085,13 +18113,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CONTROL.IF",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Condicional.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18216,13 +18246,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CONTROL.REPEAT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Bucle posterior.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18347,13 +18379,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CONTROL.SWITCH",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Selección múltiple.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18478,13 +18512,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.CONTROL.WHILE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Bucle anterior.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18614,13 +18650,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.DECL.DESIGNATOR",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Designadores.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -18744,13 +18782,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.DECL.UNINITIALIZED",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Lectura sin inicializar.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19015,13 +19055,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.DECL.VARIABLE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Declaración de variables.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19120,13 +19162,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.EDITION.MODEL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Edición del lenguaje.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19290,13 +19334,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.IO.INPUT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Entrada.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19426,13 +19472,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.IO.OUTPUT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Salida.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19583,13 +19631,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.IO.VALUE-FORMAT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Formato de valores.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19714,13 +19764,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.CHARACTER-LITERAL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Literales de carácter.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -19845,13 +19897,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.COMMENT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Comentarios y conservación.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20162,13 +20216,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.IDENTIFIER",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Identificadores.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20293,13 +20349,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.KEYWORD",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Palabras reservadas.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20429,13 +20487,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.NUMBER-LITERAL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Literales numéricos.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20560,13 +20620,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.OPERATOR-TOKEN",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tokens de operadores.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20695,13 +20757,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.TEXT-LITERAL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Literales de texto.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20821,13 +20885,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.LEXICAL.WHITESPACE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Separación léxica.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -20985,13 +21051,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.ARITHMETIC",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Aritmética básica.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21121,13 +21189,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.COMPARISON",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Comparaciones.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21231,13 +21301,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.CONCATENATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Concatenación.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21395,13 +21467,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.DIVISION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "División entera y real.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21500,13 +21574,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.LOGICAL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Operadores lógicos.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21686,13 +21762,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.POWER",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Potencia.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21791,13 +21869,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.OPS.PRECEDENCE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Precedencia y asociatividad.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -21896,13 +21976,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.PROFILE.MODEL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Modelo de perfiles oficiales.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -22025,13 +22107,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.PROFILE.STRICTNESS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Políticas de rigor.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -22130,13 +22214,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.PROFILE.TRANSLATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Traducción de vocabularios.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -23096,13 +23182,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.PROFILE.VOCABULARY",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Vocabulario bilingüe.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -23465,13 +23553,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SOURCE.ENCODING",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Codificación y normalización del texto fuente.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -23753,13 +23843,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.STMT.ASSIGNMENT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Asignación.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -23882,13 +23974,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.STMT.TERMINATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Terminación de sentencias.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24018,13 +24112,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.BY-REFERENCE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Argumentos por referencia.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24154,13 +24250,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.CALL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Llamadas.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24259,13 +24357,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.DECLARATION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Declaración de subprogramas.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24368,13 +24468,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.INTERACTIONS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Interacciones procedimentales.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24504,13 +24606,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.PARAMETERS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Parámetros.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24631,13 +24735,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.RECURSION",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Recursión.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24794,13 +24900,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.RETURN",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Retorno.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -24924,13 +25032,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SUBPROGRAM.SCOPE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Ámbitos y nombres.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -25558,13 +25668,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.SYNTAX.GRAMMAR",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Gramática abstracta formal.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26414,13 +26526,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.ARRAY",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo arreglo.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26519,13 +26633,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.BOOLEAN",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo lógico.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26620,13 +26736,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.CHARACTER",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo carácter.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26752,13 +26870,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.CHECKING-LEVELS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Frontera entre análisis y ejecución.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26857,13 +26977,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.CLASS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipos de clase.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -26998,13 +27120,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.INFERENCE",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Inferencia flexible.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -27361,13 +27485,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.INTEGER",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo entero.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -27488,13 +27614,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.REAL",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo real.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -27598,13 +27726,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.RELATIONS",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Relaciones de tipos.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -27699,13 +27829,15 @@
         "edicion": {
           "introducida_en": "2026"
         },
-        "estado": "experimental",
+        "estado": "estable",
         "formato": "see/1",
         "id": "LANG.TYPES.TEXT",
         "reemplaza": null,
         "reemplazada_por": null,
         "resumen": "Tipo cadena.",
-        "revisado_por": [],
+        "revisado_por": [
+          "Cesar Antonio Gutierrez Contreras"
+        ],
         "sujetos": [
           "reference",
           "engine",
@@ -34089,13 +34221,7 @@
       ],
       "hash": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
       "metadata": {
-        "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Aceptar la orden compilar y la opción -o en el analizador de argumentos al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
-          "impacto_usuarios": "La orden compilar (build) y la opción --salida (--output, -o) pasan a formar parte de las convenciones de la CLI; las órdenes existentes no cambian.",
-          "justificacion": "R6 añade pseudo compilar y sus convenciones deben nombrarlo.",
-          "revisado_por": "pendiente de revisión humana durante el cierre de R6"
-        },
+        "cambio": null,
         "depende_de": [
           {
             "id": "API.WIRE-FORMAT",
@@ -34773,13 +34899,7 @@
       ],
       "hash": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
       "metadata": {
-        "cambio": {
-          "clase": "ampliacion",
-          "impacto_implementaciones": "Incorporar las dos plantillas al catálogo de mensajes de la CLI al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
-          "impacto_usuarios": "Se añaden los mensajes buildSucceeded y linkerFailed; las plantillas existentes no cambian.",
-          "justificacion": "TOOL.CLI.BUILD necesita mensajes bilingües de éxito y de fallo del enlazador.",
-          "revisado_por": "pendiente de revisión humana durante el cierre de R6"
-        },
+        "cambio": null,
         "depende_de": [
           {
             "id": "TOOL.CLI.CONVENTIONS",
@@ -35211,13 +35331,7 @@
       ],
       "hash": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca",
       "metadata": {
-        "cambio": {
-          "clase": "aclaracion",
-          "impacto_implementaciones": "Corregir la columna esperada en C5 sin reinterpretar el tramo de la API. Regenerar lock y exportación.",
-          "impacto_usuarios": "Los diagnósticos de división por cero de la CLI señalan el operador div, igual que el motor.",
-          "justificacion": "Los casos derivados usaban el operando izquierdo en contradicción con IR.SOURCE-MAP#R2. Se conserva el tramo del operador y se corrigen los esperados por autorización explícita.",
-          "revisado_por": "persona responsable: confirmación explícita durante B7"
-        },
+        "cambio": null,
         "depende_de": [
           {
             "id": "TOOL.CLI.MESSAGES",

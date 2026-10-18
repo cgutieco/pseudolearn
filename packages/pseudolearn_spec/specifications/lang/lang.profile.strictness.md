@@ -4,10 +4,13 @@
   "id": "LANG.PROFILE.STRICTNESS",
   "titulo": "Políticas de rigor",
   "dominio": "lenguaje",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "reference",

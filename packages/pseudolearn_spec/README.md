@@ -26,8 +26,10 @@ Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro d
 `matrix`, `feature <nombre>`, `export [--check]`.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
-`diff` lee la revisión con Git, sin cambiar el checkout. `lock` conserva versiones históricas;
-una versión normativa ya anclada es inmutable. Código 0: éxito; 1: error o regresión exigible.
+`diff` lee la revisión con Git, sin cambiar el checkout. `lock` conserva versiones históricas y actualiza el estado de
+los anclajes activos. La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo;
+una modificación normativa con versión conservada solo se reancla cuando está autorizada: se retira la clave exacta
+`ID@versión` de `history` y `see lock` la regenera. Código 0: éxito; 1: error o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
 E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; la evidencia está en results/e10.json. E-14 registra el estudio humano diferido en results/e14.json. La correspondencia completa usa specifications/cases/migration.json y el índice educativo del núcleo.
 Verificación: `cargo xtask verify`; incluye el corpus, anclaje y exportación actualizados.
@@ -163,10 +165,10 @@ cuenta como fallo, y un escenario que exige observación (cancelación, consulta
 sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación y códigos de error, sin
 exenciones) cuando existe `results/aot.json` y guarda `results/r6-differential.json`.
 
-Una especificación cuyo contenido cambia sin cambiar de versión (por ejemplo, al añadir un sujeto) obliga a anclar de nuevo su
-hash: se retira su entrada de `history` en `specifications.lock` y `see lock` la vuelve a escribir. La inmutabilidad de
-`see lock` y la política de no incrementar versiones durante el desarrollo del lenguaje chocan en este punto; el
-procedimiento descrito conserva la política y deja constancia del reanclaje en el diff del archivo de anclaje.
+El hash normativo incluye identidad, edición, sujetos, dependencias, reemplazos y bloques de contrato; excluye estado,
+versión, revisor, títulos, resumen y prosa. Una edición normativa autorizada que conserva versión sustituye solo la clave
+`ID@versión` de `history`, y la orden `lock` genera los anclajes actualizados. Los cambios de estado y revisión
+actualizan el anclaje activo sin reemplazar el hash histórico.
 
 La conformidad de propiedades usa `property-conformance.json`: identidad versionada, algoritmo,
 semilla y cantidad de muestras. Incluye las treinta propiedades del motor y la CLI, también las de

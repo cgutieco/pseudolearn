@@ -4,10 +4,13 @@
   "id": "LANG.IO.VALUE-FORMAT",
   "titulo": "Formato de valores",
   "dominio": "lenguaje",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.3.0",
   "duenos": [
     "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "reference",

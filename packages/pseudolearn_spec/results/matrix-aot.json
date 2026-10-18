@@ -376,7 +376,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.ARRAY.ACCESS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -386,7 +386,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.ARRAY.DIMENSION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -396,7 +396,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -406,7 +406,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.COPY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -416,7 +416,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.DECLARATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -426,7 +426,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.FIELDS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -436,7 +436,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.INHERITANCE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -446,7 +446,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -456,7 +456,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -466,7 +466,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.METHODS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -476,7 +476,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -486,7 +486,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.OVERRIDE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -496,7 +496,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -506,7 +506,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.1#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -516,7 +516,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.1#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -526,7 +526,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.1#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -536,7 +536,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.CONTROL.FOR@0.3.1#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -546,7 +546,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.FOR@0.3.1#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -556,7 +556,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.FOR@0.3.1#R6",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -566,7 +566,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.IF@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -576,7 +576,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.REPEAT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -586,7 +586,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.SWITCH@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -596,7 +596,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.CONTROL.WHILE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -606,7 +606,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.DECL.DESIGNATOR@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -616,7 +616,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -626,7 +626,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.DECL.VARIABLE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -636,7 +636,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.EDITION.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -646,7 +646,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.IO.INPUT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -656,7 +656,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.IO.OUTPUT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -666,7 +666,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -676,7 +676,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -686,7 +686,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.COMMENT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -696,7 +696,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -706,7 +706,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -716,7 +716,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -726,7 +726,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -736,7 +736,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -746,7 +746,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -756,7 +756,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.ARITHMETIC@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -766,7 +766,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.COMPARISON@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -776,7 +776,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.CONCATENATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -786,7 +786,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.DIVISION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -796,7 +796,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.LOGICAL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -806,7 +806,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.OPS.POWER@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -816,7 +816,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.OPS.PRECEDENCE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -826,7 +826,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.PROFILE.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -836,7 +836,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -846,7 +846,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -856,7 +856,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -866,7 +866,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SOURCE.ENCODING@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -876,7 +876,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.SOURCE.ENCODING@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -886,7 +886,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -896,7 +896,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.STMT.TERMINATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -906,7 +906,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -916,7 +916,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -926,7 +926,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -936,7 +936,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -946,7 +946,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -956,7 +956,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -966,7 +966,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -976,7 +976,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -986,7 +986,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -996,7 +996,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.ARRAY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1006,7 +1006,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.BOOLEAN@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1016,7 +1016,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.CHARACTER@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1026,7 +1026,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1036,7 +1036,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.CLASS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1046,7 +1046,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.INFERENCE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1056,7 +1056,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.INTEGER@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1066,7 +1066,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.INTEGER@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1076,7 +1076,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.INTEGER@0.2.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1086,7 +1086,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.REAL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1096,7 +1096,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LANG.TYPES.RELATIONS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1106,7 +1106,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LANG.TYPES.TEXT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {

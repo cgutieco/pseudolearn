@@ -26,13 +26,6 @@
     }
   ],
   "titulo_en": "Run command",
-  "cambio": {
-    "clase": "aclaracion",
-    "impacto_usuarios": "Los diagnósticos de división por cero de la CLI señalan el operador div, igual que el motor.",
-    "impacto_implementaciones": "Corregir la columna esperada en C5 sin reinterpretar el tramo de la API. Regenerar lock y exportación.",
-    "justificacion": "Los casos derivados usaban el operando izquierdo en contradicción con IR.SOURCE-MAP#R2. Se conserva el tramo del operador y se corrigen los esperados por autorización explícita.",
-    "revisado_por": "persona responsable: confirmación explícita durante B7"
-  }
 }
 ---
 

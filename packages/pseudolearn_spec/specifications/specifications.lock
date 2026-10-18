@@ -881,7 +881,7 @@
         "R1": "regla"
       },
       "hash": "0f6ce95654bf66555f6738cfb1046d22e1fc3dbd4d948c72478a864e00eb74b8",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.ARRAY.DIMENSION@0.1.0": {
@@ -911,7 +911,7 @@
         "R1": "regla"
       },
       "hash": "49206d07667b2fbb8f2aac2c88eeb7bae675b5fad562ae5c4b761eef2ea5c36f",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.CONSTRUCTOR@0.1.0": {
@@ -939,7 +939,7 @@
         "R1": "regla"
       },
       "hash": "c580e4d41cac2d2065084b4e1884bc9b3b99844c571757f60079ee2e2ad75d1a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.COPY@0.1.0": {
@@ -965,7 +965,7 @@
         "R1": "regla"
       },
       "hash": "46a9b93e85ad3445d452eb15b8af17e019864ab9f45e383c2eefda88c8b2c474",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.DECLARATION@0.1.0": {
@@ -993,7 +993,7 @@
         "R1": "regla"
       },
       "hash": "2a6d05cf944b849b8a304abc7efd6f31b5066fc09be184c39a5bf4c0f836cbbb",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.FIELDS@0.1.0": {
@@ -1019,7 +1019,7 @@
         "R1": "regla"
       },
       "hash": "82570c0a67d4d6ac4e1273aa97f606e05c9211cca8066cbc3c7740bfb7209e7d",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.INHERITANCE@0.1.0": {
@@ -1045,7 +1045,7 @@
         "R1": "regla"
       },
       "hash": "553cc19dfe7c66a5079574cddab768888bb4c9904a26e6c50c92daf482dcd1ed",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.INSTANTIATION@0.1.0": {
@@ -1073,7 +1073,7 @@
         "R1": "regla"
       },
       "hash": "8542f7a126413f18be49ae772c02b76b56ec6e217c142c2ac3e73207bf119011",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.MEMBER-ACCESS@0.1.0": {
@@ -1099,7 +1099,7 @@
         "R1": "regla"
       },
       "hash": "b6a4235919c00a3efae78f2d9f6b241cef88d856c8f3c54dcbb7efc43f79e4b3",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.METHODS@0.1.0": {
@@ -1125,7 +1125,7 @@
         "R1": "regla"
       },
       "hash": "b4e2f8d2f34c9c5034cd81c7081a56fdcb4b6d75b2f297d126a22802324b86fe",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.OUT-OF-SCOPE@0.1.0": {
@@ -1165,7 +1165,7 @@
         "R1": "regla"
       },
       "hash": "b21fdcadfe7ee92ef29675fb7986c97ffecc7289e50a31ee11d559644ce2c5e6",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.CLASS.OVERRIDE@0.1.0": {
@@ -1191,7 +1191,7 @@
         "R1": "regla"
       },
       "hash": "aca82cefa38780040ea37f0843b060655b8cc4a7e04568f4a57eec17b63b5173",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.SELF-AND-SUPER@0.1.0": {
@@ -1219,7 +1219,7 @@
         "R1": "regla"
       },
       "hash": "93ae4b2c91ce7cc9a44e2281b063327a13ebe60e0ae1c0521f9dea04673340dd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.FOR@0.1.0": {
@@ -1338,7 +1338,7 @@
         "R6": "regla"
       },
       "hash": "973fa3d92ae6fedbe12d65b121417a6572ee43733e0d4942e54692ad726dcb58",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.1"
     },
     "LANG.CONTROL.IF@0.1.0": {
@@ -1368,7 +1368,7 @@
         "R1": "regla"
       },
       "hash": "acc40faff555cdf8c816382dea0df9584fd3332131ba3c813174a432411a5529",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.REPEAT@0.1.0": {
@@ -1396,7 +1396,7 @@
         "R1": "regla"
       },
       "hash": "741beb1f16fe57c63e70168edc139d0a5331b79c012d0e609c819762e42772ff",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.SWITCH@0.1.0": {
@@ -1424,7 +1424,7 @@
         "R1": "regla"
       },
       "hash": "b3b072942604754b15c40b21f94551835a659d26f76b2e035a7cd22f07eb8855",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.WHILE@0.1.0": {
@@ -1452,7 +1452,7 @@
         "R1": "regla"
       },
       "hash": "8790d907d61b230c915d115eb410022d86897fbe6bb593e09a910db11a770b92",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.DESIGNATOR@0.1.0": {
@@ -1480,7 +1480,7 @@
         "R1": "regla"
       },
       "hash": "a231677861a1df49f5aff53772991eb77bc2f8ca8b2525e4b14249cfd6ad145e",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.UNINITIALIZED@0.1.0": {
@@ -1508,7 +1508,7 @@
         "R1": "regla"
       },
       "hash": "dfa783b20f491112f7bf5f22ed0149f0c39e826197a3c10456c78e76b2087804",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.UNUSED@0.1.0": {
@@ -1564,7 +1564,7 @@
         "R1": "regla"
       },
       "hash": "cb01bc8c87ffbe3e57e673ab8443a1c347e32a2cb914df781d87bbf390e0bf19",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.EDITION.MODEL@0.1.0": {
@@ -1590,7 +1590,7 @@
         "R1": "regla"
       },
       "hash": "9b78d59f23f13680fdfeb637921761e72ba3b9c402dc7379076bbb25d054836c",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.INPUT@0.1.0": {
@@ -1620,7 +1620,7 @@
         "R1": "regla"
       },
       "hash": "5b66784d704926720a89690c0ea9269303494d0cd96863ef5d40f81c964ab3b0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.OUTPUT@0.1.0": {
@@ -1648,7 +1648,7 @@
         "R1": "regla"
       },
       "hash": "2fafc489e28fe8d6af9184352c08d1146d51d94477bd6ff8fc424ad0de516490",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.VALUE-FORMAT@0.1.0": {
@@ -1691,7 +1691,7 @@
         "R1": "regla"
       },
       "hash": "4ed25b564ac4cfa0862acdebe302d8b54f016375789d04d35ac3f93618f1ad12",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.LEXICAL.CHARACTER-LITERAL@0.1.0": {
@@ -1719,7 +1719,7 @@
         "R1": "regla"
       },
       "hash": "fc3c773601f16c624307759116366aa2eec79c9c5ff907c53519d9c5071abe90",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.COMMENT@0.1.0": {
@@ -1747,7 +1747,7 @@
         "R1": "regla"
       },
       "hash": "6a119e23cfacf9c8a0d18d563f9a91b878aaffa8873861b8dc2c0ad772155a53",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.ERRORS@0.1.0": {
@@ -1807,7 +1807,7 @@
         "R1": "regla"
       },
       "hash": "0d3fbfb4e2167f6341ce030aacd56fbed02443383fb16d33cd3788f92ec6dd58",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.KEYWORD@0.1.0": {
@@ -1835,7 +1835,7 @@
         "R1": "regla"
       },
       "hash": "7c70a5649f422e7893157da0e3c35e96a73c056b9f5b625c86e684a9fb263d4a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.NUMBER-LITERAL@0.1.0": {
@@ -1877,7 +1877,7 @@
         "R1": "regla"
       },
       "hash": "5467f2083415a75089d23e0cb02da056592f16e9e0bae267e4b1fb434f0075dd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.LEXICAL.OPERATOR-TOKEN@0.1.0": {
@@ -1905,7 +1905,7 @@
         "R1": "regla"
       },
       "hash": "c682f4cd9cf9d14301f725e20a8609dd7a54a14cabf2281003bce1e5a5130772",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.TEXT-LITERAL@0.1.0": {
@@ -1933,7 +1933,7 @@
         "R1": "regla"
       },
       "hash": "16913a5a15c8ca8b42e776116924b394229b0ff0fc201272c46a81efcc6d0da8",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.WHITESPACE@0.1.0": {
@@ -1961,7 +1961,7 @@
         "R1": "regla"
       },
       "hash": "d556ccd837d1548df8d3f0ea20fae62a0f6fcf3fa6c647a5ffb81b5b254e6077",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.ARITHMETIC@0.1.0": {
@@ -1991,7 +1991,7 @@
         "R1": "regla"
       },
       "hash": "f98597111b51323802b18b71b502f108a8f952f34970d8dcb0ba5de78415d2b9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.COMPARISON@0.1.0": {
@@ -2019,7 +2019,7 @@
         "R1": "regla"
       },
       "hash": "a182d107115eec8a965316ea63fff4977516b8e2d58c80f6e85e2ed0b5f435a0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.CONCATENATION@0.1.0": {
@@ -2045,7 +2045,7 @@
         "R1": "regla"
       },
       "hash": "53cbed3f0c78422459a16057e181673f8302d229fc9551db73491dbc3d8e9ec7",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.DIVISION@0.1.0": {
@@ -2075,7 +2075,7 @@
         "R1": "regla"
       },
       "hash": "f0d742cf06639dc3e9d01bb15d9a3da245eafa51d7d5b6a00108e3de74295ffc",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.LOGICAL@0.1.0": {
@@ -2101,7 +2101,7 @@
         "R1": "regla"
       },
       "hash": "55dc1135bafff69e0c8bfe9c44018bde07018cd38a9845355aa7aa4dbfff6780",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.POWER@0.1.0": {
@@ -2131,7 +2131,7 @@
         "R1": "regla"
       },
       "hash": "d882ce2fe624ee97b7b0e3393c2e5beaf435e80de938bb850475e2c2c773ba3a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.PRECEDENCE@0.1.0": {
@@ -2157,7 +2157,7 @@
         "R1": "regla"
       },
       "hash": "4b1c7683d89b1ee116858bfa1a8cb2d81ecff53ed21f5f712b5348c1aa0edce9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.MODEL@0.1.0": {
@@ -2183,7 +2183,7 @@
         "R1": "regla"
       },
       "hash": "a56fe9abfe5bccb83981911f2ddcf92e39992e74db2d434658cf4e0d33e5e1db",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.STRICTNESS@0.1.0": {
@@ -2211,7 +2211,7 @@
         "R1": "regla"
       },
       "hash": "99fcf254204df7e347352c1e496ca8a2fb4c6bc47847b51eb7f26d2923466ba4",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.TRANSLATION@0.1.0": {
@@ -2237,7 +2237,7 @@
         "R1": "regla"
       },
       "hash": "c3deb1d1c1e713c5b136163994129e2720de82a1d189c40b4406f46199ff53c2",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.VOCABULARY@0.1.0": {
@@ -2265,7 +2265,7 @@
         "R1": "regla"
       },
       "hash": "83c378fb66288b72b521b593c3d61d546d518fa8e3f2328c34c1976b8550eb05",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROGRAM.STRUCTURE@0.1.0": {
@@ -2331,7 +2331,7 @@
         "R2": "regla"
       },
       "hash": "2a2c22bef2168d4ca68fb1140ed6a411349c65e2cfa26bd7f4caaa3de34ecbdd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SOURCE.POSITION@0.1.0": {
@@ -2385,7 +2385,7 @@
         "R1": "regla"
       },
       "hash": "d9bbcd1f4def7da7a0e8cf7b6aa3e535dbb476e2f5d81e393a13e94050740bf0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.STMT.TERMINATION@0.1.0": {
@@ -2413,7 +2413,7 @@
         "R1": "regla"
       },
       "hash": "54d607cd64948ea821f6c0f75ffd2bb5316ae28e867fef9ecbae51e9b3ae488b",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.BY-REFERENCE@0.1.0": {
@@ -2441,7 +2441,7 @@
         "R1": "regla"
       },
       "hash": "e80915e8acb988c4d8f94d3c0936b3eed2d82486cd0250c726fa77b162c972d7",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.CALL@0.1.0": {
@@ -2469,7 +2469,7 @@
         "R1": "regla"
       },
       "hash": "c04b384d6a38df21d0792cacfa9a1d7300baa21f5f6c92aed0ef0a9ea8cc779e",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.DECLARATION@0.1.0": {
@@ -2495,7 +2495,7 @@
         "R1": "regla"
       },
       "hash": "355f31545728ba888ac41950382b33b5c3addf4cca4e21ea4ec9f57bdeb2a365",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.INTERACTIONS@0.1.0": {
@@ -2521,7 +2521,7 @@
         "R1": "regla"
       },
       "hash": "b79a90828e8ba7d6b8cf3a108dd81c8c5221add31b79e5d14a30b7d9b6be9a2f",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.PARAMETERS@0.1.0": {
@@ -2549,7 +2549,7 @@
         "R1": "regla"
       },
       "hash": "cfe1fb76fa92333ffc9f1cc2ecd1e139b36638988e272b8910b11f642b4e96c9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.RECURSION@0.1.0": {
@@ -2577,7 +2577,7 @@
         "R1": "regla"
       },
       "hash": "01633a2d56971c13158dd86ae2e0a4a264cc7ec7cf58f479dbef3b15e8914afa",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.RETURN@0.1.0": {
@@ -2607,7 +2607,7 @@
         "R1": "regla"
       },
       "hash": "41703e94e31e8ebef4172e3ff60a2cda3f0af9eb9cb202bb5858fcd4badea1b5",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.SCOPE@0.1.0": {
@@ -2635,7 +2635,7 @@
         "R1": "regla"
       },
       "hash": "8542c491f99f03580502c0af4b28b7c6e1d81486dd7db5dbd0a8488bf8978f99",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SYNTAX.ANALYSIS-LIMITS@0.1.0": {
@@ -2705,7 +2705,7 @@
         "R1": "regla"
       },
       "hash": "4e1b1ca9162c707fe4355bd313676668b37359b4448330869bf141accb8edad2",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SYNTAX.RECOVERY@0.1.0": {
@@ -2796,7 +2796,7 @@
         "R1": "regla"
       },
       "hash": "36aa96924f84fa13583116062f1e8cfb0cc010d51cf0b81f8377daf0bc8b1f52",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.BOOLEAN@0.1.0": {
@@ -2822,7 +2822,7 @@
         "R1": "regla"
       },
       "hash": "72bd3230b1a5833f2d856bc9e183ebb5d9006c4af3ad57ec8a8746cea712ad0a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CHARACTER@0.1.0": {
@@ -2848,7 +2848,7 @@
         "R1": "regla"
       },
       "hash": "24648678578723c1893cda7b0e0cd029f2c3726ba8ee7406db061a89ca6992c9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CHECKING-LEVELS@0.1.0": {
@@ -2876,7 +2876,7 @@
         "R1": "regla"
       },
       "hash": "c907f33957e45ad625a896f267e66a59c113274e8dec287f476a61a13d33f686",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CLASS@0.1.0": {
@@ -2902,7 +2902,7 @@
         "R1": "regla"
       },
       "hash": "7102b379d881394c0c1767fc9fb0c979d8760bdee1b699985f1e3f03570f68bf",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.INFERENCE@0.1.0": {
@@ -2930,7 +2930,7 @@
         "R1": "regla"
       },
       "hash": "5ac38e32f5b737533d4277ad6e3a4c8ef2451034ef09756283a4935677224063",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.INTEGER@0.1.0": {
@@ -2976,7 +2976,7 @@
         "R3": "regla"
       },
       "hash": "aed12df2d456adb1886a9375dad769e70d8dc9a5cb091da7f069bb4f662c50ac",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.REAL@0.1.0": {
@@ -3003,7 +3003,7 @@
         "R1": "regla"
       },
       "hash": "dafa234fa3c7e78c7768bf755d25ff3556095f394074a20022c15a7ad56f456c",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.RELATIONS@0.1.0": {
@@ -3029,7 +3029,7 @@
         "R1": "regla"
       },
       "hash": "103020c1848e76bc136e1f1cd8ae51d835881eae43a3896bf0714c25e2745639",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.TEXT@0.1.0": {
@@ -3055,7 +3055,7 @@
         "R1": "regla"
       },
       "hash": "dc36b6f60e806dd890afa719250cb53d978583fba18a932000f9dbeae4a78d37",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LIB.CORE.CONVERSION@0.1.0": {
@@ -4674,7 +4674,7 @@
         "R1": "regla"
       },
       "hash": "0f6ce95654bf66555f6738cfb1046d22e1fc3dbd4d948c72478a864e00eb74b8",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.ARRAY.DIMENSION": {
@@ -4689,7 +4689,7 @@
         "R1": "regla"
       },
       "hash": "49206d07667b2fbb8f2aac2c88eeb7bae675b5fad562ae5c4b761eef2ea5c36f",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.CONSTRUCTOR": {
@@ -4703,7 +4703,7 @@
         "R1": "regla"
       },
       "hash": "c580e4d41cac2d2065084b4e1884bc9b3b99844c571757f60079ee2e2ad75d1a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.COPY": {
@@ -4716,7 +4716,7 @@
         "R1": "regla"
       },
       "hash": "46a9b93e85ad3445d452eb15b8af17e019864ab9f45e383c2eefda88c8b2c474",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.DECLARATION": {
@@ -4730,7 +4730,7 @@
         "R1": "regla"
       },
       "hash": "2a6d05cf944b849b8a304abc7efd6f31b5066fc09be184c39a5bf4c0f836cbbb",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.FIELDS": {
@@ -4743,7 +4743,7 @@
         "R1": "regla"
       },
       "hash": "82570c0a67d4d6ac4e1273aa97f606e05c9211cca8066cbc3c7740bfb7209e7d",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.INHERITANCE": {
@@ -4756,7 +4756,7 @@
         "R1": "regla"
       },
       "hash": "553cc19dfe7c66a5079574cddab768888bb4c9904a26e6c50c92daf482dcd1ed",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.INSTANTIATION": {
@@ -4770,7 +4770,7 @@
         "R1": "regla"
       },
       "hash": "8542f7a126413f18be49ae772c02b76b56ec6e217c142c2ac3e73207bf119011",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.MEMBER-ACCESS": {
@@ -4783,7 +4783,7 @@
         "R1": "regla"
       },
       "hash": "b6a4235919c00a3efae78f2d9f6b241cef88d856c8f3c54dcbb7efc43f79e4b3",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.METHODS": {
@@ -4796,7 +4796,7 @@
         "R1": "regla"
       },
       "hash": "b4e2f8d2f34c9c5034cd81c7081a56fdcb4b6d75b2f297d126a22802324b86fe",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.OUT-OF-SCOPE": {
@@ -4810,7 +4810,7 @@
         "R1": "regla"
       },
       "hash": "b21fdcadfe7ee92ef29675fb7986c97ffecc7289e50a31ee11d559644ce2c5e6",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.CLASS.OVERRIDE": {
@@ -4823,7 +4823,7 @@
         "R1": "regla"
       },
       "hash": "aca82cefa38780040ea37f0843b060655b8cc4a7e04568f4a57eec17b63b5173",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CLASS.SELF-AND-SUPER": {
@@ -4837,7 +4837,7 @@
         "R1": "regla"
       },
       "hash": "93ae4b2c91ce7cc9a44e2281b063327a13ebe60e0ae1c0521f9dea04673340dd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.FOR": {
@@ -4868,7 +4868,7 @@
         "R6": "regla"
       },
       "hash": "973fa3d92ae6fedbe12d65b121417a6572ee43733e0d4942e54692ad726dcb58",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.1"
     },
     "LANG.CONTROL.IF": {
@@ -4883,7 +4883,7 @@
         "R1": "regla"
       },
       "hash": "acc40faff555cdf8c816382dea0df9584fd3332131ba3c813174a432411a5529",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.REPEAT": {
@@ -4897,7 +4897,7 @@
         "R1": "regla"
       },
       "hash": "741beb1f16fe57c63e70168edc139d0a5331b79c012d0e609c819762e42772ff",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.SWITCH": {
@@ -4911,7 +4911,7 @@
         "R1": "regla"
       },
       "hash": "b3b072942604754b15c40b21f94551835a659d26f76b2e035a7cd22f07eb8855",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.CONTROL.WHILE": {
@@ -4925,7 +4925,7 @@
         "R1": "regla"
       },
       "hash": "8790d907d61b230c915d115eb410022d86897fbe6bb593e09a910db11a770b92",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.DESIGNATOR": {
@@ -4939,7 +4939,7 @@
         "R1": "regla"
       },
       "hash": "a231677861a1df49f5aff53772991eb77bc2f8ca8b2525e4b14249cfd6ad145e",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.UNINITIALIZED": {
@@ -4953,7 +4953,7 @@
         "R1": "regla"
       },
       "hash": "dfa783b20f491112f7bf5f22ed0149f0c39e826197a3c10456c78e76b2087804",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.DECL.UNUSED": {
@@ -4981,7 +4981,7 @@
         "R1": "regla"
       },
       "hash": "cb01bc8c87ffbe3e57e673ab8443a1c347e32a2cb914df781d87bbf390e0bf19",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.EDITION.MODEL": {
@@ -4994,7 +4994,7 @@
         "R1": "regla"
       },
       "hash": "9b78d59f23f13680fdfeb637921761e72ba3b9c402dc7379076bbb25d054836c",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.INPUT": {
@@ -5009,7 +5009,7 @@
         "R1": "regla"
       },
       "hash": "5b66784d704926720a89690c0ea9269303494d0cd96863ef5d40f81c964ab3b0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.OUTPUT": {
@@ -5023,7 +5023,7 @@
         "R1": "regla"
       },
       "hash": "2fafc489e28fe8d6af9184352c08d1146d51d94477bd6ff8fc424ad0de516490",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.IO.VALUE-FORMAT": {
@@ -5038,7 +5038,7 @@
         "R1": "regla"
       },
       "hash": "4ed25b564ac4cfa0862acdebe302d8b54f016375789d04d35ac3f93618f1ad12",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.LEXICAL.CHARACTER-LITERAL": {
@@ -5052,7 +5052,7 @@
         "R1": "regla"
       },
       "hash": "fc3c773601f16c624307759116366aa2eec79c9c5ff907c53519d9c5071abe90",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.COMMENT": {
@@ -5066,7 +5066,7 @@
         "R1": "regla"
       },
       "hash": "6a119e23cfacf9c8a0d18d563f9a91b878aaffa8873861b8dc2c0ad772155a53",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.ERRORS": {
@@ -5096,7 +5096,7 @@
         "R1": "regla"
       },
       "hash": "0d3fbfb4e2167f6341ce030aacd56fbed02443383fb16d33cd3788f92ec6dd58",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.KEYWORD": {
@@ -5110,7 +5110,7 @@
         "R1": "regla"
       },
       "hash": "7c70a5649f422e7893157da0e3c35e96a73c056b9f5b625c86e684a9fb263d4a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.NUMBER-LITERAL": {
@@ -5124,7 +5124,7 @@
         "R1": "regla"
       },
       "hash": "5467f2083415a75089d23e0cb02da056592f16e9e0bae267e4b1fb434f0075dd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.3.0"
     },
     "LANG.LEXICAL.OPERATOR-TOKEN": {
@@ -5138,7 +5138,7 @@
         "R1": "regla"
       },
       "hash": "c682f4cd9cf9d14301f725e20a8609dd7a54a14cabf2281003bce1e5a5130772",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.TEXT-LITERAL": {
@@ -5152,7 +5152,7 @@
         "R1": "regla"
       },
       "hash": "16913a5a15c8ca8b42e776116924b394229b0ff0fc201272c46a81efcc6d0da8",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.LEXICAL.WHITESPACE": {
@@ -5166,7 +5166,7 @@
         "R1": "regla"
       },
       "hash": "d556ccd837d1548df8d3f0ea20fae62a0f6fcf3fa6c647a5ffb81b5b254e6077",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.ARITHMETIC": {
@@ -5181,7 +5181,7 @@
         "R1": "regla"
       },
       "hash": "f98597111b51323802b18b71b502f108a8f952f34970d8dcb0ba5de78415d2b9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.COMPARISON": {
@@ -5195,7 +5195,7 @@
         "R1": "regla"
       },
       "hash": "a182d107115eec8a965316ea63fff4977516b8e2d58c80f6e85e2ed0b5f435a0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.CONCATENATION": {
@@ -5208,7 +5208,7 @@
         "R1": "regla"
       },
       "hash": "53cbed3f0c78422459a16057e181673f8302d229fc9551db73491dbc3d8e9ec7",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.DIVISION": {
@@ -5223,7 +5223,7 @@
         "R1": "regla"
       },
       "hash": "f0d742cf06639dc3e9d01bb15d9a3da245eafa51d7d5b6a00108e3de74295ffc",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.LOGICAL": {
@@ -5236,7 +5236,7 @@
         "R1": "regla"
       },
       "hash": "55dc1135bafff69e0c8bfe9c44018bde07018cd38a9845355aa7aa4dbfff6780",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.POWER": {
@@ -5252,7 +5252,7 @@
         "R1": "regla"
       },
       "hash": "d882ce2fe624ee97b7b0e3393c2e5beaf435e80de938bb850475e2c2c773ba3a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.OPS.PRECEDENCE": {
@@ -5265,7 +5265,7 @@
         "R1": "regla"
       },
       "hash": "4b1c7683d89b1ee116858bfa1a8cb2d81ecff53ed21f5f712b5348c1aa0edce9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.MODEL": {
@@ -5278,7 +5278,7 @@
         "R1": "regla"
       },
       "hash": "a56fe9abfe5bccb83981911f2ddcf92e39992e74db2d434658cf4e0d33e5e1db",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.STRICTNESS": {
@@ -5292,7 +5292,7 @@
         "R1": "regla"
       },
       "hash": "99fcf254204df7e347352c1e496ca8a2fb4c6bc47847b51eb7f26d2923466ba4",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.TRANSLATION": {
@@ -5305,7 +5305,7 @@
         "R1": "regla"
       },
       "hash": "c3deb1d1c1e713c5b136163994129e2720de82a1d189c40b4406f46199ff53c2",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROFILE.VOCABULARY": {
@@ -5319,7 +5319,7 @@
         "R1": "regla"
       },
       "hash": "83c378fb66288b72b521b593c3d61d546d518fa8e3f2328c34c1976b8550eb05",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.PROGRAM.STRUCTURE": {
@@ -5352,7 +5352,7 @@
         "R2": "regla"
       },
       "hash": "2a2c22bef2168d4ca68fb1140ed6a411349c65e2cfa26bd7f4caaa3de34ecbdd",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SOURCE.POSITION": {
@@ -5379,7 +5379,7 @@
         "R1": "regla"
       },
       "hash": "d9bbcd1f4def7da7a0e8cf7b6aa3e535dbb476e2f5d81e393a13e94050740bf0",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.STMT.TERMINATION": {
@@ -5393,7 +5393,7 @@
         "R1": "regla"
       },
       "hash": "54d607cd64948ea821f6c0f75ffd2bb5316ae28e867fef9ecbae51e9b3ae488b",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.BY-REFERENCE": {
@@ -5407,7 +5407,7 @@
         "R1": "regla"
       },
       "hash": "e80915e8acb988c4d8f94d3c0936b3eed2d82486cd0250c726fa77b162c972d7",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.CALL": {
@@ -5421,7 +5421,7 @@
         "R1": "regla"
       },
       "hash": "c04b384d6a38df21d0792cacfa9a1d7300baa21f5f6c92aed0ef0a9ea8cc779e",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.DECLARATION": {
@@ -5434,7 +5434,7 @@
         "R1": "regla"
       },
       "hash": "355f31545728ba888ac41950382b33b5c3addf4cca4e21ea4ec9f57bdeb2a365",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.INTERACTIONS": {
@@ -5447,7 +5447,7 @@
         "R1": "regla"
       },
       "hash": "b79a90828e8ba7d6b8cf3a108dd81c8c5221add31b79e5d14a30b7d9b6be9a2f",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.PARAMETERS": {
@@ -5461,7 +5461,7 @@
         "R1": "regla"
       },
       "hash": "cfe1fb76fa92333ffc9f1cc2ecd1e139b36638988e272b8910b11f642b4e96c9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.RECURSION": {
@@ -5475,7 +5475,7 @@
         "R1": "regla"
       },
       "hash": "01633a2d56971c13158dd86ae2e0a4a264cc7ec7cf58f479dbef3b15e8914afa",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.RETURN": {
@@ -5490,7 +5490,7 @@
         "R1": "regla"
       },
       "hash": "41703e94e31e8ebef4172e3ff60a2cda3f0af9eb9cb202bb5858fcd4badea1b5",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SUBPROGRAM.SCOPE": {
@@ -5504,7 +5504,7 @@
         "R1": "regla"
       },
       "hash": "8542c491f99f03580502c0af4b28b7c6e1d81486dd7db5dbd0a8488bf8978f99",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SYNTAX.ANALYSIS-LIMITS": {
@@ -5539,7 +5539,7 @@
         "R1": "regla"
       },
       "hash": "4e1b1ca9162c707fe4355bd313676668b37359b4448330869bf141accb8edad2",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.SYNTAX.RECOVERY": {
@@ -5576,7 +5576,7 @@
         "R1": "regla"
       },
       "hash": "36aa96924f84fa13583116062f1e8cfb0cc010d51cf0b81f8377daf0bc8b1f52",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.BOOLEAN": {
@@ -5589,7 +5589,7 @@
         "R1": "regla"
       },
       "hash": "72bd3230b1a5833f2d856bc9e183ebb5d9006c4af3ad57ec8a8746cea712ad0a",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CHARACTER": {
@@ -5602,7 +5602,7 @@
         "R1": "regla"
       },
       "hash": "24648678578723c1893cda7b0e0cd029f2c3726ba8ee7406db061a89ca6992c9",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CHECKING-LEVELS": {
@@ -5616,7 +5616,7 @@
         "R1": "regla"
       },
       "hash": "c907f33957e45ad625a896f267e66a59c113274e8dec287f476a61a13d33f686",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.CLASS": {
@@ -5629,7 +5629,7 @@
         "R1": "regla"
       },
       "hash": "7102b379d881394c0c1767fc9fb0c979d8760bdee1b699985f1e3f03570f68bf",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.INFERENCE": {
@@ -5643,7 +5643,7 @@
         "R1": "regla"
       },
       "hash": "5ac38e32f5b737533d4277ad6e3a4c8ef2451034ef09756283a4935677224063",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.INTEGER": {
@@ -5666,7 +5666,7 @@
         "R3": "regla"
       },
       "hash": "aed12df2d456adb1886a9375dad769e70d8dc9a5cb091da7f069bb4f662c50ac",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.REAL": {
@@ -5680,7 +5680,7 @@
         "R1": "regla"
       },
       "hash": "dafa234fa3c7e78c7768bf755d25ff3556095f394074a20022c15a7ad56f456c",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.RELATIONS": {
@@ -5693,7 +5693,7 @@
         "R1": "regla"
       },
       "hash": "103020c1848e76bc136e1f1cd8ae51d835881eae43a3896bf0714c25e2745639",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LANG.TYPES.TEXT": {
@@ -5706,7 +5706,7 @@
         "R1": "regla"
       },
       "hash": "dc36b6f60e806dd890afa719250cb53d978583fba18a932000f9dbeae4a78d37",
-      "state": "experimental",
+      "state": "estable",
       "version": "0.2.0"
     },
     "LIB.CORE.CONVERSION": {

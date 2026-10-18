@@ -263,25 +263,27 @@ R0 Fundación
 
 ### R6 · Backend nativo (Cranelift)
 
-- [ ] **Experimentos:** E-NR1.
+- [x] **Experimentos:** E-NR1 ejecutado y conservado en `packages/pseudolearn_benchmarks/results/r6-aot/`; razón geométrica global de 5,8× frente a V1F, por encima del máximo N3 de 1,30×.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R5.
 - **Contenido.**
-  - [ ] `RT.ABI`, `RT.FAULT.REPORTING`, `RT.PROCESS`, `RT.LINKING`, `TOOL.CLI.BUILD` y `PERF.AOT.LEVEL`,
+  - [x] `RT.ABI`, `RT.FAULT.REPORTING`, `RT.PROCESS`, `RT.LINKING`, `TOOL.CLI.BUILD` y `PERF.AOT.LEVEL`,
      especificadas **al empezar la fase** y antes de su código.
-  - [ ] Crate `codegen`.
-  - [ ] `runtime` como `staticlib`.
-  - [ ] `pseudo build`.
-  - [ ] Sujeto `aot`.
+  - [x] Crate `codegen`.
+  - [x] `runtime` como `staticlib`.
+  - [x] `pseudo build`.
+  - [x] Sujeto `aot`.
 - **Criterios de aceptación.**
-  - [ ] `aot` en `cumple` en todo `LANG`, `LIB` y `MEM` ejecutables (salidas, diagnósticos de ejecución,
+  - [x] `aot` en `cumple` en todo `LANG`, `LIB` y `MEM` ejecutables (salidas, diagnósticos de ejecución,
      terminación), salvo lo `exento` de observación.
-  - [ ] Las reglas de ejecución de `LANG` pasan a `estable` con **dos sujetos Rust** (`engine` y `aot`) más
-     `reference`.
-  - [ ] Informe de `PERF.AOT.LEVEL` publicado según el protocolo, **incluidos los resultados
-     desfavorables**, con la decisión sobre LLVM.
+  - [x] Las 66 especificaciones de ejecución de `LANG` pasan a `estable` con **dos sujetos Rust** (`engine` y `aot`)
+     más `reference`, tras revisión independiente y sin cambiar versiones.
+  - [x] Informe de `PERF.AOT.LEVEL` publicado según el protocolo, **incluidos los resultados desfavorables**, con la
+     decisión de retener Cranelift y reevaluar LLVM después de optimizar celdas y asignación.
+  - [ ] `PERF.AOT.LEVEL#R1` alcanza N3: razón geométrica por familia `aot / V1F` ≤ 1,30×. E-NR1 registró 5,8× global;
+     se requiere optimizar las vías de celdas y asignación y volver a verificar el criterio.
   - [ ] Los builds móviles y Wasm no incluyen Cranelift: verificado por el tamaño y por las *features*
      activadas.
 

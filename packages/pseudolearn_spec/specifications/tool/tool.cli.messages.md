@@ -26,13 +26,6 @@
     }
   ],
   "titulo_en": "CLI messages",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Se añaden los mensajes buildSucceeded y linkerFailed; las plantillas existentes no cambian.",
-    "impacto_implementaciones": "Incorporar las dos plantillas al catálogo de mensajes de la CLI al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
-    "justificacion": "TOOL.CLI.BUILD necesita mensajes bilingües de éxito y de fallo del enlazador.",
-    "revisado_por": "pendiente de revisión humana durante el cierre de R6"
-  }
 }
 ---
 

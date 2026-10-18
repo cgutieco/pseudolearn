@@ -21,7 +21,7 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| El código generado queda entre 3,4 y 51 veces por encima del techo nativo con marcos (razón geométrica 5,8 sobre las diez cargas de `PERF.SUITE.AWFY-CORE`): las celdas, la asignación de objetos y arreglos y la matemática de biblioteca se resuelven por entradas del runtime; el perfil de `storage` muestra el coste en la asignación y la recolección del montón, no en el código generado. El despacho virtual es una tabla de saltos sin caché monomórfica y toda función reserva ventana de raíces | Entrada rápida en línea para celdas y asignación, devirtualización de métodos sin sobrescritura y omisión de raíces en funciones escalares | Cierre del nivel nativo (`PERF.AOT.LEVEL`) |
+| E-NR1 arroja una razón geométrica de 5,8 frente al techo nativo con marcos, por encima del límite N3 de 1,30; las razones por familia son 3,7 numérica, 6,4 recursiva, 6,9 objetos y 5,6 arreglos. En `nbody`, `queens` y `sieve` dominan el código generado y `rt_aot_cell_load`; en `storage` dominan la asignación y la recolección del montón y el código generado ocupa el 2 % del tiempo. El despacho virtual no tiene caché monomórfica y toda función reserva una ventana de raíces | Caminos rápidos en línea para carga y escritura de celdas y asignación de arreglos y objetos; después, devirtualización de métodos sin sobrescritura y omisión de raíces en funciones escalares | Cierre del nivel nativo (`PERF.AOT.LEVEL`); reevaluar LLVM después de optimizar y medir estas rutas |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -198,6 +198,12 @@ Problema: con `opt_level = none` el código generado carga y almacena cada valor
 trampas son ramas explícitas a bloques fríos con llamadas, de modo que ninguna comprobación ni efecto cambia de orden.
 La conformidad y la propiedad de primera trampa sobre el corpus verifican el orden. Medido: mejora la razón geométrica
 frente al techo de 7,8 a 5,8 sin cambiar ninguna observación.
+
+Problema: elegir backend release con una brecha N3 de 5,8× no distingue el coste del generador del coste de las celdas y del
+runtime de asignación. Elección: Cranelift permanece como backend release; implementar primero las rutas rápidas de celdas
+y asignación de arreglos y objetos, y reevaluar LLVM después de repetir la medición. Descartado: migrar a LLVM antes de
+eliminar esos costes, porque E-NR1 atribuye el tiempo dominante a `rt_aot_cell_load` y al runtime de montón en las cargas
+que exponen la brecha.
 
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.

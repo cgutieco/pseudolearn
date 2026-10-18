@@ -35,7 +35,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| codegen: Cranelift, trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; LLVM como nivel release tras medición | E-NR1, RT.ABI | R6 |
+| codegen: Cranelift permanece como backend release; trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; reevaluar LLVM tras optimizar celdas y asignación | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 

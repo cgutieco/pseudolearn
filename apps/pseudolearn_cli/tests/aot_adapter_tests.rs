@@ -26,7 +26,17 @@ impl Temporary {
     }
 
     fn leftovers(&self) -> std::io::Result<usize> {
-        Ok(std::fs::read_dir(&self.0)?.count())
+        let mut leftover_count: usize = 0;
+        for entry in std::fs::read_dir(&self.0)? {
+            let file_name = entry?.file_name();
+            let belongs_to_cli = file_name.to_str().is_some_and(|name| {
+                name.starts_with("pseudo_aot_") || name.starts_with("pseudo_link_")
+            });
+            if belongs_to_cli {
+                leftover_count = leftover_count.saturating_add(1);
+            }
+        }
+        Ok(leftover_count)
     }
 }
 

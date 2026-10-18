@@ -26,13 +26,6 @@
     }
   ],
   "titulo_en": "CLI conventions",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "La orden compilar (build) y la opción --salida (--output, -o) pasan a formar parte de las convenciones de la CLI; las órdenes existentes no cambian.",
-    "impacto_implementaciones": "Aceptar la orden compilar y la opción -o en el analizador de argumentos al implementar TOOL.CLI.BUILD. Regenerar lock y exportación.",
-    "justificacion": "R6 añade pseudo compilar y sus convenciones deben nombrarlo.",
-    "revisado_por": "pendiente de revisión humana durante el cierre de R6"
-  }
 }
 ---
 

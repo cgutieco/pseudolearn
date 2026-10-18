@@ -4,10 +4,13 @@
   "id": "LANG.CONTROL.FOR",
   "titulo": "Bucle contado",
   "dominio": "lenguaje",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.3.1",
   "duenos": [
     "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "reference",
