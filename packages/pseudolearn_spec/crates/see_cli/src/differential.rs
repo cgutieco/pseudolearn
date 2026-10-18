@@ -17,21 +17,58 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         core: exempt_rules(arguments)?,
         registry: registry(arguments)?,
     };
-    let engine_index = index(&engine);
-    let reference_index = index(&reference);
-    let mut report = Report::default();
-    for (key, reference_observation) in &reference_index {
-        if let Some(engine_observation) = engine_index.get(key) {
-            report.classify(key, (reference_observation, engine_observation), &known);
-        }
-    }
-    let rendered = report.render((engine_index.len(), reference_index.len()));
+    let first = compare(("reference", "engine"), (&reference, &engine), &known);
     storage::artifact(
         &arguments.root.join("results/r5-differential.json"),
-        &rendered,
+        &first.rendered,
         false,
     )?;
-    summary(&report)
+    let mut message = summary(&first.report)?;
+    let aot_path = arguments.root.join("results/aot.json");
+    if aot_path.exists() {
+        let aot: Evidence = storage::read_json(&aot_path)?;
+        ensure_current(corpus, &aot)?;
+        let none = Exemptions {
+            core: BTreeMap::new(),
+            registry: Vec::new(),
+        };
+        let second = compare(("engine", "aot"), (&engine, &aot), &none);
+        storage::artifact(
+            &arguments.root.join("results/r6-differential.json"),
+            &second.rendered,
+            false,
+        )?;
+        message = format!("{message}; native: {}", summary(&second.report)?);
+    }
+    Ok(message)
+}
+
+struct Comparison {
+    report: Report,
+    rendered: Value,
+}
+
+fn compare(
+    labels: (&'static str, &'static str),
+    evidence: (&Evidence, &Evidence),
+    known: &Exemptions,
+) -> Comparison {
+    let left_index = index(evidence.0);
+    let right_index = index(evidence.1);
+    let mut report = Report {
+        labels,
+        ..Report::default()
+    };
+    for (key, left_observation) in &left_index {
+        if let Some(right_observation) = right_index.get(key)
+            && !left_observation.actual.is_null()
+            && !right_observation.actual.is_null()
+        {
+            report.classify(key, (left_observation, right_observation), known);
+        }
+    }
+    let rendered = report.render((left_index.len(), right_index.len()));
+    Comparison { report, rendered }
 }
 
 fn summary(report: &Report) -> Result<String, String> {
@@ -141,6 +178,7 @@ fn normalized(actual: &Value) -> Value {
 
 #[derive(Default)]
 struct Report {
+    labels: (&'static str, &'static str),
     compared: usize,
     coincide: usize,
     exempt: Vec<Value>,
@@ -181,32 +219,46 @@ impl Exemptions {
 
 impl Report {
     fn classify(&mut self, key: &Key, pair: (&Observation, &Observation), known: &Exemptions) {
-        let (reference, engine) = pair;
+        let (left, right) = pair;
         self.compared = self.compared.saturating_add(1);
-        let entry = json!({"specification":key.0,"rule":key.1,"case":key.2,"profile":key.3,
-            "strictness":key.4,"reference_verdict":reference.verdict,
-            "engine_verdict":engine.verdict});
-        let (reference_core, engine_core) = (
-            contract_view(&reference.actual),
-            contract_view(&engine.actual),
-        );
-        if reference_core != engine_core {
-            let detail = with_views(entry, reference_core, engine_core);
-            match known.justification(key, reference) {
+        let entry = self.entry(key, (&left.verdict, &right.verdict));
+        let (left_core, right_core) = (contract_view(&left.actual), contract_view(&right.actual));
+        if left_core != right_core {
+            let detail = self.with_views(entry, left_core, right_core);
+            match known.justification(key, left) {
                 Some(reason) => self
                     .exempt
                     .push(json!({"difference":detail,"exemption":reason})),
                 None => self.unresolved.push(detail),
             }
-        } else if normalized(&reference.actual) == normalized(&engine.actual) {
+        } else if normalized(&left.actual) == normalized(&right.actual) {
             self.coincide = self.coincide.saturating_add(1);
         } else {
             self.informational.push(entry);
         }
     }
 
+    fn entry(&self, key: &Key, verdicts: (&str, &str)) -> Value {
+        let mut entry = json!({"specification":key.0,"rule":key.1,"case":key.2,"profile":key.3,
+            "strictness":key.4});
+        if let Some(object) = entry.as_object_mut() {
+            object.insert(format!("{}_verdict", self.labels.0), json!(verdicts.0));
+            object.insert(format!("{}_verdict", self.labels.1), json!(verdicts.1));
+        }
+        entry
+    }
+
+    fn with_views(&self, mut entry: Value, left: Value, right: Value) -> Value {
+        if let Some(object) = entry.as_object_mut() {
+            object.insert(self.labels.0.to_owned(), left);
+            object.insert(self.labels.1.to_owned(), right);
+        }
+        entry
+    }
+
     fn render(&self, totals: (usize, usize)) -> Value {
-        json!({"engine_observations":totals.0,"reference_observations":totals.1,
+        json!({format!("{}_observations", self.labels.1):totals.1,
+            format!("{}_observations", self.labels.0):totals.0,
             "compared":self.compared,"coincide":self.coincide,
             "contract_scope":"output, termination and error diagnostic codes",
             "exempt_differences":self.exempt,
@@ -214,12 +266,4 @@ impl Report {
             "uncontracted_differences":self.informational,
             "unresolved_differences":self.unresolved})
     }
-}
-
-fn with_views(mut entry: Value, reference: Value, engine: Value) -> Value {
-    if let Some(object) = entry.as_object_mut() {
-        object.insert("reference".to_owned(), reference);
-        object.insert("engine".to_owned(), engine);
-    }
-    entry
 }

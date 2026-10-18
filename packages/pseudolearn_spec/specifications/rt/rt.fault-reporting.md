@@ -94,7 +94,7 @@
     "salida": "",
     "terminacion": "failed",
     "fallo": {
-      "codigo": "indexOutOfBounds"
+      "codigo": "arrayIndexOutOfRange"
     }
   },
   "programa": "Algoritmo P\nDimension a[3] Como Entero;\na[4] <- 1;\nFinAlgoritmo\n",

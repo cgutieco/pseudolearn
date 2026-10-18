@@ -936,7 +936,7 @@ flowchart LR
 > observaciones con 0 divergencias. Las reglas `RT.*` siguen pendientes en `conformance-aot.yaml` hasta que B5 cree el
 > sujeto `aot`. Verificado con `cargo xtask verify` en el motor y en la CLI.
 
-### [ ] Bloque B5 — Sujeto `aot` en `see`, conformidad del corpus y pruebas de propiedades (`E-17`)
+### [x] Bloque B5 — Sujeto `aot` en `see`, conformidad del corpus y pruebas de propiedades (`E-17`)
 
 - **Objetivo:** Conectar `aot` como sujeto de primer nivel en `packages/pseudolearn_spec` y validar las 82
   especificaciones con operación `execute` más las pruebas de propiedades diferenciales.
@@ -954,7 +954,30 @@ flowchart LR
       `RT.PROCESS`, `PERF.AOT.LEVEL`).
     - `see properties --subject aot` y comparación diferencial `reference` vs `engine` vs `aot`: **0 divergencias**.
 
-### [ ] Bloque B6 — Experimento de rendimiento `E-NR1` (`PERF.AOT.LEVEL`, meta `N3`)
+> **Estado de B5 (completado):** el sujeto `aot` se conecta en `see` (`subject_adapters` describe cada sujeto como datos y
+> `bindings::manifest_path` fija su manifiesto) y se lanza con `pseudo --see-adapter aot`. Divergencias con el texto del
+> bloque, resueltas así: el adaptador vive en la CLI y no en `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es
+> capacidad de la CLI y el motor no puede importarla; la caché de ejecutables (tope 32, directorio propio autolimpiado) usa como
+> clave el contenido completo del objeto en lugar de SHA-256, ya que la CLI no admite dependencias nuevas y la igualdad
+> completa excluye colisiones. Para que el proceso real sea observable sin cambiar su contrato, el runtime informa avisos y
+> fallos con plantillas por severidad y marcadores `{end_line}`, `{end_column}` y `{arguments}`, `pseudolearn_api`
+> reconstruye la respuesta de ejecución (`native_execution`) y `gc_stress` se implementa como recolección forzada fijada al
+> compilar. El presupuesto de sentencias corta ahora exactamente en la sentencia que lo supera (`ENG.LIMITS#C12` divergía
+> con el descuento por bloque). `aot` se añade a 75 especificaciones con casos `execute` (`LANG.*`, `LIB.*`, `ENG.INPUT` y
+> `PERF.SUITE.AWFY-CORE`); `ENG.EXEC.MODEL` queda fuera porque sus casos de cancelación exigen un control que un ejecutable
+> nativo no ofrece. Añadir un sujeto cambia el hash de cada especificación sin cambiar su versión, y `see lock` lo prohíbe: se
+> retiraron sus entradas de `history` para reanclarlas (conflicto entre la inmutabilidad de `see lock` y la política de no
+> incrementar versiones, sin resolver en las fuentes). Dos casos de B0 usaban códigos que no existen (`RT.ABI#C2`,
+> `RT.FAULT.REPORTING#C2`) y se corrigieron. Resultado: `see conform --subject aot` ejecuta 1 205 observaciones con 0
+> divergencias (840 `cumple`; 357 `no aplicable` y 8 `pendiente` son casos de análisis, de representación intermedia y de
+> traza); `conformance-aot.yaml` vincula 48 reglas como `cumple`, 89 como `exento` y 10 como `pendiente`. Propiedades: cuatro
+> `cumple` (`ENG.EXEC.EFFECT-ORDER`, `IR.INSTRUCTIONS`, `MEM.IDENTITY`, `MEM.MANAGED.UNOBSERVABLE`, estas dos con recolección
+> forzada en cada asignación) y tres `pendiente` por capacidad (`ENG.INPUT`, `IR.OBSERVATION-POINTS`, `RT.HOST.INTERFACE`
+> exigen `api` u `observe`); las propiedades `P*` de `RT.*` siguen sin ejecutor. `see differential` compara además `engine` con
+> `aot`: 808 observaciones, 0 diferencias. La conformidad de propiedades del motor destapó un defecto latente que se
+> corrigió: la ejecución por recursos omitía los avisos del análisis.
+
+### [x] Bloque B6 — Experimento de rendimiento `E-NR1` (`PERF.AOT.LEVEL`, meta `N3`)
 
 - **Objetivo:** Medir formalmente el rendimiento del código nativo generado por `pseudolearn_codegen` sobre las 10
   cargas de `PERF.SUITE.AWFY-CORE` siguiendo `PERF.PROTOCOL`.
@@ -981,6 +1004,20 @@ flowchart LR
           `Character`) y no posean asas vivas a través de llamadas.
         - `RR-R6-04` (*Si persiste tras `RR-R6-01..03`*): Activar `opt_level = speed` con GVN/LICM de
           `cranelift-codegen` sobre valores escalares puros entre barreras de efecto.
+
+> **Estado de B6 (completado; el criterio `N3` no se cumple):** `pseudolearn_bench_worker aot <directorio>` mide el código
+> generado con un lanzador en C que enlaza el objeto de `build_benchmark_object` con la biblioteca estática del runtime
+> construida como la de la CLI y llama a la función principal diez procesos × treinta iteraciones por carga, con estado nuevo
+> fuera del intervalo y salida verificada. Primera captura (`results/r6-aot-initial/`): razón geométrica frente al techo 7,8
+> (de 5,0 en `sieve` a 57 en `storage`) y aceleración sobre la VM entre 1,1 y 12,3. Tras aplicar `RR-R6-01` en la forma de
+> eliminar el descuento cuando no hay presupuesto y `RR-R6-04` (`opt_level = speed`): 5,8 (`results/r6-aot/`; arreglos 5,6,
+> numérica 3,7, objetos 6,9, recursiva 6,4). `PERF.AOT.LEVEL#R2` (aceleración mínima 1,2×) y `#R3` (emisión máxima 14,8 ms)
+> se cumplen; `#R1` no. El perfil muestra por qué la escalera preregistrada no basta: en `nbody`, `queens` y `sieve` el
+> tiempo está en el código generado y en `rt_aot_cell_load`, y en `storage` la asignación y la recolección del montón de
+> `pseudolearn_runtime` dominan (el código generado es el 2 %), de modo que el supuesto de §2.1 de que el runtime no es cuello de
+> botella no se sostiene para cargas con asignación. `RR-R6-02` y `RR-R6-03` no se aplicaron porque atacan costes que el
+> perfil no señala como dominantes; el cierre del nivel exige una vía rápida de asignación y de celdas, declarada como
+> pendiente en el README de `pseudolearn_codegen`.
 
 ### [ ] Bloque B7 — Transición de `LANG` a `estable`, actualización de `README.md` y puerta de cierre (`PHASE-GATE`)
 

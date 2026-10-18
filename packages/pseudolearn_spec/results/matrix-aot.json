@@ -1,0 +1,1511 @@
+[
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 5,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 5,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
+    "rule": "ENG.INPUT@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.INPUT@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 36,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R5",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R6",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R7",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.LIMITS@0.2.0#R8",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.INSTRUCTIONS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "IR.INSTRUCTIONS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 5,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "IR.INSTRUCTIONS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "IR.INSTRUCTIONS@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.MODEL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.MODEL@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.MODEL@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.MODEL@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
+    "rule": "IR.OBSERVATION-POINTS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "IR.OBSERVATION-POINTS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
+    "rule": "IR.OBSERVATION-POINTS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.SOURCE-MAP@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "IR.SOURCE-MAP@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R5",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R6",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R7",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R8",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "IR.WELL-FORMEDNESS@0.1.0#R9",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.ARRAY.ACCESS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.ARRAY.DIMENSION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.COPY@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.DECLARATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.FIELDS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.INHERITANCE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.METHODS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.OVERRIDE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 6,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.3.1#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.3.1#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.3.1#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.CONTROL.FOR@0.3.1#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R5",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 14,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.FOR@0.3.1#R6",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.IF@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.REPEAT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.SWITCH@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.CONTROL.WHILE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.DECL.DESIGNATOR@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.DECL.VARIABLE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.EDITION.MODEL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.IO.INPUT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.IO.OUTPUT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.COMMENT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 18,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 10,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 10,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.ARITHMETIC@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.COMPARISON@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.CONCATENATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.DIVISION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.LOGICAL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 20,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.OPS.POWER@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.OPS.PRECEDENCE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.PROFILE.MODEL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SOURCE.ENCODING@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 6,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SOURCE.ENCODING@0.2.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.STMT.TERMINATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 6,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 10,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.ARRAY@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.BOOLEAN@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.CHARACTER@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.CLASS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 6,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.INFERENCE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.INTEGER@0.2.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.REAL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LANG.TYPES.RELATIONS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.TYPES.TEXT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 16,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.CORE.COPY@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 20,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.CORE.MATH@0.3.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.CORE.RANDOM@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 16,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LIB.CORE.TEXT@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 12,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "LIB.MODEL@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 4,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
+    "rule": "MEM.IDENTITY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.IDENTITY@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "MEM.VALUE.COPY@0.1.0#R4",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M2",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M3",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M4",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "PERF.AOT.LEVEL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M5",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "PERF.AOT.LEVEL@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M6",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
+    "rule": "PERF.AOT.LEVEL@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 80,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.SUITE.AWFY-CORE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.ABI@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.ABI@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.ABI@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.FAULT.REPORTING@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.FAULT.REPORTING@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.FAULT.REPORTING@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.HOST.INTERFACE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "exento",
+    "cases": 1,
+    "measured": "pendiente",
+    "measurements": [],
+    "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
+    "rule": "RT.HOST.INTERFACE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.HOST.INTERFACE@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.LINKING@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.LINKING@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.LINKING@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.PROCESS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.PROCESS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "RT.PROCESS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "aot"
+  }
+]

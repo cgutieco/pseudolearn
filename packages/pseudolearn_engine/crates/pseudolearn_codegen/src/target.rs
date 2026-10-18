@@ -29,7 +29,7 @@ impl TargetConfig {
         let mut flags = settings::builder();
         for (name, value) in [
             ("is_pic", "true"),
-            ("opt_level", "none"),
+            ("opt_level", "speed"),
             ("preserve_frame_pointers", "true"),
         ] {
             flags

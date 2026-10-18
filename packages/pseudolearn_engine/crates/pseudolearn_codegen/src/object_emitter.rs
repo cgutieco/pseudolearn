@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::abi_signatures::RuntimeImports;
+use crate::block_accounting::StatementCharging;
 use crate::class_table::ClassTable;
 use crate::context_layout::ContextLayout;
 use crate::entry_point::{EntryPoint, define_entry_point};
@@ -42,10 +43,17 @@ pub fn function_symbol(index: usize) -> String {
     format!("__pl_fn_{index}")
 }
 
+#[derive(Clone, Copy)]
+pub(crate) enum EmissionMode<'settings> {
+    Library,
+    Executable(&'settings ExecutableSettings),
+    Benchmark(&'settings ExecutableSettings),
+}
+
 pub(crate) fn emit_module(
     module: &Module,
     target: &TargetConfig,
-    executable: Option<&ExecutableSettings>,
+    mode: EmissionMode<'_>,
 ) -> Result<CompiledObject, CodegenError> {
     let isa = target.build_isa()?;
     let builder = ObjectBuilder::new(isa, module.name.clone(), default_libcall_names())
@@ -61,11 +69,12 @@ pub(crate) fn emit_module(
         identifiers: &identifiers,
         literals: &literals,
         classes: &classes,
+        charging: charging_of(mode),
     };
     let faults = define_functions(&mut object, module, &declarations)?;
     let fault_sites = faults.into_sites();
     let descriptors = classes.descriptors()?;
-    if let Some(settings) = executable {
+    if let EmissionMode::Executable(settings) = mode {
         let metadata = ExecutableMetadata {
             settings: settings.clone(),
             sites: fault_sites.clone(),
@@ -80,6 +89,19 @@ pub(crate) fn emit_module(
         function_symbols: symbols_of(module),
         classes: descriptors,
     })
+}
+
+fn charging_of(mode: EmissionMode<'_>) -> StatementCharging {
+    match mode {
+        EmissionMode::Library => StatementCharging::PerBlock,
+        EmissionMode::Executable(settings) | EmissionMode::Benchmark(settings) => {
+            if settings.limits.instruction_units.is_some() {
+                StatementCharging::PerStatement
+            } else {
+                StatementCharging::Disabled
+            }
+        }
+    }
 }
 
 fn attach_entry_point(
@@ -143,6 +165,7 @@ struct Declarations<'program> {
     identifiers: &'program [FuncId],
     literals: &'program [(String, DataId)],
     classes: &'program ClassTable,
+    charging: StatementCharging,
 }
 
 fn define_function(
@@ -176,6 +199,7 @@ fn define_function(
             })
             .collect::<HashMap<_, _>>(),
         classes: declarations.classes,
+        charging: declarations.charging,
     };
     compile_function(unit.function, &environment, &mut clif, faults)?;
     let mut context = Context::for_function(clif);

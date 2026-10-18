@@ -8,10 +8,13 @@ fn request(program: &str) -> NativeBuildRequest {
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
         seed: 42,
+        forced_collection: false,
         limits: ExecutionLimits::default(),
         source_name: "p.pseudo".to_owned(),
         locale: "es".to_owned(),
         error_template: "{path}\n".to_owned(),
+        warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
+        information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
         exhausted_template: "{path}\n".to_owned(),
     }
 }

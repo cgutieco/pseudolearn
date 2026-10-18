@@ -11,7 +11,8 @@
   ],
   "sujetos": [
     "reference",
-    "engine"
+    "engine",
+    "aot"
   ],
   "resumen": "Funciones de texto y carácter.",
   "edicion": {

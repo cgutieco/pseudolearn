@@ -22,3 +22,25 @@ fn execution_checkpoints_retain_small_deltas_and_live_machine() {
     assert!(machine_events(&execution.machine).is_empty());
     assert!(machine_event_count(&execution.machine) >= 256);
 }
+
+#[test]
+fn analysis_warnings_are_part_of_the_observed_execution_diagnostics() {
+    let request = ExecuteRequest {
+        program: "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nFinAlgoritmo\n".to_owned(),
+        ..ExecuteRequest::default()
+    };
+    let Ok(mut execution) = ExecutionResource::start(&request) else {
+        return;
+    };
+    let response = execution.advance(256);
+    let codes: Vec<String> = response
+        .ok()
+        .and_then(|value| value.get("diagnostics").cloned())
+        .and_then(|value| value.as_array().cloned())
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|diagnostic| diagnostic.get("code").and_then(|code| code.as_str()))
+        .map(str::to_owned)
+        .collect();
+    assert_eq!(codes, ["variableAssignedNeverRead"]);
+}

@@ -49,7 +49,7 @@ pub fn compile_module_to_object(
     target: &TargetConfig,
 ) -> Result<CompiledObject, CodegenError> {
     pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
-    object_emitter::emit_module(module, target, None)
+    object_emitter::emit_module(module, target, object_emitter::EmissionMode::Library)
 }
 
 pub fn compile_module_to_executable_object(
@@ -58,5 +58,22 @@ pub fn compile_module_to_executable_object(
     settings: &pseudolearn_aot_rt::ExecutableSettings,
 ) -> Result<CompiledObject, CodegenError> {
     pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
-    object_emitter::emit_module(module, target, Some(settings))
+    object_emitter::emit_module(
+        module,
+        target,
+        object_emitter::EmissionMode::Executable(settings),
+    )
+}
+
+pub fn compile_module_to_benchmark_object(
+    module: &pseudolearn_ir::Module,
+    target: &TargetConfig,
+    settings: &pseudolearn_aot_rt::ExecutableSettings,
+) -> Result<CompiledObject, CodegenError> {
+    pseudolearn_ir::verify_module(module).map_err(CodegenError::InvalidModule)?;
+    object_emitter::emit_module(
+        module,
+        target,
+        object_emitter::EmissionMode::Benchmark(settings),
+    )
 }

@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::abi_signatures::{Entry, RuntimeRefs};
+use crate::block_accounting::StatementCharging;
 use crate::class_table::ClassTable;
 use crate::context_layout::ContextLayout;
 use crate::definition::Definition;
@@ -23,6 +24,7 @@ pub(crate) struct FunctionEnvironment<'program> {
     pub(crate) frontend: TargetFrontendConfig,
     pub(crate) literals: HashMap<String, GlobalValue>,
     pub(crate) classes: &'program ClassTable,
+    pub(crate) charging: StatementCharging,
 }
 
 pub(crate) struct Instruction<'program> {

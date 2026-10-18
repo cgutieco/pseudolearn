@@ -10,10 +10,13 @@ pub struct NativeBuildRequest {
     pub profile: String,
     pub strictness: String,
     pub seed: i64,
+    pub forced_collection: bool,
     pub limits: ExecutionLimits,
     pub source_name: String,
     pub locale: String,
     pub error_template: String,
+    pub warning_template: String,
+    pub information_template: String,
     pub exhausted_template: String,
 }
 
@@ -53,13 +56,14 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
     })
 }
 
-fn settings_of(request: &NativeBuildRequest) -> ExecutableSettings {
+pub(crate) fn settings_of(request: &NativeBuildRequest) -> ExecutableSettings {
     let defaults = AotLimits::default();
     let (truth, falsity) = pseudolearn_vm::boolean_words(&request.profile);
     ExecutableSettings {
         source_name: request.source_name.clone(),
         locale: request.locale.clone(),
         seed: request.seed,
+        forced_collection: request.forced_collection,
         limits: AotLimits {
             frames: request
                 .limits
@@ -75,6 +79,8 @@ fn settings_of(request: &NativeBuildRequest) -> ExecutableSettings {
             falsity: falsity.to_owned(),
         },
         error_template: request.error_template.clone(),
+        warning_template: request.warning_template.clone(),
+        information_template: request.information_template.clone(),
         exhausted_template: request.exhausted_template.clone(),
     }
 }

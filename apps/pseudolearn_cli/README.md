@@ -17,7 +17,7 @@ Comandos de compilación y verificación:
 - Compilación de producción: `cargo build --release` (salida en `target/release/pseudo`).
 - Pruebas unitarias y funcionales: `cargo test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.
-- Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`.
+- Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`; con `pseudo --see-adapter aot` el mismo binario responde como el sujeto `aot` (conformidad: `see conform --subject aot` desde `packages/pseudolearn_spec`).
 Distribución nativa en macOS, Linux y Windows. Sin secretos.
 
 `cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Compilar un programa requiere además el driver `cc` del sistema en el `PATH`.
@@ -56,6 +56,16 @@ ilegible, enlazador ausente o fallido: 3. El código del ejecutable es 0, 3, 4 o
 Los fallos del generador de código (sin diagnóstico de usuario) se informan con `linkerFailed`, porque
 `TOOL.CLI.MESSAGES` no define un mensaje propio.
 
+Adaptador `aot`: ejecuta programas compilados de verdad. Por cada petición `execute` compila con `build_native_object`
+(plantillas de diagnóstico de campos separados por tabulador, `gc_stress` como recolección forzada), enlaza con el mismo
+enlazador que `compilar` y lanza el ejecutable con entorno vacío y desde otro directorio, con las entradas en la entrada
+estándar; `pseudolearn_api` convierte código de salida, salida y salida de error en la respuesta del protocolo. Una caché
+en memoria, con tope de 32 ejecutables en un directorio temporal propio, reutiliza el ejecutable de un objeto idéntico
+(perfil y rigor distintos producen el mismo objeto); la clave es el contenido completo del objeto, no un resumen, de modo
+que una colisión no puede devolver un ejecutable ajeno. El directorio se elimina al terminar, también si el protocolo se
+cierra sin `shutdown`. Anuncia `execute` y `gc_stress`; no anuncia `observe`, `analyze`, `ir` ni `api`, porque el
+sujeto está exento de observación y solo ejecuta.
+
 La ejecución de ejecutar/run usa únicamente la API pública con entrada estándar, semilla, límites
 de profundidad, sentencias y celdas. La traza se narra con las plantillas trace* del catálogo generado;
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
@@ -90,6 +100,7 @@ Contratos TOOL.CLI.CONVENTIONS, MESSAGES, CHECK, RUN e IR; límites por defecto 
 omisión, la fuente sin extensión, el permiso de ejecución, el fallo de ejecución del binario generado (código 3, salida previa
 y posición), el programa inválido sin salida, entrada ausente e ilegible, `-o` sin valor, enlazador ausente (`PATH` vacío) sin
 salida ni temporales (se redirige `TMPDIR` y se comprueba vacío) y una salida previa que un fallo no sustituye.
+`tests/aot_adapter_tests.rs` cubre el adaptador `aot` con procesos reales: identidad y capacidades, ejecución con entradas, fallo con salida previa y tramo, entrada agotada, presupuesto de sentencias, programa rechazado, petición no admitida, reutilización de un ejecutable y ausencia de residuos con y sin `shutdown`.
 Tests de precedencia de cada fuente de idioma, alias equivalentes, aperturas bilingües, BOM, trivia, texto vacío, argumentos inválidos y error operativo.
 Conformidad contra casos cli del corpus en ambos idiomas; --json estable al cambiar idioma.
 Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify al implementar.

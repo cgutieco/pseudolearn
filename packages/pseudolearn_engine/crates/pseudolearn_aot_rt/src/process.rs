@@ -1,8 +1,8 @@
 use crate::class_layout::ClassDescriptor;
 use crate::config::{AotConfig, AotStreams};
 use crate::context::{AotRuntimeContext, STATUS_CONTINUE, STATUS_LIMIT};
-use crate::metadata::ExecutableMetadata;
-use crate::process_report::fault_report;
+use crate::metadata::{ExecutableMetadata, ExecutableSettings};
+use crate::process_report::diagnostic_report;
 use crate::session::AotSession;
 use pseudolearn_diagnostics::DiagnosticCode;
 use std::io::{BufRead, Write};
@@ -41,19 +41,29 @@ pub fn run_executable(
         output: streams.output,
     };
     let mut session = AotSession::new(config, sites, program_streams);
+    if settings.forced_collection {
+        session.engine_mut().force_collection();
+    }
     if !register_classes(&mut session, &classes) {
         return EXIT_INTERNAL;
     }
     entry(session.context_pointer());
     let _flushed = session.engine_mut().flush_output();
     let code = exit_code(&session);
-    if code != EXIT_COMPLETED {
-        if let Some(record) = session.engine().fault() {
-            let _written = errors.write_all(fault_report(record, &settings).as_bytes());
-        }
-        let _flushed = errors.flush();
-    }
+    report_diagnostics(&session, &settings, &mut errors);
     code
+}
+
+fn report_diagnostics(
+    session: &AotSession,
+    settings: &ExecutableSettings,
+    errors: &mut Box<dyn Write>,
+) {
+    let engine = session.engine();
+    for record in engine.notices().iter().chain(engine.fault()) {
+        let _written = errors.write_all(diagnostic_report(record, settings).as_bytes());
+    }
+    let _flushed = errors.flush();
 }
 
 fn register_classes(session: &mut AotSession, classes: &[ClassDescriptor]) -> bool {

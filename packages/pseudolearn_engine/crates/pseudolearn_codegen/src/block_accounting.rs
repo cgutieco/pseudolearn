@@ -6,11 +6,40 @@ use cranelift_codegen::ir::condcodes::IntCC;
 use cranelift_codegen::ir::{InstBuilder, MemFlagsData, types};
 use pseudolearn_ir::{Block, IrSpan, Operation};
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum StatementCharging {
+    Disabled,
+    PerBlock,
+    PerStatement,
+}
+
 pub(crate) fn charge_block_mass(
     lowering: &mut Lowering<'_, '_>,
     block: &Block,
 ) -> Result<(), CodegenError> {
-    if block.mass == 0 {
+    if lowering.environment.charging != StatementCharging::PerBlock {
+        return Ok(());
+    }
+    let span = first_statement_span(lowering, block);
+    charge_units(lowering, block.mass, span)
+}
+
+pub(crate) fn charge_statement(
+    lowering: &mut Lowering<'_, '_>,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    if lowering.environment.charging != StatementCharging::PerStatement {
+        return Ok(());
+    }
+    charge_units(lowering, 1, span)
+}
+
+fn charge_units(
+    lowering: &mut Lowering<'_, '_>,
+    units: u32,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    if units == 0 {
         return Ok(());
     }
     let offset = lowering.environment.layout.instruction_remaining;
@@ -23,7 +52,7 @@ pub(crate) fn charge_block_mass(
     let updated = lowering
         .builder
         .ins()
-        .iadd_imm_s(remaining, i64::from(block.mass).saturating_neg());
+        .iadd_imm_s(remaining, i64::from(units).saturating_neg());
     lowering
         .builder
         .ins()
@@ -32,7 +61,6 @@ pub(crate) fn charge_block_mass(
         .builder
         .ins()
         .icmp_imm_s(IntCC::SignedLessThan, updated, 0);
-    let span = first_statement_span(lowering, block);
     guard_trap(lowering, exhausted, "statementBudgetExhausted", span)
 }
 

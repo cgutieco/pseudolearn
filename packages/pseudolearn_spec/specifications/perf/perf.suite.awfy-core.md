@@ -10,7 +10,8 @@
     "responsable-rendimiento"
   ],
   "sujetos": [
-    "engine"
+    "engine",
+    "aot"
   ],
   "resumen": "Diez programas comparables de Are We Fast Yet en PseudoLearn.",
   "depende_de": [

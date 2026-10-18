@@ -54,6 +54,10 @@ impl AotEngine {
         Ok(())
     }
 
+    pub fn force_collection(&mut self) {
+        self.heap.set_collection_policy(CollectionPolicy::Forced);
+    }
+
     pub fn flush_output(&mut self) -> std::io::Result<()> {
         self.streams.output.flush()
     }

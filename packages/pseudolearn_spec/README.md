@@ -154,6 +154,20 @@ Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo 
 La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
 y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
 
+Cada sujeto lee su manifiesto de vínculos en una ruta fija (`bindings::manifest_path`) y se lanza con una descripción de
+datos (`subject_adapters`): `reference` con Dart, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
+(`--see-adapter` y `--see-adapter aot`). `aot` ejecuta los casos `execute` contra ejecutables reales; los casos de análisis,
+representación intermedia y traza quedan `no aplicable` o `pendiente` por capacidad. Las propiedades se ejecutan con
+`conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
+cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un
+sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación y códigos de error, sin
+exenciones) cuando existe `results/aot.json` y guarda `results/r6-differential.json`.
+
+Una especificación cuyo contenido cambia sin cambiar de versión (por ejemplo, al añadir un sujeto) obliga a anclar de nuevo su
+hash: se retira su entrada de `history` en `specifications.lock` y `see lock` la vuelve a escribir. La inmutabilidad de
+`see lock` y la política de no incrementar versiones durante el desarrollo del lenguaje chocan en este punto; el
+procedimiento descrito conserva la política y deja constancia del reanclaje en el diff del archivo de anclaje.
+
 La conformidad de propiedades usa `property-conformance.json`: identidad versionada, algoritmo,
 semilla y cantidad de muestras. Incluye las treinta propiedades del motor y la CLI, también las de
 API y reimpresión heredadas; omitir una propiedad del sujeto es un error de vínculo. El archivo de datos conserva los vínculos regla–código y la validación

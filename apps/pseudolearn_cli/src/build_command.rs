@@ -74,6 +74,7 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
         profile,
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),
         seed: options.execution.seed.unwrap_or(42),
+        forced_collection: false,
         limits: ExecutionLimits {
             depth: options.execution.depth,
             statements: options.execution.statements,
@@ -83,6 +84,8 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
         source_name: path.to_owned(),
         locale: locale.clone(),
         error_template: messages::template("diagnosticError", locale).to_owned(),
+        warning_template: messages::template("diagnosticWarning", locale).to_owned(),
+        information_template: messages::template("diagnosticInfo", locale).to_owned(),
         exhausted_template: messages::template("inputExhausted", locale).to_owned(),
     }
 }

@@ -9860,7 +9860,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "0361a7b13280c23b876362b62db2bb1aae38fa67a3fe5b04e3cb424bf96eb5d2",
+      "hash": "9ab89a5606f87e7fe611bb19cac974ec4e6224fe36d5d7f2f57cbd3b53dbd33b",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -9889,7 +9889,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Entrada del programa",
         "titulo_en": "Program input",
@@ -15851,7 +15852,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ea15bb13ac980d700d924ed5997e197f5b21db925069d38b2c9c7cfadaed7f2c",
+      "hash": "0f6ce95654bf66555f6738cfb1046d22e1fc3dbd4d948c72478a864e00eb74b8",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -15877,7 +15878,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Acceso a arreglos",
         "titulo_en": null,
@@ -16008,7 +16010,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "8c38c9c66063d3827da334442f053f8d92809cfd7bd8df7bae19ede25b84695c",
+      "hash": "49206d07667b2fbb8f2aac2c88eeb7bae675b5fad562ae5c4b761eef2ea5c36f",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16034,7 +16036,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Dimensionamiento de arreglos",
         "titulo_en": null,
@@ -16138,7 +16141,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "b10cbaa56e38c2129cb997bda9712acc330fc900151ed0cdfcaa438907e560c5",
+      "hash": "c580e4d41cac2d2065084b4e1884bc9b3b99844c571757f60079ee2e2ad75d1a",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16164,7 +16167,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Constructores",
         "titulo_en": null,
@@ -16242,7 +16246,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "244fef701153722c8600bad2ada5a6fc6e00ddb9035c601cec5126bc2d5d8a5e",
+      "hash": "46a9b93e85ad3445d452eb15b8af17e019864ab9f45e383c2eefda88c8b2c474",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16268,7 +16272,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Copia superficial",
         "titulo_en": null,
@@ -16377,7 +16382,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "0e847bb7738cab367cb8d1175af288fcc5b9147e48df903df52c52ef4c52ca1c",
+      "hash": "2a6d05cf944b849b8a304abc7efd6f31b5066fc09be184c39a5bf4c0f836cbbb",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16403,7 +16408,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Declaración de clases",
         "titulo_en": null,
@@ -16481,7 +16487,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "83f0cdc43ac82f61ea9efb7feb370b2e10eb6af6be6b25caf3a1ca14fa6a6dc3",
+      "hash": "82570c0a67d4d6ac4e1273aa97f606e05c9211cca8066cbc3c7740bfb7209e7d",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16507,7 +16513,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Atributos y visibilidad",
         "titulo_en": null,
@@ -16585,7 +16592,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "c74373682f6c80a14240adafded4a3d3cce51dd2bf1be6739c2e237b64f87ced",
+      "hash": "553cc19dfe7c66a5079574cddab768888bb4c9904a26e6c50c92daf482dcd1ed",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16611,7 +16618,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Herencia simple",
         "titulo_en": null,
@@ -16720,7 +16728,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ab40eee10a687827a2ab0d955286282f9392c21303996c37444b24a99bf670c9",
+      "hash": "8542f7a126413f18be49ae772c02b76b56ec6e217c142c2ac3e73207bf119011",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16746,7 +16754,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Instanciación explícita",
         "titulo_en": null,
@@ -16824,7 +16833,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ffc915eac7dfbb07957499a294cc5d483429f133e290e2cca2e2745b15366b10",
+      "hash": "b6a4235919c00a3efae78f2d9f6b241cef88d856c8f3c54dcbb7efc43f79e4b3",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16855,7 +16864,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Acceso a miembros",
         "titulo_en": null,
@@ -16933,7 +16943,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "87b8bc1a7957a1ca8d48a07d101c0bea7d703d2df558c9c022ddf44a244d717c",
+      "hash": "b4e2f8d2f34c9c5034cd81c7081a56fdcb4b6d75b2f297d126a22802324b86fe",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -16964,7 +16974,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Métodos de instancia",
         "titulo_en": null,
@@ -17121,7 +17132,7 @@
           "kind": "definicion"
         }
       ],
-      "hash": "a6fb22b6e1a70cb55a0ca68de6b23f5afa8720d5a2238ec3d9ab645e0f4f662c",
+      "hash": "b21fdcadfe7ee92ef29675fb7986c97ffecc7289e50a31ee11d559644ce2c5e6",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -17147,7 +17158,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Diagnósticos de construcciones ajenas a la edición",
         "titulo_en": null,
@@ -17225,7 +17237,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "d5558277813c7df3c67586c1060ca3336f0a3958ae798ba12f9f4b60fbb7c6f1",
+      "hash": "aca82cefa38780040ea37f0843b060655b8cc4a7e04568f4a57eec17b63b5173",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -17256,7 +17268,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Sobrescritura y despacho",
         "titulo_en": null,
@@ -17365,7 +17378,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "f6af8c0cb84b61edde118308a820541027fa79a1888f6fe66c8158dfcfc75533",
+      "hash": "93ae4b2c91ce7cc9a44e2281b063327a13ebe60e0ae1c0521f9dea04673340dd",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -17391,7 +17404,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Objeto actual y superclase",
         "titulo_en": null,
@@ -17892,7 +17906,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "7acaec8a7e07826c8523da5be46254ba7e0993abac1d53fb2861756e77577ffd",
+      "hash": "973fa3d92ae6fedbe12d65b121417a6572ee43733e0d4942e54692ad726dcb58",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -17918,7 +17932,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Bucle contado",
         "titulo_en": null,
@@ -18053,7 +18068,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "0d02888e3588a75c1fd34f7d126e035d36b685ce5fcf9a42f792991d80888c71",
+      "hash": "acc40faff555cdf8c816382dea0df9584fd3332131ba3c813174a432411a5529",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18079,7 +18094,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Condicional",
         "titulo_en": null,
@@ -18183,7 +18199,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ee4807aa7499e87415bed203ab4b654d0bf7e0ea69a3846c2bd62bf29b73d293",
+      "hash": "741beb1f16fe57c63e70168edc139d0a5331b79c012d0e609c819762e42772ff",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18209,7 +18225,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Bucle posterior",
         "titulo_en": null,
@@ -18313,7 +18330,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ea577ad32a8f4200f744189d9ee37661ad19ef5b0cfc4f4e0874b3a95dcaf78a",
+      "hash": "b3b072942604754b15c40b21f94551835a659d26f76b2e035a7cd22f07eb8855",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18339,7 +18356,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Selección múltiple",
         "titulo_en": null,
@@ -18443,7 +18461,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "5fff6055797361b6f5dd155912e59affd9c601851650c79220fe259f6040068e",
+      "hash": "8790d907d61b230c915d115eb410022d86897fbe6bb593e09a910db11a770b92",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18469,7 +18487,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Bucle anterior",
         "titulo_en": null,
@@ -18578,7 +18597,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "7a4d623ce0faf5a949b70f540162345b9c584a6690f3efd7f384469382a249ab",
+      "hash": "a231677861a1df49f5aff53772991eb77bc2f8ca8b2525e4b14249cfd6ad145e",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18604,7 +18623,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Designadores",
         "titulo_en": null,
@@ -18707,7 +18727,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "450a3794623107d5395402056eaf664472803ede8b549883bda8cc18068dba8a",
+      "hash": "dfa783b20f491112f7bf5f22ed0149f0c39e826197a3c10456c78e76b2087804",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -18733,7 +18753,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Lectura sin inicializar",
         "titulo_en": null,
@@ -18977,7 +18998,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "9f49bd8ad4e4cac55b3aaacb45a3e8165beaba12357d91406679959112f8f82f",
+      "hash": "cb01bc8c87ffbe3e57e673ab8443a1c347e32a2cb914df781d87bbf390e0bf19",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19003,7 +19024,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Declaración de variables",
         "titulo_en": null,
@@ -19081,7 +19103,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "a8b631e436795df4d5fa24577c30902f4ea6e780d0b7a5f54ff3655741ed7742",
+      "hash": "9b78d59f23f13680fdfeb637921761e72ba3b9c402dc7379076bbb25d054836c",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19107,7 +19129,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Edición del lenguaje",
         "titulo_en": null,
@@ -19250,7 +19273,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "7284485ee1eea79366340e632ebdcae0e16afa799b8618d2161cb7651ecbe44d",
+      "hash": "5b66784d704926720a89690c0ea9269303494d0cd96863ef5d40f81c964ab3b0",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19276,7 +19299,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Entrada",
         "titulo_en": null,
@@ -19385,7 +19409,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "9d44249e4803a63d81bc563a49e398fcf3354f3592d1d7d7bca2a52791baef38",
+      "hash": "2fafc489e28fe8d6af9184352c08d1146d51d94477bd6ff8fc424ad0de516490",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19411,7 +19435,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Salida",
         "titulo_en": null,
@@ -19541,7 +19566,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "093dfec29ba01f2e07c0eb19e9e7fd0ec0da0cf99706888efa1f21db91bffdfd",
+      "hash": "4ed25b564ac4cfa0862acdebe302d8b54f016375789d04d35ac3f93618f1ad12",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19567,7 +19592,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Formato de valores",
         "titulo_en": null,
@@ -19671,7 +19697,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "20a4e097567de762136e06a2981ca6026860707aa1f2057aacc2e6187f7e5260",
+      "hash": "fc3c773601f16c624307759116366aa2eec79c9c5ff907c53519d9c5071abe90",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19697,7 +19723,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Literales de carácter",
         "titulo_en": null,
@@ -19801,7 +19828,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "10fc128f874b9dac3dc22cc3b32a176a56bcb83521a0e80a3e423984b2d3c2f8",
+      "hash": "6a119e23cfacf9c8a0d18d563f9a91b878aaffa8873861b8dc2c0ad772155a53",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -19827,7 +19854,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Comentarios y conservación",
         "titulo_en": null,
@@ -20117,7 +20145,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "82906e20c938e44b9cffeb90f897a572f4c5eb15e3dfa759aca1bb04d0b5b3e7",
+      "hash": "0d3fbfb4e2167f6341ce030aacd56fbed02443383fb16d33cd3788f92ec6dd58",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20143,7 +20171,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Identificadores",
         "titulo_en": null,
@@ -20247,7 +20276,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "6b1f5b101fbc9f7736d0ac745ba9a391856217557a534420b2c50b35369663bc",
+      "hash": "7c70a5649f422e7893157da0e3c35e96a73c056b9f5b625c86e684a9fb263d4a",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20273,7 +20302,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Palabras reservadas",
         "titulo_en": null,
@@ -20382,7 +20412,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "66f4efce676b819f5d352133301d5ddfb90cd0bf5963d30fc863ca5c52be59d7",
+      "hash": "5467f2083415a75089d23e0cb02da056592f16e9e0bae267e4b1fb434f0075dd",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20408,7 +20438,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Literales numéricos",
         "titulo_en": null,
@@ -20512,7 +20543,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "addeb5ddbfd6d28ad99f385b32500081d4be2cf75967ca4591801c2be48f4597",
+      "hash": "c682f4cd9cf9d14301f725e20a8609dd7a54a14cabf2281003bce1e5a5130772",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20538,7 +20569,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tokens de operadores",
         "titulo_en": null,
@@ -20646,7 +20678,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "1fa39b1756120048b406192f4ff9e364ae735b7a3eaa72f35ee3912c9ea01a0c",
+      "hash": "16913a5a15c8ca8b42e776116924b394229b0ff0fc201272c46a81efcc6d0da8",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20672,7 +20704,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Literales de texto",
         "titulo_en": null,
@@ -20771,7 +20804,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "80ea6234b8d209bb24ccb231d3d4c132d639fbab2207fd578257ec5ec3fc37e4",
+      "hash": "d556ccd837d1548df8d3f0ea20fae62a0f6fcf3fa6c647a5ffb81b5b254e6077",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20797,7 +20830,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Separación léxica",
         "titulo_en": null,
@@ -20929,7 +20963,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "b79a0e318e0f8cae774428ae4aa745000431834d4a49c65bc66619f9d796cc42",
+      "hash": "f98597111b51323802b18b71b502f108a8f952f34970d8dcb0ba5de78415d2b9",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -20960,7 +20994,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Aritmética básica",
         "titulo_en": null,
@@ -21069,7 +21104,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "6dfdd6a0c723efbaff4dcf0ba3ac45bf9d81b01b95bf0443c2a58d9296167eb4",
+      "hash": "a182d107115eec8a965316ea63fff4977516b8e2d58c80f6e85e2ed0b5f435a0",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21095,7 +21130,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Comparaciones",
         "titulo_en": null,
@@ -21173,7 +21209,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "a6ae27121e6db96fc83d132a972c348b7bade2b78970ce910080e72a162c0af6",
+      "hash": "53cbed3f0c78422459a16057e181673f8302d229fc9551db73491dbc3d8e9ec7",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21204,7 +21240,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Concatenación",
         "titulo_en": null,
@@ -21336,7 +21373,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "eca709b2a0f7d7b34b8e3c318e84d5338029d07cc39951bda5098eb71e652048",
+      "hash": "f0d742cf06639dc3e9d01bb15d9a3da245eafa51d7d5b6a00108e3de74295ffc",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21367,7 +21404,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "División entera y real",
         "titulo_en": null,
@@ -21445,7 +21483,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "2d18594e209ade1f06e63d704fde86507b4986d48bd89fb5921d14ba9a9cc0ad",
+      "hash": "55dc1135bafff69e0c8bfe9c44018bde07018cd38a9845355aa7aa4dbfff6780",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21471,7 +21509,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Operadores lógicos",
         "titulo_en": null,
@@ -21625,7 +21664,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "1bcc5dbba45d3462c45b351ea1e1fca3130a2c4474acb72b8a21a7d566d9bc02",
+      "hash": "d882ce2fe624ee97b7b0e3393c2e5beaf435e80de938bb850475e2c2c773ba3a",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21656,7 +21695,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Potencia",
         "titulo_en": null,
@@ -21734,7 +21774,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "830c69a61946f48907f0210bb40882aa4bf1d4cdebd7f771041b7ab6145296a3",
+      "hash": "4b1c7683d89b1ee116858bfa1a8cb2d81ecff53ed21f5f712b5348c1aa0edce9",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21760,7 +21800,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Precedencia y asociatividad",
         "titulo_en": null,
@@ -21838,7 +21879,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "f27b3cc87c9640707c2920b73d853257416b7fdaa0eebf009a4e63b52031a936",
+      "hash": "a56fe9abfe5bccb83981911f2ddcf92e39992e74db2d434658cf4e0d33e5e1db",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21864,7 +21905,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Modelo de perfiles oficiales",
         "titulo_en": null,
@@ -21966,7 +22008,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "f3e7c05fdaa1dac254cc9c6771e060f4844c772f6743dc31ce9baa54301d0384",
+      "hash": "99fcf254204df7e347352c1e496ca8a2fb4c6bc47847b51eb7f26d2923466ba4",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -21992,7 +22034,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Políticas de rigor",
         "titulo_en": null,
@@ -22070,7 +22113,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "da8cea7486faf402bfd97d9c1514b4f53a95fdb85bf34ace8a0f3ba745edb677",
+      "hash": "c3deb1d1c1e713c5b136163994129e2720de82a1d189c40b4406f46199ff53c2",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -22096,7 +22139,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Traducción de vocabularios",
         "titulo_en": null,
@@ -23035,7 +23079,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "03f1b0983866cc14d7a89028ea0be39197ccee502a0e73f0b173d90668d0d1e2",
+      "hash": "83c378fb66288b72b521b593c3d61d546d518fa8e3f2328c34c1976b8550eb05",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -23061,7 +23105,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Vocabulario bilingüe",
         "titulo_en": null,
@@ -23409,7 +23454,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "e96c640d3f3c491cedaeabb55fa15958679dce6f8d17d3f89b178ed53d6b79df",
+      "hash": "2a2c22bef2168d4ca68fb1140ed6a411349c65e2cfa26bd7f4caaa3de34ecbdd",
       "metadata": {
         "cambio": null,
         "depende_de": [],
@@ -23429,7 +23474,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Codificación y normalización del texto fuente",
         "titulo_en": null,
@@ -23690,7 +23736,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "2a58b0cf2988d64208b85321e40d4442906ea424ee21b53358a6f08296d53416",
+      "hash": "d9bbcd1f4def7da7a0e8cf7b6aa3e535dbb476e2f5d81e393a13e94050740bf0",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -23716,7 +23762,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Asignación",
         "titulo_en": null,
@@ -23818,7 +23865,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "9fc25ea6f4fd0dbd9181943d4f508de8601c86bed3bb89c5ff357952578ccee8",
+      "hash": "54d607cd64948ea821f6c0f75ffd2bb5316ae28e867fef9ecbae51e9b3ae488b",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -23844,7 +23891,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Terminación de sentencias",
         "titulo_en": null,
@@ -23948,7 +23996,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "5959cb60f3452658d11c585894b057d5d26b37ef4a03f3c88e522801888c1f0a",
+      "hash": "e80915e8acb988c4d8f94d3c0936b3eed2d82486cd0250c726fa77b162c972d7",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -23979,7 +24027,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Argumentos por referencia",
         "titulo_en": null,
@@ -24088,7 +24137,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "db00999f5cdf5e0f1504be70ae088e9d4842f96c6edf26f93023779294449612",
+      "hash": "c04b384d6a38df21d0792cacfa9a1d7300baa21f5f6c92aed0ef0a9ea8cc779e",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24114,7 +24163,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Llamadas",
         "titulo_en": null,
@@ -24192,7 +24242,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "60d47a6d59bb2d53429743326a98a84a8976cd4fcb48b1a3971902570798f75f",
+      "hash": "355f31545728ba888ac41950382b33b5c3addf4cca4e21ea4ec9f57bdeb2a365",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24218,7 +24268,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Declaración de subprogramas",
         "titulo_en": null,
@@ -24295,7 +24346,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "32632a79801a62dc639d564790afc4d986840e28c5e3d4e7d1546f06e1dd3e21",
+      "hash": "b79a90828e8ba7d6b8cf3a108dd81c8c5221add31b79e5d14a30b7d9b6be9a2f",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24326,7 +24377,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Interacciones procedimentales",
         "titulo_en": null,
@@ -24435,7 +24487,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "8740c3005ec1a31aa4c946d9bb135dc5db61581447d12c8349eb057d6095eeaa",
+      "hash": "cfe1fb76fa92333ffc9f1cc2ecd1e139b36638988e272b8910b11f642b4e96c9",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24461,7 +24513,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Parámetros",
         "titulo_en": null,
@@ -24561,7 +24614,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "e4ee42e2b43a1c12650abaadbf81c6b5143ef79be22b467876b6cd5b5cb5069a",
+      "hash": "01633a2d56971c13158dd86ae2e0a4a264cc7ec7cf58f479dbef3b15e8914afa",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24587,7 +24640,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Recursión",
         "titulo_en": null,
@@ -24723,7 +24777,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "b0b58255905ba0f12a1b4e526f53fa9ac924080280a240246bce67d6ff913c1f",
+      "hash": "41703e94e31e8ebef4172e3ff60a2cda3f0af9eb9cb202bb5858fcd4badea1b5",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24749,7 +24803,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Retorno",
         "titulo_en": null,
@@ -24852,7 +24907,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "486e074de4798a2919a7c7c6db8c8465df9296041fd2f8b7e44da1ede630437b",
+      "hash": "8542c491f99f03580502c0af4b28b7c6e1d81486dd7db5dbd0a8488bf8978f99",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -24878,7 +24933,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Ámbitos y nombres",
         "titulo_en": null,
@@ -25465,7 +25521,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "e4e135d79a117af94a7382446fd6a363183ece456490488e6e92c77c34d931e8",
+      "hash": "4e1b1ca9162c707fe4355bd313676668b37359b4448330869bf141accb8edad2",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -25511,7 +25567,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Gramática abstracta formal",
         "titulo_en": null,
@@ -26340,7 +26397,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "16cb8b9851cf185ddd8c5f38643a012cb1ea35e2b5e182a95ff6ffafe51fb56c",
+      "hash": "36aa96924f84fa13583116062f1e8cfb0cc010d51cf0b81f8377daf0bc8b1f52",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26366,7 +26423,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo arreglo",
         "titulo_en": null,
@@ -26444,7 +26502,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "b2eea0686b3d39226efbaef3b24e17fdb02f36c57aa28cf85590d20846e30e36",
+      "hash": "72bd3230b1a5833f2d856bc9e183ebb5d9006c4af3ad57ec8a8746cea712ad0a",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26470,7 +26528,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo lógico",
         "titulo_en": null,
@@ -26544,7 +26603,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "560ef8f42f50f84bae1bacfaba5f8e3c588c5fac80c038c1af8f17c61f41617a",
+      "hash": "24648678578723c1893cda7b0e0cd029f2c3726ba8ee7406db061a89ca6992c9",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26570,7 +26629,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo carácter",
         "titulo_en": null,
@@ -26675,7 +26735,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "3e14ff4828389f3f66235662156836115849f5cd448769f6e442dda0f969c3c6",
+      "hash": "c907f33957e45ad625a896f267e66a59c113274e8dec287f476a61a13d33f686",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26701,7 +26761,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Frontera entre análisis y ejecución",
         "titulo_en": null,
@@ -26779,7 +26840,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "46aa45f14b256fd65148167f3b08c57c51974007f994780cd4bf635117931d5e",
+      "hash": "7102b379d881394c0c1767fc9fb0c979d8760bdee1b699985f1e3f03570f68bf",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26805,7 +26866,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipos de clase",
         "titulo_en": null,
@@ -26919,7 +26981,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "fa48b26b99ba098abeffaad2387d0b23a330a9e2170c7bab54c1f7a1d6382e16",
+      "hash": "5ac38e32f5b737533d4277ad6e3a4c8ef2451034ef09756283a4935677224063",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -26945,7 +27007,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Inferencia flexible",
         "titulo_en": null,
@@ -27287,7 +27350,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ed53f807008b4299bab7e3b4d76432a4e9ca9fa8fc2a0b1df8a2c41dd7b5fcc9",
+      "hash": "aed12df2d456adb1886a9375dad769e70d8dc9a5cb091da7f069bb4f662c50ac",
       "metadata": {
         "cambio": null,
         "depende_de": [],
@@ -27307,7 +27370,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo entero",
         "titulo_en": null,
@@ -27407,7 +27471,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "dc55da0182ad393438c9d12539222ddfc05b0249073eff2a1268a01c08e9c6bd",
+      "hash": "dafa234fa3c7e78c7768bf755d25ff3556095f394074a20022c15a7ad56f456c",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -27433,7 +27497,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo real",
         "titulo_en": null,
@@ -27511,7 +27576,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "f7ec05cd60d70395a816f6bbd18741a4ef2bcf552730ca54dec5a4f973cb6f6f",
+      "hash": "103020c1848e76bc136e1f1cd8ae51d835881eae43a3896bf0714c25e2745639",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -27542,7 +27607,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Relaciones de tipos",
         "titulo_en": null,
@@ -27616,7 +27682,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "42f821027c130e4282193f4bf160ac1c50f53e11f9f38f68b3cf54986afad7a1",
+      "hash": "dc36b6f60e806dd890afa719250cb53d978583fba18a932000f9dbeae4a78d37",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -27642,7 +27708,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Tipo cadena",
         "titulo_en": null,
@@ -27774,7 +27841,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "eb199f2a97b8a5ecfdffda053ef559955ce3bcd4d0b7d04f87f5bc1cf9304f83",
+      "hash": "31f381f64eba860907879a0ac265616f596f3b1c7cf910c015b0ed79c8c1f30a",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -27805,7 +27872,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Conversiones explícitas",
         "titulo_en": null,
@@ -27883,7 +27951,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "80167c8db10638e4ea15037c5952bbfeabe9fd98ea09fc9559f1010c01ceaa90",
+      "hash": "cb488b29e453bf33a822618488c64981f4c034f2b6cd7fe2ea9c4e72b77a23f4",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -27914,7 +27982,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Función de copia superficial",
         "titulo_en": null,
@@ -28072,7 +28141,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "1e31101b1716c9f17c9b2be1c3b11cafd7d78d9918d1c33576f3d3f309f1fcdf",
+      "hash": "c9136af1583983a809fd26dc6716877801981881599bb722667b94bd7d515c17",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -28098,7 +28167,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Funciones matemáticas",
         "titulo_en": null,
@@ -28204,7 +28274,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "c4a73e2af0b8f32c2a6fa263119b16f3a3b7ab945387123de06f3bb82b109585",
+      "hash": "870b28ec1fe094c01ef710a2e4f73868d8a0a8165e8c1269c46545db0dacfb47",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -28230,7 +28300,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Fuente aleatoria explícita",
         "titulo_en": null,
@@ -28335,7 +28406,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "fe692f7b341d9c96e69044576b69039a66b4333edd92832e277b5ef943b3a545",
+      "hash": "28913cd0f3f2f7112d788ac367b4a8bb2e42f1a956890de4ce63f10eb745d657",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -28361,7 +28432,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Truncamiento y redondeo",
         "titulo_en": null,
@@ -28489,7 +28561,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "8b1d0471a69a6b1661d90c8963c1f570b87e7d73ec8c50e201fc56b4d172075f",
+      "hash": "036286f2f69514c678c0d839c7c7ac1c3a56fe7fccc7f041cb1ae668b8533710",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -28520,7 +28592,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Funciones de texto y carácter",
         "titulo_en": null,
@@ -28904,7 +28977,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "37e9336411089aa58db87950fa77444dc9172ae3dd1f6e5b8841365f1dc49030",
+      "hash": "869edda9c58a25e131776b94be0900aa229d63eab027ddf48d03df98941831f6",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -28935,7 +29008,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Modelo de funciones incorporadas",
         "titulo_en": null,
@@ -30677,7 +30751,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "ccd2ce947588e562206c25ba5e88785a7427f214dfb968cd8d178cb87d9c896d",
+      "hash": "f31727d846a2b280b3fa2479d18b99f5ffe3439507f0cf3d986eecad3f954433",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -30700,7 +30774,8 @@
         "resumen": "Diez programas comparables de Are We Fast Yet en PseudoLearn.",
         "revisado_por": [],
         "sujetos": [
-          "engine"
+          "engine",
+          "aot"
         ],
         "titulo": "Suite AWFY-core",
         "titulo_en": "AWFY-core suite",
@@ -31012,7 +31087,7 @@
           "fields": {
             "espera": {
               "fallo": {
-                "codigo": "uninitializedRead"
+                "codigo": "uninitializedVariableRead"
               },
               "salida": "",
               "terminacion": "failed"
@@ -31073,7 +31148,7 @@
           "kind": "propiedad"
         }
       ],
-      "hash": "f0c3b14a622b0bb22cde9c2c9f848be0228134b34e33f322da252dd712498933",
+      "hash": "4d87ac3ecaa5fa7478b98cc1844c8b29ba3554b121202eb673ab8cec6965c8af",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -31154,7 +31229,7 @@
           "fields": {
             "espera": {
               "fallo": {
-                "codigo": "indexOutOfBounds"
+                "codigo": "arrayIndexOutOfRange"
               },
               "salida": "",
               "terminacion": "failed"
@@ -31266,7 +31341,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "17b13503a0472920f46d483948eaee72c1f9483273fb8d5e43e85bdb9d0bcb20",
+      "hash": "39cfa6e52eba621ce6945585c7c6df670da731af955b0c26827867080b14d528",
       "metadata": {
         "cambio": null,
         "depende_de": [

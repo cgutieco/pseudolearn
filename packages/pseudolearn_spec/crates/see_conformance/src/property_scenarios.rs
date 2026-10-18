@@ -69,6 +69,18 @@ fn mark_traced(case: &see_model::Block, scenarios: &mut [Scenario]) {
     }
 }
 
+pub(crate) fn runnable_by(scenario: &Scenario, declaration: &Value) -> bool {
+    let needs_observation = ["cancel_at_statement", "cancel_at_poll", "state_at"]
+        .iter()
+        .any(|name| scenario.request.get(name).is_some())
+        || scenario.request.get("observe") == Some(&json!("events"));
+    !needs_observation
+        || declaration
+            .get("capabilities")
+            .and_then(Value::as_array)
+            .is_some_and(|values| values.contains(&json!("observe")))
+}
+
 pub(crate) fn generated(
     seed: GenerationSeed,
     profile: &str,

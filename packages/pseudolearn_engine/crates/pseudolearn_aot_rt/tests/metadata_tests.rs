@@ -6,6 +6,7 @@ fn sample() -> ExecutableMetadata {
             source_name: "p.pseudo".to_owned(),
             locale: "es".to_owned(),
             seed: -7,
+            forced_collection: true,
             limits: AotLimits {
                 frames: 12,
                 instruction_units: Some(99),
@@ -17,6 +18,8 @@ fn sample() -> ExecutableMetadata {
                 falsity: "Falso".to_owned(),
             },
             error_template: "{path}:{line}:{column}\n".to_owned(),
+            warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
+            information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
             exhausted_template: "{path}\n".to_owned(),
         },
         sites: vec![FaultSite {

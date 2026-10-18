@@ -107,11 +107,17 @@ estándar con búfer y los límites y la semilla fijados al compilar, registra l
 vacía la salida y proyecta el estado: `0` completado, `3` fallo del programa, `4` límite (`statementBudgetExhausted` o
 entrada agotada) y `5` fallo interno (`internalFault`, clases inválidas, metadatos corruptos o fallo sin registro). Ante
 un fallo, la salida del programa ya está vaciada y el diagnóstico se escribe en la salida de error con la plantilla de
-línea que trae el metadato; la entrada agotada usa su propia plantilla. `run_executable` es la misma lógica con flujos
+línea que trae el metadato; la entrada agotada usa su propia plantilla. Los avisos del programa (por ejemplo, una lectura
+con tipo incorrecto que se recupera) se escriben antes que el fallo y también en ejecuciones que terminan con código `0`.
+Cada diagnóstico elige su plantilla por severidad (`error`, `warning` o `information`) y las plantillas admiten
+`{path}`, `{line}`, `{column}`, `{end_line}`, `{end_column}`, `{message}`, `{code}` y `{arguments}` (objeto JSON con los
+argumentos del diagnóstico, y con `limit` numérico para `cellLimitExceeded`, `recursionDepthExceeded` y
+`statementBudgetExhausted`). `run_executable` es la misma lógica con flujos
 inyectados, que es lo que prueban los tests sin lanzar procesos.
 
 Metadatos (`ExecutableMetadata`, magia `PLM1`): nombre de la fuente, idioma, semilla, límites (marcos, unidades opcionales,
-celdas, capacidad de raíces), palabras lógicas, las dos plantillas, la tabla de sitios (código por nombre y rango) y los
+celdas, capacidad de raíces), recolección forzada, palabras lógicas, las cuatro plantillas (error, aviso, información y
+entrada agotada), la tabla de sitios (código por nombre y rango) y los
 diseños de clase. Codificación little-endian con prefijos de longitud; el decodificador rechaza prefijos truncados, bytes
 sobrantes, magia ajena y nombres de diagnóstico desconocidos. Codegen codifica con `encode_metadata`, de modo que el
 formato vive en un solo lugar (`GEN-NO-HAND-COPY`).
@@ -166,6 +172,17 @@ arrancar, porque el comportamiento dejaría de depender solo de la entrada está
 Problema: `std` solo vacía la salida estándar al volver de su propio `main`, y el `main` generado es el de C. Elección:
 `run_executable` vacía explícitamente el flujo de salida antes de informar el fallo y de devolver el código.
 
+Problema: el sujeto `aot` se contrasta con el corpus a través de procesos reales y el proceso solo expone texto. Elección:
+las plantillas admiten marcadores para el tramo completo y los argumentos, y la CLI de producto usa las del catálogo
+mientras que el adaptador de conformidad compila con plantillas de campos separados por tabulador que `pseudolearn_api`
+interpreta; el diagnóstico conserva así código, severidad, tramo y argumentos del programa compilado. Descartado: un
+segundo canal de salida o un formato binario para diagnósticos, que añadiría un contrato que ningún usuario consume.
+
+Problema: la propiedad de transparencia de la recolección exige ejecutar con recolección forzada en cada asignación.
+Elección: `ExecutableSettings.forced_collection` se fija al compilar y `run_executable` lo aplica al montón antes de
+ejecutar; sin él, el comportamiento es el automático. Descartado: una variable de entorno, que incumpliría la
+independencia del entorno del ejecutable.
+
 Problema: una entrada nunca debe propagar un pánico a través de la frontera `extern "C"`. Elección: ninguna ruta
 usa `unwrap`, indexación ni aritmética sin comprobar (lo exige Clippy); un puntero de contexto nulo devuelve el estado
 de fallo sin escribir nada.
@@ -203,9 +220,9 @@ elemento y de campo, incluido el enraizamiento del texto que solo una celda cons
 `tests/memory_tests.rs` cubre asignación, extensiones negativas y cero, extensiones ausentes, tipo desconocido,
 agotamiento de celdas con todo enraizado, recolección con raíces, diseños y copia, y contexto nulo. `tests/text_tests.rs`,
 `tests/math_tests.rs`, `tests/random_tests.rs`, `tests/output_tests.rs`, `tests/input_tests.rs`, `tests/trap_tests.rs`,
-`tests/metadata_tests.rs` (ida y vuelta, rechazo de cada prefijo truncado, magia y nombres corruptos, `pseudolearn_aot_main` con
+`tests/metadata_tests.rs` (ida y vuelta, con recolección forzada y las cuatro plantillas, rechazo de cada prefijo truncado, magia y nombres corruptos, `pseudolearn_aot_main` con
 metadatos nulos o basura), `tests/process_tests.rs` (códigos 0, 3, 4 y 5, salida previa al fallo, entrada agotada, clases
-inválidas y plantillas) y
+inválidas, plantillas, avisos en ejecuciones completadas, límites numéricos, escape de argumentos y recolección forzada) y
 `tests/fault_tests.rs` cubren camino feliz e infeliz de cada familia: literales inválidos, conversiones fallidas,
 posiciones fuera de rango, dominios matemáticos, flujo de salida cerrado, lecturas con tipo incorrecto, entrada
 agotada, sitios inexistentes, conservación del primer fallo y renderizado por idioma.

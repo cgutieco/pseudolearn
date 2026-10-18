@@ -12,7 +12,8 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         .options
         .get("subject")
         .ok_or("Missing --subject")?;
-    let (mut command, _) = crate::conformance::subject_configuration(arguments, corpus, subject)?;
+    let (mut command, _) =
+        crate::subject_adapters::subject_configuration(arguments, corpus, subject)?;
     let registry: PropertyRegistry =
         storage::read_json(&arguments.root.join("property-conformance.json"))?;
     let vocabulary: Vocabulary =
@@ -55,18 +56,23 @@ fn save(arguments: &Arguments, evidence: &Evidence) -> Result<String, String> {
         &serde_json::json!(evidence),
         false,
     )?;
-    let completed = evidence
-        .properties
-        .iter()
-        .filter(|report| report.verdict == "cumple")
-        .count();
-    if completed != evidence.properties.len() {
+    let count = |verdict: &str| {
+        evidence
+            .properties
+            .iter()
+            .filter(|report| report.verdict == verdict)
+            .count()
+    };
+    let (completed, pending, failed) = (count("cumple"), count("pendiente"), count("incumple"));
+    if failed > 0 {
         return Err(format!(
-            "SEE-PROPERTY: {completed}/{} properties pass; evidence saved",
+            "SEE-PROPERTY: {failed}/{} properties fail; evidence saved",
             evidence.properties.len()
         ));
     }
-    Ok(format!("Executed {completed} properties; evidence saved"))
+    Ok(format!(
+        "Executed {completed} properties; {pending} pending for unavailable capabilities; evidence saved"
+    ))
 }
 
 fn hashes(corpus: &Corpus) -> Result<std::collections::BTreeMap<String, String>, String> {

@@ -5,15 +5,17 @@
 Mide cargas de la API pública en proceso. Herramienta local; no es una capa del producto ni un sujeto de conformidad.
 El comando `execute` prepara las diez cargas AWFY de medición desde la exportación y emite treinta muestras por carga; valida salida y terminación fuera del intervalo. El comando `e06` mide las ocho métricas de la línea temporal (observador en pausa, coste de los deltas por evento, independencia de la profundidad, coste de un punto con pila profunda, latencia de paso observado, latencia de retroceso, memoria retenida y memoria residente con grabación) y emite un único documento JSON con muestras crudas, veredicto por métrica y `all_passed` calculado. Pendiente: la orquestación en diez procesos del arnés Dart; hoy cada métrica se toma en un único proceso con treinta iteraciones.
 
+El comando `aot <directorio>` mide el código nativo generado con `pseudolearn_codegen` sobre las mismas diez cargas: por cada carga emite el objeto sin punto de entrada con `build_benchmark_object` (treinta emisiones cronometradas), enlaza un lanzador propio con el objeto y la biblioteca del runtime, y ejecuta diez procesos de treinta iteraciones cada uno. Cada iteración crea una sesión nueva fuera del intervalo, cronometra solo la llamada a la función principal y verifica salida y estado después; una salida distinta aborta el proceso. Compara con el techo nativo con marcos de la captura `results/e02r` y con la máquina virtual de `results/macos-r5-vm`, y escribe `raw.json` y `summary.json`.
+
 ## 2. Guía operativa y ciclo de vida
 
 Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras
-por configuración como JSONL. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
+por configuración como JSONL. `cargo run --release -p pseudolearn_bench_worker -- aot ../../../pseudolearn_benchmarks/results/r6-aot` recoge el experimento del código nativo; requiere `rustc` y un enlazador del sistema, y compila un lanzador por carga contra la biblioteca `pseudolearn_aot_rt` del mismo perfil. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
 
 ## 3. Arquitectura y modelo del sistema
 
 Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `pseudolearn_timeline`, serde_json y estándar: `e06` necesita crear máquinas y líneas temporales para medirlas, y el resto de órdenes solo usa la API. Prohibido importar otros internos del motor.
-`src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados. `src/corpus.rs` lee las diez cargas AWFY de medición; `src/e06/` contiene un módulo por métrica, estadística (percentil, media geométrica, pendiente con intervalo al 95 %) y el informe.
+`src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados. `src/corpus.rs` lee las diez cargas AWFY de medición; `src/aot/` contiene el experimento del código nativo: `emission` (tiempo de emisión), `launcher` y `launcher.template` (lanzador enlazado con el objeto), `measurement` (proceso y muestras), `baseline` (techo nativo y máquina virtual), `summary` (razones por familia, intervalos y criterios) y `statistics`; `src/e06/` contiene un módulo por métrica, estadística (percentil, media geométrica, pendiente con intervalo al 95 %) y el informe.
 El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dentro del intervalo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
@@ -27,6 +29,8 @@ La captura de procedencia y la orquestación externa preceden a compilar el trab
 solo produce tiempos crudos y conteos para validar muestras. Un perfil del sistema se realiza en una sesión
 separada de la captura normativa para no contaminar las muestras.
 
+Problema: un ejecutable compilado ejecuta el programa una sola vez y el arranque del proceso es mayor que la carga. Elección: el lanzador enlaza el mismo objeto que produce el generador y llama a su función principal repetidamente dentro de un proceso, con estado nuevo creado antes del cronómetro; la medición no incluye arranque, entrada ni salida. Descartado: cronometrar el proceso completo, que mide el sistema operativo, y enlazar el punto de entrada de producto, que no permite repetir la ejecución. El intervalo de confianza remuestrea las medias por proceso de ambos lados de forma independiente (semilla fija, 2 000 remuestreos), porque el techo nativo y el código generado no comparten proceso; la comparación no está emparejada y así se declara.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, unsafe ni pánicos explícitos. Límites del workspace. Fallos como Result.
@@ -37,7 +41,7 @@ PERF.PROTOCOL y PERF.FRONTEND.THROUGHPUT definen muestras y criterios. Las medic
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests espejo: cargas válidas e incompletas, salida incorrecta rechazada y corpus ausente o malformado. La estadística de E-06 y el veredicto del informe tienen casos negativos: un informe con una métrica fallida, ausente o sin veredicto no es verde.
+Tests espejo: el experimento nativo se prueba con un lanzador real (enlace, treinta iteraciones y aborto ante una salida incorrecta), con el análisis del techo y de la máquina virtual (incluida la ausencia de línea base), con los informes de muestras (cortos o malformados) y con el resumen (familia sobre el umbral, emisión lenta, máquina más rápida, intervalo reproducible, entradas ausentes); cargas válidas e incompletas, salida incorrecta rechazada y corpus ausente o malformado. La estadística de E-06 y el veredicto del informe tienen casos negativos: un informe con una métrica fallida, ausente o sin veredicto no es verde.
 La conformidad del motor se ejecuta aparte; el trabajador no convierte sus resultados en esperados del lenguaje.
 
 ## 8. Fuentes consultadas y genealogía conceptual

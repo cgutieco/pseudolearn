@@ -2,44 +2,793 @@
   "sujeto": "aot",
   "paquete": "packages/pseudolearn_engine",
   "activadas": [
-    "PERF.AOT.LEVEL",
+    "ENG.EXEC.EFFECT-ORDER",
+    "ENG.INPUT",
+    "ENG.LIMITS",
+    "IR.INSTRUCTIONS",
+    "IR.OBSERVATION-POINTS",
+    "IR.SOURCE-MAP",
+    "LANG.CONTROL.FOR",
+    "LANG.LEXICAL.WHITESPACE",
+    "LANG.OPS.POWER",
+    "LANG.SOURCE.ENCODING",
+    "LANG.SUBPROGRAM.RECURSION",
+    "LANG.TYPES.CHARACTER",
+    "LANG.TYPES.INTEGER",
+    "LANG.TYPES.REAL",
+    "LANG.TYPES.TEXT",
+    "LIB.CORE.TEXT",
+    "MEM.IDENTITY",
+    "MEM.MANAGED.UNOBSERVABLE",
+    "MEM.VALUE.COPY",
+    "PERF.SUITE.AWFY-CORE",
     "RT.ABI",
     "RT.FAULT.REPORTING",
     "RT.HOST.INTERFACE",
-    "RT.LINKING",
     "RT.PROCESS"
   ],
   "fases_cerradas": [],
   "vinculos": [
     {
-      "regla": "RT.HOST.INTERFACE@0.1.0#R1",
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R6",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R6"
     },
     {
-      "regla": "RT.HOST.INTERFACE@0.1.0#R2",
+      "regla": "ENG.LIMITS@0.2.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.LIMITS@0.2.0#R8",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R6"
     },
     {
-      "regla": "RT.HOST.INTERFACE@0.1.0#R3",
+      "regla": "IR.INSTRUCTIONS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.INSTRUCTIONS@0.1.0#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R6"
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.MODEL@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.OBSERVATION-POINTS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
+    },
+    {
+      "regla": "IR.SOURCE-MAP@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.SOURCE-MAP@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "IR.WELL-FORMEDNESS@0.1.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.ARRAY.ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.ARRAY.DIMENSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.FIELDS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.INHERITANCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.METHODS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.OVERRIDE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R6",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.IF@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.REPEAT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.SWITCH@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.CONTROL.WHILE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.DECL.DESIGNATOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.DECL.VARIABLE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.EDITION.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.IO.INPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.IO.OUTPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.COMMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.ARITHMETIC@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.OPS.COMPARISON@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.OPS.CONCATENATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.OPS.DIVISION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.OPS.LOGICAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.OPS.POWER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.PRECEDENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.PROFILE.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.STMT.TERMINATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.ARRAY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.BOOLEAN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.CHARACTER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.CLASS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.INFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.REAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LANG.TYPES.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.CONVERSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LIB.CORE.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LIB.CORE.MATH@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LIB.CORE.RANDOM@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LIB.CORE.ROUNDING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "LIB.CORE.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+    },
+    {
+      "regla": "PERF.SUITE.AWFY-CORE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
     },
     {
       "regla": "RT.ABI@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.ABI@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.ABI@0.1.0#R3",
@@ -50,8 +799,7 @@
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R2",
@@ -62,26 +810,23 @@
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
-      "regla": "RT.PROCESS@0.1.0#R1",
+      "regla": "RT.HOST.INTERFACE@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
-      "regla": "RT.PROCESS@0.1.0#R2",
+      "regla": "RT.HOST.INTERFACE@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "exento",
+      "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
     },
     {
-      "regla": "RT.PROCESS@0.1.0#R3",
+      "regla": "RT.HOST.INTERFACE@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.LINKING@0.1.0#R1",
@@ -102,19 +847,18 @@
       "resuelve_en": "R6"
     },
     {
-      "regla": "PERF.AOT.LEVEL@0.1.0#R1",
+      "regla": "RT.PROCESS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "RT.PROCESS@0.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R6"
     },
     {
-      "regla": "PERF.AOT.LEVEL@0.1.0#R2",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
-    },
-    {
-      "regla": "PERF.AOT.LEVEL@0.1.0#R3",
+      "regla": "RT.PROCESS@0.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R6"

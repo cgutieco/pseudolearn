@@ -1,4 +1,4 @@
-use crate::{ApiError, ExecuteRequest};
+use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
 use pseudolearn_timeline::{CheckpointStore, replay_machine_to_event};
 use pseudolearn_vm::{
     Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine, load,
@@ -31,11 +31,12 @@ pub(crate) struct ExecutionResource {
     retained_events: usize,
     cancelled: Arc<AtomicBool>,
     profile: String,
+    warnings: Vec<ApiDiagnostic>,
 }
 
 impl ExecutionResource {
     pub(crate) fn start(request: &ExecuteRequest) -> Result<Self, ApiError> {
-        let module = crate::compile_source_to_module(
+        let (module, warnings) = crate::ir_execution::compile_source_with_warnings(
             &request.program,
             &request.profile,
             &request.strictness,
@@ -70,6 +71,7 @@ impl ExecutionResource {
             retained_events: usize::MAX,
             cancelled,
             profile: request.profile.clone(),
+            warnings,
         })
     }
 
@@ -90,7 +92,11 @@ impl ExecutionResource {
                 }
             }
         }
-        let response = advance_response(&self.machine, 0, self.terminal.as_ref(), &self.profile);
+        let response = advance_response(
+            &self.machine,
+            (0, self.terminal.as_ref()),
+            (&self.profile, &self.warnings),
+        );
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
         self.record_checkpoint()?;
@@ -199,9 +205,8 @@ impl ExecutionResource {
 
 fn advance_response(
     machine: &Machine<'_>,
-    start: usize,
-    terminal: Option<&RunExit>,
-    profile: &str,
+    (start, terminal): (usize, Option<&RunExit>),
+    (profile, warnings): (&str, &[ApiDiagnostic]),
 ) -> Value {
     let events: Vec<_> = machine_events(machine)
         .get(start..)
@@ -212,11 +217,13 @@ fn advance_response(
     let termination = terminal
         .map(crate::execution_wire::termination)
         .unwrap_or(json!({"kind":"running"}));
-    let mut diagnostics: Vec<_> = machine
-        .execution_diagnostics()
-        .iter()
-        .map(|trap| crate::execution_wire::diagnostic(trap, profile))
-        .collect();
+    let mut diagnostics: Vec<_> = warnings.to_vec();
+    diagnostics.extend(
+        machine
+            .execution_diagnostics()
+            .iter()
+            .map(|trap| crate::execution_wire::diagnostic(trap, profile)),
+    );
     if let Some(RunExit::Trap(trap)) = terminal {
         diagnostics.push(crate::execution_wire::diagnostic(trap, profile));
     }

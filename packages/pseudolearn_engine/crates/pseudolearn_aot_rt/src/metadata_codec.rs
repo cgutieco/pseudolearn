@@ -53,6 +53,7 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.text(&settings.source_name);
     writer.text(&settings.locale);
     writer.signed64(settings.seed);
+    writer.unsigned32(u32::from(settings.forced_collection));
     writer.unsigned32(settings.limits.frames);
     writer.unsigned64(settings.limits.instruction_units.unwrap_or(0));
     writer.unsigned32(u32::from(settings.limits.instruction_units.is_some()));
@@ -61,6 +62,8 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.text(&settings.boolean_words.truth);
     writer.text(&settings.boolean_words.falsity);
     writer.text(&settings.error_template);
+    writer.text(&settings.warning_template);
+    writer.text(&settings.information_template);
     writer.text(&settings.exhausted_template);
 }
 
@@ -138,6 +141,7 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
     let source_name = reader.text()?;
     let locale = reader.text()?;
     let seed = reader.signed64()?;
+    let forced_collection = reader.unsigned32()? != 0;
     let frames = reader.unsigned32()?;
     let units = reader.unsigned64()?;
     let has_units = reader.unsigned32()? != 0;
@@ -147,6 +151,7 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
         source_name,
         locale,
         seed,
+        forced_collection,
         limits: AotLimits {
             frames,
             instruction_units: has_units.then_some(units),
@@ -158,6 +163,8 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
             falsity: reader.text()?,
         },
         error_template: reader.text()?,
+        warning_template: reader.text()?,
+        information_template: reader.text()?,
         exhausted_template: reader.text()?,
     })
 }

@@ -1,0 +1,208 @@
+{
+  "environment": {
+    "architecture": "aarch64",
+    "commit": "92e210ef4f6071e1b27ceb5c85efb0f69e527e06",
+    "dirty": true,
+    "hardware": "Apple M2",
+    "iterationsPerProcess": 30,
+    "operatingSystem": "macos",
+    "processesPerWorkload": 10,
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1",
+    "unixSeconds": 1792337814
+  },
+  "summary": {
+    "bootstrap": {
+      "method": "independent resampling of per-process means",
+      "rounds": 2000,
+      "seed": 42
+    },
+    "criteria": {
+      "emissionPassed": true,
+      "familiesPassed": false,
+      "speedupPassed": true
+    },
+    "emissionMaximumMilliseconds": 14.806292000000001,
+    "emissionMedianMilliseconds": 1.685208,
+    "families": {
+      "arrays": {
+        "confidence95": [
+          4.846173089902452,
+          6.3713931121102405
+        ],
+        "passed": false,
+        "ratio": 5.6483925610477
+      },
+      "numeric": {
+        "confidence95": [
+          3.1664542119058843,
+          4.270284200411919
+        ],
+        "passed": false,
+        "ratio": 3.7174181397963446
+      },
+      "objects": {
+        "confidence95": [
+          6.188179121774416,
+          7.4333376484438665
+        ],
+        "passed": false,
+        "ratio": 6.864084473207473
+      },
+      "recursive": {
+        "confidence95": [
+          5.549120831940478,
+          7.107310516511694
+        ],
+        "passed": false,
+        "ratio": 6.447334336747421
+      }
+    },
+    "geometricMeanRatio": 5.8031338294115065,
+    "geometricMeanSpeedupOverMachine": 7.957573285006197,
+    "minimumSpeedupOverMachine": 1.1965530411554965,
+    "samples": 3000,
+    "targetReached": false,
+    "workloads": {
+      "bounce": {
+        "ceilingNanoseconds": 27403.500254746912,
+        "confidence95": [
+          3.7916055345160973,
+          5.764204495747466
+        ],
+        "emissionMilliseconds": 3.624292,
+        "family": "objects",
+        "machineMicroseconds": 1579.0111533333334,
+        "nativeNanoseconds": 129829.30999999998,
+        "processes": 10,
+        "ratio": 4.73769076187669,
+        "speedupOverMachine": 12.162208620944943
+      },
+      "list": {
+        "ceilingNanoseconds": 26507.941622959264,
+        "confidence95": [
+          3.382204077645645,
+          5.400957121909532
+        ],
+        "emissionMilliseconds": 1.951625,
+        "family": "objects",
+        "machineMicroseconds": 970.13863,
+        "nativeNanoseconds": 116452.89000000001,
+        "processes": 10,
+        "ratio": 4.393132128340623,
+        "speedupOverMachine": 8.330738979513518
+      },
+      "mandelbrot": {
+        "ceilingNanoseconds": 157970.99648809215,
+        "confidence95": [
+          1.7864208621435236,
+          2.0943480847613385
+        ],
+        "emissionMilliseconds": 1.468917,
+        "family": "numeric",
+        "machineMicroseconds": 2732.87606,
+        "nativeNanoseconds": 306049.19666666666,
+        "processes": 10,
+        "ratio": 1.9373758694352265,
+        "speedupOverMachine": 8.929531884955447
+      },
+      "nbody": {
+        "ceilingNanoseconds": 9951.123860830376,
+        "confidence95": [
+          5.0918075249872,
+          9.353908134501719
+        ],
+        "emissionMilliseconds": 8.547167,
+        "family": "numeric",
+        "machineMicroseconds": 911.0868533333336,
+        "nativeNanoseconds": 70980.82999999999,
+        "processes": 10,
+        "ratio": 7.13294608656162,
+        "speedupOverMachine": 12.835674834083143
+      },
+      "permute": {
+        "ceilingNanoseconds": 39211.80911813437,
+        "confidence95": [
+          5.549120831940478,
+          7.107310516511695
+        ],
+        "emissionMilliseconds": 1.563542,
+        "family": "recursive",
+        "machineMicroseconds": 1875.0407166666669,
+        "nativeNanoseconds": 252811.6433333333,
+        "processes": 10,
+        "ratio": 6.447334336747421,
+        "speedupOverMachine": 7.41674984563277
+      },
+      "queens": {
+        "ceilingNanoseconds": 8446.989043926475,
+        "confidence95": [
+          7.251428742208977,
+          11.117321538995782
+        ],
+        "emissionMilliseconds": 1.685208,
+        "family": "arrays",
+        "machineMicroseconds": 551.3655366666667,
+        "nativeNanoseconds": 77616.69333333333,
+        "processes": 10,
+        "ratio": 9.188681662744788,
+        "speedupOverMachine": 7.103697838540576
+      },
+      "richards": {
+        "ceilingNanoseconds": 79534.26709733662,
+        "confidence95": [
+          3.6430210689163345,
+          4.595321843367918
+        ],
+        "emissionMilliseconds": 14.806292000000001,
+        "family": "objects",
+        "machineMicroseconds": 5362.485989999999,
+        "nativeNanoseconds": 328481.18999999994,
+        "processes": 10,
+        "ratio": 4.130058677701701,
+        "speedupOverMachine": 16.32509304414052
+      },
+      "sieve": {
+        "ceilingNanoseconds": 6611.800338560189,
+        "confidence95": [
+          2.8756653297522714,
+          3.9948648577093753
+        ],
+        "emissionMilliseconds": 0.5825,
+        "family": "arrays",
+        "machineMicroseconds": 314.57999,
+        "nativeNanoseconds": 22957.060000000005,
+        "processes": 10,
+        "ratio": 3.4721344905280707,
+        "speedupOverMachine": 13.702973725729684
+      },
+      "storage": {
+        "ceilingNanoseconds": 7534.8266670928815,
+        "confidence95": [
+          45.25185975758317,
+          56.62482632981757
+        ],
+        "emissionMilliseconds": 1.43525,
+        "family": "objects",
+        "machineMicroseconds": 463.42459,
+        "nativeNanoseconds": 387299.6633333334,
+        "processes": 10,
+        "ratio": 51.401270453214416,
+        "speedupOverMachine": 1.1965530411554965
+      },
+      "towers": {
+        "ceilingNanoseconds": 12872.002958395662,
+        "confidence95": [
+          2.4741675016071483,
+          4.408361897933693
+        ],
+        "emissionMilliseconds": 1.851292,
+        "family": "objects",
+        "machineMicroseconds": 275.96290999999997,
+        "nativeNanoseconds": 44390.310000000005,
+        "processes": 10,
+        "ratio": 3.448593831393332,
+        "speedupOverMachine": 6.216737616835745
+      }
+    }
+  }
+}

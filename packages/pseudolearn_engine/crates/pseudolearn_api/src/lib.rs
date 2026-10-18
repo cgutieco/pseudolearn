@@ -45,5 +45,13 @@ mod event_codec;
 mod native_build;
 pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
 
+mod native_benchmark;
+pub use native_benchmark::{BenchmarkObject, build_benchmark_object};
+
+mod native_execution;
+pub use native_execution::{
+    NativeRunReport, conformance_build_request, native_execute_response, rejected_native_response,
+};
+
 mod recording;
 mod state_changes;

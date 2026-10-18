@@ -27,6 +27,15 @@ de diagnóstico y de entrada agotada que la CLI entrega, y las palabras lógicas
 `pseudolearn_vm::boolean_words` expone desde la misma tabla generada que usa la VM. La API no enlaza ni toca el disco:
 el enlace es una capacidad del adaptador.
 
+Ejecución nativa observada: `conformance_build_request` fija las plantillas de línea en campos separados por tabulador y
+`native_execute_response` convierte la ejecución de un ejecutable (código de salida, salida estándar y salida de error)
+en un `ExecuteResponse`: `0` completado, `3` fallo con el código del último diagnóstico de error, `4` entrada agotada
+(`awaiting_input`) o límite de sentencias (`limit_reached`) y cualquier otro código o señal fallo interno. Los diagnósticos
+de la salida de error conservan código, severidad, tramo y argumentos tipados; las líneas ilegibles se ignoran y un fallo
+sin diagnóstico legible es `internalFault`. `rejected_native_response` da la forma de un programa que el análisis rechaza.
+`build_benchmark_object` entrega el objeto sin punto de entrada, sus metadatos codificados y el símbolo de la función
+principal, que es lo que el trabajador de rendimiento enlaza con un lanzador propio para medir dentro del proceso.
+
 La compilación a módulo conserva metadatos laterales de origen que la representación textual no
 transporta. Los tests de integración compilan el corpus exportado y llaman directamente al bytecode y
 la VM; `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual, copia y ausencia
@@ -44,6 +53,11 @@ Invariantes: Ningún pánico cruza la frontera.
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: el sujeto `aot` debe contrastarse con el corpus ejecutando el binario real, y el proceso solo ofrece texto.
+Elección: el adaptador compila con plantillas máquina-legibles y esta capa reconstruye la respuesta de ejecución a partir
+del código de salida y la salida de error. Descartado: ejecutar en proceso código generado (exige `unsafe` y no prueba el
+enlace ni el protocolo del proceso) y ejecutar la VM como respaldo, que ocultaría defectos del sujeto.
 
 Problema: medir ejecución no debe incluir compilación. Elección: `PreparedProgram` conserva un programa cargado inmutable; `prepare_program` compila y `execute_prepared` crea una ejecución nueva con semilla, límites y entradas explícitos. Se descarta medir el arranque del adaptador o la serialización. El trabajador valida cada salida fuera del intervalo.
 

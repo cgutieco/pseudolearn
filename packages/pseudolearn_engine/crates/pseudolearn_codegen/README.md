@@ -21,8 +21,7 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Celdas, texto y matemática de biblioteca se resuelven por entradas del runtime y el despacho virtual usa una tabla de saltos sin caché monomórfica; no hay fijación de `instruction_remaining` en registro | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
-| Nivel de optimización de Cranelift fijado en `none` | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
+| El código generado queda entre 3,4 y 51 veces por encima del techo nativo con marcos (razón geométrica 5,8 sobre las diez cargas de `PERF.SUITE.AWFY-CORE`): las celdas, la asignación de objetos y arreglos y la matemática de biblioteca se resuelven por entradas del runtime; el perfil de `storage` muestra el coste en la asignación y la recolección del montón, no en el código generado. El despacho virtual es una tabla de saltos sin caché monomórfica y toda función reserva ventana de raíces | Entrada rápida en línea para celdas y asignación, devirtualización de métodos sin sobrescritura y omisión de raíces en funciones escalares | Cierre del nivel nativo (`PERF.AOT.LEVEL`) |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -64,7 +63,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `object_emitter` | Declara, define y serializa las funciones con `cranelift-object` |
 | `function_compiler` | Entrada Cranelift con prólogo, bloques de la RI en orden inverso de postorden |
 | `block_order` | Orden inverso de postorden desde el bloque de entrada; los bloques inalcanzables no se emiten |
-| `block_accounting` | Resta `block.mass` de `instruction_remaining` en la cabecera de cada bloque |
+| `block_accounting` | Descuenta unidades de `instruction_remaining`: la masa del bloque en su cabecera o una unidad en cada `stmt.enter` |
 | `lowering` | Estado de una función, sitios de trampa fríos, propagación de fallo y retorno de cero |
 | `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
 | `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
@@ -91,7 +90,11 @@ Marcos: el prólogo incrementa `frame_depth`; todo `return` lo decrementa; antes
 
 Presupuesto: en la cabecera de todo bloque con `mass > 0` se carga `instruction_remaining`, se resta la masa, se
 almacena y, si es negativo, se salta a `statementBudgetExhausted` con el tramo de la primera `stmt.enter` del bloque.
-`stmt.enter`, `stmt.exit` y `decide.*` no emiten código.
+`stmt.exit` y `decide.*` no emiten código. Con un presupuesto de sentencias configurado en los metadatos del ejecutable
+(`StatementCharging::PerStatement`) no se descuenta en la cabecera: cada `stmt.enter` resta una unidad y, si el resultado
+es negativo, salta a `statementBudgetExhausted` con su propio tramo, de modo que el efecto de las sentencias anteriores
+del bloque ya es visible y ninguno posterior lo es, como exige `ENG.LIMITS`. Sin presupuesto (o al emitir un objeto sin
+metadatos) se conserva el descuento por bloque, que no puede distinguirse desde fuera.
 
 Aritmética: suma, resta, producto y opuesto con `sadd_overflow`, `ssub_overflow` y `smul_overflow`; el opuesto es
 `0 - x`. División: divisor cero (`divisionByZero`) antes que mínimo entre menos uno (`integerOverflow`). Módulo: divisor
@@ -183,6 +186,19 @@ Problema: el ejecutable necesita arrancar el runtime sin que codegen conozca su 
 `pseudolearn_aot_rt`, que codifica y decodifica. Descartado: emitir en Cranelift el registro de clases y literales al
 arrancar, porque duplicaría en código generado lo que el decodificador hace una vez en Rust seguro.
 
+Problema: el descuento de unidades por bloque cuesta una carga y un almacenamiento por bloque, y es invisible sin
+presupuesto. Elección: tres modos de descuento según los metadatos del ejecutable: sin presupuesto no se emite nada
+(`Disabled`); con presupuesto se descuenta una unidad en cada `stmt.enter` (`PerStatement`), que corta exactamente en la
+sentencia que lo supera; la emisión como biblioteca, sin metadatos, conserva el descuento por bloque (`PerBlock`). Descartado:
+descontar por bloque con presupuesto, porque el efecto visible de las sentencias anteriores del bloque se perdería, y
+fijar `instruction_remaining` en un registro, que solo ahorraría la carga cuando el presupuesto sí existe.
+
+Problema: con `opt_level = none` el código generado carga y almacena cada valor local en memoria. Elección:
+`opt_level = speed`, que aplica numeración de valores y movimiento de código de Cranelift sobre valores puros; las
+trampas son ramas explícitas a bloques fríos con llamadas, de modo que ninguna comprobación ni efecto cambia de orden.
+La conformidad y la propiedad de primera trampa sobre el corpus verifican el orden. Medido: mejora la razón geométrica
+frente al techo de 7,8 a 5,8 sin cambiar ninguna observación.
+
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.
 
@@ -205,7 +221,7 @@ de continuar.
 `integer_tests.rs`, `real_tests.rs`, `scalar_tests.rs`, `control_tests.rs` y `call_tests.rs` cubren cada familia con
 camino feliz e infeliz y con los bordes `i64::MAX + 1`, `i64::MIN - 1`, `i64::MIN * -1`, `i64::MIN / -1`, `x / 0`, divisor
 real cero con signo, exponentes negativos, truncamiento fuera de rango, límites de escalares Unicode, presupuesto
-exacto y agotado, paso cero, función sin retorno, código inalcanzable, recursión hasta el límite exacto de marcos y
+exacto y agotado (incluido el corte exacto en la sentencia que lo supera dentro de un bloque), paso cero, función sin retorno, código inalcanzable, recursión hasta el límite exacto de marcos y
 propagación del fallo de la función llamada. `definition_tests.rs` cubre el estado sin valor de enteros en
 fusiones, bucles y llamadas; `text_tests.rs`, `math_tests.rs` y `io_tests.rs` cubren texto, matemática, lectura, escritura
 y azar; `array_tests.rs` cubre rangos, dimensiones, centinelas por tipo, máscaras de más de una palabra, tamaños

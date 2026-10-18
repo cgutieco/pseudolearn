@@ -1,5 +1,5 @@
 use see_model::{Corpus, evidence::Conformance};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
     let subjects: std::collections::BTreeSet<_> = corpus
@@ -8,18 +8,9 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
         .collect();
     let mut errors = Vec::new();
     for subject in subjects {
-        let path = match subject.as_str() {
-            "see" => root.join("conformance.yaml"),
-            "reference" => root.join("../pseudolearn_core/conformance.yaml"),
-            "engine" => root.join("../pseudolearn_engine/conformance.yaml"),
-            "aot" => root.join("../pseudolearn_engine/conformance-aot.yaml"),
-            "service" => root.join("../pseudolearn_service/conformance.yaml"),
-            "cli" => root.join("../../apps/pseudolearn_cli/conformance.yaml"),
-            "app" => root.join("../../apps/pseudolearn_app/conformance.yaml"),
-            _ => {
-                errors.push(format!("SEE-BINDING: unknown subject {subject}"));
-                continue;
-            }
+        let Some(path) = manifest_path(root, subject) else {
+            errors.push(format!("SEE-BINDING: unknown subject {subject}"));
+            continue;
         };
         if path.exists() {
             errors.extend(subject_bindings(&path, subject, corpus)?);
@@ -33,6 +24,20 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
         }
     }
     Ok(errors)
+}
+
+pub fn manifest_path(root: &Path, subject: &str) -> Option<PathBuf> {
+    let relative = match subject {
+        "see" => "conformance.yaml",
+        "reference" => "../pseudolearn_core/conformance.yaml",
+        "engine" => "../pseudolearn_engine/conformance.yaml",
+        "aot" => "../pseudolearn_engine/conformance-aot.yaml",
+        "service" => "../pseudolearn_service/conformance.yaml",
+        "cli" => "../../apps/pseudolearn_cli/conformance.yaml",
+        "app" => "../../apps/pseudolearn_app/conformance.yaml",
+        _ => return None,
+    };
+    Some(root.join(relative))
 }
 
 fn subject_bindings(path: &Path, subject: &str, corpus: &Corpus) -> Result<Vec<String>, String> {

@@ -4,7 +4,6 @@ use see_model::{
     contract::Vocabulary,
     evidence::{Conformance, Evidence},
 };
-use std::process::Command;
 use std::time::Duration;
 
 pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> {
@@ -15,7 +14,8 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         .options
         .get("subject")
         .ok_or("Missing --subject")?;
-    let (mut command, conformance) = subject_configuration(arguments, corpus, subject)?;
+    let (mut command, conformance) =
+        crate::subject_adapters::subject_configuration(arguments, corpus, subject)?;
     let selected = select(arguments, corpus, subject)?;
     let vocabulary: Vocabulary =
         storage::read_json(&arguments.root.join("specifications/cases/vocabulary.json"))?;
@@ -69,12 +69,9 @@ pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> 
             return Err("SEE-STALE: evidence corpus hash mismatch".to_owned());
         }
     }
-    let bindings_root = match subject {
-        "engine" => arguments.root.join("../pseudolearn_engine"),
-        "cli" => arguments.root.join("../../apps/pseudolearn_cli"),
-        _ => arguments.root.join("../pseudolearn_core"),
-    };
-    let conformance = load_bindings(&bindings_root)?;
+    let manifest = crate::bindings::manifest_path(&arguments.root, subject)
+        .ok_or("SEE-BINDING: unknown subject")?;
+    let conformance = crate::subject_adapters::load_bindings(&manifest)?;
     let selected = select(arguments, corpus, subject)?;
     let report = serde_json::json!({
         "conformance": see_report::matrix(&selected, &conformance, &evidence),
@@ -82,12 +79,6 @@ pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> 
         "states": see_report::coverage::states(corpus),
     });
     serde_json::to_string_pretty(&report).map_err(|error| error.to_string())
-}
-
-fn load_bindings(core: &std::path::Path) -> Result<Conformance, String> {
-    let text = std::fs::read_to_string(core.join("conformance.yaml"))
-        .map_err(|error| error.to_string())?;
-    serde_saphyr::from_str(&text).map_err(|error| error.to_string())
 }
 
 fn select(arguments: &Arguments, corpus: &Corpus, subject: &str) -> Result<Corpus, String> {
@@ -186,90 +177,4 @@ fn save(
         evidence.observations.len(),
         divergence_count,
     ))
-}
-
-pub(crate) fn subject_configuration(
-    arguments: &Arguments,
-    corpus: &Corpus,
-    subject: &str,
-) -> Result<(Command, Conformance), String> {
-    match subject {
-        "reference" => reference_configuration(arguments, corpus),
-        "engine" => engine_configuration(arguments, corpus),
-        "cli" => cli_configuration(arguments, corpus),
-        _ => Err("Unknown subject".to_owned()),
-    }
-}
-
-fn reference_configuration(
-    arguments: &Arguments,
-    corpus: &Corpus,
-) -> Result<(Command, Conformance), String> {
-    let core = arguments
-        .root
-        .join("../pseudolearn_core")
-        .canonicalize()
-        .map_err(|error| error.to_string())?;
-    let conformance = load_bindings(&core)?;
-    let errors = see_validation::bindings::check(corpus, &conformance);
-    if !errors.is_empty() {
-        return Err(errors.join("\n"));
-    }
-    let mut command = Command::new("dart");
-    command
-        .current_dir(core)
-        .args(["run", "tool/conformance_adapter.dart"]);
-    Ok((command, conformance))
-}
-
-fn engine_configuration(
-    arguments: &Arguments,
-    corpus: &Corpus,
-) -> Result<(Command, Conformance), String> {
-    let engine = arguments
-        .root
-        .join("../pseudolearn_engine")
-        .canonicalize()
-        .map_err(|error| error.to_string())?;
-    let conformance = load_bindings(&engine)?;
-    let errors = see_validation::bindings::check(corpus, &conformance);
-    if !errors.is_empty() {
-        return Err(errors.join("\n"));
-    }
-    let mut command = Command::new("cargo");
-    command.current_dir(&engine).args([
-        "run",
-        "-p",
-        "pseudolearn_conformance",
-        "--bin",
-        "conformance_adapter",
-        "--quiet",
-    ]);
-    Ok((command, conformance))
-}
-
-fn cli_configuration(
-    arguments: &Arguments,
-    corpus: &Corpus,
-) -> Result<(Command, Conformance), String> {
-    let cli_dir = arguments
-        .root
-        .join("../../apps/pseudolearn_cli")
-        .canonicalize()
-        .map_err(|error| error.to_string())?;
-    let conformance = load_bindings(&cli_dir)?;
-    let errors = see_validation::bindings::check(corpus, &conformance);
-    if !errors.is_empty() {
-        return Err(errors.join("\n"));
-    }
-    let mut command = Command::new("cargo");
-    command.current_dir(&cli_dir).args([
-        "run",
-        "--bin",
-        "pseudo",
-        "--quiet",
-        "--",
-        "--see-adapter",
-    ]);
-    Ok((command, conformance))
 }

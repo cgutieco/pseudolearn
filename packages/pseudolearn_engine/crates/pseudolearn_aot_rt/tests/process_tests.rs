@@ -23,12 +23,15 @@ fn metadata(code: DiagnosticCode) -> ExecutableMetadata {
             source_name: "p.pseudo".to_owned(),
             locale: "en".to_owned(),
             seed: 1,
+            forced_collection: false,
             limits: AotLimits::default(),
             boolean_words: BooleanWords {
                 truth: "true".to_owned(),
                 falsity: "false".to_owned(),
             },
             error_template: "{path}:{line}:{column}: error: {message} [{code}]\n".to_owned(),
+            warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
+            information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
             exhausted_template: "{path}: input ended\n".to_owned(),
         },
         sites: vec![FaultSite {
@@ -154,5 +157,51 @@ fn a_template_keeps_unknown_placeholders_empty_and_unclosed_braces_literal() -> 
     custom.settings.error_template = "{unknown}|{line} {".to_owned();
     let outcome = run(custom, write_then_fault, "");
     assert_eq!(outcome.errors, "|3 {");
+    Ok(())
+}
+
+#[test]
+fn a_recovered_read_mismatch_is_reported_as_a_warning_on_a_completed_run() -> Result<(), String> {
+    let mut custom = metadata(DiagnosticCode::InternalFault);
+    custom.settings.warning_template = "{code}|{line}|{arguments}\n".to_owned();
+    let outcome = run(custom, read_integer, "abc\n5\n");
+    assert_eq!(outcome.code, EXIT_COMPLETED);
+    assert_eq!(
+        outcome.errors,
+        "readValueTypeMismatch|3|{\"expected\":\"Entero\",\"found\":\"abc\"}\n"
+    );
+    Ok(())
+}
+
+#[test]
+fn a_limit_fault_reports_its_numeric_limit_and_end_position() -> Result<(), String> {
+    let mut custom = metadata(named("statementBudgetExhausted")?);
+    custom.settings.limits.instruction_units = Some(7);
+    custom.settings.information_template = "{arguments}|{end_line}:{end_column}\n".to_owned();
+    let outcome = run(custom, write_then_fault, "");
+    assert_eq!(outcome.code, EXIT_LIMIT);
+    assert_eq!(outcome.errors, "{\"limit\":7}|3:9\n");
+    Ok(())
+}
+
+#[test]
+fn argument_values_are_escaped_as_json_text() -> Result<(), String> {
+    let mut custom = metadata(DiagnosticCode::InternalFault);
+    custom.settings.warning_template = "{arguments}\n".to_owned();
+    let outcome = run(custom, read_integer, "a\"\\\tb\n5\n");
+    assert_eq!(
+        outcome.errors,
+        "{\"expected\":\"Entero\",\"found\":\"a\\\"\\\\\\tb\"}\n"
+    );
+    Ok(())
+}
+
+#[test]
+fn forced_collection_does_not_change_the_observable_run() -> Result<(), String> {
+    let mut custom = metadata(DiagnosticCode::InternalFault);
+    custom.settings.forced_collection = true;
+    let outcome = run(custom, write_forty_two, "");
+    assert_eq!(outcome.code, EXIT_COMPLETED);
+    assert_eq!(outcome.output, "42\n");
     Ok(())
 }

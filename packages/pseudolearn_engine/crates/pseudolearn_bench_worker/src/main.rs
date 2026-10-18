@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod aot;
 mod corpus;
 mod e06;
 mod execution;
@@ -15,6 +16,11 @@ fn main() -> std::process::ExitCode {
         "e06-rss" => e06::rss_child(&std::env::args().nth(2).unwrap_or_default()),
         "robust" => robustness::collect(),
         "robust-child" => robustness::child(),
+        "aot" => aot::collect(
+            &std::env::args()
+                .nth(2)
+                .unwrap_or_else(|| "results/r6-aot".to_owned()),
+        ),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile".to_owned()),

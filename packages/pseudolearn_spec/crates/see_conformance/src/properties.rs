@@ -37,7 +37,11 @@ pub fn run(
     if !crate::property_comparison::available(binding.executor, subject.declaration()) {
         return crate::property_evidence::pending(binding);
     }
-    let scenarios = property_scenarios::executions(context.corpus, context.vocabulary)?;
+    let scenarios: Vec<Scenario> =
+        property_scenarios::executions(context.corpus, context.vocabulary)?
+            .into_iter()
+            .filter(|scenario| property_scenarios::runnable_by(scenario, subject.declaration()))
+            .collect();
     run_samples(binding, context, subject, &scenarios)
 }
 

@@ -114,7 +114,7 @@
     "salida": "",
     "terminacion": "failed",
     "fallo": {
-      "codigo": "uninitializedRead"
+      "codigo": "uninitializedVariableRead"
     }
   },
   "programa": "Algoritmo P\nDimension a[2] Como Entero;\nEscribir a[1];\nFinAlgoritmo\n",

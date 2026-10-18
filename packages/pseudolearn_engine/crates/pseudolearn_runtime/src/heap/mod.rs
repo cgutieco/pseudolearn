@@ -78,6 +78,10 @@ impl Heap {
         }
     }
 
+    pub fn set_collection_policy(&mut self, collection: CollectionPolicy) {
+        self.options.collection = collection;
+    }
+
     pub fn needs_collection(&self, cells: u64) -> bool {
         self.options.collection == CollectionPolicy::Forced
             || self

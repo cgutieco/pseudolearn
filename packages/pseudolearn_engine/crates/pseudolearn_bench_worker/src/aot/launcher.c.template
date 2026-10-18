@@ -1,0 +1,50 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+extern int32_t pseudolearn_aot_main(void (*entry)(void *), const uint8_t *metadata, size_t count);
+extern void @@ENTRY_SYMBOL@@(void *context);
+
+static uint64_t started;
+static uint64_t finished;
+
+static uint64_t now_nanoseconds(void) {
+#ifdef __APPLE__
+    return clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
+#else
+    struct timespec moment;
+    clock_gettime(CLOCK_MONOTONIC, &moment);
+    return (uint64_t)moment.tv_sec * 1000000000ull + (uint64_t)moment.tv_nsec;
+#endif
+}
+
+static void timed_entry(void *context) {
+    started = now_nanoseconds();
+    @@ENTRY_SYMBOL@@(context);
+    finished = now_nanoseconds();
+}
+
+int main(int argc, char **argv) {
+    if (argc != 3) {
+        return 2;
+    }
+    FILE *file = fopen(argv[1], "rb");
+    if (!file) {
+        return 2;
+    }
+    uint8_t *metadata = malloc(1 << 20);
+    size_t count = fread(metadata, 1, 1 << 20, file);
+    fclose(file);
+    long iterations = strtol(argv[2], NULL, 10);
+    for (long iteration = 0; iteration < iterations; iteration++) {
+        lseek(0, 0, SEEK_SET);
+        int32_t code = pseudolearn_aot_main(timed_entry, metadata, count);
+        if (code != 0) {
+            return 1;
+        }
+        fprintf(stderr, "%llu\n", (unsigned long long)(finished - started));
+    }
+    return 0;
+}

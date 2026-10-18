@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use crate::block_accounting::charge_statement;
 use crate::definition::flag_of;
 use crate::error::CodegenError;
 use crate::lowering::{Instruction, Lowering, guard_trap, jump_to_trap, operand_value};
@@ -27,6 +28,7 @@ pub(crate) fn lower(
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
     match instruction.operation {
+        Operation::StmtEnter => charge_statement(lowering, instruction.span),
         Operation::LoopCheckStep => {
             let step = operand_value(lowering, instruction, 0)?;
             let is_zero = lowering.builder.ins().icmp_imm_s(IntCC::Equal, step, 0);

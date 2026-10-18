@@ -45,6 +45,8 @@ El workspace contiene el motor de ejecución completo de R5, con todos sus bloqu
 La conformidad integrada, el diferencial de 0 no resueltas con reference, y los cuatro experimentos
 E-06, E-12, E-16 y E-17 están verificados en verde.
 
+El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- aot <directorio>` (README del trabajador).
+
 El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
 copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,
 cambia entre los gemelos rápido y sondeado, y expone `execute` mediante `ExecutionResource` y
@@ -361,6 +363,7 @@ La política de licencias admite las que usan las dependencias presentes; no con
 | layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |
 | cargo xtask verify al implementar | Formato, Clippy, tests, dependencias, cadena y seis verificadores |
 | see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles y rigores |
+| see conform aot | Casos de ejecución contra el binario real, ambos perfiles y rigores, y propiedades con recolección forzada |
 | Diferencial de gemelos | Igualdad de salida, fallos y estado observable |
 | PERF | Medición local contra referencia con todos los resultados |
 

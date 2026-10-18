@@ -241,3 +241,45 @@ fn step_depth_verifies_step_conditions() -> Result<(), String> {
     assert_eq!(report.verdict, "cumple");
     Ok(())
 }
+
+#[test]
+fn scenarios_that_need_observation_are_skipped_for_subjects_without_it() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    let mut cancelled = specification
+        .blocks
+        .iter()
+        .find(|block| block.kind == "caso")
+        .cloned()
+        .ok_or("Missing case")?;
+    cancelled.fields.insert("cancelacion".to_owned(), json!(1));
+    specification.blocks.insert(0, cancelled);
+    let corpus = vec![specification];
+    let vocabulary = Default::default();
+    let context = PropertyContext {
+        corpus: &corpus,
+        vocabulary: &vocabulary,
+        subject: "aot",
+        first_sample: 0,
+        exhaustive: false,
+    };
+    let good = json!({"output":"1\n", "termination":{"kind":"completed"}, "diagnostics":[]});
+    let mut subject = Subject {
+        hello: json!({"capabilities":["execute"]}),
+        responses: vec![good.clone(); 2].into(),
+        requests: Vec::new(),
+    };
+    let report = run(
+        &binding(PropertyExecutor::Determinism),
+        &context,
+        &mut subject,
+    )?;
+    assert_eq!(report.verdict, "cumple");
+    assert_eq!(subject.requests.len(), 2);
+    assert!(
+        subject
+            .requests
+            .iter()
+            .all(|request| request.get("cancel_at_statement").is_none())
+    );
+    Ok(())
+}
