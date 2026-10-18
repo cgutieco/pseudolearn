@@ -57,7 +57,8 @@ pub(crate) fn array_rank(entry: &Entry<'_>, array: u32) -> Result<usize, Trap> {
 fn array_load(entry: &mut Entry<'_>, array: u32, indices: *const i64) -> Result<u64, Trap> {
     let rank = array_rank(entry, array)?;
     let indices = borrow_slice(indices, rank).ok_or_else(|| Trap::named("internalFault"))?;
-    Ok(read_element(&entry.engine.heap, Handle(array), indices)?)
+    read_element(&entry.engine.heap, Handle(array), indices)
+        .map_err(|error| array_trap(entry, array, indices, error))
 }
 
 fn array_store(entry: &mut Entry<'_>, array: u32, operands: *const i64) -> Result<u64, Trap> {
@@ -70,7 +71,8 @@ fn array_store(entry: &mut Entry<'_>, array: u32, operands: *const i64) -> Resul
         .split_last()
         .ok_or_else(|| Trap::named("internalFault"))?;
     let word = u64::from_ne_bytes(value.to_ne_bytes());
-    write_element(&mut entry.engine.heap, Handle(array), (indices, word))?;
+    write_element(&mut entry.engine.heap, Handle(array), (indices, word))
+        .map_err(|error| array_trap(entry, array, indices, error))?;
     Ok(0)
 }
 
@@ -82,4 +84,23 @@ fn object_store(entry: &mut Entry<'_>, object: u32, operands: *const u64) -> Res
     let index = usize::try_from(*field).map_err(|_| Trap::named("internalFault"))?;
     write_field(&mut entry.engine.heap, Handle(object), (index, *value))?;
     Ok(0)
+}
+
+pub(crate) fn array_trap(
+    entry: &Entry<'_>,
+    array: u32,
+    indices: &[i64],
+    error: pseudolearn_runtime::MemoryError,
+) -> Trap {
+    let trap: Trap = error.into();
+    if let Ok(dimensions) = array_dimensions(&entry.engine.heap, Handle(array)) {
+        for (index, size) in indices.iter().zip(dimensions) {
+            if u64::try_from(*index).is_err()
+                || u64::try_from(*index).is_ok_and(|index| index >= *size)
+            {
+                return trap.argument("index", index).argument("size", size);
+            }
+        }
+    }
+    trap
 }

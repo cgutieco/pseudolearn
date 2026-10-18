@@ -27,10 +27,7 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         exhaustive: !arguments.options.contains_key("sample"),
     };
     let bindings = selected(arguments, corpus, registry.entries)?;
-    let mut reports = Vec::new();
-    for binding in &bindings {
-        reports.push(properties::run(binding, &context, &mut session)?);
-    }
+    let reports = run_bindings(&bindings, &context, (&mut session, arguments))?;
     let evidence = Evidence {
         protocol: "see-protocol/1".to_owned(),
         subject: subject.clone(),
@@ -49,13 +46,15 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
 }
 
 fn save(arguments: &Arguments, evidence: &Evidence) -> Result<String, String> {
-    storage::artifact(
-        &arguments
-            .root
-            .join(format!("results/properties-{}.json", evidence.subject)),
-        &serde_json::json!(evidence),
-        false,
-    )?;
+    let path = arguments.options.get("output").map_or_else(
+        || {
+            arguments
+                .root
+                .join(format!("results/properties-{}.json", evidence.subject))
+        },
+        |output| arguments.root.join(output),
+    );
+    storage::artifact(&path, &serde_json::json!(evidence), false)?;
     let count = |verdict: &str| {
         evidence
             .properties
@@ -85,4 +84,26 @@ fn hashes(corpus: &Corpus) -> Result<std::collections::BTreeMap<String, String>,
             ))
         })
         .collect()
+}
+
+fn run_bindings(
+    bindings: &[see_model::properties::PropertyBinding],
+    context: &PropertyContext<'_>,
+    input: (&mut Session, &Arguments),
+) -> Result<Vec<see_model::properties::PropertyRun>, String> {
+    let (session, arguments) = input;
+    let mut reports = Vec::new();
+    for binding in bindings {
+        if crate::native_properties::supports(binding.executor) {
+            reports.push(crate::native_properties::run(
+                binding,
+                arguments,
+                context.corpus,
+                session,
+            )?);
+        } else {
+            reports.push(properties::run(binding, context, session)?);
+        }
+    }
+    Ok(reports)
 }

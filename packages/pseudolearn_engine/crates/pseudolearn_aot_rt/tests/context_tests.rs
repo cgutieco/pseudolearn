@@ -13,6 +13,7 @@ fn build(limits: AotLimits) -> AotSession {
             },
         },
         vec![FaultSite {
+            lexeme: String::new(),
             code: DiagnosticCode::InternalFault,
             range: SourceRange::default(),
         }],

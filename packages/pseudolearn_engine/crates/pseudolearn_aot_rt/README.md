@@ -135,6 +135,14 @@ reclamarse y uno enraizado conserva su asa.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: construir raíces por cada objeto asigna y recorre celdas aunque no haya recolección. Elección: las asignaciones y copias de objeto consultan el costo lógico exacto que publica el runtime y materializan raíces solo si `needs_collection` puede activar recorrido o presión de límite. La recolección forzada y la presión de celdas mantienen el camino completo. Se descarta conservar un vector paralelo de raíces que pueda quedar obsoleto.
+
+Problema: las celdas de funciones terminadas no deben conservar objetos ni crecer durante toda la sesión. Elección: solo una función que crea celdas toma una marca de la tabla al entrar y libera su sufijo al retornar; las celdas del llamador mantienen sus identificadores. Una celda de elemento o campo enraíza también su propietario. Se descarta conservar referencias locales de marcos terminados o depender de un uso SSA posterior del propietario.
+
+Problema: los perfiles agregados no distinguen mecanismos de memoria. Elección: la feature `telemetry`, desactivada por omisión, cuenta asignaciones, crecimiento de palabras, recolecciones, recorridos, copias de diseño y accesos o raíces de celdas según la responsabilidad del crate. Sus resultados pertenecen a sesiones diagnósticas separadas; el código de producto y la campaña normativa no contienen estos incrementos. Se descarta atribuir los tiempos instrumentados al rendimiento de producción.
+
+Problema: el diagnóstico nativo debe conservar los argumentos del motor. Elección: los sitios de fallo incluyen el lexema de variable, campo o subprograma; los accesos conservan índice, extensión, longitud, posición y texto de conversión. El código Unicode inválido se transmite solo en el bloque frío. Los metadatos internos usan la magia PLM2 para distinguir el lexema añadido. Se descarta reconstruir argumentos en la CLI o incluir mensajes traducidos en el generador.
+
 Problema: la frontera necesita llamar a la biblioteca matemática, pero `pseudolearn_library` importa
 `pseudolearn_runtime`, de modo que un módulo de frontera dentro del runtime crearía un ciclo. Elección: crate hoja
 propio con `unsafe` permitido solo aquí; el runtime y la biblioteca conservan `#![forbid(unsafe_code)]`. Descartado:

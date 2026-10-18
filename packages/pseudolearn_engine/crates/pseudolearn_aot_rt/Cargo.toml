@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2024"
 publish = false
 
+[features]
+telemetry = ["pseudolearn_runtime/telemetry"]
+
 [dependencies]
 pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
 pseudolearn_abi = { path = "../pseudolearn_abi", version = "=0.1.0" }

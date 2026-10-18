@@ -62,7 +62,14 @@ pub extern "C" fn rt_aot_text_character(
     position: i64,
 ) -> u32 {
     run_entry(context, site, |entry| {
-        let character = text_character(&mut entry.engine.heap, handle_of(handle)?, position)?;
+        let owner = handle_of(handle)?;
+        let length = text_length(&entry.engine.heap, owner)?;
+        let character =
+            text_character(&mut entry.engine.heap, owner, position).map_err(|error| {
+                let trap: Trap = error.into();
+                trap.argument("position", position)
+                    .argument("length", length)
+            })?;
         Ok(u64::from(u32::from(character)))
     })
 }
@@ -137,7 +144,7 @@ fn text_query(entry: &mut Entry<'_>, operation: u32, handle: u64) -> Result<u64,
         return Ok(text_length(&entry.engine.heap, handle)?);
     }
     let text = text_content(&entry.engine.heap, handle)?;
-    let conversion = Trap::named("stringToNumberConversionFailed");
+    let conversion = Trap::named("stringToNumberConversionFailed").argument("lexeme", text);
     match operation {
         TEXT_TO_INTEGER => parse_integer(text)
             .map(|number| u64::from_ne_bytes(number.to_ne_bytes()))

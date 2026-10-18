@@ -45,6 +45,14 @@ pub struct PropertyBinding {
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PropertyExecutor {
+    NativeEquivalence,
+    NativeRoots,
+    NativeDiagnostics,
+    NativeLinking,
+    NativeCleanup,
+    NativePermissions,
+    NativeExit,
+    NativeEnvironment,
     Determinism,
     FirstTrap,
     InputBatching,

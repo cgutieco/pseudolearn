@@ -1,0 +1,343 @@
+module Rebotes es
+class Aleatorio { semilla: i64 }
+class Pelota { posX: i64, posY: i64, vx: i64, vy: i64 }
+func @Absoluto(%0: i64) -> i64 {
+b0() mass 1:
+  stmt.enter @9:1-11:6
+  %1 = const.i64 0 @9:12-9:13
+  %2 = int.cmp lt, %0, %1 @9:10-9:11
+  decide.bool %2 @9:1-11:6
+  branch %2, b1(), b2()
+b1() mass 1:
+  stmt.enter @10:1-10:19
+  %3 = const.i64 0 @10:10-10:11
+  %4 = int.sub %3, %0 @10:12-10:13
+  stmt.exit @10:1-10:19
+  return %4 @10:1-10:19
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @9:1-11:6
+  stmt.enter @12:1-12:15
+  stmt.exit @12:1-12:15
+  return %0 @12:1-12:15
+}
+func @main() -> unit {
+b0() mass 7:
+  stmt.enter @55:1-55:35
+  %0 = const.i64 100 @55:19-55:22
+  %1 = array.new array<obj<Pelota>, 1>, %0 @55:1-55:35
+  stmt.exit @55:1-55:35
+  stmt.enter @56:1-56:33
+  %2 = value.undefined obj<Aleatorio> @56:1-56:33
+  stmt.exit @56:1-56:33
+  stmt.enter @57:1-57:46
+  %3 = value.undefined i64 @57:1-57:46
+  %4 = value.undefined i64 @57:1-57:46
+  %5 = value.undefined i64 @57:1-57:46
+  %6 = value.undefined i64 @57:1-57:46
+  stmt.exit @57:1-57:46
+  stmt.enter @58:1-58:7
+  %7 = in.read i64 @58:1-58:7
+  stmt.exit @58:1-58:7
+  stmt.enter @59:1-59:31
+  %8 = object.new Aleatorio @59:14-59:31
+  %9 = value.require %8 @59:1-59:31
+  stmt.exit @59:1-59:31
+  stmt.enter @60:1-60:27
+  %10 = const.i64 74755 @60:22-60:27
+  object.store %9, semilla, %10 @60:1-60:27
+  stmt.exit @60:1-60:27
+  stmt.enter @61:1-63:8
+  %11 = const.i64 0 @61:16-61:17
+  %12 = const.i64 99 @61:24-61:26
+  %13 = const.i64 0
+  %14 = int.add %12, %13 @61:1-63:8
+  %15 = const.i64 1 @61:36-61:37
+  %16 = const.i64 0
+  %17 = int.add %15, %16 @61:1-63:8
+  loop.check_step %17 @61:1-63:8
+  jump b1(%11)
+b1(%18: i64) mass 0:
+  %19 = const.i64 0
+  %20 = int.cmp ge, %17, %19
+  branch %20, b2(), b3()
+b2() mass 0:
+  %21 = int.cmp le, %18, %14 @61:1-63:8
+  jump b4(%21)
+b3() mass 0:
+  %22 = int.cmp ge, %18, %14 @61:1-63:8
+  jump b4(%22)
+b4(%23: bool) mass 0:
+  decide.bool %23 @61:1-63:8
+  branch %23, b5(), b6()
+b5() mass 1:
+  stmt.enter @62:1-62:53
+  %24 = object.new Pelota @62:20-62:34
+  %25 = call @Pelota.iniciar(%24, %9) @62:20-62:53
+  array.store %1, %18, %25 @62:1-62:53
+  stmt.exit @62:1-62:53
+  %26 = int.add %18, %17 @61:1-63:8
+  jump b1(%26)
+b6() mass 2:
+  stmt.exit @61:1-63:8
+  stmt.enter @64:1-64:13
+  %27 = const.i64 0 @64:12-64:13
+  %28 = value.require %27 @64:1-64:13
+  stmt.exit @64:1-64:13
+  stmt.enter @65:1-71:8
+  %29 = const.i64 1 @65:15-65:16
+  %30 = const.i64 0
+  %31 = int.add %7, %30 @65:1-71:8
+  %32 = const.i64 1 @65:34-65:35
+  %33 = const.i64 0
+  %34 = int.add %32, %33 @65:1-71:8
+  loop.check_step %34 @65:1-71:8
+  jump b7(%29, %18, %28)
+b7(%35: i64, %36: i64, %37: i64) mass 0:
+  %38 = const.i64 0
+  %39 = int.cmp ge, %34, %38
+  branch %39, b8(), b9()
+b8() mass 0:
+  %40 = int.cmp le, %35, %31 @65:1-71:8
+  jump b10(%40)
+b9() mass 0:
+  %41 = int.cmp ge, %35, %31 @65:1-71:8
+  jump b10(%41)
+b10(%42: bool) mass 0:
+  decide.bool %42 @65:1-71:8
+  branch %42, b11(), b12()
+b11() mass 1:
+  stmt.enter @66:1-70:8
+  %43 = const.i64 0 @66:16-66:17
+  %44 = const.i64 99 @66:24-66:26
+  %45 = const.i64 0
+  %46 = int.add %44, %45 @66:1-70:8
+  %47 = const.i64 1 @66:36-66:37
+  %48 = const.i64 0
+  %49 = int.add %47, %48 @66:1-70:8
+  loop.check_step %49 @66:1-70:8
+  jump b13(%43, %37)
+b12() mass 1:
+  stmt.exit @65:1-71:8
+  stmt.enter @72:1-72:17
+  out.write %37, newline @72:1-72:17
+  stmt.exit @72:1-72:17
+  return @73:1-73:13
+b13(%50: i64, %51: i64) mass 0:
+  %52 = const.i64 0
+  %53 = int.cmp ge, %49, %52
+  branch %53, b14(), b15()
+b14() mass 0:
+  %54 = int.cmp le, %50, %46 @66:1-70:8
+  jump b16(%54)
+b15() mass 0:
+  %55 = int.cmp ge, %50, %46 @66:1-70:8
+  jump b16(%55)
+b16(%56: bool) mass 0:
+  decide.bool %56 @66:1-70:8
+  branch %56, b17(), b18()
+b17() mass 1:
+  stmt.enter @67:1-69:6
+  %57 = array.load %1, %50 @67:4-67:19
+  %58 = call @Pelota.rebotar(%57) @67:4-67:29
+  decide.bool %58 @67:1-69:6
+  branch %58, b19(), b20()
+b18() mass 0:
+  stmt.exit @66:1-70:8
+  %59 = int.add %35, %34 @65:1-71:8
+  jump b7(%59, %50, %51)
+b19() mass 1:
+  stmt.enter @68:1-68:23
+  %60 = const.i64 1 @68:22-68:23
+  %61 = int.add %51, %60 @68:20-68:21
+  %62 = value.require %61 @68:1-68:23
+  stmt.exit @68:1-68:23
+  jump b21(%62)
+b20() mass 0:
+  jump b21(%51)
+b21(%63: i64) mass 0:
+  stmt.exit @67:1-69:6
+  %64 = int.add %50, %49 @66:1-70:8
+  jump b13(%64, %63)
+}
+func @Aleatorio.siguiente(%0: obj<Aleatorio>) -> i64 {
+b0() mass 2:
+  stmt.enter @4:1-4:58
+  %1 = object.load %0, semilla @4:19-4:32
+  %2 = const.i64 1309 @4:34-4:38
+  %3 = int.mul %1, %2 @4:32-4:33
+  %4 = const.i64 13849 @4:42-4:47
+  %5 = int.add %3, %4 @4:40-4:41
+  %6 = const.i64 65536 @4:53-4:58
+  %7 = int.mod %5, %6 @4:49-4:52
+  object.store %0, semilla, %7 @4:1-4:58
+  stmt.exit @4:1-4:58
+  stmt.enter @5:1-5:22
+  %8 = object.load %0, semilla @5:10-5:22
+  stmt.exit @5:1-5:22
+  return %8 @5:1-5:22
+}
+func @Pelota.iniciar(%0: obj<Pelota>, %1: obj<Aleatorio>) -> obj<Pelota> {
+b0() mass 5:
+  stmt.enter @20:1-20:43
+  %2 = call @Aleatorio.siguiente(%1) @20:14-20:35
+  %3 = const.i64 500 @20:40-20:43
+  %4 = int.mod %2, %3 @20:36-20:39
+  object.store %0, posX, %4 @20:1-20:43
+  stmt.exit @20:1-20:43
+  stmt.enter @21:1-21:43
+  %5 = call @Aleatorio.siguiente(%1) @21:14-21:35
+  %6 = const.i64 500 @21:40-21:43
+  %7 = int.mod %5, %6 @21:36-21:39
+  object.store %0, posY, %7 @21:1-21:43
+  stmt.exit @21:1-21:43
+  stmt.enter @22:1-22:49
+  %8 = call @Aleatorio.siguiente(%1) @22:13-22:34
+  %9 = const.i64 300 @22:39-22:42
+  %10 = int.mod %8, %9 @22:35-22:38
+  %11 = const.i64 150 @22:46-22:49
+  %12 = int.sub %10, %11 @22:44-22:45
+  object.store %0, vx, %12 @22:1-22:49
+  stmt.exit @22:1-22:49
+  stmt.enter @23:1-23:49
+  %13 = call @Aleatorio.siguiente(%1) @23:13-23:34
+  %14 = const.i64 300 @23:39-23:42
+  %15 = int.mod %13, %14 @23:35-23:38
+  %16 = const.i64 150 @23:46-23:49
+  %17 = int.sub %15, %16 @23:44-23:45
+  object.store %0, vy, %17 @23:1-23:49
+  stmt.exit @23:1-23:49
+  stmt.enter @24:1-24:14
+  stmt.exit @24:1-24:14
+  return %0 @24:1-24:14
+}
+func @Pelota.rebotar(%0: obj<Pelota>) -> bool {
+b0() mass 5:
+  stmt.enter @27:1-27:27
+  %1 = value.undefined bool @27:1-27:27
+  stmt.exit @27:1-27:27
+  stmt.enter @28:1-28:16
+  %2 = const.bool false @28:11-28:16
+  %3 = value.require %2 @28:1-28:16
+  stmt.exit @28:1-28:16
+  stmt.enter @29:1-29:33
+  %4 = object.load %0, posX @29:14-29:24
+  %5 = object.load %0, vx @29:26-29:33
+  %6 = int.add %4, %5 @29:24-29:25
+  object.store %0, posX, %6 @29:1-29:33
+  stmt.exit @29:1-29:33
+  stmt.enter @30:1-30:33
+  %7 = object.load %0, posY @30:14-30:24
+  %8 = object.load %0, vy @30:26-30:33
+  %9 = int.add %7, %8 @30:24-30:25
+  object.store %0, posY, %9 @30:1-30:33
+  stmt.exit @30:1-30:33
+  stmt.enter @31:1-35:6
+  %10 = object.load %0, posX @31:4-31:14
+  %11 = const.i64 500 @31:16-31:19
+  %12 = int.cmp gt, %10, %11 @31:14-31:15
+  decide.bool %12 @31:1-35:6
+  branch %12, b1(), b2()
+b1() mass 3:
+  stmt.enter @32:1-32:17
+  %13 = const.i64 500 @32:14-32:17
+  object.store %0, posX, %13 @32:1-32:17
+  stmt.exit @32:1-32:17
+  stmt.enter @33:1-33:33
+  %14 = const.i64 0 @33:12-33:13
+  %15 = object.load %0, vx @33:25-33:32
+  %16 = call @Absoluto(%15) @33:16-33:33
+  %17 = int.sub %14, %16 @33:14-33:15
+  object.store %0, vx, %17 @33:1-33:33
+  stmt.exit @33:1-33:33
+  stmt.enter @34:1-34:20
+  %18 = const.bool true @34:11-34:20
+  %19 = value.require %18 @34:1-34:20
+  stmt.exit @34:1-34:20
+  jump b3(%19)
+b2() mass 0:
+  jump b3(%3)
+b3(%20: bool) mass 1:
+  stmt.exit @31:1-35:6
+  stmt.enter @36:1-40:6
+  %21 = object.load %0, posX @36:4-36:14
+  %22 = const.i64 0 @36:16-36:17
+  %23 = int.cmp lt, %21, %22 @36:14-36:15
+  decide.bool %23 @36:1-40:6
+  branch %23, b4(), b5()
+b4() mass 3:
+  stmt.enter @37:1-37:15
+  %24 = const.i64 0 @37:14-37:15
+  object.store %0, posX, %24 @37:1-37:15
+  stmt.exit @37:1-37:15
+  stmt.enter @38:1-38:29
+  %25 = object.load %0, vx @38:21-38:28
+  %26 = call @Absoluto(%25) @38:12-38:29
+  object.store %0, vx, %26 @38:1-38:29
+  stmt.exit @38:1-38:29
+  stmt.enter @39:1-39:20
+  %27 = const.bool true @39:11-39:20
+  %28 = value.require %27 @39:1-39:20
+  stmt.exit @39:1-39:20
+  jump b6(%28)
+b5() mass 0:
+  jump b6(%20)
+b6(%29: bool) mass 1:
+  stmt.exit @36:1-40:6
+  stmt.enter @41:1-45:6
+  %30 = object.load %0, posY @41:4-41:14
+  %31 = const.i64 500 @41:16-41:19
+  %32 = int.cmp gt, %30, %31 @41:14-41:15
+  decide.bool %32 @41:1-45:6
+  branch %32, b7(), b8()
+b7() mass 3:
+  stmt.enter @42:1-42:17
+  %33 = const.i64 500 @42:14-42:17
+  object.store %0, posY, %33 @42:1-42:17
+  stmt.exit @42:1-42:17
+  stmt.enter @43:1-43:33
+  %34 = const.i64 0 @43:12-43:13
+  %35 = object.load %0, vy @43:25-43:32
+  %36 = call @Absoluto(%35) @43:16-43:33
+  %37 = int.sub %34, %36 @43:14-43:15
+  object.store %0, vy, %37 @43:1-43:33
+  stmt.exit @43:1-43:33
+  stmt.enter @44:1-44:20
+  %38 = const.bool true @44:11-44:20
+  %39 = value.require %38 @44:1-44:20
+  stmt.exit @44:1-44:20
+  jump b9(%39)
+b8() mass 0:
+  jump b9(%29)
+b9(%40: bool) mass 1:
+  stmt.exit @41:1-45:6
+  stmt.enter @46:1-50:6
+  %41 = object.load %0, posY @46:4-46:14
+  %42 = const.i64 0 @46:16-46:17
+  %43 = int.cmp lt, %41, %42 @46:14-46:15
+  decide.bool %43 @46:1-50:6
+  branch %43, b10(), b11()
+b10() mass 3:
+  stmt.enter @47:1-47:15
+  %44 = const.i64 0 @47:14-47:15
+  object.store %0, posY, %44 @47:1-47:15
+  stmt.exit @47:1-47:15
+  stmt.enter @48:1-48:29
+  %45 = object.load %0, vy @48:21-48:28
+  %46 = call @Absoluto(%45) @48:12-48:29
+  object.store %0, vy, %46 @48:1-48:29
+  stmt.exit @48:1-48:29
+  stmt.enter @49:1-49:20
+  %47 = const.bool true @49:11-49:20
+  %48 = value.require %47 @49:1-49:20
+  stmt.exit @49:1-49:20
+  jump b12(%48)
+b11() mass 0:
+  jump b12(%40)
+b12(%49: bool) mass 1:
+  stmt.exit @46:1-50:6
+  stmt.enter @51:1-51:16
+  stmt.exit @51:1-51:16
+  return %49 @51:1-51:16
+}

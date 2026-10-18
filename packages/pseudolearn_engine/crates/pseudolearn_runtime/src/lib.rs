@@ -24,8 +24,8 @@ pub use delta::{
 };
 pub use heap::{Heap, ObjectLayout};
 pub use object::{
-    copy_object, new_object, new_object_shared, object_allocation_cells, object_class, read_field,
-    write_field,
+    copy_object, new_object, new_object_shared, object_allocation_cells, object_class,
+    object_layout_cells, read_field, write_field,
 };
 pub use random::RandomState;
 pub use snapshot::{
@@ -47,3 +47,8 @@ pub use arithmetic::{
     real_divide, real_multiply, real_subtract,
 };
 pub use error::ArithmeticError;
+
+#[cfg(feature = "telemetry")]
+mod statistics;
+#[cfg(feature = "telemetry")]
+pub use statistics::HeapStatistics;

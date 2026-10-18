@@ -211,6 +211,87 @@
       "seed": 42,
       "specification": "RT.HOST.INTERFACE@0.1.0",
       "verdict": "pendiente"
+    },
+    {
+      "completed": 100,
+      "counterexample": null,
+      "property": "P1",
+      "samples": 100,
+      "seed": 42,
+      "specification": "RT.ABI@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 100,
+      "counterexample": null,
+      "property": "P2",
+      "samples": 100,
+      "seed": 42,
+      "specification": "RT.ABI@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 100,
+      "counterexample": null,
+      "property": "P3",
+      "samples": 100,
+      "seed": 42,
+      "specification": "RT.ABI@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 100,
+      "counterexample": null,
+      "property": "P1",
+      "samples": 100,
+      "seed": 42,
+      "specification": "RT.FAULT.REPORTING@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 10,
+      "counterexample": null,
+      "property": "P1",
+      "samples": 10,
+      "seed": 42,
+      "specification": "RT.LINKING@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 10,
+      "counterexample": null,
+      "property": "P2",
+      "samples": 10,
+      "seed": 42,
+      "specification": "RT.LINKING@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 10,
+      "counterexample": null,
+      "property": "P3",
+      "samples": 10,
+      "seed": 42,
+      "specification": "RT.LINKING@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 10,
+      "counterexample": null,
+      "property": "P1",
+      "samples": 10,
+      "seed": 42,
+      "specification": "RT.PROCESS@0.1.0",
+      "verdict": "cumple"
+    },
+    {
+      "completed": 10,
+      "counterexample": null,
+      "property": "P2",
+      "samples": 10,
+      "seed": 42,
+      "specification": "RT.PROCESS@0.1.0",
+      "verdict": "cumple"
     }
   ],
   "protocol": "see-protocol/1",

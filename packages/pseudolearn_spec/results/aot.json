@@ -6104,10 +6104,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 0,
+              "size": 0
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice 0 fuera de rango para un arreglo de tamaño 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -6148,10 +6151,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 0,
+              "size": 0
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice 0 fuera de rango para un arreglo de tamaño 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -6192,10 +6198,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 0,
+              "size": 0
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index 0 is out of range for an array of size 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -6236,10 +6245,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 0,
+              "size": 0
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index 0 is out of range for an array of size 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -6280,10 +6292,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": -1,
+              "size": 1
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice -1 fuera de rango para un arreglo de tamaño 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6324,10 +6339,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": -1,
+              "size": 1
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice -1 fuera de rango para un arreglo de tamaño 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6368,10 +6386,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": -1,
+              "size": 1
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index -1 is out of range for an array of size 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6412,10 +6433,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": -1,
+              "size": 1
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index -1 is out of range for an array of size 1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6736,10 +6760,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "size": -1
+            },
             "class": "runtime",
             "code": "negativeArraySize",
-            "message": "El tamaño de un arreglo no puede ser negativo: ",
+            "message": "El tamaño de un arreglo no puede ser negativo: -1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6800,10 +6826,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "size": -1
+            },
             "class": "runtime",
             "code": "negativeArraySize",
-            "message": "El tamaño de un arreglo no puede ser negativo: ",
+            "message": "El tamaño de un arreglo no puede ser negativo: -1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6864,10 +6892,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "size": -1
+            },
             "class": "runtime",
             "code": "negativeArraySize",
-            "message": "An array size cannot be negative: ",
+            "message": "An array size cannot be negative: -1",
             "related": [],
             "severity": "error",
             "span": {
@@ -6928,10 +6958,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "size": -1
+            },
             "class": "runtime",
             "code": "negativeArraySize",
-            "message": "An array size cannot be negative: ",
+            "message": "An array size cannot be negative: -1",
             "related": [],
             "severity": "error",
             "span": {
@@ -12418,10 +12450,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "x"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "La variable  se lee sin haber sido inicializada",
+            "message": "La variable x se lee sin haber sido inicializada",
             "related": [],
             "severity": "error",
             "span": {
@@ -12482,10 +12516,12 @@
             }
           },
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "x"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "Variable  is read without being initialized",
+            "message": "Variable x is read without being initialized",
             "related": [],
             "severity": "error",
             "span": {
@@ -22292,10 +22328,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "runtime",
             "code": "subroutineEndedWithoutReturn",
-            "message": "Un camino de ejecución de  llega al cierre sin retornar",
+            "message": "Un camino de ejecución de f llega al cierre sin retornar",
             "related": [],
             "severity": "error",
             "span": {
@@ -22336,10 +22374,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "runtime",
             "code": "subroutineEndedWithoutReturn",
-            "message": "Un camino de ejecución de  llega al cierre sin retornar",
+            "message": "Un camino de ejecución de f llega al cierre sin retornar",
             "related": [],
             "severity": "error",
             "span": {
@@ -22380,10 +22420,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "runtime",
             "code": "subroutineEndedWithoutReturn",
-            "message": "An execution path of  reaches the end without returning",
+            "message": "An execution path of f reaches the end without returning",
             "related": [],
             "severity": "error",
             "span": {
@@ -22424,10 +22466,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "f"
+            },
             "class": "runtime",
             "code": "subroutineEndedWithoutReturn",
-            "message": "An execution path of  reaches the end without returning",
+            "message": "An execution path of f reaches the end without returning",
             "related": [],
             "severity": "error",
             "span": {
@@ -23378,10 +23422,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 55296
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código 55296 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -23422,10 +23468,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 55296
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código 55296 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -23466,10 +23514,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 55296
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code 55296 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -23510,10 +23560,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 55296
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code 55296 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -25896,10 +25948,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 0,
+              "position": 0
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Posición  fuera de rango para una cadena de longitud ",
+            "message": "Posición 0 fuera de rango para una cadena de longitud 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -25940,10 +25995,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 0,
+              "position": 0
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Posición  fuera de rango para una cadena de longitud ",
+            "message": "Posición 0 fuera de rango para una cadena de longitud 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -25984,10 +26042,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 0,
+              "position": 0
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Position  is out of range for a string of length ",
+            "message": "Position 0 is out of range for a string of length 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -26028,10 +26089,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 0,
+              "position": 0
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Position  is out of range for a string of length ",
+            "message": "Position 0 is out of range for a string of length 0",
             "related": [],
             "severity": "error",
             "span": {
@@ -26164,10 +26228,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "El texto  no representa un número",
+            "message": "El texto no no representa un número",
             "related": [],
             "severity": "error",
             "span": {
@@ -26208,10 +26274,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "El texto  no representa un número",
+            "message": "El texto no no representa un número",
             "related": [],
             "severity": "error",
             "span": {
@@ -26252,10 +26320,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "Text  does not represent a number",
+            "message": "Text no does not represent a number",
             "related": [],
             "severity": "error",
             "span": {
@@ -26296,10 +26366,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "Text  does not represent a number",
+            "message": "Text no does not represent a number",
             "related": [],
             "severity": "error",
             "span": {
@@ -26340,10 +26412,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "El texto  no representa un número",
+            "message": "El texto no no representa un número",
             "related": [],
             "severity": "error",
             "span": {
@@ -26384,10 +26458,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "El texto  no representa un número",
+            "message": "El texto no no representa un número",
             "related": [],
             "severity": "error",
             "span": {
@@ -26428,10 +26504,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "Text  does not represent a number",
+            "message": "Text no does not represent a number",
             "related": [],
             "severity": "error",
             "span": {
@@ -26472,10 +26550,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "no"
+            },
             "class": "runtime",
             "code": "stringToNumberConversionFailed",
-            "message": "Text  does not represent a number",
+            "message": "Text no does not represent a number",
             "related": [],
             "severity": "error",
             "span": {
@@ -28108,10 +28188,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 2,
+              "position": 2
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Posición  fuera de rango para una cadena de longitud ",
+            "message": "Posición 2 fuera de rango para una cadena de longitud 2",
             "related": [],
             "severity": "error",
             "span": {
@@ -28152,10 +28235,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 2,
+              "position": 2
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Posición  fuera de rango para una cadena de longitud ",
+            "message": "Posición 2 fuera de rango para una cadena de longitud 2",
             "related": [],
             "severity": "error",
             "span": {
@@ -28196,10 +28282,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 2,
+              "position": 2
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Position  is out of range for a string of length ",
+            "message": "Position 2 is out of range for a string of length 2",
             "related": [],
             "severity": "error",
             "span": {
@@ -28240,10 +28329,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "length": 2,
+              "position": 2
+            },
             "class": "runtime",
             "code": "stringPositionOutOfRange",
-            "message": "Position  is out of range for a string of length ",
+            "message": "Position 2 is out of range for a string of length 2",
             "related": [],
             "severity": "error",
             "span": {
@@ -28284,10 +28376,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": -1
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código -1 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -28328,10 +28422,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": -1
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código -1 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -28372,10 +28468,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": -1
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code -1 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -28416,10 +28514,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": -1
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code -1 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -28460,10 +28560,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 1114112
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código 1114112 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -28504,10 +28606,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 1114112
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "El código  no designa ningún punto de código Unicode válido",
+            "message": "El código 1114112 no designa ningún punto de código Unicode válido",
             "related": [],
             "severity": "error",
             "span": {
@@ -28548,10 +28652,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 1114112
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code 1114112 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -28592,10 +28698,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "code": 1114112
+            },
             "class": "runtime",
             "code": "invalidCharacterCode",
-            "message": "Code  does not designate a valid Unicode code point",
+            "message": "Code 1114112 does not designate a valid Unicode code point",
             "related": [],
             "severity": "error",
             "span": {
@@ -32268,10 +32376,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "a"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "La variable  se lee sin haber sido inicializada",
+            "message": "La variable a se lee sin haber sido inicializada",
             "related": [],
             "severity": "error",
             "span": {
@@ -32314,10 +32424,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "a"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "La variable  se lee sin haber sido inicializada",
+            "message": "La variable a se lee sin haber sido inicializada",
             "related": [],
             "severity": "error",
             "span": {
@@ -32360,10 +32472,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "a"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "Variable  is read without being initialized",
+            "message": "Variable a is read without being initialized",
             "related": [],
             "severity": "error",
             "span": {
@@ -32406,10 +32520,12 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "lexeme": "a"
+            },
             "class": "runtime",
             "code": "uninitializedVariableRead",
-            "message": "Variable  is read without being initialized",
+            "message": "Variable a is read without being initialized",
             "related": [],
             "severity": "error",
             "span": {
@@ -32636,10 +32752,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 4,
+              "size": 3
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice 4 fuera de rango para un arreglo de tamaño 3",
             "related": [],
             "severity": "error",
             "span": {
@@ -32682,10 +32801,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 4,
+              "size": 3
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Índice  fuera de rango para un arreglo de tamaño ",
+            "message": "Índice 4 fuera de rango para un arreglo de tamaño 3",
             "related": [],
             "severity": "error",
             "span": {
@@ -32728,10 +32850,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 4,
+              "size": 3
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index 4 is out of range for an array of size 3",
             "related": [],
             "severity": "error",
             "span": {
@@ -32774,10 +32899,13 @@
       "actual": {
         "diagnostics": [
           {
-            "arguments": {},
+            "arguments": {
+              "index": 4,
+              "size": 3
+            },
             "class": "runtime",
             "code": "arrayIndexOutOfRange",
-            "message": "Index  is out of range for an array of size ",
+            "message": "Index 4 is out of range for an array of size 3",
             "related": [],
             "severity": "error",
             "span": {

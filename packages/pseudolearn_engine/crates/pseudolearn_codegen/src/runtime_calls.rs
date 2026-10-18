@@ -17,7 +17,10 @@ pub(crate) fn call_runtime(
     lowering: &mut Lowering<'_, '_>,
     call: &RuntimeCall<'_>,
 ) -> Result<Value, CodegenError> {
-    let site = lowering.faults.register(call.code_name, call.span)?;
+    let lexeme = crate::fault_lexeme::resolve(lowering, call.code_name, call.span);
+    let site = lowering
+        .faults
+        .register(call.code_name, call.span, lexeme)?;
     let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
     let mut arguments = vec![lowering.context, site_value];
     arguments.extend_from_slice(call.operands);

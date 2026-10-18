@@ -48,7 +48,7 @@ impl Sampler {
         Self { state: seed }
     }
 
-    fn next_word(&mut self) -> u64 {
+    pub(crate) fn next_word(&mut self) -> u64 {
         self.state = self.state.wrapping_add(0x9e37_79b9_7f4a_7c15);
         let mut mixed = self.state;
         mixed = (mixed ^ (mixed >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);

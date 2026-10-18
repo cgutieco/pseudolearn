@@ -1,6 +1,6 @@
 package: pseudolearn_engine
 declarative: false
-unsafe_allowed: [pseudolearn_wasm, pseudolearn_aot_rt]
+unsafe_allowed: [pseudolearn_wasm, pseudolearn_aot_rt, pseudolearn_native_probe]
 generated_sources:
   - crates/pseudolearn_diagnostics/generated
   - crates/pseudolearn_lexicon/generated
@@ -118,6 +118,13 @@ layers:
     may_import: [pseudolearn_api, pseudolearn_bytecode, pseudolearn_timeline, pseudolearn_vm]
     external_dependencies: [serde_json]
     unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_native_probe
+    path: crates/pseudolearn_native_probe
+    may_import: [pseudolearn_aot_rt, pseudolearn_api]
+    external_dependencies: [ceiling_kernels, serde, serde_json]
+    permitted_path_dependencies: [ceiling_kernels]
+    unsafe_allowed: true
     tooling: true
   - name: xtask
     path: xtask

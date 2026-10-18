@@ -13,6 +13,7 @@ fn session() -> AotSession {
             },
         },
         vec![FaultSite {
+            lexeme: String::new(),
             code: DiagnosticCode::InternalFault,
             range: SourceRange::default(),
         }],
@@ -220,6 +221,7 @@ fn local_reference_cells_keep_their_text_alive_through_collection() {
             },
         },
         vec![FaultSite {
+            lexeme: String::new(),
             code: DiagnosticCode::InternalFault,
             range: SourceRange::default(),
         }],
@@ -248,4 +250,56 @@ fn local_reference_cells_keep_their_text_alive_through_collection() {
     let query = rt_aot_text_query(session.context_pointer(), 0, TEXT_LENGTH, text);
     assert_eq!(query, STATUS_CONTINUE);
     assert_eq!(result(&session), 4);
+}
+
+#[test]
+fn released_cells_do_not_remove_the_caller_cells() {
+    let mut session = session();
+    let caller = local(&mut session, KIND_INTEGER);
+    assert_eq!(
+        rt_aot_cell_store(session.context_pointer(), 0, caller, 7),
+        STATUS_CONTINUE
+    );
+    assert_eq!(
+        rt_aot_cell_mark(session.context_pointer(), 0),
+        STATUS_CONTINUE
+    );
+    let base = u32::try_from(result(&session)).unwrap_or(0);
+    let _callee = local(&mut session, KIND_INTEGER);
+    assert_eq!(
+        rt_aot_cell_release(session.context_pointer(), 0, base),
+        STATUS_CONTINUE
+    );
+    assert_eq!(
+        rt_aot_cell_load(session.context_pointer(), 0, caller),
+        STATUS_CONTINUE
+    );
+    assert_eq!(result(&session), 7);
+    assert_eq!(
+        rt_aot_cell_release(session.context_pointer(), 0, u32::MAX),
+        STATUS_FAILED
+    );
+}
+
+#[test]
+fn an_element_cell_roots_its_owner_through_a_forced_collection() {
+    let mut session = session();
+    let owner = array(&mut session, 1);
+    let index = [0_i64];
+    assert_eq!(
+        rt_aot_cell_element(session.context_pointer(), 0, owner, index.as_ptr()),
+        STATUS_CONTINUE
+    );
+    let cell = u32::try_from(result(&session)).unwrap_or(0);
+    assert_eq!(
+        rt_aot_cell_store(session.context_pointer(), 0, cell, 42),
+        STATUS_CONTINUE
+    );
+    session.engine_mut().force_collection();
+    let _unrelated = array(&mut session, 1);
+    assert_eq!(
+        rt_aot_cell_load(session.context_pointer(), 0, cell),
+        STATUS_CONTINUE
+    );
+    assert_eq!(result(&session), 42);
 }

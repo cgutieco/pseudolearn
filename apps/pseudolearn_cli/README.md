@@ -24,7 +24,7 @@ Distribución nativa en macOS, Linux y Windows. Sin secretos.
 
 ## 3. Arquitectura y modelo del sistema
 
-Adaptador de borde → API pública de pseudolearn_engine. Prohibido importar sus crates internos.
+Adaptador de borde → API pública de pseudolearn_engine con la feature `native` explícita. Prohibido importar sus crates internos.
 Flujo: argumentos y entorno → configuración explícita → API → presentación o JSON.
 Sin estado global de ejecución. I/O solo en el adaptador; el núcleo recibe capacidades inyectadas.
 

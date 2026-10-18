@@ -14,8 +14,12 @@ pub(crate) enum CellTarget {
         kind: ValueKind,
         word: u64,
         defined: bool,
+        origin_site: u32,
     },
-    Managed(MemoryCell),
+    Managed {
+        cell: MemoryCell,
+        origin_site: u32,
+    },
 }
 
 #[unsafe(no_mangle)]
@@ -28,6 +32,7 @@ pub extern "C" fn rt_aot_cell_local(context: *mut AotRuntimeContext, site: u32, 
                 kind,
                 word: kind.absent(),
                 defined: false,
+                origin_site: site,
             },
         )
     })
@@ -43,8 +48,15 @@ pub extern "C" fn rt_aot_cell_element(
     run_entry(context, site, |entry| {
         let rank = array_rank(entry, array)?;
         let indices = borrow_slice(indices, rank).ok_or_else(|| Trap::named("internalFault"))?;
-        let cell = element_cell(&entry.engine.heap, Handle(array), indices)?;
-        publish(entry, CellTarget::Managed(cell))
+        let cell = element_cell(&entry.engine.heap, Handle(array), indices)
+            .map_err(|error| crate::access::array_trap(entry, array, indices, error))?;
+        publish(
+            entry,
+            CellTarget::Managed {
+                cell,
+                origin_site: site,
+            },
+        )
     })
 }
 
@@ -58,19 +70,34 @@ pub extern "C" fn rt_aot_cell_field(
     run_entry(context, site, |entry| {
         let index = usize::try_from(field).map_err(|_| Trap::named("internalFault"))?;
         let cell = field_cell(&entry.engine.heap, Handle(object), index)?;
-        publish(entry, CellTarget::Managed(cell))
+        publish(
+            entry,
+            CellTarget::Managed {
+                cell,
+                origin_site: site,
+            },
+        )
     })
 }
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rt_aot_cell_load(context: *mut AotRuntimeContext, site: u32, cell: u32) -> u32 {
-    run_entry(context, site, |entry| match target(entry, cell)? {
-        CellTarget::Managed(managed) => Ok(read_memory_cell(&entry.engine.heap, managed)?),
-        CellTarget::Local {
-            kind,
-            word,
-            defined,
-        } => local_value(kind, word, defined),
+    run_entry(context, site, |entry| {
+        #[cfg(feature = "telemetry")]
+        entry
+            .engine
+            .record(|statistics| statistics.cell_loads = statistics.cell_loads.saturating_add(1));
+        match target(entry, cell)? {
+            CellTarget::Managed { cell, origin_site } => read_memory_cell(&entry.engine.heap, cell)
+                .map_err(|error| named_cell_trap(entry, origin_site, error.into())),
+            CellTarget::Local {
+                kind,
+                word,
+                defined,
+                origin_site,
+            } => local_value(kind, word, defined)
+                .map_err(|trap| named_cell_trap(entry, origin_site, trap)),
+        }
     })
 }
 
@@ -82,16 +109,23 @@ pub extern "C" fn rt_aot_cell_store(
     word: u64,
 ) -> u32 {
     run_entry(context, site, |entry| {
+        #[cfg(feature = "telemetry")]
+        entry
+            .engine
+            .record(|statistics| statistics.cell_stores = statistics.cell_stores.saturating_add(1));
         let slot = slot_of(cell)?;
         match target(entry, cell)? {
-            CellTarget::Managed(managed) => {
-                write_memory_cell(&mut entry.engine.heap, managed, word)?;
+            CellTarget::Managed { cell, .. } => {
+                write_memory_cell(&mut entry.engine.heap, cell, word)?;
             }
-            CellTarget::Local { kind, .. } => {
+            CellTarget::Local {
+                kind, origin_site, ..
+            } => {
                 let stored = CellTarget::Local {
                     kind,
                     word,
                     defined: true,
+                    origin_site,
                 };
                 *entry
                     .engine
@@ -105,6 +139,10 @@ pub extern "C" fn rt_aot_cell_store(
 }
 
 fn publish(entry: &mut Entry<'_>, target: CellTarget) -> Result<u64, Trap> {
+    #[cfg(feature = "telemetry")]
+    entry
+        .engine
+        .record(|statistics| statistics.cells_created = statistics.cells_created.saturating_add(1));
     entry
         .engine
         .cells
@@ -151,7 +189,18 @@ pub(crate) fn rooted_handles(cells: &[CellTarget]) -> impl Iterator<Item = Handl
                 word,
                 ..
             } => u32::try_from(*word).ok().filter(|handle| *handle != 0),
+            CellTarget::Managed { cell, .. } => Some(cell.owner.0).filter(|handle| *handle != 0),
             _ => None,
         })
         .map(Handle)
+}
+
+fn named_cell_trap(entry: &Entry<'_>, site: u32, trap: Trap) -> Trap {
+    if trap.code.map(|code| code.as_str()) == Some("uninitializedVariableRead")
+        && let Some(lexeme) = entry.engine.site_lexeme(site)
+    {
+        trap.argument("lexeme", lexeme)
+    } else {
+        trap
+    }
 }

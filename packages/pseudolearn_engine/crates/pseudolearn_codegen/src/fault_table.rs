@@ -15,12 +15,14 @@ impl FaultTable {
         &mut self,
         code_name: &'static str,
         span: Option<IrSpan>,
+        lexeme: String,
     ) -> Result<u32, CodegenError> {
         let code = DiagnosticCode::from_name(code_name)
             .ok_or(CodegenError::InvalidModule("unknown diagnostic code"))?;
         let identifier = u32::try_from(self.sites.len())
             .map_err(|_| CodegenError::InvalidModule("too many fault sites"))?;
         self.sites.push(FaultSite {
+            lexeme,
             code,
             range: range_of(span),
         });

@@ -54,6 +54,11 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: la emisión debe medirse sin análisis ni lowering. Elección: `PreparedNativeBenchmark` prepara una RI inmutable antes del reloj; `emit_benchmark_object` emite el objeto y sus metadatos. La inspección explícita captura CLIF sin modificar las funciones emitidas; permanece fuera de la medición. El módulo `literals` es dueño de los datos de texto del objeto. Se descarta mezclar las cadenas CLIF con el intervalo de emisión.
+
+Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación.
+
+
 Problema: el sujeto `aot` debe contrastarse con el corpus ejecutando el binario real, y el proceso solo ofrece texto.
 Elección: el adaptador compila con plantillas máquina-legibles y esta capa reconstruye la respuesta de ejecución a partir
 del código de salida y la salida de error. Descartado: ejecutar en proceso código generado (exige `unsafe` y no prueba el

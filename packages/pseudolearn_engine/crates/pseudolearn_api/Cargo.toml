@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2024"
 publish = false
 
+[features]
+default = []
+native = ["dep:pseudolearn_codegen", "dep:pseudolearn_aot_rt"]
+
 [dependencies]
 pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
 pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
@@ -11,8 +15,8 @@ pseudolearn_lexicon = { path = "../pseudolearn_lexicon", version = "=0.1.0" }
 pseudolearn_syntax = { path = "../pseudolearn_syntax", version = "=0.1.0" }
 pseudolearn_semantic = { path = "../pseudolearn_semantic", version = "=0.1.0" }
 pseudolearn_ir = { path = "../pseudolearn_ir", version = "=0.1.0" }
-pseudolearn_aot_rt = { path = "../pseudolearn_aot_rt", version = "=0.1.0" }
-pseudolearn_codegen = { path = "../pseudolearn_codegen", version = "=0.1.0" }
+pseudolearn_aot_rt = { path = "../pseudolearn_aot_rt", version = "=0.1.0", optional = true }
+pseudolearn_codegen = { path = "../pseudolearn_codegen", version = "=0.1.0", optional = true }
 pseudolearn_lowering = { path = "../pseudolearn_lowering", version = "=0.1.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

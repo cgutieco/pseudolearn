@@ -21,6 +21,7 @@ members = [
     "crates/pseudolearn_api",
     "crates/pseudolearn_conformance",
     "crates/pseudolearn_bench_worker",
+    "crates/pseudolearn_native_probe",
     "xtask",
 ]
 resolver = "3"

@@ -58,7 +58,7 @@ fn arguments_json(
     let mut entries: Vec<String> = record
         .arguments
         .iter()
-        .map(|(name, value)| format!("{}:{}", json_text(name), json_text(value)))
+        .map(|(name, value)| format!("{}:{}", json_text(name), argument_json(code, name, value)))
         .collect();
     if let Some(limit) = limit_of(code, settings) {
         entries.push(format!("\"limit\":{limit}"));
@@ -100,4 +100,14 @@ pub(crate) fn diagnostic_report(record: &FaultRecord, settings: &ExecutableSetti
             ("arguments", &arguments),
         ],
     )
+}
+
+fn argument_json(code: DiagnosticCode, name: &str, value: &str) -> String {
+    if code.argument_kind(name) == Some(pseudolearn_diagnostics::ArgumentKind::Number)
+        && value.parse::<i128>().is_ok()
+    {
+        value.to_owned()
+    } else {
+        json_text(value)
+    }
 }

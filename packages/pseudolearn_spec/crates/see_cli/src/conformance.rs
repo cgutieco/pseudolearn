@@ -42,6 +42,7 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
             see_change::hash(specification)?,
         );
     }
+    crate::structural_evidence::append(arguments, &selected, &conformance, &mut evidence)?;
     save(arguments, &selected, &conformance, &evidence)
 }
 

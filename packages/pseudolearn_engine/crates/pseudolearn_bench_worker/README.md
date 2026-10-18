@@ -7,6 +7,10 @@ El comando `execute` prepara las diez cargas AWFY de medición desde la exportac
 
 El comando `aot <directorio>` mide el código nativo generado con `pseudolearn_codegen` sobre las mismas diez cargas: por cada carga emite el objeto sin punto de entrada con `build_benchmark_object` (treinta emisiones cronometradas), enlaza un lanzador propio con el objeto y la biblioteca del runtime, y ejecuta diez procesos de treinta iteraciones cada uno. Cada iteración crea una sesión nueva fuera del intervalo, cronometra solo la llamada a la función principal y verifica salida y estado después; una salida distinta aborta el proceso. Compara con el techo nativo con marcos de la captura `results/e02r` y con la máquina virtual de `results/macos-r5-vm`, y escribe `raw.json` y `summary.json`.
 
+El comando `paired <directorio-nuevo>` enlaza un trabajador con el mismo objeto AOT y V1F. Conserva parejas reales, medianas por carga y bootstrap de medias por proceso identificado separadamente. Rechaza sobrescribir evidencias. `paired-summary <directorio>` recalcula el resumen sin ejecutar cargas ni modificar los crudos.
+
+`paired-probe <directorio-nuevo>` ejecuta las seis cargas de diagnóstico con contadores separados, escala Storage en profundidades 3–6 y conserva un perfil del proceso de Storage. Sus tiempos instrumentados no sirven para declarar N3.
+
 ## 2. Guía operativa y ciclo de vida
 
 Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras
@@ -19,6 +23,8 @@ Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `p
 El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dentro del intervalo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: una captura histórica no permite emparejar variantes por proceso. Elección: `paired/` prepara y enlaza el trabajador `pseudolearn_native_probe`, alterna el orden y conserva la configuración, el objeto y el lanzador por carga. Captura hashes antes de compilar el runtime y los objetos medidos, conserva treinta tiempos de emisión por carga, resolución observada y candidatos de cambio. Se descarta reemplazar las capturas E-NR1 o interpretar el intervalo de medias como intervalo de medianas. La latencia VM se toma sobre la API preparada y conserva dentro del intervalo su creación de máquina.
 
 Problema: el arranque de una CLI y la serialización no son coste de análisis. Elección: llamadas directas
 a la API en un proceso trabajador. Fuentes generadas por vocabulario del corpus, con terminadores y

@@ -2,7 +2,7 @@
   "aot_observations": 1205,
   "coincide": 808,
   "compared": 808,
-  "contract_scope": "output, termination and error diagnostic codes",
+  "contract_scope": "output, termination and error diagnostic codes, arguments and source ranges",
   "engine_observations": 1512,
   "exempt_differences": [],
   "uncontracted_differences": [],

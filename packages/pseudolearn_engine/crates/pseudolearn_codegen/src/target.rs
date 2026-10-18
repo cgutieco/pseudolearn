@@ -8,17 +8,27 @@ use target_lexicon::Triple;
 #[derive(Clone, Debug)]
 pub struct TargetConfig {
     triple: Triple,
+    pub(crate) inspect: bool,
 }
 
 impl TargetConfig {
     pub fn host() -> Self {
         Self {
             triple: Triple::host(),
+            inspect: false,
         }
     }
 
     pub fn for_triple(triple: Triple) -> Self {
-        Self { triple }
+        Self {
+            triple,
+            inspect: false,
+        }
+    }
+
+    pub fn with_inspection(mut self) -> Self {
+        self.inspect = true;
+        self
     }
 
     pub fn triple(&self) -> &Triple {

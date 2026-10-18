@@ -263,7 +263,7 @@ R0 Fundación
 
 ### R6 · Backend nativo (Cranelift)
 
-- [x] **Experimentos:** E-NR1 ejecutado y conservado en `packages/pseudolearn_benchmarks/results/r6-aot/`; razón geométrica global de 5,8× frente a V1F, por encima del máximo N3 de 1,30×.
+- [x] **Experimentos:** E-NR1 ejecutado y conservado en `packages/pseudolearn_benchmarks/results/r6-aot/`; razón global histórica de cocientes de medias de 5,8× frente a V1F. El criterio N3 se aplica a cocientes de medianas por familia, no a ese global.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
@@ -281,9 +281,11 @@ R0 Fundación
   - [x] Las 66 especificaciones de ejecución de `LANG` pasan a `estable` con **dos sujetos Rust** (`engine` y `aot`)
      más `reference`, tras revisión independiente y sin cambiar versiones.
   - [x] Informe de `PERF.AOT.LEVEL` publicado según el protocolo, **incluidos los resultados desfavorables**, con la
-     decisión de retener Cranelift y reevaluar LLVM después de optimizar celdas y asignación.
+     decisión de conservar Cranelift durante el diagnóstico y comparar alternativas según perfiles y costes medidos.
   - [ ] `PERF.AOT.LEVEL#R1` alcanza N3: razón geométrica por familia `aot / V1F` ≤ 1,30×. E-NR1 registró 5,8× global;
-     se requiere optimizar las vías de celdas y asignación y volver a verificar el criterio.
+     las campañas emparejadas conservadas siguen incumpliendo las cuatro familias. La técnica siguiente se selecciona por evidencia.
+  - [ ] `PERF.AOT.LEVEL#R3`: emisión ≤ 15 ms de mediana por carga; la campaña `r6-paired-runtime` mide 15,79 ms en Richards.
+  - [ ] Vínculos de conformidad pendientes, argumentos y posiciones de diagnósticos, propiedades RT y puerta local final verificados.
   - [ ] Los builds móviles y Wasm no incluyen Cranelift: verificado por el tamaño y por las *features*
      activadas.
 

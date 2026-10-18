@@ -32,6 +32,7 @@ unsafe extern "C" {
 fn parse_site(line: &str) -> FaultSite {
     let fields: Vec<&str> = line.split(',').collect();
     FaultSite {
+        lexeme: String::new(),
         code: DiagnosticCode::from_name(fields[0]).unwrap(),
         range: SourceRange {
             start_line: fields[1].parse().unwrap(),

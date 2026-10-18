@@ -11,6 +11,8 @@ impl Heap {
         request: AllocationRequest,
         roots: &[Handle],
     ) -> Result<Handle, MemoryError> {
+        #[cfg(feature = "telemetry")]
+        self.record(|statistics| statistics.allocations = statistics.allocations.saturating_add(1));
         let (shape_tag, status_flags) = header_shape(&request)?;
         if !matches!(request.shape, Shape::Auxiliary) {
             self.prepare(request.cells, roots)?;
@@ -37,10 +39,23 @@ impl Heap {
             CommonHeader::new(shape_tag, status_flags, identity),
         )?;
         self.register_block(handle, request.cells, physical)?;
-        if let Shape::Object(layout) = request.shape {
+        self.store_allocation_layout(request.shape)?;
+        Ok(handle)
+    }
+
+    fn store_allocation_layout(&mut self, shape: Shape) -> Result<(), MemoryError> {
+        if let Shape::Object(layout) = shape {
+            let index = usize::try_from(layout.class).map_err(|_| MemoryError::Resource)?;
+            if self.layouts.get(index).and_then(Option::as_ref).is_some() {
+                return Ok(());
+            }
+            #[cfg(feature = "telemetry")]
+            self.record(|statistics| {
+                statistics.layout_copies = statistics.layout_copies.saturating_add(1)
+            });
             self.store_layout((*layout).clone())?;
         }
-        Ok(handle)
+        Ok(())
     }
 
     fn prepare_metadata(&mut self, shape: &Shape) -> Result<(), MemoryError> {
@@ -66,6 +81,13 @@ impl Heap {
         physical: usize,
         request: &AllocationRequest,
     ) -> Result<(), MemoryError> {
+        #[cfg(feature = "telemetry")]
+        self.record(|statistics| {
+            statistics.initialized_words = statistics.initialized_words.saturating_add(
+                u64::try_from(physical.saturating_mul(2).saturating_sub(request.payload))
+                    .unwrap_or(u64::MAX),
+            )
+        });
         let kind = initial_kind(&request.shape);
         let end = address.checked_add(physical).ok_or(MemoryError::Resource)?;
         self.words
@@ -112,12 +134,13 @@ impl Heap {
             || bound > self.options.cells
             || self.allocated_cells >= threshold
         {
-            let live = self.reachable_cells(roots)?;
+            let reachable = self.reachable(roots)?;
+            let live = self.marked_cells(&reachable)?;
             if live.checked_add(cells).ok_or(MemoryError::Resource)? > self.options.cells {
                 return Err(MemoryError::CellLimit);
             }
             if self.options.collection != CollectionPolicy::Disabled {
-                self.collect(roots)?;
+                self.collect_marked(reachable)?;
             }
         }
         Ok(())
@@ -138,6 +161,10 @@ impl Heap {
             .ok_or(MemoryError::Resource)?;
         u32::try_from(end).map_err(|_| MemoryError::Resource)?;
         if end > self.words.len() {
+            #[cfg(feature = "telemetry")]
+            self.record(|statistics| {
+                statistics.heap_growths = statistics.heap_growths.saturating_add(1)
+            });
             self.words
                 .try_reserve_exact(end.saturating_sub(self.words.len()))
                 .map_err(|_| MemoryError::Resource)?;

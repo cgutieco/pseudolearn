@@ -23,6 +23,7 @@ fn sample() -> ExecutableMetadata {
             exhausted_template: "{path}\n".to_owned(),
         },
         sites: vec![FaultSite {
+            lexeme: "sourceName".to_owned(),
             code: DiagnosticCode::InternalFault,
             range: SourceRange {
                 start_line: 1,

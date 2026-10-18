@@ -1,10 +1,10 @@
 mod baseline;
-mod emission;
+pub(crate) mod emission;
 mod launcher;
 mod measurement;
 mod provenance;
 mod runtime_archive;
-mod statistics;
+pub(crate) mod statistics;
 mod summary;
 
 #[cfg(test)]
@@ -34,6 +34,9 @@ impl Drop for Workspace {
 }
 
 pub fn collect(output: &str) -> Result<(), String> {
+    if Path::new(output).exists() {
+        return Err("Refusing to overwrite existing evidence".to_owned());
+    }
     let benchmarks = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../pseudolearn_benchmarks");
     let references = baseline::load(&benchmarks)?;
     let workspace = Workspace(

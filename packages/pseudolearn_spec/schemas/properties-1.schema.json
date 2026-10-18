@@ -46,7 +46,15 @@
               "interface_language",
               "fused_first_trap",
               "lossless_reprint",
-              "lossless_recovery"
+              "lossless_recovery",
+              "native_equivalence",
+              "native_roots",
+              "native_diagnostics",
+              "native_linking",
+              "native_cleanup",
+              "native_permissions",
+              "native_exit",
+              "native_environment"
             ]
           },
           "seed": {

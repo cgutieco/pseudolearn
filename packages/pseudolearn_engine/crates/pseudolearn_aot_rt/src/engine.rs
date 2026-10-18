@@ -9,6 +9,8 @@ use pseudolearn_runtime::{
 use std::sync::Arc;
 
 pub struct AotEngine {
+    #[cfg(feature = "telemetry")]
+    pub(crate) statistics: std::cell::Cell<crate::AotStatistics>,
     pub(crate) heap: Heap,
     pub(crate) random: RandomState,
     pub(crate) layouts: Vec<Option<Arc<ObjectLayout>>>,
@@ -25,6 +27,8 @@ impl AotEngine {
     pub(crate) fn new(config: AotConfig, sites: Vec<FaultSite>, streams: AotStreams) -> Self {
         let capacity = usize::try_from(config.limits.root_capacity).unwrap_or(0);
         Self {
+            #[cfg(feature = "telemetry")]
+            statistics: std::cell::Cell::default(),
             heap: Heap::new(MemoryOptions {
                 cells: config.limits.cells,
                 collection: CollectionPolicy::Automatic,
@@ -72,6 +76,12 @@ impl AotEngine {
 
     pub fn heap(&self) -> &Heap {
         &self.heap
+    }
+
+    pub(crate) fn site_lexeme(&self, site: u32) -> Option<&str> {
+        self.site(site)
+            .map(|site| site.lexeme.as_str())
+            .filter(|name| !name.is_empty())
     }
 
     pub(crate) fn site_range(&self, site: u32) -> SourceRange {

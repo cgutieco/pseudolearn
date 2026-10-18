@@ -125,9 +125,9 @@
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R4",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el esquema de límites y la cobertura de RI; la conformidad conserva el resultado estructural con hash del corpus."
     },
     {
       "regla": "IR.MODEL@0.1.0#R1",
@@ -759,21 +759,21 @@
     },
     {
       "regla": "PERF.AOT.LEVEL@0.1.0#R1",
-      "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+      "verificacion": "medicion",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
     },
     {
       "regla": "PERF.AOT.LEVEL@0.1.0#R2",
-      "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+      "verificacion": "medicion",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
     },
     {
       "regla": "PERF.AOT.LEVEL@0.1.0#R3",
-      "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
+      "verificacion": "medicion",
+      "estado": "pendiente",
+      "resuelve_en": "R6"
     },
     {
       "regla": "PERF.SUITE.AWFY-CORE@0.1.0#R1",
@@ -793,8 +793,7 @@
     {
       "regla": "RT.ABI@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R1",
@@ -804,8 +803,7 @@
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.FAULT.REPORTING@0.1.0#R3",
@@ -831,20 +829,17 @@
     {
       "regla": "RT.LINKING@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.LINKING@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.LINKING@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.PROCESS@0.1.0#R1",
@@ -854,14 +849,12 @@
     {
       "regla": "RT.PROCESS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "RT.PROCESS@0.1.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     }
   ]
 }

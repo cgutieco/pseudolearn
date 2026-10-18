@@ -35,6 +35,7 @@ fn metadata(code: DiagnosticCode) -> ExecutableMetadata {
             exhausted_template: "{path}: input ended\n".to_owned(),
         },
         sites: vec![FaultSite {
+            lexeme: String::new(),
             code,
             range: SourceRange {
                 start_line: 3,

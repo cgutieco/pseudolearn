@@ -1,6 +1,6 @@
 # 15 — Plan técnico de ejecución de R6: Backend nativo AOT (`pseudolearn_codegen`) y cierre de estabilidad de `LANG`
 
-**Estado:** Propuesto (pendiente de aprobación antes de implementar)
+**Estado:** R6 implementada parcialmente; fase abierta hasta verificar rendimiento, portabilidad y conformidad completa.
 **Fase cubierta:** R6 («Backend nativo») de `docs/plan-nucleo-rust/07-fases.md`
 **Paquetes afectados (cuando se autorice la ejecución):** `packages/pseudolearn_spec`, `packages/pseudolearn_engine`,
 `apps/pseudolearn_cli`, `packages/pseudolearn_benchmarks`
@@ -98,10 +98,10 @@ A continuación se consolidan los tiempos medianos verificados en los artefactos
 | Carga (`PERF.SUITE.AWFY-CORE`) | Familia     | `reference` Dart (µs) | `engine` VM R5 (µs) | Aceleración VM R5 / `reference` | `V1` Rust nativo (µs) | `V1F` Nativo + marcos (µs) | `V2R` Montón plano + combustible (µs) | Razón `V2R / V1F` (`E-02R`) | Margen disponible (`VM R5 / V2R`) |
 |--------------------------------|-------------|----------------------:|--------------------:|--------------------------------:|----------------------:|---------------------------:|--------------------------------------:|----------------------------:|----------------------------------:|
 | `sieve`                        | `arrays`    |             11.066,41 |              314,58 |                 $35{,}18\times$ |                  6,84 |                       6,87 |                                  8,76 |             $1{,}276\times$ |                **$35{,}9\times$** |
-| `permute`                      | `arrays`    |             57.075,83 |            1.875,04 |                 $30{,}44\times$ |                 36,75 |                      38,96 |                                 40,66 |             $1{,}044\times$ |                **$46{,}1\times$** |
+| `permute`                      | `recursive`    |             57.075,83 |            1.875,04 |                 $30{,}44\times$ |                 36,75 |                      38,96 |                                 40,66 |             $1{,}044\times$ |                **$46{,}1\times$** |
 | `queens`                       | `arrays`    |             11.275,05 |              551,37 |                 $20{,}45\times$ |                 14,25 |                      14,31 |                                 17,31 |             $1{,}210\times$ |                **$31{,}9\times$** |
-| `towers`                       | `recursive` |              9.752,09 |              275,96 |                 $35{,}34\times$ |                 12,16 |                      12,89 |                                 13,24 |             $1{,}027\times$ |                **$20{,}8\times$** |
-| `list`                         | `recursive` |             32.396,15 |              970,14 |                 $33{,}39\times$ |                 22,92 |                      26,51 |                                 29,96 |             $1{,}130\times$ |                **$32{,}4\times$** |
+| `towers`                       | `objects` |              9.752,09 |              275,96 |                 $35{,}34\times$ |                 12,16 |                      12,89 |                                 13,24 |             $1{,}027\times$ |                **$20{,}8\times$** |
+| `list`                         | `objects` |             32.396,15 |              970,14 |                 $33{,}39\times$ |                 22,92 |                      26,51 |                                 29,96 |             $1{,}130\times$ |                **$32{,}4\times$** |
 | `storage`                      | `objects`   |              9.206,29 |              463,42 |                 $19{,}87\times$ |                 11,23 |                      17,13 |                                 20,60 |             $1{,}202\times$ |                **$22{,}5\times$** |
 | `bounce`                       | `objects`   |             41.008,22 |            1.579,01 |                 $25{,}97\times$ |                 10,81 |                      27,40 |                                 34,96 |             $1{,}276\times$ |                **$45{,}2\times$** |
 | `mandelbrot`                   | `numeric`   |            164.687,06 |            2.732,88 |                 $60{,}26\times$ |                169,53 |                     157,97 |                                158,18 |             $1{,}001\times$ |                **$17{,}3\times$** |
@@ -1003,19 +1003,7 @@ flowchart LR
         - `RR-R6-04` (*Si persiste tras `RR-R6-01..03`*): Activar `opt_level = speed` con GVN/LICM de
           `cranelift-codegen` sobre valores escalares puros entre barreras de efecto.
 
-> **Estado de B6 (completado; el criterio `N3` no se cumple):** `pseudolearn_bench_worker aot <directorio>` mide el código
-> generado con un lanzador en C que enlaza el objeto de `build_benchmark_object` con la biblioteca estática del runtime
-> construida como la de la CLI y llama a la función principal diez procesos × treinta iteraciones por carga, con estado nuevo
-> fuera del intervalo y salida verificada. Primera captura (`results/r6-aot-initial/`): razón geométrica frente al techo 7,8
-> (de 5,0 en `sieve` a 57 en `storage`) y aceleración sobre la VM entre 1,1 y 12,3. Tras aplicar `RR-R6-01` en la forma de
-> eliminar el descuento cuando no hay presupuesto y `RR-R6-04` (`opt_level = speed`): 5,8 (`results/r6-aot/`; arreglos 5,6,
-> numérica 3,7, objetos 6,9, recursiva 6,4). `PERF.AOT.LEVEL#R2` (aceleración mínima 1,2×) y `#R3` (emisión máxima 14,8 ms)
-> se cumplen; `#R1` no. El perfil muestra por qué la escalera preregistrada no basta: en `nbody`, `queens` y `sieve` el
-> tiempo está en el código generado y en `rt_aot_cell_load`, y en `storage` la asignación y la recolección del montón de
-> `pseudolearn_runtime` dominan (el código generado es el 2 %), de modo que el supuesto de §2.1 de que el runtime no es cuello de
-> botella no se sostiene para cargas con asignación. `RR-R6-02` y `RR-R6-03` no se aplicaron porque atacan costes que el
-> perfil no señala como dominantes; el cierre del nivel exige una vía rápida de asignación y de celdas, declarada como
-> pendiente en el README de `pseudolearn_codegen`.
+> **Estado histórico de B6 (ejecutado; R6 abierta):** se conservan `results/r6-aot-initial/` y `results/r6-aot/`. El global publicado de 5,803133829× es una agregación de cocientes de medias de capturas independientes. No corresponde al estimador normativo ni acredita emparejamiento. El recálculo diagnóstico de medianas tampoco elimina el incumplimiento. Los porcentajes y atribuciones de perfiles antiguos sin crudos conservados no se adoptan como causas; los contadores posteriores contradicen que Sieve o NBody ejecuten cargas de celda. El seguimiento siguiente sustituye esa interpretación, sin modificar sus artefactos.
 
 ### [x] Bloque B7 — Transición de `LANG` a `estable`, actualización de `README.md` y verificación local
 
@@ -1048,10 +1036,7 @@ los bloques `cambio` obsoletos de `TOOL.CLI.CONVENTIONS`, `TOOL.CLI.MESSAGES` y 
 normativo ni las versiones. Se regeneraron `specifications.lock`, `export.json` y los resultados de conformidad y
 propiedades; las anclas normativas del lock permanecen iguales porque estos metadatos no forman parte del hash
 normativo. La documentación técnica registra el resultado desfavorable de E-NR1, con razón geométrica global de
-5,8× y razones por familia de 5,6× (`arrays`), 3,7× (`numeric`), 6,9× (`objects`) y 6,4× (`recursive`). El perfil señala
-`rt_aot_cell_load` y la asignación/almacenamiento; quedan pendientes las vías rápidas de celdas y asignación. Se retiene
-Cranelift y se reevaluará LLVM después de optimizarlas. E-NR1 se conserva y no se repite sin un cambio de rendimiento
-que medir. **B7 queda implementado, pero R6 permanece abierta:** no se cumple `PERF.AOT.LEVEL#R1` (`N3 ≤ 1,30×`), y
+5,8× y razones por familia de 5,6× (`arrays`), 3,7× (`numeric`), 6,9× (`objects`) y 6,4× (`recursive`). La interpretación causal histórica queda sustituida por los contadores, perfiles y campañas emparejadas del seguimiento. No se presupone una técnica de optimización ni un backend definitivo. E-NR1 se conserva. **B7 queda implementado, pero R6 permanece abierta:** no se cumple `PERF.AOT.LEVEL#R1` (`N3 ≤ 1,30×`), y
 la puerta de fase no se marca como completada.
 
 Las puertas de Rust pasaron tests, Clippy y verificadores con un trabajo y un hilo de test. `cargo deny check` pasó por

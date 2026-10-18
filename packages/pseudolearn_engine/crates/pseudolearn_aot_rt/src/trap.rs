@@ -21,6 +21,11 @@ impl Trap {
         }
     }
 
+    pub(crate) fn argument(mut self, name: &str, value: impl ToString) -> Self {
+        self.arguments.push((name.to_owned(), value.to_string()));
+        self
+    }
+
     pub(crate) fn exhausted_input() -> Self {
         Self {
             code: None,
@@ -70,6 +75,13 @@ impl From<LibraryError> for Trap {
 pub extern "C" fn rt_aot_fault(context: *mut AotRuntimeContext, site: u32) -> u32 {
     run_entry(context, site, |entry| {
         let code = entry.engine.site_code(site)?;
-        Err(Trap::with_code(code))
+        let mut trap = Trap::with_code(code);
+        if code.as_str() == "invalidCharacterCode" {
+            trap = trap.argument(
+                "code",
+                i64::from_ne_bytes(entry.context.result_word.to_ne_bytes()),
+            );
+        }
+        Err(trap)
     })
 }

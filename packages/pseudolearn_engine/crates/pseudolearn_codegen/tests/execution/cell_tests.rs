@@ -179,3 +179,50 @@ fn text_held_only_by_a_cell_survives_collections() -> Result<(), Failure> {
     call.cells = Some(120);
     expect_value(&run(&call)?, "4")
 }
+
+static RETIRED_HARNESS: OnceLock<Result<crate::support::Harness, Failure>> = OnceLock::new();
+
+const RETIRED_CELLS: &str = "module P es
+func @allocate() -> unit {
+b0() mass 0:
+  %0 = cell.local array<i64, 1>
+  %1 = const.i64 16
+  %2 = array.new array<i64, 1>, %1 @1:1-1:5
+  cell.store %0, %2
+  return
+}
+func @main() -> i64 {
+b0() mass 0:
+  %0 = const.i64 0
+  jump b1(%0)
+b1(%1: i64) mass 0:
+  %2 = const.i64 10
+  %3 = int.cmp lt, %1, %2
+  branch %3, b2(), b3()
+b2() mass 0:
+  call @allocate() @2:1-2:5
+  %4 = const.i64 1
+  %5 = int.add %1, %4 @3:1-3:5
+  jump b1(%5)
+b3() mass 0:
+  return %1
+}
+";
+
+#[test]
+fn returned_frames_do_not_retain_arrays_through_local_cells() -> Result<(), Failure> {
+    let signatures = vec![
+        Signature {
+            parameters: vec![],
+            returns: Kind::Unit,
+        },
+        Signature {
+            parameters: vec![],
+            returns: Kind::Integer,
+        },
+    ];
+    let harness = shared(&RETIRED_HARNESS, RETIRED_CELLS, &signatures)?;
+    let mut call = Call::with(1, &[]);
+    call.cells = Some(20);
+    expect_value(&harness.run(&call)?, "10")
+}

@@ -218,11 +218,37 @@ impl Exemptions {
 }
 
 impl Report {
+    fn contract_view(&self, actual: &Value) -> Value {
+        if self.labels.1 == "aot" {
+            let mut result = contract_view(actual);
+            let errors: Vec<Value> = actual
+                .get("diagnostics")
+                .and_then(Value::as_array)
+                .into_iter()
+                .flatten()
+                .filter(|diagnostic| diagnostic.get("severity") == Some(&json!("error")))
+                .map(|diagnostic| {
+                    json!({"code":diagnostic.get("code"),
+                    "arguments":diagnostic.get("arguments"), "span":diagnostic.get("span")})
+                })
+                .collect();
+            if let Some(fields) = result.as_object_mut() {
+                fields.insert("error_diagnostics".to_owned(), json!(errors));
+            }
+            result
+        } else {
+            contract_view(actual)
+        }
+    }
+
     fn classify(&mut self, key: &Key, pair: (&Observation, &Observation), known: &Exemptions) {
         let (left, right) = pair;
         self.compared = self.compared.saturating_add(1);
         let entry = self.entry(key, (&left.verdict, &right.verdict));
-        let (left_core, right_core) = (contract_view(&left.actual), contract_view(&right.actual));
+        let (left_core, right_core) = (
+            self.contract_view(&left.actual),
+            self.contract_view(&right.actual),
+        );
         if left_core != right_core {
             let detail = self.with_views(entry, left_core, right_core);
             match known.justification(key, left) {
@@ -260,7 +286,9 @@ impl Report {
         json!({format!("{}_observations", self.labels.1):totals.1,
             format!("{}_observations", self.labels.0):totals.0,
             "compared":self.compared,"coincide":self.coincide,
-            "contract_scope":"output, termination and error diagnostic codes",
+            "contract_scope": if self.labels.1 == "aot" {
+                "output, termination and error diagnostic codes, arguments and source ranges"
+            } else { "output, termination and error diagnostic codes" },
             "exempt_differences":self.exempt,
             "uncontracted_span_or_notice_differences":self.informational.len(),
             "uncontracted_differences":self.informational,

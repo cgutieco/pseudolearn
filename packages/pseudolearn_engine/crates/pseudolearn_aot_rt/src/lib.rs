@@ -1,5 +1,7 @@
 mod access;
+mod cell_frames;
 mod cells;
+pub use cell_frames::{rt_aot_cell_mark, rt_aot_cell_release};
 mod class_layout;
 mod config;
 mod context;
@@ -62,3 +64,8 @@ pub use text::{
     rt_aot_text_concat, rt_aot_text_format, rt_aot_text_literal, rt_aot_text_query,
 };
 pub use trap::rt_aot_fault;
+
+#[cfg(feature = "telemetry")]
+mod statistics;
+#[cfg(feature = "telemetry")]
+pub use statistics::AotStatistics;

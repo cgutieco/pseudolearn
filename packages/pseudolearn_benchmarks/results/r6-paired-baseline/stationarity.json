@@ -1,0 +1,3492 @@
+{
+  "changePointCandidates": [
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 5,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 22,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 23,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 24,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 25,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 5,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 22,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 23,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 24,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 25,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 6,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 7,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 11,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 12,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 13,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 0,
+      "split": 14,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 7,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 11,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 12,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 5,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 6,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 7,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 8,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 9,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 0,
+      "split": 10,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 19,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 20,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 21,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 19,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 20,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 21,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 22,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 23,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 24,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 1,
+      "split": 25,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 18,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 20,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 21,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 22,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 23,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 24,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 25,
+      "workload": "storage"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 1,
+      "split": 11,
+      "workload": "nbody"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 1,
+      "split": 11,
+      "workload": "nbody"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 9,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 10,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 11,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 12,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 13,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 14,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 2,
+      "split": 25,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 2,
+      "split": 25,
+      "workload": "list"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 25,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 2,
+      "split": 5,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 2,
+      "split": 6,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 2,
+      "split": 7,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 2,
+      "split": 8,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 5,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 6,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 7,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 2,
+      "split": 8,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 3,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 3,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 8,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 9,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 20,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 21,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 22,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 23,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 24,
+      "workload": "richards"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 4,
+      "split": 25,
+      "workload": "richards"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 19,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 20,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 21,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 18,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 19,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 5,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 6,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 7,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 12,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 13,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 14,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 15,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 16,
+      "workload": "towers"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 5,
+      "split": 17,
+      "workload": "towers"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "list"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 5,
+      "split": 11,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 8,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 9,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 5,
+      "split": 10,
+      "workload": "list"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 23,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 24,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 25,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 6,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 6,
+      "split": 25,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 20,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 21,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 22,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 23,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 24,
+      "workload": "queens"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 5,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 6,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 6,
+      "split": 7,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 7,
+      "split": 20,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 7,
+      "split": 24,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 13,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 14,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 15,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 16,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 17,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 18,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 19,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 20,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 7,
+      "split": 25,
+      "workload": "bounce"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 5,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 6,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 7,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 12,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 13,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 14,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 15,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 16,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 17,
+      "workload": "storage"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 8,
+      "split": 5,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 8,
+      "split": 6,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 8,
+      "split": 7,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 8,
+      "split": 8,
+      "workload": "mandelbrot"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 5,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 24,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 8,
+      "split": 25,
+      "workload": "nbody"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 8,
+      "split": 24,
+      "workload": "nbody"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 8,
+      "split": 25,
+      "workload": "nbody"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 13,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 14,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 15,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 16,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 17,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 18,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 19,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 20,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 21,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 22,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 7,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 8,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 9,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 10,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 11,
+      "workload": "sieve"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 12,
+      "workload": "sieve"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 9,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 10,
+      "workload": "queens"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 11,
+      "workload": "queens"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "storage"
+    },
+    {
+      "metric": "native_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 6,
+      "workload": "bounce"
+    },
+    {
+      "metric": "ceiling_nanoseconds",
+      "process": 9,
+      "split": 7,
+      "workload": "bounce"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 5,
+      "workload": "bounce"
+    },
+    {
+      "metric": "vm_nanoseconds",
+      "process": 9,
+      "split": 21,
+      "workload": "nbody"
+    }
+  ],
+  "samplesDiscarded": 0,
+  "stationarityDemonstrated": false
+}

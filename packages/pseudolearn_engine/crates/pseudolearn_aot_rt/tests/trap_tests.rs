@@ -4,6 +4,7 @@ use std::io::Cursor;
 
 fn site(code: DiagnosticCode) -> FaultSite {
     FaultSite {
+        lexeme: String::new(),
         code,
         range: SourceRange {
             start_line: 3,

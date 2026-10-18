@@ -1,3 +1,5 @@
+#![cfg(feature = "native")]
+
 use pseudolearn_api::{
     ExecutionLimits, NativeBuildFailure, NativeBuildRequest, build_native_object,
 };
@@ -75,5 +77,39 @@ fn an_empty_program_is_rejected() -> Check {
         build_native_object(&request("")),
         Err(NativeBuildFailure::Rejected(_))
     ));
+    Ok(())
+}
+
+#[test]
+fn inspection_preserves_bytes_and_benchmark_functions_match_product_functions() -> Check {
+    use pseudolearn_api::{
+        emit_benchmark_object, inspect_benchmark_object, prepare_native_benchmark,
+    };
+    for statements in [None, Some(100)] {
+        let mut build = request("Algoritmo P\nEscribir 1;\nFinAlgoritmo\n");
+        build.limits.statements = statements;
+        let prepared = prepare_native_benchmark(&build).map_err(failure)?;
+        let measured = emit_benchmark_object(&prepared).map_err(failure)?;
+        let inspected = inspect_benchmark_object(&prepared).map_err(failure)?;
+        assert_eq!(measured.bytes, inspected.bytes);
+        assert_eq!(measured.metadata, inspected.metadata);
+        assert!(measured.inspection.is_empty());
+        assert!(!inspected.inspection.is_empty());
+        let metadata = pseudolearn_aot_rt::decode_metadata(&measured.metadata)
+            .ok_or("Invalid benchmark metadata")?;
+        let module = pseudolearn_api::compile_source_to_module(
+            &build.program,
+            &build.profile,
+            &build.strictness,
+        )
+        .map_err(failure)?;
+        let product = pseudolearn_codegen::compile_module_to_executable_object(
+            &module,
+            &pseudolearn_codegen::TargetConfig::host().with_inspection(),
+            &metadata.settings,
+        )
+        .map_err(failure)?;
+        assert_eq!(inspected.inspection, product.inspection);
+    }
     Ok(())
 }

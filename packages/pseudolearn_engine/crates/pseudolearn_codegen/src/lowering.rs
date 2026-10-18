@@ -41,9 +41,11 @@ pub(crate) struct Lowering<'func, 'program> {
     pub(crate) function: &'program Function,
     pub(crate) faults: &'program mut FaultTable,
     pub(crate) context: Value,
+    pub(crate) cell_frame: Option<Value>,
+    pub(crate) fault_lexemes: crate::fault_lexeme::Lexemes,
     pub(crate) values: HashMap<ValueId, Value>,
     pub(crate) blocks: HashMap<BlockId, Block>,
-    pub(crate) cold_blocks: Vec<(Block, u32)>,
+    pub(crate) cold_blocks: Vec<(Block, u32, Option<Value>)>,
     pub(crate) propagate_block: Option<Block>,
     pub(crate) types: HashMap<ValueId, IrType>,
     pub(crate) definitions: HashMap<ValueId, Definition>,
@@ -80,10 +82,11 @@ pub(crate) fn cold_block(
     code_name: &'static str,
     span: Option<IrSpan>,
 ) -> Result<Block, CodegenError> {
-    let site = lowering.faults.register(code_name, span)?;
+    let lexeme = crate::fault_lexeme::resolve(lowering, code_name, span);
+    let site = lowering.faults.register(code_name, span, lexeme)?;
     let block = lowering.builder.create_block();
     lowering.builder.set_cold_block(block);
-    lowering.cold_blocks.push((block, site));
+    lowering.cold_blocks.push((block, site, None));
     Ok(block)
 }
 
@@ -94,6 +97,22 @@ pub(crate) fn guard_trap(
     span: Option<IrSpan>,
 ) -> Result<(), CodegenError> {
     let cold = cold_block(lowering, code_name, span)?;
+    let next = lowering.builder.create_block();
+    lowering.builder.ins().brif(condition, cold, &[], next, &[]);
+    lowering.builder.switch_to_block(next);
+    Ok(())
+}
+
+pub(crate) fn guard_character_trap(
+    lowering: &mut Lowering<'_, '_>,
+    condition: Value,
+    word: Value,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    let cold = cold_block(lowering, "invalidCharacterCode", span)?;
+    if let Some(trap) = lowering.cold_blocks.last_mut() {
+        trap.2 = Some(word);
+    }
     let next = lowering.builder.create_block();
     lowering.builder.ins().brif(condition, cold, &[], next, &[]);
     lowering.builder.switch_to_block(next);
@@ -142,8 +161,16 @@ pub(crate) fn emit_return_zero(lowering: &mut Lowering<'_, '_>) {
 
 pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) -> Result<(), CodegenError> {
     let fault = lowering.environment.runtime.get(Entry::Fault)?;
-    for (block, site) in std::mem::take(&mut lowering.cold_blocks) {
+    for (block, site, word) in std::mem::take(&mut lowering.cold_blocks) {
         lowering.builder.switch_to_block(block);
+        if let Some(word) = word {
+            lowering.builder.ins().store(
+                cranelift_codegen::ir::MemFlagsData::trusted(),
+                word,
+                lowering.context,
+                lowering.environment.layout.result_word,
+            );
+        }
         let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
         lowering
             .builder

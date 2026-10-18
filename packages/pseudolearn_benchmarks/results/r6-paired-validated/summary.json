@@ -1,0 +1,141 @@
+{
+  "bootstrap": {
+    "method": "paired resampling of per-process means; interval does not estimate median ratios",
+    "rounds": 2000,
+    "seed": 42
+  },
+  "criteria": {
+    "emissionPassed": true,
+    "familiesPassed": false,
+    "speedupPassed": true
+  },
+  "estimator": "geometric mean per family of ratios of pooled workload medians",
+  "families": {
+    "arrays": {
+      "medianRatio": 3.0681985879019105,
+      "passed": false,
+      "processMeanRatioConfidence95": [
+        2.5588670916264653,
+        3.0053996451995557
+      ]
+    },
+    "numeric": {
+      "medianRatio": 2.5671887649797696,
+      "passed": false,
+      "processMeanRatioConfidence95": [
+        2.413745503923441,
+        3.067884037649833
+      ]
+    },
+    "objects": {
+      "medianRatio": 3.289721211721839,
+      "passed": false,
+      "processMeanRatioConfidence95": [
+        2.96249256805984,
+        3.309780830274506
+      ]
+    },
+    "recursive": {
+      "medianRatio": 3.859161094224924,
+      "passed": false,
+      "processMeanRatioConfidence95": [
+        3.6502419117693985,
+        3.910058334301672
+      ]
+    }
+  },
+  "maximumEmissionMedianMilliseconds": 14.574375,
+  "targetReached": false,
+  "workloads": {
+    "bounce": {
+      "ceilingMedianNanoseconds": 35500.0,
+      "emissionMedianMilliseconds": 3.550541,
+      "family": "objects",
+      "nativeMedianNanoseconds": 81000.0,
+      "ratio": 2.2816901408450705,
+      "speedupOverVmApi": 21.40740740740741,
+      "vmApiMedianNanoseconds": 1734000.0
+    },
+    "list": {
+      "ceilingMedianNanoseconds": 29042.0,
+      "emissionMedianMilliseconds": 1.8404999999999998,
+      "family": "objects",
+      "nativeMedianNanoseconds": 58583.0,
+      "ratio": 2.017182012258109,
+      "speedupOverVmApi": 18.369936671047913,
+      "vmApiMedianNanoseconds": 1076166.0
+    },
+    "mandelbrot": {
+      "ceilingMedianNanoseconds": 173708.0,
+      "emissionMedianMilliseconds": 1.273083,
+      "family": "numeric",
+      "nativeMedianNanoseconds": 276916.0,
+      "ratio": 1.5941464987219933,
+      "speedupOverVmApi": 10.901016914876713,
+      "vmApiMedianNanoseconds": 3018666.0
+    },
+    "nbody": {
+      "ceilingMedianNanoseconds": 10875.0,
+      "emissionMedianMilliseconds": 8.443375,
+      "family": "numeric",
+      "nativeMedianNanoseconds": 44959.0,
+      "ratio": 4.13416091954023,
+      "speedupOverVmApi": 21.35463422229142,
+      "vmApiMedianNanoseconds": 960083.0
+    },
+    "permute": {
+      "ceilingMedianNanoseconds": 41125.0,
+      "emissionMedianMilliseconds": 1.551042,
+      "family": "recursive",
+      "nativeMedianNanoseconds": 158708.0,
+      "ratio": 3.859161094224924,
+      "speedupOverVmApi": 12.722528164931825,
+      "vmApiMedianNanoseconds": 2019167.0
+    },
+    "queens": {
+      "ceilingMedianNanoseconds": 9792.0,
+      "emissionMedianMilliseconds": 1.6297499999999998,
+      "family": "arrays",
+      "nativeMedianNanoseconds": 48084.0,
+      "ratio": 4.910539215686274,
+      "speedupOverVmApi": 12.089946759836952,
+      "vmApiMedianNanoseconds": 581333.0
+    },
+    "richards": {
+      "ceilingMedianNanoseconds": 100875.0,
+      "emissionMedianMilliseconds": 14.574375,
+      "family": "objects",
+      "nativeMedianNanoseconds": 260375.0,
+      "ratio": 2.581164807930607,
+      "speedupOverVmApi": 22.13058089294287,
+      "vmApiMedianNanoseconds": 5762250.0
+    },
+    "sieve": {
+      "ceilingMedianNanoseconds": 7042.0,
+      "emissionMedianMilliseconds": 0.5353330000000001,
+      "family": "arrays",
+      "nativeMedianNanoseconds": 13500.0,
+      "ratio": 1.9170690144845215,
+      "speedupOverVmApi": 22.73148148148148,
+      "vmApiMedianNanoseconds": 306875.0
+    },
+    "storage": {
+      "ceilingMedianNanoseconds": 9750.0,
+      "emissionMedianMilliseconds": 1.45525,
+      "family": "objects",
+      "nativeMedianNanoseconds": 171500.0,
+      "ratio": 17.58974358974359,
+      "speedupOverVmApi": 2.2716268221574345,
+      "vmApiMedianNanoseconds": 389584.0
+    },
+    "towers": {
+      "ceilingMedianNanoseconds": 13875.0,
+      "emissionMedianMilliseconds": 1.9237499999999998,
+      "family": "objects",
+      "nativeMedianNanoseconds": 25583.0,
+      "ratio": 1.84381981981982,
+      "speedupOverVmApi": 12.003400695774538,
+      "vmApiMedianNanoseconds": 307083.0
+    }
+  }
+}

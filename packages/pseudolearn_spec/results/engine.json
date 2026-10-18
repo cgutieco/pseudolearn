@@ -10350,11 +10350,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Se alcanzó el límite de profundidad de recursión: 100000",
+            "message": "Se alcanzó el límite de profundidad de recursión: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -10397,11 +10397,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Se alcanzó el límite de profundidad de recursión: 100000",
+            "message": "Se alcanzó el límite de profundidad de recursión: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -10444,11 +10444,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Recursion depth limit reached: 100000",
+            "message": "Recursion depth limit reached: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -10491,11 +10491,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Recursion depth limit reached: 100000",
+            "message": "Recursion depth limit reached: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -49965,11 +49965,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Se alcanzó el límite de profundidad de recursión: 100000",
+            "message": "Se alcanzó el límite de profundidad de recursión: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -50011,11 +50011,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Se alcanzó el límite de profundidad de recursión: 100000",
+            "message": "Se alcanzó el límite de profundidad de recursión: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -50057,11 +50057,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Recursion depth limit reached: 100000",
+            "message": "Recursion depth limit reached: 1000",
             "related": [],
             "severity": "error",
             "span": {
@@ -50103,11 +50103,11 @@
         "diagnostics": [
           {
             "arguments": {
-              "limit": 100000
+              "limit": 1000
             },
             "class": "runtime",
             "code": "recursionDepthExceeded",
-            "message": "Recursion depth limit reached: 100000",
+            "message": "Recursion depth limit reached: 1000",
             "related": [],
             "severity": "error",
             "span": {

@@ -180,10 +180,65 @@
       "executor": "lossless_recovery",
       "seed": 42,
       "samples": 100
+    },
+    {
+      "reference": "RT.ABI@0.1.0#P1",
+      "executor": "native_equivalence",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "RT.ABI@0.1.0#P2",
+      "executor": "native_equivalence",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "RT.ABI@0.1.0#P3",
+      "executor": "native_roots",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "RT.FAULT.REPORTING@0.1.0#P1",
+      "executor": "native_diagnostics",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "RT.LINKING@0.1.0#P1",
+      "executor": "native_linking",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "RT.LINKING@0.1.0#P2",
+      "executor": "native_cleanup",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "RT.LINKING@0.1.0#P3",
+      "executor": "native_permissions",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "RT.PROCESS@0.1.0#P1",
+      "executor": "native_exit",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "RT.PROCESS@0.1.0#P2",
+      "executor": "native_environment",
+      "seed": 42,
+      "samples": 10
     }
   ],
   "subjects": [
     "engine",
-    "cli"
+    "cli",
+    "aot"
   ]
 }

@@ -35,7 +35,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| codegen: Cranelift permanece como backend release; trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; reevaluar LLVM tras optimizar celdas y asignación | E-NR1, RT.ABI | R6 |
+| codegen: Cranelift permanece como backend release; trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
@@ -45,7 +45,7 @@ El workspace contiene el motor de ejecución completo de R5, con todos sus bloqu
 La conformidad integrada, el diferencial de 0 no resueltas con reference, y los cuatro experimentos
 E-06, E-12, E-16 y E-17 están verificados en verde.
 
-El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- aot <directorio>` (README del trabajador).
+El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
 
 El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
 copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,
@@ -65,6 +65,8 @@ Comandos de compilación y verificación:
 Plataformas soportadas: macOS (arm64/x86_64), Linux y Windows. No hay secretos ni despliegue propio: los consumidores distribuyen sus artefactos.
 
 ## 3. Arquitectura y modelo del sistema
+
+`pseudolearn_native_probe` es tooling sin consumidores de producto: enlaza el objeto medido, el runtime AOT y los núcleos V1F de ceiling. Solo este trabajador recibe la dependencia externa por ruta `ceiling_kernels`; ceiling no importa el motor. Su única conversión insegura presta los bytes de configuración de C durante la llamada.
 
 Un crate por capa; Cargo impide ciclos y el verificador contrasta dependencias con architecture.yaml.
 Los niveles siguientes solo importan los anteriores permitidos explícitamente.
@@ -102,6 +104,9 @@ Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; e
 `pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI, y el adaptador `aot`. service y wasm se declaran con sus carpetas al empezar sus fases; no son capas presentes del modo declarativo.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación.
+
 
 La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
 La VM despacha sobre instrucciones inmutables del bytecode verificado sin clonarlas en cada paso;

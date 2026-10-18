@@ -7,7 +7,7 @@ por procesos. Sirve a quienes redactan contratos y a consumidores de la exportac
 Responsabilidades: identidad del corpus, integridad de reglas y casos, evidencia por sujeto.
 Fuera de alcance de producto: motor Rust y API integrada del motor. El paquete sí incluye conformidad
 generativa con oráculos independientes; no implementa la API de observación de memoria del sujeto.
-Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad, shell para ejecutar sujetos.
+Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad y shell para el protocolo de sujetos. La prueba de permisos Unix usa un shell aislado únicamente para fijar `umask 077` antes de lanzar el compilador.
 Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisiones, contrastar un sujeto.
 Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE` y
 propiedades completas de observación (B7.3). Los sujetos Rust ya cubren análisis y las pruebas directas
@@ -69,6 +69,12 @@ La escritura se ejecuta en un hilo con confirmación y la lectura usa una cola a
 salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, nunca cumplimiento.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Las peticiones de ejecución del corpus fijan explícitamente 1 000 marcos cuando el caso no declara profundidad, para comparar los sujetos bajo el mismo límite. Un límite declarado prevalece. Los valores por omisión de cada producto se verifican en sus pruebas de anfitrión; no se infieren de esta configuración experimental.
+
+Problema: una regla estructural no produce un caso de ejecución. Elección: los vínculos con verificación `estructural` registran una observación del validador con hash del contrato, después de ejecutar `see validate`; se rechaza aplicarla a una regla que no declara verificación estructural. El esquema de límites y la cobertura de RI usan esta evidencia. Una revisión humana no se convierte en evidencia estructural automática.
+
+Problema: las propiedades nativas necesitan un oráculo independiente y artefactos de proceso. Elección: `native_equivalence`, `native_diagnostics` y `native_roots` contrastan engine con aot sobre casos del corpus y grafos de memoria sembrados, con GC forzado para raíces; conserva códigos, argumentos y tramos de errores. Los ejecutores nativos de enlace, limpieza, permisos, códigos de salida y entorno compilan casos RT del corpus, borran la fuente y verifica dependencias, limpieza, permisos y ejecución desde otro directorio con entorno vacío. Se descarta declarar conformidad a partir del nombre de un test o de una exención del ejecutor.
 
 - El corpus y sus recursos son autosustentables. La investigación transitoria de la raíz no es una dependencia; una puerta local comprueba referencias externas y tiene casos negativos.
 - La migración cubre la edición 2026, español e inglés y rigores estricto/flexible. Las palabras reservadas y restricciones de identificadores son las vigentes. NFC se aplica a nombres y reconocimiento léxico; literales, comentarios y posiciones originales se conservan.
@@ -162,7 +168,7 @@ datos (`subject_adapters`): `reference` con Dart, `engine` con el adaptador del 
 representación intermedia y traza quedan `no aplicable` o `pendiente` por capacidad. Las propiedades se ejecutan con
 `conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
 cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un
-sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación y códigos de error, sin
+sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación, códigos, argumentos y tramos de errores, sin
 exenciones) cuando existe `results/aot.json` y guarda `results/r6-differential.json`.
 
 El hash normativo incluye identidad, edición, sujetos, dependencias, reemplazos y bloques de contrato; excluye estado,

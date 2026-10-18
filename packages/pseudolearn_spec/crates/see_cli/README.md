@@ -20,6 +20,12 @@ Imports internos permitidos: model, format, graph, change, validation, conforman
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: una regla estructural no produce un caso de ejecución. Elección: los vínculos con verificación `estructural` registran una observación del validador con hash del contrato, después de ejecutar `see validate`; se rechaza aplicarla a una regla que no declara verificación estructural. El esquema de límites y la cobertura de RI usan esta evidencia. Una revisión humana no se convierte en evidencia estructural automática.
+
+Problema: las propiedades nativas necesitan un oráculo independiente y artefactos de proceso. Elección: `native_equivalence`, `native_diagnostics` y `native_roots` contrastan engine con aot sobre casos del corpus y grafos de memoria sembrados, con GC forzado para raíces; conserva códigos, argumentos y tramos de errores. Los ejecutores nativos de enlace, limpieza, permisos, códigos de salida y entorno compilan casos RT del corpus, borran la fuente y verifica dependencias, limpieza, permisos y ejecución desde otro directorio con entorno vacío. Se descarta declarar conformidad a partir del nombre de un test o de una exención del ejecutor.
+
+El diferencial nativo exige igualdad de código, argumentos tipados y tramo de todos los diagnósticos de error, además de salida y terminación. La comparación con reference conserva sus exenciones y su contrato reducido. Se descarta comparar el texto traducido del diagnóstico.
+
 Budget mide E-10 sobre archivos .pseudo de ejemplos locales: recoge candidatos de declaraciones y controles contados sin usar el sujeto ni descartar los que colisionan. Registra revisión Git, archivos, candidatos, presupuesto de lexemas y colisiones. Es una muestra editorial local, no una muestra de estudiantes ni evidencia suficiente para cambiar palabras reservadas.
 
 Export comprueba además los recursos derivados; la correspondencia educativa se comprueba desde el índice del núcleo sin que el corpus dependa del índice. Los contratos estructurales producen evidencia separada del sujeto reference.
@@ -31,7 +37,7 @@ Cuando el corpus contiene propiedades, `validate` exige `property-conformance.js
 esquema, el modelo tipado y sus referencias. Así retirar o desactualizar un vínculo es visible antes de ejecutar.
 
 `conform --subject engine --operation properties` ejecuta los vínculos de propiedades del sujeto.
-`--property <ID@versión#P>` selecciona uno; `--seed`, `--samples` y `--sample` reproducen una muestra.
+`--property <ID@versión#P>` selecciona uno; `--output <archivo>` conserva una ejecución dirigida sin sustituir la evidencia completa; `--seed`, `--samples` y `--sample` reproducen una muestra.
 La selección explícita de muestra omite el recorrido exhaustivo del corpus. El artefacto separado
 `results/properties-<sujeto>.json` conserva evidencia sin sustituir resultados de casos. Un vínculo
 pendiente o fallido devuelve código distinto de cero después de guardar su evidencia.

@@ -9,12 +9,15 @@ mod e10;
 mod history;
 mod math_contrast;
 mod math_verdicts;
+mod native_artifacts;
+mod native_properties;
 mod property_execution;
 mod property_registry;
 mod property_selection;
 mod resources;
 mod runtime_fixtures;
 mod storage;
+mod structural_evidence;
 mod subject_adapters;
 mod target_evidence;
 mod target_parity;
@@ -32,3 +35,9 @@ fn main() -> std::process::ExitCode {
         }
     }
 }
+
+#[cfg(test)]
+mod native_properties_tests;
+
+#[cfg(test)]
+mod structural_evidence_tests;

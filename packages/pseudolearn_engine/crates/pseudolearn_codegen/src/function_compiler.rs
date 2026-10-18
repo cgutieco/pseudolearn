@@ -52,6 +52,8 @@ fn start_function<'func, 'program>(
         function,
         faults,
         context,
+        cell_frame: None,
+        fault_lexemes: crate::fault_lexeme::collect(function, environment.module),
         values: HashMap::new(),
         blocks: HashMap::new(),
         cold_blocks: Vec::new(),
@@ -63,11 +65,8 @@ fn start_function<'func, 'program>(
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);
     enter_frame(&mut lowering);
-    let first = function
-        .blocks
-        .first()
-        .and_then(|block| lowering.blocks.get(&block.identifier).copied())
-        .ok_or(CodegenError::InvalidModule("function without blocks"))?;
+    crate::cell_frames::enter(&mut lowering)?;
+    let first = entry_block(&lowering)?;
     lowering.builder.ins().jump(first, &[]);
     Ok(lowering)
 }
@@ -144,4 +143,13 @@ fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(
         lower_instruction(lowering, &instruction)?;
     }
     Ok(())
+}
+
+fn entry_block(lowering: &Lowering<'_, '_>) -> Result<cranelift_codegen::ir::Block, CodegenError> {
+    lowering
+        .function
+        .blocks
+        .first()
+        .and_then(|block| lowering.blocks.get(&block.identifier).copied())
+        .ok_or(CodegenError::InvalidModule("function without blocks"))
 }

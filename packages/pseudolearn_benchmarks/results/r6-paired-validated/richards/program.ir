@@ -1,0 +1,1287 @@
+module Richards es
+class Paquete { enlace: obj<Paquete>, identidad: i64, especie: i64, dato: i64, d0: i64, d1: i64, d2: i64, d3: i64 }
+class Area { lista: obj<Tarea>, nula: obj<Tarea>, vacio: obj<Paquete>, t1: obj<Tarea>, t2: obj<Tarea>, t3: obj<Tarea>, t4: obj<Tarea>, t5: obj<Tarea>, t6: obj<Tarea>, retenciones: i64, encolados: i64 }
+class Tarea { enlace: obj<Tarea>, identidad: i64, prioridad: i64, entrada: obj<Paquete>, pendiente: bool, esperando: bool, reteniendo: bool, area: obj<Area> }
+class TareaDispositivo : Tarea { retenido: obj<Paquete> }
+class TareaManejador : Tarea { trabajo: obj<Paquete>, dispositivo: obj<Paquete> }
+class TareaOciosa : Tarea { control: i64, cuenta: i64 }
+class TareaTrabajo : Tarea { destino: i64, cuenta: i64 }
+func @OExclusivo(%0: i64, %1: i64) -> i64 {
+b0() mass 6:
+  stmt.enter @2:1-2:42
+  %2 = value.undefined i64 @2:1-2:42
+  %3 = value.undefined i64 @2:1-2:42
+  %4 = value.undefined i64 @2:1-2:42
+  %5 = value.undefined i64 @2:1-2:42
+  stmt.exit @2:1-2:42
+  stmt.enter @3:1-3:13
+  %6 = value.require %0 @3:1-3:13
+  stmt.exit @3:1-3:13
+  stmt.enter @4:1-4:13
+  %7 = value.require %1 @4:1-4:13
+  stmt.exit @4:1-4:13
+  stmt.enter @5:1-5:15
+  %8 = const.i64 0 @5:14-5:15
+  %9 = value.require %8 @5:1-5:15
+  stmt.exit @5:1-5:15
+  stmt.enter @6:1-6:10
+  %10 = const.i64 1 @6:9-6:10
+  %11 = value.require %10 @6:1-6:10
+  stmt.exit @6:1-6:10
+  stmt.enter @7:1-14:12
+  jump b1(%6, %7, %9, %11)
+b1(%12: i64, %13: i64, %14: i64, %15: i64) mass 0:
+  %16 = const.i64 0 @7:14-7:15
+  %17 = int.cmp gt, %12, %16 @7:12-7:13
+  branch %17, b3(), b2()
+b2() mass 0:
+  %18 = const.i64 0 @7:22-7:23
+  %19 = int.cmp gt, %13, %18 @7:20-7:21
+  jump b4(%19)
+b3() mass 0:
+  %20 = const.bool true
+  jump b4(%20)
+b4(%21: bool) mass 0:
+  decide.bool %21 @7:1-14:12
+  branch %21, b5(), b6()
+b5() mass 1:
+  stmt.enter @8:1-10:6
+  %22 = const.i64 2 @8:11-8:12
+  %23 = int.mod %12, %22 @8:7-8:10
+  %24 = const.i64 2 @8:24-8:25
+  %25 = int.mod %13, %24 @8:20-8:23
+  %26 = int.cmp ne, %23, %25 @8:14-8:16
+  decide.bool %26 @8:1-10:6
+  branch %26, b7(), b8()
+b6() mass 1:
+  stmt.exit @7:1-14:12
+  stmt.enter @15:1-15:19
+  stmt.exit @15:1-15:19
+  return %14 @15:1-15:19
+b7() mass 1:
+  stmt.enter @9:1-9:30
+  %27 = int.add %14, %15 @9:24-9:25
+  %28 = value.require %27 @9:1-9:30
+  stmt.exit @9:1-9:30
+  jump b9(%28)
+b8() mass 0:
+  jump b9(%14)
+b9(%29: i64) mass 3:
+  stmt.exit @8:1-10:6
+  stmt.enter @11:1-11:13
+  %30 = const.i64 2 @11:12-11:13
+  %31 = int.div %12, %30 @11:8-11:11
+  %32 = value.require %31 @11:1-11:13
+  stmt.exit @11:1-11:13
+  stmt.enter @12:1-12:13
+  %33 = const.i64 2 @12:12-12:13
+  %34 = int.div %13, %33 @12:8-12:11
+  %35 = value.require %34 @12:1-12:13
+  stmt.exit @12:1-12:13
+  stmt.enter @13:1-13:17
+  %36 = const.i64 2 @13:16-13:17
+  %37 = int.mul %15, %36 @13:14-13:15
+  %38 = value.require %37 @13:1-13:17
+  stmt.exit @13:1-13:17
+  jump b1(%32, %35, %29, %38)
+}
+func @main() -> unit {
+b0() mass 50:
+  stmt.enter @270:1-270:23
+  %0 = value.undefined obj<Area> @270:1-270:23
+  stmt.exit @270:1-270:23
+  stmt.enter @271:1-271:33
+  %1 = value.undefined obj<Paquete> @271:1-271:33
+  %2 = value.undefined obj<Paquete> @271:1-271:33
+  stmt.exit @271:1-271:33
+  stmt.enter @272:1-272:32
+  %3 = value.undefined obj<Tarea> @272:1-272:32
+  %4 = value.undefined obj<Tarea> @272:1-272:32
+  stmt.exit @272:1-272:32
+  stmt.enter @273:1-273:32
+  %5 = value.undefined obj<TareaOciosa> @273:1-273:32
+  stmt.exit @273:1-273:32
+  stmt.enter @274:1-274:34
+  %6 = value.undefined obj<TareaTrabajo> @274:1-274:34
+  stmt.exit @274:1-274:34
+  stmt.enter @275:1-275:51
+  %7 = value.undefined obj<TareaManejador> @275:1-275:51
+  %8 = value.undefined obj<TareaManejador> @275:1-275:51
+  stmt.exit @275:1-275:51
+  stmt.enter @276:1-276:57
+  %9 = value.undefined obj<TareaDispositivo> @276:1-276:57
+  %10 = value.undefined obj<TareaDispositivo> @276:1-276:57
+  stmt.exit @276:1-276:57
+  stmt.enter @277:1-277:27
+  %11 = value.undefined i64 @277:1-277:27
+  stmt.exit @277:1-277:27
+  stmt.enter @278:1-278:12
+  %12 = in.read i64 @278:1-278:12
+  stmt.exit @278:1-278:12
+  stmt.enter @279:1-279:21
+  %13 = object.new Area @279:9-279:21
+  %14 = value.require %13 @279:1-279:21
+  stmt.exit @279:1-279:21
+  stmt.enter @280:1-280:25
+  %15 = object.new Paquete @280:10-280:25
+  %16 = value.require %15 @280:1-280:25
+  stmt.exit @280:1-280:25
+  stmt.enter @281:1-281:22
+  object.store %16, enlace, %16 @281:1-281:22
+  stmt.exit @281:1-281:22
+  stmt.enter @282:1-282:22
+  %17 = object.new Tarea @282:9-282:22
+  %18 = value.require %17 @282:1-282:22
+  stmt.exit @282:1-282:22
+  stmt.enter @283:1-283:20
+  object.store %14, vacio, %16 @283:1-283:20
+  stmt.exit @283:1-283:20
+  stmt.enter @284:1-284:18
+  object.store %14, nula, %18 @284:1-284:18
+  stmt.exit @284:1-284:18
+  stmt.enter @285:1-285:19
+  object.store %14, lista, %18 @285:1-285:19
+  stmt.exit @285:1-285:19
+  stmt.enter @286:1-286:22
+  %19 = const.i64 0 @286:21-286:22
+  object.store %14, retenciones, %19 @286:1-286:22
+  stmt.exit @286:1-286:22
+  stmt.enter @287:1-287:20
+  %20 = const.i64 0 @287:19-287:20
+  object.store %14, encolados, %20 @287:1-287:20
+  stmt.exit @287:1-287:20
+  stmt.enter @288:1-288:30
+  %21 = object.new TareaOciosa @288:11-288:30
+  %22 = value.require %21 @288:1-288:30
+  stmt.exit @288:1-288:30
+  stmt.enter @289:1-289:20
+  %23 = const.i64 1 @289:19-289:20
+  object.store %22, control, %23 @289:1-289:20
+  stmt.exit @289:1-289:20
+  stmt.enter @290:1-290:24
+  object.store %22, cuenta, %12 @290:1-290:24
+  stmt.exit @290:1-290:24
+  stmt.enter @291:1-291:48
+  %24 = const.i64 1 @291:22-291:23
+  %25 = const.i64 1 @291:25-291:26
+  %26 = const.bool false @291:35-291:40
+  %27 = const.bool false @291:42-291:47
+  %28 = call @Tarea.iniciar(%22, %14, %24, %25, %16, %26, %27) @291:1-291:48
+  stmt.exit @291:1-291:48
+  stmt.enter @292:1-292:48
+  %29 = object.new Paquete @292:9-292:24
+  %30 = const.i64 0 @292:40-292:41
+  %31 = const.i64 1001 @292:43-292:47
+  %32 = call @Paquete.iniciar(%29, %16, %30, %31) @292:9-292:48
+  %33 = value.require %32 @292:1-292:48
+  stmt.exit @292:1-292:48
+  stmt.enter @293:1-293:47
+  %34 = object.new Paquete @293:9-293:24
+  %35 = const.i64 0 @293:39-293:40
+  %36 = const.i64 1001 @293:42-293:46
+  %37 = call @Paquete.iniciar(%34, %33, %35, %36) @293:9-293:47
+  %38 = value.require %37 @293:1-293:47
+  stmt.exit @293:1-293:47
+  stmt.enter @294:1-294:32
+  %39 = object.new TareaTrabajo @294:12-294:32
+  %40 = value.require %39 @294:1-294:32
+  stmt.exit @294:1-294:32
+  stmt.enter @295:1-295:21
+  %41 = const.i64 3 @295:20-295:21
+  object.store %40, destino, %41 @295:1-295:21
+  stmt.exit @295:1-295:21
+  stmt.enter @296:1-296:20
+  %42 = const.i64 0 @296:19-296:20
+  object.store %40, cuenta, %42 @296:1-296:20
+  stmt.exit @296:1-296:20
+  stmt.enter @297:1-297:59
+  %43 = const.i64 2 @297:23-297:24
+  %44 = const.i64 1000 @297:26-297:30
+  %45 = const.bool true @297:38-297:47
+  %46 = const.bool true @297:49-297:58
+  %47 = call @Tarea.iniciar(%40, %14, %43, %44, %38, %45, %46) @297:1-297:59
+  stmt.exit @297:1-297:59
+  stmt.enter @298:1-298:48
+  %48 = object.new Paquete @298:9-298:24
+  %49 = const.i64 5 @298:40-298:41
+  %50 = const.i64 1000 @298:43-298:47
+  %51 = call @Paquete.iniciar(%48, %16, %49, %50) @298:9-298:48
+  %52 = value.require %51 @298:1-298:48
+  stmt.exit @298:1-298:48
+  stmt.enter @299:1-299:47
+  %53 = object.new Paquete @299:9-299:24
+  %54 = const.i64 5 @299:39-299:40
+  %55 = const.i64 1000 @299:42-299:46
+  %56 = call @Paquete.iniciar(%53, %52, %54, %55) @299:9-299:47
+  %57 = value.require %56 @299:1-299:47
+  stmt.exit @299:1-299:47
+  stmt.enter @300:1-300:47
+  %58 = object.new Paquete @300:9-300:24
+  %59 = const.i64 5 @300:39-300:40
+  %60 = const.i64 1000 @300:42-300:46
+  %61 = call @Paquete.iniciar(%58, %57, %59, %60) @300:9-300:47
+  %62 = value.require %61 @300:1-300:47
+  stmt.exit @300:1-300:47
+  stmt.enter @301:1-301:37
+  %63 = object.new TareaManejador @301:15-301:37
+  %64 = value.require %63 @301:1-301:37
+  stmt.exit @301:1-301:37
+  stmt.enter @302:1-302:28
+  object.store %64, trabajo, %16 @302:1-302:28
+  stmt.exit @302:1-302:28
+  stmt.enter @303:1-303:32
+  object.store %64, dispositivo, %16 @303:1-303:32
+  stmt.exit @303:1-303:32
+  stmt.enter @304:1-304:62
+  %65 = const.i64 3 @304:26-304:27
+  %66 = const.i64 2000 @304:29-304:33
+  %67 = const.bool true @304:41-304:50
+  %68 = const.bool true @304:52-304:61
+  %69 = call @Tarea.iniciar(%64, %14, %65, %66, %62, %67, %68) @304:1-304:62
+  stmt.exit @304:1-304:62
+  stmt.enter @305:1-305:48
+  %70 = object.new Paquete @305:9-305:24
+  %71 = const.i64 6 @305:40-305:41
+  %72 = const.i64 1000 @305:43-305:47
+  %73 = call @Paquete.iniciar(%70, %16, %71, %72) @305:9-305:48
+  %74 = value.require %73 @305:1-305:48
+  stmt.exit @305:1-305:48
+  stmt.enter @306:1-306:47
+  %75 = object.new Paquete @306:9-306:24
+  %76 = const.i64 6 @306:39-306:40
+  %77 = const.i64 1000 @306:42-306:46
+  %78 = call @Paquete.iniciar(%75, %74, %76, %77) @306:9-306:47
+  %79 = value.require %78 @306:1-306:47
+  stmt.exit @306:1-306:47
+  stmt.enter @307:1-307:47
+  %80 = object.new Paquete @307:9-307:24
+  %81 = const.i64 6 @307:39-307:40
+  %82 = const.i64 1000 @307:42-307:46
+  %83 = call @Paquete.iniciar(%80, %79, %81, %82) @307:9-307:47
+  %84 = value.require %83 @307:1-307:47
+  stmt.exit @307:1-307:47
+  stmt.enter @308:1-308:37
+  %85 = object.new TareaManejador @308:15-308:37
+  %86 = value.require %85 @308:1-308:37
+  stmt.exit @308:1-308:37
+  stmt.enter @309:1-309:28
+  object.store %86, trabajo, %16 @309:1-309:28
+  stmt.exit @309:1-309:28
+  stmt.enter @310:1-310:32
+  object.store %86, dispositivo, %16 @310:1-310:32
+  stmt.exit @310:1-310:32
+  stmt.enter @311:1-311:62
+  %87 = const.i64 4 @311:26-311:27
+  %88 = const.i64 3000 @311:29-311:33
+  %89 = const.bool true @311:41-311:50
+  %90 = const.bool true @311:52-311:61
+  %91 = call @Tarea.iniciar(%86, %14, %87, %88, %84, %89, %90) @311:1-311:62
+  stmt.exit @311:1-311:62
+  stmt.enter @312:1-312:41
+  %92 = object.new TareaDispositivo @312:17-312:41
+  %93 = value.require %92 @312:1-312:41
+  stmt.exit @312:1-312:41
+  stmt.enter @313:1-313:31
+  object.store %93, retenido, %16 @313:1-313:31
+  stmt.exit @313:1-313:31
+  stmt.enter @314:1-314:61
+  %94 = const.i64 5 @314:28-314:29
+  %95 = const.i64 4000 @314:31-314:35
+  %96 = const.bool false @314:44-314:49
+  %97 = const.bool true @314:51-314:60
+  %98 = call @Tarea.iniciar(%93, %14, %94, %95, %16, %96, %97) @314:1-314:61
+  stmt.exit @314:1-314:61
+  stmt.enter @315:1-315:41
+  %99 = object.new TareaDispositivo @315:17-315:41
+  %100 = value.require %99 @315:1-315:41
+  stmt.exit @315:1-315:41
+  stmt.enter @316:1-316:31
+  object.store %100, retenido, %16 @316:1-316:31
+  stmt.exit @316:1-316:31
+  stmt.enter @317:1-317:61
+  %101 = const.i64 6 @317:28-317:29
+  %102 = const.i64 5000 @317:31-317:35
+  %103 = const.bool false @317:44-317:49
+  %104 = const.bool true @317:51-317:60
+  %105 = call @Tarea.iniciar(%100, %14, %101, %102, %16, %103, %104) @317:1-317:61
+  stmt.exit @317:1-317:61
+  stmt.enter @318:1-318:21
+  %106 = object.load %14, lista @318:11-318:21
+  %107 = value.require %106 @318:1-318:21
+  stmt.exit @318:1-318:21
+  stmt.enter @319:1-325:12
+  jump b1(%107)
+b1(%108: obj<Tarea>) mass 0:
+  %109 = ref.cmp ne, %108, %18 @319:17-319:19
+  decide.bool %109 @319:1-325:12
+  branch %109, b2(), b3()
+b2() mass 1:
+  stmt.enter @320:1-324:6
+  %110 = object.load %108, reteniendo @320:4-320:22
+  branch %110, b5(), b4()
+b3() mass 1:
+  stmt.exit @319:1-325:12
+  stmt.enter @326:1-326:47
+  %111 = object.load %14, encolados @326:10-326:24
+  %112 = const.char ' ' @326:26-326:29
+  %113 = object.load %14, retenciones @326:31-326:47
+  out.write %111, %112, %113, newline @326:1-326:47
+  stmt.exit @326:1-326:47
+  return @327:1-327:13
+b4() mass 0:
+  %114 = object.load %108, pendiente @320:28-320:45
+  %115 = bool.not %114 @320:25-320:27
+  branch %115, b7(), b8()
+b5() mass 0:
+  %116 = const.bool true
+  jump b6(%116)
+b6(%117: bool) mass 0:
+  decide.bool %117 @320:1-324:6
+  branch %117, b10(), b11()
+b7() mass 0:
+  %118 = object.load %108, esperando @320:47-320:63
+  jump b9(%118)
+b8() mass 0:
+  %119 = const.bool false
+  jump b9(%119)
+b9(%120: bool) mass 0:
+  jump b6(%120)
+b10() mass 1:
+  stmt.enter @321:1-321:24
+  %121 = object.load %108, enlace @321:11-321:24
+  %122 = value.require %121 @321:1-321:24
+  stmt.exit @321:1-321:24
+  jump b12(%122)
+b11() mass 1:
+  stmt.enter @323:1-323:26
+  %123 = call @Tarea.correr(%108) @323:11-323:26
+  %124 = value.require %123 @323:1-323:26
+  stmt.exit @323:1-323:26
+  jump b12(%124)
+b12(%125: obj<Tarea>) mass 0:
+  stmt.exit @320:1-324:6
+  jump b1(%125)
+}
+func @Paquete.iniciar(%0: obj<Paquete>, %1: obj<Paquete>, %2: i64, %3: i64) -> obj<Paquete> {
+b0() mass 9:
+  stmt.enter @27:1-27:22
+  object.store %0, enlace, %1 @27:1-27:22
+  stmt.exit @27:1-27:22
+  stmt.enter @28:1-28:28
+  object.store %0, identidad, %2 @28:1-28:28
+  stmt.exit @28:1-28:28
+  stmt.enter @29:1-29:24
+  object.store %0, especie, %3 @29:1-29:24
+  stmt.exit @29:1-29:24
+  stmt.enter @30:1-30:15
+  %4 = const.i64 0 @30:14-30:15
+  object.store %0, dato, %4 @30:1-30:15
+  stmt.exit @30:1-30:15
+  stmt.enter @31:1-31:13
+  %5 = const.i64 0 @31:12-31:13
+  object.store %0, d0, %5 @31:1-31:13
+  stmt.exit @31:1-31:13
+  stmt.enter @32:1-32:13
+  %6 = const.i64 0 @32:12-32:13
+  object.store %0, d1, %6 @32:1-32:13
+  stmt.exit @32:1-32:13
+  stmt.enter @33:1-33:13
+  %7 = const.i64 0 @33:12-33:13
+  object.store %0, d2, %7 @33:1-33:13
+  stmt.exit @33:1-33:13
+  stmt.enter @34:1-34:13
+  %8 = const.i64 0 @34:12-34:13
+  object.store %0, d3, %8 @34:1-34:13
+  stmt.exit @34:1-34:13
+  stmt.enter @35:1-35:14
+  stmt.exit @35:1-35:14
+  return %0 @35:1-35:14
+}
+func @Paquete.consultar(%0: obj<Paquete>, %1: i64) -> i64 {
+b0() mass 1:
+  stmt.enter @38:1-42:9
+  jump b2()
+b1() mass 1:
+  stmt.exit @38:1-42:9
+  stmt.enter @43:1-43:17
+  %2 = object.load %0, d3 @43:10-43:17
+  stmt.exit @43:1-43:17
+  return %2 @43:1-43:17
+b2() mass 0:
+  %3 = const.i64 0 @39:1-39:2
+  %4 = int.cmp eq, %1, %3 @38:1-42:9
+  branch %4, b3(), b4()
+b3() mass 1:
+  %5 = const.i64 0
+  decide.case %5 @38:1-42:9
+  stmt.enter @39:4-39:20
+  %6 = object.load %0, d0 @39:13-39:20
+  stmt.exit @39:4-39:20
+  return %6 @39:4-39:20
+b4() mass 0:
+  %7 = const.i64 1 @40:1-40:2
+  %8 = int.cmp eq, %1, %7 @38:1-42:9
+  branch %8, b5(), b6()
+b5() mass 1:
+  %9 = const.i64 1
+  decide.case %9 @38:1-42:9
+  stmt.enter @40:4-40:20
+  %10 = object.load %0, d1 @40:13-40:20
+  stmt.exit @40:4-40:20
+  return %10 @40:4-40:20
+b6() mass 0:
+  %11 = const.i64 2 @41:1-41:2
+  %12 = int.cmp eq, %1, %11 @38:1-42:9
+  branch %12, b7(), b8()
+b7() mass 1:
+  %13 = const.i64 2
+  decide.case %13 @38:1-42:9
+  stmt.enter @41:4-41:20
+  %14 = object.load %0, d2 @41:13-41:20
+  stmt.exit @41:4-41:20
+  return %14 @41:4-41:20
+b8() mass 0:
+  decide.none @38:1-42:9
+  jump b1()
+}
+func @Paquete.guardar(%0: obj<Paquete>, %1: i64, %2: i64) -> unit {
+b0() mass 1:
+  stmt.enter @46:1-51:9
+  jump b2()
+b1() mass 0:
+  stmt.exit @46:1-51:9
+  return @52:1-52:10
+b2() mass 0:
+  %3 = const.i64 0 @47:1-47:2
+  %4 = int.cmp eq, %1, %3 @46:1-51:9
+  branch %4, b3(), b4()
+b3() mass 1:
+  %5 = const.i64 0
+  decide.case %5 @46:1-51:9
+  stmt.enter @47:4-47:20
+  object.store %0, d0, %2 @47:4-47:20
+  stmt.exit @47:4-47:20
+  jump b1()
+b4() mass 0:
+  %6 = const.i64 1 @48:1-48:2
+  %7 = int.cmp eq, %1, %6 @46:1-51:9
+  branch %7, b5(), b6()
+b5() mass 1:
+  %8 = const.i64 1
+  decide.case %8 @46:1-51:9
+  stmt.enter @48:4-48:20
+  object.store %0, d1, %2 @48:4-48:20
+  stmt.exit @48:4-48:20
+  jump b1()
+b6() mass 0:
+  %9 = const.i64 2 @49:1-49:2
+  %10 = int.cmp eq, %1, %9 @46:1-51:9
+  branch %10, b7(), b8()
+b7() mass 1:
+  %11 = const.i64 2
+  decide.case %11 @46:1-51:9
+  stmt.enter @49:4-49:20
+  object.store %0, d2, %2 @49:4-49:20
+  stmt.exit @49:4-49:20
+  jump b1()
+b8() mass 1:
+  decide.default @46:1-51:9
+  stmt.enter @50:15-50:31
+  object.store %0, d3, %2 @50:15-50:31
+  stmt.exit @50:15-50:31
+  jump b1()
+}
+func @Paquete.anexarA(%0: obj<Paquete>, %1: obj<Paquete>, %2: obj<Paquete>) -> obj<Paquete> {
+b0() mass 3:
+  stmt.enter @54:1-54:28
+  %3 = value.undefined obj<Paquete> @54:1-54:28
+  stmt.exit @54:1-54:28
+  stmt.enter @55:1-55:21
+  object.store %0, enlace, %2 @55:1-55:21
+  stmt.exit @55:1-55:21
+  stmt.enter @56:1-58:6
+  %4 = ref.cmp eq, %1, %2 @56:10-56:11
+  decide.bool %4 @56:1-58:6
+  branch %4, b1(), b2()
+b1() mass 1:
+  stmt.enter @57:1-57:14
+  stmt.exit @57:1-57:14
+  return %0 @57:1-57:14
+b2() mass 0:
+  jump b3()
+b3() mass 2:
+  stmt.exit @56:1-58:6
+  stmt.enter @59:1-59:16
+  %5 = value.require %1 @59:1-59:16
+  stmt.exit @59:1-59:16
+  stmt.enter @60:1-62:12
+  jump b4(%5)
+b4(%6: obj<Paquete>) mass 0:
+  %7 = object.load %6, enlace @60:10-60:24
+  %8 = ref.cmp ne, %7, %2 @60:24-60:26
+  decide.bool %8 @60:1-62:12
+  branch %8, b5(), b6()
+b5() mass 1:
+  stmt.enter @61:1-61:24
+  %9 = object.load %6, enlace @61:11-61:24
+  %10 = value.require %9 @61:1-61:24
+  stmt.exit @61:1-61:24
+  jump b4(%10)
+b6() mass 2:
+  stmt.exit @60:1-62:12
+  stmt.enter @63:1-63:22
+  object.store %6, enlace, %0 @63:1-63:22
+  stmt.exit @63:1-63:22
+  stmt.enter @64:1-64:15
+  stmt.exit @64:1-64:15
+  return %1 @64:1-64:15
+}
+func @Area.registrar(%0: obj<Area>, %1: i64, %2: obj<Tarea>) -> unit {
+b0() mass 1:
+  stmt.enter @80:1-87:9
+  jump b2()
+b1() mass 0:
+  stmt.exit @80:1-87:9
+  return @88:1-88:10
+b2() mass 0:
+  %3 = const.i64 1 @81:1-81:2
+  %4 = int.cmp eq, %1, %3 @80:1-87:9
+  branch %4, b3(), b4()
+b3() mass 1:
+  %5 = const.i64 0
+  decide.case %5 @80:1-87:9
+  stmt.enter @81:4-81:20
+  object.store %0, t1, %2 @81:4-81:20
+  stmt.exit @81:4-81:20
+  jump b1()
+b4() mass 0:
+  %6 = const.i64 2 @82:1-82:2
+  %7 = int.cmp eq, %1, %6 @80:1-87:9
+  branch %7, b5(), b6()
+b5() mass 1:
+  %8 = const.i64 1
+  decide.case %8 @80:1-87:9
+  stmt.enter @82:4-82:20
+  object.store %0, t2, %2 @82:4-82:20
+  stmt.exit @82:4-82:20
+  jump b1()
+b6() mass 0:
+  %9 = const.i64 3 @83:1-83:2
+  %10 = int.cmp eq, %1, %9 @80:1-87:9
+  branch %10, b7(), b8()
+b7() mass 1:
+  %11 = const.i64 2
+  decide.case %11 @80:1-87:9
+  stmt.enter @83:4-83:20
+  object.store %0, t3, %2 @83:4-83:20
+  stmt.exit @83:4-83:20
+  jump b1()
+b8() mass 0:
+  %12 = const.i64 4 @84:1-84:2
+  %13 = int.cmp eq, %1, %12 @80:1-87:9
+  branch %13, b9(), b10()
+b9() mass 1:
+  %14 = const.i64 3
+  decide.case %14 @80:1-87:9
+  stmt.enter @84:4-84:20
+  object.store %0, t4, %2 @84:4-84:20
+  stmt.exit @84:4-84:20
+  jump b1()
+b10() mass 0:
+  %15 = const.i64 5 @85:1-85:2
+  %16 = int.cmp eq, %1, %15 @80:1-87:9
+  branch %16, b11(), b12()
+b11() mass 1:
+  %17 = const.i64 4
+  decide.case %17 @80:1-87:9
+  stmt.enter @85:4-85:20
+  object.store %0, t5, %2 @85:4-85:20
+  stmt.exit @85:4-85:20
+  jump b1()
+b12() mass 1:
+  decide.default @80:1-87:9
+  stmt.enter @86:15-86:31
+  object.store %0, t6, %2 @86:15-86:31
+  stmt.exit @86:15-86:31
+  jump b1()
+}
+func @Area.buscar(%0: obj<Area>, %1: i64) -> obj<Tarea> {
+b0() mass 1:
+  stmt.enter @90:1-96:9
+  jump b2()
+b1() mass 1:
+  stmt.exit @90:1-96:9
+  stmt.enter @97:1-97:17
+  %2 = object.load %0, t6 @97:10-97:17
+  stmt.exit @97:1-97:17
+  return %2 @97:1-97:17
+b2() mass 0:
+  %3 = const.i64 1 @91:1-91:2
+  %4 = int.cmp eq, %1, %3 @90:1-96:9
+  branch %4, b3(), b4()
+b3() mass 1:
+  %5 = const.i64 0
+  decide.case %5 @90:1-96:9
+  stmt.enter @91:4-91:20
+  %6 = object.load %0, t1 @91:13-91:20
+  stmt.exit @91:4-91:20
+  return %6 @91:4-91:20
+b4() mass 0:
+  %7 = const.i64 2 @92:1-92:2
+  %8 = int.cmp eq, %1, %7 @90:1-96:9
+  branch %8, b5(), b6()
+b5() mass 1:
+  %9 = const.i64 1
+  decide.case %9 @90:1-96:9
+  stmt.enter @92:4-92:20
+  %10 = object.load %0, t2 @92:13-92:20
+  stmt.exit @92:4-92:20
+  return %10 @92:4-92:20
+b6() mass 0:
+  %11 = const.i64 3 @93:1-93:2
+  %12 = int.cmp eq, %1, %11 @90:1-96:9
+  branch %12, b7(), b8()
+b7() mass 1:
+  %13 = const.i64 2
+  decide.case %13 @90:1-96:9
+  stmt.enter @93:4-93:20
+  %14 = object.load %0, t3 @93:13-93:20
+  stmt.exit @93:4-93:20
+  return %14 @93:4-93:20
+b8() mass 0:
+  %15 = const.i64 4 @94:1-94:2
+  %16 = int.cmp eq, %1, %15 @90:1-96:9
+  branch %16, b9(), b10()
+b9() mass 1:
+  %17 = const.i64 3
+  decide.case %17 @90:1-96:9
+  stmt.enter @94:4-94:20
+  %18 = object.load %0, t4 @94:13-94:20
+  stmt.exit @94:4-94:20
+  return %18 @94:4-94:20
+b10() mass 0:
+  %19 = const.i64 5 @95:1-95:2
+  %20 = int.cmp eq, %1, %19 @90:1-96:9
+  branch %20, b11(), b12()
+b11() mass 1:
+  %21 = const.i64 4
+  decide.case %21 @90:1-96:9
+  stmt.enter @95:4-95:20
+  %22 = object.load %0, t5 @95:13-95:20
+  stmt.exit @95:4-95:20
+  return %22 @95:4-95:20
+b12() mass 0:
+  decide.none @90:1-96:9
+  jump b1()
+}
+func @Tarea.iniciar(%0: obj<Tarea>, %1: obj<Area>, %2: i64, %3: i64, %4: obj<Paquete>, %5: bool, %6: bool) -> unit {
+b0() mass 10:
+  stmt.enter @110:1-110:18
+  object.store %0, area, %1 @110:1-110:18
+  stmt.exit @110:1-110:18
+  stmt.enter @111:1-111:26
+  %7 = object.load %1, lista @111:16-111:26
+  object.store %0, enlace, %7 @111:1-111:26
+  stmt.exit @111:1-111:26
+  stmt.enter @112:1-112:28
+  object.store %0, identidad, %2 @112:1-112:28
+  stmt.exit @112:1-112:28
+  stmt.enter @113:1-113:28
+  object.store %0, prioridad, %3 @113:1-113:28
+  stmt.exit @113:1-113:28
+  stmt.enter @114:1-114:24
+  object.store %0, entrada, %4 @114:1-114:24
+  stmt.exit @114:1-114:24
+  stmt.enter @115:1-115:28
+  object.store %0, pendiente, %5 @115:1-115:28
+  stmt.exit @115:1-115:28
+  stmt.enter @116:1-116:28
+  object.store %0, esperando, %6 @116:1-116:28
+  stmt.exit @116:1-116:28
+  stmt.enter @117:1-117:25
+  %8 = const.bool false @117:20-117:25
+  object.store %0, reteniendo, %8 @117:1-117:25
+  stmt.exit @117:1-117:25
+  stmt.enter @118:1-118:19
+  object.store %1, lista, %0 @118:1-118:19
+  stmt.exit @118:1-118:19
+  stmt.enter @119:1-119:32
+  %9 = call @Area.registrar(%1, %2, %0) @119:1-119:32
+  stmt.exit @119:1-119:32
+  return @120:1-120:10
+}
+func @Tarea.procesar(%0: obj<Tarea>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 1:
+  stmt.enter @122:1-122:14
+  stmt.exit @122:1-122:14
+  return %0 @122:1-122:14
+}
+func @Tarea.agregarPaquete(%0: obj<Tarea>, %1: obj<Paquete>, %2: obj<Tarea>) -> obj<Tarea> {
+b0() mass 1:
+  stmt.enter @125:1-133:6
+  %3 = object.load %0, entrada @125:4-125:17
+  %4 = object.load %0, area @125:19-125:28
+  %5 = object.load %4, vacio @125:19-125:35
+  %6 = ref.cmp eq, %3, %5 @125:17-125:18
+  decide.bool %6 @125:1-133:6
+  branch %6, b1(), b2()
+b1() mass 3:
+  stmt.enter @126:1-126:24
+  object.store %0, entrada, %1 @126:1-126:24
+  stmt.exit @126:1-126:24
+  stmt.enter @127:1-127:28
+  %7 = const.bool true @127:19-127:28
+  object.store %0, pendiente, %7 @127:1-127:28
+  stmt.exit @127:1-127:28
+  stmt.enter @128:1-130:6
+  %8 = object.load %0, prioridad @128:4-128:19
+  %9 = object.load %2, prioridad @128:21-128:40
+  %10 = int.cmp gt, %8, %9 @128:19-128:20
+  decide.bool %10 @128:1-130:6
+  branch %10, b4(), b5()
+b2() mass 1:
+  stmt.enter @132:1-132:63
+  %11 = object.load %0, entrada @132:33-132:45
+  %12 = object.load %0, area @132:47-132:56
+  %13 = object.load %12, vacio @132:47-132:62
+  %14 = call @Paquete.anexarA(%1, %11, %13) @132:17-132:63
+  object.store %0, entrada, %14 @132:1-132:63
+  stmt.exit @132:1-132:63
+  jump b3()
+b3() mass 1:
+  stmt.exit @125:1-133:6
+  stmt.enter @134:1-134:18
+  stmt.exit @134:1-134:18
+  return %2 @134:1-134:18
+b4() mass 1:
+  stmt.enter @129:1-129:14
+  stmt.exit @129:1-129:14
+  return %0 @129:1-129:14
+b5() mass 0:
+  jump b6()
+b6() mass 0:
+  stmt.exit @128:1-130:6
+  jump b3()
+}
+func @Tarea.correr(%0: obj<Tarea>) -> obj<Tarea> {
+b0() mass 2:
+  stmt.enter @137:1-137:29
+  %1 = value.undefined obj<Paquete> @137:1-137:29
+  stmt.exit @137:1-137:29
+  stmt.enter @138:1-150:6
+  %2 = object.load %0, pendiente @138:4-138:19
+  branch %2, b1(), b2()
+b1() mass 0:
+  %3 = object.load %0, esperando @138:21-138:36
+  jump b3(%3)
+b2() mass 0:
+  %4 = const.bool false
+  jump b3(%4)
+b3(%5: bool) mass 0:
+  branch %5, b4(), b5()
+b4() mass 0:
+  %6 = object.load %0, reteniendo @138:41-138:57
+  %7 = bool.not %6 @138:38-138:40
+  jump b6(%7)
+b5() mass 0:
+  %8 = const.bool false
+  jump b6(%8)
+b6(%9: bool) mass 0:
+  decide.bool %9 @138:1-150:6
+  branch %9, b7(), b8()
+b7() mass 3:
+  stmt.enter @139:1-139:24
+  %10 = object.load %0, entrada @139:12-139:24
+  %11 = value.require %10 @139:1-139:24
+  stmt.exit @139:1-139:24
+  stmt.enter @140:1-140:31
+  %12 = object.load %11, enlace @140:17-140:31
+  object.store %0, entrada, %12 @140:1-140:31
+  stmt.exit @140:1-140:31
+  stmt.enter @141:1-145:6
+  %13 = object.load %0, entrada @141:4-141:17
+  %14 = object.load %0, area @141:19-141:28
+  %15 = object.load %14, vacio @141:19-141:35
+  %16 = ref.cmp eq, %13, %15 @141:17-141:18
+  decide.bool %16 @141:1-145:6
+  branch %16, b10(), b11()
+b8() mass 1:
+  stmt.enter @149:1-149:27
+  %17 = object.load %0, area @149:12-149:21
+  %18 = object.load %17, vacio @149:12-149:27
+  %19 = value.require %18 @149:1-149:27
+  stmt.exit @149:1-149:27
+  jump b9(%19)
+b9(%20: obj<Paquete>) mass 1:
+  stmt.exit @138:1-150:6
+  stmt.enter @151:1-151:32
+  %21 = call.virtual %0, @Tarea.procesar(%0, %20) @151:10-151:32
+  stmt.exit @151:1-151:32
+  return %21 @151:1-151:32
+b10() mass 1:
+  stmt.enter @142:1-142:24
+  %22 = const.bool false @142:19-142:24
+  object.store %0, pendiente, %22 @142:1-142:24
+  stmt.exit @142:1-142:24
+  jump b12()
+b11() mass 1:
+  stmt.enter @144:1-144:28
+  %23 = const.bool true @144:19-144:28
+  object.store %0, pendiente, %23 @144:1-144:28
+  stmt.exit @144:1-144:28
+  jump b12()
+b12() mass 2:
+  stmt.exit @141:1-145:6
+  stmt.enter @146:1-146:24
+  %24 = const.bool false @146:19-146:24
+  object.store %0, esperando, %24 @146:1-146:24
+  stmt.exit @146:1-146:24
+  stmt.enter @147:1-147:25
+  %25 = const.bool false @147:20-147:25
+  object.store %0, reteniendo, %25 @147:1-147:25
+  stmt.exit @147:1-147:25
+  jump b9(%11)
+}
+func @Tarea.esperar(%0: obj<Tarea>) -> obj<Tarea> {
+b0() mass 2:
+  stmt.enter @154:1-154:28
+  %1 = const.bool true @154:19-154:28
+  object.store %0, esperando, %1 @154:1-154:28
+  stmt.exit @154:1-154:28
+  stmt.enter @155:1-155:14
+  stmt.exit @155:1-155:14
+  return %0 @155:1-155:14
+}
+func @Tarea.retener(%0: obj<Tarea>) -> obj<Tarea> {
+b0() mass 3:
+  stmt.enter @158:1-158:51
+  %1 = object.load %0, area @158:26-158:35
+  %2 = object.load %1, retenciones @158:26-158:48
+  %3 = const.i64 1 @158:50-158:51
+  %4 = int.add %2, %3 @158:48-158:49
+  %5 = object.load %0, area @158:1-158:10
+  object.store %5, retenciones, %4 @158:1-158:51
+  stmt.exit @158:1-158:51
+  stmt.enter @159:1-159:29
+  %6 = const.bool true @159:20-159:29
+  object.store %0, reteniendo, %6 @159:1-159:29
+  stmt.exit @159:1-159:29
+  stmt.enter @160:1-160:21
+  %7 = object.load %0, enlace @160:10-160:21
+  stmt.exit @160:1-160:21
+  return %7 @160:1-160:21
+}
+func @Tarea.liberar(%0: obj<Tarea>, %1: i64) -> obj<Tarea> {
+b0() mass 4:
+  stmt.enter @163:1-163:25
+  %2 = value.undefined obj<Tarea> @163:1-163:25
+  stmt.exit @163:1-163:25
+  stmt.enter @164:1-164:37
+  %3 = object.load %0, area @164:10-164:19
+  %4 = call @Area.buscar(%3, %1) @164:10-164:37
+  %5 = value.require %4 @164:1-164:37
+  stmt.exit @164:1-164:37
+  stmt.enter @165:1-165:26
+  %6 = const.bool false @165:21-165:26
+  object.store %5, reteniendo, %6 @165:1-165:26
+  stmt.exit @165:1-165:26
+  stmt.enter @166:1-168:6
+  %7 = object.load %5, prioridad @166:4-166:20
+  %8 = object.load %0, prioridad @166:22-166:37
+  %9 = int.cmp gt, %7, %8 @166:20-166:21
+  decide.bool %9 @166:1-168:6
+  branch %9, b1(), b2()
+b1() mass 1:
+  stmt.enter @167:1-167:15
+  stmt.exit @167:1-167:15
+  return %5 @167:1-167:15
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @166:1-168:6
+  stmt.enter @169:1-169:14
+  stmt.exit @169:1-169:14
+  return %0 @169:1-169:14
+}
+func @Tarea.encolar(%0: obj<Tarea>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 6:
+  stmt.enter @172:1-172:27
+  %2 = value.undefined obj<Tarea> @172:1-172:27
+  stmt.exit @172:1-172:27
+  stmt.enter @173:1-173:47
+  %3 = object.load %0, area @173:12-173:21
+  %4 = object.load %1, identidad @173:29-173:46
+  %5 = call @Area.buscar(%3, %4) @173:12-173:47
+  %6 = value.require %5 @173:1-173:47
+  stmt.exit @173:1-173:47
+  stmt.enter @174:1-174:47
+  %7 = object.load %0, area @174:24-174:33
+  %8 = object.load %7, encolados @174:24-174:44
+  %9 = const.i64 1 @174:46-174:47
+  %10 = int.add %8, %9 @174:44-174:45
+  %11 = object.load %0, area @174:1-174:10
+  object.store %11, encolados, %10 @174:1-174:47
+  stmt.exit @174:1-174:47
+  stmt.enter @175:1-175:34
+  %12 = object.load %0, area @175:19-175:28
+  %13 = object.load %12, vacio @175:19-175:34
+  object.store %1, enlace, %13 @175:1-175:34
+  stmt.exit @175:1-175:34
+  stmt.enter @176:1-176:36
+  %14 = object.load %0, identidad @176:22-176:36
+  object.store %1, identidad, %14 @176:1-176:36
+  stmt.exit @176:1-176:36
+  stmt.enter @177:1-177:47
+  %15 = call @Tarea.agregarPaquete(%6, %1, %0) @177:10-177:47
+  stmt.exit @177:1-177:47
+  return %15 @177:1-177:47
+}
+func @TareaDispositivo.procesar(%0: obj<TareaDispositivo>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 2:
+  stmt.enter @183:1-183:28
+  %2 = value.undefined obj<Paquete> @183:1-183:28
+  stmt.exit @183:1-183:28
+  stmt.enter @184:1-191:6
+  %3 = object.load %0, area @184:14-184:23
+  %4 = object.load %3, vacio @184:14-184:30
+  %5 = ref.cmp eq, %1, %4 @184:12-184:13
+  decide.bool %5 @184:1-191:6
+  branch %5, b1(), b2()
+b1() mass 2:
+  stmt.enter @185:1-185:24
+  %6 = object.load %0, retenido @185:11-185:24
+  %7 = value.require %6 @185:1-185:24
+  stmt.exit @185:1-185:24
+  stmt.enter @186:1-188:6
+  %8 = object.load %0, area @186:13-186:22
+  %9 = object.load %8, vacio @186:13-186:29
+  %10 = ref.cmp eq, %7, %9 @186:11-186:12
+  decide.bool %10 @186:1-188:6
+  branch %10, b4(), b5()
+b2() mass 0:
+  jump b3(%2)
+b3(%11: obj<Paquete>) mass 2:
+  stmt.exit @184:1-191:6
+  stmt.enter @192:1-192:25
+  object.store %0, retenido, %1 @192:1-192:25
+  stmt.exit @192:1-192:25
+  stmt.enter @193:1-193:24
+  %12 = call @Tarea.retener(%0) @193:10-193:24
+  stmt.exit @193:1-193:24
+  return %12 @193:1-193:24
+b4() mass 1:
+  stmt.enter @187:1-187:24
+  %13 = call @Tarea.esperar(%0) @187:10-187:24
+  stmt.exit @187:1-187:24
+  return %13 @187:1-187:24
+b5() mass 0:
+  jump b6()
+b6() mass 2:
+  stmt.exit @186:1-188:6
+  stmt.enter @189:1-189:33
+  %14 = object.load %0, area @189:18-189:27
+  %15 = object.load %14, vacio @189:18-189:33
+  object.store %0, retenido, %15 @189:1-189:33
+  stmt.exit @189:1-189:33
+  stmt.enter @190:1-190:30
+  %16 = call @Tarea.encolar(%0, %7) @190:10-190:30
+  stmt.exit @190:1-190:30
+  return %16 @190:1-190:30
+}
+func @TareaManejador.procesar(%0: obj<TareaManejador>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 3:
+  stmt.enter @200:1-200:54
+  %2 = value.undefined obj<Paquete> @200:1-200:54
+  %3 = value.undefined obj<Paquete> @200:1-200:54
+  stmt.exit @200:1-200:54
+  stmt.enter @201:1-201:27
+  %4 = value.undefined i64 @201:1-201:27
+  stmt.exit @201:1-201:27
+  stmt.enter @202:1-208:6
+  %5 = object.load %0, area @202:15-202:24
+  %6 = object.load %5, vacio @202:15-202:31
+  %7 = ref.cmp ne, %1, %6 @202:12-202:14
+  decide.bool %7 @202:1-208:6
+  branch %7, b1(), b2()
+b1() mass 1:
+  stmt.enter @203:1-207:6
+  %8 = object.load %1, especie @203:4-203:20
+  %9 = const.i64 1001 @203:22-203:26
+  %10 = int.cmp eq, %8, %9 @203:20-203:21
+  decide.bool %10 @203:1-207:6
+  branch %10, b4(), b5()
+b2() mass 0:
+  jump b3()
+b3() mass 2:
+  stmt.exit @202:1-208:6
+  stmt.enter @209:1-209:30
+  %11 = object.load %0, trabajo @209:18-209:30
+  %12 = value.require %11 @209:1-209:30
+  stmt.exit @209:1-209:30
+  stmt.enter @210:1-212:6
+  %13 = object.load %0, area @210:20-210:29
+  %14 = object.load %13, vacio @210:20-210:36
+  %15 = ref.cmp eq, %12, %14 @210:18-210:19
+  decide.bool %15 @210:1-212:6
+  branch %15, b7(), b8()
+b4() mass 1:
+  stmt.enter @204:1-204:63
+  %16 = object.load %0, trabajo @204:33-204:45
+  %17 = object.load %0, area @204:47-204:56
+  %18 = object.load %17, vacio @204:47-204:62
+  %19 = call @Paquete.anexarA(%1, %16, %18) @204:17-204:63
+  object.store %0, trabajo, %19 @204:1-204:63
+  stmt.exit @204:1-204:63
+  jump b6()
+b5() mass 1:
+  stmt.enter @206:1-206:71
+  %20 = object.load %0, dispositivo @206:37-206:53
+  %21 = object.load %0, area @206:55-206:64
+  %22 = object.load %21, vacio @206:55-206:70
+  %23 = call @Paquete.anexarA(%1, %20, %22) @206:21-206:71
+  object.store %0, dispositivo, %23 @206:1-206:71
+  stmt.exit @206:1-206:71
+  jump b6()
+b6() mass 0:
+  stmt.exit @203:1-207:6
+  jump b3()
+b7() mass 1:
+  stmt.enter @211:1-211:24
+  %24 = call @Tarea.esperar(%0) @211:10-211:24
+  stmt.exit @211:1-211:24
+  return %24 @211:1-211:24
+b8() mass 0:
+  jump b9()
+b9() mass 2:
+  stmt.exit @210:1-212:6
+  stmt.enter @213:1-213:29
+  %25 = object.load %12, dato @213:11-213:29
+  %26 = value.require %25 @213:1-213:29
+  stmt.exit @213:1-213:29
+  stmt.enter @214:1-217:6
+  %27 = const.i64 4 @214:14-214:15
+  %28 = int.cmp ge, %26, %27 @214:11-214:13
+  decide.bool %28 @214:1-217:6
+  branch %28, b10(), b11()
+b10() mass 2:
+  stmt.enter @215:1-215:37
+  %29 = object.load %12, enlace @215:17-215:37
+  object.store %0, trabajo, %29 @215:1-215:37
+  stmt.exit @215:1-215:37
+  stmt.enter @216:1-216:37
+  %30 = call @Tarea.encolar(%0, %12) @216:10-216:37
+  stmt.exit @216:1-216:37
+  return %30 @216:1-216:37
+b11() mass 0:
+  jump b12()
+b12() mass 2:
+  stmt.exit @214:1-217:6
+  stmt.enter @218:1-218:38
+  %31 = object.load %0, dispositivo @218:22-218:38
+  %32 = value.require %31 @218:1-218:38
+  stmt.exit @218:1-218:38
+  stmt.enter @219:1-221:6
+  %33 = object.load %0, area @219:24-219:33
+  %34 = object.load %33, vacio @219:24-219:40
+  %35 = ref.cmp eq, %32, %34 @219:22-219:23
+  decide.bool %35 @219:1-221:6
+  branch %35, b13(), b14()
+b13() mass 1:
+  stmt.enter @220:1-220:24
+  %36 = call @Tarea.esperar(%0) @220:10-220:24
+  stmt.exit @220:1-220:24
+  return %36 @220:1-220:24
+b14() mass 0:
+  jump b15()
+b15() mass 4:
+  stmt.exit @219:1-221:6
+  stmt.enter @222:1-222:45
+  %37 = object.load %32, enlace @222:21-222:45
+  object.store %0, dispositivo, %37 @222:1-222:45
+  stmt.exit @222:1-222:45
+  stmt.enter @223:1-223:58
+  %38 = call @Paquete.consultar(%12, %26) @223:27-223:58
+  object.store %32, dato, %38 @223:1-223:58
+  stmt.exit @223:1-223:58
+  stmt.enter @224:1-224:33
+  %39 = const.i64 1 @224:32-224:33
+  %40 = int.add %26, %39 @224:30-224:31
+  object.store %12, dato, %40 @224:1-224:33
+  stmt.exit @224:1-224:33
+  stmt.enter @225:1-225:41
+  %41 = call @Tarea.encolar(%0, %32) @225:10-225:41
+  stmt.exit @225:1-225:41
+  return %41 @225:1-225:41
+}
+func @TareaOciosa.procesar(%0: obj<TareaOciosa>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 2:
+  stmt.enter @232:1-232:31
+  %2 = object.load %0, cuenta @232:16-232:28
+  %3 = const.i64 1 @232:30-232:31
+  %4 = int.sub %2, %3 @232:28-232:29
+  object.store %0, cuenta, %4 @232:1-232:31
+  stmt.exit @232:1-232:31
+  stmt.enter @233:1-235:6
+  %5 = object.load %0, cuenta @233:4-233:16
+  %6 = const.i64 0 @233:18-233:19
+  %7 = int.cmp eq, %5, %6 @233:16-233:17
+  decide.bool %7 @233:1-235:6
+  branch %7, b1(), b2()
+b1() mass 1:
+  stmt.enter @234:1-234:24
+  %8 = call @Tarea.retener(%0) @234:10-234:24
+  stmt.exit @234:1-234:24
+  return %8 @234:1-234:24
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @233:1-235:6
+  stmt.enter @236:1-239:6
+  %9 = object.load %0, control @236:4-236:17
+  %10 = const.i64 2 @236:21-236:22
+  %11 = int.mod %9, %10 @236:17-236:20
+  %12 = const.i64 0 @236:25-236:26
+  %13 = int.cmp eq, %11, %12 @236:23-236:24
+  decide.bool %13 @236:1-239:6
+  branch %13, b4(), b5()
+b4() mass 2:
+  stmt.enter @237:1-237:35
+  %14 = object.load %0, control @237:17-237:30
+  %15 = const.i64 2 @237:34-237:35
+  %16 = int.div %14, %15 @237:30-237:33
+  object.store %0, control, %16 @237:1-237:35
+  stmt.exit @237:1-237:35
+  stmt.enter @238:1-238:25
+  %17 = const.i64 5 @238:23-238:24
+  %18 = call @Tarea.liberar(%0, %17) @238:10-238:25
+  stmt.exit @238:1-238:25
+  return %18 @238:1-238:25
+b5() mass 0:
+  jump b6()
+b6() mass 2:
+  stmt.exit @236:1-239:6
+  stmt.enter @240:1-240:54
+  %19 = object.load %0, control @240:28-240:41
+  %20 = const.i64 2 @240:45-240:46
+  %21 = int.div %19, %20 @240:41-240:44
+  %22 = const.i64 53256 @240:48-240:53
+  %23 = call @OExclusivo(%21, %22) @240:17-240:54
+  object.store %0, control, %23 @240:1-240:54
+  stmt.exit @240:1-240:54
+  stmt.enter @241:1-241:25
+  %24 = const.i64 6 @241:23-241:24
+  %25 = call @Tarea.liberar(%0, %24) @241:10-241:25
+  stmt.exit @241:1-241:25
+  return %25 @241:1-241:25
+}
+func @TareaTrabajo.procesar(%0: obj<TareaTrabajo>, %1: obj<Paquete>) -> obj<Tarea> {
+b0() mass 2:
+  stmt.enter @248:1-248:29
+  %2 = value.undefined i64 @248:1-248:29
+  stmt.exit @248:1-248:29
+  stmt.enter @249:1-251:6
+  %3 = object.load %0, area @249:14-249:23
+  %4 = object.load %3, vacio @249:14-249:30
+  %5 = ref.cmp eq, %1, %4 @249:12-249:13
+  decide.bool %5 @249:1-251:6
+  branch %5, b1(), b2()
+b1() mass 1:
+  stmt.enter @250:1-250:24
+  %6 = call @Tarea.esperar(%0) @250:10-250:24
+  stmt.exit @250:1-250:24
+  return %6 @250:1-250:24
+b2() mass 0:
+  jump b3()
+b3() mass 1:
+  stmt.exit @249:1-251:6
+  stmt.enter @252:1-256:6
+  %7 = object.load %0, destino @252:4-252:17
+  %8 = const.i64 3 @252:19-252:20
+  %9 = int.cmp eq, %7, %8 @252:17-252:18
+  decide.bool %9 @252:1-256:6
+  branch %9, b4(), b5()
+b4() mass 1:
+  stmt.enter @253:1-253:18
+  %10 = const.i64 4 @253:17-253:18
+  object.store %0, destino, %10 @253:1-253:18
+  stmt.exit @253:1-253:18
+  jump b6()
+b5() mass 1:
+  stmt.enter @255:1-255:18
+  %11 = const.i64 3 @255:17-255:18
+  object.store %0, destino, %11 @255:1-255:18
+  stmt.exit @255:1-255:18
+  jump b6()
+b6() mass 3:
+  stmt.exit @252:1-256:6
+  stmt.enter @257:1-257:34
+  %12 = object.load %0, destino @257:22-257:34
+  object.store %1, identidad, %12 @257:1-257:34
+  stmt.exit @257:1-257:34
+  stmt.enter @258:1-258:18
+  %13 = const.i64 0 @258:17-258:18
+  object.store %1, dato, %13 @258:1-258:18
+  stmt.exit @258:1-258:18
+  stmt.enter @259:1-265:8
+  %14 = const.i64 0 @259:18-259:19
+  %15 = const.i64 3 @259:26-259:27
+  %16 = const.i64 0
+  %17 = int.add %15, %16 @259:1-265:8
+  %18 = const.i64 1 @259:37-259:38
+  %19 = const.i64 0
+  %20 = int.add %18, %19 @259:1-265:8
+  loop.check_step %20 @259:1-265:8
+  jump b7(%14)
+b7(%21: i64) mass 0:
+  %22 = const.i64 0
+  %23 = int.cmp ge, %20, %22
+  branch %23, b8(), b9()
+b8() mass 0:
+  %24 = int.cmp le, %21, %17 @259:1-265:8
+  jump b10(%24)
+b9() mass 0:
+  %25 = int.cmp ge, %21, %17 @259:1-265:8
+  jump b10(%25)
+b10(%26: bool) mass 0:
+  decide.bool %26 @259:1-265:8
+  branch %26, b11(), b12()
+b11() mass 2:
+  stmt.enter @260:1-260:31
+  %27 = object.load %0, cuenta @260:16-260:28
+  %28 = const.i64 1 @260:30-260:31
+  %29 = int.add %27, %28 @260:28-260:29
+  object.store %0, cuenta, %29 @260:1-260:31
+  stmt.exit @260:1-260:31
+  stmt.enter @261:1-263:6
+  %30 = object.load %0, cuenta @261:4-261:16
+  %31 = const.i64 26 @261:18-261:20
+  %32 = int.cmp gt, %30, %31 @261:16-261:17
+  decide.bool %32 @261:1-263:6
+  branch %32, b13(), b14()
+b12() mass 1:
+  stmt.exit @259:1-265:8
+  stmt.enter @266:1-266:31
+  %33 = call @Tarea.encolar(%0, %1) @266:10-266:31
+  stmt.exit @266:1-266:31
+  return %33 @266:1-266:31
+b13() mass 1:
+  stmt.enter @262:1-262:17
+  %34 = const.i64 1 @262:16-262:17
+  object.store %0, cuenta, %34 @262:1-262:17
+  stmt.exit @262:1-262:17
+  jump b15()
+b14() mass 0:
+  jump b15()
+b15() mass 1:
+  stmt.exit @261:1-263:6
+  stmt.enter @264:1-264:48
+  %35 = const.i64 65 @264:27-264:29
+  %36 = object.load %0, cuenta @264:32-264:44
+  %37 = int.add %35, %36 @264:30-264:31
+  %38 = const.i64 1 @264:46-264:47
+  %39 = int.sub %37, %38 @264:44-264:45
+  %40 = call @Paquete.guardar(%1, %21, %39) @264:1-264:48
+  stmt.exit @264:1-264:48
+  %41 = int.add %21, %20 @259:1-265:8
+  jump b7(%41)
+}

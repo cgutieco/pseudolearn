@@ -42,13 +42,22 @@ pub use resources::ApiSession;
 
 mod event_codec;
 
+#[cfg(feature = "native")]
 mod native_build;
+#[cfg(feature = "native")]
 pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
 
+#[cfg(feature = "native")]
 mod native_benchmark;
-pub use native_benchmark::{BenchmarkObject, build_benchmark_object};
+#[cfg(feature = "native")]
+pub use native_benchmark::{
+    BenchmarkObject, PreparedNativeBenchmark, build_benchmark_object, emit_benchmark_object,
+    inspect_benchmark_object, prepare_native_benchmark,
+};
 
+#[cfg(feature = "native")]
 mod native_execution;
+#[cfg(feature = "native")]
 pub use native_execution::{
     NativeRunReport, conformance_build_request, native_execute_response, rejected_native_response,
 };

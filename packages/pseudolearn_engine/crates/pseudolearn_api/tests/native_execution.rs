@@ -1,3 +1,5 @@
+#![cfg(feature = "native")]
+
 use pseudolearn_api::{
     ExecuteRequest, NativeRunReport, conformance_build_request, native_execute_response,
     rejected_native_response,

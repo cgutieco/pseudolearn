@@ -17,10 +17,7 @@ pub fn new_object_shared(
 ) -> Result<Handle, MemoryError> {
     let payload = object_fields_start_offset(layout.fields.len(), layout.dense)
         .ok_or(MemoryError::Resource)?;
-    let cells = u64::try_from(layout.fields.len())
-        .map_err(|_| MemoryError::Resource)?
-        .checked_add(1)
-        .ok_or(MemoryError::Resource)?;
+    let cells = object_layout_cells(&layout)?;
     let fields = layout.clone();
     let request = AllocationRequest {
         shape: Shape::Object(layout),
@@ -102,7 +99,11 @@ pub fn copy_object(
 }
 
 pub fn object_allocation_cells(heap: &Heap, handle: Handle) -> Result<u64, MemoryError> {
-    u64::try_from(heap.layout(handle)?.fields.len())
+    object_layout_cells(heap.layout(handle)?)
+}
+
+pub fn object_layout_cells(layout: &ObjectLayout) -> Result<u64, MemoryError> {
+    u64::try_from(layout.fields.len())
         .map_err(|_| MemoryError::Resource)?
         .checked_add(1)
         .ok_or(MemoryError::Resource)

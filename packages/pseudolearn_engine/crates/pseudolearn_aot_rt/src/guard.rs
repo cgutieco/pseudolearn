@@ -55,7 +55,22 @@ impl Entry<'_> {
         self.context.heap_words_pointer = self.engine.heap.words_pointer();
     }
 
+    pub(crate) fn allocation_roots(&self, cells: u64) -> Result<Vec<Handle>, Trap> {
+        if self.engine.heap.needs_collection(cells) {
+            self.roots()
+        } else {
+            Ok(Vec::new())
+        }
+    }
+
     pub(crate) fn roots(&self) -> Result<Vec<Handle>, Trap> {
+        #[cfg(feature = "telemetry")]
+        self.engine.record(|statistics| {
+            statistics.root_builds = statistics.root_builds.saturating_add(1);
+            statistics.root_cells_scanned = statistics
+                .root_cells_scanned
+                .saturating_add(u64::try_from(self.engine.cells.len()).unwrap_or(u64::MAX));
+        });
         let top =
             usize::try_from(self.context.root_top).map_err(|_| Trap::named("internalFault"))?;
         let words = self
@@ -68,7 +83,15 @@ impl Entry<'_> {
         Ok(handles)
     }
 
-    fn fail(&mut self, trap: Trap) -> u32 {
+    fn fail(&mut self, mut trap: Trap) -> u32 {
+        if matches!(
+            trap.code.map(|code| code.as_str()),
+            Some("uninitializedVariableRead" | "subroutineEndedWithoutReturn")
+        ) && !trap.arguments.iter().any(|(name, _)| name == "lexeme")
+            && let Some(lexeme) = self.engine.site_lexeme(self.site)
+        {
+            trap = trap.argument("lexeme", lexeme);
+        }
         let status = status_of(trap.code);
         self.engine.record_fault(FaultRecord {
             site: self.site,

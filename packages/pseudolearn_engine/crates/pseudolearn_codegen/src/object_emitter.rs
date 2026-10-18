@@ -13,15 +13,13 @@ use crate::target::TargetConfig;
 use crate::type_mapping::extend_signature;
 use cranelift_codegen::Context;
 use cranelift_codegen::ir::{Function as ClifFunction, UserFuncName};
-use cranelift_module::{
-    DataDescription, DataId, FuncId, Linkage, Module as ClifModule, default_libcall_names,
-};
+use cranelift_module::{DataId, FuncId, Linkage, Module as ClifModule, default_libcall_names};
 use cranelift_object::{ObjectBuilder, ObjectModule};
 use pseudolearn_aot_rt::{
     ClassDescriptor, ExecutableMetadata, ExecutableSettings, FaultSite, encode_metadata,
 };
-use pseudolearn_ir::{Module, Operand, Operation};
-use std::collections::{BTreeSet, HashMap};
+use pseudolearn_ir::Module;
+use std::collections::HashMap;
 
 const ENTRY_FUNCTION_NAME: &str = "main";
 
@@ -37,6 +35,7 @@ pub struct CompiledObject {
     pub fault_sites: Vec<FaultSite>,
     pub function_symbols: Vec<FunctionSymbol>,
     pub classes: Vec<ClassDescriptor>,
+    pub inspection: Vec<String>,
 }
 
 pub fn function_symbol(index: usize) -> String {
@@ -55,23 +54,21 @@ pub(crate) fn emit_module(
     target: &TargetConfig,
     mode: EmissionMode<'_>,
 ) -> Result<CompiledObject, CodegenError> {
-    let isa = target.build_isa()?;
-    let builder = ObjectBuilder::new(isa, module.name.clone(), default_libcall_names())
-        .map_err(CodegenError::backend)?;
-    let mut object = ObjectModule::new(builder);
+    let mut object = create_object(module, target)?;
     let pointer = object.isa().pointer_type();
     let imports = RuntimeImports::declare(&mut object, pointer)?;
     let identifiers = declare_functions(&mut object, module)?;
     let classes = ClassTable::build(module)?;
-    let literals = define_literals(&mut object, module)?;
+    let literals = crate::literals::define_literals(&mut object, module)?;
     let declarations = Declarations {
         imports: &imports,
         identifiers: &identifiers,
         literals: &literals,
         classes: &classes,
         charging: charging_of(mode),
+        inspect: target.inspect,
     };
-    let faults = define_functions(&mut object, module, &declarations)?;
+    let (faults, inspection) = define_functions(&mut object, module, &declarations)?;
     let fault_sites = faults.into_sites();
     let descriptors = classes.descriptors()?;
     if let EmissionMode::Executable(settings) = mode {
@@ -85,6 +82,7 @@ pub(crate) fn emit_module(
     let bytes = object.finish().emit().map_err(CodegenError::backend)?;
     Ok(CompiledObject {
         bytes,
+        inspection,
         fault_sites,
         function_symbols: symbols_of(module),
         classes: descriptors,
@@ -127,8 +125,9 @@ fn define_functions(
     object: &mut ObjectModule,
     module: &Module,
     declarations: &Declarations<'_>,
-) -> Result<FaultTable, CodegenError> {
+) -> Result<(FaultTable, Vec<String>), CodegenError> {
     let mut faults = FaultTable::default();
+    let mut inspection = Vec::new();
     for (index, function) in module.functions.iter().enumerate() {
         let identifier = *declarations
             .identifiers
@@ -140,9 +139,11 @@ fn define_functions(
             index,
             identifier,
         };
-        define_function(object, declarations, &unit, &mut faults)?;
+        if let Some(text) = define_function(object, declarations, &unit, &mut faults)? {
+            inspection.push(text);
+        }
     }
-    Ok(faults)
+    Ok((faults, inspection))
 }
 
 fn entry_index(module: &Module) -> Result<usize, CodegenError> {
@@ -166,6 +167,7 @@ struct Declarations<'program> {
     literals: &'program [(String, DataId)],
     classes: &'program ClassTable,
     charging: StatementCharging,
+    inspect: bool,
 }
 
 fn define_function(
@@ -173,40 +175,21 @@ fn define_function(
     declarations: &Declarations<'_>,
     unit: &FunctionUnit<'_>,
     faults: &mut FaultTable,
-) -> Result<(), CodegenError> {
+) -> Result<Option<String>, CodegenError> {
     let mut clif = ClifFunction::with_name_signature(
         UserFuncName::user(0, u32::try_from(unit.index).unwrap_or(0)),
         signature_of(object, unit.function),
     );
-    let environment = FunctionEnvironment {
-        module: unit.module,
-        frontend: object.isa().frontend_config(),
-        layout: ContextLayout::new()?,
-        runtime: declarations.imports.import_into(object, &mut clif),
-        callees: declarations
-            .identifiers
-            .iter()
-            .map(|callee| object.declare_func_in_func(*callee, &mut clif))
-            .collect(),
-        literals: declarations
-            .literals
-            .iter()
-            .map(|(content, storage)| {
-                (
-                    content.clone(),
-                    object.declare_data_in_func(*storage, &mut clif),
-                )
-            })
-            .collect::<HashMap<_, _>>(),
-        classes: declarations.classes,
-        charging: declarations.charging,
-    };
+    let environment = function_environment(object, declarations, unit, &mut clif)?;
     compile_function(unit.function, &environment, &mut clif, faults)?;
     let mut context = Context::for_function(clif);
+    let inspection = declarations
+        .inspect
+        .then(|| format!("{}\n{}", unit.function.name, context.func.display()));
     object
         .define_function(unit.identifier, &mut context)
         .map_err(CodegenError::backend)?;
-    Ok(())
+    Ok(inspection)
 }
 
 fn signature_of(
@@ -245,45 +228,40 @@ fn symbols_of(module: &Module) -> Vec<FunctionSymbol> {
         .collect()
 }
 
-fn define_literals(
-    object: &mut ObjectModule,
-    module: &Module,
-) -> Result<Vec<(String, DataId)>, CodegenError> {
-    let mut contents = BTreeSet::new();
-    for function in &module.functions {
-        for block in &function.blocks {
-            for instruction in &block.instructions {
-                collect_literal(function, *instruction, &mut contents);
-            }
-        }
-    }
-    let mut defined = Vec::new();
-    for (position, content) in contents.into_iter().enumerate() {
-        let name = format!("__pl_str_{position}");
-        let storage = object
-            .declare_data(&name, Linkage::Local, false, false)
-            .map_err(CodegenError::backend)?;
-        let mut description = DataDescription::new();
-        let mut bytes = content.as_bytes().to_vec();
-        bytes.push(0);
-        description.define(bytes.into_boxed_slice());
-        object
-            .define_data(storage, &description)
-            .map_err(CodegenError::backend)?;
-        defined.push((content, storage));
-    }
-    Ok(defined)
+fn create_object(module: &Module, target: &TargetConfig) -> Result<ObjectModule, CodegenError> {
+    let builder = ObjectBuilder::new(
+        target.build_isa()?,
+        module.name.clone(),
+        default_libcall_names(),
+    )
+    .map_err(CodegenError::backend)?;
+    Ok(ObjectModule::new(builder))
 }
 
-fn collect_literal(
-    function: &pseudolearn_ir::Function,
-    instruction: pseudolearn_ir::InstructionId,
-    contents: &mut BTreeSet<String>,
-) {
-    if function.columns.operation(instruction) != Some(Operation::ConstStr) {
-        return;
-    }
-    if let Some(Operand::LiteralStr(content)) = function.columns.operands(instruction).first() {
-        contents.insert(content.clone());
-    }
+fn function_environment<'program>(
+    object: &mut ObjectModule,
+    declarations: &'program Declarations<'program>,
+    unit: &FunctionUnit<'program>,
+    clif: &mut ClifFunction,
+) -> Result<FunctionEnvironment<'program>, CodegenError> {
+    Ok(FunctionEnvironment {
+        module: unit.module,
+        frontend: object.isa().frontend_config(),
+        layout: ContextLayout::new()?,
+        runtime: declarations.imports.import_into(object, clif),
+        callees: declarations
+            .identifiers
+            .iter()
+            .map(|callee| object.declare_func_in_func(*callee, clif))
+            .collect(),
+        literals: declarations
+            .literals
+            .iter()
+            .map(|(content, storage)| {
+                (content.clone(), object.declare_data_in_func(*storage, clif))
+            })
+            .collect::<HashMap<_, _>>(),
+        classes: declarations.classes,
+        charging: declarations.charging,
+    })
 }

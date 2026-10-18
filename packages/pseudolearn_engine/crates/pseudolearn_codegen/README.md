@@ -21,7 +21,7 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| E-NR1 arroja una razón geométrica de 5,8 frente al techo nativo con marcos, por encima del límite N3 de 1,30; las razones por familia son 3,7 numérica, 6,4 recursiva, 6,9 objetos y 5,6 arreglos. En `nbody`, `queens` y `sieve` dominan el código generado y `rt_aot_cell_load`; en `storage` dominan la asignación y la recolección del montón y el código generado ocupa el 2 % del tiempo. El despacho virtual no tiene caché monomórfica y toda función reserva una ventana de raíces | Caminos rápidos en línea para carga y escritura de celdas y asignación de arreglos y objetos; después, devirtualización de métodos sin sobrescritura y omisión de raíces en funciones escalares | Cierre del nivel nativo (`PERF.AOT.LEVEL`); reevaluar LLVM después de optimizar y medir estas rutas |
+| Las campañas emparejadas siguen por encima de 1,30× en las cuatro familias y Richards supera 15 ms de emisión. Los contadores separan celdas (Permute y Queens), acceso a arreglos sin celdas (Sieve y NBody), código escalar (Mandelbrot) y asignación/GC (Storage). La atribución histórica de celdas a Sieve y NBody y el porcentaje del 2 % no están acreditados | Diagnosticar RI, CLIF y ensamblado conservados; comparar eliminación o especialización de celdas, análisis de límites y definición, asignador y backend mediante variantes aisladas | Cierre de PERF.AOT.LEVEL con evidencia comparable; ninguna técnica se considera suficiente antes de medir |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -113,8 +113,7 @@ entero sin valor estático atrapa sin comprobar, y sobre uno con indicador compr
 Raíces: los puntos seguros son `call`, `call.virtual`, `array.new`, `object.new`, `object.copy`, `text.concat`,
 `text.format`, `const.str` e `in.read`. `liveness` calcula por flujo hacia atrás qué valores `str`, `array` y `obj` siguen
 vivos al entrar en cada uno, incluidos sus operandos, y el generador los copia en `roots[root_top..]`, avanza `root_top`
-(comprueba `root_capacity`) y lo restaura al volver. Las celdas no son asas del montón y no se enraízan; el runtime enraíza
-el contenido de las celdas locales de referencia.
+(comprueba `root_capacity`) y lo restaura al volver. Las celdas no son asas del montón; el runtime enraíza el contenido de las celdas locales de referencia y el propietario de las celdas de campo o elemento.
 
 Memoria en línea: `array.load`, `array.store`, `object.load` y `object.store` leen `heap_words_pointer` en cada acceso (el
 puntero cambia en cualquier asignación), comprueban asa presente, extensiones sin signo y centinela de definición, y ante
@@ -132,6 +131,12 @@ línea; `text.concat` marca con `CHARACTER_OPERAND_FLAG` los operandos de tipo `
 objeto guarda como dato local, uno por contenido distinto, y la entrada lo copia al montón en cada ejecución.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: las celdas de funciones terminadas no deben conservar objetos ni crecer durante toda la sesión. Elección: solo una función que crea celdas toma una marca de la tabla al entrar y libera su sufijo al retornar; las celdas del llamador mantienen sus identificadores. Una celda de elemento o campo enraíza también su propietario. Se descarta conservar referencias locales de marcos terminados o depender de un uso SSA posterior del propietario.
+
+Problema: el diagnóstico nativo debe conservar los argumentos del motor. Elección: los sitios de fallo incluyen el lexema de variable, campo o subprograma; los accesos conservan índice, extensión, longitud, posición y texto de conversión. El código Unicode inválido se transmite solo en el bloque frío. Los metadatos internos usan la magia PLM2 para distinguir el lexema añadido. Se descarta reconstruir argumentos en la CLI o incluir mensajes traducidos en el generador.
+
+Problema: la emisión debe medirse sin análisis ni lowering. Elección: `PreparedNativeBenchmark` prepara una RI inmutable antes del reloj; `emit_benchmark_object` emite el objeto y sus metadatos. La inspección explícita captura CLIF sin modificar las funciones emitidas; permanece fuera de la medición. El módulo `literals` es dueño de los datos de texto del objeto. Se descarta mezclar las cadenas CLIF con el intervalo de emisión.
 
 Problema: detectar el desbordamiento sin señales del sistema. Elección: instrucciones `*_overflow` de CLIF y salto a
 bloque frío por sitio, que conserva `DiagnosticCode` y tramo. Descartado: `trap` de CLIF y `SIGFPE`, porque no
@@ -199,11 +204,7 @@ trampas son ramas explícitas a bloques fríos con llamadas, de modo que ninguna
 La conformidad y la propiedad de primera trampa sobre el corpus verifican el orden. Medido: mejora la razón geométrica
 frente al techo de 7,8 a 5,8 sin cambiar ninguna observación.
 
-Problema: elegir backend release con una brecha N3 de 5,8× no distingue el coste del generador del coste de las celdas y del
-runtime de asignación. Elección: Cranelift permanece como backend release; implementar primero las rutas rápidas de celdas
-y asignación de arreglos y objetos, y reevaluar LLVM después de repetir la medición. Descartado: migrar a LLVM antes de
-eliminar esos costes, porque E-NR1 atribuye el tiempo dominante a `rt_aot_cell_load` y al runtime de montón en las cargas
-que exponen la brecha.
+Problema: la brecha frente a V1F mezcla código generado, runtime y diferencias de representación del techo manual. Elección: conservar Cranelift mientras se miden variantes aisladas, sin condicionar un backend alternativo a una optimización particular. Los contadores no muestran cargas de celda en Sieve ni NBody. Las funciones sin asas vivas ya omiten la ventana de raíces y `opt_level = speed` ya está activo. Se descarta tratar estas medidas existentes como trabajo pendiente o prometer que celdas y asignación bastarán para cerrar el nivel.
 
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.

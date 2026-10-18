@@ -7,18 +7,26 @@ use pseudolearn_abi::{
 
 impl Heap {
     pub fn reachable_cells(&self, roots: &[Handle]) -> Result<u64, MemoryError> {
-        self.reachable(roots)?
-            .handles
-            .iter()
-            .try_fold(0_u64, |total, handle| {
-                total
-                    .checked_add(self.block(*handle)?.cells)
-                    .ok_or(MemoryError::Resource)
-            })
+        self.marked_cells(&self.reachable(roots)?)
+    }
+
+    pub(super) fn marked_cells(&self, reachable: &MarkSet) -> Result<u64, MemoryError> {
+        reachable.handles.iter().try_fold(0_u64, |total, handle| {
+            total
+                .checked_add(self.block(*handle)?.cells)
+                .ok_or(MemoryError::Resource)
+        })
     }
 
     pub fn collect(&mut self, roots: &[Handle]) -> Result<(), MemoryError> {
         let reachable = self.reachable(roots)?;
+        self.collect_marked(reachable)
+    }
+
+    pub(super) fn collect_marked(&mut self, reachable: MarkSet) -> Result<(), MemoryError> {
+        #[cfg(feature = "telemetry")]
+        self.record(|statistics| statistics.collections = statistics.collections.saturating_add(1));
+        let live_cells = self.marked_cells(&reachable)?;
         let mut dead = Vec::new();
         for block in &self.blocks {
             if !reachable.contains(block.handle) && !self.is_literal(block.handle)? {
@@ -29,12 +37,16 @@ impl Heap {
             self.release_block(handle)?;
         }
         self.compact_text()?;
-        self.live_cells = self.reachable_cells(roots)?;
+        self.live_cells = live_cells;
         self.allocated_cells = 0;
         Ok(())
     }
 
-    fn reachable(&self, roots: &[Handle]) -> Result<MarkSet, MemoryError> {
+    pub(super) fn reachable(&self, roots: &[Handle]) -> Result<MarkSet, MemoryError> {
+        #[cfg(feature = "telemetry")]
+        self.record(|statistics| {
+            statistics.reachability_walks = statistics.reachability_walks.saturating_add(1)
+        });
         let mut marked = MarkSet::new(self.used)?;
         let mut pending = roots.to_vec();
         while let Some(handle) = pending.pop() {

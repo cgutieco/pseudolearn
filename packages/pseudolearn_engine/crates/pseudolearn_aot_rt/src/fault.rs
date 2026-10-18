@@ -13,6 +13,7 @@ pub struct SourceRange {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FaultSite {
+    pub lexeme: String,
     pub code: DiagnosticCode,
     pub range: SourceRange,
 }

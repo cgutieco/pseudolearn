@@ -121,6 +121,7 @@ fn lower_return(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
+    crate::cell_frames::leave(lowering)?;
     let offset = lowering.environment.layout.frame_depth;
     let context = lowering.context;
     let depth = lowering

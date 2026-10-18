@@ -1,0 +1,119 @@
+module Almacen es
+class Aleatorio { semilla: i64 }
+class Nodo { h0: obj<Nodo>, h1: obj<Nodo>, h2: obj<Nodo>, h3: obj<Nodo>, medida: i64 }
+func @Construir(%0: i64, %1: obj<Aleatorio>, %2: cell<i64>) -> obj<Nodo> {
+b0() mass 4:
+  stmt.enter @16:1-16:23
+  %3 = value.undefined obj<Nodo> @16:1-16:23
+  stmt.exit @16:1-16:23
+  stmt.enter @17:1-17:21
+  %4 = cell.load %2 @17:11-17:17
+  %5 = const.i64 1 @17:20-17:21
+  %6 = int.add %4, %5 @17:18-17:19
+  cell.store %2, %6 @17:1-17:21
+  stmt.exit @17:1-17:21
+  stmt.enter @18:1-18:21
+  %7 = object.new Nodo @18:9-18:21
+  %8 = value.require %7 @18:1-18:21
+  stmt.exit @18:1-18:21
+  stmt.enter @19:1-26:6
+  %9 = const.i64 1 @19:18-19:19
+  %10 = int.cmp eq, %0, %9 @19:16-19:17
+  decide.bool %10 @19:1-26:6
+  branch %10, b1(), b2()
+b1() mass 1:
+  stmt.enter @20:1-20:48
+  %11 = call @Aleatorio.siguiente(%1) @20:16-20:37
+  %12 = const.i64 10 @20:42-20:44
+  %13 = int.mod %11, %12 @20:38-20:41
+  %14 = const.i64 1 @20:47-20:48
+  %15 = int.add %13, %14 @20:45-20:46
+  object.store %8, medida, %15 @20:1-20:48
+  stmt.exit @20:1-20:48
+  jump b3()
+b2() mass 4:
+  stmt.enter @22:1-22:57
+  %16 = const.i64 1 @22:36-22:37
+  %17 = int.sub %0, %16 @22:34-22:35
+  %18 = call @Construir(%17, %1, %2) @22:12-22:57
+  object.store %8, h0, %18 @22:1-22:57
+  stmt.exit @22:1-22:57
+  stmt.enter @23:1-23:57
+  %19 = const.i64 1 @23:36-23:37
+  %20 = int.sub %0, %19 @23:34-23:35
+  %21 = call @Construir(%20, %1, %2) @23:12-23:57
+  object.store %8, h1, %21 @23:1-23:57
+  stmt.exit @23:1-23:57
+  stmt.enter @24:1-24:57
+  %22 = const.i64 1 @24:36-24:37
+  %23 = int.sub %0, %22 @24:34-24:35
+  %24 = call @Construir(%23, %1, %2) @24:12-24:57
+  object.store %8, h2, %24 @24:1-24:57
+  stmt.exit @24:1-24:57
+  stmt.enter @25:1-25:57
+  %25 = const.i64 1 @25:36-25:37
+  %26 = int.sub %0, %25 @25:34-25:35
+  %27 = call @Construir(%26, %1, %2) @25:12-25:57
+  object.store %8, h3, %27 @25:1-25:57
+  stmt.exit @25:1-25:57
+  jump b3()
+b3() mass 1:
+  stmt.exit @19:1-26:6
+  stmt.enter @27:1-27:14
+  stmt.exit @27:1-27:14
+  return %8 @27:1-27:14
+}
+func @main() -> unit {
+b0() mass 9:
+  stmt.enter @30:1-30:33
+  %0 = value.undefined obj<Aleatorio> @30:1-30:33
+  stmt.exit @30:1-30:33
+  stmt.enter @31:1-31:23
+  %1 = value.undefined obj<Nodo> @31:1-31:23
+  stmt.exit @31:1-31:23
+  stmt.enter @32:1-32:30
+  %2 = value.undefined i64 @32:1-32:30
+  %3 = cell.local i64 @32:1-32:30
+  stmt.exit @32:1-32:30
+  stmt.enter @33:1-33:7
+  %4 = in.read i64 @33:1-33:7
+  stmt.exit @33:1-33:7
+  stmt.enter @34:1-34:31
+  %5 = object.new Aleatorio @34:14-34:31
+  %6 = value.require %5 @34:1-34:31
+  stmt.exit @34:1-34:31
+  stmt.enter @35:1-35:27
+  %7 = const.i64 74755 @35:22-35:27
+  object.store %6, semilla, %7 @35:1-35:27
+  stmt.exit @35:1-35:27
+  stmt.enter @36:1-36:12
+  %8 = const.i64 0 @36:11-36:12
+  cell.store %3, %8 @36:1-36:12
+  stmt.exit @36:1-36:12
+  stmt.enter @37:1-37:40
+  %9 = call @Construir(%4, %6, %3) @37:9-37:40
+  %10 = value.require %9 @37:1-37:40
+  stmt.exit @37:1-37:40
+  stmt.enter @38:1-38:16
+  %11 = cell.load %3 @38:10-38:16
+  out.write %11, newline @38:1-38:16
+  stmt.exit @38:1-38:16
+  return @39:1-39:13
+}
+func @Aleatorio.siguiente(%0: obj<Aleatorio>) -> i64 {
+b0() mass 2:
+  stmt.enter @4:1-4:58
+  %1 = object.load %0, semilla @4:19-4:32
+  %2 = const.i64 1309 @4:34-4:38
+  %3 = int.mul %1, %2 @4:32-4:33
+  %4 = const.i64 13849 @4:42-4:47
+  %5 = int.add %3, %4 @4:40-4:41
+  %6 = const.i64 65536 @4:53-4:58
+  %7 = int.mod %5, %6 @4:49-4:52
+  object.store %0, semilla, %7 @4:1-4:58
+  stmt.exit @4:1-4:58
+  stmt.enter @5:1-5:22
+  %8 = object.load %0, semilla @5:10-5:22
+  stmt.exit @5:1-5:22
+  return %8 @5:1-5:22
+}

@@ -5,6 +5,7 @@ mod corpus;
 mod e06;
 mod execution;
 mod frontend;
+mod paired;
 mod robustness;
 mod workloads;
 
@@ -16,6 +17,13 @@ fn main() -> std::process::ExitCode {
         "e06-rss" => e06::rss_child(&std::env::args().nth(2).unwrap_or_default()),
         "robust" => robustness::collect(),
         "robust-child" => robustness::child(),
+        "paired-probe" => {
+            paired::diagnostics::collect(&std::env::args().nth(2).unwrap_or_default())
+        }
+        "paired-summary" => {
+            paired::summarize_existing(&std::env::args().nth(2).unwrap_or_default())
+        }
+        "paired" => paired::collect(&std::env::args().nth(2).unwrap_or_default()),
         "aot" => aot::collect(
             &std::env::args()
                 .nth(2)

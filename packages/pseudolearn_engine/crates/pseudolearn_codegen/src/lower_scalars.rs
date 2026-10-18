@@ -209,7 +209,7 @@ fn lower_character_from_code(
             .ins()
             .icmp_imm_s(IntCC::UnsignedLessThan, offset, SURROGATE_COUNT);
     let invalid = lowering.builder.ins().bor(out_of_range, surrogate);
-    guard_trap(lowering, invalid, "invalidCharacterCode", instruction.span)?;
+    crate::lowering::guard_character_trap(lowering, invalid, operand, instruction.span)?;
     let result = lowering.builder.ins().ireduce(types::I32, operand);
     bind_result(lowering, instruction, result);
     Ok(())

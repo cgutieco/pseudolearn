@@ -1,0 +1,5540 @@
+{
+  "normative": false,
+  "records": [
+    {
+      "inputs": [
+        "2000"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 1,
+        "cellLoadsInIr": 0,
+        "cellStoresInIr": 0,
+        "objectAllocationsInIr": 0,
+        "objectHash": "9edf2112baf25d1dc3d0e9d6325ae6dd278b5d2c"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 29875,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 60709,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 382708
+        },
+        {
+          "ceiling_nanoseconds": 8333,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 15584,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 313083
+        },
+        {
+          "ceiling_nanoseconds": 8208,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 15000,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 310125
+        },
+        {
+          "ceiling_nanoseconds": 7500,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 14459,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 307084
+        },
+        {
+          "ceiling_nanoseconds": 7250,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 13750,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306417
+        },
+        {
+          "ceiling_nanoseconds": 6917,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 13834,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306166
+        },
+        {
+          "ceiling_nanoseconds": 6958,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 13708,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 312458
+        },
+        {
+          "ceiling_nanoseconds": 7292,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 14625,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 622833
+        },
+        {
+          "ceiling_nanoseconds": 15916,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 42791,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 503125
+        },
+        {
+          "ceiling_nanoseconds": 8500,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 16042,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 310791
+        },
+        {
+          "ceiling_nanoseconds": 7917,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 14542,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305959
+        },
+        {
+          "ceiling_nanoseconds": 7417,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 13833,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 310500
+        },
+        {
+          "ceiling_nanoseconds": 7375,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 14125,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 308542
+        },
+        {
+          "ceiling_nanoseconds": 7042,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 14125,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306292
+        },
+        {
+          "ceiling_nanoseconds": 7084,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 13292,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 311083
+        },
+        {
+          "ceiling_nanoseconds": 8167,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 13333,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 309041
+        },
+        {
+          "ceiling_nanoseconds": 6959,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 13250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 311625
+        },
+        {
+          "ceiling_nanoseconds": 6709,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 13041,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305500
+        },
+        {
+          "ceiling_nanoseconds": 7708,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 13042,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 307084
+        },
+        {
+          "ceiling_nanoseconds": 6750,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 13042,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 461041
+        },
+        {
+          "ceiling_nanoseconds": 8250,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 15334,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306125
+        },
+        {
+          "ceiling_nanoseconds": 7792,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 14458,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305625
+        },
+        {
+          "ceiling_nanoseconds": 7416,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 13958,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306125
+        },
+        {
+          "ceiling_nanoseconds": 7167,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 13750,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 304917
+        },
+        {
+          "ceiling_nanoseconds": 7166,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 13625,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 307292
+        },
+        {
+          "ceiling_nanoseconds": 7167,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 13542,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305458
+        },
+        {
+          "ceiling_nanoseconds": 6958,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 13250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 306042
+        },
+        {
+          "ceiling_nanoseconds": 6834,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 13041,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305208
+        },
+        {
+          "ceiling_nanoseconds": 6750,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 13083,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 305583
+        },
+        {
+          "ceiling_nanoseconds": 6667,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 13000,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 10007,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 304959
+        }
+      ],
+      "workload": "sieve"
+    },
+    {
+      "inputs": [
+        "6"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 1,
+        "cellLoadsInIr": 9,
+        "cellStoresInIr": 1,
+        "objectAllocationsInIr": 0,
+        "objectHash": "8760a1cf4b4ccb9a6bea71aa9718a771e8d306d6"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 63958,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 205875,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2099625
+        },
+        {
+          "ceiling_nanoseconds": 41209,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 166458,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1994250
+        },
+        {
+          "ceiling_nanoseconds": 40750,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 165666,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1990041
+        },
+        {
+          "ceiling_nanoseconds": 40666,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 165291,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5193500
+        },
+        {
+          "ceiling_nanoseconds": 100167,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 345584,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5278667
+        },
+        {
+          "ceiling_nanoseconds": 100459,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 351250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4856209
+        },
+        {
+          "ceiling_nanoseconds": 41292,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 166041,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3188458
+        },
+        {
+          "ceiling_nanoseconds": 96417,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 346250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4899875
+        },
+        {
+          "ceiling_nanoseconds": 42666,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 167459,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1998250
+        },
+        {
+          "ceiling_nanoseconds": 41167,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 344792,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5226458
+        },
+        {
+          "ceiling_nanoseconds": 95917,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 346375,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3370500
+        },
+        {
+          "ceiling_nanoseconds": 41750,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 165459,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1992542
+        },
+        {
+          "ceiling_nanoseconds": 41291,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 164875,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1991709
+        },
+        {
+          "ceiling_nanoseconds": 41334,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 164250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2407833
+        },
+        {
+          "ceiling_nanoseconds": 42709,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 253208,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2529292
+        },
+        {
+          "ceiling_nanoseconds": 41958,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 164417,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4976416
+        },
+        {
+          "ceiling_nanoseconds": 96625,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 344542,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3603167
+        },
+        {
+          "ceiling_nanoseconds": 42875,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 224083,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2689791
+        },
+        {
+          "ceiling_nanoseconds": 66459,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 189334,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3059834
+        },
+        {
+          "ceiling_nanoseconds": 90916,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 302000,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2312209
+        },
+        {
+          "ceiling_nanoseconds": 41166,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 227833,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2725250
+        },
+        {
+          "ceiling_nanoseconds": 41666,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 164416,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3399208
+        },
+        {
+          "ceiling_nanoseconds": 96750,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 344625,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4197500
+        },
+        {
+          "ceiling_nanoseconds": 115583,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 190250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3875250
+        },
+        {
+          "ceiling_nanoseconds": 96083,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 349041,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5158042
+        },
+        {
+          "ceiling_nanoseconds": 97541,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 341875,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5092333
+        },
+        {
+          "ceiling_nanoseconds": 96083,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 339708,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4242333
+        },
+        {
+          "ceiling_nanoseconds": 96000,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 341250,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5098125
+        },
+        {
+          "ceiling_nanoseconds": 121542,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 338833,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2459042
+        },
+        {
+          "ceiling_nanoseconds": 41708,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 191791,
+          "telemetry": {
+            "allocations": 1,
+            "cellLoads": 40322,
+            "cellStores": 1,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 1,
+            "initializedWords": 27,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 1,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4618833
+        }
+      ],
+      "workload": "permute"
+    },
+    {
+      "inputs": [
+        "7"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 3,
+        "cellLoadsInIr": 12,
+        "cellStoresInIr": 3,
+        "objectAllocationsInIr": 0,
+        "objectHash": "6e6a57fef4be5f4cbf4908abb78fbcaa09775e8f"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 789208,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 176125,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 790167
+        },
+        {
+          "ceiling_nanoseconds": 27834,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 61708,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 587750
+        },
+        {
+          "ceiling_nanoseconds": 17416,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 56125,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 587375
+        },
+        {
+          "ceiling_nanoseconds": 12500,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 54333,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 583917
+        },
+        {
+          "ceiling_nanoseconds": 11667,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 53292,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 584041
+        },
+        {
+          "ceiling_nanoseconds": 9708,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 51917,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 584000
+        },
+        {
+          "ceiling_nanoseconds": 9292,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 51583,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1200500
+        },
+        {
+          "ceiling_nanoseconds": 25042,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 70000,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 780000
+        },
+        {
+          "ceiling_nanoseconds": 24709,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 82667,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1104708
+        },
+        {
+          "ceiling_nanoseconds": 21333,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 60417,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1404792
+        },
+        {
+          "ceiling_nanoseconds": 22042,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 53500,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 604083
+        },
+        {
+          "ceiling_nanoseconds": 15875,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 53125,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 585625
+        },
+        {
+          "ceiling_nanoseconds": 13167,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 51917,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 584458
+        },
+        {
+          "ceiling_nanoseconds": 11209,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 51625,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 583041
+        },
+        {
+          "ceiling_nanoseconds": 9875,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 50458,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 583500
+        },
+        {
+          "ceiling_nanoseconds": 9333,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 50083,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 583625
+        },
+        {
+          "ceiling_nanoseconds": 9083,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 49666,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1625750
+        },
+        {
+          "ceiling_nanoseconds": 24875,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 59500,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 993875
+        },
+        {
+          "ceiling_nanoseconds": 9667,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 59583,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1624792
+        },
+        {
+          "ceiling_nanoseconds": 44666,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 110292,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 3387209
+        },
+        {
+          "ceiling_nanoseconds": 44584,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 120792,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1631042
+        },
+        {
+          "ceiling_nanoseconds": 40000,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 117333,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1450791
+        },
+        {
+          "ceiling_nanoseconds": 37833,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 106375,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1439625
+        },
+        {
+          "ceiling_nanoseconds": 44084,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 110000,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1410333
+        },
+        {
+          "ceiling_nanoseconds": 39083,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 106417,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1316334
+        },
+        {
+          "ceiling_nanoseconds": 24750,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 59084,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 607417
+        },
+        {
+          "ceiling_nanoseconds": 96500,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 86000,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 847209
+        },
+        {
+          "ceiling_nanoseconds": 796750,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 150666,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1595875
+        },
+        {
+          "ceiling_nanoseconds": 45125,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 111250,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1444709
+        },
+        {
+          "ceiling_nanoseconds": 37583,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 106458,
+          "telemetry": {
+            "allocations": 3,
+            "cellLoads": 9146,
+            "cellStores": 3,
+            "cellsCreated": 3,
+            "collections": 0,
+            "heapGrowths": 3,
+            "initializedWords": 111,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 3,
+            "rootCellsScanned": 3
+          },
+          "vm_nanoseconds": 1229125
+        }
+      ],
+      "workload": "queens"
+    },
+    {
+      "inputs": [
+        "3"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 0,
+        "cellLoadsInIr": 2,
+        "cellStoresInIr": 2,
+        "objectAllocationsInIr": 2,
+        "objectHash": "08373cca11b12577d3c29ea7b623e98b1ea543b5"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 23333,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 37208,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 96625
+        },
+        {
+          "ceiling_nanoseconds": 750,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 3291,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 10333
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 3000,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 8833
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 2750,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 9750
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 2584,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7458
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 2625,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7375
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 2542,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7166
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 2667,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7208
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 3667,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7375
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 2667,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7125
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 2709,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7333
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 2750,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7250
+        },
+        {
+          "ceiling_nanoseconds": 375,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 2625,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 8583
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 2916,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7250
+        },
+        {
+          "ceiling_nanoseconds": 459,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 2666,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7167
+        },
+        {
+          "ceiling_nanoseconds": 459,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 2792,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7125
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 2667,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7333
+        },
+        {
+          "ceiling_nanoseconds": 500,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 2708,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7292
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 2542,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7167
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 3042,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7083
+        },
+        {
+          "ceiling_nanoseconds": 416,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 2583,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7125
+        },
+        {
+          "ceiling_nanoseconds": 416,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 2875,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7041
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 2583,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7292
+        },
+        {
+          "ceiling_nanoseconds": 416,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 2791,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7042
+        },
+        {
+          "ceiling_nanoseconds": 458,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 2541,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7000
+        },
+        {
+          "ceiling_nanoseconds": 375,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 2750,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7125
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 2542,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7334
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 2708,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 8333
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 2708,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7042
+        },
+        {
+          "ceiling_nanoseconds": 417,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 2792,
+          "telemetry": {
+            "allocations": 22,
+            "cellLoads": 22,
+            "cellStores": 22,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 22,
+            "initializedWords": 278,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 7166
+        }
+      ],
+      "workload": "storage"
+    },
+    {
+      "inputs": [
+        "4"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 0,
+        "cellLoadsInIr": 2,
+        "cellStoresInIr": 2,
+        "objectAllocationsInIr": 2,
+        "objectHash": "08373cca11b12577d3c29ea7b623e98b1ea543b5"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 25459,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 47750,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 117000
+        },
+        {
+          "ceiling_nanoseconds": 2584,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 9750,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 28792
+        },
+        {
+          "ceiling_nanoseconds": 1375,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 8667,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 24042
+        },
+        {
+          "ceiling_nanoseconds": 1291,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 8708,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 25459
+        },
+        {
+          "ceiling_nanoseconds": 1291,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 8167,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23583
+        },
+        {
+          "ceiling_nanoseconds": 1209,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 8417,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23667
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 8166,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23875
+        },
+        {
+          "ceiling_nanoseconds": 1291,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 9625,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23541
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 8708,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23625
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 8584,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 24000
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 9708,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23708
+        },
+        {
+          "ceiling_nanoseconds": 1292,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 9083,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23667
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 8916,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 24458
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 8958,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23459
+        },
+        {
+          "ceiling_nanoseconds": 1208,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 8959,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23209
+        },
+        {
+          "ceiling_nanoseconds": 1166,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 9458,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23208
+        },
+        {
+          "ceiling_nanoseconds": 1209,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 8916,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23375
+        },
+        {
+          "ceiling_nanoseconds": 1292,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 9125,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23292
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 8833,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23166
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 9541,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23333
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 9000,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23292
+        },
+        {
+          "ceiling_nanoseconds": 1208,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 9250,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23000
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 8792,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23500
+        },
+        {
+          "ceiling_nanoseconds": 1250,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 9166,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23250
+        },
+        {
+          "ceiling_nanoseconds": 1208,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 8708,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23333
+        },
+        {
+          "ceiling_nanoseconds": 1125,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 8916,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23291
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 8708,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23625
+        },
+        {
+          "ceiling_nanoseconds": 1125,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 9125,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 24542
+        },
+        {
+          "ceiling_nanoseconds": 1167,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 9000,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23625
+        },
+        {
+          "ceiling_nanoseconds": 1208,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 9125,
+          "telemetry": {
+            "allocations": 86,
+            "cellLoads": 86,
+            "cellStores": 86,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 86,
+            "initializedWords": 1110,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 23583
+        }
+      ],
+      "workload": "storage"
+    },
+    {
+      "inputs": [
+        "5"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 0,
+        "cellLoadsInIr": 2,
+        "cellStoresInIr": 2,
+        "objectAllocationsInIr": 2,
+        "objectHash": "08373cca11b12577d3c29ea7b623e98b1ea543b5"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 44292,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 94292,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 189541
+        },
+        {
+          "ceiling_nanoseconds": 5458,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 32042,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 93084
+        },
+        {
+          "ceiling_nanoseconds": 5375,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 29959,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 90500
+        },
+        {
+          "ceiling_nanoseconds": 6417,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 30500,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 91625
+        },
+        {
+          "ceiling_nanoseconds": 4958,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 30833,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 90000
+        },
+        {
+          "ceiling_nanoseconds": 5208,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 30583,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 89792
+        },
+        {
+          "ceiling_nanoseconds": 4000,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 30458,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 111084
+        },
+        {
+          "ceiling_nanoseconds": 4875,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 30709,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 89959
+        },
+        {
+          "ceiling_nanoseconds": 4417,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 32041,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 90792
+        },
+        {
+          "ceiling_nanoseconds": 4750,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 31042,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 89209
+        },
+        {
+          "ceiling_nanoseconds": 4167,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 32959,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 89042
+        },
+        {
+          "ceiling_nanoseconds": 4708,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 34792,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 88375
+        },
+        {
+          "ceiling_nanoseconds": 4291,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 33042,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1257959
+        },
+        {
+          "ceiling_nanoseconds": 22416,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 90292,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 247833
+        },
+        {
+          "ceiling_nanoseconds": 10833,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 80750,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 226542
+        },
+        {
+          "ceiling_nanoseconds": 10666,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 94917,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 230291
+        },
+        {
+          "ceiling_nanoseconds": 10291,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 82625,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 363000
+        },
+        {
+          "ceiling_nanoseconds": 16000,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 99333,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 235459
+        },
+        {
+          "ceiling_nanoseconds": 9792,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 97167,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 219834
+        },
+        {
+          "ceiling_nanoseconds": 9667,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 81708,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 266917
+        },
+        {
+          "ceiling_nanoseconds": 5542,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 35625,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 92916
+        },
+        {
+          "ceiling_nanoseconds": 4584,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 35458,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 89583
+        },
+        {
+          "ceiling_nanoseconds": 4250,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 32625,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 100458
+        },
+        {
+          "ceiling_nanoseconds": 4208,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 35000,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 91208
+        },
+        {
+          "ceiling_nanoseconds": 4208,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 32541,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 91375
+        },
+        {
+          "ceiling_nanoseconds": 4958,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 36750,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 113333
+        },
+        {
+          "ceiling_nanoseconds": 4125,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 33708,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 90875
+        },
+        {
+          "ceiling_nanoseconds": 4458,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 35083,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 93042
+        },
+        {
+          "ceiling_nanoseconds": 4250,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 32291,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 92541
+        },
+        {
+          "ceiling_nanoseconds": 4916,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 46666,
+          "telemetry": {
+            "allocations": 342,
+            "cellLoads": 342,
+            "cellStores": 342,
+            "cellsCreated": 1,
+            "collections": 0,
+            "heapGrowths": 342,
+            "initializedWords": 4438,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 104292
+        }
+      ],
+      "workload": "storage"
+    },
+    {
+      "inputs": [
+        "6"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 0,
+        "cellLoadsInIr": 2,
+        "cellStoresInIr": 2,
+        "objectAllocationsInIr": 2,
+        "objectHash": "08373cca11b12577d3c29ea7b623e98b1ea543b5"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 46125,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 326042,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 638459
+        },
+        {
+          "ceiling_nanoseconds": 11417,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 226541,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 461042
+        },
+        {
+          "ceiling_nanoseconds": 59375,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 255042,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1249250
+        },
+        {
+          "ceiling_nanoseconds": 48959,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 583875,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1147083
+        },
+        {
+          "ceiling_nanoseconds": 26333,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 519125,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1083875
+        },
+        {
+          "ceiling_nanoseconds": 32833,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 557625,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1662083
+        },
+        {
+          "ceiling_nanoseconds": 28375,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 831666,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1130959
+        },
+        {
+          "ceiling_nanoseconds": 25542,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 565875,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 538084
+        },
+        {
+          "ceiling_nanoseconds": 11000,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 212333,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 438375
+        },
+        {
+          "ceiling_nanoseconds": 10209,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 223084,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 433167
+        },
+        {
+          "ceiling_nanoseconds": 10875,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 201291,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 586917
+        },
+        {
+          "ceiling_nanoseconds": 11083,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 262042,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 430125
+        },
+        {
+          "ceiling_nanoseconds": 28667,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 847292,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1093000
+        },
+        {
+          "ceiling_nanoseconds": 27833,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 530166,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1059291
+        },
+        {
+          "ceiling_nanoseconds": 19500,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 514792,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 2498708
+        },
+        {
+          "ceiling_nanoseconds": 12125,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 212042,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 437333
+        },
+        {
+          "ceiling_nanoseconds": 10375,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 207625,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 438041
+        },
+        {
+          "ceiling_nanoseconds": 10250,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 257459,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 441292
+        },
+        {
+          "ceiling_nanoseconds": 9917,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 209292,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 440000
+        },
+        {
+          "ceiling_nanoseconds": 9959,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 276167,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 440167
+        },
+        {
+          "ceiling_nanoseconds": 10042,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 206917,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 439750
+        },
+        {
+          "ceiling_nanoseconds": 9875,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 256500,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 507208
+        },
+        {
+          "ceiling_nanoseconds": 13291,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 1382292,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 490250
+        },
+        {
+          "ceiling_nanoseconds": 10667,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 208750,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 440375
+        },
+        {
+          "ceiling_nanoseconds": 9667,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 256875,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 683292
+        },
+        {
+          "ceiling_nanoseconds": 40584,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 523958,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 625250
+        },
+        {
+          "ceiling_nanoseconds": 10500,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 211375,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 439375
+        },
+        {
+          "ceiling_nanoseconds": 10042,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 256042,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 435584
+        },
+        {
+          "ceiling_nanoseconds": 26709,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 4669958,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 1336542
+        },
+        {
+          "ceiling_nanoseconds": 25750,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 3477917,
+          "telemetry": {
+            "allocations": 1366,
+            "cellLoads": 1366,
+            "cellStores": 1366,
+            "cellsCreated": 1,
+            "collections": 1,
+            "heapGrowths": 1366,
+            "initializedWords": 17750,
+            "layoutCopies": 0,
+            "reachabilityWalks": 3,
+            "rootBuilds": 1,
+            "rootCellsScanned": 1
+          },
+          "vm_nanoseconds": 506291
+        }
+      ],
+      "workload": "storage"
+    },
+    {
+      "inputs": [
+        "30"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 0,
+        "cellLoadsInIr": 0,
+        "cellStoresInIr": 0,
+        "objectAllocationsInIr": 0,
+        "objectHash": "4fd01a46a40d39f78176539230edacfebac36695"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 202583,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 300833,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3130791
+        },
+        {
+          "ceiling_nanoseconds": 179542,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 279708,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3001125
+        },
+        {
+          "ceiling_nanoseconds": 174333,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 275667,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2982666
+        },
+        {
+          "ceiling_nanoseconds": 171584,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 274541,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2980834
+        },
+        {
+          "ceiling_nanoseconds": 171084,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 274292,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3228709
+        },
+        {
+          "ceiling_nanoseconds": 179583,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 279834,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2978917
+        },
+        {
+          "ceiling_nanoseconds": 175333,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 276166,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2981625
+        },
+        {
+          "ceiling_nanoseconds": 171958,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 275333,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2982750
+        },
+        {
+          "ceiling_nanoseconds": 170875,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 305584,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2983625
+        },
+        {
+          "ceiling_nanoseconds": 170750,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 273917,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4999125
+        },
+        {
+          "ceiling_nanoseconds": 171291,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 274500,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2987750
+        },
+        {
+          "ceiling_nanoseconds": 170958,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 274291,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 6432667
+        },
+        {
+          "ceiling_nanoseconds": 265875,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 398042,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3347833
+        },
+        {
+          "ceiling_nanoseconds": 180542,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 282333,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2985042
+        },
+        {
+          "ceiling_nanoseconds": 240333,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 361958,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2996125
+        },
+        {
+          "ceiling_nanoseconds": 178458,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 278291,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2986334
+        },
+        {
+          "ceiling_nanoseconds": 172291,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 274875,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3580833
+        },
+        {
+          "ceiling_nanoseconds": 264667,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 399833,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4008250
+        },
+        {
+          "ceiling_nanoseconds": 178208,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 278875,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2983708
+        },
+        {
+          "ceiling_nanoseconds": 173916,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 276750,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5378625
+        },
+        {
+          "ceiling_nanoseconds": 178834,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 279916,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 5189958
+        },
+        {
+          "ceiling_nanoseconds": 178458,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 280584,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2982000
+        },
+        {
+          "ceiling_nanoseconds": 174083,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 276125,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2982667
+        },
+        {
+          "ceiling_nanoseconds": 171333,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 274709,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4496750
+        },
+        {
+          "ceiling_nanoseconds": 288250,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 397292,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2985792
+        },
+        {
+          "ceiling_nanoseconds": 176750,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 280167,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 4076250
+        },
+        {
+          "ceiling_nanoseconds": 177500,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 278291,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2989667
+        },
+        {
+          "ceiling_nanoseconds": 172000,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 275542,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2984125
+        },
+        {
+          "ceiling_nanoseconds": 170875,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 274333,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 3582750
+        },
+        {
+          "ceiling_nanoseconds": 264500,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 345375,
+          "telemetry": {
+            "allocations": 0,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 0,
+            "initializedWords": 0,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 0,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 2983459
+        }
+      ],
+      "workload": "mandelbrot"
+    },
+    {
+      "inputs": [
+        "100"
+      ],
+      "inspection": {
+        "arrayAllocationsInIr": 7,
+        "cellLoadsInIr": 0,
+        "cellStoresInIr": 0,
+        "objectAllocationsInIr": 0,
+        "objectHash": "5ebb268a4413fe5c57fe58283bd3b77956f12fd4"
+      },
+      "pairs": [
+        {
+          "ceiling_nanoseconds": 33125,
+          "iteration": 0,
+          "native_first": true,
+          "native_nanoseconds": 88834,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1076208
+        },
+        {
+          "ceiling_nanoseconds": 11291,
+          "iteration": 1,
+          "native_first": false,
+          "native_nanoseconds": 46125,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 947917
+        },
+        {
+          "ceiling_nanoseconds": 10916,
+          "iteration": 2,
+          "native_first": true,
+          "native_nanoseconds": 44834,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 946917
+        },
+        {
+          "ceiling_nanoseconds": 10750,
+          "iteration": 3,
+          "native_first": false,
+          "native_nanoseconds": 44584,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 949083
+        },
+        {
+          "ceiling_nanoseconds": 10875,
+          "iteration": 4,
+          "native_first": true,
+          "native_nanoseconds": 44583,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 950125
+        },
+        {
+          "ceiling_nanoseconds": 10833,
+          "iteration": 5,
+          "native_first": false,
+          "native_nanoseconds": 44625,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1125250
+        },
+        {
+          "ceiling_nanoseconds": 12417,
+          "iteration": 6,
+          "native_first": true,
+          "native_nanoseconds": 94583,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 958000
+        },
+        {
+          "ceiling_nanoseconds": 10875,
+          "iteration": 7,
+          "native_first": false,
+          "native_nanoseconds": 45208,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1599000
+        },
+        {
+          "ceiling_nanoseconds": 37708,
+          "iteration": 8,
+          "native_first": true,
+          "native_nanoseconds": 126416,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1834583
+        },
+        {
+          "ceiling_nanoseconds": 31125,
+          "iteration": 9,
+          "native_first": false,
+          "native_nanoseconds": 117875,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1833625
+        },
+        {
+          "ceiling_nanoseconds": 31792,
+          "iteration": 10,
+          "native_first": true,
+          "native_nanoseconds": 118208,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1835500
+        },
+        {
+          "ceiling_nanoseconds": 32375,
+          "iteration": 11,
+          "native_first": false,
+          "native_nanoseconds": 119833,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1820750
+        },
+        {
+          "ceiling_nanoseconds": 11875,
+          "iteration": 12,
+          "native_first": true,
+          "native_nanoseconds": 47208,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 955708
+        },
+        {
+          "ceiling_nanoseconds": 10875,
+          "iteration": 13,
+          "native_first": false,
+          "native_nanoseconds": 44708,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 955584
+        },
+        {
+          "ceiling_nanoseconds": 10833,
+          "iteration": 14,
+          "native_first": true,
+          "native_nanoseconds": 44542,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 956792
+        },
+        {
+          "ceiling_nanoseconds": 10708,
+          "iteration": 15,
+          "native_first": false,
+          "native_nanoseconds": 44500,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 955875
+        },
+        {
+          "ceiling_nanoseconds": 10791,
+          "iteration": 16,
+          "native_first": true,
+          "native_nanoseconds": 44292,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 956000
+        },
+        {
+          "ceiling_nanoseconds": 10750,
+          "iteration": 17,
+          "native_first": false,
+          "native_nanoseconds": 44375,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 956000
+        },
+        {
+          "ceiling_nanoseconds": 10708,
+          "iteration": 18,
+          "native_first": true,
+          "native_nanoseconds": 44334,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 955542
+        },
+        {
+          "ceiling_nanoseconds": 10584,
+          "iteration": 19,
+          "native_first": false,
+          "native_nanoseconds": 44250,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 955500
+        },
+        {
+          "ceiling_nanoseconds": 10666,
+          "iteration": 20,
+          "native_first": true,
+          "native_nanoseconds": 44250,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 954958
+        },
+        {
+          "ceiling_nanoseconds": 10708,
+          "iteration": 21,
+          "native_first": false,
+          "native_nanoseconds": 44375,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 1009791
+        },
+        {
+          "ceiling_nanoseconds": 11125,
+          "iteration": 22,
+          "native_first": true,
+          "native_nanoseconds": 45583,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944875
+        },
+        {
+          "ceiling_nanoseconds": 10708,
+          "iteration": 23,
+          "native_first": false,
+          "native_nanoseconds": 44334,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944458
+        },
+        {
+          "ceiling_nanoseconds": 10709,
+          "iteration": 24,
+          "native_first": true,
+          "native_nanoseconds": 44292,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944042
+        },
+        {
+          "ceiling_nanoseconds": 10625,
+          "iteration": 25,
+          "native_first": false,
+          "native_nanoseconds": 44292,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944250
+        },
+        {
+          "ceiling_nanoseconds": 10833,
+          "iteration": 26,
+          "native_first": true,
+          "native_nanoseconds": 44166,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944500
+        },
+        {
+          "ceiling_nanoseconds": 10625,
+          "iteration": 27,
+          "native_first": false,
+          "native_nanoseconds": 44333,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944500
+        },
+        {
+          "ceiling_nanoseconds": 10666,
+          "iteration": 28,
+          "native_first": true,
+          "native_nanoseconds": 44250,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 944125
+        },
+        {
+          "ceiling_nanoseconds": 10667,
+          "iteration": 29,
+          "native_first": false,
+          "native_nanoseconds": 44292,
+          "telemetry": {
+            "allocations": 7,
+            "cellLoads": 0,
+            "cellStores": 0,
+            "cellsCreated": 0,
+            "collections": 0,
+            "heapGrowths": 7,
+            "initializedWords": 105,
+            "layoutCopies": 0,
+            "reachabilityWalks": 0,
+            "rootBuilds": 7,
+            "rootCellsScanned": 0
+          },
+          "vm_nanoseconds": 943792
+        }
+      ],
+      "workload": "nbody"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ publish = false
 workspace = true
 
 [dependencies]
-pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0" }
+pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0", features = ["native"] }
 pseudolearn_bytecode = { path = "../pseudolearn_bytecode", version = "=0.1.0" }
 pseudolearn_timeline = { path = "../pseudolearn_timeline", version = "=0.1.0" }
 pseudolearn_vm = { path = "../pseudolearn_vm", version = "=0.1.0" }

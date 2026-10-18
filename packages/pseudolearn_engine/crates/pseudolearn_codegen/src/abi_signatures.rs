@@ -33,6 +33,8 @@ pub(crate) enum Entry {
     ArrayStore,
     ObjectLoad,
     ObjectStore,
+    CellMark,
+    CellRelease,
     CellLocal,
     CellElement,
     CellField,
@@ -108,6 +110,8 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
         "rt_aot_object_store",
         &[Slot::Word32, Slot::Address],
     ),
+    (Entry::CellMark, "rt_aot_cell_mark", NO_OPERANDS),
+    (Entry::CellRelease, "rt_aot_cell_release", ONE_WORD32),
     (Entry::CellLocal, "rt_aot_cell_local", ONE_WORD32),
     (
         Entry::CellElement,
