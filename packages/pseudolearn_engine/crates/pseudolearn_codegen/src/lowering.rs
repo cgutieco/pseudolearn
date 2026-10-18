@@ -1,14 +1,18 @@
 #![forbid(unsafe_code)]
 
-use crate::abi_signatures::RuntimeRefs;
+use crate::abi_signatures::{Entry, RuntimeRefs};
+use crate::class_table::ClassTable;
 use crate::context_layout::ContextLayout;
+use crate::definition::Definition;
 use crate::error::CodegenError;
 use crate::fault_table::FaultTable;
 use crate::type_mapping::{clif_type, zero_value};
-use cranelift_codegen::ir::{Block, FuncRef, InstBuilder, Value, types};
+use cranelift_codegen::ir::{Block, FuncRef, GlobalValue, InstBuilder, Value, types};
 use cranelift_codegen::isa::TargetFrontendConfig;
 use cranelift_frontend::FunctionBuilder;
-use pseudolearn_ir::{BlockId, Function, IrSpan, Module, Operand, Operation, ValueId};
+use pseudolearn_ir::{
+    BlockId, Function, InstructionId, IrSpan, IrType, Module, Operand, Operation, ValueId,
+};
 use std::collections::HashMap;
 
 pub(crate) struct FunctionEnvironment<'program> {
@@ -17,9 +21,12 @@ pub(crate) struct FunctionEnvironment<'program> {
     pub(crate) runtime: RuntimeRefs,
     pub(crate) callees: Vec<FuncRef>,
     pub(crate) frontend: TargetFrontendConfig,
+    pub(crate) literals: HashMap<String, GlobalValue>,
+    pub(crate) classes: &'program ClassTable,
 }
 
 pub(crate) struct Instruction<'program> {
+    pub(crate) identifier: InstructionId,
     pub(crate) operation: Operation,
     pub(crate) operands: &'program [Operand],
     pub(crate) result: Option<ValueId>,
@@ -36,6 +43,9 @@ pub(crate) struct Lowering<'func, 'program> {
     pub(crate) blocks: HashMap<BlockId, Block>,
     pub(crate) cold_blocks: Vec<(Block, u32)>,
     pub(crate) propagate_block: Option<Block>,
+    pub(crate) types: HashMap<ValueId, IrType>,
+    pub(crate) definitions: HashMap<ValueId, Definition>,
+    pub(crate) live_roots: HashMap<InstructionId, Vec<ValueId>>,
 }
 
 pub(crate) fn operand_value(
@@ -128,8 +138,8 @@ pub(crate) fn emit_return_zero(lowering: &mut Lowering<'_, '_>) {
     }
 }
 
-pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) {
-    let fault = lowering.environment.runtime.fault;
+pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) -> Result<(), CodegenError> {
+    let fault = lowering.environment.runtime.get(Entry::Fault)?;
     for (block, site) in std::mem::take(&mut lowering.cold_blocks) {
         lowering.builder.switch_to_block(block);
         let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
@@ -143,4 +153,16 @@ pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) {
         lowering.builder.switch_to_block(block);
         emit_return_zero(lowering);
     }
+    Ok(())
+}
+
+pub(crate) fn trap_and_continue(
+    lowering: &mut Lowering<'_, '_>,
+    code_name: &'static str,
+    span: Option<IrSpan>,
+) -> Result<(), CodegenError> {
+    jump_to_trap(lowering, code_name, span)?;
+    let unreachable = lowering.builder.create_block();
+    lowering.builder.switch_to_block(unreachable);
+    Ok(())
 }

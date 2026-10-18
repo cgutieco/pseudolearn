@@ -1,10 +1,11 @@
 #![forbid(unsafe_code)]
 
+use crate::definition::flag_of;
 use crate::error::CodegenError;
 use crate::lowering::{Instruction, Lowering, guard_trap, jump_to_trap, operand_value};
 use cranelift_codegen::ir::condcodes::IntCC;
 use cranelift_codegen::ir::{Block, BlockArg, InstBuilder, MemFlagsData, types};
-use pseudolearn_ir::{BlockId, Operand, Operation, ValueId};
+use pseudolearn_ir::{BlockId, IrType, Operand, Operation, ValueId};
 
 pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::StmtEnter,
@@ -43,7 +44,7 @@ pub(crate) fn lower(
 }
 
 fn target_of(
-    lowering: &Lowering<'_, '_>,
+    lowering: &mut Lowering<'_, '_>,
     operand: Option<&Operand>,
 ) -> Result<(Block, Vec<BlockArg>), CodegenError> {
     let Some(Operand::BlockTarget {
@@ -53,10 +54,8 @@ fn target_of(
     else {
         return Err(CodegenError::InvalidModule("branch without block target"));
     };
-    Ok((
-        block_of(lowering, *target_block)?,
-        block_arguments(lowering, arguments),
-    ))
+    let block = block_of(lowering, *target_block)?;
+    Ok((block, block_arguments(lowering, *target_block, arguments)))
 }
 
 fn block_of(lowering: &Lowering<'_, '_>, identifier: BlockId) -> Result<Block, CodegenError> {
@@ -67,12 +66,27 @@ fn block_of(lowering: &Lowering<'_, '_>, identifier: BlockId) -> Result<Block, C
         .ok_or(CodegenError::InvalidModule("unknown block target"))
 }
 
-fn block_arguments(lowering: &Lowering<'_, '_>, arguments: &[ValueId]) -> Vec<BlockArg> {
-    arguments
+fn block_arguments(
+    lowering: &mut Lowering<'_, '_>,
+    target: BlockId,
+    arguments: &[ValueId],
+) -> Vec<BlockArg> {
+    let function = lowering.function;
+    let mut passed: Vec<BlockArg> = arguments
         .iter()
         .filter_map(|identifier| lowering.values.get(identifier))
         .map(|value| BlockArg::Value(*value))
-        .collect()
+        .collect();
+    let parameters = function
+        .block(target)
+        .map(|block| block.parameters.as_slice())
+        .unwrap_or_default();
+    for ((_, parameter_type), source) in parameters.iter().zip(arguments) {
+        if *parameter_type == IrType::I64 {
+            passed.push(BlockArg::Value(flag_of(lowering, *source)));
+        }
+    }
+    passed
 }
 
 fn lower_jump(

@@ -1,5 +1,29 @@
 use pseudolearn_aot_rt::*;
+use std::cell::RefCell;
 use std::io::Cursor;
+use std::rc::Rc;
+
+struct Capture(Rc<RefCell<Vec<u8>>>);
+
+impl std::io::Write for Capture {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        self.0.borrow_mut().extend_from_slice(bytes);
+        Ok(bytes.len())
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        Ok(())
+    }
+}
+
+fn parse_class(line: &str) -> ClassDescriptor {
+    let mut fields = line.split(',');
+    let dense = fields.next() == Some("1");
+    ClassDescriptor {
+        fields: fields.filter(|text| !text.is_empty()).map(|text| text.parse().unwrap()).collect(),
+        dense,
+    }
+}
 
 unsafe extern "C" {
 @@DECLARATIONS@@
@@ -25,9 +49,11 @@ fn main() {
     let function: usize = arguments[2].parse().unwrap();
     let frames: u32 = arguments[3].parse().unwrap();
     let budget: i64 = arguments[4].parse().unwrap();
+    let cells: u64 = std::env::var("PL_CELLS").ok().and_then(|text| text.parse().ok()).unwrap_or(1 << 22);
     let limits = AotLimits {
         frames,
         instruction_units: u64::try_from(budget).ok(),
+        cells,
         ..AotLimits::default()
     };
     let config = AotConfig {
@@ -38,11 +64,18 @@ fn main() {
             falsity: "false".to_owned(),
         },
     };
+    let input = std::env::var("PL_INPUT").unwrap_or_default().replace("\\n", "\n");
+    let output = Rc::new(RefCell::new(Vec::new()));
     let streams = AotStreams {
-        input: Box::new(Cursor::new(Vec::new())),
-        output: Box::new(std::io::sink()),
+        input: Box::new(Cursor::new(input.into_bytes())),
+        output: Box::new(Capture(output.clone())),
     };
     let mut session = AotSession::new(config, sites, streams);
+    let classes_path = std::path::Path::new(&arguments[1]).with_file_name("classes.txt");
+    let classes_text = std::fs::read_to_string(classes_path).unwrap_or_default();
+    for (index, line) in classes_text.lines().enumerate() {
+        session.engine_mut().register_class(index as u32, &parse_class(line)).unwrap();
+    }
     let context = session.context_pointer();
     let value = match function {
 @@DISPATCH@@
@@ -52,7 +85,7 @@ fn main() {
     let code = record.and_then(|entry| entry.code).map(|code| code.as_str().to_owned());
     let range = record.map(|entry| entry.range).unwrap_or_default();
     println!(
-        "status={}|value={}|code={}|range={}:{}-{}:{}|depth={}|remaining={}",
+        "status={}|value={}|code={}|range={}:{}-{}:{}|depth={}|remaining={}|output={}",
         session.context().fault_status,
         value,
         code.unwrap_or_default(),
@@ -62,5 +95,6 @@ fn main() {
         range.end_column,
         session.context().frame_depth,
         session.context().instruction_remaining,
+        output.borrow().iter().map(|byte| format!("{byte:02x}")).collect::<String>(),
     );
 }

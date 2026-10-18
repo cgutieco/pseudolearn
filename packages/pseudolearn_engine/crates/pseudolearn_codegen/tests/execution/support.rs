@@ -14,6 +14,7 @@ pub enum Kind {
     Real,
     Boolean,
     Character,
+    Handle,
     Unit,
 }
 
@@ -23,7 +24,7 @@ impl Kind {
             Self::Integer => "i64",
             Self::Real => "f64",
             Self::Boolean => "u8",
-            Self::Character => "u32",
+            Self::Character | Self::Handle => "u32",
             Self::Unit => "()",
         }
     }
@@ -39,6 +40,8 @@ pub struct Call {
     pub frames: u32,
     pub budget: Option<u64>,
     pub arguments: Vec<String>,
+    pub input: String,
+    pub cells: Option<u64>,
 }
 
 impl Call {
@@ -48,6 +51,8 @@ impl Call {
             frames: 1_000,
             budget: None,
             arguments: arguments.iter().map(|text| (*text).to_owned()).collect(),
+            input: String::new(),
+            cells: None,
         }
     }
 }
@@ -60,6 +65,7 @@ pub struct Outcome {
     pub range: String,
     pub depth: u32,
     pub remaining: i64,
+    pub output: String,
 }
 
 pub struct Harness {
@@ -73,8 +79,13 @@ pub fn failure(error: impl std::fmt::Display) -> Failure {
     error.to_string()
 }
 
-pub fn build_object(module_text: &str) -> Result<CompiledObject, Failure> {
-    let module = parse_module(module_text).map_err(failure)?;
+pub type Patch = fn(&mut pseudolearn_ir::Module);
+
+pub fn no_patch(_: &mut pseudolearn_ir::Module) {}
+
+pub fn build_object_with(module_text: &str, patch: Patch) -> Result<CompiledObject, Failure> {
+    let mut module = parse_module(module_text).map_err(failure)?;
+    patch(&mut module);
     compile_module_to_object(&module, &TargetConfig::host()).map_err(failure)
 }
 
@@ -146,6 +157,17 @@ fn dispatch(signatures: &[Signature]) -> String {
     text
 }
 
+fn class_lines(compiled: &CompiledObject) -> String {
+    compiled
+        .classes
+        .iter()
+        .map(|class| {
+            let fields: Vec<String> = class.fields.iter().map(u32::to_string).collect();
+            format!("{},{}\n", u8::from(class.dense), fields.join(","))
+        })
+        .collect()
+}
+
 fn site_lines(compiled: &CompiledObject) -> String {
     compiled
         .fault_sites
@@ -163,12 +185,16 @@ fn site_lines(compiled: &CompiledObject) -> String {
         .collect()
 }
 
-pub fn build_harness(module_text: &str, signatures: &[Signature]) -> Result<Harness, Failure> {
-    let compiled = build_object(module_text)?;
+pub fn build_harness(
+    module_text: &str,
+    (signatures, patch): (&[Signature], Patch),
+) -> Result<Harness, Failure> {
+    let compiled = build_object_with(module_text, patch)?;
     let directory = work_directory()?;
     let object = directory.join("program.o");
     std::fs::write(&object, &compiled.bytes).map_err(failure)?;
     std::fs::write(directory.join("sites.txt"), site_lines(&compiled)).map_err(failure)?;
+    std::fs::write(directory.join("classes.txt"), class_lines(&compiled)).map_err(failure)?;
     let source = include_str!("harness.template")
         .replace("@@DECLARATIONS@@", &declarations(signatures))
         .replace("@@DISPATCH@@", &dispatch(signatures));
@@ -225,6 +251,11 @@ impl Harness {
             .arg(call.frames.to_string())
             .arg(budget.to_string())
             .args(&call.arguments)
+            .env("PL_INPUT", call.input.replace('\n', "\\n"))
+            .env(
+                "PL_CELLS",
+                call.cells.map_or(String::new(), |cells| cells.to_string()),
+            )
             .output()
             .map_err(failure)?;
         if !output.status.success() {
@@ -236,6 +267,18 @@ impl Harness {
         }
         parse_outcome(&String::from_utf8_lossy(&output.stdout))
     }
+}
+
+fn decode_hex(text: &str) -> Result<String, Failure> {
+    let bytes = text
+        .as_bytes()
+        .chunks(2)
+        .map(|pair| {
+            let digits = std::str::from_utf8(pair).map_err(failure)?;
+            u8::from_str_radix(digits, 16).map_err(failure)
+        })
+        .collect::<Result<Vec<u8>, Failure>>()?;
+    String::from_utf8(bytes).map_err(failure)
 }
 
 fn parse_outcome(line: &str) -> Result<Outcome, Failure> {
@@ -253,6 +296,7 @@ fn parse_outcome(line: &str) -> Result<Outcome, Failure> {
         range: field("range"),
         depth: field("depth").parse().map_err(failure)?,
         remaining: field("remaining").parse().map_err(failure)?,
+        output: decode_hex(&field("output"))?,
     })
 }
 
@@ -261,7 +305,15 @@ pub fn shared(
     module_text: &str,
     signatures: &[Signature],
 ) -> Result<&'static Harness, Failure> {
-    cell.get_or_init(|| build_harness(module_text, signatures))
+    shared_with(cell, module_text, (signatures, no_patch))
+}
+
+pub fn shared_with(
+    cell: &'static std::sync::OnceLock<Result<Harness, Failure>>,
+    module_text: &str,
+    configuration: (&[Signature], Patch),
+) -> Result<&'static Harness, Failure> {
+    cell.get_or_init(|| build_harness(module_text, configuration))
         .as_ref()
         .map_err(Clone::clone)
 }

@@ -75,13 +75,28 @@ pub extern "C" fn rt_aot_text_compare(
     right: u64,
 ) -> u32 {
     run_entry(context, site, |entry| {
-        let ordering = compare_text(&entry.engine.heap, handle_of(left)?, handle_of(right)?)?;
+        let ordering = compare_parts(entry, operand(left)?, operand(right)?)?;
         let sign: i64 = match ordering {
             Ordering::Less => -1,
             Ordering::Equal => 0,
             Ordering::Greater => 1,
         };
         Ok(u64::from_ne_bytes(sign.to_ne_bytes()))
+    })
+}
+
+fn compare_parts(entry: &Entry<'_>, left: TextPart, right: TextPart) -> Result<Ordering, Trap> {
+    let heap = &entry.engine.heap;
+    let mut buffer = [0_u8; 4];
+    Ok(match (left, right) {
+        (TextPart::Text(first), TextPart::Text(second)) => compare_text(heap, first, second)?,
+        (TextPart::Character(first), TextPart::Character(second)) => first.cmp(&second),
+        (TextPart::Text(first), TextPart::Character(second)) => {
+            text_content(heap, first)?.cmp(&*second.encode_utf8(&mut buffer))
+        }
+        (TextPart::Character(first), TextPart::Text(second)) => {
+            (*first.encode_utf8(&mut buffer)).cmp(text_content(heap, second)?)
+        }
     })
 }
 

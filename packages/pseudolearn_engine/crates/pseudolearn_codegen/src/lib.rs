@@ -1,23 +1,39 @@
 #![forbid(unsafe_code)]
 
 mod abi_signatures;
+mod array_fast_path;
 mod block_accounting;
 mod block_order;
+mod class_table;
 mod context_layout;
+mod definition;
 mod error;
 mod fault_table;
 mod function_compiler;
+mod inline_memory;
 mod instruction_dispatch;
+mod liveness;
 mod lower_arithmetic;
+mod lower_arrays;
 mod lower_calls;
+mod lower_cells;
 mod lower_control;
+mod lower_io;
+mod lower_math;
+mod lower_objects;
 mod lower_real;
 mod lower_scalars;
+mod lower_text;
+mod lower_virtual;
 mod lowering;
 mod object_emitter;
+mod object_fast_path;
 mod runtime_calls;
+mod shadow_stack;
 mod target;
 mod type_mapping;
+mod value_types;
+mod word_conversion;
 
 pub use abi_signatures::{
     FAULT_SYMBOL, INTEGER_POWER_SYMBOL, MATH_UNARY_SYMBOL, REAL_POWER_SYMBOL,

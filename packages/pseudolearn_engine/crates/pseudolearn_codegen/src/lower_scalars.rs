@@ -1,10 +1,13 @@
 #![forbid(unsafe_code)]
 
+use crate::definition::{Definition, definition_of};
 use crate::error::CodegenError;
-use crate::lowering::{Instruction, Lowering, bind_result, guard_trap, operand_value};
+use crate::lowering::{
+    Instruction, Lowering, bind_result, guard_trap, operand_value, trap_and_continue,
+};
 use cranelift_codegen::ir::condcodes::{FloatCC, IntCC};
-use cranelift_codegen::ir::{InstBuilder, types};
-use pseudolearn_ir::{IrType, Operand, Operation, PredicateKind};
+use cranelift_codegen::ir::{InstBuilder, Value, types};
+use pseudolearn_ir::{IrType, Operand, Operation, PredicateKind, ValueId};
 
 const UNDEFINED_BOOLEAN: i64 = 2;
 const UNDEFINED_CHARACTER: i64 = -1;
@@ -84,7 +87,19 @@ fn lower_undefined(
             .ins()
             .iconst(types::I32, UNDEFINED_CHARACTER),
         [Operand::Type(IrType::F64)] => lowering.builder.ins().f64const(f64::NAN),
-        _ => return Err(CodegenError::Unsupported("value.undefined")),
+        [Operand::Type(IrType::I64)] => {
+            if let Some(identifier) = instruction.result {
+                lowering
+                    .definitions
+                    .insert(identifier, Definition::Undefined);
+            }
+            lowering.builder.ins().iconst(types::I64, 0)
+        }
+        [Operand::Type(IrType::Unit)] => {
+            return Err(CodegenError::InvalidModule("undefined unit value"));
+        }
+        [Operand::Type(_)] => lowering.builder.ins().iconst(types::I32, 0),
+        _ => return Err(CodegenError::InvalidModule("malformed value.undefined")),
     };
     bind_result(lowering, instruction, result);
     Ok(())
@@ -94,34 +109,74 @@ fn lower_require(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
-    let operand = operand_value(lowering, instruction, 0)?;
-    let operand_type = lowering.builder.func.dfg.value_type(operand);
-    let missing = if operand_type == types::F64 {
-        lowering
-            .builder
-            .ins()
-            .fcmp(FloatCC::NotEqual, operand, operand)
-    } else if operand_type == types::I8 {
-        lowering
-            .builder
-            .ins()
-            .icmp_imm_s(IntCC::Equal, operand, UNDEFINED_BOOLEAN)
-    } else if operand_type == types::I32 {
-        lowering
-            .builder
-            .ins()
-            .icmp_imm_s(IntCC::Equal, operand, UNDEFINED_CHARACTER)
-    } else {
-        lowering.builder.ins().iconst(types::I8, 0)
+    let Some(Operand::Value(identifier)) = instruction.operands.first() else {
+        return Err(CodegenError::InvalidModule("malformed value.require"));
     };
-    guard_trap(
-        lowering,
-        missing,
-        "uninitializedVariableRead",
-        instruction.span,
-    )?;
+    let operand = operand_value(lowering, instruction, 0)?;
+    let operand_type = lowering
+        .types
+        .get(identifier)
+        .cloned()
+        .ok_or(CodegenError::InvalidModule("untyped operand"))?;
+    if operand_type == IrType::I64 {
+        require_integer(lowering, instruction, *identifier)?;
+    } else {
+        let missing = missing_condition(lowering, &operand_type, operand);
+        guard_trap(
+            lowering,
+            missing,
+            "uninitializedVariableRead",
+            instruction.span,
+        )?;
+    }
     bind_result(lowering, instruction, operand);
     Ok(())
+}
+
+fn require_integer(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    identifier: ValueId,
+) -> Result<(), CodegenError> {
+    match definition_of(lowering, identifier) {
+        Definition::Defined => Ok(()),
+        Definition::Undefined => {
+            trap_and_continue(lowering, "uninitializedVariableRead", instruction.span)
+        }
+        Definition::Flag(flag) => {
+            let missing = lowering.builder.ins().icmp_imm_s(IntCC::Equal, flag, 0);
+            guard_trap(
+                lowering,
+                missing,
+                "uninitializedVariableRead",
+                instruction.span,
+            )
+        }
+    }
+}
+
+fn missing_condition(
+    lowering: &mut Lowering<'_, '_>,
+    operand_type: &IrType,
+    operand: Value,
+) -> Value {
+    match operand_type {
+        IrType::F64 => lowering
+            .builder
+            .ins()
+            .fcmp(FloatCC::NotEqual, operand, operand),
+        IrType::Bool => lowering
+            .builder
+            .ins()
+            .icmp_imm_s(IntCC::Equal, operand, UNDEFINED_BOOLEAN),
+        IrType::Char => {
+            lowering
+                .builder
+                .ins()
+                .icmp_imm_s(IntCC::Equal, operand, UNDEFINED_CHARACTER)
+        }
+        _ => lowering.builder.ins().icmp_imm_s(IntCC::Equal, operand, 0),
+    }
 }
 
 fn lower_comparison(

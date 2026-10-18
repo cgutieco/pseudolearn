@@ -1,3 +1,6 @@
+mod access;
+mod cells;
+mod class_layout;
 mod config;
 mod context;
 mod engine;
@@ -14,12 +17,17 @@ mod session;
 mod text;
 mod trap;
 
+pub use access::{rt_aot_array_load, rt_aot_array_store, rt_aot_object_load, rt_aot_object_store};
+pub use cells::{
+    rt_aot_cell_element, rt_aot_cell_field, rt_aot_cell_load, rt_aot_cell_local, rt_aot_cell_store,
+};
+pub use class_layout::ClassDescriptor;
 pub use config::{AotConfig, AotLimits, AotStreams, BooleanWords};
 pub use context::{
     AotRuntimeContext, CONTEXT_FAULT_SITE_OFFSET, CONTEXT_FAULT_STATUS_OFFSET,
     CONTEXT_FRAME_DEPTH_OFFSET, CONTEXT_FRAME_LIMIT_OFFSET, CONTEXT_HEAP_WORDS_OFFSET,
-    CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOT_TOP_OFFSET,
-    CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
+    CONTEXT_INSTRUCTION_REMAINING_OFFSET, CONTEXT_RESULT_WORD_OFFSET, CONTEXT_ROOT_CAPACITY_OFFSET,
+    CONTEXT_ROOT_TOP_OFFSET, CONTEXT_ROOTS_OFFSET, STATUS_CONTINUE, STATUS_FAILED, STATUS_LIMIT,
 };
 pub use engine::AotEngine;
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};

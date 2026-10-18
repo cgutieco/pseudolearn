@@ -1,12 +1,13 @@
 #![forbid(unsafe_code)]
 
+use crate::abi_signatures::Entry;
 use crate::error::CodegenError;
 use crate::lowering::{Lowering, propagate_if_failed};
-use cranelift_codegen::ir::{FuncRef, InstBuilder, MemFlagsData, Value, types};
+use cranelift_codegen::ir::{InstBuilder, MemFlagsData, Value, types};
 use pseudolearn_ir::IrSpan;
 
 pub(crate) struct RuntimeCall<'operands> {
-    pub(crate) target: FuncRef,
+    pub(crate) target: Entry,
     pub(crate) code_name: &'static str,
     pub(crate) span: Option<IrSpan>,
     pub(crate) operands: &'operands [Value],
@@ -20,7 +21,8 @@ pub(crate) fn call_runtime(
     let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
     let mut arguments = vec![lowering.context, site_value];
     arguments.extend_from_slice(call.operands);
-    let instruction = lowering.builder.ins().call(call.target, &arguments);
+    let target = lowering.environment.runtime.get(call.target)?;
+    let instruction = lowering.builder.ins().call(target, &arguments);
     let status = lowering
         .builder
         .inst_results(instruction)

@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use crate::abi_signatures::Entry;
 use crate::error::CodegenError;
 use crate::lower_scalars::{float_condition, predicate_of};
 use crate::lowering::{Instruction, Lowering, bind_result, guard_trap, operand_value};
@@ -124,7 +125,7 @@ fn lower_power(
         .bitcast(types::I64, MemFlagsData::new(), exponent);
     let operands = [base_bits, exponent_bits];
     let call = RuntimeCall {
-        target: lowering.environment.runtime.real_power,
+        target: Entry::RealPower,
         code_name: "nonFiniteRealResult",
         span: instruction.span,
         operands: &operands,
@@ -158,7 +159,7 @@ fn lower_rounding(
         .iconst(types::I32, i64::from(selector));
     let operands = [selector_value, bits];
     let call = RuntimeCall {
-        target: lowering.environment.runtime.math_unary,
+        target: Entry::MathUnary,
         code_name: "integerOverflow",
         span: instruction.span,
         operands: &operands,

@@ -30,6 +30,7 @@ fn layout_offsets_are_the_contract_the_generated_code_reads() {
     assert_eq!(CONTEXT_FRAME_DEPTH_OFFSET, 16);
     assert_eq!(CONTEXT_FRAME_LIMIT_OFFSET, 20);
     assert_eq!(CONTEXT_ROOT_TOP_OFFSET, 24);
+    assert_eq!(CONTEXT_ROOT_CAPACITY_OFFSET, 28);
     assert_eq!(CONTEXT_ROOTS_OFFSET, 32);
     assert_eq!(CONTEXT_FAULT_SITE_OFFSET, 40);
     assert_eq!(CONTEXT_FAULT_STATUS_OFFSET, 44);

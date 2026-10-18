@@ -233,3 +233,31 @@ fn compare_returns_the_sign_of_the_ordering() {
     assert_eq!(sign(&mut session, high, low), 1);
     assert_eq!(sign(&mut session, low, low), 0);
 }
+
+#[test]
+fn comparison_accepts_character_operands_marked_with_the_flag() {
+    let mut session = session();
+    let word = literal(&mut session, "b");
+    let sign = |session: &mut AotSession, left: u64, right: u64| {
+        let status = rt_aot_text_compare(session.context_pointer(), 0, left, right);
+        assert_eq!(status, STATUS_CONTINUE);
+        i64::from_ne_bytes(session.context().result_word.to_ne_bytes())
+    };
+    let low = u64::from(u32::from('a')) | CHARACTER_OPERAND_FLAG;
+    let high = u64::from(u32::from('c')) | CHARACTER_OPERAND_FLAG;
+    assert_eq!(sign(&mut session, word, low), 1);
+    assert_eq!(sign(&mut session, low, word), -1);
+    assert_eq!(sign(&mut session, low, high), -1);
+    assert_eq!(sign(&mut session, high, high), 0);
+    let same = u64::from(u32::from('b')) | CHARACTER_OPERAND_FLAG;
+    assert_eq!(sign(&mut session, word, same), 0);
+}
+
+#[test]
+fn comparison_with_an_invalid_character_is_an_internal_fault() {
+    let mut session = session();
+    let word = literal(&mut session, "b");
+    let invalid = 0xD800_u64 | CHARACTER_OPERAND_FLAG;
+    let status = rt_aot_text_compare(session.context_pointer(), 0, word, invalid);
+    assert_eq!(status, STATUS_FAILED);
+}

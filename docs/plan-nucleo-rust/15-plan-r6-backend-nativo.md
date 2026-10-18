@@ -871,7 +871,7 @@ flowchart LR
 > entrada; `deny.toml` admite `Apache-2.0 WITH LLVM-exception` y `Zlib` y exime `hashbrown@0.16.1`. Los tests enlazan el
 > objeto con el runtime real mediante `rustc` y ejecutan el binario. Verificado con `cargo xtask verify`.
 
-### [ ] Bloque B3 — Acceso en línea a memoria, clases, celdas, biblioteca y E/S
+### [x] Bloque B3 — Acceso en línea a memoria, clases, celdas, biblioteca y E/S
 
 - **Objetivo:** Completar las 74 operaciones de `IR.INSTRUCTIONS` en `pseudolearn_codegen` con los caminos rápidos en
   línea necesarios para cumplir `N3`.
@@ -886,6 +886,22 @@ flowchart LR
       `Text`, `Random` y `io.read`/`io.write`.
 - **Criterio de aceptación verificable:** Cobertura de las 74 operaciones (`O1`–`O74`) en `pseudolearn_codegen`,
   verificada con tests de caja negra por familia de instrucción.
+
+> **Estado de B3 (completado):** `pseudolearn_codegen` baja las 74 operaciones de `IR.INSTRUCTIONS` (un test exige que
+> `Operation::ALL`, nueva lista generada, tenga bajada y dueño único). La numeración `O26`–`O74` de este plan no coincide con
+> el catálogo real, así que el bloque se organizó por familias: `lower_arrays`, `lower_objects`, `lower_cells`,
+> `lower_text`, `lower_math`, `lower_io`, `lower_calls` y `lower_virtual`. Divergencias con el texto del bloque, resueltas
+> así: no hay `heap_defined_ptr` ni banco de definición (el mapa vive en banda y se lee desde `heap_words_pointer`);
+> `array.load/store` y `object.load/store` tienen camino rápido en línea y, ante cualquier condición distinta del éxito,
+> llaman a `rt_aot_array_*` / `rt_aot_object_*`, que se añadieron a `pseudolearn_aot_rt` junto con `rt_aot_cell_*`, el
+> registro de clases por `ClassDescriptor` y la comparación de texto con operandos de carácter; las celdas y la biblioteca
+> matemática (salvo `sqrt` y `abs`, en línea) pasan por el runtime; la pila de raíces usa un análisis de vivacidad propio
+> que reproduce el mapa de raíces de la VM; el despacho virtual es un `Switch` por la clase real de la cabecera
+> (`class_table`), sin caché monomórfica; los enteros sin valor viajan como parámetro de bloque `i8` adicional, y un
+> argumento entero sin valor se rechaza en el sitio de la llamada (la VM lo atrapa en la función llamada; el lowering no
+> produce ese caso porque emite `value.require` antes de pasar el valor). `text.cmp` solo admite `str` en el verificador.
+> Los literales se guardan como datos locales del objeto y los diseños de clase salen en `CompiledObject.classes`; el
+> registro de ambos al arrancar el ejecutable pasa a B4. Verificado con `cargo xtask verify`.
 
 ### [ ] Bloque B4 — Enlazador nativo (`RT.LINKING`) y subcomando `pseudo compilar` / `pseudo build` (`TOOL.CLI.BUILD`)
 

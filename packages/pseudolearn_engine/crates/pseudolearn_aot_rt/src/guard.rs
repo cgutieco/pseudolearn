@@ -1,3 +1,4 @@
+use crate::cells::rooted_handles;
 use crate::context::{AotRuntimeContext, STATUS_CONTINUE, STATUS_FAILED};
 use crate::engine::AotEngine;
 use crate::fault::{FaultRecord, status_of};
@@ -62,7 +63,9 @@ impl Entry<'_> {
             .roots
             .get(..top)
             .ok_or_else(|| Trap::named("internalFault"))?;
-        Ok(words.iter().copied().map(Handle).collect())
+        let mut handles: Vec<Handle> = words.iter().copied().map(Handle).collect();
+        handles.extend(rooted_handles(&self.engine.cells));
+        Ok(handles)
     }
 
     fn fail(&mut self, trap: Trap) -> u32 {

@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use crate::abi_signatures::RuntimeImports;
+use crate::class_table::ClassTable;
 use crate::context_layout::ContextLayout;
 use crate::error::CodegenError;
 use crate::fault_table::FaultTable;
@@ -10,10 +11,13 @@ use crate::target::TargetConfig;
 use crate::type_mapping::extend_signature;
 use cranelift_codegen::Context;
 use cranelift_codegen::ir::{Function as ClifFunction, UserFuncName};
-use cranelift_module::{FuncId, Linkage, Module as ClifModule, default_libcall_names};
+use cranelift_module::{
+    DataDescription, DataId, FuncId, Linkage, Module as ClifModule, default_libcall_names,
+};
 use cranelift_object::{ObjectBuilder, ObjectModule};
-use pseudolearn_aot_rt::FaultSite;
-use pseudolearn_ir::Module;
+use pseudolearn_aot_rt::{ClassDescriptor, FaultSite};
+use pseudolearn_ir::{Module, Operand, Operation};
+use std::collections::{BTreeSet, HashMap};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionSymbol {
@@ -26,6 +30,7 @@ pub struct CompiledObject {
     pub bytes: Vec<u8>,
     pub fault_sites: Vec<FaultSite>,
     pub function_symbols: Vec<FunctionSymbol>,
+    pub classes: Vec<ClassDescriptor>,
 }
 
 pub fn function_symbol(index: usize) -> String {
@@ -43,6 +48,8 @@ pub(crate) fn emit_module(
     let pointer = object.isa().pointer_type();
     let imports = RuntimeImports::declare(&mut object, pointer)?;
     let identifiers = declare_functions(&mut object, module)?;
+    let classes = ClassTable::build(module)?;
+    let literals = define_literals(&mut object, module)?;
     let mut faults = FaultTable::default();
     for (index, function) in module.functions.iter().enumerate() {
         let identifier = *identifiers
@@ -57,6 +64,8 @@ pub(crate) fn emit_module(
         let declarations = Declarations {
             imports: &imports,
             identifiers: &identifiers,
+            literals: &literals,
+            classes: &classes,
         };
         define_function(&mut object, &declarations, &unit, &mut faults)?;
     }
@@ -65,6 +74,7 @@ pub(crate) fn emit_module(
         bytes,
         fault_sites: faults.into_sites(),
         function_symbols: symbols_of(module),
+        classes: classes.descriptors()?,
     })
 }
 
@@ -78,6 +88,8 @@ struct FunctionUnit<'program> {
 struct Declarations<'program> {
     imports: &'program RuntimeImports,
     identifiers: &'program [FuncId],
+    literals: &'program [(String, DataId)],
+    classes: &'program ClassTable,
 }
 
 fn define_function(
@@ -100,6 +112,17 @@ fn define_function(
             .iter()
             .map(|callee| object.declare_func_in_func(*callee, &mut clif))
             .collect(),
+        literals: declarations
+            .literals
+            .iter()
+            .map(|(content, storage)| {
+                (
+                    content.clone(),
+                    object.declare_data_in_func(*storage, &mut clif),
+                )
+            })
+            .collect::<HashMap<_, _>>(),
+        classes: declarations.classes,
     };
     compile_function(unit.function, &environment, &mut clif, faults)?;
     let mut context = Context::for_function(clif);
@@ -143,4 +166,47 @@ fn symbols_of(module: &Module) -> Vec<FunctionSymbol> {
             symbol: function_symbol(index),
         })
         .collect()
+}
+
+fn define_literals(
+    object: &mut ObjectModule,
+    module: &Module,
+) -> Result<Vec<(String, DataId)>, CodegenError> {
+    let mut contents = BTreeSet::new();
+    for function in &module.functions {
+        for block in &function.blocks {
+            for instruction in &block.instructions {
+                collect_literal(function, *instruction, &mut contents);
+            }
+        }
+    }
+    let mut defined = Vec::new();
+    for (position, content) in contents.into_iter().enumerate() {
+        let name = format!("__pl_str_{position}");
+        let storage = object
+            .declare_data(&name, Linkage::Local, false, false)
+            .map_err(CodegenError::backend)?;
+        let mut description = DataDescription::new();
+        let mut bytes = content.as_bytes().to_vec();
+        bytes.push(0);
+        description.define(bytes.into_boxed_slice());
+        object
+            .define_data(storage, &description)
+            .map_err(CodegenError::backend)?;
+        defined.push((content, storage));
+    }
+    Ok(defined)
+}
+
+fn collect_literal(
+    function: &pseudolearn_ir::Function,
+    instruction: pseudolearn_ir::InstructionId,
+    contents: &mut BTreeSet<String>,
+) {
+    if function.columns.operation(instruction) != Some(Operation::ConstStr) {
+        return;
+    }
+    if let Some(Operand::LiteralStr(content)) = function.columns.operands(instruction).first() {
+        contents.insert(content.clone());
+    }
 }

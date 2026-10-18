@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use crate::abi_signatures::Entry;
 use crate::error::CodegenError;
 use crate::lower_scalars::{predicate_of, signed_condition};
 use crate::lowering::{Instruction, Lowering, bind_result, guard_trap, operand_value};
@@ -101,7 +102,7 @@ fn lower_power(
     let exponent = operand_value(lowering, instruction, 1)?;
     let operands: [Value; 2] = [base, exponent];
     let call = RuntimeCall {
-        target: lowering.environment.runtime.integer_power,
+        target: Entry::IntegerPower,
         code_name: "integerOverflow",
         span: instruction.span,
         operands: &operands,

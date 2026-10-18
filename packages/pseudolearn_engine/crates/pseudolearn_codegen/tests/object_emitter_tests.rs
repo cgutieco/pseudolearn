@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 use object::{Object, ObjectSection, ObjectSymbol, RelocationTarget};
+use pseudolearn_aot_rt::{KIND_INTEGER, KIND_REAL, KIND_REFERENCE};
 use pseudolearn_codegen::{
     CodegenError, FAULT_SYMBOL, INTEGER_POWER_SYMBOL, MATH_UNARY_SYMBOL, REAL_POWER_SYMBOL,
     TargetConfig, compile_module_to_object, function_symbol,
@@ -40,20 +41,28 @@ fn every_undefined_symbol_is_a_runtime_entry_and_every_function_is_exported() ->
 {
     let compiled = compile(PROGRAM)?;
     let file = object::File::parse(compiled.bytes.as_slice()).map_err(|error| error.to_string())?;
-    let allowed = [
+    let required = [
         FAULT_SYMBOL,
         MATH_UNARY_SYMBOL,
         REAL_POWER_SYMBOL,
         INTEGER_POWER_SYMBOL,
     ];
+    let mut imported = Vec::new();
     let mut defined = Vec::new();
     for symbol in file.symbols() {
         let name = bare(symbol.name().map_err(|error| error.to_string())?);
         if symbol.is_undefined() {
-            assert!(allowed.contains(&name), "unexpected import {name}");
+            assert!(name.starts_with("rt_aot_"), "unexpected import {name}");
+            imported.push(name.to_owned());
         } else {
             defined.push(name.to_owned());
         }
+    }
+    for symbol in required {
+        assert!(
+            imported.iter().any(|name| name == symbol),
+            "missing import {symbol}"
+        );
     }
     for index in 0..2 {
         assert!(
@@ -125,23 +134,73 @@ fn an_empty_module_compiles_to_an_object_without_functions() -> Result<(), Strin
 }
 
 #[test]
-fn operations_outside_the_scalar_core_are_reported_by_name() -> Result<(), String> {
-    let text = "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.str \"a\"\n  %1 = text.length %0\n  return %1\n}\n";
-    let module = parse_module(text)?;
-    let error = compile_module_to_object(&module, &TargetConfig::host());
-    assert_eq!(error.err(), Some(CodegenError::Unsupported("const.str")));
+fn string_literals_are_stored_once_as_local_symbols() -> Result<(), String> {
+    let text = "module P es\nfunc @main() -> i64 {\nb0() mass 0:\n  %0 = const.str \"abc\"\n  %1 = const.str \"abc\"\n  %2 = const.str \"\"\n  %3 = text.length %0\n  return %3\n}\n";
+    let compiled = compile(text)?;
+    let file = object::File::parse(compiled.bytes.as_slice()).map_err(|error| error.to_string())?;
+    let literal_symbols = file
+        .symbols()
+        .filter(|symbol| {
+            symbol
+                .name()
+                .is_ok_and(|name| bare(name).starts_with("__pl_str_"))
+        })
+        .count();
+    assert_eq!(literal_symbols, 2);
+    for symbol in file.symbols() {
+        if symbol.is_undefined() {
+            let name = symbol.name().map_err(|error| error.to_string())?;
+            assert!(
+                bare(name).starts_with("rt_aot_"),
+                "unexpected import {name}"
+            );
+        }
+    }
     Ok(())
 }
 
 #[test]
-fn undefined_integers_are_reported_as_unsupported() -> Result<(), String> {
-    let text = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = value.undefined i64\n  return\n}\n";
+fn class_descriptors_list_inherited_fields_before_declared_ones() -> Result<(), String> {
+    let text = "module P es\nclass Base { first: i64 }\nclass Derived : Base { ratio: f64, name: str }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    let mut module = parse_module(text)?;
+    if let Some(class) = module.classes.get_mut(1) {
+        class.dense_integers = true;
+    }
+    let compiled = compile_module_to_object(&module, &TargetConfig::host())
+        .map_err(|error| error.to_string())?;
+    let fields: Vec<_> = compiled
+        .classes
+        .iter()
+        .map(|class| (class.fields.clone(), class.dense))
+        .collect();
+    assert_eq!(
+        fields,
+        [
+            (vec![KIND_INTEGER], false),
+            (vec![KIND_INTEGER, KIND_REAL, KIND_REFERENCE], true)
+        ]
+    );
+    Ok(())
+}
+
+#[test]
+fn a_method_naming_a_missing_function_is_rejected() -> Result<(), String> {
+    let text = "module P es\nclass C { }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
+    let mut module = parse_module(text)?;
+    if let Some(class) = module.classes.first_mut() {
+        class.methods.push(("go".to_owned(), "@missing".to_owned()));
+    }
+    let error = compile_module_to_object(&module, &TargetConfig::host());
+    assert!(matches!(error, Err(CodegenError::InvalidModule(_))));
+    Ok(())
+}
+
+#[test]
+fn a_cyclic_class_hierarchy_is_rejected() -> Result<(), String> {
+    let text = "module P es\nclass A : B { }\nclass B : A { }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
     let module = parse_module(text)?;
     let error = compile_module_to_object(&module, &TargetConfig::host());
-    assert_eq!(
-        error.err(),
-        Some(CodegenError::Unsupported("value.undefined"))
-    );
+    assert!(error.is_err());
     Ok(())
 }
 

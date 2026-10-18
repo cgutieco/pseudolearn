@@ -114,6 +114,13 @@ fn generate_enum(entries: &[InstructionEntry]) -> String {
         code.push_str(&format!("    {},\n", entry.pascal));
     }
     code.push_str("}\n\n");
+    code.push_str("impl Operation {\n");
+    code.push_str("    pub const ALL: &'static [Operation] = &[\n");
+    for entry in entries {
+        code.push_str(&format!("        Operation::{},\n", entry.pascal));
+    }
+    code.push_str("    ];\n");
+    code.push_str("}\n\n");
     code
 }
 

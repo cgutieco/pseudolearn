@@ -2,6 +2,7 @@
 
 use cranelift_codegen::ir::{AbiParam, InstBuilder, Signature, Type, Value, types};
 use cranelift_frontend::FunctionBuilder;
+use pseudolearn_aot_rt::{KIND_BOOLEAN, KIND_CHARACTER, KIND_INTEGER, KIND_REAL, KIND_REFERENCE};
 use pseudolearn_ir::{Function, IrType};
 
 pub(crate) fn clif_type(value_type: &IrType) -> Option<Type> {
@@ -33,5 +34,32 @@ pub(crate) fn zero_value(builder: &mut FunctionBuilder<'_>, value_type: Type) ->
         builder.ins().f64const(0.0)
     } else {
         builder.ins().iconst(value_type, 0)
+    }
+}
+
+pub(crate) fn kind_code(value_type: &IrType) -> Option<u32> {
+    match value_type {
+        IrType::I64 => Some(KIND_INTEGER),
+        IrType::F64 => Some(KIND_REAL),
+        IrType::Bool => Some(KIND_BOOLEAN),
+        IrType::Char => Some(KIND_CHARACTER),
+        IrType::Str | IrType::Array { .. } | IrType::Object(_) | IrType::Cell(_) => {
+            Some(KIND_REFERENCE)
+        }
+        IrType::Unit => None,
+    }
+}
+
+pub(crate) fn is_heap_reference(value_type: &IrType) -> bool {
+    matches!(
+        value_type,
+        IrType::Str | IrType::Array { .. } | IrType::Object(_)
+    )
+}
+
+pub(crate) fn element_type(declared: &IrType) -> IrType {
+    match declared {
+        IrType::Array { element, .. } => element.as_ref().clone(),
+        other => other.clone(),
     }
 }

@@ -8,8 +8,10 @@ función de la RI y deja sin resolver únicamente los símbolos `rt_aot_*` de `p
 enlazador del ejecutable y el adaptador de conformidad `aot`.
 
 Responsabilidades exclusivas: bajada de bloques SSA con parámetros a CLIF, prólogo y epílogo de marco, contabilidad de
-`block.mass`, aritmética entera y real comprobada, comparaciones, lógicos y caracteres escalares, llamadas directas con
-propagación inmediata de fallo, bloques fríos de trampa por sitio y tabla de sitios de fallo.
+`block.mass`, aritmética entera y real comprobada, comparaciones, lógicos y caracteres escalares, llamadas directas y
+virtuales con propagación inmediata de fallo, bloques fríos de trampa por sitio y tabla de sitios de fallo, acceso a
+arreglos y objetos con camino rápido en línea, celdas, texto, matemática, entrada, salida y azar mediante las entradas
+del runtime, pila de raíces para el recolector, seguimiento de definición de enteros y tabla de clases.
 
 Fuera de alcance de producto: trazas, instantáneas y observación paso a paso (`aot` está exento de `ENG.TRACE.*` y
 `ENG.STATE.*`); desoptimización hacia la VM.
@@ -19,9 +21,8 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Familias `O5` (`const.str`), `text.*`, `math.sqrt/abs/ln/exp/sin/cos/atan`, `array.*`, `object.*`, `ref.cmp`, `cell.*`, `call.virtual`, `out.write`, `in.read`, `host.random` devuelven `CodegenError::Unsupported` con el nombre de la operación | Acceso en línea a memoria, pila de raíces y tablas de clases | Memoria, clases, celdas, biblioteca y E/S |
-| `value.undefined` de `i64` y de referencias, y `value.require` de referencias | Indicador de definición para enteros y representación del asa sin valor | Memoria, clases, celdas, biblioteca y E/S |
-| Cabecera `main`, metadatos de literales y de clases en el objeto | Formato de metadatos y punto de entrada del ejecutable | Enlace nativo |
+| Cabecera `main`, registro de las clases de `CompiledObject.classes` en el motor al arrancar y metadatos del ejecutable | Punto de entrada del ejecutable; el objeto ya exporta los diseños y los literales como datos locales | Enlace nativo |
+| Celdas, texto y matemática de biblioteca se resuelven por entradas del runtime y el despacho virtual usa una tabla de saltos sin caché monomórfica; no hay fijación de `instruction_remaining` en registro | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
 | Nivel de optimización de Cranelift fijado en `none` | Medición de rendimiento sobre `PERF.SUITE.AWFY-CORE` | Experimento de rendimiento |
 
 ## 2. Guía operativa y ciclo de vida
@@ -47,7 +48,8 @@ con `verify_module` antes de emitir. `CompiledObject` contiene los bytes del obj
 de `pseudolearn_aot_rt` recibe tal cual y la lista `function_symbols` (nombre en la RI y símbolo).
 
 Convención de las funciones generadas: `extern "C"`, primer parámetro `*mut AotRuntimeContext`, luego un parámetro por
-parámetro de la RI. Tipos: `i64`→`I64`, `f64`→`F64`, `bool`→`I8` (0 o 1), `char`→`I32`, `str`, `array`, `obj` y `cell`→`I32`
+parámetro de la RI. `CompiledObject.classes` entrega un `ClassDescriptor` por clase, en el orden de `Module.classes`, con los
+campos heredados primero; el índice de la clase es el que `rt_aot_object_new` recibe y el que el montón guarda en la cabecera. Tipos: `i64`→`I64`, `f64`→`F64`, `bool`→`I8` (0 o 1), `char`→`I32`, `str`, `array`, `obj` y `cell`→`I32`
 (asa); `unit` no ocupa parámetro ni retorno.
 
 | Módulo | Responsabilidad |
@@ -57,9 +59,15 @@ parámetro de la RI. Tipos: `i64`→`I64`, `f64`→`F64`, `bool`→`I8` (0 o 1),
 | `block_order` | Orden inverso de postorden desde el bloque de entrada; los bloques inalcanzables no se emiten |
 | `block_accounting` | Resta `block.mass` de `instruction_remaining` en la cabecera de cada bloque |
 | `lowering` | Estado de una función, sitios de trampa fríos, propagación de fallo y retorno de cero |
-| `instruction_dispatch` | Despacho de cada `Operation` a su familia |
-| `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_control`, `lower_calls` | Bajada por familia |
-| `runtime_calls`, `abi_signatures` | Firmas e invocación de las entradas `rt_aot_*` |
+| `instruction_dispatch` | Tabla de familias: asigna cada `Operation` a su bajada; un test exige cobertura de las 74 y que ninguna tenga dos dueños |
+| `lower_scalars`, `lower_arithmetic`, `lower_real`, `lower_math`, `lower_control` | Bajada de escalares, aritmética, matemática y control |
+| `lower_text`, `lower_io` | Literales, texto, entrada, salida y azar por las entradas del runtime |
+| `lower_arrays`, `lower_objects`, `lower_cells` | Memoria: arreglos y objetos con camino rápido en línea y camino lento por el runtime; celdas por el runtime |
+| `array_fast_path`, `object_fast_path`, `inline_memory` | Comprobaciones y accesos en línea sobre las palabras del montón |
+| `lower_calls`, `lower_virtual`, `class_table` | Llamadas directas, despacho virtual por clase real y tabla de clases y métodos |
+| `value_types`, `liveness`, `shadow_stack`, `definition` | Tipo de cada valor, valores de referencia vivos por punto seguro, pila de raíces y definición de enteros |
+| `word_conversion` | Paso entre valores nativos y palabras de 64 bits del montón |
+| `runtime_calls`, `abi_signatures` | Tabla de entradas `rt_aot_*` e invocación con propagación de fallo |
 | `fault_table` | Tabla de sitios (`DiagnosticCode` y tramo fuente) |
 | `context_layout` | Desplazamientos del contexto como `i32` |
 | `type_mapping`, `target` | Tipos CLIF y configuración del ISA |
@@ -85,8 +93,32 @@ NaN) y atrapa `nonFiniteRealResult`; el divisor real cero, incluido `-0.0`, atra
 `real.neg` es `fneg`. `int.pow`, `real.pow`, `real.trunc` y `real.round` llaman a `rt_aot_integer_power`,
 `rt_aot_real_power` y `rt_aot_math_unary`, cuyo resultado se lee de `result_word`.
 
-Estados sin valor escalares: `bool` usa el centinela 2, `char` el centinela `0xFFFF_FFFF` y `f64` un NaN, igual que la VM;
-`value.require` atrapa `uninitializedVariableRead` al encontrarlos.
+Estados sin valor: `bool` usa el centinela 2, `char` el centinela `0xFFFF_FFFF`, `f64` un NaN y toda referencia el asa 0,
+igual que la VM; `value.require` atrapa `uninitializedVariableRead` al encontrarlos. Un `i64` no tiene centinela: cada valor
+entero lleva un estado estático (definido, sin valor o con indicador) y todo parámetro de bloque `i64` recibe un parámetro
+`i8` adicional, tras los demás, que los saltos rellenan con 1, 0 o el indicador del argumento. `value.require` sobre un
+entero sin valor estático atrapa sin comprobar, y sobre uno con indicador comprueba el indicador.
+
+Raíces: los puntos seguros son `call`, `call.virtual`, `array.new`, `object.new`, `object.copy`, `text.concat`,
+`text.format`, `const.str` e `in.read`. `liveness` calcula por flujo hacia atrás qué valores `str`, `array` y `obj` siguen
+vivos al entrar en cada uno, incluidos sus operandos, y el generador los copia en `roots[root_top..]`, avanza `root_top`
+(comprueba `root_capacity`) y lo restaura al volver. Las celdas no son asas del montón y no se enraízan; el runtime enraíza
+el contenido de las celdas locales de referencia.
+
+Memoria en línea: `array.load`, `array.store`, `object.load` y `object.store` leen `heap_words_pointer` en cada acceso (el
+puntero cambia en cualquier asignación), comprueban asa presente, extensiones sin signo y centinela de definición, y ante
+cualquier condición que no sea el éxito saltan a un bloque frío que llama a la entrada equivalente del runtime, que
+produce la trampa exacta o el valor. Los enteros de arreglo usan el límite denso y, si no se alcanzó, el mapa de
+definición con bit encendido igual a definido; los de objeto usan la carga útil de la cabecera: 2 es denso y, si no, el
+bit apagado de la máscara es definido. Las escrituras de enteros actualizan esos mapas en línea.
+
+Despacho virtual: `call.virtual` atrapa el receptor ausente, lee la clase real de la cabecera (`forma - 3`), salta por
+`Switch` a un bloque por función destino distinta y llama con el mismo protocolo de marcos y fallo que `call`; una clase
+sin implementación es un `internalFault`. La tabla resuelve cada método con la herencia.
+
+Entrada, salida y texto: cada valor de `out.write` es una llamada a `rt_aot_write` y solo el último lleva el salto de
+línea; `text.concat` marca con `CHARACTER_OPERAND_FLAG` los operandos de tipo `char`; `const.str` apunta al literal que el
+objeto guarda como dato local, uno por contenido distinto, y la entrada lo copia al montón en cada ejecución.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -110,8 +142,31 @@ Problema: un fallo debe detener la ejecución sin efectos posteriores y sin una 
 `fault_status` en el contexto, comprobado tras cada llamada con dos instrucciones, y retorno inmediato de cero. Descartado:
 códigos de error devueltos por valor, porque duplican el registro de retorno de las funciones con resultado.
 
-Problema: los enteros sin valor requieren un indicador de definición. Elección: se rechazan con
-`CodegenError::Unsupported` hasta que exista el análisis de definición, en lugar de aproximarlos.
+Problema: los enteros sin valor requieren un indicador de definición y un parámetro adicional en la firma de cada función
+cambiaría el contrato `extern "C"` que el arnés y el enlazador comparten. Elección: el indicador viaja solo por los
+parámetros de bloque, donde la RI lo exige para que `value.require` decida; el límite de llamada rechaza un argumento
+entero sin valor en el sitio de la llamada con `uninitializedVariableRead`, mientras la VM lo propaga y lo atrapa en la
+primera lectura de la función llamada. Divergencia conocida: ningún programa lowering la produce porque toda lectura de
+variable emite `value.require` antes de pasar el valor; si el corpus la exigiera, el indicador pasaría a ser un parámetro
+de función. Descartado: aproximar el entero sin valor con un centinela, porque todo `i64` es un valor legal.
+
+Problema: el recolector no mueve objetos, pero libera lo que no alcanza desde las raíces, y los valores nativos viven en
+registros que él no ve. Elección: pila de raíces explícita alimentada por un análisis de vivacidad propio, que reproduce
+el mapa de raíces de la VM (valores vivos al entrar, con sus operandos). Descartado: enraizar todos los valores de
+referencia definidos, porque retrasaría la recolección y cambiaría cuándo se alcanza `cellLimitExceeded`.
+
+Problema: la representación del montón (cabeceras, mapas de definición, carga útil) pertenece a `pseudolearn_abi` y
+`pseudolearn_runtime`, y copiar sus constantes a mano falla en silencio. Elección: el camino rápido solo aprueba el caso de
+éxito y todo lo demás lo decide el runtime, de modo que un desplazamiento incorrecto se manifiesta como un fallo de los
+tests de ejecución, nunca como una trampa distinta. Descartado: duplicar las trampas en línea.
+
+Problema: una celda de variable local pasa a otra función, pero un asa de 32 bits no puede apuntar a un marco nativo.
+Elección: las celdas son índices a una tabla del motor (`Local` con palabra y definición, o `Managed` con propietario e
+índice), como en la VM; se crean por `rt_aot_cell_*` y no se liberan. Descartado: punteros a la pila.
+
+Problema: `sqrt` y `abs` no tienen selector en la biblioteca de `pseudolearn_aot_rt`. Elección: `sqrt` comprueba el
+argumento negativo y usa la instrucción IEEE de Cranelift, que está correctamente redondeada como la biblioteca y conserva
+`-0.0`; `abs` borra el signo. `ln`, `exp`, `sin`, `cos` y `atan` llaman a la biblioteca.
 
 Problema: `cranelift-object` activa siempre `gimli`, que arrastra una segunda versión de `hashbrown`, y Cranelift usa `Apache-2.0 WITH LLVM-exception`. Elección: la política de `deny.toml` admite esa licencia y `Zlib` y exime únicamente `hashbrown@0.16.1` de la regla de versiones duplicadas.
 
@@ -132,14 +187,22 @@ de continuar.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-`tests/execution/` contiene un único binario de tests: `support.rs` genera, enlaza y ejecuta un arnés por módulo de RI;
+`tests/execution/` contiene un único binario de tests: `support.rs` genera, enlaza y ejecuta un arnés por módulo de RI
+(con entrada por variable de entorno, salida capturada, límite de celdas y clases registradas desde `CompiledObject.classes`);
 `integer_tests.rs`, `real_tests.rs`, `scalar_tests.rs`, `control_tests.rs` y `call_tests.rs` cubren cada familia con
 camino feliz e infeliz y con los bordes `i64::MAX + 1`, `i64::MIN - 1`, `i64::MIN * -1`, `i64::MIN / -1`, `x / 0`, divisor
 real cero con signo, exponentes negativos, truncamiento fuera de rango, límites de escalares Unicode, presupuesto
 exacto y agotado, paso cero, función sin retorno, código inalcanzable, recursión hasta el límite exacto de marcos y
-propagación del fallo de la función llamada. `tests/object_emitter_tests.rs` comprueba que todo símbolo indefinido es una
+propagación del fallo de la función llamada. `definition_tests.rs` cubre el estado sin valor de enteros en
+fusiones, bucles y llamadas; `text_tests.rs`, `math_tests.rs` y `io_tests.rs` cubren texto, matemática, lectura, escritura
+y azar; `array_tests.rs` cubre rangos, dimensiones, centinelas por tipo, máscaras de más de una palabra, tamaños
+inválidos y supervivencia de un arreglo vivo bajo recolección; `object_tests.rs` cubre campos de cada tipo, clases densas y
+no densas, copia, identidad, herencia y una lista enlazada bajo recolección; `cell_tests.rs` cubre celdas locales, de
+elemento y de campo; `virtual_tests.rs` cubre despacho por clase, receptor ausente, recursión y raíces a través de la
+llamada. Dos mutaciones deliberadas (sin pila de raíces y sin raíces de celdas) hacen fallar los tests de supervivencia.
+`tests/object_emitter_tests.rs` comprueba que todo símbolo indefinido es una
 entrada `rt_aot_*`, que toda relocalización apunta a un símbolo del objeto, los sitios de fallo con su tramo, el orden de
-símbolos, el determinismo, el módulo vacío y el rechazo de operaciones no soportadas y de módulos mal formados.
+símbolos, el determinismo, el módulo vacío y los literales como símbolos locales, los diseños de clase, el rechazo de módulos mal formados, de métodos sin función y de jerarquías cíclicas.
 
 Aceptación de un cambio: `cargo xtask verify` desde la raíz del motor.
 

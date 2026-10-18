@@ -2,14 +2,16 @@
 
 use crate::block_accounting::charge_block_mass;
 use crate::block_order::reverse_postorder;
+use crate::definition::Definition;
 use crate::error::CodegenError;
 use crate::fault_table::FaultTable;
 use crate::instruction_dispatch::lower_instruction;
+use crate::liveness::live_roots;
 use crate::lowering::{FunctionEnvironment, Instruction, Lowering, finish_cold_blocks};
 use crate::type_mapping::clif_type;
 use cranelift_codegen::ir::{Function as ClifFunction, InstBuilder, MemFlagsData, types};
 use cranelift_frontend::{FunctionBuilder, FunctionBuilderContext};
-use pseudolearn_ir::{BlockId, Function};
+use pseudolearn_ir::{BlockId, Function, IrType};
 use std::collections::HashMap;
 
 pub(crate) fn compile_function<'program>(
@@ -24,7 +26,7 @@ pub(crate) fn compile_function<'program>(
     for identifier in reverse_postorder(function) {
         lower_block(&mut lowering, identifier)?;
     }
-    finish_cold_blocks(&mut lowering);
+    finish_cold_blocks(&mut lowering)?;
     lowering.builder.seal_all_blocks();
     lowering.builder.finalize(environment.frontend);
     Ok(())
@@ -36,6 +38,7 @@ fn start_function<'func, 'program>(
     environment: &'program FunctionEnvironment<'program>,
     faults: &'program mut FaultTable,
 ) -> Result<Lowering<'func, 'program>, CodegenError> {
+    let types = crate::value_types::infer(environment.module, function);
     let entry = builder.create_block();
     builder.append_block_params_for_function_params(entry);
     builder.switch_to_block(entry);
@@ -53,6 +56,9 @@ fn start_function<'func, 'program>(
         blocks: HashMap::new(),
         cold_blocks: Vec::new(),
         propagate_block: None,
+        types: types.clone(),
+        definitions: HashMap::new(),
+        live_roots: live_roots(function, &types),
     };
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);
@@ -84,6 +90,14 @@ fn declare_blocks(lowering: &mut Lowering<'_, '_>) {
             if let Some(clif) = clif_type(parameter_type) {
                 let value = lowering.builder.append_block_param(created, clif);
                 lowering.values.insert(*identifier, value);
+            }
+        }
+        for (identifier, parameter_type) in &block.parameters {
+            if *parameter_type == IrType::I64 {
+                let flag = lowering.builder.append_block_param(created, types::I8);
+                lowering
+                    .definitions
+                    .insert(*identifier, Definition::Flag(flag));
             }
         }
         lowering.blocks.insert(block.identifier, created);
@@ -121,6 +135,7 @@ fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(
             .operation(*instruction_id)
             .ok_or(CodegenError::InvalidModule("instruction without operation"))?;
         let instruction = Instruction {
+            identifier: *instruction_id,
             operation,
             operands: columns.operands(*instruction_id),
             result: columns.result(*instruction_id),

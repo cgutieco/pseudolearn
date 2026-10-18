@@ -24,7 +24,6 @@ sección 5.
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Punto de entrada `pseudolearn_aot_main` y decodificación de metadatos (literales, clases, tabla de sitios) | Formato de metadatos emitido por codegen | Enlace nativo (`RT.LINKING`) |
-| Celdas por referencia (`cell.local`, `cell.element`, `cell.field`, `cell.load`, `cell.store`) | Lowering de memoria del backend | Memoria y clases del backend |
 | Salida a `stdout` con vaciado previo al fallo y proyección de estado a códigos de salida 0, 3, 4 y 5 | Proceso del ejecutable | `RT.PROCESS` |
 
 ## 2. Guía operativa y ciclo de vida
@@ -56,7 +55,7 @@ Contexto `AotRuntimeContext` (`#[repr(C)]`, 64 bytes; el código generado conoce
 | 16 | `frame_depth` | `u32` | Marcos activos, mantenido por el código generado |
 | 20 | `frame_limit` | `u32` | Máximo de marcos (por omisión 1 000) |
 | 24 | `root_top` | `u32` | Tope de la pila de raíces |
-| 28 | `root_capacity` | `u32` | Capacidad de la pila de raíces |
+| 28 | `root_capacity` | `u32` | Capacidad de la pila de raíces; el código generado comprueba `root_top + n <= root_capacity` antes de apilar |
 | 32 | `roots_pointer` | `*mut u32` | Base de la pila de raíces (`Handle` de 32 bits) |
 | 40 | `fault_site` | `u32` | Sitio del primer fallo observado por la última entrada que falló |
 | 44 | `fault_status` | `u32` | `0` continúa, `1` fallo del programa, `2` límite |
@@ -79,7 +78,16 @@ a través de ninguna llamada.
 | `rt_aot_text_format` | palabra, tipo | asa del texto formateado |
 | `rt_aot_text_query` | `TEXT_LENGTH`, `TEXT_TO_INTEGER` o `TEXT_TO_REAL`, asa | longitud, entero o binario64 |
 | `rt_aot_text_character` | asa, posición `i64` tal como la entrega la RI | punto de código |
-| `rt_aot_text_compare` | dos asas | `-1`, `0` o `1` como `i64` |
+| `rt_aot_text_compare` | dos operandos; el bit 32 marca un carácter | `-1`, `0` o `1` como `i64` |
+| `rt_aot_array_load` | asa, puntero a `rango` índices `i64` | palabra del elemento |
+| `rt_aot_array_store` | asa, puntero a `rango` índices y el valor como última palabra | 0 |
+| `rt_aot_object_load` | asa, campo | palabra del campo |
+| `rt_aot_object_store` | asa, puntero a `[campo, valor]` | 0 |
+| `rt_aot_cell_local` | tipo | identificador de celda (`1` en adelante; `0` no es celda) |
+| `rt_aot_cell_element` | asa, puntero a índices | identificador de celda |
+| `rt_aot_cell_field` | asa, campo | identificador de celda |
+| `rt_aot_cell_load` | celda | palabra de la ubicación |
+| `rt_aot_cell_store` | celda, palabra | 0 |
 | `rt_aot_math_unary` | `MATH_*`, binario64 | binario64 o entero con signo |
 | `rt_aot_real_power` | base, exponente | binario64 |
 | `rt_aot_integer_power` | base, exponente (`i64`) | entero con signo; traps `negativeIntegerExponent` o `integerOverflow` |
@@ -87,6 +95,13 @@ a través de ninguna llamada.
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |
 | `rt_aot_fault` | — | el código del sitio decide el estado |
+
+Los accesos a arreglos y objetos son el camino lento de los accesos en línea del código generado: reproducen la
+comprobación completa (asa ausente, rango, definición) y producen el diagnóstico exacto. Las celdas locales guardan su
+palabra y, para enteros, un indicador de definición; las de elemento y de campo apuntan al propietario y a la posición.
+Ninguna celda se libera y el propietario de una celda administrada no se enraíza (igual que en la VM); las celdas locales
+de referencia sí se añaden a las raíces de cada asignación. `AotEngine::register_class` registra el diseño de una clase a
+partir de un `ClassDescriptor` (códigos de tipo por campo y densidad), que es lo que `CompiledObject.classes` entrega.
 
 Códigos de tipo: `KIND_INTEGER` 0, `KIND_REAL` 1, `KIND_BOOLEAN` 2, `KIND_CHARACTER` 3, `KIND_REFERENCE` 4.
 
@@ -163,6 +178,9 @@ plantilla del catálogo en la configuración regional solicitada.
 ## 7. Verificación, testing y aseguramiento de calidad
 
 `tests/context_tests.rs` fija los desplazamientos y el tamaño del contexto, los valores iniciales y la pila de raíces.
+`tests/access_tests.rs` y `tests/cell_tests.rs` cubren lectura y escritura de elementos y campos (rangos, dimensiones,
+arreglos vacíos, asa ausente, buffers nulos, campos sin valor, clases con tipos desconocidos) y las celdas locales, de
+elemento y de campo, incluido el enraizamiento del texto que solo una celda conserva.
 `tests/memory_tests.rs` cubre asignación, extensiones negativas y cero, extensiones ausentes, tipo desconocido,
 agotamiento de celdas con todo enraizado, recolección con raíces, diseños y copia, y contexto nulo. `tests/text_tests.rs`,
 `tests/math_tests.rs`, `tests/random_tests.rs`, `tests/output_tests.rs`, `tests/input_tests.rs`, `tests/trap_tests.rs` y

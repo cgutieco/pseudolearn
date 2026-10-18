@@ -30,3 +30,4 @@ pub const CONTEXT_ROOTS_OFFSET: usize = offset_of!(AotRuntimeContext, roots_poin
 pub const CONTEXT_FAULT_SITE_OFFSET: usize = offset_of!(AotRuntimeContext, fault_site);
 pub const CONTEXT_FAULT_STATUS_OFFSET: usize = offset_of!(AotRuntimeContext, fault_status);
 pub const CONTEXT_RESULT_WORD_OFFSET: usize = offset_of!(AotRuntimeContext, result_word);
+pub const CONTEXT_ROOT_CAPACITY_OFFSET: usize = offset_of!(AotRuntimeContext, root_capacity);
