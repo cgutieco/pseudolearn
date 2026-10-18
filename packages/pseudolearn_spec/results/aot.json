@@ -33863,6 +33863,44 @@
       "specification": "RT.PROCESS",
       "strictness": "flexible",
       "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "corpus_hash": "8e07bc6c23d9b6fb2d5b32fe45852b3f6992cab3986a7877c88530f6a2e10829",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "case": "estructural",
+      "differences": [],
+      "expected": {
+        "corpus_hash": "8e07bc6c23d9b6fb2d5b32fe45852b3f6992cab3986a7877c88530f6a2e10829",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "profile": "independent",
+      "rule": "R6",
+      "specification": "ENG.LIMITS",
+      "strictness": "independent",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "corpus_hash": "44cd64dd56e6fb9400d20911dd644e54944e9d245e12b9acb89a13d0ea057ad8",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "case": "estructural",
+      "differences": [],
+      "expected": {
+        "corpus_hash": "44cd64dd56e6fb9400d20911dd644e54944e9d245e12b9acb89a13d0ea057ad8",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "profile": "independent",
+      "rule": "R4",
+      "specification": "IR.INSTRUCTIONS",
+      "strictness": "independent",
+      "verdict": "cumple"
     }
   ],
   "protocol": "see-protocol/1",

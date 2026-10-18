@@ -92,9 +92,9 @@
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R6",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica que el esquema de casos solo admite límites de profundidad, sentencias y celdas; la conformidad conserva el resultado estructural con hash del corpus."
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R7",

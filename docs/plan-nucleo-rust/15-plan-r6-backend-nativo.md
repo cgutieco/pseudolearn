@@ -1101,3 +1101,15 @@ responsable:
       `IR.INSTRUCTIONS` o `SEE.*`).
     - **Propuesta por defecto:** Usar `"revisado_por": ["arquitectura"]` (siguiendo la convención ya empleada en las
       especificaciones `estable` de `SEE.*`, `DIAG.*` e `IR.*`), salvo que se indique otro identificador.
+
+---
+
+## 11. Seguimiento de implementación (2026-10-18) y puertas pendientes
+
+**Implementado y conservado.** Característica `native` opcional en la API; sonda `pseudolearn_native_probe`; órdenes `paired`, `paired-summary` y `paired-probe` del trabajador de benchmarks con comprobación previa en un proceso separado; reutilización de diseños de clase, raíces construidas solo cuando puede haber recolección y un único recorrido de marcado; liberación de celdas al retornar; diagnósticos con argumentos y posiciones; ejecutores de propiedades `RT`; evidencia estructural en `see conform`.
+
+**Evidencia.** Conformidad `aot`: 1.207 observaciones, cero divergencias. Diferencial nativo: 808 comparaciones, cero diferencias. Propiedades `aot`: 13 cumplen y 3 pendientes por capacidad no disponible (`ENG.INPUT`, `IR.OBSERVATION-POINTS`, `RT.HOST.INTERFACE`, exentas de observación). Vínculos aún pendientes en la matriz: `PERF.AOT.LEVEL#R1`–`R3` (medición) y `ENG.LIMITS#R8` (revisión humana informativa sobre valores de producto, no satisfecha por ningún test).
+
+**Rendimiento.** La campaña final `r6-paired-validated` da 3,068×, 2,567×, 3,290× y 3,859× por familia: `#R1` incumple en las cuatro. La emisión pasa `#R3` en esa captura y falló en `r6-paired-runtime`; ambas se conservan. Sieve y NBody no ejecutan cargas de celda, de modo que ninguna técnica única de celdas explica la brecha.
+
+**Puertas pendientes.** (1) Variantes aisladas guiadas por los perfiles y la inspección de código generado, cada una con campaña formal propia solo si mejora en la sonda. (2) Artefactos finales móviles y Wasm con presupuestos de 3 MiB por ABI y 600 KiB Brotli: hoy solo está verificada la exclusión del backend en grafos de dependencias y `cargo check`. (3) Revisión de `ENG.LIMITS#R8`. (4) Puerta local final posterior a todos los cambios.

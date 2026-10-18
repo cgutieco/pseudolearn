@@ -25,11 +25,7 @@ pub fn append(
                 specification.metadata.version,
                 field(rule, "id")
             );
-            if !bindings
-                .vinculos
-                .iter()
-                .any(|binding| binding.regla == reference && binding.verificacion == "estructural")
-            {
+            if !is_structurally_bound(bindings, &reference) {
                 continue;
             }
             if !see_model::strings(rule.fields.get("verificacion")).contains(&"estructural") {
@@ -37,19 +33,35 @@ pub fn append(
                     "SEE-STRUCTURAL: incompatible verification {reference}"
                 ));
             }
-            let proof = json!({"validator":"see validate","passed":true,"corpus_hash":see_change::hash(specification)?});
-            evidence.observations.push(Observation {
-                specification: specification.metadata.id.clone(),
-                rule: field(rule, "id").to_owned(),
-                case: "estructural".to_owned(),
-                profile: "independent".to_owned(),
-                strictness: "independent".to_owned(),
-                verdict: "cumple".to_owned(),
-                differences: Vec::new(),
-                expected: proof.clone(),
-                actual: proof,
-            });
+            evidence
+                .observations
+                .push(structural_observation(specification, field(rule, "id"))?);
         }
     }
     Ok(())
+}
+
+fn is_structurally_bound(bindings: &Conformance, reference: &str) -> bool {
+    bindings
+        .vinculos
+        .iter()
+        .any(|binding| binding.regla == reference && binding.verificacion == "estructural")
+}
+
+fn structural_observation(
+    specification: &see_model::Specification,
+    rule: &str,
+) -> Result<Observation, String> {
+    let proof = json!({"validator":"see validate","passed":true,"corpus_hash":see_change::hash(specification)?});
+    Ok(Observation {
+        specification: specification.metadata.id.clone(),
+        rule: rule.to_owned(),
+        case: "estructural".to_owned(),
+        profile: "independent".to_owned(),
+        strictness: "independent".to_owned(),
+        verdict: "cumple".to_owned(),
+        differences: Vec::new(),
+        expected: proof.clone(),
+        actual: proof,
+    })
 }

@@ -120,11 +120,11 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": null,
+    "reason": "see validate verifica que el esquema de casos solo admite límites de profundidad, sentencias y celdas; la conformidad conserva el resultado estructural con hash del corpus.",
     "rule": "ENG.LIMITS@0.2.0#R6",
     "state": "experimental",
     "subject": "aot"
@@ -180,11 +180,11 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": null,
+    "reason": "see validate verifica el esquema de límites y la cobertura de RI; la conformidad conserva el resultado estructural con hash del corpus.",
     "rule": "IR.INSTRUCTIONS@0.1.0#R4",
     "state": "experimental",
     "subject": "aot"
@@ -1379,7 +1379,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -1399,9 +1399,9 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "RT.FAULT.REPORTING@0.1.0#R2",
@@ -1449,7 +1449,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -1459,7 +1459,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -1469,7 +1469,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -1489,7 +1489,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -1499,7 +1499,7 @@
     "subject": "aot"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
