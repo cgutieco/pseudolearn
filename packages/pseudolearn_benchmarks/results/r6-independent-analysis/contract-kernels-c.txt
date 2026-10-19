@@ -1,0 +1,430 @@
+===== cexp/aot_contract.h
+#include <stdint.h>
+typedef struct {
+    uint64_t *heap;
+    int64_t instruction_remaining;
+    uint32_t frame_depth, frame_limit, root_top, root_capacity;
+    uint32_t *roots;
+    uint32_t fault_site, fault_status;
+    uint64_t result_word;
+} Ctx;
+extern int32_t rt_aot_array_new(Ctx *, int32_t, int32_t, int64_t *);
+extern int32_t rt_aot_read(Ctx *, int32_t, int32_t);
+extern int32_t rt_aot_write(Ctx *, int32_t, int64_t, int32_t);
+extern int32_t rt_aot_array_load(Ctx *, int32_t, uint32_t, int64_t *);
+extern int32_t rt_aot_array_store(Ctx *, int32_t, uint32_t, int64_t *);
+extern int32_t rt_aot_fault(Ctx *, int32_t);
+#define COLD __attribute__((cold, noinline))
+#if DEFINED_CHECK
+#define BOOL_UNDEFINED(byte) ((byte) == 2)
+#else
+#define BOOL_UNDEFINED(byte) 0
+#endif
+#if OVERFLOW_CHECK
+#define CHECKED_ADD(a, b, out) __builtin_add_overflow((a), (b), (out))
+#else
+#define CHECKED_ADD(a, b, out) (*(out) = (int64_t)((uint64_t)(a) + (uint64_t)(b)), 0)
+#endif
+===== cexp/sieve.c
+#include "aot_contract.h"
+COLD static int fault(Ctx *c, int32_t site) { rt_aot_fault(c, site); return 1; }
+COLD static int slow_store(Ctx *c, int32_t site, uint32_t array, int64_t index, int64_t value) {
+    int64_t operands[2] = {index, value};
+    return rt_aot_array_store(c, site, array, operands) != 0;
+}
+COLD static int slow_load(Ctx *c, int32_t site, uint32_t array, int64_t index, uint8_t *value) {
+    int64_t operands[1] = {index};
+    if (rt_aot_array_load(c, site, array, operands)) return 1;
+    *value = (uint8_t)c->result_word;
+    return 0;
+}
+static inline int store_bool(Ctx *c, int32_t site, uint32_t array, int64_t index, int64_t value) {
+    if (__builtin_expect(array != 0, 1)) {
+        uint64_t *header = c->heap + array;
+        if (__builtin_expect((uint64_t)index < header[2], 1)) { header[5 + index] = (uint64_t)value; return 0; }
+    }
+    return slow_store(c, site, array, index, value);
+}
+static inline int load_bool(Ctx *c, int32_t site, uint32_t array, int64_t index, uint8_t *value) {
+    if (__builtin_expect(array != 0, 1)) {
+        uint64_t *header = c->heap + array;
+        if (__builtin_expect((uint64_t)index < header[2], 1)) {
+            uint8_t byte = *(uint8_t *)(header + 5 + index);
+            if (__builtin_expect(!BOOL_UNDEFINED(byte), 1)) { *value = byte; return 0; }
+        }
+    }
+    return slow_load(c, site, array, index, value);
+}
+void __pl_fn_0(Ctx *c) {
+    c->frame_depth += 1;
+    int64_t dimensions[1] = {5001};
+    if (rt_aot_array_new(c, 0, 258, dimensions)) return;
+    uint32_t flags = (uint32_t)c->result_word;
+    uint32_t top = c->root_top;
+    if (top + 1 > c->root_capacity) { fault(c, 1); return; }
+    c->roots[top] = flags;
+    c->root_top = top + 1;
+    if (rt_aot_read(c, 2, 0)) return;
+    int64_t size = (int64_t)c->result_word;
+    c->root_top = top;
+    for (int64_t index = 0; index <= size;) {
+        if (store_bool(c, 12, flags, index, 1)) return;
+        if (CHECKED_ADD(index, 1, &index)) { fault(c, 13); return; }
+    }
+    int64_t count = 0;
+    for (int64_t index = 2; index <= size;) {
+        uint8_t present;
+        if (load_bool(c, 6, flags, index, &present)) return;
+        if (present) {
+            if (CHECKED_ADD(count, 1, &count)) { fault(c, 7); return; }
+            int64_t multiple;
+            if (CHECKED_ADD(index, index, &multiple)) { fault(c, 8); return; }
+            while (multiple <= size) {
+                if (store_bool(c, 10, flags, multiple, 0)) return;
+                if (CHECKED_ADD(multiple, index, &multiple)) { fault(c, 11); return; }
+            }
+        }
+        if (CHECKED_ADD(index, 1, &index)) { fault(c, 9); return; }
+    }
+    if (rt_aot_write(c, 5, count, 256)) return;
+    c->frame_depth -= 1;
+}
+===== cexp/mandelbrot.c
+#include "aot_contract.h"
+#include <math.h>
+extern int32_t rt_aot_integer_power(Ctx *, int32_t, int64_t, int64_t);
+COLD static int fault(Ctx *c, int32_t site) { rt_aot_fault(c, site); return 1; }
+#define TRY_ADD(a, b, out, site) if (__builtin_add_overflow((a), (b), (out))) { fault(c, site); RETURN_FAIL; }
+#define TRY_SUB(a, b, out, site) if (__builtin_sub_overflow((a), (b), (out))) { fault(c, site); RETURN_FAIL; }
+#define TRY_MUL(a, b, out, site) if (__builtin_mul_overflow((a), (b), (out))) { fault(c, site); RETURN_FAIL; }
+#if FINITE_CHECK
+#define FINITE(x, site) if (__builtin_expect(!__builtin_isfinite(x), 0)) { fault(c, site); RETURN_FAIL; }
+#else
+#define FINITE(x, site)
+#endif
+#if NAN_CHECK
+#define REQUIRE_REAL(x, site) if (__builtin_expect(__builtin_isnan(x), 0)) { fault(c, site); RETURN_FAIL; }
+#else
+#define REQUIRE_REAL(x, site)
+#endif
+#define RETURN_FAIL return 0
+__attribute__((noinline)) int64_t __pl_fn_0(Ctx *c, int64_t first, int64_t second) {
+    c->frame_depth += 1;
+    int64_t left = first, right = second, result = 0, weight = 1;
+    while (left > 0 || right > 0) {
+        if (left % 2 != right % 2) TRY_ADD(result, weight, &result, 40);
+        left = left / 2;
+        right = right / 2;
+        TRY_MUL(weight, 2, &weight, 41);
+    }
+    c->frame_depth -= 1;
+    return result;
+}
+static int call_exclusive(Ctx *c, int64_t a, int64_t b, int64_t *out, int32_t site) {
+    if (c->frame_depth >= c->frame_limit) { fault(c, site); return 1; }
+    *out = __pl_fn_0(c, a, b);
+    return c->fault_status != 0;
+}
+#undef RETURN_FAIL
+#define RETURN_FAIL return
+void __pl_fn_1(Ctx *c) {
+    c->frame_depth += 1;
+    if (rt_aot_read(c, 2, 0)) return;
+    int64_t n = (int64_t)c->result_word;
+    int64_t sum = 0, accumulated = 0, bits = 0, row = 0;
+    while (row < n) {
+        double rn = (double)n;
+        if (rn == 0.0) { fault(c, 3); return; }
+        double scaled_row = 2.0 * (double)row; FINITE(scaled_row, 4);
+        double ratio_row = scaled_row / rn; FINITE(ratio_row, 5);
+        double ci = ratio_row - 1.0; FINITE(ci, 6); REQUIRE_REAL(ci, 7);
+        int64_t column = 0;
+        while (column < n) {
+            double zrzr = 0.0, zi = 0.0, zizi = 0.0;
+            if (rn == 0.0) { fault(c, 8); return; }
+            double scaled_column = 2.0 * (double)column; FINITE(scaled_column, 9);
+            double ratio_column = scaled_column / rn; FINITE(ratio_column, 10);
+            double cr = ratio_column - 1.5; FINITE(cr, 11); REQUIRE_REAL(cr, 12);
+            int64_t iteration = 0, escape = 0;
+            int active = 1;
+            while (active && iteration < 50) {
+                double difference = zrzr - zizi; FINITE(difference, 13);
+                double zr = difference + cr; FINITE(zr, 14); REQUIRE_REAL(zr, 15);
+                double doubled = 2.0 * zr; FINITE(doubled, 16);
+                double product = doubled * zi; FINITE(product, 17);
+                zi = product + ci; FINITE(zi, 18); REQUIRE_REAL(zi, 19);
+                zrzr = zr * zr; FINITE(zrzr, 20); REQUIRE_REAL(zrzr, 21);
+                zizi = zi * zi; FINITE(zizi, 22); REQUIRE_REAL(zizi, 23);
+                double magnitude = zrzr + zizi; FINITE(magnitude, 24);
+                if (magnitude > 4.0) { active = 0; escape = 1; }
+                TRY_ADD(iteration, 1, &iteration, 25);
+            }
+            int64_t shifted;
+            if (__builtin_mul_overflow(accumulated, 2, &shifted)) { fault(c, 26); return; }
+            if (__builtin_add_overflow(shifted, escape, &accumulated)) { fault(c, 27); return; }
+            if (__builtin_add_overflow(bits, 1, &bits)) { fault(c, 28); return; }
+            if (bits == 8) {
+                if (call_exclusive(c, sum, accumulated, &sum, 29)) return;
+                accumulated = 0; bits = 0;
+            } else {
+                int64_t last;
+                if (__builtin_sub_overflow(n, 1, &last)) { fault(c, 31); return; }
+                if (column == last) {
+                    int64_t exponent;
+                    if (__builtin_sub_overflow(8, bits, &exponent)) { fault(c, 32); return; }
+                    if (rt_aot_integer_power(c, 30, 2, exponent)) return;
+                    int64_t power = (int64_t)c->result_word;
+                    if (__builtin_mul_overflow(accumulated, power, &accumulated)) { fault(c, 33); return; }
+                    if (call_exclusive(c, sum, accumulated, &sum, 34)) return;
+                    accumulated = 0; bits = 0;
+                }
+            }
+            if (__builtin_add_overflow(column, 1, &column)) { fault(c, 35); return; }
+        }
+        if (__builtin_add_overflow(row, 1, &row)) { fault(c, 36); return; }
+    }
+    if (rt_aot_write(c, 5, sum, 256)) return;
+    c->frame_depth -= 1;
+}
+===== cexp/nbody.c
+#include "aot_contract.h"
+#include <math.h>
+#include <string.h>
+extern int32_t rt_aot_math_unary(Ctx *, int32_t, int32_t, int64_t);
+COLD static void fault(Ctx *c, int32_t site) { rt_aot_fault(c, site); }
+COLD static void slow_load(Ctx *c, int32_t site, uint32_t a, int64_t i) { int64_t o[1] = {i}; rt_aot_array_load(c, site, a, o); }
+COLD static void slow_store(Ctx *c, int32_t site, uint32_t a, int64_t i, double v) { int64_t o[2]; o[0] = i; memcpy(&o[1], &v, 8); rt_aot_array_store(c, site, a, o); }
+#define FAIL return
+#define FIN(x) do { if (__builtin_expect(!__builtin_isfinite(x), 0)) { fault(c, __LINE__); FAIL; } } while (0)
+#define REQ(x) do { if (__builtin_expect(__builtin_isnan(x), 0)) { fault(c, 1000 + __LINE__); FAIL; } } while (0)
+#define ADD(a, b) ({ double _r = (a) + (b); FIN(_r); _r; })
+#define SUB(a, b) ({ double _r = (a) - (b); FIN(_r); _r; })
+#define MUL(a, b) ({ double _r = (a) * (b); FIN(_r); _r; })
+#define DIV(a, b) ({ double _d = (b); if (_d == 0.0) { fault(c, 2000 + __LINE__); FAIL; } double _r = (a) / _d; FIN(_r); _r; })
+#define LOAD(a, i) ({ uint32_t _a = (a); int64_t _i = (i); double _v; \
+    if (__builtin_expect(_a == 0, 0)) { slow_load(c, 3000 + __LINE__, _a, _i); FAIL; } \
+    uint64_t *_h = c->heap + _a; if (__builtin_expect((uint64_t)_i >= _h[2], 0)) { slow_load(c, 3000 + __LINE__, _a, _i); FAIL; } \
+    memcpy(&_v, &_h[5 + _i], 8); if (__builtin_expect(__builtin_isnan(_v), 0)) { slow_load(c, 3000 + __LINE__, _a, _i); FAIL; } _v; })
+#define STORE(a, i, v) do { uint32_t _a = (a); int64_t _i = (i); double _v = (v); \
+    if (__builtin_expect(_a == 0, 0)) { slow_store(c, 4000 + __LINE__, _a, _i, _v); FAIL; } \
+    uint64_t *_h = c->heap + _a; if (__builtin_expect((uint64_t)_i >= _h[2], 0)) { slow_store(c, 4000 + __LINE__, _a, _i, _v); FAIL; } \
+    memcpy(&_h[5 + _i], &_v, 8); } while (0)
+#define INC(i) do { if (__builtin_add_overflow((i), 1, &(i))) { fault(c, 5000 + __LINE__); FAIL; } } while (0)
+static int alloc(Ctx *c, uint32_t *out, int index) {
+    int64_t dimensions[1] = {5};
+    if (rt_aot_array_new(c, 0, 257, dimensions)) return 1;
+    *out = (uint32_t)c->result_word;
+    c->roots[c->root_top + index] = *out;
+    return 0;
+}
+void __pl_fn_0(Ctx *c) {
+    c->frame_depth += 1;
+    uint32_t px, py, pz, vx, vy, vz, mass;
+    uint32_t top = c->root_top;
+    if (top + 7 > c->root_capacity) { fault(c, 1); return; }
+    if (alloc(c, &px, 0) || alloc(c, &py, 1) || alloc(c, &pz, 2) || alloc(c, &vx, 3) || alloc(c, &vy, 4) || alloc(c, &vz, 5) || alloc(c, &mass, 6)) return;
+    c->root_top = top + 7;
+    if (rt_aot_read(c, 14, 0)) return;
+    int64_t n = (int64_t)c->result_word;
+    c->root_top = top;
+    double pi = 3.141592653589793;
+    double solar = MUL(MUL(4.0, pi), pi);
+    double days = 365.24;
+    STORE(px, 0, 0.0); STORE(py, 0, 0.0); STORE(pz, 0, 0.0); STORE(vx, 0, 0.0); STORE(vy, 0, 0.0); STORE(vz, 0, 0.0); STORE(mass, 0, solar);
+    STORE(px, 1, 4.84143144246472090); STORE(py, 1, -1.16032004402742839); STORE(pz, 1, -0.103622044471123109);
+    STORE(vx, 1, MUL(0.00166007664274403694, days)); STORE(vy, 1, MUL(0.00769901118419740425, days)); STORE(vz, 1, MUL(-0.0000690460016972063023, days)); STORE(mass, 1, MUL(0.000954791938424326609, solar));
+    STORE(px, 2, 8.34336671824457987); STORE(py, 2, 4.12479856412430479); STORE(pz, 2, -0.403523417114321381);
+    STORE(vx, 2, MUL(-0.00276742510726862411, days)); STORE(vy, 2, MUL(0.00499852801234917238, days)); STORE(vz, 2, MUL(0.0000230417297573763929, days)); STORE(mass, 2, MUL(0.000285885980666130812, solar));
+    STORE(px, 3, 12.8943695621391310); STORE(py, 3, -15.1111514016986312); STORE(pz, 3, -0.223307578892655734);
+    STORE(vx, 3, MUL(0.00296460137564761618, days)); STORE(vy, 3, MUL(0.00237847173959480950, days)); STORE(vz, 3, MUL(-0.0000296589568540237556, days)); STORE(mass, 3, MUL(0.0000436624404335156298, solar));
+    STORE(px, 4, 15.3796971148509165); STORE(py, 4, -25.9193146099879641); STORE(pz, 4, 0.179258772950371181);
+    STORE(vx, 4, MUL(0.00268067772490389322, days)); STORE(vy, 4, MUL(0.00162824170038242295, days)); STORE(vz, 4, MUL(-0.0000951592254519715870, days)); STORE(mass, 4, MUL(0.0000515138902046611451, solar));
+    double mx = 0.0, my = 0.0, mz = 0.0;
+    for (int64_t i = 0; i <= 4;) {
+        mx = ADD(mx, MUL(LOAD(vx, i), LOAD(mass, i))); REQ(mx);
+        my = ADD(my, MUL(LOAD(vy, i), LOAD(mass, i))); REQ(my);
+        mz = ADD(mz, MUL(LOAD(vz, i), LOAD(mass, i))); REQ(mz);
+        INC(i);
+    }
+    STORE(vx, 0, SUB(0.0, DIV(mx, solar))); STORE(vy, 0, SUB(0.0, DIV(my, solar))); STORE(vz, 0, SUB(0.0, DIV(mz, solar)));
+    for (int64_t round = 1; round <= n;) {
+        for (int64_t i = 0; i <= 4;) {
+            int64_t start;
+            if (__builtin_add_overflow(i, 1, &start)) { fault(c, 6); return; }
+            for (int64_t j = start; j <= 4;) {
+                double dx = SUB(LOAD(px, i), LOAD(px, j)); REQ(dx);
+                double dy = SUB(LOAD(py, i), LOAD(py, j)); REQ(dy);
+                double dz = SUB(LOAD(pz, i), LOAD(pz, j)); REQ(dz);
+                double square = ADD(ADD(MUL(dx, dx), MUL(dy, dy)), MUL(dz, dz)); REQ(square);
+                if (square < 0.0) { fault(c, 7); return; }
+                double distance = sqrt(square); REQ(distance);
+                double magnitude = DIV(0.01, MUL(square, distance)); REQ(magnitude);
+                STORE(vx, i, SUB(LOAD(vx, i), MUL(MUL(dx, LOAD(mass, j)), magnitude)));
+                STORE(vy, i, SUB(LOAD(vy, i), MUL(MUL(dy, LOAD(mass, j)), magnitude)));
+                STORE(vz, i, SUB(LOAD(vz, i), MUL(MUL(dz, LOAD(mass, j)), magnitude)));
+                STORE(vx, j, ADD(LOAD(vx, j), MUL(MUL(dx, LOAD(mass, i)), magnitude)));
+                STORE(vy, j, ADD(LOAD(vy, j), MUL(MUL(dy, LOAD(mass, i)), magnitude)));
+                STORE(vz, j, ADD(LOAD(vz, j), MUL(MUL(dz, LOAD(mass, i)), magnitude)));
+                INC(j);
+            }
+            INC(i);
+        }
+        for (int64_t i = 0; i <= 4;) {
+            STORE(px, i, ADD(LOAD(px, i), MUL(0.01, LOAD(vx, i))));
+            STORE(py, i, ADD(LOAD(py, i), MUL(0.01, LOAD(vy, i))));
+            STORE(pz, i, ADD(LOAD(pz, i), MUL(0.01, LOAD(vz, i))));
+            INC(i);
+        }
+        INC(round);
+    }
+    double energy = 0.0;
+    for (int64_t i = 0; i <= 4;) {
+        double m = LOAD(mass, i);
+        double speed = ADD(ADD(MUL(LOAD(vx, i), LOAD(vx, i)), MUL(LOAD(vy, i), LOAD(vy, i))), MUL(LOAD(vz, i), LOAD(vz, i)));
+        energy = ADD(energy, MUL(MUL(0.5, m), speed)); REQ(energy);
+        int64_t start;
+        if (__builtin_add_overflow(i, 1, &start)) { fault(c, 8); return; }
+        for (int64_t j = start; j <= 4;) {
+            double dx = SUB(LOAD(px, i), LOAD(px, j)); REQ(dx);
+            double dy = SUB(LOAD(py, i), LOAD(py, j)); REQ(dy);
+            double dz = SUB(LOAD(pz, i), LOAD(pz, j)); REQ(dz);
+            double square = ADD(ADD(MUL(dx, dx), MUL(dy, dy)), MUL(dz, dz));
+            if (square < 0.0) { fault(c, 9); return; }
+            double distance = sqrt(square); REQ(distance);
+            energy = SUB(energy, DIV(MUL(LOAD(mass, i), LOAD(mass, j)), distance)); REQ(energy);
+            INC(j);
+        }
+        INC(i);
+    }
+    double scaled = MUL(energy, 1000000000000000.0);
+    int64_t bits; memcpy(&bits, &scaled, 8);
+    if (rt_aot_math_unary(c, 91, 5, bits)) return;
+    if (rt_aot_write(c, 92, (int64_t)c->result_word, 256)) return;
+    c->frame_depth -= 1;
+}
+===== cexp/permute.c
+#include "aot_contract.h"
+COLD static void fault(Ctx *c, int32_t site) { rt_aot_fault(c, site); }
+COLD static void slow_load(Ctx *c, int32_t site, uint32_t a, int64_t i) { int64_t o[1] = {i}; rt_aot_array_load(c, site, a, o); }
+COLD static void slow_store(Ctx *c, int32_t site, uint32_t a, int64_t i, int64_t v) { int64_t o[2] = {i, v}; rt_aot_array_store(c, site, a, o); }
+static inline int load_int(Ctx *c, int32_t site, uint32_t a, int64_t i, int64_t *out) {
+    if (__builtin_expect(a == 0, 0)) { slow_load(c, site, a, i); return 1; }
+    uint64_t *h = c->heap + a;
+    uint64_t length = h[2];
+    if (__builtin_expect((uint64_t)i >= length, 0)) { slow_load(c, site, a, i); return 1; }
+    int64_t value = (int64_t)h[5 + i];
+    if (__builtin_expect(h[3] != length, 0)) {
+        uint64_t word = c->heap[h[4] + ((uint64_t)i >> 6)];
+        if (!(word & (1ULL << (i & 63)))) { slow_load(c, site, a, i); return 1; }
+    }
+    *out = value;
+    return 0;
+}
+static inline int store_int(Ctx *c, int32_t site, uint32_t a, int64_t i, int64_t v) {
+    if (__builtin_expect(a == 0, 0)) { slow_store(c, site, a, i, v); return 1; }
+    uint64_t *h = c->heap + a;
+    uint64_t length = h[2];
+    if (__builtin_expect((uint64_t)i >= length, 0)) { slow_store(c, site, a, i, v); return 1; }
+    if (__builtin_expect(h[3] != length, 0)) {
+        uint64_t *word = &c->heap[h[4] + ((uint64_t)i >> 6)];
+        uint64_t bit = 1ULL << (i & 63);
+        if (!(*word & bit)) { *word |= bit; h[3] += 1; if (h[3] == length) h[4] = 0; }
+    }
+    h[5 + i] = (uint64_t)v;
+    return 0;
+}
+__attribute__((noinline)) int64_t __pl_fn_0(Ctx *c, uint32_t values, int64_t number) {
+    c->frame_depth += 1;
+    int64_t count = 1;
+    if (number != 0) {
+        int64_t below;
+        if (__builtin_sub_overflow(number, 1, &below)) { fault(c, 1); return 0; }
+        if (c->frame_depth >= c->frame_limit) { fault(c, 2); return 0; }
+#if ROOTS
+        uint32_t top = c->root_top; if (top + 1 > c->root_capacity) { fault(c, 3); return 0; } c->roots[top] = values; c->root_top = top + 1;
+#endif
+        int64_t nested = __pl_fn_0(c, values, below);
+#if ROOTS
+        c->root_top = top;
+#endif
+        if (c->fault_status) return 0;
+        if (__builtin_add_overflow(count, nested, &count)) { fault(c, 4); return 0; }
+        for (int64_t index = below; index >= 0;) {
+            int64_t first, second;
+            if (load_int(c, 5, values, below, &first)) return 0;
+            if (load_int(c, 6, values, index, &second)) return 0;
+            if (store_int(c, 7, values, below, second)) return 0;
+            if (store_int(c, 8, values, index, first)) return 0;
+            if (c->frame_depth >= c->frame_limit) { fault(c, 9); return 0; }
+#if ROOTS
+            uint32_t top2 = c->root_top; if (top2 + 1 > c->root_capacity) { fault(c, 3); return 0; } c->roots[top2] = values; c->root_top = top2 + 1;
+#endif
+            nested = __pl_fn_0(c, values, below);
+#if ROOTS
+            c->root_top = top2;
+#endif
+            if (c->fault_status) return 0;
+            if (__builtin_add_overflow(count, nested, &count)) { fault(c, 10); return 0; }
+            if (load_int(c, 11, values, below, &first)) return 0;
+            if (load_int(c, 12, values, index, &second)) return 0;
+            if (store_int(c, 13, values, below, second)) return 0;
+            if (store_int(c, 14, values, index, first)) return 0;
+            if (__builtin_sub_overflow(index, 1, &index)) { fault(c, 15); return 0; }
+        }
+    }
+    c->frame_depth -= 1;
+    return count;
+}
+void __pl_fn_1(Ctx *c) {
+    c->frame_depth += 1;
+    int64_t dimensions[1] = {10};
+    if (rt_aot_array_new(c, 30, 256, dimensions)) return;
+    uint32_t values = (uint32_t)c->result_word;
+    uint32_t top = c->root_top;
+    c->roots[top] = values; c->root_top = top + 1;
+    if (rt_aot_read(c, 2, 0)) return;
+    int64_t n = (int64_t)c->result_word;
+    for (int64_t i = 0; i <= 9; i++) if (store_int(c, 20, values, i, 0)) return;
+    if (c->frame_depth >= c->frame_limit) { fault(c, 21); return; }
+    int64_t result = __pl_fn_0(c, values, n);
+    c->root_top = top;
+    if (c->fault_status) return;
+    if (rt_aot_write(c, 22, result, 256)) return;
+    c->frame_depth -= 1;
+}
+===== cexp/fixed.c
+#include "aot_contract.h"
+void __pl_fn_0(Ctx *c) {
+    c->frame_depth += 1;
+#if STAGE >= 3
+    int64_t dimensions[1] = {LENGTH};
+    if (rt_aot_array_new(c, 0, 258, dimensions)) return;
+    uint32_t flags = (uint32_t)c->result_word;
+    uint32_t top = c->root_top;
+    c->roots[top] = flags;
+    c->root_top = top + 1;
+#endif
+    int64_t size = 0;
+#if STAGE >= 2
+    if (rt_aot_read(c, 2, 0)) return;
+    size = (int64_t)c->result_word;
+#endif
+#if STAGE >= 3
+    c->root_top = top;
+#endif
+    if (rt_aot_write(c, 5, size - 1, 256)) return;
+    c->frame_depth -= 1;
+}
+===== cexp/allocs.c
+#include "aot_contract.h"
+void __pl_fn_0(Ctx *c) {
+    c->frame_depth += 1;
+    for (int repeat = 0; repeat < COUNT; repeat++) {
+        int64_t dimensions[1] = {LENGTH};
+        if (rt_aot_array_new(c, 0, 258, dimensions)) return;
+    }
+    if (rt_aot_read(c, 2, 0)) return;
+    int64_t size = (int64_t)c->result_word;
+    if (rt_aot_write(c, 5, size - 1, 256)) return;
+    c->frame_depth -= 1;
+}

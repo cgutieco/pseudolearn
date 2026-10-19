@@ -1,0 +1,48 @@
+diff -ruN rt/src-runtime-base/src/heap/allocate.rs rt/src-runtime-both/src/heap/allocate.rs
+--- rt/src-runtime-base/src/heap/allocate.rs	2026-10-18 23:29:38
++++ rt/src-runtime-both/src/heap/allocate.rs	2026-10-18 23:30:57
+@@ -129,7 +129,7 @@
+             .checked_add(self.allocated_cells)
+             .and_then(|count| count.checked_add(cells))
+             .ok_or(MemoryError::Resource)?;
+-        let threshold = self.live_cells.max(4096);
++        let threshold = self.live_cells.max(1 << 18);
+         if self.options.collection == CollectionPolicy::Forced
+             || bound > self.options.cells
+             || self.allocated_cells >= threshold
+diff -ruN rt/src-runtime-base/src/heap/inline_window.rs rt/src-runtime-both/src/heap/inline_window.rs
+--- rt/src-runtime-base/src/heap/inline_window.rs	2026-10-18 23:29:38
++++ rt/src-runtime-both/src/heap/inline_window.rs	2026-10-18 23:30:57
+@@ -71,9 +71,10 @@
+             .used
+             .checked_add(MINIMUM_SLACK_WORDS)
+             .ok_or(MemoryError::Resource)?;
+-        if self.words.len() >= wanted {
++        if self.words.len() >= self.used.saturating_add(MINIMUM_SLACK_WORDS / 2) {
+             return Ok(());
+         }
++        let wanted = wanted.saturating_add(MINIMUM_SLACK_WORDS);
+         let target = wanted.max(self.words.len().saturating_add(self.words.len() / 2));
+         let target = target.min(address_ceiling());
+         if target <= self.words.len() {
+@@ -92,7 +93,7 @@
+         }
+         let committed = self.live_cells.saturating_add(self.allocated_cells);
+         let room_cells = self.options.cells.saturating_sub(committed);
+-        let threshold = self.live_cells.max(4096);
++        let threshold = self.live_cells.max(1 << 18);
+         let room_threshold = threshold.saturating_sub(self.allocated_cells);
+         (clamp_signed(room_cells), clamp_signed(room_threshold))
+     }
+diff -ruN rt/src-runtime-base/src/heap/mod.rs rt/src-runtime-both/src/heap/mod.rs
+--- rt/src-runtime-base/src/heap/mod.rs	2026-10-18 23:29:38
++++ rt/src-runtime-both/src/heap/mod.rs	2026-10-18 23:30:57
+@@ -96,7 +96,7 @@
+                 .saturating_add(self.allocated_cells)
+                 .saturating_add(cells)
+                 > self.options.cells
+-            || self.allocated_cells >= self.live_cells.max(4096)
++            || self.allocated_cells >= self.live_cells.max(1 << 18)
+     }
+ 
+     pub fn identity(&self, handle: Handle) -> Result<u64, MemoryError> {

@@ -1,0 +1,11 @@
+sieve       native     11209 ceiling      6500 ratio  1.724 emission   0.57 ms identical True
+queens      native     25208 ceiling      8833 ratio  2.854 emission   2.05 ms identical True
+mandelbrot  native    259812 ceiling    164416 ratio  1.580 emission   1.27 ms identical True
+nbody       native     37833 ceiling     10375 ratio  3.647 emission   7.93 ms identical True
+permute     native     88792 ceiling     39625 ratio  2.241 emission   1.78 ms identical True
+bounce      native     70250 ceiling     30166 ratio  2.329 emission   3.63 ms identical True
+list        native     55750 ceiling     28188 ratio  1.978 emission   1.96 ms identical True
+richards    native    243833 ceiling     86396 ratio  2.822 emission  16.07 ms identical True
+storage     native     73583 ceiling      9459 ratio  7.779 emission   1.78 ms identical True
+towers      native     17792 ceiling     13416 ratio  1.326 emission   2.21 ms identical True
+families {'arrays': 2.218, 'numeric': 2.4, 'recursive': 2.241, 'objects': 2.664}
