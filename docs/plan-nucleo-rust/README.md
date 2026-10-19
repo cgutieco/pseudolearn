@@ -36,8 +36,13 @@
 | 12 | [Relevo histórico de R5](12-relevo-r5.md) | Estado anterior a B2/B3; conservado como historial |
 | 13 | [Relevo de B4 · Remanso](13-relevo-b4-remanso.md) | Estado actual por bloque, evidencia parcial, fallos pendientes y comandos para continuar B4 |
 | 14 | [RFC-014 · Diagnóstico arquitectónico y especificación ejecutable de cierre de B7](14-rfc-cierre-b7-arquitectura-y-rendimiento.md) | Evidencia medida de B7, causas raíz, decisiones aprobadas (D1, D2, D3-a) y especificación paso a paso de las 6 etapas de cierre |
+| 15 | [Plan de R6 · Backend nativo](15-plan-r6-backend-nativo.md) | Arquitectura, especificaciones AOT y ejecución de R6 |
+| 16 | [Relevo de R6 · Backend nativo](16-relevo-r6-backend-nativo.md) | Estado de avance y diagnóstico de R6 |
+| 17 | [Plan de S1–S6 de R6](17-plan-s1-s6-r6.md) | Optimizaciones escalonadas S1–S6 del backend nativo |
+| 18 | [Informe de implementación S1–S6 de R6](18-informe-implementacion-s1-s6-r6.md) | Evidencia final de S1–S6 y cierre de R6 bajo D-R6-03 |
+| 19 | [Plan de R7 · Servicio de lenguaje y herramientas](19-plan-r7-servicio-y-herramientas.md) | Análisis empírico (E-08), especificaciones `TOOL.*`, arquitectura de `pseudolearn_service`, formateo, traducción, LSP, E-09/E-20 y bloques B0–B8 de R7 |
 
-Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para cerrar B7 en R5, seguir **14**.
+Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para ejecutar R7, seguir **19**.
 
 ---
 

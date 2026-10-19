@@ -293,6 +293,8 @@ Cierre aceptado por D-R6-03 e informe [18](18-informe-implementacion-s1-s6-r6.md
 
 ### R7 · Servicio de lenguaje y herramientas
 
+> **Plan detallado:** [19 · Plan de R7 · Servicio de lenguaje y herramientas](19-plan-r7-servicio-y-herramientas.md).
+
 - [ ] **Experimentos:** E-09 y E-20.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
