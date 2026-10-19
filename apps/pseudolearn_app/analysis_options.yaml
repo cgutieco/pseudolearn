@@ -3,6 +3,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - lib/presentation/l10n/generated/**
+    - lib/engine/bridge/**
     - build/**
     - ios/**
     - windows/**

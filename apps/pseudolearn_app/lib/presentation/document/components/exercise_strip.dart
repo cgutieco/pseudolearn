@@ -49,11 +49,14 @@ final class ExerciseStrip extends StatelessWidget {
         : null;
 
     return Container(
-      decoration: BoxDecoration(color: theme.colors.surfaces.subtle, border: Border(bottom: border)),
+      decoration: BoxDecoration(
+        color: theme.colors.surfaces.subtle,
+        border: Border(bottom: border),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [header, if (body != null) body],
+        children: [header, ?body],
       ),
     );
   }
@@ -76,8 +79,12 @@ final class _ExerciseStripHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final title = exercise?.title ?? l10n.exerciseNotFoundTitle;
-    final icon = isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down;
-    final semantic = isExpanded ? l10n.exerciseStripCollapse : l10n.exerciseStripExpand;
+    final icon = isExpanded
+        ? Icons.keyboard_arrow_up
+        : Icons.keyboard_arrow_down;
+    final semantic = isExpanded
+        ? l10n.exerciseStripCollapse
+        : l10n.exerciseStripExpand;
 
     return Container(
       height: 36,
@@ -94,9 +101,15 @@ final class _ExerciseStripHeader extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if (exercise != null) _HeaderBadges(exercise: exercise!, isCompleted: isCompleted),
+          if (exercise != null)
+            _HeaderBadges(exercise: exercise!, isCompleted: isCompleted),
           const SizedBox(width: SpacingTokens.space2),
-          AppIconButton(icon: icon, semanticLabel: semantic, variant: AppButtonVariant.tertiary, onPressed: onToggleExpand),
+          AppIconButton(
+            icon: icon,
+            semanticLabel: semantic,
+            variant: AppButtonVariant.tertiary,
+            onPressed: onToggleExpand,
+          ),
         ],
       ),
     );

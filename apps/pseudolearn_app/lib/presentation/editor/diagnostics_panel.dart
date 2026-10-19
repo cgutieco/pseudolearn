@@ -38,7 +38,9 @@ final class _DiagnosticsPanelState extends State<DiagnosticsPanel> {
     return Container(
       decoration: BoxDecoration(
         color: theme.colors.surfaces.defaultSurface,
-        border: Border(top: BorderSide(color: theme.colors.borders.subtle, width: 1)),
+        border: Border(
+          top: BorderSide(color: theme.colors.borders.subtle, width: 1),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -81,7 +83,9 @@ final class _DiagnosticsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-    final countColor = count > 0 ? theme.colors.severities.error.fg : theme.colors.text.secondary;
+    final countColor = count > 0
+        ? theme.colors.severities.error.fg
+        : theme.colors.text.secondary;
     final height = trailing != null ? 40.0 : 36.0;
 
     return Container(
@@ -90,15 +94,24 @@ final class _DiagnosticsHeader extends StatelessWidget {
       color: theme.colors.surfaces.subtle,
       child: Row(
         children: [
-          Expanded(child: _DiagnosticsCountLabel(text: l10n.diagnosticsCount(count), color: countColor)),
+          Expanded(
+            child: _DiagnosticsCountLabel(
+              text: l10n.diagnosticsCount(count),
+              color: countColor,
+            ),
+          ),
           if (offersToggle)
             AppIconButton(
-              icon: isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
-              semanticLabel: isExpanded ? l10n.actionCollapse : l10n.actionExpand,
+              icon: isExpanded
+                  ? Icons.keyboard_arrow_down
+                  : Icons.keyboard_arrow_up,
+              semanticLabel: isExpanded
+                  ? l10n.actionCollapse
+                  : l10n.actionExpand,
               variant: AppButtonVariant.tertiary,
               onPressed: onToggle,
             ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );
@@ -113,7 +126,13 @@ final class _DiagnosticsCountLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppText(text, variant: AppTextVariant.label, color: color, maxLines: 1, overflow: TextOverflow.ellipsis);
+    return AppText(
+      text,
+      variant: AppTextVariant.label,
+      color: color,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
 
@@ -129,12 +148,18 @@ final class _DiagnosticsList extends StatelessWidget {
       return const _EmptyDiagnostics();
     }
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: ComponentMetricsTokens.diagnosticsListHeight),
+      constraints: const BoxConstraints(
+        maxHeight: ComponentMetricsTokens.diagnosticsListHeight,
+      ),
       child: ListView.separated(
         shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space3, vertical: SpacingTokens.space2),
+        padding: const EdgeInsets.symmetric(
+          horizontal: SpacingTokens.space3,
+          vertical: SpacingTokens.space2,
+        ),
         itemCount: diagnostics.length,
-        separatorBuilder: (_, __) => const SizedBox(height: SpacingTokens.space2),
+        separatorBuilder: (_, _) =>
+            const SizedBox(height: SpacingTokens.space2),
         itemBuilder: (context, index) => _DiagnosticItemRow(
           diagnostic: diagnostics[index],
           onTap: () {
@@ -154,9 +179,15 @@ final class _EmptyDiagnostics extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: ComponentMetricsTokens.diagnosticsEmptyHeight),
+      constraints: const BoxConstraints(
+        maxHeight: ComponentMetricsTokens.diagnosticsEmptyHeight,
+      ),
       child: Center(
-        child: AppText(l10n.diagnosticsEmpty, variant: AppTextVariant.caption, color: theme.colors.severities.success.fg),
+        child: AppText(
+          l10n.diagnosticsEmpty,
+          variant: AppTextVariant.caption,
+          color: theme.colors.severities.success.fg,
+        ),
       ),
     );
   }
@@ -166,10 +197,7 @@ final class _DiagnosticItemRow extends StatelessWidget {
   final AppDiagnostic diagnostic;
   final VoidCallback onTap;
 
-  const _DiagnosticItemRow({
-    required this.diagnostic,
-    required this.onTap,
-  });
+  const _DiagnosticItemRow({required this.diagnostic, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +233,18 @@ final class _DiagnosticMainRow extends StatelessWidget {
       children: [
         SeverityChip(severity: diagnostic.severity),
         const SizedBox(width: SpacingTokens.space2),
-        AppText('L:$line C:$col', variant: AppTextVariant.codeCaption, color: theme.colors.text.tertiary),
+        AppText(
+          'L:$line C:$col',
+          variant: AppTextVariant.codeCaption,
+          color: theme.colors.text.tertiary,
+        ),
         const SizedBox(width: SpacingTokens.space2),
         Expanded(
-          child: AppText(diagnostic.message, variant: AppTextVariant.bodySmall, color: theme.colors.text.primary),
+          child: AppText(
+            diagnostic.message,
+            variant: AppTextVariant.bodySmall,
+            color: theme.colors.text.primary,
+          ),
         ),
       ],
     );
@@ -224,11 +260,20 @@ final class _RelatedRangesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     return Padding(
-      padding: const EdgeInsets.only(left: SpacingTokens.space8, top: SpacingTokens.spaceHalf),
+      padding: const EdgeInsets.only(
+        left: SpacingTokens.space8,
+        top: SpacingTokens.spaceHalf,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: ranges
-            .map((r) => AppText('• ${r.label}', variant: AppTextVariant.caption, color: theme.colors.text.tertiary))
+            .map(
+              (r) => AppText(
+                '• ${r.label}',
+                variant: AppTextVariant.caption,
+                color: theme.colors.text.tertiary,
+              ),
+            )
             .toList(),
       ),
     );

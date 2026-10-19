@@ -182,6 +182,7 @@ code_rules:
   forbid_comments: true
   comment_exempt:
     - lib/presentation/l10n/generated/
+    - lib/engine/bridge/
 
 limits:
   file_lines: 250
@@ -202,6 +203,7 @@ limits_exempt:
   - test/
   - tool/
   - lib/presentation/l10n/generated/
+  - lib/engine/bridge/
 
 # Dueños declarados de un literal de color y de un literal de duración. La regla existe para que
 # ningún color ni ningún tiempo aparezca suelto en el código; un valor con nombre y con un archivo

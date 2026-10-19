@@ -34,7 +34,11 @@ final class TrackingStrip extends StatelessWidget {
       ),
       child: changedNames.isEmpty
           ? _StripMessage(text: l10n.trackingStripEmpty)
-          : _StripEntries(label: l10n.trackingStripLabel, names: changedNames, values: changedValues),
+          : _StripEntries(
+              label: l10n.trackingStripLabel,
+              names: changedNames,
+              values: changedValues,
+            ),
     );
   }
 }
@@ -49,7 +53,12 @@ final class _StripMessage extends StatelessWidget {
     final theme = AppThemeExtension.of(context);
     return Align(
       alignment: Alignment.centerLeft,
-      child: AppText(text, variant: AppTextVariant.caption, color: theme.colors.text.tertiary, maxLines: 1),
+      child: AppText(
+        text,
+        variant: AppTextVariant.caption,
+        color: theme.colors.text.tertiary,
+        maxLines: 1,
+      ),
     );
   }
 }
@@ -59,21 +68,31 @@ final class _StripEntries extends StatelessWidget {
   final List<String> names;
   final List<String> values;
 
-  const _StripEntries({required this.label, required this.names, required this.values});
+  const _StripEntries({
+    required this.label,
+    required this.names,
+    required this.values,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     return Row(
       children: [
-        AppText(label, variant: AppTextVariant.caption, color: theme.colors.text.tertiary),
+        AppText(
+          label,
+          variant: AppTextVariant.caption,
+          color: theme.colors.text.tertiary,
+        ),
         const SizedBox(width: SpacingTokens.space2),
         Expanded(
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: names.length,
-            separatorBuilder: (_, __) => const SizedBox(width: SpacingTokens.space3),
-            itemBuilder: (_, index) => _StripEntry(name: names[index], value: values[index]),
+            separatorBuilder: (_, _) =>
+                const SizedBox(width: SpacingTokens.space3),
+            itemBuilder: (_, index) =>
+                _StripEntry(name: names[index], value: values[index]),
           ),
         ),
       ],

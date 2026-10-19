@@ -349,6 +349,25 @@ void main() {
       );
     });
 
+    test('Negative fixture: domain importing generated bridge fails layer check', () {
+      final fixturePath = p.join(
+        packageRoot,
+        'test',
+        'architecture',
+        'fixtures',
+        'domain_importing_bridge',
+      );
+      final violations = validateArchitecture(
+        config: config,
+        packageRoot: packageRoot,
+        customSourceRoot: fixturePath,
+      );
+      expect(
+        violations.any((v) => v.violationType == 'layer_direction'),
+        isTrue,
+      );
+    });
+
     test('Negative fixture: cubit importing flutter fails layer check', () {
       final fixturePath = p.join(
         packageRoot,

@@ -21,7 +21,7 @@ final class FlowchartLayout implements FlowchartBuilder {
   final AnalysisCache _analyses;
 
   FlowchartLayout({AnalysisCache? analyses})
-      : _analyses = analyses ?? AnalysisCache();
+    : _analyses = analyses ?? AnalysisCache();
 
   @override
   DiagramProgram buildDiagram({
@@ -70,20 +70,20 @@ final class FlowchartLayout implements FlowchartBuilder {
     final start = _terminal(nodes, vocabulary.start, entry.span.start.line);
     final body = entry.body.isEmpty
         ? null
-        : LayoutBlock.stack(
-            entry.body.map(builder.buildStatement).toList(),
-          );
+        : LayoutBlock.stack(entry.body.map(builder.buildStatement).toList());
     final end = _terminal(nodes, vocabulary.end, entry.span.end.line);
-    final block = LayoutBlock.stack([start, if (body != null) body, end]);
+    final block = LayoutBlock.stack([start, ?body, end]);
     return _toScene(block);
   }
 
   LayoutBlock _terminal(NodeFactory nodes, String text, int sourceLine) =>
-      LayoutBlock.fromNode(nodes.create(
-        shape: DiagramShape.startEnd,
-        text: text,
-        sourceLine: sourceLine,
-      ));
+      LayoutBlock.fromNode(
+        nodes.create(
+          shape: DiagramShape.startEnd,
+          text: text,
+          sourceLine: sourceLine,
+        ),
+      );
 
   DiagramScene _toScene(LayoutBlock block) {
     const margin = DiagramMetrics.canvasMargin;

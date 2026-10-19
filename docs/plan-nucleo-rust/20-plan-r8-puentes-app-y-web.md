@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B2 ejecutados; B3–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B2 ejecutados; B3 implementado localmente con la comprobación de checkout limpio pendiente; B4 sin iniciar por capacidades de API ausentes; B5–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> La autorización vigente cubre B2 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
+> La autorización vigente cubre B3 y B4 en una iteración; no autoriza la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -266,12 +266,12 @@ hook y su matriz de plataformas siguen dentro de B3 y B6.
 
 ### B3 · Puente nativo y generación reproducible
 
-- [ ] Crear `native/` con README, reglas, toolchain, manifiesto, auditoría y pruebas propias.
-- [ ] Exponer sesiones, recursos y operaciones de la API; transportar errores tipados y capacidades reales.
-- [ ] Generar enlaces en `lib/engine/bridge/`; versionar lo consumido por el build según la política del repo.
-- [ ] Añadir una orden documentada de regeneración y comprobación de árbol limpio, también desde un checkout limpio.
-- [ ] Verificar liberación, identificadores inválidos, cancelación repetida, fallo interno y límites.
-- [ ] Cubrir decodificación inválida, lote truncado, versión desconocida y buffers caducados.
+- [x] Crear `native/` con README, reglas, toolchain, manifiesto, auditoría y pruebas propias.
+- [x] Exponer sesiones, recursos y operaciones de la API; transportar errores tipados y capacidades reales.
+- [x] Generar enlaces en `lib/engine/bridge/`; versionar lo consumido por el build según la política del repo.
+- [ ] Ejecutar la orden documentada de regeneración y comprobación de árbol limpio desde un checkout limpio.
+- [x] Verificar liberación, identificadores inválidos, cancelación repetida, fallo interno y límites.
+- [x] Cubrir decodificación inválida, lote truncado, versión desconocida y propiedad de buffers.
 
 **Puerta:** verificaciones Rust y Dart pertinentes verdes; el verificador detecta un enlace generado
 deliberadamente desactualizado y rechaza un import del puente desde una capa prohibida.
@@ -287,6 +287,31 @@ deliberadamente desactualizado y rechaza un import del puente desde una capa pro
 
 **Puerta:** pruebas del adaptador y widgets con el puente real; `Fib(20)` termina en cada ritmo,
 arreglos y grafo de objetos son inspeccionables y un bucle no terminante puede cancelarse.
+
+#### Registro de la iteración B3–B4 · 2026-10-19
+
+B3 añade `pseudolearn_bridge` con `flutter_rust_bridge` 2.13.0 y Native Assets. El registro de sesiones
+confina `ApiSession` al hilo invocador; cada llamada transporta JSON por valor y no conserva buffers
+entre llamadas. La generación Rust–Dart queda reproducible mediante `tool/bridge.sh`. La prueba Dart
+cruza FFI contra la biblioteca compilada.
+
+Pasaron `cargo fmt --check`, `cargo test --locked` (8 pruebas de integración),
+`cargo clippy --all-targets --locked`, `cargo deny check`, `rust-checks all`, `bash tool/bridge.sh check`,
+`bash tool/test_bridge.sh`, `dart run tool/check_limits.dart`, la prueba negativa de capas y los 1.949
+tests de Flutter. El análisis estricto de Dart 3.13.4 con `--fatal-infos --fatal-warnings` no encontró
+incidencias. Flutter compiló la biblioteca Native Assets para macOS; Xcode no completó
+el build de la app porque falta un perfil de firma de desarrollo.
+
+La regeneración se comprobó en el árbol de trabajo, no en un checkout limpio independiente. La prueba
+negativa de generación detectó un enlace Dart alterado y lo regeneró; la prueba de capas rechazó el
+import del puente desde dominio.
+
+B4 no puede consumir todavía una identidad estructural de foco ni afirmar que una colección paginada
+esté completa. La API pública actual no anuncia `program_view` ni `state_pages`; los eventos contienen
+línea y clase sin `source.node_id`, y las consultas no aceptan cursores opacos. `APP.EXEC.PACE` prohíbe
+derivar identidad desde la línea y `APP.EXEC.SNAPSHOT-VIEW` exige paginación verificable. Crear los
+adaptadores con la superficie actual incumpliría esos contratos; los seis ítems de B4 permanecen
+pendientes hasta implementar las capacidades correspondientes en la API Rust.
 
 ### B5 · Servicio de lenguaje y consumidores restantes
 

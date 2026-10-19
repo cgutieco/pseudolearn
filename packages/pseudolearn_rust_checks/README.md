@@ -38,9 +38,11 @@ Los miembros Cargo, incluidas dependencias por target y desarrollo, se contrasta
 `cargo metadata --no-deps --format-version 1`. Los crates tooling también tienen lista cerrada.
 Con `declarative: true`, `layers` comprueba carpetas y README sin ejecutar Cargo: cada capa declarada
 existe, no hay carpeta de crate sin declarar, todas las dependencias internas tienen dueño y no existe
-ningún Cargo.toml ni fuente Rust. El modo es explícito; un manifiesto perdido de un miembro ejecutable
-sigue siendo un error. Las políticas opcionales unsafe_allowed, generated_sources y
-deterministic_output_crates documentan las restricciones del miembro antes de construir sus crates.
+ningún Cargo.toml ni fuente Rust. El modo es explícito; la falta de un manifiesto de un miembro
+ejecutable sigue siendo un error. `unsafe_allowed`, `generated_sources` y `deterministic_output_crates` declaran
+restricciones del miembro. `generated_sources` acepta rutas exactas o directorios relativos al
+miembro; las fuentes listadas quedan fuera de los analizadores de código escrito a mano, mientras
+Cargo continúa comprobando sus dependencias. Las rutas absolutas, ascendentes y duplicadas fallan.
 Problema: especificar arquitectura antes del motor. Elección: validación declarativa con rechazo
 SPEC-FIRST para código prematuro. Se descarta crear crates vacíos para satisfacer Cargo.
 Las dependencias internas siguen `may_import`; las externas siguen `external_dependencies`.
@@ -71,9 +73,11 @@ Las capas con `pending: true` permiten fases intermedias: el verificador exige s
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 El código inglés no lleva comentarios, atributos doc, allow ni expect. `#![forbid(unsafe_code)]`
-protege cada crate verificado. Límites y listas de nombres están únicamente en `architecture.yaml`.
-Los tests se excluyen de tamaño, no de comentarios, nombres o atributos. Se inspeccionan `src`,
-`tests`, ejemplos y build scripts; no se inspeccionan target, .git ni fixtures negativos.
+protege cada crate verificado salvo los crates que declaran una salida generada con `unsafe_allowed`.
+Límites, rutas generadas y listas de nombres están únicamente en `architecture.yaml`. Los tests se
+excluyen de tamaño, no de comentarios, nombres o atributos. Se inspeccionan `src`, `tests`, ejemplos
+y build scripts; no se inspeccionan target, .git, fixtures negativos ni salidas listadas en
+`generated_sources`.
 Las declaraciones, aliases de imports, genéricos, bindings y tiempos de vida se verifican como declaraciones; rutas de terceros y
 palabras de Rust no son nombres propios. Las firmas heredadas de traits externos no son nombres
 propios renombrables: se verifican sus bindings y genéricos, no el nombre impuesto por el contrato. Los componentes camelCase y snake_case se normalizan.

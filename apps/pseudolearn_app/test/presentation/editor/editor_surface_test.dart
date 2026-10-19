@@ -50,7 +50,10 @@ EditorState _state({
     report: isExecutable
         ? const AnalysisReport.empty()
         : const AnalysisReport(
-            isExecutable: false, diagnostics: [], highlightSpans: []),
+            isExecutable: false,
+            diagnostics: [],
+            highlightSpans: [],
+          ),
     completions: _completions,
     keys: hasKeys ? _keys : const [],
     pendingEdit: pendingEdit,
@@ -102,148 +105,178 @@ void _ignoreRun() {}
 bool _fieldHasFocus(WidgetTester tester) =>
     tester.widget<TextField>(find.byType(TextField)).focusNode!.hasFocus;
 
-Finder _barKey(String label) => find.descendant(
-      of: find.byType(EditorKeyBar),
-      matching: find.text(label),
-    );
+Finder _barKey(String label) =>
+    find.descendant(of: find.byType(EditorKeyBar), matching: find.text(label));
 
 void main() {
   group('EditorSurface · caret', () {
-    testWidgets('reports the caret sitting in the field when a key is pressed',
-        (tester) async {
-      EditorKey? pressedKey;
-      CaretRange? pressedCaret;
-
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P\nFinProceso'),
-        onKeyPressed: (key, caret) {
-          pressedKey = key;
-          pressedCaret = caret;
-        },
-      ));
-      await tester.pumpAndSettle();
-
-      final field = tester.widget<TextField>(find.byType(TextField));
-      field.controller!.selection = const TextSelection.collapsed(offset: 9);
-
-      await tester.tap(_barKey('<-'));
-      await tester.pumpAndSettle();
-
-      expect(pressedKey?.kind, EditorKeyKind.assignment);
-      expect(pressedCaret, const CaretRange(start: 9, end: 9));
-    });
-
     testWidgets(
-        'falls back to the end of the document when the field was never focused',
-        (tester) async {
-      CaretRange? pressedCaret;
+      'reports the caret sitting in the field when a key is pressed',
+      (tester) async {
+        EditorKey? pressedKey;
+        CaretRange? pressedCaret;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, caret) => pressedCaret = caret,
-      ));
-      await tester.pumpAndSettle();
-
-      await tester.tap(_barKey('<-'));
-      await tester.pumpAndSettle();
-
-      expect(pressedCaret, const CaretRange(start: 9, end: 9));
-    });
-
-    testWidgets(
-        'applies a pending edit once and leaves the caret where it says',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
-      await tester.pumpAndSettle();
-
-      await tester.pumpWidget(_surface(
-        editorState: _state(
-          sourceCode: 'Proceso P<-',
-          pendingEdit: const SourceEdit(
-            sourceCode: 'Proceso P<-',
-            caret: CaretRange.collapsed(11),
-            revision: 1,
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(sourceCode: 'Proceso P\nFinProceso'),
+            onKeyPressed: (key, caret) {
+              pressedKey = key;
+              pressedCaret = caret;
+            },
           ),
-        ),
-        onKeyPressed: (_, __) {},
-      ));
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      final field = tester.widget<TextField>(find.byType(TextField));
-      expect(field.controller!.text, 'Proceso P<-');
-      expect(field.controller!.selection.baseOffset, 11);
-    });
+        final field = tester.widget<TextField>(find.byType(TextField));
+        field.controller!.selection = const TextSelection.collapsed(offset: 9);
+
+        await tester.tap(_barKey('<-'));
+        await tester.pumpAndSettle();
+
+        expect(pressedKey?.kind, EditorKeyKind.assignment);
+        expect(pressedCaret, const CaretRange(start: 9, end: 9));
+      },
+    );
 
     testWidgets(
-        'remounting keeps text typed after a pending edit instead of replaying it',
-        (tester) async {
-      const staleEdit = SourceEdit(
-        sourceCode: 'Proceso P<-',
-        caret: CaretRange.collapsed(11),
-        revision: 1,
-      );
+      'falls back to the end of the document when the field was never focused',
+      (tester) async {
+        CaretRange? pressedCaret;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P<-', pendingEdit: staleEdit),
-        onKeyPressed: (_, __) {},
-      ));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(sourceCode: 'Proceso P'),
+            onKeyPressed: (_, caret) => pressedCaret = caret,
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pumpAndSettle();
+        await tester.tap(_barKey('<-'));
+        await tester.pumpAndSettle();
 
-      await tester.pumpWidget(_surface(
-        editorState:
-            _state(sourceCode: 'Proceso P<- 6', pendingEdit: staleEdit),
-        onKeyPressed: (_, __) {},
-      ));
-      await tester.pumpAndSettle();
+        expect(pressedCaret, const CaretRange(start: 9, end: 9));
+      },
+    );
 
-      await tester.pumpWidget(_surface(
-        editorState:
-            _state(sourceCode: 'Proceso P<- 6', pendingEdit: staleEdit),
-        onKeyPressed: (_, __) {},
-        executionState: const ExecutionState.initial().copyWith(
-          isOutputPanelExpanded: true,
+    testWidgets(
+      'applies a pending edit once and leaves the caret where it says',
+      (tester) async {
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(sourceCode: 'Proceso P'),
+            onKeyPressed: (_, _) {},
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(
+              sourceCode: 'Proceso P<-',
+              pendingEdit: const SourceEdit(
+                sourceCode: 'Proceso P<-',
+                caret: CaretRange.collapsed(11),
+                revision: 1,
+              ),
+            ),
+            onKeyPressed: (_, _) {},
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final field = tester.widget<TextField>(find.byType(TextField));
+        expect(field.controller!.text, 'Proceso P<-');
+        expect(field.controller!.selection.baseOffset, 11);
+      },
+    );
+
+    testWidgets(
+      'remounting keeps text typed after a pending edit instead of replaying it',
+      (tester) async {
+        const staleEdit = SourceEdit(
+          sourceCode: 'Proceso P<-',
+          caret: CaretRange.collapsed(11),
+          revision: 1,
+        );
+
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(
+              sourceCode: 'Proceso P<-',
+              pendingEdit: staleEdit,
+            ),
+            onKeyPressed: (_, _) {},
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pumpAndSettle();
+
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(
+              sourceCode: 'Proceso P<- 6',
+              pendingEdit: staleEdit,
+            ),
+            onKeyPressed: (_, _) {},
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.pumpWidget(
+          _surface(
+            editorState: _state(
+              sourceCode: 'Proceso P<- 6',
+              pendingEdit: staleEdit,
+            ),
+            onKeyPressed: (_, _) {},
+            executionState: const ExecutionState.initial().copyWith(
+              isOutputPanelExpanded: true,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final field = tester.widget<TextField>(find.byType(TextField));
+        expect(field.controller!.text, 'Proceso P<- 6');
+      },
+    );
+
+    testWidgets('undoing after a pressed key restores the previous text', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
         ),
-      ));
-      await tester.pumpAndSettle();
-
-      final field = tester.widget<TextField>(find.byType(TextField));
-      expect(field.controller!.text, 'Proceso P<- 6');
-    });
-
-    testWidgets('undoing after a pressed key restores the previous text',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
       await tester.pumpAndSettle();
       await tester.pump(const Duration(milliseconds: 600));
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(
-          sourceCode: 'Proceso P<-',
-          pendingEdit: const SourceEdit(
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(
             sourceCode: 'Proceso P<-',
-            caret: CaretRange.collapsed(11),
-            revision: 1,
+            pendingEdit: const SourceEdit(
+              sourceCode: 'Proceso P<-',
+              caret: CaretRange.collapsed(11),
+              revision: 1,
+            ),
           ),
+          onKeyPressed: (_, _) {},
         ),
-        onKeyPressed: (_, __) {},
-      ));
+      );
       await tester.pumpAndSettle();
       await tester.pump(const Duration(milliseconds: 600));
 
-      final controller =
-          tester.widget<TextField>(find.byType(TextField)).controller!;
+      final controller = tester
+          .widget<TextField>(find.byType(TextField))
+          .controller!;
       expect(controller.text, 'Proceso P<-');
 
       Actions.invoke(
@@ -258,68 +291,82 @@ void main() {
 
   group('EditorSurface · when the key bar appears', () {
     testWidgets('compact with the keyboard up shows it', (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsOneWidget);
     });
 
     testWidgets('no keyboard hides it', (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        keyboardInset: 0,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          keyboardInset: 0,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsNothing);
     });
 
-    testWidgets('a wide tablet writing on screen still shows it',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        size: _wideTablet,
-      ));
+    testWidgets('a wide tablet writing on screen still shows it', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          size: _wideTablet,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsOneWidget);
     });
 
-    testWidgets('a machine that types on a physical keyboard never shows it',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
-        onKeyPressed: (_, __) {},
-        size: _wideTablet,
-      ));
+    testWidgets('a machine that types on a physical keyboard never shows it', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
+          onKeyPressed: (_, _) {},
+          size: _wideTablet,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsNothing);
     });
 
     testWidgets('a profile with no keys yet shows nothing', (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P', hasKeys: false),
-        onKeyPressed: (_, __) {},
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P', hasKeys: false),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsNothing);
     });
 
     testWidgets('a run in flight hides it', (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        executionState: const ExecutionState.initial().copyWith(
-          status: ExecutionStatus.running,
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          executionState: const ExecutionState.initial().copyWith(
+            status: ExecutionStatus.running,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorKeyBar), findsNothing);
@@ -327,23 +374,28 @@ void main() {
   });
 
   group('EditorSurface · diagnostics panel', () {
-    testWidgets('collapses to its count line in compact with the keyboard up',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+    testWidgets('collapses to its count line in compact with the keyboard up', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byTooltip('Expandir'), findsNothing);
     });
 
     testWidgets('keeps its toggle when the keyboard is down', (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        keyboardInset: 0,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          keyboardInset: 0,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byTooltip('Expandir'), findsOneWidget);
@@ -351,12 +403,15 @@ void main() {
   });
 
   group('EditorSurface · leaving the keyboard', () {
-    testWidgets('compact with the keyboard up offers running and hiding',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+    testWidgets('compact with the keyboard up offers running and hiding', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(KeyboardExitActions), findsOneWidget);
@@ -364,39 +419,48 @@ void main() {
       expect(find.byTooltip('Ocultar teclado'), findsOneWidget);
     });
 
-    testWidgets('no keyboard leaves them to the execution footer',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        keyboardInset: 0,
-      ));
+    testWidgets('no keyboard leaves them to the execution footer', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          keyboardInset: 0,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(KeyboardExitActions), findsNothing);
     });
 
-    testWidgets('a wide canvas keeps its footer and needs no exit actions',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        size: _wideTablet,
-      ));
+    testWidgets('a wide canvas keeps its footer and needs no exit actions', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          size: _wideTablet,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(KeyboardExitActions), findsNothing);
     });
 
-    testWidgets('running drops the focus before asking for the run',
-        (tester) async {
+    testWidgets('running drops the focus before asking for the run', (
+      tester,
+    ) async {
       var runs = 0;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        onRun: () => runs++,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          onRun: () => runs++,
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -410,35 +474,18 @@ void main() {
       expect(_fieldHasFocus(tester), isFalse);
     });
 
-    testWidgets('a program that does not compile cannot be run from here',
-        (tester) async {
+    testWidgets('a program that does not compile cannot be run from here', (
+      tester,
+    ) async {
       var runs = 0;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P', isExecutable: false),
-        onKeyPressed: (_, __) {},
-        onRun: () => runs++,
-      ));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byTooltip('Ejecutar'));
-      await tester.pumpAndSettle();
-
-      expect(runs, 0);
-    });
-
-    testWidgets('a run already in flight cannot be started again',
-        (tester) async {
-      var runs = 0;
-
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        onRun: () => runs++,
-        executionState: const ExecutionState.initial().copyWith(
-          status: ExecutionStatus.running,
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P', isExecutable: false),
+          onKeyPressed: (_, _) {},
+          onRun: () => runs++,
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byTooltip('Ejecutar'));
@@ -447,15 +494,41 @@ void main() {
       expect(runs, 0);
     });
 
-    testWidgets('hiding the keyboard drops the focus without running',
-        (tester) async {
+    testWidgets('a run already in flight cannot be started again', (
+      tester,
+    ) async {
       var runs = 0;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-        onRun: () => runs++,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          onRun: () => runs++,
+          executionState: const ExecutionState.initial().copyWith(
+            status: ExecutionStatus.running,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Ejecutar'));
+      await tester.pumpAndSettle();
+
+      expect(runs, 0);
+    });
+
+    testWidgets('hiding the keyboard drops the focus without running', (
+      tester,
+    ) async {
+      var runs = 0;
+
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+          onRun: () => runs++,
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -469,12 +542,15 @@ void main() {
       expect(runs, 0);
     });
 
-    testWidgets('tapping the diagnostics strip drops the focus too',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+    testWidgets('tapping the diagnostics strip drops the focus too', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -487,12 +563,15 @@ void main() {
       expect(_fieldHasFocus(tester), isFalse);
     });
 
-    testWidgets('tapping the code field keeps writing instead of hiding',
-        (tester) async {
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        onKeyPressed: (_, __) {},
-      ));
+    testWidgets('tapping the code field keeps writing instead of hiding', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -503,20 +582,23 @@ void main() {
   });
 
   group('EditorSurface · physical keyboard', () {
-    testWidgets('the tab key enters through the same port as the drawn one',
-        (tester) async {
+    testWidgets('the tab key enters through the same port as the drawn one', (
+      tester,
+    ) async {
       EditorKey? pressedKey;
       CaretRange? pressedCaret;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
-        onKeyPressed: (key, caret) {
-          pressedKey = key;
-          pressedCaret = caret;
-        },
-        size: _wideTablet,
-        keyboardInset: 0,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
+          onKeyPressed: (key, caret) {
+            pressedKey = key;
+            pressedCaret = caret;
+          },
+          size: _wideTablet,
+          keyboardInset: 0,
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -536,12 +618,14 @@ void main() {
     testWidgets('shift and tab asks for a dedent', (tester) async {
       EditorKey? pressedKey;
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
-        onKeyPressed: (key, _) => pressedKey = key,
-        size: _wideTablet,
-        keyboardInset: 0,
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P', showsKeyBar: false),
+          onKeyPressed: (key, _) => pressedKey = key,
+          size: _wideTablet,
+          keyboardInset: 0,
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(TextField));
@@ -555,17 +639,19 @@ void main() {
       expect(pressedKey?.kind, EditorKeyKind.dedent);
     });
 
-    testWidgets('CodeField only receives focus when execution isInFlight',
-        (tester) async {
+    testWidgets('CodeField only receives focus when execution isInFlight', (
+      tester,
+    ) async {
       const focus = ExecutionFocus(
         nodeId: ProgramNodeId(1),
         range: SourceRange(
-            startOffset: 0,
-            endOffset: 7,
-            startLine: 1,
-            startColumn: 1,
-            endLine: 1,
-            endColumn: 8),
+          startOffset: 0,
+          endOffset: 7,
+          startLine: 1,
+          startColumn: 1,
+          endLine: 1,
+          endColumn: 8,
+        ),
         kind: ExecutionFocusKind.statement,
       );
       const finishedStep = ExecutionStep(
@@ -580,11 +666,13 @@ void main() {
         currentStep: finishedStep,
       );
 
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        executionState: finishedExecState,
-        onKeyPressed: (_, __) {},
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          executionState: finishedExecState,
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       var codeField = tester.widget<CodeField>(find.byType(CodeField));
@@ -594,11 +682,13 @@ void main() {
         status: ExecutionStatus.pausedAtStatement,
         currentStep: finishedStep,
       );
-      await tester.pumpWidget(_surface(
-        editorState: _state(sourceCode: 'Proceso P'),
-        executionState: inFlightExecState,
-        onKeyPressed: (_, __) {},
-      ));
+      await tester.pumpWidget(
+        _surface(
+          editorState: _state(sourceCode: 'Proceso P'),
+          executionState: inFlightExecState,
+          onKeyPressed: (_, _) {},
+        ),
+      );
       await tester.pumpAndSettle();
 
       codeField = tester.widget<CodeField>(find.byType(CodeField));

@@ -11,8 +11,9 @@ motor y cómo se construye su experiencia interactiva**.
 
 **Estado:** Arquitectura hexagonal implementada; superficies de biblioteca, documento (con cuatro pestañas sincronizadas
 por `NodeId`), introducción con laboratorio en vivo, base de conocimiento y ajustes operativas; tres notaciones de
-diagrama (ordinograma, estructograma y diagrama de clases) trazadas determinísticamente; verificación mecánica y suite
-de pruebas al 100 % en verde.
+diagrama (ordinograma, estructograma y diagrama de clases) trazadas determinísticamente. La suite Flutter pasa y el
+análisis estático estricto no informa incidencias. El puente Rust–Dart compila y sus pruebas FFI,
+generación y límites pasan. Los adaptadores de análisis y ejecución esperan capacidades públicas de la API Rust.
 
 ---
 
@@ -119,7 +120,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 
 ### 2.1 Requisitos previos y plataformas objetivo
 
-- **SDKs:** Flutter SDK `3.47.5` exacto (fijado en `environment.flutter` de `pubspec.yaml`, ver §4.47), Dart SDK `>= 3.5.0`.
+- **SDKs:** Flutter SDK `3.47.5` exacto (fijado en `environment.flutter` de `pubspec.yaml`, ver §4.47), Dart SDK `^3.9.0`.
 - **Plataformas objetivo primarias:** macOS 13+ (Apple Silicon y x86_64), iOS 16+ (iPhone y iPad), Windows 10/11 (x64).
 - **Plataformas secundarias:** Linux (GTK), Web (WASM). Son objetivo declarado, **no andamiaje
   existente**: el proyecto contiene las carpetas `ios/`, `macos/` y `windows/`. Toda afirmación sobre el comportamiento en
@@ -143,6 +144,10 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 ```bash
 # Resolución de dependencias del monorepo
 flutter pub get
+
+# Regeneración y comprobación del puente Rust–Dart
+bash tool/bridge.sh generate
+bash tool/bridge.sh check
 
 # Verificación de fuentes tipográficas empaquetadas
 dart run tool/check_design_system.dart
@@ -193,16 +198,19 @@ La verificación de integridad se ejecuta sin dependencias externas:
 # 1. Análisis estático estricto
 flutter analyze --fatal-infos --fatal-warnings
 
-# 2. Verificación de límites métricos (architecture.yaml)
+# 2. Verificación del transporte Dart–FFI con la biblioteca nativa real
+bash tool/test_bridge.sh
+
+# 3. Verificación de límites métricos (architecture.yaml)
 dart run tool/check_limits.dart
 
-# 3. Verificación de invariantes de la base de conocimiento
+# 4. Verificación de invariantes de la base de conocimiento
 dart run tool/check_content.dart
 
-# 4. Verificación de integridad del sistema de diseño
+# 5. Verificación de integridad del sistema de diseño
 dart run tool/check_design_system.dart
 
-# 5. Suite completa de tests unitarios, de arquitectura y widgets
+# 6. Suite completa de tests unitarios, de arquitectura y widgets
 flutter test
 ```
 
@@ -2048,8 +2056,17 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   parámetros y resultados por valor, no un estado de memoria compartido.
 - **Código generado:** Solo `native/src/frb_generated.rs` y el subárbol `lib/engine/bridge/` pueden contener los
   comentarios, atributos, bloques `unsafe` y `unwrap` que FRB emite. Son salidas inmutables del generador y su
-  versión fijada; la regeneración debe producir un árbol limpio. Todo wrapper escrito a mano permanece sujeto a
-  los límites y verificadores ordinarios. Las exenciones se limitan a esas rutas exactas.
+  versión fijada; `bash tool/bridge.sh generate` regenera y formatea esas salidas; `bash tool/bridge.sh check`
+  compara una segunda generación contra el árbol versionado. `analysis_options.yaml` excluye el subárbol Dart generado
+  del análisis estático. Todo wrapper escrito a mano permanece sujeto a los límites y verificadores ordinarios. Las
+  exenciones se limitan a esas rutas exactas.
+- **Responsabilidad del crate:** `native/` es un miembro Cargo separado, con lock, auditoría de dependencias y
+  reglas Rust propias. `native/src/api.rs` expone creación, llamada y cierre de sesión; las operaciones y
+  capacidades siguen siendo las de `pseudolearn_api`. El registro libera los recursos descendientes cuando se
+  cierra una sesión. `hook/build.dart` compila la biblioteca por Native Assets sin incorporar el feature `native`.
+- **Capacidades API pendientes:** El API actual todavía no publica `API.PROGRAM.VIEW` ni cursores opacos para páginas de estado.
+  Los adaptadores de ejecución requieren ambas garantías para conservar identidad estructural y presentar como
+  completa una vista paginada; no se reconstruyen identidades desde líneas.
 - **Alternativas descartadas:** Exponer `ApiSession` como objeto opaco exige `Sync`; no satisface el tipo de máquina
   actual. Las llamadas asíncronas o un worker cambian el contrato de los puertos. Cargokit se descarta porque FRB
   ofrece el backend Native Assets en la versión fijada y la app ya mantiene su versión exacta de Flutter.
@@ -2255,7 +2272,9 @@ Apple y no toca nada.
 | Invariantes de contenido       | `dart run tool/check_content.dart`                                       | Paridad de manifiestos, resolución de marcadores, 7 partes de módulos, sintaxis de ejemplos y soluciones de ejercicios                           | `architecture.yaml`             |
 | Sistema de diseño              | `dart run tool/check_design_system.dart`                                 | Familias tipográficas en disco, ausencia de medidas crudas en padding/espacios y unicidad de `DesignCanvas`                                      | `architecture.yaml`             |
 | Cobertura de especificación    | `flutter test test/tool/spec_coverage_test.dart`                         | Proyección completa de las secciones de `language-spec.md` en especificaciones publicadas                                                        | `architecture.yaml`             |
-| Capas y dependencias           | `flutter test test/architecture/layering_test.dart`                      | Matriz de `may_import`, `forbidden_imports` y ausencia de imports package propios                                                                | `architecture.yaml`             |
+| Capas y dependencias           | `flutter test test/architecture/layering_test.dart`                      | Matriz de `may_import`, `forbidden_imports`, ausencia de imports package propios y rechazo del puente generado desde el dominio                   | `architecture.yaml`             |
+| Generación Rust–Dart           | `bash tool/bridge.sh check`                                               | Regeneración y comparación limpia de los enlaces Rust y Dart versionados                                                                          | `.flutter_rust_bridge.yaml`     |
+| Transporte Dart–FFI real       | `bash tool/test_bridge.sh`                                                | Construye la biblioteca nativa y verifica por FFI sesión, capacidades, errores y cierre                                                           | `native/README.md`              |
 | Pureza de presentación         | `flutter test test/architecture/presentation_purity_test.dart`           | Prohibición de constructores adaptativos, métodos de derivación de colecciones, `await` y `MediaQuery` fuera de shell                            | `architecture.yaml`             |
 | Pureza de composición          | `flutter test test/architecture/composition_purity_test.dart`            | Ausencia total de condicionales en `composition/`                                                                                                | `architecture.yaml`             |
 | Inmutabilidad de estados       | `flutter test test/architecture/state_immutability_test.dart`            | Campos estrictamente `final` en archivos `*_state.dart`                                                                                          | `architecture.yaml`             |

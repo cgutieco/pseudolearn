@@ -9,6 +9,7 @@ import 'data/index/index_schema.dart';
 import 'data/index/metadata_index.dart';
 import 'data/platform/platform_database_factory.dart';
 import 'data/progress/sqlite_local_progress_store.dart';
+import 'engine/bridge/frb_generated.dart';
 
 Future<Directory> resolveDocumentsDirectory() async {
   return getApplicationDocumentsDirectory();
@@ -30,6 +31,7 @@ Future<Database> openLocalDatabase(Directory directory) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await RustLib.init();
   initializePlatformDatabaseFactory();
   final directory = await resolveDocumentsDirectory();
   final database = await openLocalDatabase(directory);

@@ -27,7 +27,7 @@ final class DocumentHeadingsNav extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: headings.length,
-        separatorBuilder: (_, __) => const SizedBox(width: SpacingTokens.space2),
+        separatorBuilder: (_, _) => const SizedBox(width: SpacingTokens.space2),
         itemBuilder: (context, index) {
           final heading = headings[index];
           return _HeadingChip(
@@ -65,10 +65,7 @@ final class _HeadingChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colors.surfaces.subtle,
           borderRadius: BorderRadius.circular(RadiusTokens.radiusFull),
-          border: Border.all(
-            color: theme.colors.borders.subtle,
-            width: 1,
-          ),
+          border: Border.all(color: theme.colors.borders.subtle, width: 1),
         ),
         alignment: Alignment.center,
         child: AppText(

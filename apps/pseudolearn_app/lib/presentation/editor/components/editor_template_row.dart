@@ -25,8 +25,7 @@ final class EditorTemplateRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space3),
         itemCount: templates.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(width: SpacingTokens.space2),
+        separatorBuilder: (_, _) => const SizedBox(width: SpacingTokens.space2),
         itemBuilder: (context, index) => _TemplateChip(
           template: templates[index],
           onTap: () => onTemplateSelected(templates[index]),
@@ -43,10 +42,10 @@ final class _TemplateChip extends StatelessWidget {
   const _TemplateChip({required this.template, required this.onTap});
 
   Color _chipColor(AppThemeExtension theme) => switch (template.family) {
-        CompletionFamily.structured => theme.syntax.keywordStructured,
-        CompletionFamily.procedural => theme.syntax.keywordProcedural,
-        CompletionFamily.oop => theme.syntax.keywordOop,
-      };
+    CompletionFamily.structured => theme.syntax.keywordStructured,
+    CompletionFamily.procedural => theme.syntax.keywordProcedural,
+    CompletionFamily.oop => theme.syntax.keywordOop,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +69,11 @@ final class _TemplateChip extends StatelessWidget {
             borderRadius: radius,
             border: chipBorder,
           ),
-          child: AppText(template.label,
-              variant: AppTextVariant.codeInline, color: _chipColor(theme)),
+          child: AppText(
+            template.label,
+            variant: AppTextVariant.codeInline,
+            color: _chipColor(theme),
+          ),
         ),
       ),
     );

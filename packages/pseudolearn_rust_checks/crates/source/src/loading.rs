@@ -20,8 +20,20 @@ pub fn read_architecture(root: &Path) -> Result<Architecture, String> {
 fn validate_rules(rules: &Architecture) -> Result<(), String> {
     let mut names = std::collections::BTreeSet::new();
     let mut paths = std::collections::BTreeSet::new();
+    let mut generated_sources = std::collections::BTreeSet::new();
     if rules.package.is_empty() || rules.layers.is_empty() {
         return Err("Package and layers must be nonempty".to_owned());
+    }
+    for source in &rules.generated_sources {
+        if source.is_empty()
+            || !is_relative_path(source)
+            || Path::new(source)
+                .components()
+                .any(|component| !matches!(component, std::path::Component::Normal(_)))
+            || !generated_sources.insert(source)
+        {
+            return Err("Generated source paths must be unique member-relative paths".to_owned());
+        }
     }
     for layer in &rules.layers {
         if !names.insert(&layer.name) || !paths.insert(&layer.path) {
@@ -84,8 +96,18 @@ pub fn load_sources(root: &Path, rules: &Architecture) -> Result<Vec<SourceFile>
             sources.push(parse_source(&build_script, root, index)?);
         }
     }
+    sources.retain(|source| !is_generated_source(&source.relative, &rules.generated_sources));
     sources.sort_by(|first, second| first.path.cmp(&second.path));
     Ok(sources)
+}
+
+fn is_generated_source(relative: &str, generated_sources: &[String]) -> bool {
+    generated_sources.iter().any(|generated| {
+        relative == generated
+            || relative
+                .strip_prefix(generated)
+                .is_some_and(|suffix| suffix.starts_with('/'))
+    })
 }
 
 fn collect_sources(
