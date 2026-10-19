@@ -88,8 +88,12 @@ fn link_with_settings(
     configured: &ExecutableSettings,
 ) -> Result<PathBuf, Failure> {
     let module = parse_module(module_text).map_err(failure)?;
-    let compiled = compile_module_to_executable_object(&module, &TargetConfig::host(), configured)
-        .map_err(failure)?;
+    let compiled = compile_module_to_executable_object(
+        &module,
+        &TargetConfig::host().with_verification(),
+        configured,
+    )
+    .map_err(failure)?;
     let directory = work_directory()?;
     let object = directory.join("program.o");
     std::fs::write(&object, &compiled.bytes).map_err(failure)?;
@@ -205,7 +209,11 @@ fn exhausted_input_exits_four_with_the_exhaustion_message() -> Result<(), Failur
 #[test]
 fn a_module_without_a_main_function_cannot_become_an_executable() -> Result<(), Failure> {
     let module = parse_module(WITHOUT_MAIN).map_err(failure)?;
-    match compile_module_to_executable_object(&module, &TargetConfig::host(), &settings()) {
+    match compile_module_to_executable_object(
+        &module,
+        &TargetConfig::host().with_verification(),
+        &settings(),
+    ) {
         Err(CodegenError::InvalidModule(_)) => Ok(()),
         other => Err(format!("expected an invalid module, got {other:?}")),
     }

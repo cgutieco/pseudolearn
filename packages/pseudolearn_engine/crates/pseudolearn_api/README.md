@@ -54,6 +54,8 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: configurar el montón desde la API debe preservar el calendario de la VM. Elección: las ejecuciones del sujeto engine conservan el mínimo automático de 4096 celdas. Se descarta heredar la configuración específica de AOT.
+
 Problema: la emisión debe medirse sin análisis ni lowering. Elección: `PreparedNativeBenchmark` prepara una RI inmutable antes del reloj; `emit_benchmark_object` emite el objeto y sus metadatos. La inspección explícita captura CLIF sin modificar las funciones emitidas; permanece fuera de la medición. El módulo `literals` es dueño de los datos de texto del objeto. Se descarta mezclar las cadenas CLIF con el intervalo de emisión.
 
 Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación.

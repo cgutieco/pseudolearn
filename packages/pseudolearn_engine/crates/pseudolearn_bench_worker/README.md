@@ -24,6 +24,8 @@ El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dent
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: excluir la conciliación final oculta trabajo de las asignaciones nativas. Elección: el intervalo versión 2 incluye entrada y `settle_session`; el tiempo de entrada se conserva por separado. El resumen identifica versión, nivel Cranelift, denominador V1F y umbral 1,70. Los registros sin versión conservan el intervalo histórico y umbral 1,30; mezclar versiones se rechaza. Se descarta reinterpretar resultados históricos o quitar la muestra VM entre parejas.
+
 Problema: una captura histórica no permite emparejar variantes por proceso. Elección: `paired/` prepara y enlaza el trabajador `pseudolearn_native_probe`, alterna el orden y conserva la configuración, el objeto y el lanzador por carga. Captura hashes antes de compilar el runtime y los objetos medidos, conserva treinta tiempos de emisión por carga, resolución observada y candidatos de cambio. Se descarta reemplazar las capturas E-NR1 o interpretar el intervalo de medias como intervalo de medianas. La latencia VM se toma sobre la API preparada y conserva dentro del intervalo su creación de máquina.
 
 Problema: el arranque de una CLI y la serialización no son coste de análisis. Elección: llamadas directas

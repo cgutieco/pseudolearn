@@ -4,10 +4,14 @@ mod abi_signatures;
 mod array_fast_path;
 mod block_accounting;
 mod block_order;
+mod block_parameters;
+mod borrowed_roots;
 mod cell_frames;
 mod class_table;
 mod constant_folding;
+mod constant_overflow;
 mod context_layout;
+mod defined_producers;
 mod definition;
 mod entry_point;
 mod error;
@@ -31,6 +35,7 @@ mod lower_scalars;
 mod lower_text;
 mod lower_virtual;
 mod lowering;
+mod memory_regions;
 mod object_allocation;
 mod object_emitter;
 mod object_fast_path;
@@ -47,7 +52,7 @@ pub use abi_signatures::{
 pub use entry_point::{MAIN_SYMBOL, METADATA_SYMBOL, RUNTIME_MAIN_SYMBOL};
 pub use error::CodegenError;
 pub use object_emitter::{CompiledObject, FunctionSymbol, function_symbol};
-pub use target::TargetConfig;
+pub use target::{ParameterRoots, TargetConfig};
 
 pub fn compile_module_to_object(
     module: &pseudolearn_ir::Module,

@@ -265,7 +265,7 @@ R0 Fundación
 
 - [x] **Experimentos:** E-NR1 ejecutado y conservado en `packages/pseudolearn_benchmarks/results/r6-aot/`; razón global histórica de cocientes de medias de 5,8× frente a V1F. El criterio N3 se aplica a cocientes de medianas por familia, no a ese global.
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase cerrada por autorización explícita el 2026-10-19**, con incumplimientos aceptados y pendientes conservados; este cierre no certifica todos los criterios. Publicación en la rama única mediante commit y push ordinario.
 
 - **Depende de.** R5.
 - **Contenido.**
@@ -282,12 +282,14 @@ R0 Fundación
      más `reference`, tras revisión independiente y sin cambiar versiones.
   - [x] Informe de `PERF.AOT.LEVEL` publicado según el protocolo, **incluidos los resultados desfavorables**, con la
      decisión de conservar Cranelift durante el diagnóstico y comparar alternativas según perfiles y costes medidos.
-  - [ ] `PERF.AOT.LEVEL#R1` alcanza N3: razón geométrica por familia `aot / V1F` ≤ 1,30×. E-NR1 registró 5,8× global;
-     las campañas emparejadas conservadas siguen incumpliendo las cuatro familias. La técnica siguiente se selecciona por evidencia.
-  - [ ] `PERF.AOT.LEVEL#R3`: emisión ≤ 15 ms de mediana por carga; `r6-paired-runtime` mide 15,79 ms en Richards y `r6-paired-validated` 14,57 ms y `r6-paired-inline-allocator` 15,30 ms. Se conserva como pendiente hasta que la medición final posterior a las mejoras de `R1` lo confirme.
+  - [ ] `PERF.AOT.LEVEL#R1` alcanza el nivel Cranelift de D-R6-01: razón geométrica por familia `aot / V1F` ≤ 1,70×, con el cambio clasificado registrado en el corpus; ≤ 1,30× frente a V1F-S queda para el nivel optimizado. Antes: N3 ≤ 1,30× frente a V1F. E-NR1 registró 5,8× global;
+     la campaña final `r6-paired-s1-s6` incumple arreglos (1,721792×) y recursiva (2,191876×); numérica (1,523839×) y objetos (1,448865×) cumplen. Se requieren optimizaciones de arquitectura o microarquitectura; la causa de la anomalía de Permute sigue sin demostrarse.
+  - [x] `PERF.AOT.LEVEL#R3`: máxima mediana de emisión 10,384417 ms, Richards, en la campaña final; cumple ≤ 15 ms.
   - [ ] Vínculos de conformidad pendientes, argumentos y posiciones de diagnósticos, propiedades RT y puerta local final verificados.
   - [ ] Los builds móviles y Wasm no incluyen Cranelift: verificado por el tamaño y por las *features*
      activadas.
+
+Cierre aceptado por D-R6-03 e informe [18](18-informe-implementacion-s1-s6-r6.md). Las casillas pendientes conservan su significado: no se han cumplido todos los casos ni se certifica el nivel Cranelift. Los vínculos pendientes del manifiesto AOT se conservan como deuda técnica y no se declara R6 certificada en `fases_cerradas`. La autorización de cierre no modifica el corpus ni introduce exenciones. R7 no se inicia.
 
 ### R7 · Servicio de lenguaje y herramientas
 

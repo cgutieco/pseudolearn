@@ -6,6 +6,7 @@ use std::time::Duration;
 
 pub enum Experiment {
     Idiomatic,
+    Semantic(Box<crate::semantic_memory::SemanticMachine>),
     Framed(Box<crate::framed_direct::FramedDirect>),
     Flat(Box<crate::remanso::RemansoMachine<crate::differential::Unobserved>>),
     Unchecked(
@@ -31,6 +32,7 @@ impl Experiment {
                 let timeline = (variant == 3).then(|| Timeline::new(Duration::from_millis(1)));
                 Ok(Self::Paged(Box::new(ClepsydraMachine::new(timeline)?)))
             }
+            9 => Ok(Self::Semantic(Box::default())),
             4 => Ok(Self::Framed(Box::default())),
             5 => Ok(Self::Flat(Box::default())),
             6 => Ok(Self::Unchecked(Box::default())),
@@ -42,6 +44,10 @@ impl Experiment {
 
     pub fn run(&mut self, kernel: &str, size: i64) -> Outcome<String> {
         match self {
+            Self::Semantic(machine) => {
+                machine.reset();
+                checked(kernel, machine.as_mut(), size)
+            }
             Self::Framed(machine) => {
                 machine.reset();
                 checked(kernel, machine.as_mut(), size)

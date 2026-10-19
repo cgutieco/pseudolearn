@@ -1,0 +1,1629 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/xtask verify`
+    Checking pseudolearn_bench_worker v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bench_worker)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.48s
+   Compiling pseudolearn_bench_worker v0.1.0 (/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_engine/crates/pseudolearn_bench_worker)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.35s
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_abi-a34d18f1f22fd381)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/abi_tests.rs (target/debug/deps/abi_tests-63bff47266590efe)
+
+running 8 tests
+test object_masks_cover_every_field_and_reject_size_overflow ... ok
+test verifies_absence_sentinels ... ok
+test verifies_common_header_roundtrip ... ok
+test verifies_primitive_sizes_and_alignments ... ok
+test verifies_word_bit_conversions ... ok
+test verifies_structural_offsets ... ok
+test verifies_control_frame_roundtrip ... ok
+test verifies_common_header_status_fields ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_aot_rt-e2eab3db9be49645)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access_tests.rs (target/debug/deps/access_tests-012241d9dabb4e22)
+
+running 11 tests
+test object_store_without_operands_is_an_internal_fault ... ok
+test multidimensional_elements_use_row_major_positions ... ok
+test object_fields_round_trip_and_start_without_value ... ok
+test an_absent_array_handle_is_an_uninitialized_read ... ok
+test missing_operand_buffers_are_internal_faults ... ok
+test reading_an_unassigned_element_is_an_uninitialized_read ... ok
+test registering_a_class_with_an_unknown_kind_is_rejected ... ok
+test an_index_outside_the_extent_is_out_of_range_for_load_and_store ... ok
+test object_access_through_an_absent_handle_or_bad_field_fails ... ok
+test stored_integer_elements_are_read_back ... ok
+test zero_length_arrays_reject_every_index ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cell_tests.rs (target/debug/deps/cell_tests-d71505925933649d)
+
+running 12 tests
+test a_field_cell_for_a_missing_field_or_object_fails ... ok
+test element_cells_observe_writes_made_through_the_array ... ok
+test an_element_cell_roots_its_owner_through_a_forced_collection ... ok
+test an_element_cell_outside_the_extent_is_out_of_range ... ok
+test field_cells_read_and_write_the_object_field ... ok
+test distinct_local_cells_do_not_alias ... ok
+test an_unknown_local_kind_is_an_internal_fault ... ok
+test local_reference_cells_keep_their_text_alive_through_collection ... ok
+test a_local_cell_starts_without_value_and_keeps_what_is_stored ... ok
+test released_cells_do_not_remove_the_caller_cells ... ok
+test unknown_cell_identifiers_are_internal_faults ... ok
+test sentinel_kinds_report_the_unset_state_without_a_flag ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/context_tests.rs (target/debug/deps/context_tests-1873efa7eaf77a4c)
+
+running 6 tests
+test layout_offsets_are_the_contract_the_generated_code_reads ... ok
+test root_stack_rejects_pushes_beyond_capacity_and_pops_saturate ... ok
+test defaults_start_without_statement_budget_and_with_one_thousand_frames ... ok
+test oversized_budget_saturates_instead_of_wrapping ... ok
+test explicit_budget_and_frames_are_published_in_the_context ... ok
+test zero_root_capacity_rejects_every_push ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fault_tests.rs (target/debug/deps/fault_tests-65246611d276065a)
+
+running 3 tests
+test input_exhaustion_has_no_diagnostic_to_render ... ok
+test a_fault_renders_in_the_requested_locale ... ok
+test arguments_are_substituted_into_the_template ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/inline_allocation_tests.rs (target/debug/deps/inline_allocation_tests-45272bae3f55f0ff)
+
+running 4 tests
+test an_empty_class_still_has_a_header_and_one_cell ... ok
+test a_dense_class_image_has_no_mask_word ... ok
+test a_sparse_class_image_has_mask_words_and_absent_fields ... ok
+test oversized_or_unknown_shapes_have_no_inline_image ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/input_tests.rs (target/debug/deps/input_tests-01eca4cbe283ac9b)
+
+running 8 tests
+test an_unknown_kind_is_an_internal_fault ... ok
+test input_that_ends_after_only_mismatches_is_exhausted ... ok
+test a_mismatched_line_is_consumed_noted_and_the_read_is_repeated ... ok
+test text_lines_are_stored_verbatim_without_the_line_terminator ... ok
+test exhausted_input_reaches_the_resource_limit_status_without_a_code ... ok
+test reals_booleans_and_characters_are_converted ... ok
+test each_read_consumes_one_line_in_order ... ok
+test a_character_read_rejects_longer_lines ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/math_tests.rs (target/debug/deps/math_tests-b03a422749d68063)
+
+running 7 tests
+test truncation_outside_the_integer_range_fails ... ok
+test logarithm_of_a_negative_number_is_a_domain_failure ... ok
+test integer_power_is_exact_and_traps_on_negative_exponents_and_overflow ... ok
+test transcendental_results_come_from_the_library ... ok
+test unknown_operation_is_an_internal_fault ... ok
+test rounding_operations_return_integers ... ok
+test power_matches_exact_integers_and_rejects_non_finite_results ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/memory_tests.rs (target/debug/deps/memory_tests-80726e4e1f162295)
+
+running 11 tests
+test entry_points_reject_a_null_context ... ok
+test array_new_with_unknown_element_kind_is_an_internal_fault ... ok
+test array_new_with_negative_extent_fails_with_negative_size ... ok
+test array_new_with_zero_extent_is_valid ... ok
+test array_new_publishes_the_handle_and_a_usable_heap_pointer ... ok
+test object_copy_of_a_non_object_handle_fails ... ok
+test array_new_with_missing_extents_is_an_internal_fault ... ok
+test cell_budget_exhaustion_is_a_program_failure_when_everything_is_rooted ... ok
+test object_new_and_copy_use_the_registered_layout ... ok
+test collection_reclaims_unrooted_arrays_and_keeps_rooted_ones ... ok
+test object_new_with_unregistered_class_is_an_internal_fault ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/metadata_tests.rs (target/debug/deps/metadata_tests-35c74ca89f9e18ef)
+
+running 6 tests
+test the_exported_main_rejects_missing_metadata ... ok
+test metadata_without_budget_keeps_the_budget_absent ... ok
+test encoded_metadata_decodes_to_the_same_value ... ok
+test unknown_diagnostic_names_are_rejected ... ok
+test trailing_bytes_and_wrong_magic_are_rejected ... ok
+test every_truncation_of_the_encoding_is_rejected ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/output_tests.rs (target/debug/deps/output_tests-1ef4815fd31ff5fd)
+
+running 5 tests
+test an_unknown_kind_is_an_internal_fault ... ok
+test writing_a_non_finite_real_fails_without_output ... ok
+test a_closed_output_stream_is_reported_as_an_internal_fault ... ok
+test values_are_written_in_call_order_with_optional_newlines ... ok
+test flush_reaches_the_underlying_stream ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/process_tests.rs (target/debug/deps/process_tests-55c1852c6e2633bf)
+
+running 11 tests
+test a_completed_program_exits_zero_with_its_output_and_no_diagnostics ... ok
+test an_unknown_class_layout_is_an_internal_failure ... ok
+test an_internal_fault_exits_five ... ok
+test a_limit_fault_reports_its_numeric_limit_and_end_position ... ok
+test a_budget_fault_exits_four ... ok
+test a_recovered_read_mismatch_is_reported_as_a_warning_on_a_completed_run ... ok
+test a_template_keeps_unknown_placeholders_empty_and_unclosed_braces_literal ... ok
+test a_program_fault_exits_three_after_preserving_prior_output ... ok
+test argument_values_are_escaped_as_json_text ... ok
+test exhausted_input_exits_four_with_the_exhaustion_template ... ok
+test forced_collection_does_not_change_the_observable_run ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/random_tests.rs (target/debug/deps/random_tests-0e97e179e24b1c88)
+
+running 3 tests
+test random_real_rejects_a_null_context ... ok
+test random_real_follows_the_seeded_generator ... ok
+test random_real_stays_in_the_unit_interval ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/text_tests.rs (target/debug/deps/text_tests-77794e58de69e045)
+
+running 15 tests
+test format_of_a_non_finite_real_fails ... ok
+test compare_returns_the_sign_of_the_ordering ... ok
+test concat_rejects_an_invalid_character_operand ... ok
+test comparison_with_an_invalid_character_is_an_internal_fault ... ok
+test comparison_accepts_character_operands_marked_with_the_flag ... ok
+test empty_literal_accepts_a_null_pointer ... ok
+test concat_joins_text_and_characters ... ok
+test format_renders_each_primitive_kind ... ok
+test character_access_uses_the_position_the_ir_delivers_and_is_bounded ... ok
+test literal_text_round_trips_through_the_heap ... ok
+test literal_with_invalid_utf8_is_an_internal_fault ... ok
+test non_empty_literal_with_null_pointer_is_an_internal_fault ... ok
+test query_with_unknown_operation_is_an_internal_fault ... ok
+test query_conversion_of_malformed_text_fails ... ok
+test query_reports_length_in_code_points_and_parses_numbers ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/trap_tests.rs (target/debug/deps/trap_tests-45a1c891deeb5776)
+
+running 7 tests
+test a_null_context_cannot_record_anything_and_fails ... ok
+test an_exhausted_statement_budget_returns_the_limit_status ... ok
+test frame_depth_overflow_is_a_program_failure_not_a_limit ... ok
+test layouts_registered_twice_with_different_shapes_are_rejected ... ok
+test an_undeclared_site_is_an_internal_fault ... ok
+test only_the_first_failure_is_kept ... ok
+test a_runtime_failure_site_returns_the_failed_status ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_api-fc33729d6505fa33)
+
+running 2 tests
+test execution_resource::execution_resource_tests::analysis_warnings_are_part_of_the_observed_execution_diagnostics ... ok
+test execution_resource::execution_resource_tests::execution_checkpoints_retain_small_deltas_and_live_machine ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/analyze_tests.rs (target/debug/deps/analyze_tests-92a8016c1f1ba8b5)
+
+running 2 tests
+test suppresses_semantics_after_syntax_errors ... ok
+test exposes_positions_with_independent_presentation_language ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/api_tests.rs (target/debug/deps/api_tests-68fd201fa2b5dcac)
+
+running 2 tests
+test analyzes_valid_program ... ok
+test reports_diagnostics_for_invalid_program ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/argument_conversion.rs (target/debug/deps/argument_conversion-8bbe32fec4067afa)
+
+running 2 tests
+test serializes_nesting_limits_as_numbers_instead_of_strings ... ok
+test keeps_named_types_distinct_from_generated_keyword_identities ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/event_codec.rs (target/debug/deps/event_codec-87d3167fef3549b8)
+
+running 2 tests
+test corrupt_binary_batches_are_usage_errors ... ok
+test event_encodings_preserve_control_characters_unicode_and_large_indices ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/execution.rs (target/debug/deps/execution-1a0338a64fd56c90)
+
+running 4 tests
+test execution_rejects_programs_with_analysis_errors ... ok
+test execution_preserves_analysis_warnings_on_stepped_path ... ok
+test execution_preserves_analysis_warnings_on_bulk_path ... ok
+test cell_backed_accumulators_survive_loop_joins ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/fault_injection.rs (target/debug/deps/fault_injection-f8db5e6ce08bb5c0)
+
+running 3 tests
+test unknown_stage_is_a_usage_failure ... ok
+test missing_request_is_a_usage_failure ... ok
+test every_injected_stage_is_contained_as_an_internal_failure ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/native_access.rs (target/debug/deps/native_access-f9ed806495611ec6)
+
+running 5 tests
+test array_parameters_preserve_aliasing_and_roots_through_recursive_allocations ... ok
+test partial_definition_and_managed_cells_remain_successful_under_forced_collection ... ok
+test absent::absent_receivers_force_each_slow_path_and_match_the_vm ... ok
+test each_terminal_field_failure_matches_vm_diagnostics ... ok
+test each_terminal_array_failure_matches_vm_diagnostics ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.54s
+
+     Running tests/native_benchmark.rs (target/debug/deps/native_benchmark-49a1b98b58e19cfd)
+
+running 2 tests
+test a_rejected_program_reports_its_diagnostics ... ok
+test a_valid_program_yields_an_object_without_an_entry_point_and_its_metadata ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/native_build.rs (target/debug/deps/native_build-2396a87ed3ebc944)
+
+running 5 tests
+test an_empty_program_is_rejected ... ok
+test a_program_with_semantic_errors_is_rejected_with_its_diagnostics ... ok
+test a_valid_program_becomes_an_object_that_calls_the_runtime_main ... ok
+test explicit_limits_and_flexible_strictness_are_accepted ... ok
+test inspection_preserves_bytes_and_benchmark_functions_match_product_functions ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/native_execution.rs (target/debug/deps/native_execution-3f2c08fe3bd0eb05)
+
+running 8 tests
+test the_conformance_build_request_carries_the_machine_readable_templates ... ok
+test a_completed_run_keeps_its_output_and_has_no_diagnostics ... ok
+test a_rejected_program_is_reported_as_an_analysis_failure ... ok
+test exit_four_distinguishes_exhausted_input_from_the_statement_limit ... ok
+test a_failed_run_reports_the_fatal_code_position_and_arguments ... ok
+test malformed_report_lines_are_ignored ... ok
+test internal_exits_signals_and_unreadable_reports_become_an_internal_fault ... ok
+test warnings_precede_the_fatal_diagnostic_and_keep_typed_arguments ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/probes.rs (target/debug/deps/probes-e7d9841ea534a18a)
+
+running 5 tests
+test unknown_probe_operation_is_a_failure_value ... ok
+test reprint_probe_handles_empty_text ... ok
+test reprint_probe_returns_the_exact_text_including_bom_and_errors ... ok
+test statement_mass_probe_reports_uncompilable_programs ... ok
+test statement_mass_probe_aligns_tree_statements_with_observation_points ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/recording_options.rs (target/debug/deps/recording_options-eae70f37ba619053)
+
+running 6 tests
+test unsupported_option_is_a_usage_failure ... ok
+test malformed_host_tape_is_a_usage_failure ... ok
+test recording_without_states_skips_state_capture ... ok
+test host_tape_replays_the_recorded_run ... ok
+test seeking_every_event_does_not_change_the_recording ... ok
+test partitioned_input_tape_yields_the_same_observations ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/resources.rs (target/debug/deps/resources-75d1c2d5cfb5adc7)
+
+running 4 tests
+test released_document_invalidates_its_descendants ... ok
+test starting_an_analysis_with_errors_returns_usage_failure ... ok
+test seeking_does_not_change_the_live_continuation ... ok
+test suspended_input_resumes_without_repeating_output ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/runtime_corpus.rs (target/debug/deps/runtime_corpus-00d1636ea46371e2)
+
+running 1 test
+test runtime_executes_exported_cases_under_each_collection_policy ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.01s
+
+     Running tests/runtime_edges.rs (target/debug/deps/runtime_edges-f97c8a762dacaaf2)
+
+running 8 tests
+test depth_includes_main_and_accepts_exact_boundary ... ok
+test shallow_copy_keeps_cycles_and_uninitialized_fields ... ok
+test invalid_reference_index_traps_before_entering_the_callee ... ok
+test receiver_escape_dispatches_before_derived_integer_initialization ... ok
+test reference_arguments_evaluate_indices_once_and_alias_immediately ... ok
+test constructor_reference_parameters_and_super_calls_share_one_receiver ... ok
+test mutually_recursive_subprograms_return_through_reused_windows ... ok
+test suspended_frames_retain_roots_across_recursive_bank_growth ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/state_queries.rs (target/debug/deps/state_queries-234e2fbbe9b17d3d)
+
+running 2 tests
+test partial_queries_preserve_historical_values_and_validate_ranges ... ok
+test trimmed_history_rejects_discarded_events_and_cannot_resurrect_them ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/stepping.rs (target/debug/deps/stepping-24adb230a13a16be)
+
+running 5 tests
+test missing_request_is_a_usage_failure ... ok
+test stepping_into_stops_at_the_next_statement_entry ... ok
+test stepping_to_a_line_stops_at_its_first_entry_after_the_start ... ok
+test stepping_past_the_last_event_returns_the_event_count ... ok
+test unknown_condition_never_matches ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/versioning.rs (target/debug/deps/versioning-298f19eac30ccbde)
+
+running 1 test
+test declared_editions_and_capabilities_negotiate_without_changing_resources ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (target/debug/deps/pseudolearn_bench_worker-8b4971be545900f9)
+
+running 36 tests
+test aot::baseline_tests::malformed_ceiling_samples_are_rejected ... ok
+test aot::measurement_tests::malformed_lines_are_rejected ... ok
+test aot::measurement_tests::a_complete_report_becomes_one_sample_per_iteration ... ok
+test aot::measurement_tests::a_short_report_is_rejected ... ok
+test aot::baseline_tests::a_workload_without_a_virtual_machine_baseline_is_rejected ... ok
+test aot::baseline_tests::the_framed_native_ceiling_is_averaged_per_process ... ok
+test aot::statistics_tests::empty_and_non_positive_inputs_have_no_result ... ok
+test aot::statistics_tests::mean_and_geometric_mean_match_known_values ... ok
+test aot::statistics_tests::resampling_an_empty_input_yields_nothing ... ok
+test aot::statistics_tests::resampling_is_deterministic_and_draws_only_from_the_input ... ok
+test aot::statistics_tests::percentile_uses_nearest_rank ... ok
+test aot::summary_tests::missing_samples_or_emission_times_are_rejected ... ok
+test e06::report_tests::a_single_failing_metric_fails_the_report ... ok
+test e06::report_tests::every_metric_passing_is_required_for_a_green_report ... ok
+test e06::report_tests::missing_metrics_or_missing_verdicts_fail_the_report ... ok
+test e06::stats_tests::degenerate_series_yield_no_verdict ... ok
+test e06::stats_tests::flat_noisy_series_has_slope_indistinguishable_from_zero ... ok
+test e06::stats_tests::geometric_mean_matches_known_value_and_rejects_non_positive_input ... ok
+test e06::stats_tests::growing_series_has_significant_slope ... ok
+test e06::stats_tests::percentile_uses_nearest_rank_and_rejects_empty_input ... ok
+test frontend_tests::rejects_missing_tree_and_false_success_for_incomplete_source ... ok
+test aot::summary_tests::a_family_above_the_threshold_fails_the_target_but_keeps_the_report ... ok
+test aot::summary_tests::a_native_level_within_the_threshold_reaches_the_target ... ok
+test aot::summary_tests::slow_emission_and_a_machine_that_wins_fail_their_own_criteria ... ok
+test aot::summary_tests::the_confidence_interval_brackets_the_ratio_and_is_reproducible ... ok
+test paired::validation_tests::complete_pairs_are_validated ... ok
+test paired::validation_tests::missing_duplicate_nonfinite_and_wrong_order_samples_are_rejected ... ok
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Finished `release` profile [optimized] target(s) in 0.05s
+    Finished `release` profile [optimized] target(s) in 0.06s
+test aot::launcher_tests::a_missing_runtime_archive_cannot_be_linked ... ok
+test workloads_tests::rejects_missing_export_vocabulary ... ok
+test aot::launcher_tests::a_launcher_runs_the_generated_code_and_reports_every_iteration ... ok
+test aot::launcher_tests::a_wrong_expected_output_fails_the_verification ... ok
+test paired::summary_tests::medians_do_not_become_means_when_one_sample_is_slow ... ok
+test paired::summary_tests::missing_workloads_emissions_or_duplicate_processes_fail ... ok
+test paired::summary_tests::all_families_must_pass_and_bootstrap_is_reproducible ... ok
+test paired::summary_tests::settlement_interval_uses_the_cranelift_level_without_reinterpreting_old_records ... ok
+test workloads_tests::generates_all_configurations_and_validates_completed_and_incomplete_programs ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.84s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_bytecode-b028fa8abe655803)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/class_verification_tests.rs (target/debug/deps/class_verification_tests-27afaf0c524a1d16)
+
+running 5 tests
+test rejects_duplicate_class_names ... ok
+test accepts_empty_method_table ... ok
+test rejects_missing_and_cyclic_superclass_metadata ... ok
+test rejects_inherited_field_layout_and_reference_metadata ... ok
+test rejects_method_targets_with_missing_or_unrelated_receivers ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/compile_tests.rs (target/debug/deps/compile_tests-96e14b03273fd65b)
+
+running 5 tests
+test selects_fused_arithmetic_superinstructions ... ok
+test compiles_calls_with_return_point_identity ... ok
+test compiles_scalar_constants_as_immediate_operands ... ok
+test selects_profiled_compare_branch_superinstructions_only_for_fast_code ... ok
+test compiles_verified_ir_to_shared_bytecode_twins ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/memory_metadata_tests.rs (target/debug/deps/memory_metadata_tests-71356830a8cda595)
+
+running 5 tests
+test exact_roots_keep_live_literals_and_expire_dead_temporaries ... ok
+test rejects_invalid_definition_maps ... ok
+test exact_roots_follow_branch_arguments_and_loop_back_edges ... ok
+test rejects_root_classes_offsets_and_duplicate_entries ... ok
+test rejects_missing_root_and_definition_maps ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/verifier_type_tests.rs (target/debug/deps/verifier_type_tests-ec016c3702d39b6c)
+
+running 17 tests
+test rejects_array_cell_with_incompatible_element_type ... ok
+test rejects_array_store_with_incompatible_element_type ... ok
+test rejects_cell_load_with_wrong_destination_type ... ok
+test accepts_subtype_at_block_edge_and_rejects_unrelated_type ... ok
+test accepts_subtype_stores_through_base_typed_cells ... ok
+test rejects_array_creation_with_non_array_destination ... ok
+test rejects_array_load_with_non_integer_index ... ok
+test accepts_related_types_at_control_flow_joins ... ok
+test rejects_cell_store_with_incompatible_value_type ... ok
+test rejects_local_cell_with_incompatible_value_type ... ok
+test rejects_field_cell_with_incompatible_field_type ... ok
+test rejects_object_copy_with_different_destination_type ... ok
+test rejects_object_creation_with_incompatible_destination_type ... ok
+test rejects_random_instruction_with_non_real_destination ... ok
+test rejects_reference_comparison_with_scalar_operand ... ok
+test rejects_object_store_with_a_value_that_differs_from_the_field ... ok
+test rejects_object_load_with_a_destination_type_that_differs_from_the_field ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/verify_padding_tests.rs (target/debug/deps/verify_padding_tests-e24121fd699a9cdd)
+
+running 7 tests
+test compiled_variants_are_padded_to_a_power_of_two ... ok
+test rejects_used_length_beyond_the_code ... ok
+test rejects_tail_instruction_other_than_unreachable ... ok
+test unpadded_function_keeps_the_original_verification ... ok
+test rejects_block_that_starts_in_the_padding ... ok
+test rejects_length_that_is_not_a_power_of_two ... ok
+test rejects_empty_used_length ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/verify_tests.rs (target/debug/deps/verify_tests-adec7403319d191e)
+
+running 5 tests
+test rejects_call_without_return_point ... ok
+test rejects_jump_to_block_outside_function ... ok
+test rejects_superinstruction_with_an_incompatible_opcode_pair ... ok
+test rejects_register_outside_window ... ok
+test rejects_incompatible_block_argument_class ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_codegen-0f57acaccfd70c43)
+
+running 6 tests
+test instruction_dispatch::tests::every_operation_of_the_instruction_catalog_has_a_lowering ... ok
+test instruction_dispatch::tests::no_operation_is_claimed_by_two_families ... ok
+test defined_producers::defined_producers_tests::nan_constants_and_unknown_parameters_keep_their_presence_checks ... ok
+test borrowed_roots::borrowed_roots_tests::borrowed_parameters_do_not_extend_to_new_allocations_or_join_values ... ok
+test class_table::class_table_tests::payload_constant_requires_every_descendant_to_share_the_layout ... ok
+test block_parameters::block_parameters_tests::dead_loop_cycles_disappear_without_changing_the_entry_signature ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/execution/main.rs (target/debug/deps/execution-7d8dc34725059e36)
+
+running 111 tests
+test array_tests::inner_dimension_overflow_is_not_aliased_to_the_next_row ... ok
+test array_tests::definition_masks_span_more_than_one_word_of_integers ... ok
+test array_tests::a_live_array_survives_collections_triggered_by_other_allocations ... ok
+test array_tests::real_elements_distinguish_unset_from_zero ... ok
+test array_tests::reference_elements_hold_text_and_report_absence ... ok
+test array_tests::multidimensional_access_checks_every_dimension ... ok
+test array_tests::elements_written_in_a_loop_are_read_back ... ok
+test array_tests::sizes_are_validated_when_the_array_is_created ... ok
+test array_tests::reading_an_unassigned_element_traps_but_out_of_range_wins_first ... ok
+test array_tests::boolean_and_character_elements_use_their_own_sentinels ... ok
+test array_tests::writing_outside_the_extent_traps ... ok
+test call_tests::recursion_computes_fibonacci_and_balances_the_frames ... ok
+test call_tests::unbounded_recursion_stops_at_the_frame_limit_at_the_call_site ... ok
+test call_tests::overflow_deep_in_the_recursion_wins_over_the_depth_limit ... ok
+test call_tests::towers_counts_moves_for_small_discs ... ok
+test call_tests::recursion_reaches_exactly_the_frame_limit_and_not_one_more ... ok
+test call_tests::a_trap_in_the_callee_propagates_immediately_with_its_own_site ... ok
+test call_tests::a_smaller_frame_limit_is_honoured ... ok
+test cell_tests::a_callee_updates_the_caller_local_through_the_cell ... ok
+test cell_tests::a_local_cell_without_value_traps_in_the_callee ... ok
+test cell_tests::field_cells_alias_the_object_field ... ok
+test cell_tests::text_held_only_by_a_cell_survives_collections ... ok
+test cell_tests::element_cells_alias_the_array_slot ... ok
+test cell_tests::real_and_boolean_cells_keep_their_representation ... ok
+test constant_folding_tests::constant_operands_fold_to_the_exact_result ... ok
+test constant_folding_tests::constant_overflow_still_traps_at_run_time ... ok
+test cell_tests::returned_frames_do_not_retain_arrays_through_local_cells ... ok
+test constant_folding_tests::identity_operands_return_the_other_operand_unchanged ... ok
+test control_tests::a_function_that_reaches_its_end_without_returning_traps ... ok
+test control_tests::exhausting_the_budget_stops_at_the_charging_block_as_a_limit ... ok
+test control_tests::a_function_without_instructions_but_return_balances_the_frame ... ok
+test control_tests::block_mass_is_charged_on_every_header_entry ... ok
+test control_tests::a_budget_that_exactly_fits_does_not_trap ... ok
+test control_tests::a_zero_loop_step_traps_and_a_non_zero_one_passes ... ok
+test control_tests::branches_pass_arguments_to_the_selected_edge ... ok
+test control_tests::reaching_unreachable_code_is_an_internal_fault ... ok
+test control_tests::loops_accumulate_through_block_parameters ... ok
+test constant_overflow_tests::constant_overflow_specializations_match_checked_arithmetic_at_both_extremes ... ok
+test executable_tests::a_configured_statement_budget_stops_exactly_at_the_statement_that_exceeds_it ... ok
+test executable_tests::a_module_without_a_main_function_cannot_become_an_executable ... ok
+test definition_tests::requiring_a_statically_undefined_integer_traps ... ok
+test definition_tests::an_undefined_integer_cannot_cross_a_call_boundary ... ok
+test definition_tests::an_absent_reference_traps_when_required ... ok
+test definition_tests::a_merged_integer_is_defined_only_on_the_path_that_assigned_it ... ok
+test definition_tests::definition_survives_loop_back_edges ... ok
+test definition_tests::a_dynamically_undefined_argument_traps_and_a_defined_one_passes ... ok
+test executable_tests::a_linked_program_runs_alone_and_prints_its_output ... ok
+test executable_tests::a_runtime_fault_keeps_prior_output_reports_the_site_and_exits_three ... ok
+test executable_tests::a_statement_budget_that_covers_the_program_lets_it_complete ... ok
+test executable_tests::exhausted_input_exits_four_with_the_exhaustion_message ... ok
+test executable_tests::standard_input_feeds_the_program ... ok
+test integer_tests::addition_traps_exactly_past_the_maximum ... ok
+test integer_tests::addition_returns_the_exact_sum ... ok
+test integer_tests::comparison_is_signed ... ok
+test integer_tests::subtraction_traps_exactly_below_the_minimum ... ok
+test integer_tests::multiplication_traps_on_minimum_times_minus_one ... ok
+test integer_tests::negation_traps_only_on_the_minimum ... ok
+test integer_tests::modulo_takes_the_dividend_sign_and_never_traps_on_minimum ... ok
+test integer_tests::division_truncates_toward_zero_and_traps_on_zero_and_overflow ... ok
+test integer_tests::power_is_exact_and_traps_on_negative_exponent_and_overflow ... ok
+test integer_tests::widening_rounds_to_the_nearest_real ... ok
+test io_tests::the_random_source_yields_unit_interval_reals ... ok
+test io_tests::writes_render_every_primitive_with_a_single_trailing_newline ... ok
+test io_tests::consecutive_reads_consume_consecutive_lines ... ok
+test io_tests::a_line_of_the_wrong_type_is_skipped_and_the_next_one_is_read ... ok
+test io_tests::exhausted_input_stops_the_program_as_a_limit_without_a_diagnostic ... ok
+test io_tests::each_primitive_is_converted_from_its_line ... ok
+test math_tests::exponential_overflows_into_a_trap ... ok
+test math_tests::logarithm_needs_a_positive_operand ... ok
+test math_tests::absolute_value_clears_the_sign_and_never_traps ... ok
+test math_tests::trigonometric_functions_match_their_exact_values ... ok
+test math_tests::square_root_is_exact_and_rejects_negative_operands ... ok
+test object_tests::every_field_kind_round_trips_through_the_object ... ok
+test object_tests::dense_classes_read_integers_as_defined ... ok
+test object_tests::copies_are_independent_of_the_original ... ok
+test object_tests::an_absent_receiver_traps ... ok
+test object_tests::inherited_fields_come_before_the_declared_ones ... ok
+test object_tests::reference_comparison_distinguishes_a_copy_from_its_source ... ok
+test object_tests::fields_without_value_trap_on_read ... ok
+test object_tests::a_linked_list_survives_collections_while_garbage_is_reclaimed ... ok
+test object_tests::the_cell_limit_boundary_is_exact_for_inline_allocations ... ok
+test object_tests::thousands_of_inline_allocations_survive_repeated_automatic_collections ... ok
+test real_tests::comparison_treats_signed_zeros_as_equal ... ok
+test real_tests::negation_flips_the_sign_bit_and_never_traps ... ok
+test real_tests::overflowing_results_trap_as_non_finite ... ok
+test real_tests::rounding_moves_ties_away_from_zero ... ok
+test real_tests::power_delegates_to_the_library ... ok
+test real_tests::arithmetic_follows_ieee_rounding ... ok
+test real_tests::division_by_either_zero_traps_before_the_result_check ... ok
+test real_tests::truncation_goes_toward_zero_and_traps_out_of_range ... ok
+test scalar_tests::reading_a_defined_scalar_passes_it_through ... ok
+test scalar_tests::constants_keep_their_exact_bits ... ok
+test scalar_tests::reading_an_undefined_scalar_traps ... ok
+test scalar_tests::characters_compare_and_convert_by_scalar ... ok
+test scalar_tests::boolean_operators_are_exact ... ok
+test scalar_tests::character_construction_accepts_only_unicode_scalars ... ok
+test scalar_tests::invalid_character_codes_trap_at_the_boundaries ... ok
+test text_tests::formatting_renders_each_primitive_like_the_engine ... ok
+test text_tests::literals_are_written_with_the_requested_newline ... ok
+test text_tests::several_values_in_one_write_share_a_single_newline ... ok
+test text_tests::character_access_outside_the_text_traps ... ok
+test text_tests::the_empty_literal_has_no_code_points ... ok
+test text_tests::comparison_is_lexicographic_by_code_point ... ok
+test text_tests::concatenation_joins_code_points_and_counts_them ... ok
+test text_tests::character_access_is_zero_based_over_code_points ... ok
+test text_tests::numeric_conversion_accepts_decimals_and_traps_otherwise ... ok
+test virtual_tests::unbounded_virtual_recursion_stops_at_the_frame_limit ... ok
+test virtual_tests::an_absent_receiver_traps_at_the_call_site ... ok
+test virtual_tests::references_held_by_the_caller_survive_allocations_in_the_callee ... ok
+test virtual_tests::virtual_calls_without_a_result_mutate_the_receiver ... ok
+test virtual_tests::the_implementation_follows_the_class_of_the_receiver ... ok
+
+test result: ok. 111 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.37s
+
+     Running tests/object_emitter_tests.rs (target/debug/deps/object_emitter_tests-dce69a3fca9016fe)
+
+running 11 tests
+test a_cyclic_class_hierarchy_is_rejected ... ok
+test a_method_naming_a_missing_function_is_rejected ... ok
+test ill_formed_modules_are_rejected_before_any_code_is_emitted ... ok
+test an_empty_module_compiles_to_an_object_without_functions ... ok
+test class_descriptors_list_inherited_fields_before_declared_ones ... ok
+test string_literals_are_stored_once_as_local_symbols ... ok
+test every_relocation_targets_a_symbol_of_the_object ... ok
+test every_undefined_symbol_is_a_runtime_entry_and_every_function_is_exported ... ok
+test function_symbols_follow_module_order ... ok
+test trapping_instructions_register_fault_sites_with_their_exact_span ... ok
+test compilation_is_deterministic ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/terminal_success_tests.rs (target/debug/deps/terminal_success_tests-2419e24dd12893fe)
+
+running 1 test
+test successful_runtime_fallback_is_an_internal_fault_for_each_terminal_access ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running unittests src/main.rs (target/debug/deps/conformance_adapter-e7f42953c1ceac14)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/main.rs (target/debug/deps/main-577d67f19a0fb05c)
+
+running 2 tests
+test rejects_invalid_utf8_without_panicking ... ok
+test handles_random_unicode_and_extreme_depth_in_isolated_processes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.30s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_diagnostics-3d4d0322a0c01e62)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/arguments.rs (target/debug/deps/arguments-dd56b2041ab7117b)
+
+running 3 tests
+test rejects_wrong_argument_kinds_and_accepts_signed_numeric_bounds ... ok
+test preserves_numeric_arguments_and_rejects_text_substitutes_or_missing_keys ... ok
+test does_not_reinterpret_braces_inside_a_user_lexeme ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/diagnostics_tests.rs (target/debug/deps/diagnostics_tests-74963480d427d3ee)
+
+running 2 tests
+test sorts_diagnostics_by_span_and_code ... ok
+test renders_bilingual_template_with_arguments ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_ir-754e0d5fadc52058)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/catalog_tests.rs (target/debug/deps/catalog_tests-def01e8ab5699fdc)
+
+running 2 tests
+test verifies_instruction_catalog_properties ... ok
+test the_catalog_lists_every_operation_once_and_names_round_trip ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/text_format_tests.rs (target/debug/deps/text_format_tests-177f5b0d3b7fc50f)
+
+running 10 tests
+test rejects_stray_character_at_the_end_of_the_text ... ok
+test rejects_unterminated_non_ascii_character_literal ... ok
+test rejects_array_type_operand_without_rank ... ok
+test rejects_unexpected_characters_outside_literals_instead_of_looping ... ok
+test preserves_real_literal_types_when_the_value_is_an_integer ... ok
+test round_trips_array_type_operands_of_array_creation ... ok
+test normalizes_non_canonical_formatting_and_renumbers_blocks_and_values ... ok
+test parses_and_prints_valid_module_with_classes_and_subprograms ... ok
+test round_trips_non_ascii_character_and_string_literals ... ok
+test roundtrips_loop_and_branches_canonically ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/type_checker_calls_tests.rs (target/debug/deps/type_checker_calls_tests-e81a2876254ef4b9)
+
+running 2 tests
+test rejects_call_result_used_as_the_wrong_type ... ok
+test accepts_call_result_with_the_callee_return_type ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/type_checker_intrinsics_tests.rs (target/debug/deps/type_checker_intrinsics_tests-65d724e8f65671a8)
+
+running 4 tests
+test rejects_an_integer_argument_to_a_mathematical_intrinsic ... ok
+test rejects_a_real_argument_to_character_from_code ... ok
+test infers_character_code_conversions ... ok
+test infers_real_results_for_mathematical_intrinsics ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/type_checker_values_tests.rs (target/debug/deps/type_checker_values_tests-fb59a0f2736ecf26)
+
+running 2 tests
+test rejects_a_required_value_used_as_an_incompatible_type ... ok
+test checks_and_preserves_the_type_of_required_values ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/verifier_tests.rs (target/debug/deps/verifier_tests-59241c564c200477)
+
+running 15 tests
+test rejects_mass_mismatch_as_rule6 ... ok
+test rejects_missing_function_call_as_rule8 ... ok
+test rejects_branch_arity_mismatch_as_rule5 ... ok
+test accepts_derived_values_stored_through_base_typed_cells ... ok
+test rejects_missing_span_on_trapping_instruction_as_rule7 ... ok
+test accepts_derived_values_at_base_typed_block_parameters ... ok
+test accepts_well_formed_program ... ok
+test rejects_direct_object_field_writes_with_incompatible_values ... ok
+test rejects_missing_terminator_as_rule4 ... ok
+test rejects_operand_type_mismatch_as_rule3 ... ok
+test rejects_unknown_instruction_as_rule1 ... ok
+test rejects_unrelated_values_at_base_typed_block_parameters ... ok
+test rejects_unrelated_values_stored_through_base_typed_cells ... ok
+test rejects_use_before_definition_as_rule2 ... ok
+test verifies_direct_object_field_reads_and_writes ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_lexicon-a4007a996bcab161)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/keywords.rs (target/debug/deps/keywords-73959c9f16906a66)
+
+running 2 tests
+test preserves_english_accents_and_normalizes_spanish_nfd ... ok
+test resolves_every_generated_form_and_rejects_near_misses ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/lexicon_tests.rs (target/debug/deps/lexicon_tests-7900ec6bd68ee55a)
+
+running 3 tests
+test distinguishes_builtins_from_keywords ... ok
+test finds_bilingual_keywords_with_aliases ... ok
+test detects_openers_and_folds_accents_correctly ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_library-4423e326ab218277)
+
+running 31 tests
+test precision::integer_tests::negative_zero_is_normalized ... ok
+test precision::integer_tests::signed_addition_and_subtraction ... ok
+test precision::integer_tests::directed_divisions_round_toward_their_infinities ... ok
+test precision::interval_tests::multiplication_keeps_every_sign_combination_inside ... ok
+test precision::integer_tests::ordering_respects_sign ... ok
+test precision::integer_tests::directed_shifts_round_toward_their_infinities ... ok
+test precision::interval_tests::scaled_multiplication_rounds_outward ... ok
+test precision::interval_tests::division_requires_a_positive_denominator ... ok
+test precision::interval_tests::square_root_rounds_outward_and_rejects_negative_bounds ... ok
+test precision::interval_tests::widening_and_bounds ... ok
+test precision::natural::division_tests::division_by_zero_is_rejected ... ok
+test precision::natural::division_tests::smaller_dividend_has_zero_quotient ... ok
+test precision::natural_tests::bits_below_detect_discarded_ones ... ok
+test precision::natural_tests::addition_carries_across_limbs ... ok
+test precision::natural_tests::increment_carries_into_a_new_limb ... ok
+test precision::natural_tests::multiplication_matches_wide_arithmetic ... ok
+test precision::natural_tests::power_by_squaring ... ok
+test precision::natural_tests::shifts_are_inverse_for_whole_and_partial_limbs ... ok
+test precision::natural_tests::small_division_returns_quotient_and_remainder ... ok
+test precision::natural_tests::subtraction_borrows_and_rejects_negative_results ... ok
+test precision::natural_tests::zero_has_no_bits ... ok
+test transcendental::binary64_tests::decomposition_rejects_non_finite_values ... ok
+test transcendental::binary64_tests::subnormal_and_overflow_boundaries ... ok
+test precision::natural::division_tests::long_division_reconstructs_the_dividend ... ok
+test transcendental::binary64_tests::ties_round_to_even_significands ... ok
+test transcendental::binary64_tests::zero_keeps_the_sign_of_tiny_negative_values ... ok
+test transcendental::power_exact_tests::integral_powers_of_small_odd_bases_are_exact ... ok
+test transcendental::power_exact_tests::negative_exponents_of_odd_bases_use_the_general_path ... ok
+test precision::natural::division_tests::square_root_is_the_floor_root ... ok
+test transcendental::power_exact_tests::perfect_roots_are_detected ... ok
+test transcendental::power_exact_tests::powers_of_two_use_exponent_arithmetic ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conversion_tests.rs (target/debug/deps/conversion_tests-0a7328eb97c7e7ad)
+
+running 2 tests
+test integer_real_conversion_rounds_to_binary64 ... ok
+test real_integer_conversion_truncates_toward_zero ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/decimal_tests.rs (target/debug/deps/decimal_tests-1c47196ac328e65b)
+
+running 1 test
+test decimal_conversions_validate_range_and_finiteness ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/format_tests.rs (target/debug/deps/format_tests-b64d0965bda7ba11)
+
+running 1 test
+test format_preserves_real_bits_with_positional_round_trip ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/math_tests.rs (target/debug/deps/math_tests-70821ad08925c547)
+
+running 5 tests
+test absolute_clears_only_the_sign_bit ... ok
+test square_root_returns_finite_results ... ok
+test square_root_preserves_negative_zero ... ok
+test square_root_reports_invalid_inputs ... ok
+test square_root_matches_binary64_rounding_for_seeded_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/rounding_tests.rs (target/debug/deps/rounding_tests-41cf020031f44098)
+
+running 2 tests
+test truncation_and_rounding_reject_unrepresentable_values ... ok
+test truncation_and_rounding_follow_library_contract ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/transcendental_tests.rs (target/debug/deps/transcendental_tests-0720cb3fa22c15ad)
+
+running 10 tests
+test logarithm_rejects_its_invalid_domain ... ok
+test power_keeps_signed_zero_rules ... ok
+test trigonometric_functions_keep_signed_zero_and_small_identities ... ok
+test exponential_matches_correctly_rounded_constants ... ok
+test power_handles_exact_results ... ok
+test power_traps_undefined_and_overflowing_results ... ok
+test arctangent_matches_quarter_and_half_turns ... ok
+test exponential_handles_range_boundaries ... ok
+test logarithm_matches_correctly_rounded_constants ... ok
+test trigonometric_reduction_is_exact_for_huge_arguments ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_lowering-cbea793634ff7e06)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/lowering_tests.rs (target/debug/deps/lowering_tests-6abfdf7906cd6f7f)
+
+running 4 tests
+test lowers_procedural_write_statement ... ok
+test collects_loop_writes_nested_in_conditionals_switches_and_inner_loops ... ok
+test lowers_conditional_and_while_loop ... ok
+test lowers_for_loop_and_switch_statement ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/statements_read_tests.rs (target/debug/deps/statements_read_tests-6e0f44df643a00e2)
+
+running 2 tests
+test lowers_read_targets_and_verifies_ir ... ok
+test lowers_value_field_reads_and_writes_to_direct_operations ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_math_probe-6621337a7e54b582)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/math_probe-d08768fe2550e300)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/lib_tests.rs (target/debug/deps/lib_tests-41fde899557542db)
+
+running 4 tests
+test rejects_malformed_lines ... ok
+test reports_non_finite_results_by_their_trap ... ok
+test evaluates_unary_and_binary_functions ... ok
+test probes_every_function_file_in_a_directory ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_native_probe-cde63403687a4833)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/measurement.rs (target/debug/deps/measurement-32f452f684e98cfa)
+
+running 4 tests
+test order_alternates_across_processes_and_iterations ... ok
+test invalid_configuration_and_missing_metadata_are_rejected ... ok
+test unknown_workloads_and_wrong_native_output_are_rejected ... ok
+test a_valid_pair_verifies_both_results_outside_the_interval ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_runtime-26829c3eed1df34b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/arithmetic_tests.rs (target/debug/deps/arithmetic_tests-a12312f6ffce2add)
+
+running 4 tests
+test checked_integer_operations_return_exact_results ... ok
+test checked_integer_operations_report_overflow_and_invalid_domains ... ok
+test real_division_distinguishes_zero_divisors_from_overflow ... ok
+test checked_real_operations_reject_non_finite_results ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/array_tests.rs (target/debug/deps/array_tests-8fed2c45521818b5)
+
+running 9 tests
+test empty_arrays_are_valid_but_have_no_valid_index ... ok
+test array_access_rejects_wrong_rank_and_preserves_reference_absence ... ok
+test in_band_dimensions_cover_rank_one_empty_and_multiple_dimensions ... ok
+test direct_one_dimensional_access_checks_definition_and_bounds ... ok
+test arrays_validate_each_dimension_and_track_integer_definition ... ok
+test sparse_integer_writes_do_not_define_lower_indices ... ok
+test integer_definition_masks_track_word_boundaries ... ok
+test zero_extents_override_product_overflow_but_not_negative_dimensions ... ok
+test stable_element_cells_survive_growth_and_dense_transition ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/delta_tests.rs (target/debug/deps/delta_tests-7f1f2f4bd8b380a2)
+
+running 10 tests
+test block_delta_revert_without_fill_content_is_rejected ... ok
+test composed_tail_deltas_cover_append_then_rewrite ... ok
+test composed_block_deltas_equal_two_step_revert ... ok
+test dirty_block_delta_skips_clean_prefix_and_restores_truncated_tail ... ok
+test heap_delta_reverts_block_removal_and_keeps_only_used_words ... ok
+test block_delta_records_only_changed_blocks_and_reverts_exactly ... ok
+test heap_delta_round_trips_and_composes ... ok
+test tail_delta_truncates_appends_and_keeps_replaced_content ... ok
+test map_delta_restores_changed_added_and_removed_entries ... ok
+test block_delta_handles_growth_shrink_and_empty_vectors ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/heap_tests.rs (target/debug/deps/heap_tests-15fbc08b2166319d)
+
+running 11 tests
+test collection_need_matches_heap_policy_and_budget ... ok
+test copy_preserves_absence_and_shared_references ... ok
+test allocation_rejects_addresses_outside_handle_space ... ok
+test object_layouts_are_indexed_and_class_shapes_cannot_conflict ... ok
+test integer_masks_span_multiple_words_without_changing_field_offsets ... ok
+test collection_preserves_cycles_and_never_reuses_identity ... ok
+test exact_array_limit_counts_the_new_array_before_overwrite ... ok
+test reused_handle_receives_a_new_identity_ordinal ... ok
+test exact_limit_includes_new_value_before_overwrite_in_every_policy ... ok
+test text_and_derived_indices_do_not_consume_identity_ordinals ... ok
+test words_pointer_tracks_the_current_storage_after_growth ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/inline_window_tests.rs (target/debug/deps/inline_window_tests-2d5d58594f78a8bd)
+
+running 7 tests
+test a_fresh_window_has_slack_and_full_collection_room ... ok
+test a_duplicated_block_is_an_internal_error ... ok
+test configurable_collection_threshold_agrees_with_inline_room ... ok
+test adopted_blocks_advance_the_heap_counters ... ok
+test adoption_rejects_a_regressing_or_out_of_range_window ... ok
+test forced_collection_closes_the_window ... ok
+test small_allocations_preserve_slack_until_the_refill_boundary ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/random_tests.rs (target/debug/deps/random_tests-8d1e9dae5fbb3f86)
+
+running 1 test
+test random_state_round_trip_preserves_every_next_output ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/statistics_tests.rs (target/debug/deps/statistics_tests-511a1e3802195375)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/text_tests.rs (target/debug/deps/text_tests-b7c0063f6a769ade)
+
+running 3 tests
+test shared_appends_preserve_prefixes_and_branched_results ... ok
+test unicode_breadcrumbs_observe_code_points_without_normalization ... ok
+test breadcrumb_extension_and_compaction_keep_shared_prefix_indices ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_semantic-2c603d4cc3362bd3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/argument_checker.rs (target/debug/deps/argument_checker-788f07f37374e800)
+
+running 2 tests
+test invalid_names_suppress_initialization_cascades ... ok
+test reference_parameters_require_locations_and_exact_types ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/checker.rs (target/debug/deps/checker-22fb2bd7e8f68a38)
+
+running 4 tests
+test detects_duplicate_subroutine ... ok
+test detects_undeclared_variable_in_strict_mode ... ok
+test detects_duplicate_variable_declaration ... ok
+test detects_non_boolean_condition ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/expression_model.rs (target/debug/deps/expression_model-32de01fba8ea1ae5)
+
+running 2 tests
+test widens_mixed_numeric_operands_before_binary_operations ... ok
+test retains_literal_code_points_with_explicit_numeric_widening ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/flow.rs (target/debug/deps/flow-c79b503ec50e2326)
+
+running 2 tests
+test merges_definition_from_every_branch ... ok
+test a_write_on_one_branch_does_not_define_all_paths ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/flow_bindings.rs (target/debug/deps/flow_bindings-41e63f27b763ec52)
+
+running 2 tests
+test infers_an_assignment_after_an_unexecuted_untyped_read_without_inventing_a_dynamic_type ... ok
+test preserves_implicit_variable_diagnostics_after_parameter_inference_repeats ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/hierarchy.rs (target/debug/deps/hierarchy-456ac2e784cdbbe3)
+
+running 2 tests
+test reports_a_self_cycle_once ... ok
+test checks_deep_inheritance_without_host_recursion ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/hir.rs (target/debug/deps/hir-26bc9e72b7b7ae5c)
+
+running 2 tests
+test audits_typed_hir_of_generated_programs_in_both_strictness_modes ... ok
+test audits_types_and_spans_of_every_successfully_analyzed_corpus_program ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/hir_finalization.rs (target/debug/deps/hir_finalization-43a12ecf19cac734)
+
+running 2 tests
+test models_untyped_failed_reads_without_inventing_a_primitive_type ... ok
+test preserves_integer_reads_before_a_later_real_widening ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/types.rs (target/debug/deps/types-e74ca62517edb2e3)
+
+running 1 test
+test interns_types_by_role_and_rejects_unknown_indices ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/unit_resolver.rs (target/debug/deps/unit_resolver-cab1043089b61760)
+
+running 2 tests
+test a_duplicate_signature_does_not_change_call_arity ... ok
+test registers_forward_calls_with_isolated_parameter_scopes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_source-99b150b7d2d6a8ab)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/source_tests.rs (target/debug/deps/source_tests-f73e4ead666551f2)
+
+running 4 tests
+test detects_byte_order_mark_and_preserves_content ... ok
+test computes_accurate_line_and_column_positions ... ok
+test extracts_valid_spans_without_panic ... ok
+test normalizes_identifiers_with_nfc_equality ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_syntax-92104f3ceba2ad77)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/grammar_reader.rs (target/debug/deps/grammar_reader-e6a7a2e72341ae2c)
+
+running 2 tests
+test generates_deterministic_views_from_declared_identities ... ok
+test validates_references_and_nested_ebnf ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/parser.rs (target/debug/deps/parser-7998b3875df9ca4b)
+
+running 2 tests
+test preserves_nested_spans_and_direct_child_ranges ... ok
+test rejects_excessive_nesting_without_cascading_closures ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/reprint_tests.rs (target/debug/deps/reprint_tests-4cd440e3f305c4cc)
+
+running 2 tests
+test verifies_lossless_reprint_property_two_edges_and_random ... ok
+test verifies_lossless_reprint_property_one_on_corpus ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/schema.rs (target/debug/deps/schema-579cd2921ef16971)
+
+running 2 tests
+test extracts_empty_schema_from_missing_units ... ok
+test extracts_direct_units_and_parameter_contracts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/syntax_tests.rs (target/debug/deps/syntax_tests-e5090eefdd88a72f)
+
+running 5 tests
+test handles_empty_source ... ok
+test reports_unterminated_string_diagnostic ... ok
+test parses_basic_algorithm_in_english ... ok
+test parses_basic_algorithm_in_spanish ... ok
+test lossless_reprint_matches_source_exactly ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_timeline-f8e7943c21a8b11d)
+
+running 11 tests
+test inspect::inspect_tests::value_kind_formatting_covers_each_runtime_kind ... ok
+test inspect::inspect_tests::scalar_decoding_preserves_values_and_rejects_reference_types ... ok
+test thinning::thinning_tests::density_ties_prefer_fewer_composed_slots_and_keep_stable_order ... ok
+test thinning::thinning_tests::event_distance_saturates_when_checkpoints_are_reversed ... ok
+test inspect::inspect_tests::value_type_formatting_covers_scalar_reference_and_container_types ... ok
+test cell_view::cell_view_tests::invalid_cell_handles_are_rejected ... ok
+test cell_view::cell_view_tests::local_reference_cells_decode_text_values ... ok
+test cell_view::cell_view_tests::managed_object_cells_decode_the_referenced_field ... ok
+test cell_view::cell_view_tests::managed_array_cells_decode_the_referenced_element ... ok
+test thinning::thinning_tests::equal_density_candidates_use_composed_slots_then_keep_the_first_exact_tie ... ok
+test cell_view::cell_view_tests::local_scalar_cells_show_defined_and_undefined_values ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/checkpoint_tests.rs (target/debug/deps/checkpoint_tests-6f8d8b4ad5bfb926)
+
+running 8 tests
+test cost_scheduler_caps_the_proportional_distance_but_never_below_the_minimum ... ok
+test cost_scheduler_calculates_distance_proportional_to_state_size ... ok
+test image_before_the_first_checkpoint_is_rejected ... ok
+test capture_cost_counts_only_changed_regions ... ok
+test slot_budget_forces_thinning_and_advances_horizon_when_exhausted ... ok
+test every_retained_checkpoint_reproduces_its_saved_image_bit_for_bit ... ok
+test thinning_fuses_segments_without_changing_reconstruction ... ok
+test slot_budget_thins_only_after_the_exact_retained_slot_limit ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/replay_tests.rs (target/debug/deps/replay_tests-664389974e832c8d)
+
+running 4 tests
+test unreachable_events_and_false_recorded_indices_are_rejected ... ok
+test historical_queries_restore_real_event_boundaries ... ok
+test array_slice_queries_restore_the_requested_historical_event ... ok
+test evicted_horizon_rejects_older_events_and_accepts_the_exact_boundary ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/snapshot_tests.rs (target/debug/deps/snapshot_tests-5246d99b556eef79)
+
+running 4 tests
+test format_real_ensures_at_least_one_decimal ... ok
+test initial_snapshot_captures_main_frame_and_registers ... ok
+test array_slices_cover_element_kinds_dimensions_and_boundaries ... ok
+test snapshot_isolation_preserves_captured_values_across_mutation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_vm-75abf824345b3aab)
+
+running 8 tests
+test load::parallel_copy_tests::empty_copy_produces_no_moves ... ok
+test load::parallel_copy_tests::chain_reads_every_source_before_overwriting_it ... ok
+test load::parallel_copy_tests::swap_cycle_uses_the_scratch_register ... ok
+test load::parallel_copy_tests::self_copies_are_dropped ... ok
+test load::parallel_copy_tests::static_definitions_do_not_track_the_scratch_register ... ok
+test machine::text::tests::finite_real_preserves_finite_values ... ok
+test load::parallel_copy_tests::three_cycle_rotates_values ... ok
+test machine::text::tests::finite_real_rejects_non_finite_values ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/calls_tests.rs (target/debug/deps/calls_tests-b9da32bd5faeaec8)
+
+running 4 tests
+test undefined_argument_reaches_the_callee_as_undefined ... ok
+test callee_trap_reports_the_callee_span ... ok
+test zero_depth_returns_without_recursion ... ok
+test deep_recursion_grows_the_banks ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/control_tests.rs (target/debug/deps/control_tests-a91d4376452659ff)
+
+running 5 tests
+test empty_loop_consumes_every_probe_before_service ... ok
+test enforces_exact_statement_fuel_at_block_entry ... ok
+test statement_fuel_stops_exactly_at_the_exhausting_block ... ok
+test empty_backedges_use_independent_probe_fuel ... ok
+test recursive_calls_return_through_shared_continuation_identity ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/events_tests.rs (target/debug/deps/events_tests-d068247b409b18ec)
+
+running 1 test
+test records_and_clears_object_field_changes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/execute_tests.rs (target/debug/deps/execute_tests-787e780cb90a4717)
+
+running 15 tests
+test invalid_character_code_traps ... ok
+test direct_object_field_read_traps_when_the_field_is_uninitialized ... ok
+test executes_direct_object_field_load_and_store ... ok
+test integer_overflow_traps_with_its_code ... ok
+test minimum_integer_modulo_minus_one_is_zero ... ok
+test negative_square_root_traps_as_non_finite ... ok
+test mathematical_intrinsics_use_the_correctly_rounded_library ... ok
+test executes_checked_integer_and_real_operations ... ok
+test real_comparison_treats_signed_zeros_as_equal ... ok
+test logarithm_of_zero_traps ... ok
+test fused_compare_branch_preserves_result_and_profile_counts ... ok
+test real_power_of_a_negative_base_with_fractional_exponent_traps ... ok
+test zero_loop_step_traps ... ok
+test reports_integer_trap_with_the_instruction_span ... ok
+test non_finite_real_result_traps ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/execution_model_tests.rs (target/debug/deps/execution_model_tests-d74423895cba46e9)
+
+running 3 tests
+test cancels_via_external_atomic_flag ... ok
+test cancels_at_statement_threshold ... ok
+test cancels_in_zero_mass_loop_via_poll ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/fused_expression_tests.rs (target/debug/deps/fused_expression_tests-a0f9390a840e1311)
+
+running 4 tests
+test fused_arithmetic_preserves_first_trap_and_span_on_first_instruction_overflow ... ok
+test fused_arithmetic_preserves_second_trap_and_span_on_second_instruction_fault ... ok
+test fused_arithmetic_preserves_real_zero_divisor_trap_and_span ... ok
+test fused_arithmetic_preserves_scalar_result ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/input_tests.rs (target/debug/deps/input_tests-aad267295cd46dee)
+
+running 3 tests
+test awaits_input_when_stream_is_empty ... ok
+test reads_integer_successfully_from_input_stream ... ok
+test retries_on_type_mismatch_and_consumes_next_input ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/limits_tests.rs (target/debug/deps/limits_tests-02e83962cb90b801)
+
+running 2 tests
+test recursion_depth_limit_traps_without_overflowing_host_stack ... ok
+test statement_budget_stops_at_exact_limit_and_records_diagnostic ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/load_tests.rs (target/debug/deps/load_tests-35f9e87544b36d76)
+
+running 3 tests
+test program_without_main_fails_to_load ... ok
+test unsupported_operation_traps_only_when_executed ... ok
+test loaded_program_runs_repeatedly_with_fresh_state ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/output_tests.rs (target/debug/deps/output_tests-590d2a7ac70f07c0)
+
+running 3 tests
+test boolean_words_follow_the_profile_and_default_to_spanish ... ok
+test rejects_output_without_a_value ... ok
+test writes_integer_output_with_one_newline ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/profile_tests.rs (target/debug/deps/profile_tests-92727d71cd508a76)
+
+running 1 test
+test opcode_profile_matches_execution_and_ignores_observation_markers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/registers_tests.rs (target/debug/deps/registers_tests-d5647c8b8d777a04)
+
+running 7 tests
+test undefined_boolean_uses_its_sentinel ... ok
+test undefined_real_uses_its_sentinel ... ok
+test defined_integer_flowing_through_a_block_parameter_is_read ... ok
+test directly_undefined_integer_traps_at_the_require ... ok
+test defined_character_passes_the_require ... ok
+test undefined_integer_flowing_through_a_block_parameter_traps ... ok
+test swapped_block_arguments_keep_their_values ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/step_tests.rs (target/debug/deps/step_tests-a585600d2712a04c)
+
+running 6 tests
+test step_into_advances_to_next_statement_entered ... ok
+test advance_step_dispatches_actions ... ok
+test step_to_line_finds_matching_statement ... ok
+test step_out_advances_to_current_frame_return ... ok
+test step_past_end_returns_trace_length ... ok
+test step_over_skips_nested_call_depth ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/trace_tests.rs (target/debug/deps/trace_tests-2bf739627d61347b)
+
+running 3 tests
+test probed_mode_emits_structured_events_and_fast_mode_stays_clean ... ok
+test failure_event_is_recorded_on_runtime_trap ... ok
+test decision_events_record_affirmative_and_negative_branches ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/twin_switching_tests.rs (target/debug/deps/twin_switching_tests-06ef96dc13bb805c)
+
+running 2 tests
+test twin_execution_across_helper_calls_and_returns ... ok
+test fast_and_probed_twins_produce_identical_output_and_value ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/wire_format_tests.rs (target/debug/deps/wire_format_tests-182c74c625b8aa34)
+
+running 6 tests
+test rejects_short_header ... ok
+test encodes_and_decodes_empty_event_trace ... ok
+test rejects_corrupted_pool_length ... ok
+test rejects_invalid_signature ... ok
+test rejects_unsupported_version ... ok
+test encodes_and_decodes_all_trace_classes_and_payloads ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_vm_dispatch-1671d7302d164ed0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/lib_tests.rs (target/debug/deps/lib_tests-fa66db61f1919886)
+
+running 7 tests
+test rejects_empty_table ... ok
+test rejects_missing_forms_file ... ok
+test rejects_special_form_without_handler ... ok
+test unary_rows_have_no_fused_form ... ok
+test generates_every_form_from_the_real_tables ... ok
+test rejects_scalar_instruction_without_a_form ... ok
+test rejects_unsupported_arity ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running unittests src/lib.rs (target/debug/deps/pseudolearn_vm_tracer-f0ba646af7c9d641)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/vm_tracer-76859f9a67910449)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/xtask-a68f5bba2a84a634)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_abi
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_aot_rt
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_api
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_bytecode
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_codegen
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_diagnostics
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_ir
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_lexicon
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_library
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_lowering
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_math_probe
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_native_probe
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_runtime
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_semantic
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_source
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_syntax
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_timeline
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_vm
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_vm_dispatch
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pseudolearn_vm_tracer
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running `/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_rust_checks/target/debug/rust-checks all .`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_rust_checks/target/debug/rust-checks toolchain ../..`
+advisories ok, bans ok, licenses ok, sources ok

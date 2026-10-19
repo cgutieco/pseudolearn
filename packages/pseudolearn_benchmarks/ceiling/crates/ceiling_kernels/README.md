@@ -21,6 +21,8 @@ Capa ceiling_kernels; dependencias: biblioteca estándar. Sin acceso al motor ni
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: el techo V1F no paga definición ni recuperación de memoria. Elección: la variante 9, V1F-S, ejecuta los mismos algoritmos comprobados con los bancos de marco de V1F y un montón propio sin dependencias del motor. Cada casilla distingue ausencia de cero; las referencias de objetos y arreglos forman el grafo del recolector no móvil. Los argumentos, asignaciones locales y retenciones explícitas son raíces hasta salir del marco; el marco raíz vive toda la ejecución. La recolección se activa por presión o por máximo entre 4096 celdas asignadas y celdas vivas de la última recolección; el límite se comprueba sobre lo alcanzable. El modo forzado sirve para probar supervivencia. Se descarta sustituir V1F, renumerar variantes o importar el runtime del motor.
+
 Problema: elegir una política de recuperación requiere medir también la perturbación de la sombra.
 Elección: cada candidato registra pausas en tiempo y palabras, memoria pico y bloques cambiados por
 punto de 64 palabras. La ejecución ordinaria y la forzada deben conservar resultados independientes.

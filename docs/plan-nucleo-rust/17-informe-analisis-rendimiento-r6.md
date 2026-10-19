@@ -222,3 +222,9 @@ Criterio global para cada paso: campaña formal en un directorio nuevo, 10 × 30
 - **1,30× por familia no es alcanzable con Cranelift y el diseño actual sin cambios estructurales.** La evidencia más fuerte: aun con todas las mejoras, NBody queda en 2,04 y Permute en 1,6–1,7 con Cranelift, cuando el mismo contrato compilado con LLVM da 1,57 y 1,00–1,16. Además, NBody no baja de 1,30 ni siquiera con LLVM mientras se paguen las comprobaciones de indefinido que el techo no hace.
 - **Para cumplir 1,30× haría falta, a la vez:** (a) optimización de nivel LLVM, sea un optimizador intermedio propio sobre la RI o un backend LLVM de *release*, lo que es un conflicto con decisiones vigentes; (b) S7 (asignador) para Storage; (c) S8 (asignación definida) para NBody; y (d) resolver las fragilidades de método de §5.
 - **La alternativa que recomiendo decidir primero:** redefinir el techo para que haga el mismo trabajo semántico (V1F-S) o fijar un umbral por niveles (por ejemplo, ≤ 1,7× para el nivel Cranelift y ≤ 1,30× para un futuro nivel optimizado), dejando constancia en el corpus como cambio clasificado. Esta decisión corresponde a la persona (D-07) y no la tomo aquí.
+
+---
+
+## 10. Decisión adoptada
+
+El 2026-10-18 la persona aprobó la alternativa del §9, registrada como D-R6-01 y D-R6-02 en [08](08-decisiones-riesgos-y-cambios-de-reglas.md) §1.7: umbral por niveles (≤ 1,70× frente a V1F para Cranelift; ≤ 1,30× frente a V1F-S para un nivel optimizado futuro), cambio clasificado en el corpus e implementación de S1–S6 en una iteración.

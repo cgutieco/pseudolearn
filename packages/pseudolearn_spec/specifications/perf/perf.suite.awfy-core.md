@@ -5,7 +5,7 @@
   "titulo": "Suite AWFY-core",
   "dominio": "rendimiento",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -21,7 +21,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "AWFY-core suite"
+  "titulo_en": "AWFY-core suite",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Se distinguen V1F histórico y V1F-S experimental sin cambiar programas, tamaños ni resultados esperados.",
+    "impacto_implementaciones": "Ceiling incorpora una variante adicional con definición y recolección desde raíces de marcos, sin importar el motor.",
+    "justificacion": "El nivel optimizado requiere un denominador que pague definición y límite de celdas vivas; V1F se conserva intacto.",
+    "revisado_por": "persona-responsable"
+  }
 }
 ---
 
@@ -676,3 +683,16 @@
 Las adaptaciones conservan el algoritmo de Are We Fast Yet en un lenguaje sin nulo, sin operadores de bits y sin arreglos como valores: las referencias ausentes son objetos centinela, la disyunción exclusiva se calcula con div y mod, Storage representa los arreglos de hijos con objetos de cuatro campos y las hojas guardan su tamaño, Queens cuenta todas las soluciones y NBody escribe trunc(energía × 10¹⁵). Las salidas esperadas proceden de oráculos independientes escritos desde la definición de cada algoritmo; los valores de control de Are We Fast Yet (669, 8660, 8191, 10, 5461, 1331, 191, 23246 y 9297) se reproducen con los tamaños originales.
 
 Aviso de licencia de los programas derivados de Are We Fast Yet: Copyright (c) 2015-2016 Stefan Marr, licencia MIT.
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "V1F conserva su variante histórica y su representación sin modificaciones. V1F-S es una variante adicional experimental con los mismos algoritmos comprobados y marcos, rastreo explícito de definición de elementos y campos, recolección no móvil desde raíces de marcos y límite por celdas vivas alcanzables. Ambos techos conservan los diez programas, tamaños y controles; no se reemplazan resultados históricos.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Los tests de ceiling contrastan controles independientes, indefinidos, raíces, ciclos, recuperación de basura y límite vivo."
+}
+```

@@ -63,7 +63,7 @@ fn lower_arguments(
                 .and_then(|parameter| usize::try_from(parameter.0).ok())
                 .and_then(|index| state.context.module.locals.get(index));
             if parameter.is_some_and(|parameter| {
-                parameter.passing == pseudolearn_semantic::hir::Passing::Reference
+                crate::parameter_passing::requires_cell(parameter, state.context.module)
             }) {
                 let span = usize::try_from(argument.0)
                     .ok()

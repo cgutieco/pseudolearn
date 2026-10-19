@@ -20,6 +20,8 @@ pub struct Pair {
     pub iteration: u32,
     pub native_first: bool,
     pub native_nanoseconds: u64,
+    #[serde(default)]
+    pub native_entry_nanoseconds: u64,
     pub ceiling_nanoseconds: u64,
     pub vm_nanoseconds: u64,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -57,7 +59,8 @@ pub fn measure(entry: EntryFunction, configuration: &Configuration) -> Result<Ve
             iteration,
             native_first: first,
             native_nanoseconds: native.0,
-            telemetry: native.1,
+            native_entry_nanoseconds: native.1,
+            telemetry: native.2,
             ceiling_nanoseconds: ceiling,
             vm_nanoseconds: crate::execution::machine(
                 &prepared,

@@ -14,6 +14,8 @@ Tooling independiente de las capas del producto. Importa `pseudolearn_aot_rt`, `
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: excluir la conciliación final oculta trabajo de las asignaciones nativas. Elección: el intervalo versión 2 incluye entrada y `settle_session`; el tiempo de entrada se conserva por separado. El resumen identifica versión, nivel Cranelift, denominador V1F y umbral 1,70. Los registros sin versión conservan el intervalo histórico y umbral 1,30; mezclar versiones se rechaza. Se descarta reinterpretar resultados históricos o quitar la muestra VM entre parejas.
+
 Problema: los perfiles agregados no distinguen mecanismos de memoria. Elección: la feature `telemetry`, desactivada por omisión, cuenta asignaciones, crecimiento de palabras, recolecciones, recorridos, copias de diseño y accesos o raíces de celdas según la responsabilidad del crate. Sus resultados pertenecen a sesiones diagnósticas separadas; el código de producto y la campaña normativa no contienen estos incrementos. Se descarta atribuir los tiempos instrumentados al rendimiento de producción.
 
 Problema: procesos históricos no forman parejas experimentales. Elección: cada proceso ejecuta ambas variantes de cada iteración con orden alternado por proceso e iteración. Cada lado crea estado nuevo antes del reloj y valida su salida después. La variante 4 de ceiling sigue siendo el denominador V1F. Se descarta emparejar índices de capturas históricas.

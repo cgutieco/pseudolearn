@@ -96,3 +96,7 @@ impl AotEngine {
 pub(crate) fn settle_failure() -> Trap {
     Trap::named("internalFault")
 }
+
+pub fn class_payload_offset(fields: usize, dense: bool) -> Option<i64> {
+    i64::try_from(object_fields_start_offset(fields, dense)?).ok()
+}

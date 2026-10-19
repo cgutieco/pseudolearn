@@ -8,7 +8,7 @@ use crate::statement_context::StatementContext;
 use crate::statements::lower_statement_list;
 use crate::types::lower_type;
 use pseudolearn_ir::{Function, IrType, Operation, OriginEntry, VariableId};
-use pseudolearn_semantic::hir::{FunctionKind, HirFunction, HirModule, Passing};
+use pseudolearn_semantic::hir::{FunctionKind, HirFunction, HirModule};
 use pseudolearn_semantic::identities::LocalId;
 use pseudolearn_source::SourceText;
 
@@ -93,7 +93,9 @@ fn initialize_single_parameter(local_id: LocalId, context: &mut StatementContext
     let local_option = usize::try_from(local_id.0)
         .ok()
         .and_then(|local_index| context.expression_context.module.locals.get(local_index));
-    let is_reference = local_option.is_some_and(|local| local.passing == Passing::Reference);
+    let is_reference = local_option.is_some_and(|local| {
+        crate::parameter_passing::requires_cell(local, context.expression_context.module)
+    });
     let raw_type = local_option
         .map(|local| lower_type(local.type_id, context.expression_context.module))
         .unwrap_or(IrType::I64);

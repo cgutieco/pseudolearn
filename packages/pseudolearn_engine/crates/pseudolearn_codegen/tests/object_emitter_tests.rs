@@ -29,7 +29,8 @@ b0() mass 0:
 
 fn compile(text: &str) -> Result<pseudolearn_codegen::CompiledObject, String> {
     let module = parse_module(text)?;
-    compile_module_to_object(&module, &TargetConfig::host()).map_err(|error| error.to_string())
+    compile_module_to_object(&module, &TargetConfig::host().with_verification())
+        .map_err(|error| error.to_string())
 }
 
 fn bare(name: &str) -> &str {
@@ -166,7 +167,7 @@ fn class_descriptors_list_inherited_fields_before_declared_ones() -> Result<(), 
     if let Some(class) = module.classes.get_mut(1) {
         class.dense_integers = true;
     }
-    let compiled = compile_module_to_object(&module, &TargetConfig::host())
+    let compiled = compile_module_to_object(&module, &TargetConfig::host().with_verification())
         .map_err(|error| error.to_string())?;
     let fields: Vec<_> = compiled
         .classes
@@ -190,7 +191,7 @@ fn a_method_naming_a_missing_function_is_rejected() -> Result<(), String> {
     if let Some(class) = module.classes.first_mut() {
         class.methods.push(("go".to_owned(), "@missing".to_owned()));
     }
-    let error = compile_module_to_object(&module, &TargetConfig::host());
+    let error = compile_module_to_object(&module, &TargetConfig::host().with_verification());
     assert!(matches!(error, Err(CodegenError::InvalidModule(_))));
     Ok(())
 }
@@ -199,7 +200,7 @@ fn a_method_naming_a_missing_function_is_rejected() -> Result<(), String> {
 fn a_cyclic_class_hierarchy_is_rejected() -> Result<(), String> {
     let text = "module P es\nclass A : B { }\nclass B : A { }\nfunc @main() -> unit {\nb0() mass 0:\n  return\n}\n";
     let module = parse_module(text)?;
-    let error = compile_module_to_object(&module, &TargetConfig::host());
+    let error = compile_module_to_object(&module, &TargetConfig::host().with_verification());
     assert!(error.is_err());
     Ok(())
 }
@@ -208,7 +209,7 @@ fn a_cyclic_class_hierarchy_is_rejected() -> Result<(), String> {
 fn ill_formed_modules_are_rejected_before_any_code_is_emitted() -> Result<(), String> {
     let text = "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n}\n";
     let module = parse_module(text)?;
-    let error = compile_module_to_object(&module, &TargetConfig::host());
+    let error = compile_module_to_object(&module, &TargetConfig::host().with_verification());
     assert!(matches!(error, Err(CodegenError::InvalidModule(_))));
     Ok(())
 }

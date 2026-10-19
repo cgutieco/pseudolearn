@@ -1,0 +1,39 @@
+{
+  "command": "time -l storage-after < input-7",
+  "sameObjectAsBefore": true,
+  "runtimeArchiveSha256": "c70c1229fb3c870be7ebc034eb8030a49ab24523301787d65f3c5fa8abdccd1e",
+  "runs": [
+    {
+      "sample": 0,
+      "status": 0,
+      "output": "5461\n",
+      "time": "        0.23 real         0.00 user         0.00 sys\n             2965504  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 349  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n            18396809  instructions retired\n            10502161  cycles elapsed\n             2146688  peak memory footprint\n"
+    },
+    {
+      "sample": 1,
+      "status": 0,
+      "output": "5461\n",
+      "time": "        0.00 real         0.00 user         0.00 sys\n             2932736  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 349  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   6  involuntary context switches\n            16826202  instructions retired\n             6947162  cycles elapsed\n             2113920  peak memory footprint\n"
+    },
+    {
+      "sample": 2,
+      "status": 0,
+      "output": "5461\n",
+      "time": "        0.00 real         0.00 user         0.00 sys\n             2932736  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 347  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  12  involuntary context switches\n            16832054  instructions retired\n             6567262  cycles elapsed\n             2113920  peak memory footprint\n"
+    },
+    {
+      "sample": 3,
+      "status": 0,
+      "output": "5461\n",
+      "time": "        0.00 real         0.00 user         0.00 sys\n             2949120  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 349  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   7  involuntary context switches\n            16819959  instructions retired\n             6057539  cycles elapsed\n             2113896  peak memory footprint\n"
+    },
+    {
+      "sample": 4,
+      "status": 0,
+      "output": "5461\n",
+      "time": "        0.00 real         0.00 user         0.00 sys\n             2949120  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 349  page reclaims\n                   1  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   8  involuntary context switches\n            16835090  instructions retired\n             6010235  cycles elapsed\n             2130304  peak memory footprint\n"
+    }
+  ],
+  "revision": "b9638c704afbaf42cefb28a5458156e32716022f",
+  "executableSha256": "05e0d51acfbc61414b9ad45a6dfe8ebec8c999fb043c8e8bc47aac09e712353a"
+}

@@ -43,12 +43,14 @@ pub enum CollectionPolicy {
 pub struct MemoryOptions {
     pub cells: u64,
     pub collection: CollectionPolicy,
+    pub collection_minimum: u64,
 }
 
 impl Default for MemoryOptions {
     fn default() -> Self {
         Self {
             cells: 1 << 22,
+            collection_minimum: 4096,
             collection: CollectionPolicy::Automatic,
         }
     }

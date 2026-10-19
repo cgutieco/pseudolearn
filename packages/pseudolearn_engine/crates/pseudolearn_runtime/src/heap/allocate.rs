@@ -129,7 +129,7 @@ impl Heap {
             .checked_add(self.allocated_cells)
             .and_then(|count| count.checked_add(cells))
             .ok_or(MemoryError::Resource)?;
-        let threshold = self.live_cells.max(4096);
+        let threshold = self.collection_threshold();
         if self.options.collection == CollectionPolicy::Forced
             || bound > self.options.cells
             || self.allocated_cells >= threshold

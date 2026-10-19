@@ -1287,30 +1287,54 @@
       {
         "id": "M1",
         "protocol": "PERF.PROTOCOL#R1",
-        "provisional": true,
+        "provisional": false,
         "suite": "PERF.SUITE.AWFY-CORE"
       },
       {
         "id": "M2",
         "protocol": "PERF.PROTOCOL#R1",
-        "provisional": true,
+        "provisional": false,
         "suite": "PERF.SUITE.AWFY-CORE"
       },
       {
         "id": "M3",
         "protocol": "PERF.PROTOCOL#R1",
-        "provisional": true,
+        "provisional": false,
         "suite": "PERF.SUITE.AWFY-CORE"
       },
       {
         "id": "M4",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M7",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M8",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M9",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M10",
         "protocol": "PERF.PROTOCOL#R1",
         "provisional": true,
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
     "reason": null,
-    "rule": "PERF.AOT.LEVEL@0.1.0#R1",
+    "rule": "PERF.AOT.LEVEL@1.0.0#R1",
     "state": "experimental",
     "subject": "aot"
   },
@@ -1327,7 +1351,7 @@
       }
     ],
     "reason": null,
-    "rule": "PERF.AOT.LEVEL@0.1.0#R2",
+    "rule": "PERF.AOT.LEVEL@1.0.0#R2",
     "state": "experimental",
     "subject": "aot"
   },
@@ -1344,7 +1368,7 @@
       }
     ],
     "reason": null,
-    "rule": "PERF.AOT.LEVEL@0.1.0#R3",
+    "rule": "PERF.AOT.LEVEL@1.0.0#R3",
     "state": "experimental",
     "subject": "aot"
   },
@@ -1354,7 +1378,17 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "PERF.SUITE.AWFY-CORE@0.1.0#R1",
+    "rule": "PERF.SUITE.AWFY-CORE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "aot"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": "La identidad adicional de V1F-S preserva V1F y sus números; ceiling contrasta controles del corpus y recolección forzada, definición, ciclos, raíces y límite vivo.",
+    "rule": "PERF.SUITE.AWFY-CORE@0.2.0#R2",
     "state": "experimental",
     "subject": "aot"
   },

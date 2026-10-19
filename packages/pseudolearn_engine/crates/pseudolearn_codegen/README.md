@@ -9,7 +9,7 @@ enlazador del ejecutable y el adaptador de conformidad `aot`.
 
 Responsabilidades exclusivas: bajada de bloques SSA con parámetros a CLIF, prólogo y epílogo de marco, contabilidad de
 `block.mass`, aritmética entera y real comprobada, comparaciones, lógicos y caracteres escalares, llamadas directas y
-virtuales con propagación inmediata de fallo, bloques fríos de trampa por sitio y tabla de sitios de fallo, acceso a
+virtuales con propagación inmediata de fallo, bloque frío compartido de trampa y tabla de sitios de fallo, acceso a
 arreglos y objetos con camino rápido en línea, celdas, texto, matemática, entrada, salida y azar mediante las entradas
 del runtime, pila de raíces para el recolector, seguimiento de definición de enteros y tabla de clases.
 
@@ -21,7 +21,7 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Las campañas emparejadas siguen por encima de 1,30× en las cuatro familias y Richards supera 15 ms de emisión. Los contadores separan celdas (Permute y Queens), acceso a arreglos sin celdas (Sieve y NBody), código escalar (Mandelbrot) y asignación/GC (Storage). La atribución histórica de celdas a Sieve y NBody y el porcentaje del 2 % no están acreditados | Diagnosticar RI, CLIF y ensamblado conservados; comparar eliminación o especialización de celdas, análisis de límites y definición, asignador y backend mediante variantes aisladas | Cierre de PERF.AOT.LEVEL con evidencia comparable; ninguna técnica se considera suficiente antes de medir |
+| Certificar el nivel Cranelift: razón por familia ≤ 1,70 frente a V1F y emisión ≤ 15 ms. Las variantes de raíces pueden alterar la asignación de registros; ninguna mejora exploratoria certifica el nivel | Campaña paired formal con procedencia, conformidad y diferencial vigentes | PERF.AOT.LEVEL; R6 permanece abierta |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -79,8 +79,7 @@ campos heredados primero; el índice de la clase es el que `rt_aot_object_new` r
 | `entry_point` | En modo ejecutable, define `main` y el dato local `__pl_metadata` |
 | `type_mapping`, `target` | Tipos CLIF y configuración del ISA |
 
-Protocolo de fallo: toda trampa en línea salta a un bloque frío propio que llama a `rt_aot_fault(contexto, sitio)` y
-retorna cero del tipo de la función. Tras toda entrada del runtime y toda llamada a otra función se lee
+Protocolo de fallo: cada trampa conserva su sitio y llega al bloque frío compartido que llama a `rt_aot_fault(contexto, sitio)` y retorna cero del tipo de la función. Los datos adicionales de carácter se escriben antes de compartir el bloque. Tras toda entrada del runtime y toda llamada a otra función se lee
 `fault_status`; si es distinto de cero se salta a un único bloque frío por función que retorna cero sin ejecutar más
 efectos. El marco no se restituye en el fallo porque la ejecución termina.
 
@@ -118,7 +117,7 @@ vivos al entrar en cada uno, incluidos sus operandos, y el generador los copia e
 Memoria en línea: `array.load`, `array.store`, `object.load` y `object.store` leen `heap_words_pointer` en cada acceso (el
 puntero cambia en cualquier asignación), comprueban asa presente, extensiones sin signo y centinela de definición, y ante
 cualquier condición que no sea el éxito saltan a un bloque frío que llama a la entrada equivalente del runtime, que
-produce la trampa exacta o el valor. Los enteros de arreglo usan el límite denso y, si no se alcanzó, el mapa de
+produce la trampa exacta; el éxito inesperado de un camino terminal se convierte en internalFault. Los enteros de arreglo usan el límite denso y, si no se alcanzó, el mapa de
 definición con bit encendido igual a definido; los de objeto usan la carga útil de la cabecera: 2 es denso y, si no, el
 bit apagado de la máscara es definido. Las escrituras de enteros actualizan esos mapas en línea.
 
@@ -131,6 +130,18 @@ línea; `text.concat` marca con `CHARACTER_OPERAND_FLAG` los operandos de tipo `
 objeto guarda como dato local, uno por contenido distinto, y la entrada lo copia al montón en cada ejecución.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
+
+Problema: parámetros de bloque transportados sin uso mantienen registros vivos a través de llamadas. Elección: una pasada CLIF propaga usos reales por argumentos de aristas hasta punto fijo y retira parámetros muertos con sus argumentos; conserva la firma de entrada. Los productores con resultado necesariamente definido permiten omitir value.require, sin propagar esa prueba a lecturas ni fusiones desconocidas. Se descarta tocar la RI observable para estas optimizaciones.
+
+Problema: reunir accesos fallidos al runtime con accesos rápidos correctos invalida conocimiento de memoria. Elección: los accesos de rango uno incluyen mapas de definición parcial; su camino lento y el de campos son terminales y conservan los diagnósticos del runtime. Un éxito inesperado produce internalFault. Los arreglos de más dimensiones y las celdas conservan reunión. Las regiones context, heap, cells y roots se asignan solo a direcciones de procedencia demostrable; llamadas y direcciones desconocidas mantienen barreras conservadoras. Se descarta volver terminal una lectura válida de celda gestionada.
+
+Problema: leer el desplazamiento de campos en cada acceso repite metadatos. Elección: el análisis del programa completo usa un desplazamiento constante solo cuando la clase estática y todos sus descendientes tienen la misma carga útil, calculada por el dueño de la disposición. Se descarta inferirlo solo de la clase estática o del número de subclases.
+
+Problema: el llamado vuelve a apilar parámetros que su llamador ya mantiene enraizados durante toda la llamada. Elección: ParameterRoots permite comparar AllLive y Borrowed; Borrowed es el valor predeterminado y excluye únicamente las asas originales y copias demostradas por value.require, no fusiones ni valores nuevos. Los argumentos arreglo son asas RI y se enraízan como tales. Se descarta tratar una celda de elemento como asa de arreglo o ajustar código a una carga particular.
+
+Problema: verificar CLIF en cada emisión release consume tiempo sin ampliar el contrato de entrada ya verificado. Elección: el verificador Cranelift se activa en depuración y mediante `TargetConfig::with_verification` en todos los arneses de pruebas, también release; la emisión de producto release lo desactiva y siempre conserva `verify_module`. Se descarta desactivar la validación de RI.
+
+Problema: materializar desbordamiento con un operando constante añade instrucciones. Elección: suma y resta comparan el operando variable con el extremo admisible calculado con aritmética comprobada; la operación general conserva su comprobación para el resto. Se descarta envolver valores fuera de rango.
 
 Problema: las celdas de funciones terminadas no deben conservar objetos ni crecer durante toda la sesión. Elección: solo una función que crea celdas toma una marca de la tabla al entrar y libera su sufijo al retornar; las celdas del llamador mantienen sus identificadores. Una celda de elemento o campo enraíza también su propietario. Se descarta conservar referencias locales de marcos terminados o depender de un uso SSA posterior del propietario.
 
@@ -178,7 +189,7 @@ tests de ejecución, nunca como una trampa distinta. Descartado: duplicar las tr
 
 Problema: una celda de variable local pasa a otra función, pero un asa de 32 bits no puede apuntar a un marco nativo.
 Elección: las celdas son índices a una tabla del motor (`Local` con palabra y definición, o `Managed` con propietario e
-índice), como en la VM; se crean por `rt_aot_cell_*` y no se liberan. Descartado: punteros a la pila.
+índice), como en la VM; se crean por `rt_aot_cell_*` y se liberan al retornar su marco propietario. Descartado: punteros a la pila.
 
 Problema: `sqrt` y `abs` no tienen selector en la biblioteca de `pseudolearn_aot_rt`. Elección: `sqrt` comprueba el
 argumento negativo y usa la instrucción IEEE de Cranelift, que está correctamente redondeada como la biblioteca y conserva

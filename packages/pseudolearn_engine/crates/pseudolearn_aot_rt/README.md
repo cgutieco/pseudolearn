@@ -146,6 +146,10 @@ reclamarse y uno enraizado conserva su asa.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: un receptor ausente no tiene clase real desde la que recuperar el nombre de campo que la VM informa. Elección: la entrada conserva por separado el sitio del fallo y el sitio que aporta contexto de lexema; una lectura de campo con receptor ausente omite este último. Una lectura de campo sin valor en un objeto existente conserva su nombre. Se descarta inventar un argumento estático que la VM no puede producir.
+
+Problema: la recolección periódica y las raíces temporales penalizan asignaciones sin presión. Elección: AOT fija `collection_minimum` en 262144 celdas y construye raíces de arreglos solo cuando el costo lógico exacto requiere recorrido. La presión de límite y el modo forzado mantienen raíces completas. Se descarta alterar la política de la VM.
+
 Problema: construir raíces por cada objeto asigna y recorre celdas aunque no haya recolección. Elección: las asignaciones y copias de objeto consultan el costo lógico exacto que publica el runtime y materializan raíces solo si `needs_collection` puede activar recorrido o presión de límite. La recolección forzada y la presión de celdas mantienen el camino completo. Se descarta conservar un vector paralelo de raíces que pueda quedar obsoleto.
 
 Problema: las celdas de funciones terminadas no deben conservar objetos ni crecer durante toda la sesión. Elección: solo una función que crea celdas toma una marca de la tabla al entrar y libera su sufijo al retornar; las celdas del llamador mantienen sus identificadores. Una celda de elemento o campo enraíza también su propietario. Se descarta conservar referencias locales de marcos terminados o depender de un uso SSA posterior del propietario.

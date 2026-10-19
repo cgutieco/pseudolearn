@@ -8,14 +8,15 @@ use std::time::Instant;
 pub(crate) fn native(
     entry: EntryFunction,
     configuration: &Configuration,
-) -> Result<(u64, Option<serde_json::Value>), String> {
+) -> Result<(u64, u64, Option<serde_json::Value>), String> {
     let (mut session, output) = prepare(configuration)?;
     let started = Instant::now();
     entry(session.context_pointer());
-    let elapsed = started.elapsed();
+    let entry_elapsed = started.elapsed();
     if !pseudolearn_aot_rt::settle_session(&mut session) {
         return Err("Native allocation state could not be settled".to_owned());
     }
+    let elapsed = started.elapsed();
     if session.context().fault_status != 0
         || output.text().map_err(|error| error.to_string())? != configuration.expected
     {
@@ -23,6 +24,7 @@ pub(crate) fn native(
     }
     Ok((
         u64::try_from(elapsed.as_nanos()).map_err(|error| error.to_string())?,
+        u64::try_from(entry_elapsed.as_nanos()).map_err(|error| error.to_string())?,
         telemetry(&session),
     ))
 }

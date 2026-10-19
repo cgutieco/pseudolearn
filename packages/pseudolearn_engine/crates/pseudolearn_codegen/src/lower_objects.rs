@@ -27,6 +27,7 @@ pub(crate) const OPERATIONS: &[Operation] = &[
 pub(crate) struct FieldTarget {
     pub(crate) index: u32,
     pub(crate) field_type: IrType,
+    pub(crate) payload: Option<i64>,
 }
 
 pub(crate) fn lower(
@@ -62,6 +63,7 @@ pub(crate) fn field_target(
     Ok(FieldTarget {
         index: u32::try_from(index).map_err(|_| CodegenError::InvalidModule("field index"))?,
         field_type: field_type.clone(),
+        payload: lowering.environment.classes.static_payload(class),
     })
 }
 
@@ -125,14 +127,29 @@ pub(crate) fn allocate_handle(
     Ok(lowering.builder.ins().ireduce(types::I32, word))
 }
 
-fn payload_slot(lowering: &mut Lowering<'_, '_>, base: Value, index: u32) -> (Value, Value) {
+fn payload_slot(
+    lowering: &mut Lowering<'_, '_>,
+    base: Value,
+    target: &FieldTarget,
+) -> (Value, Value) {
+    if let Some(payload) = target.payload {
+        let payload = lowering.builder.ins().iconst(types::I64, payload);
+        let position = lowering
+            .builder
+            .ins()
+            .iadd_imm_s(payload, i64::from(target.index));
+        return (payload, element_slot(lowering, base, position));
+    }
     let header = lowering
         .builder
         .ins()
         .load(types::I64, MemFlagsData::trusted(), base, 0);
     let flags = lowering.builder.ins().ushr_imm_u(header, 32);
     let payload = lowering.builder.ins().band_imm_u(flags, 0xFFFF);
-    let position = lowering.builder.ins().iadd_imm_s(payload, i64::from(index));
+    let position = lowering
+        .builder
+        .ins()
+        .iadd_imm_s(payload, i64::from(target.index));
     (payload, element_slot(lowering, base, position))
 }
 
@@ -149,11 +166,8 @@ fn lower_load(
         .ins()
         .jump(joined.merge, &[BlockArg::Value(fast)]);
     lowering.builder.switch_to_block(joined.slow);
-    let slow = slow_field_load(lowering, instruction, (object, &target))?;
-    lowering
-        .builder
-        .ins()
-        .jump(joined.merge, &[BlockArg::Value(slow)]);
+    slow_field_load(lowering, instruction, (object, &target))?;
+    crate::lowering::jump_to_trap(lowering, "internalFault", instruction.span)?;
     let merged = finish_fast_path(lowering, &joined)
         .ok_or(CodegenError::InvalidModule("missing merged value"))?;
     bind_result(lowering, instruction, merged);
@@ -167,7 +181,7 @@ fn fast_field_load(
 ) -> Result<Value, CodegenError> {
     require_present(lowering, object, slow);
     let (_, base) = heap_base(lowering, object);
-    let (payload, address) = payload_slot(lowering, base, target.index);
+    let (payload, address) = payload_slot(lowering, base, target);
     let value = lowering.builder.ins().load(
         clif_load(&target.field_type),
         MemFlagsData::trusted(),
@@ -215,7 +229,7 @@ fn lower_store(
     let joined = begin_fast_path(lowering, None);
     require_present(lowering, object, joined.slow);
     let (_, base) = heap_base(lowering, object);
-    let (payload, address) = payload_slot(lowering, base, target.index);
+    let (payload, address) = payload_slot(lowering, base, &target);
     if target.field_type == IrType::I64 {
         define(lowering, (base, payload, target.index))
             .ok_or(CodegenError::InvalidModule("field index out of range"))?;
@@ -239,7 +253,7 @@ fn lower_store(
         operands: &operands,
     };
     call_runtime(lowering, &call)?;
-    lowering.builder.ins().jump(joined.merge, &[]);
+    crate::lowering::jump_to_trap(lowering, "internalFault", instruction.span)?;
     finish_fast_path(lowering, &joined);
     Ok(())
 }

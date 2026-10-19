@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use pseudolearn_runtime::{CollectionPolicy, MemoryOptions};
+use pseudolearn_runtime::MemoryOptions;
 use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 
@@ -31,10 +31,7 @@ impl Default for RunOptions {
             seed: 42,
             inspect_memory: false,
             depth: 100_000,
-            memory: MemoryOptions {
-                cells: 1 << 22,
-                collection: CollectionPolicy::Automatic,
-            },
+            memory: MemoryOptions::default(),
             twin_mode: TwinMode::Fast,
             statement_limit: None,
             inputs: Vec::new(),

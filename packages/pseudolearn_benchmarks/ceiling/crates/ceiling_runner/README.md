@@ -14,6 +14,8 @@ Capa ceiling_runner; dependencias: ceiling_kernels, ceiling_statistics, serde_js
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: distinguir el costo del contrato semántico del techo histórico. Elección: V1F-S se identifica como variante 9 y usa los algoritmos comprobados con definición y recolección por celdas vivas; sus controles ordinarios y con recolección forzada se contrastan con la exportación. Se descarta modificar las variantes 0–8 o sus campañas.
+
 Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
 
 

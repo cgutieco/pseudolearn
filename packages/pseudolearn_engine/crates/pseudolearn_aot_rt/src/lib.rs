@@ -47,7 +47,7 @@ pub use entry::pseudolearn_aot_main;
 pub use fault::{FaultRecord, FaultSite, SourceRange, render_fault};
 pub use inline_allocation::{
     INLINE_MAXIMUM_PHYSICAL, INLINE_PHYSICAL_SHIFT, INLINE_RECORD_WORDS, InlineObjectImage,
-    inline_object_image,
+    class_payload_offset, inline_object_image,
 };
 pub use input::rt_aot_read;
 pub use kinds::{

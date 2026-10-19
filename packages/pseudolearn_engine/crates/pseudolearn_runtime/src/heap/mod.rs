@@ -89,6 +89,10 @@ impl Heap {
         self.options.collection = collection;
     }
 
+    pub(crate) fn collection_threshold(&self) -> u64 {
+        self.live_cells.max(self.options.collection_minimum)
+    }
+
     pub fn needs_collection(&self, cells: u64) -> bool {
         self.options.collection == CollectionPolicy::Forced
             || self
@@ -96,7 +100,7 @@ impl Heap {
                 .saturating_add(self.allocated_cells)
                 .saturating_add(cells)
                 > self.options.cells
-            || self.allocated_cells >= self.live_cells.max(4096)
+            || self.allocated_cells >= self.collection_threshold()
     }
 
     pub fn identity(&self, handle: Handle) -> Result<u64, MemoryError> {

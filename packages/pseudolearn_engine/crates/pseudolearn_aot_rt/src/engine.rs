@@ -31,6 +31,7 @@ impl AotEngine {
             #[cfg(feature = "telemetry")]
             statistics: std::cell::Cell::default(),
             heap: Heap::new(MemoryOptions {
+                collection_minimum: 262_144,
                 cells: config.limits.cells,
                 collection: CollectionPolicy::Automatic,
             }),

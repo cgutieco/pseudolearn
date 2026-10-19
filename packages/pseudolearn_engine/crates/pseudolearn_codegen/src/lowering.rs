@@ -25,6 +25,7 @@ pub(crate) struct FunctionEnvironment<'program> {
     pub(crate) literals: HashMap<String, GlobalValue>,
     pub(crate) classes: &'program ClassTable,
     pub(crate) charging: StatementCharging,
+    pub(crate) parameter_roots: crate::target::ParameterRoots,
 }
 
 pub(crate) struct Instruction<'program> {
@@ -48,6 +49,7 @@ pub(crate) struct Lowering<'func, 'program> {
     pub(crate) cold_blocks: Vec<(Block, u32, Option<Value>)>,
     pub(crate) propagate_block: Option<Block>,
     pub(crate) types: HashMap<ValueId, IrType>,
+    pub(crate) defined_values: std::collections::HashSet<ValueId>,
     pub(crate) definitions: HashMap<ValueId, Definition>,
     pub(crate) live_roots: HashMap<InstructionId, Vec<ValueId>>,
 }
@@ -161,6 +163,9 @@ pub(crate) fn emit_return_zero(lowering: &mut Lowering<'_, '_>) {
 
 pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) -> Result<(), CodegenError> {
     let fault = lowering.environment.runtime.get(Entry::Fault)?;
+    let shared = lowering.builder.create_block();
+    lowering.builder.set_cold_block(shared);
+    let shared_site = lowering.builder.append_block_param(shared, types::I32);
     for (block, site, word) in std::mem::take(&mut lowering.cold_blocks) {
         lowering.builder.switch_to_block(block);
         if let Some(word) = word {
@@ -172,12 +177,14 @@ pub(crate) fn finish_cold_blocks(lowering: &mut Lowering<'_, '_>) -> Result<(), 
             );
         }
         let site_value = lowering.builder.ins().iconst(types::I32, i64::from(site));
-        lowering
-            .builder
-            .ins()
-            .call(fault, &[lowering.context, site_value]);
-        emit_return_zero(lowering);
+        lowering.builder.ins().jump(shared, &[site_value.into()]);
     }
+    lowering.builder.switch_to_block(shared);
+    lowering
+        .builder
+        .ins()
+        .call(fault, &[lowering.context, shared_site]);
+    jump_to_propagation(lowering);
     if let Some(block) = lowering.propagate_block {
         lowering.builder.switch_to_block(block);
         emit_return_zero(lowering);
@@ -194,4 +201,17 @@ pub(crate) fn trap_and_continue(
     let unreachable = lowering.builder.create_block();
     lowering.builder.switch_to_block(unreachable);
     Ok(())
+}
+
+pub(crate) fn jump_to_propagation(lowering: &mut Lowering<'_, '_>) {
+    let block = match lowering.propagate_block {
+        Some(block) => block,
+        None => {
+            let block = lowering.builder.create_block();
+            lowering.builder.set_cold_block(block);
+            lowering.propagate_block = Some(block);
+            block
+        }
+    };
+    lowering.builder.ins().jump(block, &[]);
 }

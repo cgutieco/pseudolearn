@@ -5,7 +5,7 @@
   "titulo": "Nivel del código nativo",
   "dominio": "rendimiento",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -25,7 +25,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Native code level"
+  "titulo_en": "Native code level",
+  "cambio": {
+    "clase": "cambio_significado",
+    "impacto_usuarios": "El nivel Cranelift se evalúa frente a V1F con límite 1,70; el nivel optimizado futuro conserva 1,30 frente a V1F-S.",
+    "impacto_implementaciones": "Los arneses identifican nivel y denominador; el intervalo nativo incluye conciliación final. No se reinterpretan campañas históricas.",
+    "justificacion": "V1F omite definición de valores y recolección; separar niveles distingue calidad del backend y equivalencia semántica.",
+    "revisado_por": "persona-responsable"
+  }
 }
 ---
 
@@ -36,12 +43,16 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La media geométrica de la razón entre el tiempo mediano del código nativo generado y el del techo nativo con marcos es como máximo 1,30 en cada familia de PERF.SUITE.AWFY-CORE: numérica, recursiva, de objetos y de arreglos.",
+  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,70 frente a V1F para el nivel Cranelift, y como máximo 1,30 frente a V1F-S para el nivel optimizado futuro, en cada familia numérica, recursiva, de objetos y de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
   "verificacion": [
     "M1",
     "M2",
     "M3",
-    "M4"
+    "M4",
+    "M7",
+    "M8",
+    "M9",
+    "M10"
   ]
 }
 ```
@@ -53,8 +64,8 @@
   "unidad": "razon",
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
+  "umbral": 1.7,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],
@@ -69,8 +80,8 @@
   "unidad": "razon",
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
+  "umbral": 1.7,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],
@@ -85,8 +96,8 @@
   "unidad": "razon",
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
+  "umbral": 1.7,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],
@@ -101,8 +112,8 @@
   "unidad": "razon",
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
+  "umbral": 1.7,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],
@@ -158,6 +169,70 @@
   "suite": "PERF.SUITE.AWFY-CORE",
   "comparador": "<=",
   "umbral": 15,
+  "provisional": true,
+  "plataformas": [
+    "macos-arm64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M7",
+  "metrica": "razon_aot_optimizado_v1fs_numeric",
+  "unidad": "razon",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 1.3,
+  "provisional": true,
+  "plataformas": [
+    "macos-arm64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M8",
+  "metrica": "razon_aot_optimizado_v1fs_recursive",
+  "unidad": "razon",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 1.3,
+  "provisional": true,
+  "plataformas": [
+    "macos-arm64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M9",
+  "metrica": "razon_aot_optimizado_v1fs_objects",
+  "unidad": "razon",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 1.3,
+  "provisional": true,
+  "plataformas": [
+    "macos-arm64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M10",
+  "metrica": "razon_aot_optimizado_v1fs_arrays",
+  "unidad": "razon",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 1.3,
   "provisional": true,
   "plataformas": [
     "macos-arm64"

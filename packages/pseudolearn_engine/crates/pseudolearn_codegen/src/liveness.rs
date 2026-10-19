@@ -29,6 +29,7 @@ struct Analysis<'program> {
 pub(crate) fn live_roots(
     function: &Function,
     types: &Types,
+    policy: crate::target::ParameterRoots,
 ) -> HashMap<InstructionId, Vec<ValueId>> {
     let analysis = Analysis { function, types };
     let live_in = fixpoint(&analysis);
@@ -36,6 +37,12 @@ pub(crate) fn live_roots(
     for block in &function.blocks {
         let outgoing = outgoing(&analysis, block, &live_in);
         scan(&analysis, block, outgoing, Some(&mut recorded));
+    }
+    if policy == crate::target::ParameterRoots::Borrowed {
+        let borrowed = crate::borrowed_roots::collect(function, types);
+        for roots in recorded.values_mut() {
+            roots.retain(|value| !borrowed.contains(value));
+        }
     }
     recorded
 }

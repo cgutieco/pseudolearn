@@ -1,0 +1,72 @@
+{
+  "bounce": {
+    "arrayAllocationsInIr": 1,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 2,
+    "objectHash": "b17e11fbbc5f22e8dc6eeb73a916740dfd04b7bf"
+  },
+  "list": {
+    "arrayAllocationsInIr": 0,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 1,
+    "objectHash": "46b3ab5583e64740b60c3b4777126019577190df"
+  },
+  "mandelbrot": {
+    "arrayAllocationsInIr": 0,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 0,
+    "objectHash": "e0083c5dd7bfa2c6b9f98329da56bacbffc29f2a"
+  },
+  "nbody": {
+    "arrayAllocationsInIr": 7,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 0,
+    "objectHash": "6953258f0ed108732146f8cbbf325db7f9eeb54c"
+  },
+  "permute": {
+    "arrayAllocationsInIr": 1,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 0,
+    "objectHash": "95bc78e418b7c5e00f61d3016e4a8f351fcf633f"
+  },
+  "queens": {
+    "arrayAllocationsInIr": 3,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 0,
+    "objectHash": "a04b0c4ffafb65e6b5221e270396d3c419edb84b"
+  },
+  "richards": {
+    "arrayAllocationsInIr": 0,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 17,
+    "objectHash": "b80fa94bdbb6fe1ccfbbf0adf3ea7a6200f59f28"
+  },
+  "sieve": {
+    "arrayAllocationsInIr": 1,
+    "cellLoadsInIr": 0,
+    "cellStoresInIr": 0,
+    "objectAllocationsInIr": 0,
+    "objectHash": "e1332f13c65b9c530ac7ca439fad893420bd0179"
+  },
+  "storage": {
+    "arrayAllocationsInIr": 0,
+    "cellLoadsInIr": 2,
+    "cellStoresInIr": 2,
+    "objectAllocationsInIr": 2,
+    "objectHash": "14f248cb8231dedcd9bf5d091c0fab747078f171"
+  },
+  "towers": {
+    "arrayAllocationsInIr": 1,
+    "cellLoadsInIr": 2,
+    "cellStoresInIr": 2,
+    "objectAllocationsInIr": 2,
+    "objectHash": "f1cf1938866b5dff076c184576b12dff178bec85"
+  }
+}

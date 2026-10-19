@@ -84,8 +84,8 @@
     "MEM.IDENTITY": "0f1aa35b6cbc9dc289e608650e96a7c6c24c2878bf11be9efa659f712fba4f7c",
     "MEM.MANAGED.UNOBSERVABLE": "a6431d5c5bc59eb4a15ace4315bab58ca8f4fbf74d9f9d7cf030e6afe71d8ce8",
     "MEM.VALUE.COPY": "d1f30b2fb4c509cba35d01e4c13a6ff7f5c4edcfb5a04436dd6d1880ab9f109a",
-    "PERF.AOT.LEVEL": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
-    "PERF.SUITE.AWFY-CORE": "f31727d846a2b280b3fa2479d18b99f5ffe3439507f0cf3d986eecad3f954433",
+    "PERF.AOT.LEVEL": "f21afc7e494a60ffe00e37cfbe20639010d6e3b4ed6decb971747b94bbbda66f",
+    "PERF.SUITE.AWFY-CORE": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
     "RT.ABI": "4d87ac3ecaa5fa7478b98cc1844c8b29ba3554b121202eb673ab8cec6965c8af",
     "RT.FAULT.REPORTING": "39cfa6e52eba621ce6945585c7c6df670da731af955b0c26827867080b14d528",
     "RT.HOST.INTERFACE": "c5936707440b9df36abec983355646f0ff6f5906646908c4e45bfdd96e081e9c",
@@ -33899,6 +33899,25 @@
       "profile": "independent",
       "rule": "R4",
       "specification": "IR.INSTRUCTIONS",
+      "strictness": "independent",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "corpus_hash": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "case": "estructural",
+      "differences": [],
+      "expected": {
+        "corpus_hash": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
+        "passed": true,
+        "validator": "see validate"
+      },
+      "profile": "independent",
+      "rule": "R2",
+      "specification": "PERF.SUITE.AWFY-CORE",
       "strictness": "independent",
       "verdict": "cumple"
     }

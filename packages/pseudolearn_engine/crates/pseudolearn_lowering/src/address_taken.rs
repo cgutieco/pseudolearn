@@ -1,8 +1,4 @@
-use pseudolearn_semantic::{
-    expression_model::HirExpression,
-    hir::{HirModule, Passing},
-    identities::LocalId,
-};
+use pseudolearn_semantic::{expression_model::HirExpression, hir::HirModule, identities::LocalId};
 
 pub(crate) fn contains(local: LocalId, module: &HirModule) -> bool {
     module.expressions.kinds.iter().any(|expression| {
@@ -49,7 +45,7 @@ fn references_local(
     let by_reference = usize::try_from(parameter.0)
         .ok()
         .and_then(|index| module.locals.get(index))
-        .is_some_and(|local| local.passing == Passing::Reference);
+        .is_some_and(|local| crate::parameter_passing::requires_cell(local, module));
     by_reference
         && usize::try_from(argument.0)
             .ok()

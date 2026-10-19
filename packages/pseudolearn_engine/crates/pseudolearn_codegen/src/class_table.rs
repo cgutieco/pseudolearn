@@ -11,12 +11,14 @@ struct ClassShape {
     fields: Vec<(String, IrType)>,
     methods: HashMap<String, usize>,
     dense: bool,
+    payload: Option<i64>,
 }
 
 #[derive(Debug, Default)]
 pub(crate) struct ClassTable {
     names: Vec<String>,
     classes: Vec<ClassShape>,
+    parents: Vec<Option<String>>,
 }
 
 impl ClassTable {
@@ -32,6 +34,11 @@ impl ClassTable {
                 .map(|class| class.name.clone())
                 .collect(),
             classes,
+            parents: module
+                .classes
+                .iter()
+                .map(|class| class.superclass.clone())
+                .collect(),
         })
     }
 
@@ -64,6 +71,17 @@ impl ClassTable {
             .map(|(_, field_type)| kind_code(field_type))
             .collect::<Option<Vec<_>>>()?;
         inline_object_image(u32::try_from(class).ok()?, &fields, shape.dense)
+    }
+
+    pub(crate) fn static_payload(&self, name: &str) -> Option<i64> {
+        let root = self.class_index(name)?;
+        let payload = self.classes.get(root)?.payload?;
+        for (index, shape) in self.classes.iter().enumerate() {
+            if descendant(self, index, root) && shape.payload != Some(payload) {
+                return None;
+            }
+        }
+        Some(payload)
     }
 
     pub(crate) fn descriptors(&self) -> Result<Vec<ClassDescriptor>, CodegenError> {
@@ -117,6 +135,7 @@ fn resolve(module: &Module, index: usize, budget: usize) -> Result<ClassShape, C
             .ok_or(CodegenError::InvalidModule("method without function"))?;
         shape.methods.insert(method.clone(), function);
     }
+    shape.payload = pseudolearn_aot_rt::class_payload_offset(shape.fields.len(), shape.dense);
     Ok(shape)
 }
 
@@ -127,3 +146,25 @@ pub(crate) fn same_function(left: &str, right: &str) -> bool {
 pub(crate) fn method_name(function_name: &str) -> Option<&str> {
     function_name.rsplit_once('.').map(|(_, method)| method)
 }
+
+fn descendant(table: &ClassTable, mut candidate: usize, root: usize) -> bool {
+    for _ in 0..table.classes.len() {
+        if candidate == root {
+            return true;
+        }
+        let Some(parent) = table
+            .parents
+            .get(candidate)
+            .and_then(Option::as_ref)
+            .and_then(|name| table.class_index(name))
+        else {
+            return false;
+        };
+        candidate = parent;
+    }
+    false
+}
+
+#[cfg(test)]
+#[path = "class_table_tests.rs"]
+mod class_table_tests;

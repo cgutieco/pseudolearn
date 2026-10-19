@@ -5,7 +5,7 @@ use crate::expressions_builtins::lower_builtin_call;
 use pseudolearn_ir::{IrSpan, Operand, Operation, ValueId};
 use pseudolearn_semantic::BuiltinKind;
 use pseudolearn_semantic::expression_model::HirExpression;
-use pseudolearn_semantic::hir::{FunctionKind, HirFunction, Passing};
+use pseudolearn_semantic::hir::{FunctionKind, HirFunction};
 use pseudolearn_semantic::identities::ExpressionId;
 
 pub fn lower_call(
@@ -27,7 +27,9 @@ pub fn lower_call(
                     .ok()
                     .and_then(|local_index| state.context.module.locals.get(local_index))
             })
-            .is_some_and(|local| local.passing == Passing::Reference);
+            .is_some_and(|local| {
+                crate::parameter_passing::requires_cell(local, state.context.module)
+            });
         if is_reference {
             lowered_arguments.push(lower_cell_argument(argument_id, span, state));
         } else {

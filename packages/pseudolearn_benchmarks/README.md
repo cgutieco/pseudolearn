@@ -87,6 +87,8 @@ control independiente; las muestras aceptadas deben terminar normalmente y valid
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: cambiar el nivel aceptado y el intervalo altera la lectura de las razones históricas. Elección: las campañas paired versión 2 identifican Cranelift, V1F y umbral 1,70; incluyen conciliación final y conservan tiempo de entrada auxiliar. Las campañas sin versión conservan su contrato. V1F-S es la variante adicional 9 para el nivel optimizado futuro frente a 1,30. Se descarta recalcular campañas anteriores como si compartieran este intervalo.
+
 - **Problema:** la captura puede consagrar un error del intérprete. **Elección:** resultados esperados
   calculados por la definición de cada carga y validados antes de guardar tiempos.
   **Descartado:** usar la primera ejecución como resultado normativo.

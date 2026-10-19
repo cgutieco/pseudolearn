@@ -3337,6 +3337,27 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "PERF.AOT.LEVEL@1.0.0": {
+      "edition": {},
+      "elements": {
+        "M1": "medicion",
+        "M10": "medicion",
+        "M2": "medicion",
+        "M3": "medicion",
+        "M4": "medicion",
+        "M5": "medicion",
+        "M6": "medicion",
+        "M7": "medicion",
+        "M8": "medicion",
+        "M9": "medicion",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "f21afc7e494a60ffe00e37cfbe20639010d6e3b4ed6decb971747b94bbbda66f",
+      "state": "experimental",
+      "version": "1.0.0"
+    },
     "PERF.ARTIFACT.SIZE@0.1.0": {
       "edition": {},
       "elements": {
@@ -3434,6 +3455,36 @@
       "hash": "f31727d846a2b280b3fa2479d18b99f5ffe3439507f0cf3d986eecad3f954433",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "PERF.SUITE.AWFY-CORE@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C10": "caso",
+        "C11": "caso",
+        "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
+        "C16": "caso",
+        "C17": "caso",
+        "C18": "caso",
+        "C19": "caso",
+        "C2": "caso",
+        "C20": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "C7": "caso",
+        "C8": "caso",
+        "C9": "caso",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
+      "state": "experimental",
+      "version": "0.2.0"
     },
     "PERF.VM.STEP-LATENCY@0.1.0": {
       "edition": {},
@@ -5859,18 +5910,22 @@
       "edition": {},
       "elements": {
         "M1": "medicion",
+        "M10": "medicion",
         "M2": "medicion",
         "M3": "medicion",
         "M4": "medicion",
         "M5": "medicion",
         "M6": "medicion",
+        "M7": "medicion",
+        "M8": "medicion",
+        "M9": "medicion",
         "R1": "regla",
         "R2": "regla",
         "R3": "regla"
       },
-      "hash": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
+      "hash": "f21afc7e494a60ffe00e37cfbe20639010d6e3b4ed6decb971747b94bbbda66f",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     "PERF.ARTIFACT.SIZE": {
       "edition": {},
@@ -5948,11 +6003,12 @@
         "C7": "caso",
         "C8": "caso",
         "C9": "caso",
-        "R1": "regla"
+        "R1": "regla",
+        "R2": "regla"
       },
-      "hash": "f31727d846a2b280b3fa2479d18b99f5ffe3439507f0cf3d986eecad3f954433",
+      "hash": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "PERF.VM.STEP-LATENCY": {
       "edition": {},

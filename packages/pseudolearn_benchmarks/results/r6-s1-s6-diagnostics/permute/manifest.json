@@ -1,0 +1,24 @@
+{
+  "archiveSha256": "bd8d08fd6ab2d829c08f86b1accc64aaa3745876b8da8470d32a34db15166f28",
+  "variants": {
+    "all-live": {
+      "objectSha256": "a74f2c7cead8b38808fab6d2826cc222a2b07e242ffa9bae4d57833db39602e4",
+      "bytes": 3984,
+      "symbols": "                 U _rt_aot_array_load\n                 U _rt_aot_array_new\n                 U _rt_aot_array_store\n                 U _rt_aot_cell_element\n                 U _rt_aot_cell_field\n                 U _rt_aot_cell_load\n                 U _rt_aot_cell_local\n                 U _rt_aot_cell_mark\n                 U _rt_aot_cell_release\n                 U _rt_aot_cell_store\n                 U _rt_aot_fault\n                 U _rt_aot_integer_power\n                 U _rt_aot_math_unary\n                 U _rt_aot_object_copy\n                 U _rt_aot_object_load\n                 U _rt_aot_object_new\n                 U _rt_aot_object_store\n                 U _rt_aot_random_real\n                 U _rt_aot_read\n                 U _rt_aot_real_power\n                 U _rt_aot_text_character\n                 U _rt_aot_text_compare\n                 U _rt_aot_text_concat\n                 U _rt_aot_text_format\n                 U _rt_aot_text_literal\n                 U _rt_aot_text_query\n                 U _rt_aot_write\n0000000000000000 T ___pl_fn_0\n00000000000006fc T ___pl_fn_1\n"
+    },
+    "borrowed": {
+      "objectSha256": "7947e5c31f916dc05f5f3f7e2df75c765ef881c6ea382442c85c330823dc829f",
+      "bytes": 3864,
+      "symbols": "                 U _rt_aot_array_load\n                 U _rt_aot_array_new\n                 U _rt_aot_array_store\n                 U _rt_aot_cell_element\n                 U _rt_aot_cell_field\n                 U _rt_aot_cell_load\n                 U _rt_aot_cell_local\n                 U _rt_aot_cell_mark\n                 U _rt_aot_cell_release\n                 U _rt_aot_cell_store\n                 U _rt_aot_fault\n                 U _rt_aot_integer_power\n                 U _rt_aot_math_unary\n                 U _rt_aot_object_copy\n                 U _rt_aot_object_load\n                 U _rt_aot_object_new\n                 U _rt_aot_object_store\n                 U _rt_aot_random_real\n                 U _rt_aot_read\n                 U _rt_aot_real_power\n                 U _rt_aot_text_character\n                 U _rt_aot_text_compare\n                 U _rt_aot_text_concat\n                 U _rt_aot_text_format\n                 U _rt_aot_text_literal\n                 U _rt_aot_text_query\n                 U _rt_aot_write\n0000000000000000 T ___pl_fn_0\n0000000000000688 T ___pl_fn_1\n"
+    }
+  },
+  "revision": "b9638c704afbaf42cefb28a5458156e32716022f",
+  "dirty": true,
+  "driverSha256": "a6f995a16d65f91ecc1bc215e6490d33d2cf2262d629a6271a167b9167dfe953",
+  "order": "Alternating variant order across ten processes; thirty pairs each; no compilation or profiling during measurement.",
+  "interval": "Native entry plus settlement; same probe and runtime archive for both variants.",
+  "limitations": [
+    "Source tree is uncommitted; executable artifact hashes identify the measured variants.",
+    "No hardware branch or cache counters; the microarchitectural cause remains unproven."
+  ]
+}

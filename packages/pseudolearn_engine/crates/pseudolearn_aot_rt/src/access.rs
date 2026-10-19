@@ -32,6 +32,9 @@ pub extern "C" fn rt_aot_object_load(
     field: u32,
 ) -> u32 {
     run_entry(context, site, |entry| {
+        if object == 0 {
+            entry.lexeme_site = None;
+        }
         let index = usize::try_from(field).map_err(|_| Trap::named("internalFault"))?;
         Ok(read_field(&entry.engine.heap, Handle(object), index)?)
     })

@@ -1,0 +1,24 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+extern int32_t pseudolearn_native_pair(void (*entry)(void *), const uint8_t *configuration, size_t count);
+extern void __pl_fn_1(void *context);
+
+int main(int argc, char **argv) {
+    if (argc != 2) return 2;
+    FILE *file = fopen(argv[1], "rb");
+    if (!file) return 2;
+    if (fseek(file, 0, SEEK_END) != 0) return 2;
+    long length = ftell(file);
+    if (length <= 0 || length > (1 << 24)) return 2;
+    rewind(file);
+    uint8_t *configuration = malloc((size_t)length);
+    if (!configuration) return 2;
+    size_t count = fread(configuration, 1, (size_t)length, file);
+    fclose(file);
+    if (count != (size_t)length) return 2;
+    int32_t result = pseudolearn_native_pair(__pl_fn_1, configuration, count);
+    free(configuration);
+    return result;
+}

@@ -32,7 +32,9 @@ pub fn collect(output: &str) -> Result<(), String> {
     for process in 0..10 {
         for (workload, launcher) in &launchers {
             let pairs = launcher::run(launcher, process)?;
-            records.push(json!({"workload":workload,"process":process,"pairs":pairs}));
+            records.push(
+                json!({"workload":workload,"process":process,"pairs":pairs,"measurementVersion":2}),
+            );
             storage::write(&directory.join("raw.json"), &json!(records))?;
         }
     }

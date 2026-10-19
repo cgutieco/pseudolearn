@@ -77,3 +77,42 @@ fn missing_workloads_emissions_or_duplicate_processes_fail() {
     }
     assert!(summarize(&records, &emissions).is_err());
 }
+
+#[test]
+fn settlement_interval_uses_the_cranelift_level_without_reinterpreting_old_records()
+-> Result<(), String> {
+    let (mut records, emissions) = input(170);
+    for record in &mut records {
+        record
+            .as_object_mut()
+            .ok_or("Invalid test record")?
+            .insert("measurementVersion".to_owned(), json!(2));
+    }
+    for record in &mut records {
+        for pair in record
+            .get_mut("pairs")
+            .and_then(Value::as_array_mut)
+            .ok_or("Missing pairs")?
+        {
+            pair.as_object_mut()
+                .ok_or("Invalid pair")?
+                .insert("native_entry_nanoseconds".to_owned(), json!(169));
+        }
+    }
+    let report = summarize(&records, &emissions)?;
+    assert_eq!(report.get("targetReached"), Some(&json!(true)));
+    assert_eq!(report.get("threshold"), Some(&json!(1.7)));
+    if let Some(record) = records.first_mut() {
+        record
+            .as_object_mut()
+            .ok_or("Invalid test record")?
+            .remove("measurementVersion");
+    }
+    assert!(summarize(&records, &emissions).is_err());
+    let (records, emissions) = input(170);
+    assert_eq!(
+        summarize(&records, &emissions)?.get("targetReached"),
+        Some(&json!(false))
+    );
+    Ok(())
+}

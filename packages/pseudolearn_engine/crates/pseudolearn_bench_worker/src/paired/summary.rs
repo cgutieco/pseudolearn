@@ -142,7 +142,7 @@ pub fn summarize(records: &[Value], emissions: &Value) -> Result<Value, String> 
         workloads,
         families,
         confidence,
-        (&speedups, emission_maximum),
+        (&speedups, emission_maximum, measurement_version(records)?),
     )
 }
 
@@ -150,8 +150,10 @@ fn finish(
     workloads: serde_json::Map<String, Value>,
     families: BTreeMap<String, Vec<f64>>,
     confidence: BTreeMap<String, Value>,
-    limits: (&[f64], f64),
+    limits: (&[f64], f64, u64),
 ) -> Result<Value, String> {
+    let version = limits.2;
+    let threshold = if version == 2 { 1.7 } else { 1.3 };
     let families: BTreeMap<String, Value> = families
         .into_iter()
         .map(|(name, ratios)| {
@@ -159,7 +161,7 @@ fn finish(
             let interval = confidence.get(&name).cloned().unwrap_or(Value::Null);
             (
                 name,
-                json!({"medianRatio":ratio,"passed":ratio<=1.3,
+                json!({"medianRatio":ratio,"passed":ratio<=threshold,
             "processMeanRatioConfidence95":interval}),
             )
         })
@@ -168,12 +170,15 @@ fn finish(
         families.len() == 4 && families.values().all(|family| family["passed"] == true);
     let speedup_passed = limits.0.iter().all(|speedup| *speedup >= 1.0);
     let emission_passed = limits.1 <= 15.0;
-    Ok(json!({"workloads":workloads,"families":families,
+    Ok(
+        json!({"measurementVersion":version,"level":"cranelift","denominator":"V1F","threshold":threshold,
+        "nativeInterval":if version == 2 { "entry-and-settlement" } else { "entry" },"workloads":workloads,"families":families,
         "criteria":{"familiesPassed":families_passed,"speedupPassed":speedup_passed,"emissionPassed":emission_passed},
         "targetReached":families_passed && speedup_passed && emission_passed,
         "maximumEmissionMedianMilliseconds":limits.1,
         "estimator":"geometric mean per family of ratios of pooled workload medians",
-        "bootstrap":{"method":"paired resampling of per-process means; interval does not estimate median ratios", "rounds":2000,"seed":42}}))
+        "bootstrap":{"method":"paired resampling of per-process means; interval does not estimate median ratios", "rounds":2000,"seed":42}}),
+    )
 }
 
 fn emission_median(emissions: &Value, workload: &str) -> Result<f64, String> {
@@ -184,4 +189,45 @@ fn emission_median(emissions: &Value, workload: &str) -> Result<f64, String> {
         return Err("Invalid emission samples".to_owned());
     }
     Ok(median(&times))
+}
+
+fn measurement_version(records: &[Value]) -> Result<u64, String> {
+    let version = records
+        .first()
+        .and_then(|record| record.get("measurementVersion"))
+        .and_then(Value::as_u64)
+        .unwrap_or(1);
+    if ![1, 2].contains(&version)
+        || records.iter().any(|record| {
+            record
+                .get("measurementVersion")
+                .and_then(Value::as_u64)
+                .unwrap_or(1)
+                != version
+        })
+    {
+        return Err("Mixed or unknown measurement versions".to_owned());
+    }
+    if version == 2
+        && records
+            .iter()
+            .any(|record| !valid_settled_intervals(record))
+    {
+        return Err("Missing or invalid entry and settlement interval".to_owned());
+    }
+    Ok(version)
+}
+
+fn valid_settled_intervals(record: &Value) -> bool {
+    record
+        .get("pairs")
+        .and_then(Value::as_array)
+        .is_some_and(|pairs| {
+            pairs.iter().all(|pair| {
+                pair.get("native_entry_nanoseconds")
+                    .and_then(Value::as_u64)
+                    .zip(pair.get("native_nanoseconds").and_then(Value::as_u64))
+                    .is_some_and(|(entry, settled)| entry > 0 && entry <= settled)
+            })
+        })
 }

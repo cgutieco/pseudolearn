@@ -121,10 +121,14 @@ fn lower_load(
         .jump(joined.merge, &[BlockArg::Value(fast)]);
     lowering.builder.switch_to_block(joined.slow);
     let slow = slow_load(lowering, instruction, &read)?;
-    lowering
-        .builder
-        .ins()
-        .jump(joined.merge, &[BlockArg::Value(slow)]);
+    if indices.len() == 1 {
+        crate::lowering::jump_to_trap(lowering, "internalFault", instruction.span)?;
+    } else {
+        lowering
+            .builder
+            .ins()
+            .jump(joined.merge, &[BlockArg::Value(slow)]);
+    }
     let merged = finish_fast_path(lowering, &joined)
         .ok_or(CodegenError::InvalidModule("missing merged value"))?;
     bind_result(lowering, instruction, merged);
@@ -196,7 +200,23 @@ fn lower_store(
         .store(MemFlagsData::trusted(), word, address, located.offset);
     lowering.builder.ins().jump(joined.merge, &[]);
     lowering.builder.switch_to_block(joined.slow);
-    let mut operands = indices.clone();
+    slow_store(lowering, instruction, (array, &indices), word)?;
+    if indices.len() == 1 {
+        crate::lowering::jump_to_trap(lowering, "internalFault", instruction.span)?;
+    } else {
+        lowering.builder.ins().jump(joined.merge, &[]);
+    }
+    finish_fast_path(lowering, &joined);
+    Ok(())
+}
+
+fn slow_store(
+    lowering: &mut Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+    (array, indices): (Value, &[Value]),
+    word: Value,
+) -> Result<(), CodegenError> {
+    let mut operands = indices.to_vec();
     operands.push(word);
     let buffer = spill_words(lowering, &operands)?;
     let call_operands = [array, buffer];
@@ -207,7 +227,5 @@ fn lower_store(
         operands: &call_operands,
     };
     call_runtime(lowering, &call)?;
-    lowering.builder.ins().jump(joined.merge, &[]);
-    finish_fast_path(lowering, &joined);
     Ok(())
 }

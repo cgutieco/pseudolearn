@@ -92,7 +92,27 @@ pub(crate) fn require_dense(lowering: &mut Lowering<'_, '_>, located: &Located, 
         .ins()
         .load(types::I64, flags, located.base, BOUNDARY_WORD);
     let dense = lowering.builder.ins().icmp(IntCC::Equal, total, boundary);
-    branch_unless(lowering, dense, slow);
+    let accepted = lowering.builder.create_block();
+    let masked = lowering.builder.create_block();
+    lowering
+        .builder
+        .ins()
+        .brif(dense, accepted, &[], masked, &[]);
+    lowering.builder.switch_to_block(masked);
+    let definition = definition_bit(lowering, located);
+    let selected = lowering
+        .builder
+        .ins()
+        .band(definition.current, definition.bit);
+    let defined = lowering
+        .builder
+        .ins()
+        .icmp_imm_s(IntCC::NotEqual, selected, 0);
+    lowering
+        .builder
+        .ins()
+        .brif(defined, accepted, &[], slow, &[]);
+    lowering.builder.switch_to_block(accepted);
 }
 
 pub(crate) fn define_integer(lowering: &mut Lowering<'_, '_>, located: &Located) {

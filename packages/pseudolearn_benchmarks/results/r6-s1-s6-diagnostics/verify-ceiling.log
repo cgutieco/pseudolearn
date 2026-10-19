@@ -1,0 +1,171 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/xtask verify`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/ceiling_kernels-9ca0b51119c6f378)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/card_recording.rs (target/debug/deps/card_recording-61d09fcc55f5ff08)
+
+running 1 test
+test dirty_cards_preserve_old_blocks_and_reset_independently ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/clepsydra.rs (target/debug/deps/clepsydra-dd2ea6b97b20fcf3)
+
+running 2 tests
+test deferred_traps_preserve_first_failure ... ok
+test deferred_trap_prevents_following_effect ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/collection.rs (target/debug/deps/collection-2e9c62701d7e4d0f)
+
+running 4 tests
+test collectors_reject_negative_sizes_and_invalid_accesses ... ok
+test collectors_release_cycles_and_preserve_live_links ... ok
+test collectors_preserve_recursive_storage_and_empty_workloads ... ok
+test collectors_preserve_churn_under_forced_reclamation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/differential.rs (target/debug/deps/differential-73fd8f13e20d5127)
+
+running 1 test
+test undo_restores_changed_words_and_excludes_new_allocations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/direct.rs (target/debug/deps/direct-67268a0164064886)
+
+running 1 test
+test checked_arithmetic_and_bounds_return_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/flat_heap.rs (target/debug/deps/flat_heap-12f352ea13397fb7)
+
+running 1 test
+test allocation_grows_in_zeroed_blocks_without_invalidating_handles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/frame_banks.rs (target/debug/deps/frame_banks-75ec3ebba492424e)
+
+running 1 test
+test returns_restore_suspended_arguments ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/paged_heap.rs (target/debug/deps/paged_heap-2080632a17f7cc0e)
+
+running 1 test
+test shared_pages_remain_immutable_after_writes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/remanso.rs (target/debug/deps/remanso-446020a3400c9020)
+
+running 2 tests
+test immediate_arithmetic_checks_the_first_failure_and_array_boundaries ... ok
+test deterministic_polling_takes_real_checkpoints_across_resets ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/semantic_memory.rs (target/debug/deps/semantic_memory-211a73062295d272)
+
+running 3 tests
+test undefined_values_bounds_and_empty_allocations_are_distinct ... ok
+test returned_handles_retained_by_callers_survive_collection ... ok
+test rooted_cycles_survive_and_unreachable_cycles_release_live_cells ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/timeline.rs (target/debug/deps/timeline-2e776be1c1dc2a66)
+
+running 1 test
+test zero_interval_records_after_clock_poll ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/ceiling-02a14ab59212a695)
+
+running 8 tests
+test worker::worker_tests::rejects_incorrect_output_before_accepting_sample ... ok
+test memory_report::memory_report_tests::rejects_incomplete_memory_processes ... ok
+test report::report_tests::rejects_incomplete_processes_and_groups ... ok
+test memory_report::memory_report_tests::selection_requires_guards_and_resolves_uncertainty_by_simplicity ... ok
+test worker::worker_tests::invalid_kernel_does_not_produce_a_measurement ... ok
+test report::report_tests::unfavorable_family_is_retained_with_review_gate ... ok
+test worker::worker_tests::semantic_variant_matches_all_corpus_controls_under_forced_collection ... ok
+test worker::worker_tests::recursive_v3_sample_records_a_real_checkpoint ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/corpus.rs (target/debug/deps/corpus-490696d0143dba26)
+
+running 2 tests
+test rejects_invalid_or_missing_corpus ... ok
+test all_variants_match_both_normative_sizes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running unittests src/lib.rs (target/debug/deps/ceiling_statistics-869f733514b38515)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/change_points.rs (target/debug/deps/change_points-1f56973035143dc6)
+
+running 1 test
+test detects_shift_without_discarding_samples ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/statistics.rs (target/debug/deps/statistics-45e69c57c1506b6f)
+
+running 1 test
+test bootstrap_is_reproducible_and_constant_interval_is_exact ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/xtask-a68f5bba2a84a634)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ceiling_kernels
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ceiling_statistics
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+warning[license-not-encountered]: license was not encountered
+  ┌─ /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_benchmarks/ceiling/deny.toml:5:47
+  │
+5 │ allow = ["MIT", "Apache-2.0", "Unicode-3.0", "BSD-3-Clause"]
+  │                                               ━━━━━━━━━━━━ unmatched license allowance
+
+warning[license-not-encountered]: license was not encountered
+  ┌─ /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_benchmarks/ceiling/deny.toml:5:32
+  │
+5 │ allow = ["MIT", "Apache-2.0", "Unicode-3.0", "BSD-3-Clause"]
+  │                                ━━━━━━━━━━━ unmatched license allowance
+
+advisories ok, bans ok, licenses ok, sources ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_rust_checks/target/debug/rust-checks all .`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `/Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_rust_checks/target/debug/rust-checks toolchain ../../..`

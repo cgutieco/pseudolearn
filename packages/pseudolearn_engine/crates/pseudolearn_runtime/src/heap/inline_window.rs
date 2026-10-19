@@ -3,6 +3,7 @@ use crate::{CollectionPolicy, MemoryError};
 use pseudolearn_abi::Handle;
 
 const MINIMUM_SLACK_WORDS: usize = 1 << 14;
+const REFILL_SLACK_WORDS: usize = 1 << 13;
 const SIZE_MASK_WIDTH: usize = 64;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -67,6 +68,9 @@ impl Heap {
     }
 
     fn ensure_slack(&mut self) -> Result<(), MemoryError> {
+        if self.words.len().saturating_sub(self.used) >= REFILL_SLACK_WORDS {
+            return Ok(());
+        }
         let wanted = self
             .used
             .checked_add(MINIMUM_SLACK_WORDS)
@@ -92,7 +96,7 @@ impl Heap {
         }
         let committed = self.live_cells.saturating_add(self.allocated_cells);
         let room_cells = self.options.cells.saturating_sub(committed);
-        let threshold = self.live_cells.max(4096);
+        let threshold = self.collection_threshold();
         let room_threshold = threshold.saturating_sub(self.allocated_cells);
         (clamp_signed(room_cells), clamp_signed(room_threshold))
     }

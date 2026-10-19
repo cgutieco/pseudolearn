@@ -67,6 +67,7 @@ pub(crate) fn emit_module(
         classes: &classes,
         charging: charging_of(mode),
         inspect: target.inspect,
+        parameter_roots: target.parameter_roots,
     };
     let (faults, inspection) = define_functions(&mut object, module, &declarations)?;
     let fault_sites = faults.into_sites();
@@ -168,6 +169,7 @@ struct Declarations<'program> {
     classes: &'program ClassTable,
     charging: StatementCharging,
     inspect: bool,
+    parameter_roots: crate::target::ParameterRoots,
 }
 
 fn define_function(
@@ -182,6 +184,8 @@ fn define_function(
     );
     let environment = function_environment(object, declarations, unit, &mut clif)?;
     compile_function(unit.function, &environment, &mut clif, faults)?;
+    crate::block_parameters::eliminate(&mut clif);
+    crate::memory_regions::assign(&mut clif, environment.layout);
     let mut context = Context::for_function(clif);
     let inspection = declarations
         .inspect
@@ -246,6 +250,7 @@ fn function_environment<'program>(
 ) -> Result<FunctionEnvironment<'program>, CodegenError> {
     Ok(FunctionEnvironment {
         module: unit.module,
+        parameter_roots: declarations.parameter_roots,
         frontend: object.isa().frontend_config(),
         layout: ContextLayout::new()?,
         runtime: declarations.imports.import_into(object, clif),

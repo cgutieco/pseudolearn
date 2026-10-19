@@ -86,7 +86,7 @@ pub fn no_patch(_: &mut pseudolearn_ir::Module) {}
 pub fn build_object_with(module_text: &str, patch: Patch) -> Result<CompiledObject, Failure> {
     let mut module = parse_module(module_text).map_err(failure)?;
     patch(&mut module);
-    compile_module_to_object(&module, &TargetConfig::host()).map_err(failure)
+    compile_module_to_object(&module, &TargetConfig::host().with_verification()).map_err(failure)
 }
 
 pub(crate) fn work_directory() -> Result<PathBuf, Failure> {

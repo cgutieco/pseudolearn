@@ -28,6 +28,8 @@ Invariantes: Cada bloque tiene una masa igual a su cantidad de stmt.enter. Las c
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+Problema: representar parámetros arreglo como celdas introduce una indirección que no permite ninguna operación adicional del lenguaje. Elección: LANG.TYPES.ARRAY y LANG.STMT.ASSIGNMENT prohíben asignar o retornar el arreglo completo; los parámetros arreglo conservan el asa y comparten los elementos. La declaración y todas las llamadas usan el mismo tipo RI array; los orígenes conservan esa asa observable. Las referencias escalares y las celdas de elemento o campo conservan su representación. Se descarta especializar solo AOT y mantener dos interpretaciones de cell<array>.
+
 Los locales respaldados por celdas conservan su asa estable a través de un bucle y no reciben parámetros SSA escalares. Se descarta acarrear como entero una referencia de celda: las escrituras indirectas ya conservan el valor y el alias.
 
 Los límites y el paso de Para se congelan en temporales sin origen de variable para que una escritura del cuerpo no altere los controles ya evaluados. Mientras tiene una entrada a sentencia para el bucle completo y una decisión por prueba, incluida la final. La escritura sin valores usa un texto vacío, manteniendo el evento de salida y su salto opcional. Se descartan ranuras de origen mutables como caché de límites, entradas repetidas al bucle y RI inválida para salida vacía.

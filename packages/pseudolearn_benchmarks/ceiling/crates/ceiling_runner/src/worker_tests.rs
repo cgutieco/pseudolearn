@@ -27,3 +27,21 @@ fn recursive_v3_sample_records_a_real_checkpoint() -> Result<(), String> {
     }
     Ok(())
 }
+
+#[test]
+fn semantic_variant_matches_all_corpus_controls_under_forced_collection() -> Result<(), String> {
+    for workload in crate::corpus::load("verificacion")? {
+        let mut experiment =
+            ceiling_kernels::variant::Experiment::new(9).map_err(|error| format!("{error:?}"))?;
+        let actual = experiment
+            .run(&workload.name, workload.size)
+            .map_err(|error| format!("{}: {error:?}", workload.name))?;
+        super::validate(&actual, &workload.expected)?;
+        let mut machine = ceiling_kernels::semantic_memory::SemanticMachine::default();
+        machine.force_collection();
+        let actual = ceiling_kernels::variant::checked(&workload.name, &mut machine, workload.size)
+            .map_err(|error| format!("{} forced: {error:?}", workload.name))?;
+        super::validate(&actual, &workload.expected)?;
+    }
+    Ok(())
+}

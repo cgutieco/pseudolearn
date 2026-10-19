@@ -4,7 +4,6 @@ use crate::environment::get_local_ir_type;
 use crate::spans::resolve_span;
 use crate::statement_context::StatementContext;
 use pseudolearn_ir::{Operand, Operation, OriginEntry, VariableId};
-use pseudolearn_semantic::hir::Passing;
 use pseudolearn_semantic::identities::LocalId;
 use pseudolearn_source::Span;
 
@@ -31,7 +30,9 @@ fn lower_single_declare(
     let is_reference = usize::try_from(local_id.0)
         .ok()
         .and_then(|local_index| context.expression_context.module.locals.get(local_index))
-        .is_some_and(|local| local.passing == Passing::Reference);
+        .is_some_and(|local| {
+            crate::parameter_passing::requires_cell(local, context.expression_context.module)
+        });
     let local_type = get_local_ir_type(local_id, context.expression_context.module);
 
     if is_reference || crate::address_taken::contains(local_id, context.expression_context.module) {

@@ -9,6 +9,7 @@ pub(crate) struct Entry<'engine> {
     pub(crate) context: &'engine mut AotRuntimeContext,
     pub(crate) engine: &'engine mut AotEngine,
     pub(crate) site: u32,
+    pub(crate) lexeme_site: Option<u32>,
 }
 
 fn open_entry<'engine>(context: *mut AotRuntimeContext, site: u32) -> Option<Entry<'engine>> {
@@ -18,6 +19,7 @@ fn open_entry<'engine>(context: *mut AotRuntimeContext, site: u32) -> Option<Ent
         context,
         engine,
         site,
+        lexeme_site: Some(site),
     })
 }
 
@@ -93,7 +95,9 @@ impl Entry<'_> {
             trap.code.map(|code| code.as_str()),
             Some("uninitializedVariableRead" | "subroutineEndedWithoutReturn")
         ) && !trap.arguments.iter().any(|(name, _)| name == "lexeme")
-            && let Some(lexeme) = self.engine.site_lexeme(self.site)
+            && let Some(lexeme) = self
+                .lexeme_site
+                .and_then(|site| self.engine.site_lexeme(site))
         {
             trap = trap.argument("lexeme", lexeme);
         }

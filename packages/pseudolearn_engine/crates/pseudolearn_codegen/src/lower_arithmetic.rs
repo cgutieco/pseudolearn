@@ -47,17 +47,16 @@ fn lower_checked(
         Operation::IntNeg => None,
         _ => Some(operand_value(lowering, instruction, 1)?),
     };
-    match fold_checked(lowering, instruction.operation, left, right) {
-        Some(Folded::Constant(number)) => {
-            let folded = lowering.builder.ins().iconst(types::I64, number);
-            bind_result(lowering, instruction, folded);
-            return Ok(());
-        }
-        Some(Folded::Passthrough(value)) => {
-            bind_result(lowering, instruction, value);
-            return Ok(());
-        }
-        None => {}
+    if let Some(value) = folded_value(lowering, instruction.operation, left, right) {
+        bind_result(lowering, instruction, value);
+        return Ok(());
+    }
+    if let Some((result, overflow)) =
+        crate::constant_overflow::specialize(lowering, instruction.operation, left, right)
+    {
+        guard_trap(lowering, overflow, "integerOverflow", instruction.span)?;
+        bind_result(lowering, instruction, result);
+        return Ok(());
     }
     let (result, overflow) = if instruction.operation == Operation::IntNeg {
         let zero = lowering.builder.ins().iconst(types::I64, 0);
@@ -152,4 +151,16 @@ fn lower_widening(
     let result = lowering.builder.ins().fcvt_from_sint(types::F64, operand);
     bind_result(lowering, instruction, result);
     Ok(())
+}
+
+fn folded_value(
+    lowering: &mut Lowering<'_, '_>,
+    operation: Operation,
+    left: Value,
+    right: Option<Value>,
+) -> Option<Value> {
+    match fold_checked(lowering, operation, left, right)? {
+        Folded::Constant(number) => Some(lowering.builder.ins().iconst(types::I64, number)),
+        Folded::Passthrough(value) => Some(value),
+    }
 }

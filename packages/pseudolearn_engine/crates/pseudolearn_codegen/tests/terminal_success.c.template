@@ -1,0 +1,31 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+static uint32_t calls;
+static uint32_t reported;
+uint32_t rt_aot_array_load(void *context, uint32_t site, uint32_t array, const int64_t *indices) { calls++; return 0; }
+uint32_t rt_aot_array_store(void *context, uint32_t site, uint32_t array, const int64_t *operands) { calls++; return 0; }
+uint32_t rt_aot_object_load(void *context, uint32_t site, uint32_t object, uint32_t field) { calls++; return 0; }
+uint32_t rt_aot_object_store(void *context, uint32_t site, uint32_t object, const uint64_t *operands) { calls++; return 0; }
+uint32_t rt_aot_fault(void *context, uint32_t site) {
+    uint32_t failed = 1;
+    reported = site;
+    memcpy((uint8_t *)context + @@STATUS_OFFSET@@, &failed, sizeof(failed));
+    return failed;
+}
+extern int64_t __pl_fn_0(void *, uint32_t, int64_t);
+extern int64_t __pl_fn_1(void *, uint32_t, int64_t);
+extern int64_t __pl_fn_2(void *, uint32_t);
+extern int64_t __pl_fn_3(void *, uint32_t);
+int main(void) {
+    uint64_t context[@@CONTEXT_WORDS@@] = {0};
+    __pl_fn_0(context, 0, 0); printf("%u\n", reported);
+    memset(context, 0, sizeof(context));
+    __pl_fn_1(context, 0, 0); printf("%u\n", reported);
+    memset(context, 0, sizeof(context));
+    __pl_fn_2(context, 0); printf("%u\n", reported);
+    memset(context, 0, sizeof(context));
+    __pl_fn_3(context, 0); printf("%u\n", reported);
+    return calls == 4 ? 0 : 1;
+}

@@ -39,7 +39,16 @@ fn array_new(entry: &mut Entry<'_>, descriptor: u32, extents: Option<&[i64]>) ->
     if let Some(size) = extents.iter().find(|size| **size < 0) {
         return Err(Trap::named("negativeArraySize").argument("size", size));
     }
-    let roots = entry.roots()?;
+    let cells = extents
+        .iter()
+        .try_fold(1_u64, |total, extent| {
+            u64::try_from(*extent)
+                .ok()
+                .and_then(|extent| total.checked_mul(extent))
+        })
+        .and_then(|total| total.checked_add(1))
+        .ok_or_else(|| Trap::named("resourceLimit"))?;
+    let roots = entry.allocation_roots(cells)?;
     let handle = new_array(&mut entry.engine.heap, kind, extents, &roots)?;
     Ok(u64::from(handle.0))
 }

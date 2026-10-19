@@ -17,11 +17,13 @@ fn collection_need_matches_heap_policy_and_budget() {
     let automatic = Heap::new(MemoryOptions::default());
     assert!(!automatic.needs_collection(3));
     let forced = Heap::new(MemoryOptions {
+        collection_minimum: 4096,
         cells: 8,
         collection: CollectionPolicy::Forced,
     });
     assert!(forced.needs_collection(1));
     let over_budget = Heap::new(MemoryOptions {
+        collection_minimum: 4096,
         cells: 2,
         collection: CollectionPolicy::Disabled,
     });
@@ -87,6 +89,7 @@ fn exact_limit_includes_new_value_before_overwrite_in_every_policy() -> Result<(
         CollectionPolicy::Disabled,
     ] {
         let mut heap = Heap::new(MemoryOptions {
+            collection_minimum: 4096,
             cells: 5,
             collection,
         });
@@ -108,6 +111,7 @@ fn exact_array_limit_counts_the_new_array_before_overwrite() -> Result<(), Memor
         CollectionPolicy::Disabled,
     ] {
         let mut heap = Heap::new(MemoryOptions {
+            collection_minimum: 4096,
             cells: 3,
             collection,
         });
@@ -124,6 +128,7 @@ fn exact_array_limit_counts_the_new_array_before_overwrite() -> Result<(), Memor
 #[test]
 fn allocation_rejects_addresses_outside_handle_space() {
     let options = MemoryOptions {
+        collection_minimum: 4096,
         cells: u64::MAX,
         collection: CollectionPolicy::Disabled,
     };

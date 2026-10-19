@@ -2035,7 +2035,17 @@
     "measured": "cumple",
     "measurements": [],
     "reason": null,
-    "rule": "PERF.SUITE.AWFY-CORE@0.1.0#R1",
+    "rule": "PERF.SUITE.AWFY-CORE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.SUITE.AWFY-CORE@0.2.0#R2",
     "state": "experimental",
     "subject": "engine"
   },

@@ -109,6 +109,7 @@ pub(crate) fn options(request: &ExecuteRequest) -> RunOptions {
         seed: request.seed,
         depth: request.limits.depth.unwrap_or(defaults.depth),
         memory: MemoryOptions {
+            collection_minimum: defaults.memory.collection_minimum,
             cells: request.limits.cells.unwrap_or(defaults.memory.cells),
             collection: if request.gc_stress {
                 CollectionPolicy::Forced

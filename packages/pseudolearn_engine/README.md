@@ -35,7 +35,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| codegen: Cranelift permanece como backend release; trampas inmediatas con bloques fríos por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
+| codegen: Cranelift permanece como backend release; trampas inmediatas con bloque frío compartido con identidad por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
 | service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
@@ -85,7 +85,7 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, arreglos, objetos, texto y recolección | abi, diagnostics |
 | 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
 | 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, acceso a memoria, celdas, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
-| 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampas frías por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
+| 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampa fría compartida con identidad por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline |
@@ -149,7 +149,7 @@ Alternativas descartadas: SSA con parámetros de bloque permite compartir semán
 
 ### lowering
 
-Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia como celda.
+Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna.
 Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpus; se rechaza optimizar antes de conservar los observables y sus nodos fuente.
 
 ### bytecode

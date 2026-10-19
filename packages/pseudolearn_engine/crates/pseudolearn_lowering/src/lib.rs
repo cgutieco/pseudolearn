@@ -15,6 +15,7 @@ pub mod expressions_complex;
 pub mod expressions_logical;
 mod expressions_objects;
 pub mod functions;
+mod parameter_passing;
 mod places;
 pub mod spans;
 pub mod statement_context;

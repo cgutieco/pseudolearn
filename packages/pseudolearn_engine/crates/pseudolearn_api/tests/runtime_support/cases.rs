@@ -97,6 +97,7 @@ fn check(case: &Value) -> Result<(), String> {
                 .and_then(|depth| usize::try_from(depth).ok())
                 .unwrap_or(1000),
             memory: MemoryOptions {
+                collection_minimum: 4096,
                 cells: request
                     .pointer("/limits/cells")
                     .and_then(Value::as_u64)

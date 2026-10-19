@@ -59,8 +59,9 @@ fn start_function<'func, 'program>(
         cold_blocks: Vec::new(),
         propagate_block: None,
         types: types.clone(),
+        defined_values: crate::defined_producers::collect(function),
         definitions: HashMap::new(),
-        live_roots: live_roots(function, &types),
+        live_roots: live_roots(function, &types, environment.parameter_roots),
     };
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);

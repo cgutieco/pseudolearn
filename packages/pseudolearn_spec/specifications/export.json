@@ -29648,12 +29648,16 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "La media geométrica de la razón entre el tiempo mediano del código nativo generado y el del techo nativo con marcos es como máximo 1,30 en cada familia de PERF.SUITE.AWFY-CORE: numérica, recursiva, de objetos y de arreglos.",
+            "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,70 frente a V1F para el nivel Cranelift, y como máximo 1,30 frente a V1F-S para el nivel optimizado futuro, en cada familia numérica, recursiva, de objetos y de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
             "verificacion": [
               "M1",
               "M2",
               "M3",
-              "M4"
+              "M4",
+              "M7",
+              "M8",
+              "M9",
+              "M10"
             ]
           },
           "kind": "regla"
@@ -29667,9 +29671,9 @@
               "macos-arm64"
             ],
             "protocolo": "PERF.PROTOCOL#R1",
-            "provisional": true,
+            "provisional": false,
             "suite": "PERF.SUITE.AWFY-CORE",
-            "umbral": 1.3,
+            "umbral": 1.7,
             "unidad": "razon"
           },
           "kind": "medicion"
@@ -29683,9 +29687,9 @@
               "macos-arm64"
             ],
             "protocolo": "PERF.PROTOCOL#R1",
-            "provisional": true,
+            "provisional": false,
             "suite": "PERF.SUITE.AWFY-CORE",
-            "umbral": 1.3,
+            "umbral": 1.7,
             "unidad": "razon"
           },
           "kind": "medicion"
@@ -29699,9 +29703,9 @@
               "macos-arm64"
             ],
             "protocolo": "PERF.PROTOCOL#R1",
-            "provisional": true,
+            "provisional": false,
             "suite": "PERF.SUITE.AWFY-CORE",
-            "umbral": 1.3,
+            "umbral": 1.7,
             "unidad": "razon"
           },
           "kind": "medicion"
@@ -29715,9 +29719,9 @@
               "macos-arm64"
             ],
             "protocolo": "PERF.PROTOCOL#R1",
-            "provisional": true,
+            "provisional": false,
             "suite": "PERF.SUITE.AWFY-CORE",
-            "umbral": 1.3,
+            "umbral": 1.7,
             "unidad": "razon"
           },
           "kind": "medicion"
@@ -29777,11 +29781,81 @@
             "unidad": "ms"
           },
           "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M7",
+            "metrica": "razon_aot_optimizado_v1fs_numeric",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M8",
+            "metrica": "razon_aot_optimizado_v1fs_recursive",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M9",
+            "metrica": "razon_aot_optimizado_v1fs_objects",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M10",
+            "metrica": "razon_aot_optimizado_v1fs_arrays",
+            "plataformas": [
+              "macos-arm64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "umbral": 1.3,
+            "unidad": "razon"
+          },
+          "kind": "medicion"
         }
       ],
-      "hash": "26772dc7a629e0ad7be32c27f69ba1c922bc7caa85075bed71cb667ae517c9bc",
+      "hash": "f21afc7e494a60ffe00e37cfbe20639010d6e3b4ed6decb971747b94bbbda66f",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "cambio_significado",
+          "impacto_implementaciones": "Los arneses identifican nivel y denominador; el intervalo nativo incluye conciliación final. No se reinterpretan campañas históricas.",
+          "impacto_usuarios": "El nivel Cranelift se evalúa frente a V1F con límite 1,70; el nivel optimizado futuro conserva 1,30 frente a V1F-S.",
+          "justificacion": "V1F omite definición de valores y recolección; separar niveles distingue calidad del backend y equivalencia semántica.",
+          "revisado_por": "persona-responsable"
+        },
         "depende_de": [
           {
             "id": "PERF.PROTOCOL",
@@ -29811,7 +29885,7 @@
         ],
         "titulo": "Nivel del código nativo",
         "titulo_en": "Native code level",
-        "version": "0.1.0"
+        "version": "1.0.0"
       }
     },
     {
@@ -30881,11 +30955,30 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "justificacion": "Los tests de ceiling contrastan controles independientes, indefinidos, raíces, ciclos, recuperación de basura y límite vivo.",
+            "texto": "V1F conserva su variante histórica y su representación sin modificaciones. V1F-S es una variante adicional experimental con los mismos algoritmos comprobados y marcos, rastreo explícito de definición de elementos y campos, recolección no móvil desde raíces de marcos y límite por celdas vivas alcanzables. Ambos techos conservan los diez programas, tamaños y controles; no se reemplazan resultados históricos.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "f31727d846a2b280b3fa2479d18b99f5ffe3439507f0cf3d986eecad3f954433",
+      "hash": "dc72e8ad30ce47a61dad7078cd554ab00f4d1cf083c180304495cd182bfec712",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Ceiling incorpora una variante adicional con definición y recolección desde raíces de marcos, sin importar el motor.",
+          "impacto_usuarios": "Se distinguen V1F histórico y V1F-S experimental sin cambiar programas, tamaños ni resultados esperados.",
+          "justificacion": "El nivel optimizado requiere un denominador que pague definición y límite de celdas vivas; V1F se conserva intacto.",
+          "revisado_por": "persona-responsable"
+        },
         "depende_de": [
           {
             "id": "PERF.PROTOCOL",
@@ -30911,7 +31004,7 @@
         ],
         "titulo": "Suite AWFY-core",
         "titulo_en": "AWFY-core suite",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     },
     {

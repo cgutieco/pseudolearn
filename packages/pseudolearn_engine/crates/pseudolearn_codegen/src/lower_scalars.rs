@@ -118,6 +118,10 @@ fn lower_require(
         .get(identifier)
         .cloned()
         .ok_or(CodegenError::InvalidModule("untyped operand"))?;
+    if lowering.defined_values.contains(identifier) {
+        bind_result(lowering, instruction, operand);
+        return Ok(());
+    }
     if operand_type == IrType::I64 {
         require_integer(lowering, instruction, *identifier)?;
     } else {

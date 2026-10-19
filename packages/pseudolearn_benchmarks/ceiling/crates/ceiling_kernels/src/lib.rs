@@ -17,5 +17,8 @@ pub mod machine;
 pub mod paged_heap;
 pub mod remanso;
 pub mod remanso_heap;
+mod semantic_frames;
+mod semantic_heap;
+pub mod semantic_memory;
 pub mod timeline;
 pub mod variant;

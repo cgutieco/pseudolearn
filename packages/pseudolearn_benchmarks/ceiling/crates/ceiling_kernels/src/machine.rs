@@ -11,6 +11,7 @@ pub enum Trap {
     CellLimit,
     DepthLimit,
     InvalidHandle,
+    Uninitialized,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

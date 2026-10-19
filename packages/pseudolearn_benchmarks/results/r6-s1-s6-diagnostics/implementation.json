@@ -1,0 +1,139 @@
+{
+  "branch": "feature/agregar-ruta-de-especificacion",
+  "commit": "b9638c704afbaf42cefb28a5458156e32716022f",
+  "solutions": {
+    "S1": "implemented",
+    "S2": "implemented",
+    "S3": "implemented",
+    "S4": "implemented",
+    "S5": "implemented",
+    "S6": "implemented"
+  },
+  "verification": {
+    "engine": {
+      "exitCode": 0,
+      "passedTests": 701
+    },
+    "spec": {
+      "exitCode": 0,
+      "passedTests": 148
+    },
+    "ceiling": {
+      "exitCode": 0,
+      "passedTests": 30
+    },
+    "rust-checks": {
+      "exitCode": 0,
+      "passedTests": 45
+    }
+  },
+  "conformance": {
+    "engine": {
+      "observations": 1512,
+      "divergences": 0
+    },
+    "aot": {
+      "observations": 1208,
+      "divergences": 0
+    },
+    "nativeDifferential": {
+      "comparisons": 808,
+      "exemptions": 0,
+      "differences": 0
+    },
+    "legacyReferenceDifferential": {
+      "comparisons": 1180,
+      "exemptions": 94,
+      "uncontractedDifferences": 188,
+      "unresolved": 0
+    }
+  },
+  "campaign": {
+    "directory": "r6-paired-s1-s6",
+    "processesPerWorkload": 10,
+    "pairsPerProcess": 30,
+    "pairs": 3000,
+    "exitCode": 1,
+    "targetReached": false,
+    "families": {
+      "arrays": {
+        "ratio": 1.721791519823422,
+        "passed": false,
+        "previousRatio": 2.1237539666061562,
+        "ratioChangePercent": -18.926978035270547
+      },
+      "numeric": {
+        "ratio": 1.523839148564599,
+        "passed": true,
+        "previousRatio": 2.3925238022895705,
+        "ratioChangePercent": -36.308297242170276
+      },
+      "objects": {
+        "ratio": 1.4488648161700708,
+        "passed": true,
+        "previousRatio": 2.566000377325705,
+        "ratioChangePercent": -43.53606379122661
+      },
+      "recursive": {
+        "ratio": 2.1918764702938085,
+        "passed": false,
+        "previousRatio": 2.2532467532467533,
+        "ratioChangePercent": -2.7236379177963954
+      }
+    },
+    "maximumEmissionMedianMilliseconds": 10.384417,
+    "maximumIndividualEmissionMilliseconds": 11.870834,
+    "minimumSpeedupOverVmApi": 11.554205761316872,
+    "sourceHashesChecked": 1152,
+    "sourceHashMismatches": 0,
+    "changePointCandidates": 163
+  },
+  "entryOnly": {
+    "bounce": {
+      "entryOnlyMedianNanoseconds": 49583,
+      "entryOnlyRatio": 1.3251463238634844
+    },
+    "list": {
+      "entryOnlyMedianNanoseconds": 30792,
+      "entryOnlyRatio": 1.0648407511152609
+    },
+    "mandelbrot": {
+      "entryOnlyMedianNanoseconds": 199875,
+      "entryOnlyRatio": 1.1677260670927638
+    },
+    "nbody": {
+      "entryOnlyMedianNanoseconds": 21541,
+      "entryOnlyRatio": 1.9884611834210284
+    },
+    "permute": {
+      "entryOnlyMedianNanoseconds": 87541,
+      "entryOnlyRatio": 2.1908253666349666
+    },
+    "queens": {
+      "entryOnlyMedianNanoseconds": 17417,
+      "entryOnlyRatio": 1.9352222222222222
+    },
+    "richards": {
+      "entryOnlyMedianNanoseconds": 172167,
+      "entryOnlyRatio": 1.7354144827030078
+    },
+    "sieve": {
+      "entryOnlyMedianNanoseconds": 10083,
+      "entryOnlyRatio": 1.5219622641509434
+    },
+    "storage": {
+      "entryOnlyMedianNanoseconds": 30333,
+      "entryOnlyRatio": 2.9958518518518518
+    },
+    "towers": {
+      "entryOnlyMedianNanoseconds": 12000,
+      "entryOnlyRatio": 0.8648648648648649
+    }
+  },
+  "storageRssBytes": {
+    "before": 3538944,
+    "after": 2965504
+  },
+  "phase": "R6 closed by explicit human authorization with unmet acceptance criteria; Cranelift level not certified; R7 not started",
+  "publication": "Commit and ordinary push authorized without coauthorship; measurement evidence precedes closure"
+}

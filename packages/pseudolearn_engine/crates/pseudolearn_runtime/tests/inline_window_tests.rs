@@ -5,6 +5,7 @@ use pseudolearn_runtime::{
 
 fn automatic() -> Heap {
     Heap::new(MemoryOptions {
+        collection_minimum: 4096,
         cells: 10_000,
         collection: CollectionPolicy::Automatic,
     })
@@ -26,6 +27,7 @@ fn a_fresh_window_has_slack_and_full_collection_room() -> Result<(), MemoryError
 #[test]
 fn forced_collection_closes_the_window() -> Result<(), MemoryError> {
     let mut heap = Heap::new(MemoryOptions {
+        collection_minimum: 4096,
         cells: 10_000,
         collection: CollectionPolicy::Forced,
     });
@@ -84,5 +86,39 @@ fn a_duplicated_block_is_an_internal_error() -> Result<(), MemoryError> {
         heap.adopt_inline((window.used + 16, window.ordinal + 2), &[block]),
         Err(MemoryError::Internal)
     );
+    Ok(())
+}
+
+#[test]
+fn small_allocations_preserve_slack_until_the_refill_boundary() -> Result<(), MemoryError> {
+    let mut heap = automatic();
+    let initial = heap.inline_window()?;
+    let block = InlineBlock {
+        handle: Handle(1),
+        physical: 8,
+        cells: 6,
+    };
+    heap.adopt_inline((initial.used + 8, 1), &[block])?;
+    assert_eq!(heap.inline_window()?.limit, initial.limit);
+    Ok(())
+}
+
+#[test]
+fn configurable_collection_threshold_agrees_with_inline_room() -> Result<(), MemoryError> {
+    let mut heap = Heap::new(MemoryOptions {
+        cells: 1_000_000,
+        collection_minimum: 262_144,
+        collection: CollectionPolicy::Automatic,
+    });
+    assert_eq!(heap.inline_window()?.room_threshold, 262_144);
+    let block = InlineBlock {
+        handle: Handle(1),
+        physical: 8,
+        cells: 4096,
+    };
+    heap.adopt_inline((9, 1), &[block])?;
+    assert!(!heap.needs_collection(1));
+    assert_eq!(heap.inline_window()?.room_threshold, 262_144 - 4096);
+    assert!(heap.needs_collection(1_000_000));
     Ok(())
 }

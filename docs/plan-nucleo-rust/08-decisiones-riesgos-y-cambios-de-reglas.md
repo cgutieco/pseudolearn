@@ -55,7 +55,7 @@
 |------|--------------------------------------------------------------|-------------------------------|
 | D-13 | Palabras reservadas: vocabulario contextual, `Y`/`O`         | R2 (`LANG.LEXICAL.KEYWORD`)   |
 | D-14 | NFC y `ñ` en el perfil estricto                              | R2 (`LANG.SOURCE.ENCODING`, `LANG.LEXICAL.IDENTIFIER`) |
-| D-07 | Nivel de rendimiento aceptado como «muy optimizado»; R3 fija umbrales provisionales (D-R3-03) | Umbrales definitivos de R5 y R6 |
+| D-07 | Nivel de rendimiento aceptado como «muy optimizado»; R3 fija umbrales provisionales (D-R3-03). Para R6 la resuelve D-R6-01 | Umbrales definitivos de R5 y R6 |
 | D-01 | Licencia                                                     | Política de `cargo-deny`; si algún crate se publica |
 
 D-17 y D-21 quedan resueltas por D-R3-01 y D-R3-02 (§1.5).
@@ -109,6 +109,17 @@ La autorización confirma las recomendaciones del plan ejecutable y exige elegir
 | D-R5-18 | ¿Criterio de elección del recolector de E-12 (§7.3)? | **Sí,** con las tres variantes medidas y la perdedora fuera del motor | Elegir sin medir |
 | D-R5-19 | ¿Contrato de límites de análisis (§6.4)? | **Sí:** profundidad de anidación mínima garantizada (propuesta: 256 niveles), diagnóstico propio con tramo y sin agotar la pila; el valor se fija en BF.1 con casos de borde | Reutilizar los límites de ejecución de `ENG.LIMITS`, que miden otra cosa |
 
+
+### 1.7 Decisiones de R6
+
+Aprobada el 2026-10-18 por la persona responsable, sobre la alternativa recomendada en [17](17-informe-analisis-rendimiento-r6.md) §9.
+
+| ID | Decisión | Elección aprobada y fundamento | Alternativa descartada o de reserva |
+|---|---|---|---|
+| D-R6-01 | ¿Cómo se resuelve D-07 para `PERF.AOT.LEVEL#R1`? | **Umbral por niveles con techo semánticamente equivalente.** (1) Nivel Cranelift: razón geométrica por familia ≤ 1,70× frente a V1F. (2) Nivel optimizado futuro (optimizador intermedio propio o backend de *release*): ≤ 1,30× frente a **V1F-S**, variante experimental del techo que añade el rastreo de valores indefinidos y la recolección con límite de celdas vivas del motor; V1F se conserva intacto para comparar con las campañas anteriores. Se registra en el corpus como cambio clasificado de `PERF.AOT.LEVEL` y `PERF.SUITE.AWFY-CORE`. Fundamento: V1F no hace el mismo trabajo semántico (17 §6.1); el 1,30× nació en R5 como cota de representación entre núcleos manuales (17 §6.2); con Cranelift y cambios generales lo mejor medido es 1,5–1,7× por familia (17 §2.6) | Mantener 1,30× frente a V1F para Cranelift: exige optimización de nivel LLVM y cambios estructurales (17 §9) |
+| D-R6-02 | ¿Qué cambios de 17 §4 se implementan para cerrar el nivel Cranelift? | **S1–S6**, en una sola iteración, con S3 limitado a accesos cuyo camino rápido sea completo y sin el camino lento terminal de celdas (17 §6.4) | S7–S9 quedan para el nivel optimizado y requieren decisión propia (RN-11) |
+
+| D-R6-03 | ¿Se cierra R6 pese a los criterios pendientes? | **Sí, por autorización explícita de la persona responsable el 2026-10-19**, con commit y push sin coautoría. S1–S6 están implementadas y los verificadores locales están verdes, pero no se cumplieron todos los casos: arreglos y recursiva incumplen 1,70×. El cierre acepta esa deuda, sin certificar el nivel Cranelift ni modificar umbrales o exenciones. Faltan optimizaciones de arquitectura o microarquitectura y demostrar la causa de Permute; su selección requiere trabajo autorizado aparte. Informe y evidencia en [18](18-informe-implementacion-s1-s6-r6.md). R7 no se inicia | Mantener abierta la fase hasta satisfacer todos los criterios; descartado por la autorización posterior de cierre |
 
 ## 2. Riesgos
 
