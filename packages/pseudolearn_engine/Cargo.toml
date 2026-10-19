@@ -20,6 +20,7 @@ members = [
     "crates/pseudolearn_timeline",
     "crates/pseudolearn_service",
     "crates/pseudolearn_api",
+    "crates/pseudolearn_wasm",
     "crates/pseudolearn_conformance",
     "crates/pseudolearn_bench_worker",
     "crates/pseudolearn_native_probe",

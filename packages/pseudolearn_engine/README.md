@@ -36,7 +36,6 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | codegen: Cranelift permanece como backend release; trampas inmediatas con bloque frío compartido con identidad por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
-| wasm: bancos crecientes con máscara; puentes generados con `wasm-bindgen` y CLI `0.2.129` | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -58,6 +57,9 @@ Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
 - Compilación optimizada: `cargo build --release`.
 - Pruebas unitarias y de integración: `cargo test --workspace`.
+- Preparación Wasm: `rustup target add wasm32-unknown-unknown --toolchain 1.99.0` y `cargo install wasm-bindgen-cli --version 0.2.129 --locked`.
+- Generación reproducible del módulo y enlaces: `bash tool/wasm.sh build`.
+- Prueba del artefacto final en Chrome: `bash tool/wasm.sh test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`.
 - Medición E-08 vigente en `packages/pseudolearn_benchmarks/results/e08r/` y su comprobación en
   `packages/pseudolearn_spec/results/r5-frontend-e08.json`; la captura histórica anterior se conserva.
@@ -90,18 +92,19 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
 | 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
+| 10 | pseudolearn_wasm | Expone la API pública como módulo para navegadores | api |
 | tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
 | tooling | pseudolearn_vm_dispatch | Genera la forma de despacho de la VM desde la tabla de formas y `IR.INSTRUCTIONS` | ninguna |
 | tooling | pseudolearn_math_probe | Evalúa la biblioteca matemática sobre los argumentos del contraste de SEE | library |
 
 
-texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor.
+texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor nativo, Wasm o de conformidad.
 El backend nativo consume la misma RI; pseudolearn_service consume el árbol sintáctico y el análisis semántico. diagnostics y lexicon suministran datos generados a las etapas.
 
 `crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
 Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; el anfitrión orquesta ejecuciones independientes.
-`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI, y el adaptador `aot`. pseudolearn_service reside en el nivel 6 y alimenta a pseudolearn_api; wasm se declara con su carpeta al abordar su hito.
+`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI y al adaptador `aot`. `pseudolearn_service` reside en el nivel 6 y alimenta a `pseudolearn_api`; `pseudolearn_wasm` reside en el nivel 10 y solo importa esa API.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -242,13 +245,9 @@ Alternativas descartadas: El corpus API define recursos y codificaciones; se rec
 
 ### wasm
 
-Problema: exponer la API del motor al navegador sin incluir el backend AOT nativo ni su dependencia Cranelift.
-Elección: `pseudolearn_wasm` se enlaza con `pseudolearn_api` sin features por omisión y fija `wasm-bindgen` y
-`wasm-bindgen-cli` en `0.2.129`. El mismo número para runtime y generador conserva el formato de enlace esperado;
-Rust `1.99.0` supera el MSRV publicado por esa versión. `wasm-bindgen` aporta las exportaciones JavaScript y las
-conversiones de tipos, mientras la API conserva la propiedad de recursos y el contrato del motor.
-Alternativas descartadas: activar la feature `native` incluiría Cranelift para un destino que no compila código
-nativo; usar versiones distintas del crate y CLI deja de corresponder al esquema de enlace.
+Problema: el navegador no representa con exactitud todos los enteros de 64 bits del protocolo y no puede conservar vistas de memoria cuando crece el módulo. Elección: `pseudolearn_wasm` importa solo `pseudolearn_api` sin features por omisión, recibe argumentos y devuelve respuestas como texto JSON, y limita la memoria lineal a 256 MiB en su build canónico. El consumidor no crea vistas sobre memoria; la prueba de crecimiento confirma que una vista previa queda invalidada y que la sesión sigue respondiendo. Se descartan objetos JavaScript con números ya convertidos, buffers prestados entre llamadas y memoria sin máximo declarado.
+
+Problema: la generación de enlaces debe corresponder a la versión del crate y dejar un paquete repetible que cargue en un navegador real. Elección: `wasm-bindgen` y `wasm-bindgen-cli` se fijan en `0.2.129`; `tool/wasm.sh` compila `wasm32-unknown-unknown`, rechaza Cranelift y compara dos generaciones del paquete. Playwright Core `1.64.0` carga ese paquete en Chrome y compara completado, ejecución, entrada, cancelación, liberación y bordes numéricos con la misma traza ejecutada por `wasm_native_probe`. Se descartan enlaces versionados a mano y una verificación limitada a Node WASI.
 Fuentes: [versiones de wasm-bindgen](https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.129) y
 [documentación de wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/).
 
@@ -386,7 +385,7 @@ por lo que B7.4 permanece abierto. Evidencia: [`r5-differential.json`](../pseudo
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios ni atributos doc/allow/expect. Cada archivo tiene una responsabilidad; los límites y nombres viven en architecture.yaml.
-Todos los crates presentes prohíben unsafe salvo `pseudolearn_aot_rt`, que lo confina a dos funciones auditadas en su README. `pseudolearn_wasm` generado queda autorizado por la política del miembro al incorporarse. Como `[workspace.lints.rust] unsafe_code = "forbid"` no admite excepciones por crate, `pseudolearn_aot_rt` declara su propia tabla `[lints]` con `unsafe_code = "allow"` y la misma lista de lints de Clippy que el workspace.
+Todos los crates presentes prohíben unsafe salvo `pseudolearn_aot_rt` y `pseudolearn_wasm`. `pseudolearn_aot_rt` lo confina a dos funciones de la frontera ABI; `pseudolearn_wasm` permite únicamente la salida de macro de `wasm-bindgen` y no escribe bloques `unsafe`. Cada excepción tiene su configuración de crate y su fila en architecture.yaml; el workspace no concede permisos globales.
 Errores esperables como Result; DIAG.ENGINE.INTERNAL-FAULT captura defectos internos en la frontera.
 No se copian datos del corpus: build.rs genera vocabulario, gramática, diagnósticos y despacho desde la exportación verificada.
 Las carpetas generated son salidas del generador; los límites no justifican dividir lógica arbitrariamente ni modificar generados a mano.
@@ -409,6 +408,7 @@ La política de licencias admite las que usan las dependencias presentes; no con
 |---|---|
 | layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |
 | cargo xtask verify al implementar | Formato, Clippy, tests, dependencias, cadena y seis verificadores |
+| Wasm y navegador | Grafo sin AOT, generación reproducible, ciclo de vida, límites y memoria | `bash tool/wasm.sh test` |
 | see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles y rigores |
 | see conform aot | Casos de ejecución contra el binario real, ambos perfiles y rigores, y propiedades con recolección forzada |
 | Diferencial de gemelos | Igualdad de salida, fallos y estado observable |

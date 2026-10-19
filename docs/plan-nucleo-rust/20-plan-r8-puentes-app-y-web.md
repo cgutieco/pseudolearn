@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> Las autorizaciones cubrieron B3, B4, una iteración de B5 y B6; no autorizan la publicación de aplicaciones.
+> Las autorizaciones cubrieron B3, B4, una iteración de B5, B6 y una iteración de B7; no autorizan la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -474,16 +474,45 @@ evidencia de ejecución en runner Windows. No se inició B7.
 
 ### B7 · Módulo Wasm y consumidor real en navegador
 
-- [ ] Crear `pseudolearn_wasm` con README, capa declarada y superficie pública equivalente.
-- [ ] Compilar a `wasm32-unknown-unknown` sin `native`; generar enlaces y paquete de consumo reproducible.
-- [ ] Añadir consumidor mínimo de prueba que cargue el artefacto final en navegador y consulte el servicio.
-- [ ] Verificar ejecución, entrada, cancelación entre lotes, liberación, Unicode y extremos de enteros.
-- [ ] Comprobar crecimiento de memoria, invalidación de vistas y límite de memoria sin corrupción silenciosa.
-- [ ] Contrastar nativo/Wasm por observables del corpus; conservar diferencias y semillas reproducibles.
-- [ ] Si D-R8-04 exige Flutter web, crear su andamiaje y adaptadores y repetir pruebas sobre esa app.
+- [x] Crear `pseudolearn_wasm` con README, capa declarada y superficie pública equivalente.
+- [x] Compilar a `wasm32-unknown-unknown` sin `native`; generar enlaces y paquete de consumo reproducible.
+- [x] Añadir consumidor mínimo de prueba que cargue el artefacto final en navegador y consulte el servicio.
+- [x] Verificar ejecución, entrada, cancelación entre lotes, liberación, Unicode y extremos de enteros.
+- [x] Comprobar crecimiento de memoria, invalidación de vistas y límite de memoria sin corrupción silenciosa.
+- [x] Contrastar nativo/Wasm por observables del corpus; conservar diferencias y semillas reproducibles.
+- [x] Aplicar D-R8-04: consumidor web mínimo, sin Flutter web.
 
 **Puerta:** pruebas en navegador del paquete final y cero diferencias contractuales no resueltas.
 El Wasm de E-17 o una ejecución exclusiva en un runtime de consola no sustituye esta prueba del paquete web.
+
+#### Registro de una iteración de B7 · 2026-10-19
+
+**Qué se implementó.** Se añadió `pseudolearn_wasm`, que reenvía el protocolo JSON de `pseudolearn_api` por
+cadenas y mantiene exactos los enteros de 64 bits. El paquete compila a `wasm32-unknown-unknown` con la
+feature `native` desactivada, limita la memoria lineal a 256 MiB y genera los enlaces web con
+`wasm-bindgen` 0.2.129. Una página mínima carga el paquete release en Chrome y ejecuta la comparación
+contra una sonda nativa que mantiene una sesión para todo el trazo.
+
+**Comparación observable.** Las respuestas nativas y Wasm coincidieron byte por byte en el trazo
+determinista probado: completado del servicio; análisis; ejecución por lotes; programa y salida Unicode
+con `ñ🌍`; entrada `i64::MAX`; semilla `i64::MIN`; liberación y consulta posterior; codificación con
+`u64::MAX`; y cancelación de un bucle entre lotes con semilla 42. El caso inválido de JSON se rechazó
+con excepción explícita. No se observaron diferencias contractuales en esos casos; las semillas y
+solicitudes quedan fijadas en la prueba del navegador.
+
+**Memoria y reproducibilidad.** Un programa con comentario de 8 MiB forzó crecimiento; se verificó que
+la vista previa sobre la memoria quedó invalidada y que la sesión siguió respondiendo. Un intento de
+superar los 256 MiB fue rechazado sin cambiar la longitud existente ni impedir una consulta posterior.
+El generador se ejecutó dos veces y `diff -r` confirmó igualdad del paquete producido.
+
+**Verificaciones locales.** `cargo xtask verify` terminó en verde: formato, Clippy, pruebas del
+workspace, verificadores Rust, toolchain y `cargo deny`. `bash tool/wasm.sh test` compiló el artefacto
+release, comprobó que el grafo Wasm no incorpora Cranelift ni el backend nativo, reprodujo el paquete
+y pasó las tres pruebas en Chrome. `git diff --check` también terminó en verde.
+
+**Estado de la puerta.** B7 queda implementado y verificado para el consumidor mínimo definido por
+D-R8-04. B6 conserva su puerta abierta por ejecución y validaciones de plataforma pendientes. No se
+iniciaron B8 ni B9.
 
 ### B8 · Conformidad de app, experimento E-NR2 y tamaños
 
@@ -511,7 +540,7 @@ Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión 
 - [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0, B1 y B2 reflejan su ejecución; B3–B9 siguen pendientes.
+comprobación remota obligatoria, R8 permanece abierta. B0–B5 se registran según la evidencia de cada bloque; B6 mantiene pendientes de plataforma, B7 está implementado y verificado, y B8–B9 no se han iniciado.
 
 ### Registro de B0 · 2026-10-19
 
@@ -606,7 +635,7 @@ simulador, macOS x86_64 o Windows.
 | D-R8-02 | Mantener una superficie síncrona acotada si el transporte lo permite; o cambiar puertos y composición si la herramienta obliga a asincronía/hilos. Afecta B2–B4. | FRB 2.13.0 generó funciones sync; la ruta Dart–FFI–`pseudolearn_api` ejecutó lotes de 64 con p95 de 95 µs. `ApiSession` no es `Sync`. | Resuelta: handles `u64` sobre un registro del hilo invocador; sin sesión opaca ni worker. |
 | D-R8-03 | Medir una biblioteca Android sin distribuir app Flutter; o ampliar producto y distribución Android. Afecta B1, B6 y B8. | Android aparece como objetivo en arquitectura/performance, pero no en README, scaffold ni workflows de la app. | Resuelta: Android sigue en la hoja de ruta; R8 no exige compilarlo ni distribuir la app Flutter. |
 | D-R8-04 | Entregar `pseudolearn_wasm` con consumidor mínimo de navegador; o incluir Flutter web y sus adaptadores de persistencia/autenticación. Afecta B1 y B7. | No hay `web/` en la app; el workflow web existente despliega otro producto (`apps/fe-pseudolearn`). | Resuelta: `pseudolearn_wasm` con consumidor mínimo; sin Flutter web. |
-| D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | La salida 2.13.0 incluye comentarios, atributos `allow`, `unsafe` y `unwrap` de codec. | Resuelta: excepciones exactas en `native/src/frb_generated.rs` y `lib/engine/bridge/**`, con regeneración reproducible; ningún permiso global. |
+| D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | La salida FRB 2.13.0 incluye comentarios, atributos `allow`, `unsafe` y `unwrap` de codec; `wasm-bindgen` requiere permitir `unsafe` en la macroexpansión. | Resuelta: excepciones exactas en `native/src/frb_generated.rs`, `lib/engine/bridge/**` y el crate `pseudolearn_wasm`; el adaptador Wasm escrito no usa `unsafe` y no hay permiso global. |
 | D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Resuelta: versiones congeladas; clasificación e impacto en evidencia separada, sin bloque `cambio`. |
 | D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Resuelta: consumir el contrato vigente sin exigir reutilización semántica ni crear dependencia futura de ratificación. |
 | D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | Hay iPhone físico iOS 27.0.1, pero el modelo no fue identificado. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Pendiente de selección y disponibilidad verificable. |

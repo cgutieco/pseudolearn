@@ -8,7 +8,7 @@ generated_sources:
   - crates/pseudolearn_ir/generated
   - crates/pseudolearn_bytecode/generated
   - crates/pseudolearn_vm/generated
-deterministic_output_crates: [pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_api, pseudolearn_codegen]
+deterministic_output_crates: [pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_api, pseudolearn_codegen, pseudolearn_wasm]
 layers:
   - name: pseudolearn_source
     path: crates/pseudolearn_source
@@ -113,6 +113,11 @@ layers:
     may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_codegen, pseudolearn_aot_rt]
     external_dependencies: [serde, serde_json]
     unsafe_allowed: false
+  - name: pseudolearn_wasm
+    path: crates/pseudolearn_wasm
+    may_import: [pseudolearn_api]
+    external_dependencies: [serde_json, wasm-bindgen]
+    unsafe_allowed: true
   - name: pseudolearn_conformance
     path: crates/pseudolearn_conformance
     may_import: [pseudolearn_api]
