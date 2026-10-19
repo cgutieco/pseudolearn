@@ -1,7 +1,6 @@
 # Plan de R7 · Servicio de lenguaje y herramientas (`pseudolearn_service`, `pseudo format`, `pseudo translate`, `pseudo lsp`)
 
-> **Estado:** propuesta de plan técnico y de ejecución de R7, pendiente de aprobación explícita
-> (`PHASE-STOP`). Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
+> **Estado:** R7 ejecutada y cerrada (ver las desviaciones al final de §9 y el informe en 07-fases.md §11). Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 >
 > Este documento detalla la arquitectura, las especificaciones del corpus `TOOL.*`, el análisis
 > empírico del punto de partida tras R5 y R6, los conflictos normativos detectados (`CONFLICT-REPORT`),
@@ -1038,3 +1037,19 @@ antes de pasar al siguiente.
       cumpliendo las latencias y umbrales de calidad en el hardware de referencia.
 - [x] Todos los tests y verificadores (`rust-checks`, `clippy`, `see validate`, `see conformance`) en
       verde y `README.md` actualizados sin referencias transitorias (`DOC-NO-TRANSIENT-REFS`).
+
+### Desviaciones respecto a este plan, tras el cierre definitivo
+
+1. **D-R7-01.** No se implementó la reutilización de resultados semánticos por unidad. La sesión reconstruye árbol,
+   análisis e índice y usa las huellas para informar qué unidades cambiaron. Medido: 1,0 ms a 1 000 líneas y 9,2 ms a
+   10 000 (umbral 16 ms). `TOOL.SERVICE.INCREMENTAL#R2` se reformuló en consecuencia.
+2. **D-R7-05.** La ortografía canónica sale del vocabulario generado (tres preferencias en español: `Algoritmo`,
+   `FinAlgoritmo`, `Sino`); no se adoptó la grafía de la declaración porque la semántica distingue mayúsculas.
+3. **D-R7-04.** La gramática no tiene `Caso`; las ramas son `valor:`. Las plantillas de `Segun` y `Switch` se
+   corrigieron y se verifican analizándolas.
+4. **D-R7-06.** Las funciones estándar son las del vocabulario (`rc`, `azar`, `Longitud`, …), no la lista del plan
+   (`mayusculas`, `subcadena`), que no existe en el lenguaje.
+5. **D-R7-08.** Las suboperaciones del adaptador se recortaron a las que el servicio puede responder de verdad y se
+   añadieron `random_probe` y `template_validity` para las propiedades.
+6. **Experimentos.** E-09 y E-20 los genera `pseudolearn_bench_worker`; E-20 es una medición sin umbrales y su estado es
+   `measured`.

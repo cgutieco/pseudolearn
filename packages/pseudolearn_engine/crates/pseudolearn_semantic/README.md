@@ -66,6 +66,10 @@ Los emisores completan los argumentos tipados del catálogo: aridad numérica, t
 compatibilidad de asignación y clase propietaria de miembros privados. Los tipos primitivos usan
 identidades del léxico; los nombres de clases son datos del usuario y no se confunden con esas identidades.
 
+El análisis para servicios (`analyze_for_service`) conserva, además del módulo HIR y los diagnósticos, los símbolos,
+las ocurrencias de cada símbolo (declaración, lectura y escritura, incluidas las declaraciones de campos) y los tipos de
+expresión por intervalo. `service_collection` los recopila desde el módulo ya construido; no vuelve a resolver nombres.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

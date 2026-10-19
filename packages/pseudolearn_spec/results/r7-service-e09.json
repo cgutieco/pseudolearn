@@ -1,22 +1,72 @@
 {
   "experiment": "E-09",
-  "status": "passed",
-  "machine": "Apple M2 / macOS arm64",
-  "protocol": "PERF.PROTOCOL#R1",
+  "large_document": {
+    "lines": 10000,
+    "query_ms": {
+      "iqr": 0.02,
+      "mad": 0.009,
+      "max": 0.799,
+      "mean": 0.66,
+      "median": 0.64,
+      "min": 0.629,
+      "p95": 0.74
+    },
+    "session_build_ms": 8.378
+  },
+  "machine": {
+    "arch": "aarch64",
+    "cpu": "Apple M2",
+    "os": "macos",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)"
+  },
+  "prefix_0": {
+    "keystrokes_saved_percent": 66.952,
+    "precision_at_1_percent": 31.502,
+    "precision_at_5_percent": 74.212,
+    "queries": 2730
+  },
+  "prefix_2": {
+    "all": {
+      "keystrokes_saved_percent": 51.228,
+      "precision_at_1_percent": 87.436,
+      "precision_at_5_percent": 90.44,
+      "queries": 2730
+    },
+    "en": {
+      "keystrokes_saved_percent": 52.209,
+      "precision_at_1_percent": 91.472,
+      "precision_at_5_percent": 94.208,
+      "queries": 1243
+    },
+    "es": {
+      "keystrokes_saved_percent": 50.407,
+      "precision_at_1_percent": 84.062,
+      "precision_at_5_percent": 87.29,
+      "queries": 1487
+    }
+  },
   "programs_evaluated": 172,
-  "queries_evaluated": 731,
-  "template_validity_percent": 100.0,
-  "precision_at_1_percent": 64.2,
-  "precision_at_5_percent": 88.6,
-  "keystrokes_saved_percent": 38.4,
-  "latency": {
-    "unit": "milliseconds",
-    "mean": 0.03,
-    "median": 0.029,
-    "mad": 0.002,
+  "protocol": "PERF.PROTOCOL#R1",
+  "queries_evaluated": 2730,
+  "small_document_query_ms": {
     "iqr": 0.004,
-    "p95": 0.037,
-    "min": 0.022,
-    "max": 0.101
+    "mad": 0.002,
+    "max": 0.067,
+    "mean": 0.005,
+    "median": 0.006,
+    "min": 0.001,
+    "p95": 0.009
+  },
+  "status": "passed",
+  "template_validity": {
+    "checked": 18,
+    "valid": 18,
+    "valid_percent": 100.0
+  },
+  "thresholds": {
+    "keystrokes_saved_percent": 35.0,
+    "latency_p95_ms": 50.0,
+    "precision_at_1_percent": 60.0,
+    "precision_at_5_percent_each_language": 85.0
   }
 }

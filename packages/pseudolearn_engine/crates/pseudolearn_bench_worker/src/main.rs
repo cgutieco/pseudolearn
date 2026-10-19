@@ -7,6 +7,7 @@ mod execution;
 mod frontend;
 mod paired;
 mod robustness;
+mod service;
 mod workloads;
 
 fn main() -> std::process::ExitCode {
@@ -29,6 +30,7 @@ fn main() -> std::process::ExitCode {
                 .nth(2)
                 .unwrap_or_else(|| "results/r6-aot".to_owned()),
         ),
+        "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile".to_owned()),

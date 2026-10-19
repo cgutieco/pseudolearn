@@ -1,78 +1,187 @@
-use pseudolearn_lexicon::Profile;
+use crate::spelling::keyword_spelling;
+use pseudolearn_lexicon::{KeywordKind, Profile};
+
+struct Markers {
+    expression: &'static str,
+    value: &'static str,
+    condition: &'static str,
+    index: &'static str,
+    limit: &'static str,
+    name: &'static str,
+    parameter: &'static str,
+    class_name: &'static str,
+}
+
+fn markers(profile: Profile) -> Markers {
+    match profile {
+        Profile::Spanish => Markers {
+            expression: "expresion",
+            value: "valor",
+            condition: "condicion",
+            index: "indice",
+            limit: "limite",
+            name: "nombre",
+            parameter: "parametro",
+            class_name: "Nombre",
+        },
+        Profile::English => Markers {
+            expression: "expression",
+            value: "value",
+            condition: "condition",
+            index: "index",
+            limit: "limit",
+            name: "name",
+            parameter: "parameter",
+            class_name: "Name",
+        },
+    }
+}
+
+pub fn template_constructions() -> &'static [&'static str] {
+    &[
+        "algorithm",
+        "subroutine",
+        "function",
+        "class",
+        "if",
+        "while",
+        "for",
+        "repeat",
+        "switch",
+    ]
+}
 
 pub fn get_template(construction: &str, profile: Profile) -> Option<String> {
-    match profile {
-        Profile::Spanish => spanish_template(construction),
-        Profile::English => english_template(construction),
-    }
-}
-
-pub fn bilingual_keyword_hint(
-    word: &str,
-    profile: Profile,
-) -> Option<(&'static str, &'static str)> {
-    let pairs = [
-        ("mientras", "while", "Mientras", "while"),
-        ("si", "if", "Si", "if"),
-        ("para", "for", "Para", "for"),
-        ("escribir", "print", "Escribir", "print"),
-        ("leer", "read", "Leer", "read"),
-        ("definir", "define", "Definir", "define"),
-    ];
-    let lower = word.to_lowercase();
-    for &(es_key, en_key, es_label, en_label) in &pairs {
-        if profile == Profile::Spanish && en_key.starts_with(&lower) {
-            return Some((es_label, en_label));
-        }
-        if profile == Profile::English && es_key.starts_with(&lower) {
-            return Some((en_label, es_label));
-        }
-    }
-    None
-}
-
-fn spanish_template(construction: &str) -> Option<String> {
+    let word = |kind| keyword_spelling(kind, profile);
+    let marker = markers(profile);
     match construction {
-        "switch" | "segun" => Some(String::from(
-            "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun",
-        )),
-        "if" | "si" => Some(String::from("Si condicion Entonces\n  \nSino\n  \nFinSi")),
-        "while" | "mientras" => Some(String::from("Mientras condicion Hacer\n  \nFinMientras")),
-        "for" | "para" => Some(String::from(
-            "Para variable <- 1 Hasta limite Con Paso 1 Hacer\n  \nFinPara",
-        )),
-        "repeat" | "repetir" => Some(String::from("Repetir\n  \nHasta Que condicion")),
-        "function" | "funcion" => Some(String::from(
-            "Funcion resultado <- Nombre(argumentos)\n  \nFinFuncion",
-        )),
-        "subroutine" | "subproceso" => Some(String::from(
-            "SubProceso Nombre(argumentos)\n  \nFinSubProceso",
-        )),
-        "class" | "clase" => Some(String::from("Clase Nombre\n  \nFinClase")),
-        "algorithm" | "algoritmo" => Some(String::from("Algoritmo Nombre\n  \nFinAlgoritmo")),
+        "switch" | "segun" => Some(switch_template(&word, &marker)),
+        "if" | "si" => Some(if_template(&word, &marker)),
+        "while" | "mientras" => Some(while_template(&word, &marker)),
+        "for" | "para" => Some(for_template(&word, &marker)),
+        "repeat" | "repetir" => Some(repeat_template(&word, &marker)),
+        "function" | "funcion" => Some(function_template(&word, &marker)),
+        "subroutine" | "subproceso" => Some(subroutine_template(&word, &marker)),
+        "class" | "clase" => Some(class_template(&word, &marker)),
+        "algorithm" | "algoritmo" => Some(algorithm_template(&word, &marker)),
         _ => None,
     }
 }
 
-fn english_template(construction: &str) -> Option<String> {
-    match construction {
-        "switch" | "segun" => Some(String::from(
-            "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch",
-        )),
-        "if" | "si" => Some(String::from("If condition Then\n  \nElse\n  \nEndIf")),
-        "while" | "mientras" => Some(String::from("While condition Do\n  \nEndWhile")),
-        "for" | "para" => Some(String::from(
-            "For variable <- 1 To limit Step 1 Do\n  \nEndFor",
-        )),
-        "repeat" | "repetir" => Some(String::from("Repeat\n  \nUntil condition")),
-        "function" | "funcion" => Some(String::from(
-            "Function result <- Name(arguments)\n  \nEndFunction",
-        )),
-        "subroutine" | "subproceso" => Some(String::from(
-            "SubProcedure Name(arguments)\n  \nEndSubProcedure",
-        )),
-        "class" | "clase" => Some(String::from("Class Name\n  \nEndClass")),
-        "algorithm" | "algoritmo" => Some(String::from("Algorithm Name\n  \nEndAlgorithm")),
+type Word<'word> = &'word dyn Fn(KeywordKind) -> String;
+
+fn switch_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {} {}\n  {}:\n    \n  {}:\n    \n{}",
+        word(KeywordKind::SwitchKeyword),
+        marker.expression,
+        word(KeywordKind::DoKeyword),
+        marker.value,
+        word(KeywordKind::DefaultCase),
+        word(KeywordKind::EndSwitch)
+    )
+}
+
+fn if_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {} {}\n  \n{}\n  \n{}",
+        word(KeywordKind::IfKeyword),
+        marker.condition,
+        word(KeywordKind::Then),
+        word(KeywordKind::ElseKeyword),
+        word(KeywordKind::EndIf)
+    )
+}
+
+fn while_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {} {}\n  \n{}",
+        word(KeywordKind::WhileKeyword),
+        marker.condition,
+        word(KeywordKind::DoKeyword),
+        word(KeywordKind::EndWhile)
+    )
+}
+
+fn for_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {} <- 1 {} {} {} 1 {}\n  \n{}",
+        word(KeywordKind::ForKeyword),
+        marker.index,
+        word(KeywordKind::To),
+        marker.limit,
+        word(KeywordKind::Step),
+        word(KeywordKind::DoKeyword),
+        word(KeywordKind::EndFor)
+    )
+}
+
+fn repeat_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{}\n  \n{} {}",
+        word(KeywordKind::Repeat),
+        word(KeywordKind::Until),
+        marker.condition
+    )
+}
+
+fn function_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {}({}) {} {}\n  \n{}",
+        word(KeywordKind::Subroutine),
+        marker.name,
+        marker.parameter,
+        word(KeywordKind::TypeConnector),
+        word(KeywordKind::IntegerType),
+        word(KeywordKind::EndSubroutine)
+    )
+}
+
+fn subroutine_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {}({})\n  \n{}",
+        word(KeywordKind::Subroutine),
+        marker.name,
+        marker.parameter,
+        word(KeywordKind::EndSubroutine)
+    )
+}
+
+fn class_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {}\n  \n{}",
+        word(KeywordKind::ClassKeyword),
+        marker.class_name,
+        word(KeywordKind::EndClass)
+    )
+}
+
+fn algorithm_template(word: Word<'_>, marker: &Markers) -> String {
+    format!(
+        "{} {}\n  \n{}",
+        word(KeywordKind::Algorithm),
+        marker.name,
+        word(KeywordKind::EndAlgorithm)
+    )
+}
+
+pub fn is_unit_construction(construction: &str) -> bool {
+    matches!(
+        construction,
+        "algorithm" | "subroutine" | "function" | "class"
+    )
+}
+
+pub fn construction_for(kind: KeywordKind) -> Option<&'static str> {
+    match kind {
+        KeywordKind::Algorithm => Some("algorithm"),
+        KeywordKind::Subroutine => Some("subroutine"),
+        KeywordKind::ClassKeyword => Some("class"),
+        KeywordKind::IfKeyword => Some("if"),
+        KeywordKind::WhileKeyword => Some("while"),
+        KeywordKind::ForKeyword => Some("for"),
+        KeywordKind::Repeat => Some("repeat"),
+        KeywordKind::SwitchKeyword => Some("switch"),
         _ => None,
     }
 }

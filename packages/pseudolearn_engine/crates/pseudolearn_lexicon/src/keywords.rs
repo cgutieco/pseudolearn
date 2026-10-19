@@ -25,3 +25,15 @@ pub fn detect_opener(word: &str) -> Option<Profile> {
             detect_profile_from_opener(&profile.fold_word(word)) == Some(profile.as_str())
         })
 }
+
+impl KeywordKind {
+    pub fn lexeme(&self, profile: Profile) -> Option<&'static str> {
+        keyword_lexeme(self.as_str(), profile.as_str())
+    }
+}
+
+impl BuiltinKind {
+    pub fn lexeme(&self, profile: Profile) -> Option<&'static str> {
+        builtin_lexeme(self.as_str(), profile.as_str())
+    }
+}

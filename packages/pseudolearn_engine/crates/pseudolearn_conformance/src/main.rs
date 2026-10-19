@@ -8,8 +8,12 @@ use serde_json::{Value, json};
 use std::io::{BufRead, Write};
 
 mod lsp_handler;
+mod service_edit_request;
+mod service_edits;
 mod service_handler;
-mod service_inspection;
+mod service_queries;
+mod service_request;
+mod service_text;
 
 fn main() {
     let raw_arguments: Vec<String> = std::env::args().skip(1).collect();

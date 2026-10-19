@@ -33,9 +33,6 @@
   "clase": "semantica",
   "texto": "Todo nodo del árbol sintáctico posee un identificador estable determinado por su unidad superior contenedora (Algoritmo, SubProceso, Clase y miembro), su categoría sintáctica y su posición estructural relativa dentro de esa unidad.",
   "verificacion": [
-    "C1",
-    "C2",
-    "C3",
     "C4",
     "P1"
   ]
@@ -71,7 +68,7 @@
 ```caso
 {
   "id": "C1",
-  "regla": "R1",
+  "regla": "R2",
   "perfiles": [
     "es"
   ],
@@ -90,10 +87,16 @@
     "documento": "SubProceso Previo()\nFinSubProceso\n\nAlgoritmo Principal\n  x <- 1;\nFinAlgoritmo\n\nSubProceso Posterior()\nFinSubProceso\n",
     "edicion": {
       "rango": {
-        "start": { "line": 5, "column": 3 },
-        "end": { "line": 5, "column": 9 }
+        "start": {
+          "line": 5,
+          "column": 3
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
       },
-      "texto": "x <- 2;\n  y <- 3;"
+      "texto": "x <- 2;\n  w <- 3;"
     },
     "comprobacion": "unidades_vecinas_estables"
   }

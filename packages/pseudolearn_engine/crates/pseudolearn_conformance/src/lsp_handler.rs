@@ -1,80 +1,106 @@
 use pseudolearn_api::service::LspServer;
 use serde_json::{Value, json};
 
-struct LspProgress {
-    had_capabilities: bool,
-    initial_diagnostics_count: usize,
-    corrected_diagnostics_count: usize,
-    answered_queries: bool,
+const PROVIDERS: [&str; 9] = [
+    "textDocumentSync",
+    "completionProvider",
+    "hoverProvider",
+    "signatureHelpProvider",
+    "definitionProvider",
+    "referencesProvider",
+    "documentHighlightProvider",
+    "documentSymbolProvider",
+    "documentFormattingProvider",
+];
+
+struct Transcript {
+    answers: Vec<(Value, Vec<Value>)>,
 }
 
 pub fn handle_lsp(request: &Value) -> Value {
-    let mut server = LspServer::new();
     let Some(messages) = request.get("mensajes").and_then(Value::as_array) else {
-        return json!({});
+        return json!({ "error": "missing messages" });
     };
-
-    let mut progress = LspProgress {
-        had_capabilities: false,
-        initial_diagnostics_count: 0,
-        corrected_diagnostics_count: 0,
-        answered_queries: false,
+    let mut server = LspServer::new();
+    let transcript = Transcript {
+        answers: messages
+            .iter()
+            .map(|message| (message.clone(), server.handle_message(message)))
+            .collect(),
     };
-
-    for message in messages {
-        process_lsp_step(&mut server, message, &mut progress);
-    }
-
-    if messages
-        .iter()
-        .any(|message| message.get("method").and_then(Value::as_str) == Some("shutdown"))
+    match request
+        .get("proyeccion")
+        .and_then(Value::as_str)
+        .unwrap_or("")
     {
-        json!({ "capacidades_anunciadas": progress.had_capabilities, "cierre_limpio": true })
-    } else if progress.answered_queries {
-        json!({ "consultas_respondidas": true })
-    } else {
-        json!({
-            "diagnosticos_iniciales": progress.initial_diagnostics_count,
-            "diagnosticos_corregidos": progress.corrected_diagnostics_count,
-        })
+        "capacidades" => json!({
+            "capacidades_anunciadas": transcript.announced_all_providers(),
+            "cierre_limpio": transcript.shutdown_answered_null() && server.exit_code == Some(0),
+        }),
+        "diagnosticos" => json!({
+            "diagnosticos_iniciales": transcript.diagnostic_counts().first().copied().unwrap_or(0),
+            "diagnosticos_corregidos": transcript.diagnostic_counts().last().copied().unwrap_or(0),
+        }),
+        "consultas" => json!({ "consultas_respondidas": transcript.all_queries_answered() }),
+        other => json!({ "error": format!("unsupported projection: {other}") }),
     }
 }
 
-fn process_lsp_step(server: &mut LspServer, message: &Value, progress: &mut LspProgress) {
-    let response_option = server.handle_message(message);
-    let method = message.get("method").and_then(Value::as_str);
+impl Transcript {
+    fn responses_to(&self, method: &str) -> Vec<&Value> {
+        self.answers
+            .iter()
+            .filter(|(message, _)| message.get("method").and_then(Value::as_str) == Some(method))
+            .flat_map(|(_, replies)| replies.iter())
+            .collect()
+    }
 
-    match method {
-        Some("initialize") => {
-            if let Some(response) = &response_option {
-                progress.had_capabilities = response.pointer("/result/capabilities").is_some();
-            }
-        }
-        Some("textDocument/didOpen") => {
-            if let Some(notification) = &response_option
-                && let Some(diagnostics) = notification
-                    .pointer("/params/diagnostics")
+    fn announced_all_providers(&self) -> bool {
+        self.responses_to("initialize").iter().any(|reply| {
+            PROVIDERS.iter().all(|name| {
+                reply
+                    .pointer(&format!("/result/capabilities/{name}"))
+                    .is_some()
+            })
+        })
+    }
+
+    fn shutdown_answered_null(&self) -> bool {
+        self.responses_to("shutdown")
+            .iter()
+            .any(|reply| reply.get("result") == Some(&Value::Null))
+    }
+
+    fn diagnostic_counts(&self) -> Vec<usize> {
+        self.responses_to("textDocument/didOpen")
+            .into_iter()
+            .chain(self.responses_to("textDocument/didChange"))
+            .filter_map(|note| {
+                note.pointer("/params/diagnostics")
                     .and_then(Value::as_array)
-            {
-                progress.initial_diagnostics_count = diagnostics.len();
-            }
-        }
-        Some("textDocument/didChange") => {
-            if let Some(notification) = &response_option
-                && let Some(diagnostics) = notification
-                    .pointer("/params/diagnostics")
-                    .and_then(Value::as_array)
-            {
-                progress.corrected_diagnostics_count = diagnostics.len();
-            }
-        }
-        Some("textDocument/definition") | Some("textDocument/hover") => {
-            if let Some(response) = &response_option
-                && !response.get("result").unwrap_or(&Value::Null).is_null()
-            {
-                progress.answered_queries = true;
-            }
-        }
-        _ => {}
+            })
+            .map(Vec::len)
+            .collect()
+    }
+
+    fn all_queries_answered(&self) -> bool {
+        let queries: Vec<&(Value, Vec<Value>)> = self
+            .answers
+            .iter()
+            .filter(|(message, _)| {
+                message.get("id").is_some()
+                    && !matches!(
+                        message.get("method").and_then(Value::as_str),
+                        Some("initialize" | "shutdown")
+                    )
+            })
+            .collect();
+        !queries.is_empty()
+            && queries.iter().all(|(_, replies)| {
+                replies.first().is_some_and(|reply| {
+                    reply.get("error").is_none()
+                        && reply.get("result").is_some_and(|result| !result.is_null())
+                })
+            })
     }
 }

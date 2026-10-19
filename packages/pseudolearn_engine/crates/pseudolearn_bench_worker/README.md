@@ -11,6 +11,8 @@ El comando `paired <directorio-nuevo>` enlaza un trabajador con el mismo objeto 
 
 `paired-probe <directorio-nuevo>` ejecuta las seis cargas de diagnóstico con contadores separados, escala Storage en profundidades 3–6 y conserva un perfil del proceso de Storage. Sus tiempos instrumentados no sirven para declarar N3.
 
+El comando `service` mide las herramientas de edición: `service e09 <salida> [mediciones]` evalúa el autocompletado sobre los programas de referencia (cada identificador, palabra clave o función estándar de al menos tres caracteres se consulta con prefijo de cero y de dos caracteres sobre el documento truncado), calcula precisión en 1 y en 5, ahorro de pulsaciones y validez de plantillas, y mide la latencia en un documento de diez mil líneas; `service incremental <salida> [mediciones]` mide la latencia de una edición de cuerpo en documentos de mil y de diez mil líneas; `service e20 <binario pseudo> <salida>` mide el arranque y la latencia de `comprobar`, `ejecutar`, `compilar`, `formatear`, `traducir` y `lsp`. Los umbrales se leen de los contratos exportados, el resultado de umbral incumplido termina con error y las mediciones se registran en `results/measurement-conformance.json`.
+
 ## 2. Guía operativa y ciclo de vida
 
 Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras

@@ -180,6 +180,12 @@ La conformidad de propiedades usa `property-conformance.json`: identidad version
 semilla y cantidad de muestras. Incluye las treinta propiedades del motor y la CLI, también las de
 API y reimpresión heredadas; omitir una propiedad del sujeto es un error de vínculo. El archivo de datos conserva los vínculos regla–código y la validación
 rechaza duplicados, referencias retiradas y cantidades cero. Registrar un vínculo no es evidencia de ejecución.
+Las propiedades de las herramientas de edición (`service_format`, `service_translate`, `service_incremental`,
+`service_node_identity`, `service_completion_templates`) se ejecutan contra el sujeto `service` sobre cada programa de
+ejecución del corpus: verifican idempotencia del formateo, identidad de la doble traducción, equivalencia de la edición
+incremental con el análisis desde cero, estabilidad de la identidad de nodos ante ediciones locales y validez sintáctica de
+las plantillas. Un ejecutor que no encuentra contraejemplo en un sujeto sin la capacidad `service` queda `pendiente`, nunca `cumple`.
+Las propiedades de reimpresión y recuperación sin pérdida también las ejecuta el sujeto `service`.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

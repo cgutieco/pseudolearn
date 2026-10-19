@@ -126,7 +126,8 @@
         "jsonrpc": "2.0",
         "method": "exit"
       }
-    ]
+    ],
+    "proyeccion": "capacidades"
   }
 }
 ```
@@ -156,7 +157,9 @@
         "jsonrpc": "2.0",
         "id": 1,
         "method": "initialize",
-        "params": { "locale": "es" }
+        "params": {
+          "locale": "es"
+        }
       },
       {
         "jsonrpc": "2.0",
@@ -181,15 +184,22 @@
           "contentChanges": [
             {
               "range": {
-                "start": { "line": 2, "character": 7 },
-                "end": { "line": 2, "character": 14 }
+                "start": {
+                  "line": 2,
+                  "character": 7
+                },
+                "end": {
+                  "line": 2,
+                  "character": 14
+                }
               },
               "text": "42"
             }
           ]
         }
       }
-    ]
+    ],
+    "proyeccion": "diagnosticos"
   }
 }
 ```
@@ -218,7 +228,9 @@
         "jsonrpc": "2.0",
         "id": 1,
         "method": "initialize",
-        "params": { "locale": "es" }
+        "params": {
+          "locale": "es"
+        }
       },
       {
         "jsonrpc": "2.0",
@@ -237,8 +249,13 @@
         "id": 2,
         "method": "textDocument/definition",
         "params": {
-          "textDocument": { "uri": "file:///consultas.pseudo" },
-          "position": { "line": 3, "character": 12 }
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          },
+          "position": {
+            "line": 3,
+            "character": 12
+          }
         }
       },
       {
@@ -246,11 +263,72 @@
         "id": 3,
         "method": "textDocument/hover",
         "params": {
-          "textDocument": { "uri": "file:///consultas.pseudo" },
-          "position": { "line": 2, "character": 4 }
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          },
+          "position": {
+            "line": 2,
+            "character": 4
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "method": "textDocument/completion",
+        "params": {
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          },
+          "position": {
+            "line": 3,
+            "character": 12
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "method": "textDocument/references",
+        "params": {
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          },
+          "position": {
+            "line": 3,
+            "character": 12
+          },
+          "context": {
+            "includeDeclaration": true
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "method": "textDocument/documentSymbol",
+        "params": {
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 7,
+        "method": "textDocument/formatting",
+        "params": {
+          "textDocument": {
+            "uri": "file:///consultas.pseudo"
+          },
+          "options": {
+            "tabSize": 2,
+            "insertSpaces": true
+          }
         }
       }
-    ]
+    ],
+    "proyeccion": "consultas"
   }
 }
 ```

@@ -19,6 +19,7 @@ mod property_evidence;
 mod property_recording;
 mod property_resources;
 mod property_scenarios;
+mod property_service;
 mod property_states;
 mod property_steps;
 mod property_syntax;

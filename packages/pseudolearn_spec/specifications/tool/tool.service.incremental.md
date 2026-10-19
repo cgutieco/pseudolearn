@@ -54,7 +54,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cuando una edición modifica únicamente el cuerpo de una unidad de nivel superior sin alterar su firma ni las firmas de las demás unidades del documento, el servicio reutiliza el análisis semántico de las unidades cuyas huellas no cambiaron.",
+  "texto": "Cuando una edición modifica únicamente el cuerpo de una unidad de nivel superior sin alterar su firma ni las firmas de las demás unidades del documento, el servicio informa cuáles unidades conservan su huella y cuáles quedan afectadas, y no invalida las firmas del documento.",
   "verificacion": [
     "C2",
     "C3",
@@ -130,18 +130,24 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "reutilizadas": 2,
-      "reanalizadas": 1
+      "sin_cambios": 2,
+      "afectadas": 1
     }
   },
   "servicio": {
     "suboperacion": "incremental",
-    "documento": "SubProceso Uno()\n  x <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  y <- 2;\nFinSubProceso\n\nAlgoritmo Tres\n  z <- 3;\nFinAlgoritmo\n",
+    "documento": "SubProceso Uno()\n  x <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  w <- 2;\nFinSubProceso\n\nAlgoritmo Tres\n  z <- 3;\nFinAlgoritmo\n",
     "ediciones": [
       {
         "rango": {
-          "start": { "line": 6, "column": 8 },
-          "end": { "line": 6, "column": 9 }
+          "start": {
+            "line": 6,
+            "column": 8
+          },
+          "end": {
+            "line": 6,
+            "column": 9
+          }
         },
         "texto": "20"
       }
@@ -174,8 +180,14 @@
     "ediciones": [
       {
         "rango": {
-          "start": { "line": 1, "column": 18 },
-          "end": { "line": 1, "column": 19 }
+          "start": {
+            "line": 1,
+            "column": 18
+          },
+          "end": {
+            "line": 1,
+            "column": 20
+          }
         },
         "texto": "a, b)"
       }
@@ -205,7 +217,10 @@
   "servicio": {
     "suboperacion": "incremental",
     "documento": "Algoritmo Principal\n  Definir limite Como Entero;\n  limite <- 10;\n  Si limite > 0 Entonces\n",
-    "comprobacion": "estado_incompleto"
+    "comprobacion": "estado_incompleto",
+    "simbolos": [
+      "limite"
+    ]
   }
 }
 ```

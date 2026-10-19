@@ -31,7 +31,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 1,
+    "cases": 2,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -71,7 +71,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 2,
+    "cases": 3,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -110,9 +110,9 @@
     "subject": "service"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "no aplicable",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [
       {
         "id": "M1",
@@ -121,8 +121,37 @@
         "suite": "servicio"
       }
     ],
-    "reason": "Verificado mediante medicion M1 en suite de rendimiento.",
+    "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R5",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [
+      {
+        "id": "M2",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "servicio"
+      },
+      {
+        "id": "M3",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "servicio"
+      },
+      {
+        "id": "M4",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "servicio"
+      }
+    ],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R6",
     "state": "experimental",
     "subject": "service"
   },
@@ -158,7 +187,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 1,
+    "cases": 2,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -194,21 +223,21 @@
     "subject": "service"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": "Verificado mediante propiedad sintactica P1.",
+    "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
     "state": "experimental",
     "subject": "service"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": "Verificado mediante propiedad sintactica P2.",
+    "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
     "state": "experimental",
     "subject": "service"
@@ -254,11 +283,11 @@
     "subject": "service"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
     "measurements": [],
-    "reason": "Verificado mediante invariante estructural cubierto por propiedad P1.",
+    "reason": null,
     "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R2",
     "state": "experimental",
     "subject": "service"
@@ -305,7 +334,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 1,
+    "cases": 2,
     "measured": "cumple",
     "measurements": [],
     "reason": null,

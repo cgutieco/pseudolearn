@@ -72,8 +72,12 @@
     {
       "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R5",
       "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Verificado mediante medicion M1 en suite de rendimiento."
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.HOVER@0.1.0#R1",
@@ -108,14 +112,12 @@
     {
       "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
       "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Verificado mediante propiedad sintactica P1."
+      "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
       "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Verificado mediante propiedad sintactica P2."
+      "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.NAVIGATION@0.1.0#R1",
@@ -140,8 +142,7 @@
     {
       "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Verificado mediante invariante estructural cubierto por propiedad P1."
+      "estado": "cumple"
     },
     {
       "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R3",

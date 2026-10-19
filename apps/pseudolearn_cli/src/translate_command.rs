@@ -35,8 +35,12 @@ pub fn execute_translate(options: &CliOptions) -> Result<i32, CliError> {
             write_translation_output(options, target_path, &translated_content)?;
             Ok(0)
         }
-        Err(TranslationError::Collision { identifier, .. }) => {
-            emit_collision_diagnostic(options, target_path, &source_content, &identifier);
+        Err(TranslationError::Collision {
+            identifier, span, ..
+        }) => {
+            let offset = usize::try_from(span.start).unwrap_or(0);
+            let coordinates = line_and_column(&source_content, offset);
+            emit_collision_diagnostic(options, target_path, coordinates, &identifier);
             Ok(1)
         }
         Err(TranslationError::ParseFailure(_)) => {
@@ -46,52 +50,61 @@ pub fn execute_translate(options: &CliOptions) -> Result<i32, CliError> {
     }
 }
 
-fn emit_collision_diagnostic(
-    options: &CliOptions,
-    target_path: &str,
-    source_content: &str,
-    identifier: &str,
-) {
-    let (line, column) = find_identifier_coordinates(source_content, identifier);
-    let mut arguments = BTreeMap::new();
-    arguments.insert(
-        String::from("lexeme"),
-        serde_json::Value::String(identifier.to_owned()),
-    );
-    arguments.insert(
-        String::from("token"),
-        serde_json::Value::String(identifier.to_owned()),
-    );
-    let diagnostic = ApiDiagnostic {
+fn collision_diagnostic(coordinates: (u32, u32), identifier: &str) -> ApiDiagnostic {
+    let (line, column) = coordinates;
+    let word = serde_json::Value::String(identifier.to_owned());
+    let arguments = BTreeMap::from([
+        (String::from("lexeme"), word.clone()),
+        (String::from("token"), word),
+    ]);
+    let width = u32::try_from(identifier.chars().count()).unwrap_or(0);
+    ApiDiagnostic {
         code: String::from("reservedLexemeUsedAsName"),
         class: String::from("syntax"),
         severity: String::from("error"),
         message: String::new(),
         span: ApiSpan {
             start: ApiPosition { line, column },
-            end: ApiPosition { line, column },
+            end: ApiPosition {
+                line,
+                column: column.saturating_add(width),
+            },
         },
         arguments,
         related: Vec::new(),
-    };
+    }
+}
+
+fn emit_collision_diagnostic(
+    options: &CliOptions,
+    target_path: &str,
+    coordinates: (u32, u32),
+    identifier: &str,
+) {
+    let diagnostic = collision_diagnostic(coordinates, identifier);
     let rendered_line = format_diagnostic_line(
         &options.interface_language,
         target_path,
-        (line, column),
+        coordinates,
         &diagnostic,
     );
     eprint!("{rendered_line}");
 }
 
-fn find_identifier_coordinates(source_content: &str, identifier: &str) -> (u32, u32) {
-    for (line_index, line) in source_content.lines().enumerate() {
-        if let Some(col) = line.find(identifier) {
-            let line_number = u32::try_from(line_index.saturating_add(1)).unwrap_or(1);
-            let column_number = u32::try_from(col.saturating_add(1)).unwrap_or(1);
-            return (line_number, column_number);
-        }
-    }
-    (1, 1)
+fn line_and_column(text: &str, offset: usize) -> (u32, u32) {
+    let head = text.get(..offset.min(text.len())).unwrap_or("");
+    let line = head.matches('\n').count().saturating_add(1);
+    let line_start = head.rfind('\n').map_or(0, |index| index.saturating_add(1));
+    let column = head
+        .get(line_start..)
+        .unwrap_or("")
+        .chars()
+        .count()
+        .saturating_add(1);
+    (
+        u32::try_from(line).unwrap_or(1),
+        u32::try_from(column).unwrap_or(1),
+    )
 }
 
 fn write_translation_output(

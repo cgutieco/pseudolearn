@@ -1,0 +1,42 @@
+{
+  "documents": {
+    "1000": {
+      "lines": 1000,
+      "update_ms": {
+        "iqr": 0.018,
+        "mad": 0.008,
+        "max": 1.083,
+        "mean": 0.865,
+        "median": 0.848,
+        "min": 0.837,
+        "p95": 1.007
+      }
+    },
+    "10000": {
+      "lines": 10000,
+      "update_ms": {
+        "iqr": 0.182,
+        "mad": 0.088,
+        "max": 9.242,
+        "mean": 8.987,
+        "median": 8.981,
+        "min": 8.758,
+        "p95": 9.174
+      }
+    }
+  },
+  "experiment": "service-incremental-latency",
+  "machine": {
+    "arch": "aarch64",
+    "cpu": "Apple M2",
+    "os": "macos",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)"
+  },
+  "observed_p95_ms": {
+    "1000": 1.0070000000000001,
+    "10000": 9.173542
+  },
+  "protocol": "PERF.PROTOCOL#R1",
+  "status": "passed",
+  "threshold_p95_ms_10000_lines": 16.0
+}

@@ -131,12 +131,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+      "traducido": "Algorithm Sombras\n  Define rc As Real;\n  rc <- 5.0;\n  Define total As Integer;\n  total <- round(rc);\nEndAlgorithm\n"
     }
   },
   "servicio": {
     "suboperacion": "translate",
-    "documento": "Algoritmo Sombras\n  Definir longitud Como Entero;\n  longitud <- 5;\n  s <- mayusculas(\"texto\");\nFinAlgoritmo\n",
+    "documento": "Algoritmo Sombras\n  Definir rc Como Real;\n  rc <- 5.0;\n  Definir total Como Entero;\n  total <- redon(rc);\nFinAlgoritmo\n",
     "hacia": "en"
   }
 }

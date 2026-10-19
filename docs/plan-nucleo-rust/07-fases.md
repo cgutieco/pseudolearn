@@ -303,7 +303,8 @@ Cierre aceptado por D-R6-03 e informe [18](18-informe-implementacion-s1-s6-r6.md
 - **Contenido.**
   - [x] Las especificaciones `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP`,
      `TOOL.LSP.CAPABILITIES`, `TOOL.CLI.FORMAT` y `TOOL.CLI.TRANSLATE`, al empezar la fase.
-  - [x] Crate `service` con análisis incremental.
+  - [x] Crate `service` con análisis incremental (edición por rango, huellas por unidad e informe de cambios; la
+    reconstrucción completa cumple el presupuesto de latencia, ver informe §11).
   - [x] `pseudo format`, `pseudo translate` y `pseudo lsp`.
   - [ ] Extensión mínima de VS Code (opcional en esta fase).
 - **Criterios de aceptación.**
@@ -311,6 +312,10 @@ Cierre aceptado por D-R6-03 e informe [18](18-informe-implementacion-s1-s6-r6.md
   - [x] Doble traducción idéntica al original en todo el corpus.
   - [x] Formateo idempotente.
   - [x] Latencias de `PERF.*` del servicio cumplidas en el hardware de referencia.
+
+Reabierta tras una auditoría del primer cierre (commit `8dc88dd`), que halló resultados de experimentos sin arnés,
+un adaptador de conformidad con respuestas fijas, propiedades que no ejecutaban nada, formateo y traducción por
+líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el informe §11.
 
 ### R8 · Puente con la app y la web
 
@@ -849,3 +854,82 @@ ordinario e igualdad de HEAD local y remoto comprobada mediante `git ls-remote`.
 
 **Parada.** Fase R5 formalmente completada y cerrada. De acuerdo con la regla `PHASE-STOP`, la ejecución se
 detiene aquí y se espera autorización explícita antes de iniciar cualquier labor de R6.
+
+## 11. Informe de ejecución R7 · 2026-10-19
+
+**Contexto.** El primer cierre de R7 (`8dc88dd`) marcó todas las casillas, pero la auditoría posterior encontró que no
+estaban respaldadas: los JSON de E-09 y E-20 no los generaba ningún programa; el adaptador de conformidad del sujeto
+`service` devolvía constantes (`coincide_con_frio: true`, `conservados: true`, listas de candidatos fijas, un caso
+especial para `whi`) en lugar de consultar el servicio; los cinco ejecutores de propiedades de `service` devolvían «sin
+contraejemplo» sin ejecutar nada; cuatro reglas estaban exentas; el formateador y el traductor operaban sobre líneas de
+texto con tablas incompletas; el autocompletado era heurístico (subcadenas, sin ámbito ni ordenación); y la sesión
+«incremental» reanalizaba todo. Este cierre rehace esas piezas y deja la evidencia reproducible.
+
+**Implementación.**
+- `pseudolearn_lexicon`: `KeywordKind::lexeme`, `BuiltinKind::lexeme`, `all()` y el prefijo compuesto reservado, generados
+  desde el vocabulario, de modo que ninguna herramienta copia listas de palabras.
+- `pseudolearn_semantic`: ocurrencias de declaración de campos y recopilación de símbolos en `service_collection`.
+- `pseudolearn_service` (reescrito en gran parte): formateador y traductor sobre tokens sin pérdida con ortografía
+  canónica del vocabulario; sombreado de funciones estándar según las ocurrencias del análisis; colisiones con posición
+  exacta; contexto del cursor y autocompletado por ámbito, miembros y superclases, tipos, cierre de bloques, términos de
+  continuación y pistas bilingües, con orden determinista; plantillas construidas con el vocabulario y verificadas por el
+  analizador; índice de símbolos por token (definición, referencias, resaltado, símbolos); hover y ayuda de firma desde el
+  léxico y el análisis; sesión con edición por rango, huellas emparejadas por nombre, tipo y ordinal e identidad de nodos
+  anclada a la unidad; servidor LSP con ciclo de vida, errores estándar, sincronización incremental UTF-16, diagnósticos
+  sintácticos y semánticos localizados, cierre de documentos y las nueve capacidades anunciadas.
+- `pseudolearn_conformance`: el adaptador `service` consulta de verdad al servicio y devuelve proyecciones calculadas; una
+  operación desconocida produce un error, no `{}`.
+- `see_conformance`: ejecutores reales de las cinco propiedades de servicio y de reimpresión y recuperación sin pérdida
+  sobre el sujeto `service`, con casos negativos.
+- `pseudolearn_bench_worker`: órdenes `service e09`, `service incremental` y `service e20`; umbrales leídos de los contratos.
+- `apps/pseudolearn_cli`: `lsp` con el ciclo de vida completo y código de salida correcto; `traducir` informa línea y
+  columna del nombre en colisión.
+
+**Cambios de contrato dentro de la fase (sin subir versiones, `0.1.0`).** Los casos de las especificaciones nuevas
+contenían programas inválidos (`y` es la conjunción en español, funciones estándar inexistentes como `mayusculas`,
+`subcadena`, `Caso valor:` que la gramática no tiene, `Clase` sin algoritmo) y proyecciones imposibles de calcular desde
+el servicio; se corrigieron, se añadieron `COMPLETION#R6` con `M2`–`M4` y los casos `C7` y `C8`, y `INCREMENTAL#R2` se
+reformuló a lo que el servicio garantiza (informar qué unidades conservan huella; la reutilización de resultados
+semánticos entre ediciones no se implementa). Esta es una decisión que la persona responsable debe ratificar.
+
+**Pruebas.** `pseudolearn_engine`: 807 tests, 0 fallos (94 en `pseudolearn_service`, incluidos los 172 programas de
+referencia, ediciones aleatorias y ambos perfiles); `pseudolearn_spec`: 154; `apps/pseudolearn_cli`: 40;
+`pseudolearn_rust_checks`: 45.
+
+**Verificadores.**
+
+| Comprobación | Resultado |
+|---|---|
+| `cargo xtask verify` en `pseudolearn_engine` | Formato, Clippy, suite, doctests, `rust-checks all .`, `rust-checks toolchain` y `cargo deny check` en verde |
+| `cargo xtask verify` en `pseudolearn_spec` y en `pseudolearn_rust_checks` | En verde; 156 especificaciones validadas, lock y exportación sincronizados |
+| `cargo xtask verify` en `apps/pseudolearn_cli` | En verde |
+| `see conform --subject service` | 36 observaciones, **0 divergencias**; 7 propiedades `cumple` sobre 886 escenarios (976 en las de reimpresión) |
+| `see conform --subject cli` | 64 observaciones, **0 divergencias** |
+| Doble traducción sobre los 172 programas canónicos | 170 vuelven idénticos; 2 programas en inglés usan `y` como nombre, reservado en español, y se rechazan con `reservedLexemeUsedAsName` |
+| Matrices `service`, `cli`, `engine`, `aot` | Sin regresiones; `service` sin reglas exentas (31 reglas `cumple`) |
+| `DOC-NO-TRANSIENT-REFS` | En verde |
+
+**Experimentos** (Apple M2, `rustc 1.99.0`; evidencia en `packages/pseudolearn_spec/results/`).
+- E-09 (`r7-service-e09.json`, 172 programas, 2 730 consultas con prefijo de dos caracteres): precisión@5 87,3 % en español
+  y 94,2 % en inglés (umbral 85 %), precisión@1 87,4 % (60 %), ahorro de pulsaciones 51,2 % (35 %), validez de las 18
+  plantillas 100 %, latencia p95 de la consulta en un documento de 10 000 líneas 0,74 ms (50 ms). Con prefijo vacío:
+  precisión@5 74,2 %.
+- Latencia de edición (`r7-service-incremental.json`): p95 1,0 ms a 1 000 líneas y 9,2 ms a 10 000 (umbral 16 ms). El primer
+  intento midió 85 ms por una búsqueda cuadrática en el índice de símbolos, corregida.
+- E-20 (`r7-toolchain-e20.json`, 30 muestras): `comprobar` 2,3 ms (3,1 ms con 1 000 líneas), `ejecutar` 2,4 ms, `compilar`
+  45 ms, `formatear` 2,3 ms (4,7 ms con 1 000 líneas), `traducir` 2,3 ms (3,7 ms), `lsp` hasta el primer diagnóstico 2,2 ms;
+  completado y hover en caliente 0,16 ms y 0,13 ms (medianas).
+
+**Observaciones y resolución.** Se corrigió el cálculo de escrituras en el resaltado (`x <- 1` tras `Definir`), la
+detección de líneas de inicio de sentencia, el orden de los cierres de bloque y la normalización de espacios; la antigua
+lista de «hallazgos» sobre el código Dart congelado no se tocó.
+
+**Pendientes.**
+- Extensión mínima de VS Code: opcional en la fase; no se hace, el servidor LSP ya sirve a cualquier editor.
+- Reutilización de resultados semánticos entre ediciones: no implementada (ver cambios de contrato); condición para
+  retomarla: un presupuesto que el reanálisis completo deje de cumplir.
+
+**Publicación.** Ver el resultado del push en la conversación.
+
+**Parada.** R7 cerrada. De acuerdo con `PHASE-STOP`, la ejecución se detiene aquí y se espera autorización explícita
+antes de iniciar R8.

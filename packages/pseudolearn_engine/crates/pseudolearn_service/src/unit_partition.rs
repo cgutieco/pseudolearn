@@ -16,8 +16,8 @@ pub struct UnitFingerprint {
 pub struct PartitionReport {
     pub units: Vec<UnitFingerprint>,
     pub signature_invalidated: bool,
-    pub reused_count: usize,
-    pub reanalyzed_count: usize,
+    pub unchanged_count: usize,
+    pub affected_count: usize,
 }
 
 pub fn partition_units(tree: &SyntaxTree, source: &SourceText) -> Vec<UnitFingerprint> {
@@ -29,38 +29,56 @@ pub fn partition_units(tree: &SyntaxTree, source: &SourceText) -> Vec<UnitFinger
         .collect()
 }
 
+enum Comparison {
+    Unchanged,
+    BodyChanged,
+    SignatureChanged,
+}
+
+fn compare_unit(counterpart: Option<&UnitFingerprint>, unit: &UnitFingerprint) -> Comparison {
+    match counterpart {
+        None => Comparison::SignatureChanged,
+        Some(old) if old.signature_hash != unit.signature_hash => Comparison::SignatureChanged,
+        Some(old) if old.body_hash != unit.body_hash => Comparison::BodyChanged,
+        Some(_) => Comparison::Unchanged,
+    }
+}
+
 pub fn compare_partitions(
     previous: &[UnitFingerprint],
     current: &[UnitFingerprint],
 ) -> PartitionReport {
-    let mut signature_invalidated = previous.len() != current.len();
-    let mut reused_count = 0usize;
-    let mut reanalyzed_count = 0usize;
-
+    let mut report = PartitionReport {
+        units: current.to_vec(),
+        signature_invalidated: previous.len() != current.len(),
+        unchanged_count: 0,
+        affected_count: 0,
+    };
+    let mut seen: Vec<(&str, NodeKind)> = Vec::new();
     for unit in current {
-        let Some(old_unit) = previous
+        let ordinal = seen
             .iter()
-            .find(|candidate| candidate.name == unit.name)
-        else {
-            signature_invalidated = true;
-            reanalyzed_count = reanalyzed_count.saturating_add(1);
-            continue;
-        };
-        if old_unit.signature_hash != unit.signature_hash {
-            signature_invalidated = true;
-            reanalyzed_count = reanalyzed_count.saturating_add(1);
-        } else if old_unit.body_hash != unit.body_hash {
-            reanalyzed_count = reanalyzed_count.saturating_add(1);
-        } else {
-            reused_count = reused_count.saturating_add(1);
+            .filter(|(name, kind)| *name == unit.name && *kind == unit.kind)
+            .count();
+        seen.push((unit.name.as_str(), unit.kind));
+        let counterpart = previous
+            .iter()
+            .filter(|candidate| candidate.name == unit.name && candidate.kind == unit.kind)
+            .nth(ordinal);
+        match compare_unit(counterpart, unit) {
+            Comparison::Unchanged => {
+                report.unchanged_count = report.unchanged_count.saturating_add(1);
+            }
+            Comparison::BodyChanged => {
+                report.affected_count = report.affected_count.saturating_add(1);
+            }
+            Comparison::SignatureChanged => {
+                report.signature_invalidated = true;
+                report.affected_count = report.affected_count.saturating_add(1);
+            }
         }
     }
-    PartitionReport {
-        units: current.to_vec(),
-        signature_invalidated,
-        reused_count,
-        reanalyzed_count,
-    }
+    report
 }
 
 fn compute_unit_fingerprint(declaration: &UnitDeclaration, source: &SourceText) -> UnitFingerprint {

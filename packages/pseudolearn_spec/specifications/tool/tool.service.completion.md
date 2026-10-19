@@ -110,7 +110,23 @@
   "texto": "Para un mismo documento, perfil y posición de cursor, la lista de candidatos devuelta es estrictamente determinista en contenido y orden.",
   "verificacion": [
     "C1",
+    "C7",
     "M1"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Sobre los programas de referencia en ambos idiomas, con un prefijo de dos caracteres, el candidato esperado figura entre los cinco primeros en al menos el 85 % de las consultas de cada idioma, es el primero en al menos el 60 % y el ahorro de pulsaciones alcanza el 35 %.",
+  "verificacion": [
+    "C8",
+    "M2",
+    "M3",
+    "M4"
   ]
 }
 ```
@@ -145,7 +161,22 @@
   "servicio": {
     "suboperacion": "completion",
     "documento": "Algoritmo Principal\n  Definir total Como \nFinAlgoritmo\n",
-    "posicion": { "line": 2, "column": 22 }
+    "posicion": {
+      "line": 2,
+      "column": 22
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "Entero",
+      "Real",
+      "Logico",
+      "Caracter",
+      "Cadena"
+    ],
+    "excluye": [
+      "Escribir",
+      "Mientras"
+    ]
   }
 }
 ```
@@ -170,7 +201,11 @@
   "servicio": {
     "suboperacion": "completion",
     "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \nFinAlgoritmo\n",
-    "posicion": { "line": 3, "column": 5 }
+    "posicion": {
+      "line": 3,
+      "column": 5
+    },
+    "proyeccion": "primer_candidato"
   }
 }
 ```
@@ -194,6 +229,7 @@
         "Mover"
       ],
       "excluye": [
+        "total",
         "Escribir",
         "Algoritmo"
       ]
@@ -201,8 +237,21 @@
   },
   "servicio": {
     "suboperacion": "completion",
-    "documento": "Clase Punto\n  x;\n  SubProceso Mover()\n  FinSubProceso\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  p.\nFinAlgoritmo\n",
-    "posicion": { "line": 10, "column": 5 }
+    "documento": "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  Definir total Como Entero;\n  p.\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 10,
+      "column": 5
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "x",
+      "Mover"
+    ],
+    "excluye": [
+      "total",
+      "Escribir",
+      "Algoritmo"
+    ]
   }
 }
 ```
@@ -222,18 +271,18 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+      "plantilla": "Segun expresion Hacer\n  valor:\n    \n  De Otro Modo:\n    \nFinSegun"
     }
   },
   "esperas": {
     "es": {
       "servicio": {
-        "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+        "plantilla": "Segun expresion Hacer\n  valor:\n    \n  De Otro Modo:\n    \nFinSegun"
       }
     },
     "en": {
       "servicio": {
-        "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+        "plantilla": "Switch expression Do\n  value:\n    \n  Otherwise:\n    \nEndSwitch"
       }
     }
   },
@@ -267,7 +316,11 @@
   "servicio": {
     "suboperacion": "completion",
     "documento": "Algoritmo Principal\n  whi\nFinAlgoritmo\n",
-    "posicion": { "line": 2, "column": 6 }
+    "posicion": {
+      "line": 2,
+      "column": 6
+    },
+    "proyeccion": "sugerencia_bilingue"
   }
 }
 ```
@@ -292,7 +345,70 @@
   "servicio": {
     "suboperacion": "completion",
     "documento": "Algoritmo Principal\n  // Escr\n  s <- \"Escr\";\nFinAlgoritmo\n",
-    "posicion": { "line": 2, "column": 10 }
+    "posicion": {
+      "line": 2,
+      "column": 10
+    },
+    "proyeccion": "vacio"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "determinista": true
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "proyeccion": "determinista",
+    "documento": "Algoritmo Principal\n  Definir a Como Entero;\n  Definir b Como Entero;\n  \nFinAlgoritmo\n",
+    "posicion": {
+      "line": 4,
+      "column": 3
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "rango": 1
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "proyeccion": "rango",
+    "esperado": "Escribir",
+    "documento": "Algoritmo Principal\n  Esc\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 6
+    }
   }
 }
 ```
@@ -318,6 +434,57 @@
   "suite": "servicio",
   "comparador": "<=",
   "umbral": 50.0,
+  "provisional": false,
+  "plataformas": [
+    "macos-aarch64",
+    "linux-x86_64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M2",
+  "metrica": "precision_en_5",
+  "unidad": "porcentaje",
+  "suite": "servicio",
+  "comparador": ">=",
+  "umbral": 85.0,
+  "provisional": false,
+  "plataformas": [
+    "macos-aarch64",
+    "linux-x86_64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M3",
+  "metrica": "precision_en_1",
+  "unidad": "porcentaje",
+  "suite": "servicio",
+  "comparador": ">=",
+  "umbral": 60.0,
+  "provisional": false,
+  "plataformas": [
+    "macos-aarch64",
+    "linux-x86_64"
+  ],
+  "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```medicion
+{
+  "id": "M4",
+  "metrica": "ahorro_de_pulsaciones",
+  "unidad": "porcentaje",
+  "suite": "servicio",
+  "comparador": ">=",
+  "umbral": 35.0,
   "provisional": false,
   "plataformas": [
     "macos-aarch64",

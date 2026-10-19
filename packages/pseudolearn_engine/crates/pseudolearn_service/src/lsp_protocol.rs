@@ -1,81 +1,77 @@
-use serde::{Deserialize, Serialize};
+use crate::completion::CompletionKind;
+use crate::navigation::{Position, Range};
+use crate::positions::{lsp_position_at, offset_at, offset_from_lsp, position_at};
+use serde_json::{Value, json};
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LspPosition {
-    pub line: u32,
-    pub character: u32,
+pub const SERVER_NOT_INITIALIZED: i64 = -32002;
+pub const INVALID_REQUEST: i64 = -32600;
+pub const METHOD_NOT_FOUND: i64 = -32601;
+
+pub fn request_id(message: &Value) -> Value {
+    message.get("id").cloned().unwrap_or(Value::Null)
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LspRange {
-    pub start: LspPosition,
-    pub end: LspPosition,
+pub fn success(message: &Value, result: Value) -> Value {
+    json!({ "jsonrpc": "2.0", "id": request_id(message), "result": result })
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LspLocation {
-    pub uri: String,
-    pub range: LspRange,
+pub fn failure(message: &Value, code: i64, text: &str) -> Value {
+    json!({
+        "jsonrpc": "2.0",
+        "id": request_id(message),
+        "error": { "code": code, "message": text }
+    })
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct LspDiagnostic {
-    pub range: LspRange,
-    pub severity: Option<u32>,
-    pub message: String,
-    pub source: Option<String>,
+pub fn text_document_uri(message: &Value) -> &str {
+    message
+        .pointer("/params/textDocument/uri")
+        .and_then(Value::as_str)
+        .unwrap_or("")
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct TextDocumentIdentifier {
-    pub uri: String,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct VersionedTextDocumentIdentifier {
-    pub uri: String,
-    pub version: i32,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct TextDocumentEntry {
-    pub uri: String,
-    #[serde(rename = "languageId")]
-    pub language_id: String,
-    pub version: i32,
-    pub text: String,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct TextDocumentContentChangeEvent {
-    pub range: Option<LspRange>,
-    pub text: String,
-}
-
-pub fn parse_lsp_position(message: &serde_json::Value) -> crate::navigation::Position {
+pub fn position_from_request(text: &str, message: &Value) -> Position {
     let line = message
         .pointer("/params/position/line")
-        .and_then(serde_json::Value::as_u64)
+        .and_then(Value::as_u64)
         .unwrap_or(0);
     let character = message
         .pointer("/params/position/character")
-        .and_then(serde_json::Value::as_u64)
+        .and_then(Value::as_u64)
         .unwrap_or(0);
-    crate::navigation::Position {
-        line: u32::try_from(line.saturating_add(1)).unwrap_or(1),
-        column: u32::try_from(character.saturating_add(1)).unwrap_or(1),
-    }
+    let offset = offset_from_lsp(
+        text,
+        u32::try_from(line).unwrap_or(u32::MAX),
+        u32::try_from(character).unwrap_or(u32::MAX),
+    );
+    position_at(text, offset)
 }
 
-pub fn map_completion_kind_code(kind: crate::completion::CompletionKind) -> u64 {
+pub fn lsp_range_from_offsets(text: &str, start: usize, ending: usize) -> Value {
+    let (start_line, start_character) = lsp_position_at(text, start);
+    let (end_line, end_character) = lsp_position_at(text, ending);
+    json!({
+        "start": { "line": start_line, "character": start_character },
+        "end": { "line": end_line, "character": end_character }
+    })
+}
+
+pub fn lsp_range(text: &str, range: Range) -> Value {
+    lsp_range_from_offsets(
+        text,
+        offset_at(text, range.start),
+        offset_at(text, range.end),
+    )
+}
+
+pub fn completion_kind_code(kind: CompletionKind) -> u64 {
     match kind {
-        crate::completion::CompletionKind::Keyword => 14,
-        crate::completion::CompletionKind::Type => 7,
-        crate::completion::CompletionKind::Variable => 6,
-        crate::completion::CompletionKind::Function => 3,
-        crate::completion::CompletionKind::Method => 2,
-        crate::completion::CompletionKind::Field => 5,
-        crate::completion::CompletionKind::Class => 7,
-        crate::completion::CompletionKind::Snippet => 15,
+        CompletionKind::Keyword => 14,
+        CompletionKind::Type | CompletionKind::Class => 7,
+        CompletionKind::Variable => 6,
+        CompletionKind::Function => 3,
+        CompletionKind::Method => 2,
+        CompletionKind::Field => 5,
+        CompletionKind::Snippet => 15,
     }
 }

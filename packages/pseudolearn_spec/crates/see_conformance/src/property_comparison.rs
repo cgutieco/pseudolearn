@@ -18,10 +18,17 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         | PropertyExecutor::ServiceTranslate => "service",
         _ => "api",
     };
-    declaration
-        .get("capabilities")
-        .and_then(Value::as_array)
-        .is_some_and(|values| values.contains(&json!(capability)))
+    let offered = |name: &str| {
+        declaration
+            .get("capabilities")
+            .and_then(Value::as_array)
+            .is_some_and(|values| values.contains(&json!(name)))
+    };
+    let syntax_probe = matches!(
+        executor,
+        PropertyExecutor::LosslessReprint | PropertyExecutor::LosslessRecovery
+    );
+    offered(capability) || (syntax_probe && offered("service"))
 }
 
 pub(crate) fn check(
@@ -99,7 +106,9 @@ fn check_syntax_or_service(
         | PropertyExecutor::ServiceIncremental
         | PropertyExecutor::ServiceCompletionTemplates
         | PropertyExecutor::ServiceFormat
-        | PropertyExecutor::ServiceTranslate => Ok(None),
+        | PropertyExecutor::ServiceTranslate => {
+            crate::property_service::check(executor, scenario, subject)
+        }
         _ => Err("SEE-PROPERTY: executor unavailable".to_owned()),
     }
 }

@@ -37,6 +37,7 @@ fn generate() -> Result<(), Box<dyn std::error::Error>> {
     code.push_str(&generate_builtins(functions));
     code.push_str(&function_metadata::signatures(functions)?);
     code.push_str(&function_metadata::canonical_words(vocabulary)?);
+    code.push_str(&function_metadata::canonical_builtin_words(functions)?);
     code.push_str(&function_metadata::compound_prefixes(vocabulary));
     code.push_str(&generate_openers(vocabulary));
 
@@ -69,6 +70,12 @@ fn generate_enums(
 fn generate_keywords(vocabulary: &serde_json::Map<String, serde_json::Value>) -> String {
     let mut code = String::new();
     code.push_str("impl KeywordKind {\n");
+    code.push_str("    pub fn all() -> &'static [KeywordKind] {\n        &[\n");
+    for identity in vocabulary.keys() {
+        let pascal = to_pascal_case(identity);
+        code.push_str(&format!("            Self::{pascal},\n"));
+    }
+    code.push_str("        ]\n    }\n");
     code.push_str("    pub fn as_str(&self) -> &'static str {\n");
     code.push_str("        match self {\n");
     for identity in vocabulary.keys() {
@@ -91,6 +98,12 @@ fn generate_keywords(vocabulary: &serde_json::Map<String, serde_json::Value>) ->
 fn generate_builtins(functions: &serde_json::Map<String, serde_json::Value>) -> String {
     let mut code = String::new();
     code.push_str("impl BuiltinKind {\n");
+    code.push_str("    pub fn all() -> &'static [BuiltinKind] {\n        &[\n");
+    for identity in functions.keys() {
+        let pascal = to_pascal_case(identity);
+        code.push_str(&format!("            Self::{pascal},\n"));
+    }
+    code.push_str("        ]\n    }\n");
     code.push_str("    pub fn as_str(&self) -> &'static str {\n");
     code.push_str("        match self {\n");
     for identity in functions.keys() {

@@ -125,12 +125,12 @@
   "operacion": "service",
   "espera": {
     "servicio": {
-      "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+      "formateado": "Algoritmo Flexible\n  x <- 1\n  w <- 2\nFinAlgoritmo\n"
     }
   },
   "servicio": {
     "suboperacion": "format",
-    "documento": "Algoritmo Flexible\n  x := 1;\n  y <- 2;\nFinAlgoritmo\n"
+    "documento": "Algoritmo Flexible\n  x := 1;\n  w <- 2;\nFinAlgoritmo\n"
   }
 }
 ```

@@ -1,181 +1,283 @@
-use crate::navigation::{Position, byte_offset_at_position};
-use pseudolearn_lexicon::Profile;
-use pseudolearn_semantic::hir::Passing;
-use pseudolearn_semantic::types::Type;
-use pseudolearn_semantic::{ServiceAnalysis, ServiceSymbolCategory};
-use pseudolearn_source::SourceText;
+use crate::keyword_help::keyword_description;
+use crate::navigation::Position;
+use crate::positions::offset_at;
+use crate::query_context::QueryContext;
+use crate::spelling::{boolean_spelling, builtin_spelling, keyword_spelling};
+use crate::symbol_queries::{callable_parts, callable_signature};
+use crate::type_names::{builtin_type_display, type_display};
+use pseudolearn_lexicon::{KeywordKind, find_builtin, signature_for_builtin};
+use pseudolearn_semantic::hir::FunctionKind;
+use pseudolearn_semantic::{FieldId, ServiceAnalysis, ServiceSymbolCategory, ServiceSymbolTarget};
+use pseudolearn_syntax::TokenKind;
 use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum HoverCategory {
+    Variable,
+    Parameter,
+    Field,
+    Function,
+    Procedure,
+    Method,
+    Class,
+    Builtin,
+    Keyword,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct HoverOutcome {
+    pub category: HoverCategory,
     pub type_name: String,
     pub is_inferred: bool,
     pub is_intrinsic: bool,
     pub identifier: String,
     pub signature: Option<String>,
+    pub description: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SignatureHelp {
     pub active_parameter: u32,
     pub signature: String,
+    pub parameters: Vec<String>,
 }
 
-pub fn hover_at_position(
-    analysis: &ServiceAnalysis,
-    source: &SourceText,
-    position: Position,
-    profile: Profile,
-) -> Option<HoverOutcome> {
-    let offset = byte_offset_at_position(source, position);
-    let word = extract_identifier_at_offset(source.as_str(), offset);
-    if let Some(intrinsic_name) = match_intrinsic(&word) {
-        return Some(HoverOutcome {
-            type_name: String::from("Function"),
-            is_inferred: false,
-            is_intrinsic: true,
-            identifier: intrinsic_name.to_owned(),
-            signature: Some(format!("{intrinsic_name}()")),
-        });
+pub fn hover_at_position(context: &QueryContext<'_>, position: Position) -> Option<HoverOutcome> {
+    let offset = offset_at(context.source.as_str(), position);
+    let slot = context.token_at(offset)?;
+    match context.tree.tokens.kind(slot)? {
+        TokenKind::Identifier => identifier_hover(context, offset, slot),
+        TokenKind::Keyword(kind) => Some(keyword_hover(context, kind)),
+        TokenKind::BooleanLiteral(value) => {
+            let kind = if value {
+                KeywordKind::BooleanTrue
+            } else {
+                KeywordKind::BooleanFalse
+            };
+            Some(HoverOutcome {
+                identifier: boolean_spelling(value, context.profile),
+                ..keyword_hover(context, kind)
+            })
+        }
+        _ => None,
     }
-    let symbol = analysis.symbol_at_byte_offset(offset)?;
-    let type_kind = analysis.module.types.get(symbol.type_id);
-    let type_name = format_type_name(type_kind, profile);
-    let signature = if symbol.category == ServiceSymbolCategory::Function
-        || symbol.category == ServiceSymbolCategory::Procedure
-    {
-        Some(format_signature(
-            &symbol.name,
-            &symbol.parameter_types,
-            profile,
-        ))
-    } else {
-        None
-    };
-    Some(HoverOutcome {
-        type_name,
-        is_inferred: symbol.is_inferred,
+}
+
+fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome {
+    HoverOutcome {
+        category: HoverCategory::Keyword,
+        type_name: String::new(),
+        is_inferred: false,
         is_intrinsic: false,
-        identifier: symbol.name.clone(),
-        signature,
+        identifier: keyword_spelling(kind, context.profile),
+        signature: None,
+        description: Some(keyword_description(kind, context.profile).to_owned()),
+    }
+}
+
+fn identifier_hover(
+    context: &QueryContext<'_>,
+    offset: usize,
+    slot: usize,
+) -> Option<HoverOutcome> {
+    if let Some(found) = context.index.at_offset(offset) {
+        return symbol_hover(context, found.target);
+    }
+    let builtin = find_builtin(context.token_text(slot), context.profile)?;
+    let description = signature_for_builtin(builtin);
+    let name = builtin_spelling(builtin, context.profile);
+    let parameters: Vec<String> = description
+        .parameter_types
+        .iter()
+        .map(|word| builtin_type_display(word, context.profile))
+        .collect();
+    let result = builtin_type_display(description.return_type, context.profile);
+    let connector = keyword_spelling(KeywordKind::TypeConnector, context.profile);
+    Some(HoverOutcome {
+        category: HoverCategory::Builtin,
+        type_name: result.clone(),
+        is_inferred: false,
+        is_intrinsic: true,
+        identifier: name.clone(),
+        signature: Some(format!(
+            "{name}({}) {connector} {result}",
+            parameters.join(", ")
+        )),
+        description: None,
+    })
+}
+
+fn symbol_hover(context: &QueryContext<'_>, target: ServiceSymbolTarget) -> Option<HoverOutcome> {
+    match target {
+        ServiceSymbolTarget::Local(id) => local_hover(context, usize::try_from(id.0).ok()?),
+        ServiceSymbolTarget::Function(id) => function_hover(context, usize::try_from(id.0).ok()?),
+        ServiceSymbolTarget::Class(id) => {
+            let class = context
+                .analysis
+                .module
+                .classes
+                .get(usize::try_from(id.0).ok()?)?;
+            Some(plain(
+                HoverCategory::Class,
+                &class.name,
+                class.name.clone(),
+                false,
+            ))
+        }
+        ServiceSymbolTarget::Field(id) => field_hover(context, id),
+        ServiceSymbolTarget::Builtin(_) => None,
+    }
+}
+
+fn local_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
+    let analysis = context.analysis;
+    let local = analysis.module.locals.get(slot)?;
+    let category = if local.parameter {
+        HoverCategory::Parameter
+    } else {
+        HoverCategory::Variable
+    };
+    Some(plain(
+        category,
+        &local.name,
+        type_display(analysis, local.type_id, context.profile),
+        inferred_flag(analysis, slot),
+    ))
+}
+
+fn function_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
+    let analysis = context.analysis;
+    let function = analysis.module.functions.get(slot)?;
+    let category = match function.kind {
+        FunctionKind::Function => HoverCategory::Function,
+        FunctionKind::Method | FunctionKind::Constructor => HoverCategory::Method,
+        _ => HoverCategory::Procedure,
+    };
+    let mut outcome = plain(
+        category,
+        &function.name,
+        type_display(analysis, function.result, context.profile),
+        false,
+    );
+    outcome.signature = Some(callable_signature(analysis, slot, context.profile));
+    Some(outcome)
+}
+
+fn field_hover(context: &QueryContext<'_>, id: FieldId) -> Option<HoverOutcome> {
+    let analysis = context.analysis;
+    let field = analysis
+        .module
+        .classes
+        .iter()
+        .flat_map(|class| class.fields.iter())
+        .find(|field| field.id == id)?;
+    Some(plain(
+        HoverCategory::Field,
+        &field.name,
+        type_display(analysis, field.type_id, context.profile),
+        false,
+    ))
+}
+
+fn plain(category: HoverCategory, name: &str, type_name: String, inferred: bool) -> HoverOutcome {
+    HoverOutcome {
+        category,
+        type_name,
+        is_inferred: inferred,
+        is_intrinsic: false,
+        identifier: name.to_owned(),
+        signature: None,
+        description: None,
+    }
+}
+
+fn inferred_flag(analysis: &ServiceAnalysis, slot: usize) -> bool {
+    analysis.symbols.get(slot).is_some_and(|symbol| {
+        symbol.identifier == slot
+            && matches!(
+                symbol.category,
+                ServiceSymbolCategory::Variable | ServiceSymbolCategory::Parameter
+            )
+            && symbol.is_inferred
     })
 }
 
 pub fn signature_help_at_position(
-    analysis: &ServiceAnalysis,
-    source: &SourceText,
+    context: &QueryContext<'_>,
     position: Position,
-    profile: Profile,
 ) -> Option<SignatureHelp> {
-    let offset = byte_offset_at_position(source, position);
-    let text = source.as_str();
-    let prefix = text.get(..offset).unwrap_or(text);
-    let open_parenthesis_index = prefix.rfind('(')?;
-    let call_prefix = prefix.get(..open_parenthesis_index)?;
-    let function_name = call_prefix
-        .split(|character: char| !character.is_alphanumeric() && character != '_')
-        .rfind(|part| !part.is_empty())?;
-    let function = analysis.function_by_name(function_name)?;
-    let arguments_slice = prefix.get(open_parenthesis_index.saturating_add(1)..)?;
-    let active_parameter = u32::try_from(
-        arguments_slice
-            .chars()
-            .filter(|&character| character == ',')
-            .count(),
-    )
-    .unwrap_or(0);
-    let parameter_types: Vec<(String, pseudolearn_semantic::identities::TypeId, Passing)> =
-        function
-            .parameters
-            .iter()
-            .filter_map(|parameter_id| {
-                let parameter_position = usize::try_from(parameter_id.0).ok()?;
-                let local = analysis.module.locals.get(parameter_position)?;
-                Some((local.name.clone(), local.type_id, local.passing))
-            })
-            .collect();
-    let signature = format_signature(&function.name, &parameter_types, profile);
+    let offset = offset_at(context.source.as_str(), position);
+    let (open_slot, active) = enclosing_call(context, offset)?;
+    let callee = open_slot.checked_sub(1)?;
+    if context.tree.tokens.kind(callee)? != TokenKind::Identifier {
+        return None;
+    }
+    let name = context.token_text(callee);
+    let member = callee
+        .checked_sub(1)
+        .is_some_and(|slot| context.tree.tokens.kind(slot) == Some(TokenKind::Dot));
+    if let Some(parts) = user_callable(context, name, member) {
+        return Some(SignatureHelp {
+            active_parameter: active,
+            signature: parts.render(context.profile),
+            parameters: parts.parameters,
+        });
+    }
+    builtin_help(context, name, active)
+}
+
+fn user_callable(
+    context: &QueryContext<'_>,
+    name: &str,
+    member: bool,
+) -> Option<crate::symbol_queries::CallableParts> {
+    let analysis = context.analysis;
+    let wanted = context.profile.fold_word(name);
+    let slot = analysis.module.functions.iter().position(|function| {
+        context.profile.fold_word(&function.name) == wanted && function.owner.is_some() == member
+    })?;
+    callable_parts(analysis, slot, context.profile)
+}
+
+fn builtin_help(context: &QueryContext<'_>, name: &str, active: u32) -> Option<SignatureHelp> {
+    let builtin = find_builtin(name, context.profile)?;
+    let description = signature_for_builtin(builtin);
+    let parameters: Vec<String> = description
+        .parameter_types
+        .iter()
+        .map(|word| builtin_type_display(word, context.profile))
+        .collect();
+    let result = builtin_type_display(description.return_type, context.profile);
+    let connector = keyword_spelling(KeywordKind::TypeConnector, context.profile);
+    let label = builtin_spelling(builtin, context.profile);
     Some(SignatureHelp {
-        active_parameter,
-        signature,
+        active_parameter: active,
+        signature: format!("{label}({}) {connector} {result}", parameters.join(", ")),
+        parameters,
     })
 }
 
-fn extract_identifier_at_offset(text: &str, offset: usize) -> String {
-    let start = text
-        .get(..offset)
-        .and_then(|prefix| {
-            prefix.rfind(|character: char| !character.is_alphanumeric() && character != '_')
-        })
-        .map(|index| index.saturating_add(1))
-        .unwrap_or(0);
-    let ending = text
-        .get(offset..)
-        .and_then(|suffix| {
-            suffix.find(|character: char| !character.is_alphanumeric() && character != '_')
-        })
-        .map(|index| offset.saturating_add(index))
-        .unwrap_or(text.len());
-    text.get(start..ending).unwrap_or("").to_owned()
-}
-
-fn match_intrinsic(word: &str) -> Option<&'static str> {
-    let intrinsics = [
-        ("subcadena", "subcadena"),
-        ("substring", "substring"),
-        ("longitud", "longitud"),
-        ("length", "length"),
-        ("rc", "rc"),
-        ("raiz", "raiz"),
-        ("sqrt", "sqrt"),
-        ("abs", "abs"),
-        ("redon", "redon"),
-        ("round", "round"),
-        ("trunc", "trunc"),
-        ("azar", "azar"),
-        ("random", "random"),
-        ("mayusculas", "mayusculas"),
-        ("uppercase", "uppercase"),
-        ("minusculas", "minusculas"),
-        ("lowercase", "lowercase"),
-    ];
-    for &(candidate, canonical) in &intrinsics {
-        if word.eq_ignore_ascii_case(candidate) {
-            return Some(canonical);
+fn enclosing_call(context: &QueryContext<'_>, offset: usize) -> Option<(usize, u32)> {
+    let mut depth = 0u32;
+    let mut commas = 0u32;
+    for slot in (0..context.tree.tokens.token_count()).rev() {
+        let (Some(kind), Some(span)) = (
+            context.tree.tokens.kind(slot),
+            context.tree.tokens.span(slot),
+        ) else {
+            continue;
+        };
+        if usize::try_from(span.ending).unwrap_or(usize::MAX) > offset {
+            continue;
+        }
+        match kind {
+            TokenKind::Newline => return None,
+            TokenKind::RightParenthesis => depth = depth.saturating_add(1),
+            TokenKind::LeftParenthesis if depth == 0 => return Some((slot, commas)),
+            TokenKind::LeftParenthesis => depth = depth.saturating_sub(1),
+            TokenKind::Comma if depth == 0 => commas = commas.saturating_add(1),
+            _ => {}
         }
     }
     None
-}
-
-fn format_type_name(kind: Type, profile: Profile) -> String {
-    match (kind, profile) {
-        (Type::Integer, Profile::Spanish) => String::from("Entero"),
-        (Type::Integer, Profile::English) => String::from("Integer"),
-        (Type::Real, _) => String::from("Real"),
-        (Type::Boolean, Profile::Spanish) => String::from("Logico"),
-        (Type::Boolean, Profile::English) => String::from("Boolean"),
-        (Type::Character, Profile::Spanish) => String::from("Caracter"),
-        (Type::Character, Profile::English) => String::from("Character"),
-        (Type::String, Profile::Spanish) => String::from("Cadena"),
-        (Type::String, Profile::English) => String::from("String"),
-        _ => String::from("Desconocido"),
-    }
-}
-
-fn format_signature(
-    name: &str,
-    parameters: &[(String, pseudolearn_semantic::identities::TypeId, Passing)],
-    profile: Profile,
-) -> String {
-    let mut parts = Vec::new();
-    for (parameter_name, _, passing) in parameters {
-        let mode_text = match (passing, profile) {
-            (Passing::Reference, Profile::Spanish) => "Por Referencia",
-            (Passing::Reference, Profile::English) => "By Reference",
-            (Passing::Value, Profile::Spanish) => "Por Valor",
-            (Passing::Value, Profile::English) => "By Value",
-        };
-        parts.push(format!("{parameter_name} {mode_text}"));
-    }
-    format!("{name}({})", parts.join(", "))
 }

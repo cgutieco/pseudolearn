@@ -35,25 +35,26 @@ pub fn compute_node_identities(
     let Some(root_index) = tree.nodes.len().checked_sub(1) else {
         return identities;
     };
-    let top_children = tree.child_indices(root_index);
-    for (unit_position, &child_index) in top_children.iter().enumerate() {
-        let Some(child) = tree.node(child_index) else {
+    let mut seen_units: Vec<(String, String)> = Vec::new();
+    for &child_index in tree.child_indices(root_index) {
+        let Some((unit_name, unit_kind)) = unit_identity(tree, source, child_index) else {
             continue;
         };
         let Some(child_span) = tree.span_for_node(child_index) else {
             continue;
         };
-        let unit_name = compute_unit_name(tree, source, child_index);
-        let unit_kind = format!("{:?}", child.kind);
-        let path = vec![u32::try_from(unit_position).unwrap_or(0)];
-        identities.push((
-            SyntaxNodeId {
-                unit_name: unit_name.clone(),
-                unit_kind: unit_kind.clone(),
-                structural_path: path.clone(),
-            },
-            child_span,
-        ));
+        let ordinal = seen_units
+            .iter()
+            .filter(|(name, kind)| *name == unit_name && *kind == unit_kind)
+            .count();
+        seen_units.push((unit_name.clone(), unit_kind.clone()));
+        let path = vec![u32::try_from(ordinal).unwrap_or(0)];
+        let root_identity = SyntaxNodeId {
+            unit_name: unit_name.clone(),
+            unit_kind: unit_kind.clone(),
+            structural_path: path.clone(),
+        };
+        identities.push((root_identity, child_span));
         let builder = NodeIdentityBuilder {
             tree,
             unit_name,
@@ -62,6 +63,18 @@ pub fn compute_node_identities(
         builder.collect_children(child_index, &path, &mut identities);
     }
     identities
+}
+
+fn unit_identity(
+    tree: &SyntaxTree,
+    source: &SourceText,
+    child_index: usize,
+) -> Option<(String, String)> {
+    let child = tree.node(child_index)?;
+    Some((
+        compute_unit_name(tree, source, child_index),
+        format!("{:?}", child.kind),
+    ))
 }
 
 struct NodeIdentityBuilder<'syntax> {

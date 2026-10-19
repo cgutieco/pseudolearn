@@ -26,6 +26,7 @@ mod operator_types;
 mod operators;
 mod postfix_checker;
 pub mod service_analysis;
+pub mod service_collection;
 pub mod service_model;
 mod session;
 mod statement_checker;

@@ -104,7 +104,11 @@
   "servicio": {
     "suboperacion": "hover",
     "documento": "Algoritmo Principal\n  Definir contador Como Entero;\n  contador <- 1;\nFinAlgoritmo\n",
-    "posicion": { "line": 3, "column": 5 }
+    "posicion": {
+      "line": 3,
+      "column": 5
+    },
+    "proyeccion": "tipo"
   }
 }
 ```
@@ -130,7 +134,11 @@
   "servicio": {
     "suboperacion": "hover",
     "documento": "Algoritmo Principal\n  x <- 3.14\nFinAlgoritmo\n",
-    "posicion": { "line": 2, "column": 3 }
+    "posicion": {
+      "line": 2,
+      "column": 3
+    },
+    "proyeccion": "tipo"
   }
 }
 ```
@@ -155,8 +163,11 @@
   },
   "servicio": {
     "suboperacion": "signature_help",
-    "documento": "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Definir x, y Como Entero;\n  Intercambiar(x, );\nFinAlgoritmo\n",
-    "posicion": { "line": 6, "column": 19 }
+    "documento": "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Definir x, z Como Entero;\n  Intercambiar(x, );\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 6,
+      "column": 19
+    }
   }
 }
 ```
@@ -176,13 +187,17 @@
   "espera": {
     "servicio": {
       "es_intrinseca": true,
-      "identificador": "subcadena"
+      "identificador": "Longitud"
     }
   },
   "servicio": {
     "suboperacion": "hover",
-    "documento": "Algoritmo Principal\n  s <- subcadena(\"hola\", 1, 2);\nFinAlgoritmo\n",
-    "posicion": { "line": 2, "column": 10 }
+    "documento": "Algoritmo Principal\n  Definir n Como Entero;\n  n <- Longitud(\"hola\");\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 3,
+      "column": 10
+    },
+    "proyeccion": "intrinseca"
   }
 }
 ```

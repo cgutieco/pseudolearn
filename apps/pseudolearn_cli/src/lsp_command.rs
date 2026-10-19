@@ -15,22 +15,18 @@ pub fn execute_lsp(options: &CliOptions) -> i32 {
             continue;
         };
 
-        let method_name = request_json
-            .get("method")
-            .and_then(serde_json::Value::as_str);
-
-        if let Some(response_json) = server.handle_message(&request_json)
-            && send_lsp_response(&mut standard_output, &response_json).is_err()
-        {
-            return 0;
+        for response_json in server.handle_message(&request_json) {
+            if send_lsp_response(&mut standard_output, &response_json).is_err() {
+                return 1;
+            }
         }
 
-        if server.is_shutdown && method_name == Some("exit") {
+        if server.is_finished() {
             break;
         }
     }
 
-    0
+    server.exit_code.unwrap_or(1)
 }
 
 fn read_next_payload<Reader: BufRead>(reader: &mut Reader) -> Option<Vec<u8>> {

@@ -1340,7 +1340,7 @@
     },
     {
       "actual": {
-        "error_output": "colision.pseudo:2:5: error: «fin» es una palabra reservada de este perfil, equivalente a fin. Elegí otro nombre. [reservedLexemeUsedAsName]\n",
+        "error_output": "colision.pseudo:2:10: error: «fin» es una palabra reservada de este perfil, equivalente a fin. Elegí otro nombre. [reservedLexemeUsedAsName]\n",
         "exit_code": 1,
         "json": null,
         "kind": "cli",

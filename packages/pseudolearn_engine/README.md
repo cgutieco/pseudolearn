@@ -36,7 +36,6 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | codegen: Cranelift permanece como backend release; trampas inmediatas con bloque frío compartido con identidad por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
-| service: incrementalidad sobre postorden; salsa sujeto a E-08 | Análisis medido | R7 |
 | wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
@@ -240,9 +239,9 @@ Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se r
 
 ### service
 
-Problema: proporcionar herramientas de desarrollo de alta respuesta (autocompletado sensible al contexto, navegación, información emergente, formateo canónico, traducción y servidor LSP) sin introducir dependencias externas masivas ni duplicar el árbol sintáctico.
-Elección: sesión de documento incremental (`DocumentSession`) que particiona el documento por unidades de nivel superior (`UnitFingerprint`) sobre el árbol postorden existente; autocompletado bilingüe determinista (`TOOL.SERVICE.COMPLETION`) sensible a contexto y plantillas sintácticas; formateador canónico idempotente (`TOOL.FORMAT.STYLE`); traductor bilingüe libre de colisiones (`TOOL.TRANSLATE.ROUND-TRIP`); y servidor de Language Server Protocol (`LspServerSession`) sobre JSON-RPC con conversión exacta entre desplazamientos byte UTF-8 y posiciones línea/columna UTF-16 (`TOOL.LSP.CAPABILITIES`).
-Alternativas descartadas: frameworks externos de computación incremental (Salsa, Rowan) se descartan por su sobrecarga de memoria, dependencias pesadas y acoplamiento; reanálisis total sin caché se descarta por exceder el presupuesto de latencia en archivos grandes.
+Problema: proporcionar herramientas de edición de alta respuesta (autocompletado sensible al contexto, navegación, información emergente, formateo canónico, traducción y servidor LSP) sin dependencias externas masivas ni duplicar el árbol sintáctico.
+Elección: sesión de documento (`DocumentSession`) que aplica ediciones por rango, reconstruye árbol, análisis e índice de símbolos y calcula las huellas de firma y de cuerpo de cada unidad para informar qué unidades cambiaron; autocompletado determinista derivado de los tokens anteriores al cursor, el análisis semántico y el vocabulario; formateador y traductor sobre los tokens sin pérdida del analizador, con ortografía canónica tomada del vocabulario generado; servidor LSP sin entrada ni salida propias, con ciclo de vida, sincronización incremental y posiciones UTF-16. El detalle de cada decisión vive en el README del crate.
+Alternativas descartadas: frameworks externos de cómputo incremental (Salsa, Rowan), por dependencias pesadas y duplicación del árbol; reutilizar resultados semánticos entre ediciones, porque exige desplazar los intervalos posteriores a cada edición y la latencia medida de la reconstrucción completa cumple el presupuesto hasta diez mil líneas; formatear o traducir por líneas de texto, que no distingue cadenas, comentarios ni sombreado de funciones estándar.
 
 Problema: una máscara puede convertir un índice inválido en otro registro válido. Elección: bancos con capacidad creciente en potencias de dos y acceso indexado comprobado después de validar bytecode; el relleno de capacidad no amplía la ventana lógica.
 Alternativa descartada: enmascarar índices de bytecode, porque puede ocultar un operando fuera de ventana.

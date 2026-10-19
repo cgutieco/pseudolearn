@@ -1,14 +1,14 @@
 {
   "corpus_hashes": {
-    "TOOL.FORMAT.STYLE": "95646ef96efc06c8fa67ebe39725805106ee4ccc064bbd4f7480d031c52b4a28",
-    "TOOL.LSP.CAPABILITIES": "f1dbf551583ca4fa2a8e0bfe7375d43b24db878dd19e74c2c405b08bf5c62fd6",
-    "TOOL.SERVICE.COMPLETION": "f8ea708c629cdb092ac81ae7205fa6d1bfc7f29e66cc41c671034277066e4f02",
-    "TOOL.SERVICE.HOVER": "1419638858d073906b23cd014bef48890a4bad6bae568496ee5f44459cbb90f5",
-    "TOOL.SERVICE.INCREMENTAL": "f07efc6265ad86e32ff1463fd48b9e79a311928c4cebed4118b44705a2fa4423",
+    "TOOL.FORMAT.STYLE": "9444225479dee96254650decc751c9fba2632cd2caec16fc1debdc908147659f",
+    "TOOL.LSP.CAPABILITIES": "a6f5f9e27ba6bc34bf8a6021c98b6cd3c92fac06108dd771c8ca535528513531",
+    "TOOL.SERVICE.COMPLETION": "8e1082c98126b040612eff464d5457035691c39b75b1173636778ef0b9a5d675",
+    "TOOL.SERVICE.HOVER": "88e6766588f4bc3c01455198c498d39b070abf4b94d15e888a1b619965fc2e7f",
+    "TOOL.SERVICE.INCREMENTAL": "64b19607a55f35da335d9f00479c6380ae6c53221c359976ce427feb89eaa84e",
     "TOOL.SERVICE.LOSSLESS-TREE": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
     "TOOL.SERVICE.NAVIGATION": "810c825f2b9c32efc2e4aa54de52035be79be63ef847d65a66750cf6e529e93f",
-    "TOOL.SERVICE.NODE-IDENTITY": "d741b4e13b712a7448e8971dff8527febc32c392e217d55f247b56e950b79cf3",
-    "TOOL.TRANSLATE.ROUND-TRIP": "2fc15bac4487f39861b7f1d734850728ba0c7503105ef4ccb317f2ba704147b8"
+    "TOOL.SERVICE.NODE-IDENTITY": "86283ab5d05f07e9dfcbf04562688ba4ba7dc757f2adff3c673cdd3f56610d79",
+    "TOOL.TRANSLATE.ROUND-TRIP": "2dfda9b3a532b46cc71275f7d76685f4d54520b7995f5c38980269bc53cd9519"
   },
   "observations": [
     {
@@ -35,14 +35,14 @@
       "actual": {
         "kind": "service",
         "service": {
-          "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+          "formateado": "Algoritmo Flexible\n  x <- 1\n  w <- 2\nFinAlgoritmo\n"
         }
       },
       "case": "C2",
       "differences": [],
       "expected": {
         "servicio": {
-          "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+          "formateado": "Algoritmo Flexible\n  x <- 1\n  w <- 2\nFinAlgoritmo\n"
         }
       },
       "profile": "es",
@@ -224,6 +224,7 @@
             "Mover"
           ],
           "excluye": [
+            "total",
             "Escribir",
             "Algoritmo"
           ]
@@ -238,6 +239,7 @@
             "Mover"
           ],
           "excluye": [
+            "total",
             "Escribir",
             "Algoritmo"
           ]
@@ -253,14 +255,14 @@
       "actual": {
         "kind": "service",
         "service": {
-          "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+          "plantilla": "Segun expresion Hacer\n  valor:\n    \n  De Otro Modo:\n    \nFinSegun"
         }
       },
       "case": "C4",
       "differences": [],
       "expected": {
         "servicio": {
-          "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+          "plantilla": "Segun expresion Hacer\n  valor:\n    \n  De Otro Modo:\n    \nFinSegun"
         }
       },
       "profile": "es",
@@ -273,14 +275,14 @@
       "actual": {
         "kind": "service",
         "service": {
-          "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+          "plantilla": "Switch expression Do\n  value:\n    \n  Otherwise:\n    \nEndSwitch"
         }
       },
       "case": "C4",
       "differences": [],
       "expected": {
         "servicio": {
-          "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+          "plantilla": "Switch expression Do\n  value:\n    \n  Otherwise:\n    \nEndSwitch"
         }
       },
       "profile": "en",
@@ -339,6 +341,46 @@
       "actual": {
         "kind": "service",
         "service": {
+          "determinista": true
+        }
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "determinista": true
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "rango": 1
+        }
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "rango": 1
+        }
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
           "inferido": false,
           "tipo": "Entero"
         }
@@ -406,7 +448,7 @@
         "kind": "service",
         "service": {
           "es_intrinseca": true,
-          "identificador": "subcadena"
+          "identificador": "Longitud"
         }
       },
       "case": "C4",
@@ -414,7 +456,7 @@
       "expected": {
         "servicio": {
           "es_intrinseca": true,
-          "identificador": "subcadena"
+          "identificador": "Longitud"
         }
       },
       "profile": "es",
@@ -447,16 +489,16 @@
       "actual": {
         "kind": "service",
         "service": {
-          "reanalizadas": 1,
-          "reutilizadas": 2
+          "afectadas": 1,
+          "sin_cambios": 2
         }
       },
       "case": "C2",
       "differences": [],
       "expected": {
         "servicio": {
-          "reanalizadas": 1,
-          "reutilizadas": 2
+          "afectadas": 1,
+          "sin_cambios": 2
         }
       },
       "profile": "es",
@@ -732,7 +774,7 @@
         }
       },
       "profile": "es",
-      "rule": "R1",
+      "rule": "R2",
       "specification": "TOOL.SERVICE.NODE-IDENTITY",
       "strictness": "estricto",
       "verdict": "cumple"
@@ -823,14 +865,14 @@
       "actual": {
         "kind": "service",
         "service": {
-          "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+          "traducido": "Algorithm Sombras\n  Define rc As Real;\n  rc <- 5.0;\n  Define total As Integer;\n  total <- round(rc);\nEndAlgorithm\n"
         }
       },
       "case": "C2",
       "differences": [],
       "expected": {
         "servicio": {
-          "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+          "traducido": "Algorithm Sombras\n  Define rc As Real;\n  rc <- 5.0;\n  Define total As Integer;\n  total <- round(rc);\nEndAlgorithm\n"
         }
       },
       "profile": "es",

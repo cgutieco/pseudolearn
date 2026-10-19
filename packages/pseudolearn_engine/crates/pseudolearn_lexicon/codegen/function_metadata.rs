@@ -71,3 +71,21 @@ pub fn canonical_words(
     generated.push_str("];\npub fn keyword_lexeme(identity: &str, profile: &str) -> Option<&'static str> { CANONICAL_WORDS.binary_search_by(|entry| (entry.0, entry.1).cmp(&(identity, profile))).ok().and_then(|index| CANONICAL_WORDS.get(index)).map(|entry| entry.2) }\n");
     Ok(generated)
 }
+
+pub fn canonical_builtin_words(
+    functions: &serde_json::Map<String, serde_json::Value>,
+) -> Result<String, String> {
+    let mut generated = String::from("static CANONICAL_BUILTINS: &[(&str, &str, &str)] = &[\n");
+    for (name, entry) in functions {
+        for profile in ["en", "es"] {
+            let word = entry
+                .get("lexemas")
+                .and_then(|lexemes| lexemes.get(profile))
+                .and_then(serde_json::Value::as_str)
+                .ok_or("Missing canonical builtin lexeme")?;
+            generated.push_str(&format!("({name:?}, {profile:?}, {word:?}),\n"));
+        }
+    }
+    generated.push_str("];\npub fn builtin_lexeme(identity: &str, profile: &str) -> Option<&'static str> { CANONICAL_BUILTINS.iter().find(|entry| entry.0 == identity && entry.1 == profile).map(|entry| entry.2) }\n");
+    Ok(generated)
+}
