@@ -36,7 +36,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | codegen: Cranelift permanece como backend release; trampas inmediatas con bloque frío compartido con identidad por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
-| wasm: bancos crecientes con máscara; puentes generados | API completa | R8 |
+| wasm: bancos crecientes con máscara; puentes generados con `wasm-bindgen` y CLI `0.2.129` | API completa | R8 |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -231,6 +231,18 @@ Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elecc
 La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
 Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
+
+### wasm
+
+Problema: exponer la API del motor al navegador sin incluir el backend AOT nativo ni su dependencia Cranelift.
+Elección: `pseudolearn_wasm` se enlaza con `pseudolearn_api` sin features por omisión y fija `wasm-bindgen` y
+`wasm-bindgen-cli` en `0.2.129`. El mismo número para runtime y generador conserva el formato de enlace esperado;
+Rust `1.99.0` supera el MSRV publicado por esa versión. `wasm-bindgen` aporta las exportaciones JavaScript y las
+conversiones de tipos, mientras la API conserva la propiedad de recursos y el contrato del motor.
+Alternativas descartadas: activar la feature `native` incluiría Cranelift para un destino que no compila código
+nativo; usar versiones distintas del crate y CLI deja de corresponder al esquema de enlace.
+Fuentes: [versiones de wasm-bindgen](https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.129) y
+[documentación de wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/).
 
 ### conformance
 

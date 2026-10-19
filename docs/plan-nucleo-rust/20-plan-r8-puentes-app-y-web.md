@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0 y B1 ejecutados; B2–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B2 ejecutados; B3–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> La autorización vigente cubre B1 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
+> La autorización vigente cubre B2 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -228,15 +228,41 @@ La evidencia de clasificación, impacto y revisión independiente de esperados v
 
 ### B2 · Prueba de viabilidad del transporte
 
-- [ ] Contrastar documentación oficial y fijar versiones compatibles de herramientas y librerías.
-- [ ] Generar una prueba desechable en un directorio temporal para inspeccionar imports, comentarios,
+- [x] Contrastar documentación oficial y fijar versiones compatibles de herramientas y librerías.
+- [x] Generar una prueba desechable en un directorio temporal para inspeccionar imports, comentarios,
       atributos, `unsafe`, hilos y comportamiento síncrono; resolver D-R8-02 y D-R8-05.
-- [ ] Probar negociación, un documento, un avance y una consulta con enteros extremos y Unicode.
-- [ ] Medir una primera ida y vuelta y un lote real; comprobar que no incorpora Cranelift.
-- [ ] Documentar en README la elección de transporte, vida de buffers y alternativas descartadas.
+- [x] Probar negociación, un documento, un avance y una consulta con enteros extremos y Unicode.
+- [x] Medir una primera ida y vuelta y un lote real; comprobar que no incorpora Cranelift.
+- [x] Documentar en README la elección de transporte, vida de buffers y alternativas descartadas.
 
 **Puerta:** camino Rust → Dart → dominio verificable en macOS y viabilidad de los otros objetivos.
 Un conflicto de política o un coste incompatible se reporta antes de extender el producto.
+
+#### Registro de B2 · 2026-10-19
+
+La prueba desechable se generó con `flutter_rust_bridge_codegen 2.13.0`, `flutter_rust_bridge 2.13.0` y
+`flutter_rust_bridge_hooks 2.13.0`, sobre Flutter `3.47.5`, Dart `3.13.4` y Rust `1.99.0`. Se seleccionó el
+backend Native Assets. Para Wasm se fijan `wasm-bindgen` y `wasm-bindgen-cli` en `0.2.129`; no se usa Cargokit.
+
+FRB requiere `Sync` para una sesión opaca. `ApiSession` no lo implementa porque contiene estado `Cell` del motor,
+así que la prueba la mantuvo en un registro `thread_local` y expuso handles `u64` con funciones `#[frb(sync)]`.
+La negociación, la creación de documento, análisis e inicio, el avance en lotes de 64 eventos y la consulta de
+estado cruzaron Dart, FFI y `pseudolearn_api`. Se verificaron `i64::MIN`, `i64::MAX`, `u64::MAX`, edición aceptada
+y rechazada, sesión inválida, doble cierre y salida Unicode (`ñ`, `🌍`). Un programa de 12 000 iteraciones completó
+563 lotes y sus consultas. La primera llamada FFI midió 6 253 µs; los lotes midieron p50 80 µs y p95 95 µs en
+macOS arm64. La biblioteca se compiló en release con `default-features = false`; `cargo tree` no mostró Cranelift.
+
+El código generado contiene comentarios, `#![allow]`, bloques `unsafe` en las funciones de decodificación y
+`unwrap` del codec. D-R8-05 queda resuelta con exención exclusiva para `native/src/frb_generated.rs` y
+`lib/engine/bridge/**`; el código escrito a mano no hereda ninguna exención. D-R8-02 queda resuelta con llamadas
+síncronas por micro-lote y una sesión confinada al hilo invocador. El codec transfiere un bloque serializado por
+llamada; los valores se decodifican a datos dueños y ningún puntero permanece entre llamadas.
+
+Flutter generó correctamente el hook Native Assets para macOS. El intento de `flutter build macos --debug` quedó
+en la preparación del SDK macOS sin producir artefacto y se interrumpió; por eso este registro acredita el camino
+Dart–FFI–API por compilación nativa directa, no un build completo de la app Flutter. El soporte del hook para los
+demás destinos se documenta, pero iOS y Windows no se compilaron en esta prueba. La compilación de la app con el
+hook y su matriz de plataformas siguen dentro de B3 y B6.
 
 ### B3 · Puente nativo y generación reproducible
 
@@ -326,7 +352,7 @@ Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión 
 - [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0 y B1 reflejan su ejecución; B2–B9 siguen pendientes.
+comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0, B1 y B2 reflejan su ejecución; B3–B9 siguen pendientes.
 
 ### Registro de B0 · 2026-10-19
 
@@ -418,10 +444,10 @@ simulador, macOS x86_64 o Windows.
 | ID | Alternativas y efecto | Evidencia disponible | Estado |
 |---|---|---|---|
 | D-R8-01 | Conservar diagramas, emisores y aserciones estructurales mediante una vista pública inmutable; o retirarlos con decisión explícita. Afecta B1, B3 y B5. | Hay 39 consumidores Dart del núcleo en 12 subdirectorios de `engine/` y puertos segregados para estas responsabilidades. | Resuelta: conservarlos mediante `API.PROGRAM.VIEW`; implementación en B3–B5. |
-| D-R8-02 | Mantener una superficie síncrona acotada si el transporte lo permite; o cambiar puertos y composición si la herramienta obliga a asincronía/hilos. Afecta B2–B4. | Los puertos examinados son síncronos; no se ha probado generador ni transporte. | Pendiente de prueba y resolución antes de editar puertos. |
+| D-R8-02 | Mantener una superficie síncrona acotada si el transporte lo permite; o cambiar puertos y composición si la herramienta obliga a asincronía/hilos. Afecta B2–B4. | FRB 2.13.0 generó funciones sync; la ruta Dart–FFI–`pseudolearn_api` ejecutó lotes de 64 con p95 de 95 µs. `ApiSession` no es `Sync`. | Resuelta: handles `u64` sobre un registro del hilo invocador; sin sesión opaca ni worker. |
 | D-R8-03 | Medir una biblioteca Android sin distribuir app Flutter; o ampliar producto y distribución Android. Afecta B1, B6 y B8. | Android aparece como objetivo en arquitectura/performance, pero no en README, scaffold ni workflows de la app. | Resuelta: Android sigue en la hoja de ruta; R8 no exige compilarlo ni distribuir la app Flutter. |
 | D-R8-04 | Entregar `pseudolearn_wasm` con consumidor mínimo de navegador; o incluir Flutter web y sus adaptadores de persistencia/autenticación. Afecta B1 y B7. | No hay `web/` en la app; el workflow web existente despliega otro producto (`apps/fe-pseudolearn`). | Resuelta: `pseudolearn_wasm` con consumidor mínimo; sin Flutter web. |
-| D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | No se ha ejecutado aún una generación de prueba; las reglas actuales prohíben comentarios y `unsafe` salvo fronteras ya declaradas. | Pendiente de evidencia de B2. |
+| D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | La salida 2.13.0 incluye comentarios, atributos `allow`, `unsafe` y `unwrap` de codec. | Resuelta: excepciones exactas en `native/src/frb_generated.rs` y `lib/engine/bridge/**`, con regeneración reproducible; ningún permiso global. |
 | D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Resuelta: versiones congeladas; clasificación e impacto en evidencia separada, sin bloque `cambio`. |
 | D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Resuelta: consumir el contrato vigente sin exigir reutilización semántica ni crear dependencia futura de ratificación. |
 | D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | Hay iPhone físico iOS 27.0.1, pero el modelo no fue identificado. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Pendiente de selección y disponibilidad verificable. |

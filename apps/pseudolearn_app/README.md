@@ -565,6 +565,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
   interfaz procese eventos de usuario, atienda el botón de detención y actualice los pintores sin congelamientos.
 - **Prohibición de `await` en capa de presentación:** Los widgets delegan toda operación asíncrona a los cubits; las
   respuestas a diálogos se entregan como comandos unidireccionales mediante callbacks síncronos.
+- **Frontera Rust síncrona:** El contrato del transporte generado reserva al hilo de la interfaz las operaciones breves de
+  negociación, consulta y avance por micro-lote. Cada lote devuelve antes de que `StepBatchRunner` ceda al bucle de
+  eventos; el puente no crea workers ni convierte los puertos síncronos en `Future`.
 
 ---
 
@@ -2029,6 +2032,31 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Alternativas descartadas:** tolerancia de píxeles, omitir goldens o regenerarlos automáticamente
   para cerrar CI, porque ocultan diferencias sin revisión. El runner está en vista previa: su
   disponibilidad se comprueba por ejecución; cambiar de imagen requiere revisar los goldens.
+
+### 4.49 Frontera síncrona Rust–Dart con handles y Native Assets
+
+- **Problema:** Los puertos de análisis y ejecución son síncronos, `ApiSession` contiene estado `!Sync` y el código
+  generado de FFI tiene convenciones que no coinciden con las del código escrito a mano.
+- **Elección:** `flutter_rust_bridge`, su generador y `flutter_rust_bridge_hooks` se fijan juntos en `2.13.0`.
+  El backend elegido es Native Assets; la integración conserva desactivada la feature `native` de `pseudolearn_api`.
+  Las operaciones de frontera se declaran `#[frb(sync)]`; la configuración deja `default_dart_async: false`.
+  La sesión vive en un registro local al hilo invocador y Dart transporta un handle `u64`; `ApiSession` no se expone
+  como objeto opaco ni cruza hilos. El handle llega a Dart como `BigInt`, por lo que conserva todo el rango `u64`.
+- **Vida de los buffers:** El codec SSE crea un mensaje serializado por llamada y transfiere la propiedad de su
+  bloque entre Dart y Rust. Rust decodifica valores dueños como `String` y estructuras; al finalizar se descartan el
+  decoder y su bloque. No se retienen punteros ni vistas prestadas entre llamadas. Los consumidores intercambian
+  parámetros y resultados por valor, no un estado de memoria compartido.
+- **Código generado:** Solo `native/src/frb_generated.rs` y el subárbol `lib/engine/bridge/` pueden contener los
+  comentarios, atributos, bloques `unsafe` y `unwrap` que FRB emite. Son salidas inmutables del generador y su
+  versión fijada; la regeneración debe producir un árbol limpio. Todo wrapper escrito a mano permanece sujeto a
+  los límites y verificadores ordinarios. Las exenciones se limitan a esas rutas exactas.
+- **Alternativas descartadas:** Exponer `ApiSession` como objeto opaco exige `Sync`; no satisface el tipo de máquina
+  actual. Las llamadas asíncronas o un worker cambian el contrato de los puertos. Cargokit se descarta porque FRB
+  ofrece el backend Native Assets en la versión fijada y la app ya mantiene su versión exacta de Flutter.
+- **Fuentes:** [FRB 2.13.0](https://github.com/fzyzcjy/flutter_rust_bridge/releases/tag/v2.13.0),
+  [llamadas síncronas](https://cjycode.com/flutter_rust_bridge/guides/concurrency/sync-dart),
+  [modelo de concurrencia](https://cjycode.com/flutter_rust_bridge/guides/concurrency/overview),
+  [Native Assets](https://github.com/fzyzcjy/flutter_rust_bridge/blob/master/website/docs/manual/integrate/03-native-assets.md).
 
 ---
 
