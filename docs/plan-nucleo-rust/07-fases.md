@@ -319,6 +319,8 @@ líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el inform
 
 ### R8 · Puente con la app y la web
 
+> **Plan detallado:** [20 · Plan de ejecución de R8 · Puentes con la app y la web](20-plan-r8-puentes-app-y-web.md).
+
 - [ ] **Experimentos:** E-NR2.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.

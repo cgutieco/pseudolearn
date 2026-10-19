@@ -41,8 +41,9 @@
 | 17 | [Plan de S1–S6 de R6](17-plan-s1-s6-r6.md) | Optimizaciones escalonadas S1–S6 del backend nativo |
 | 18 | [Informe de implementación S1–S6 de R6](18-informe-implementacion-s1-s6-r6.md) | Evidencia final de S1–S6 y cierre de R6 bajo D-R6-03 |
 | 19 | [Plan de R7 · Servicio de lenguaje y herramientas](19-plan-r7-servicio-y-herramientas.md) | Análisis empírico (E-08), especificaciones `TOOL.*`, arquitectura de `pseudolearn_service`, formateo, traducción, LSP, E-09/E-20 y bloques B0–B8 de R7 |
+| 20 | [Plan de R8 · Puentes con la app y la web](20-plan-r8-puentes-app-y-web.md) | Contratos `APP.*`, integración Flutter y Wasm, decisiones pendientes, E-NR2, presupuestos y bloques B0–B9 |
 
-Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para ejecutar R7, seguir **19**.
+Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para ejecutar R7, seguir **19**; para R8, **20**.
 
 ---
 
