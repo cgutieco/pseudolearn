@@ -929,7 +929,7 @@ lista de «hallazgos» sobre el código Dart congelado no se tocó.
 - Reutilización de resultados semánticos entre ediciones: no implementada (ver cambios de contrato); condición para
   retomarla: un presupuesto que el reanálisis completo deje de cumplir.
 
-**Publicación.** Ver el resultado del push en la conversación.
+**Publicación.** Rama única `feature/agregar-ruta-de-especificacion`; commit de implementación `60907e2`, push ordinario sin force, sin trailers de coautoría ni atribución de IA e igualdad de HEAD local y remoto comprobada con `git ls-remote`. No se ejecutó ninguna comprobación remota.
 
 **Parada.** R7 cerrada. De acuerdo con `PHASE-STOP`, la ejecución se detiene aquí y se espera autorización explícita
 antes de iniciar R8.
