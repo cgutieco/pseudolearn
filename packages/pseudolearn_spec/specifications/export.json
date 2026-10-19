@@ -12,6 +12,9 @@
     "API.MODEL": [
       "API.MODEL"
     ],
+    "API.PROGRAM": [
+      "API.PROGRAM.VIEW"
+    ],
     "API.STATE": [
       "API.STATE.QUERY"
     ],
@@ -20,6 +23,16 @@
     ],
     "API.WIRE-FORMAT": [
       "API.WIRE-FORMAT"
+    ],
+    "APP.EDITOR": [
+      "APP.EDITOR.COMPLETION"
+    ],
+    "APP.ENGINE": [
+      "APP.ENGINE.BOUNDARY"
+    ],
+    "APP.EXEC": [
+      "APP.EXEC.PACE",
+      "APP.EXEC.SNAPSHOT-VIEW"
     ],
     "DIAG.CATALOG": [
       "DIAG.CATALOG"
@@ -5200,6 +5213,257 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "vista_programa": {
+                "child_order": "source",
+                "node_kinds_include": [
+                  "declaration",
+                  "statement",
+                  "expression"
+                ],
+                "units": [
+                  {
+                    "kind": "algorithm",
+                    "name": "P",
+                    "order": 0
+                  }
+                ]
+              }
+            },
+            "id": "C1",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nDefinir total Como Entero;\ntotal <- 2 + 3;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "vista_programa": {
+                "inheritance": [
+                  {
+                    "base": "Base",
+                    "class": "Hija"
+                  }
+                ],
+                "methods": [
+                  {
+                    "class": "Hija",
+                    "name": "valor",
+                    "overrides": "Base.valor"
+                  }
+                ],
+                "units": [
+                  {
+                    "kind": "class",
+                    "name": "Base",
+                    "order": 0
+                  },
+                  {
+                    "kind": "class",
+                    "name": "Hija",
+                    "order": 1
+                  },
+                  {
+                    "kind": "algorithm",
+                    "name": "P",
+                    "order": 2
+                  }
+                ]
+              }
+            },
+            "id": "C2",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Clase Base\nMetodo valor() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nClase Hija Hereda De Base\nMetodo valor() Como Entero\nRetornar 2;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y puede incluir parent_node_id; toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "vista_programa": {
+                "node_ids_unique": true,
+                "nodes_include": [
+                  {
+                    "kind": "statement",
+                    "span": {
+                      "end": {
+                        "column": 14,
+                        "line": 2
+                      },
+                      "end_byte": "28",
+                      "start": {
+                        "column": 1,
+                        "line": 2
+                      },
+                      "start_byte": "12"
+                    }
+                  }
+                ],
+                "references_same_revision": true
+              }
+            },
+            "id": "C3",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n",
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Liberar el documento o crear una revisión posterior invalida la vista anterior y sus asociaciones de eventos. Consultar una identidad de nodo con otra revisión devuelve un error de uso, no un nodo coincidente por reutilización de índice.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "document_revision": 2,
+                "node_revision": 1,
+                "operation": "query_node"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "error": "usage",
+                "unrelated_resources_unchanged": true
+              }
+            },
+            "id": "C4",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "5bad2625575636fc6d5bde91a96cc123865f64859f14709ca4bfadd580d9cc92",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "API.MODEL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.ANALYZE",
+            "tipo": "refina",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.ERRORS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SOURCE.POSITION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SYNTAX.GRAMMAR",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.CLASS.INHERITANCE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "motor",
+        "duenos": [
+          "responsable-motor"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "API.PROGRAM.VIEW",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Proyección inmutable y portable para diagramas, emisores y comprobaciones estructurales.",
+        "revisado_por": [],
+        "sujetos": [
+          "engine",
+          "app"
+        ],
+        "titulo": "Vista pública del programa",
+        "titulo_en": "Public program view",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "El estado se consulta por referencia: la lista de marcos, las variables de un marco, un objeto por identidad y un intervalo de celdas de un arreglo por desplazamiento y cantidad, sin materializar el estado completo.",
             "verificacion": [
               "C1"
@@ -5337,9 +5601,96 @@
             "regla": "R3"
           },
           "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Un sujeto que anuncia state_pages acepta una consulta paginada con consulta, evento, tamaño de página y cursor opcional. Devuelve los elementos, un indicador de truncamiento y un cursor opaco cuando quedan elementos. El cursor queda ligado a la sesión, documento y revisión, ejecución, consulta, evento y tamaño de página que lo originaron. Usarlo con otra identidad, revisión, ejecución, consulta, evento o tamaño devuelve un error de uso y no cambia la ejecución.",
+            "verificacion": [
+              "C4",
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "estado_en": {
+                "estado": {
+                  "elements": [
+                    0,
+                    1
+                  ],
+                  "next_cursor": "opaque",
+                  "truncated": true
+                },
+                "evento": 2
+              }
+            },
+            "id": "C4",
+            "operacion": "trace",
+            "origen": "derivado",
+            "paginacion": {
+              "cursor": null,
+              "event": 2,
+              "page_size": 2,
+              "query": "array_cells"
+            },
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "eventos": [
+                {
+                  "clase": "statement_entered",
+                  "linea": 2
+                },
+                {
+                  "clase": "statement_exited",
+                  "linea": 2
+                }
+              ],
+              "fallo": {
+                "codigo": "usage"
+              }
+            },
+            "id": "C5",
+            "operacion": "trace",
+            "origen": "derivado",
+            "paginacion": {
+              "cursor": "cursor_from_event_2",
+              "event": 3,
+              "page_size": 2,
+              "query": "array_cells"
+            },
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "235369e5a26370986bf40e1b7e4c467a77a6c4437ab9828777a86ceea8f75a46",
+      "hash": "1fe59db9712cb6d04f4500617c72df4ea1979777c96a464970c79f91aab06433",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -5381,7 +5732,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y sus capacidades: analyze, execute, observe, seek e interface_language.",
+            "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view y state_pages. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
             "verificacion": [
               "P1"
             ]
@@ -5406,7 +5757,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
-            "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado.",
+            "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY.",
             "verificacion": [
               "P2"
             ]
@@ -5427,7 +5778,7 @@
           "kind": "propiedad"
         }
       ],
-      "hash": "c02174f7c6f10705957ba122029ff15195a30f4eba9a3e42c86c386e72e8866b",
+      "hash": "25a2423d46a17be03c77e183d3b3e13d1f85908b2bf88d73dc9017e430bb9ce8",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -5468,7 +5819,7 @@
           "fields": {
             "id": "D1",
             "termino": "esquema de intercambio",
-            "texto": "Claves ASCII en inglés y snake_case, independientes del idioma de interfaz. Diagnóstico: code, class, severity, span {start, end} con line y column, related y arguments. Resultado de análisis: tree y diagnostics. Resultado de ejecución: output, termination {kind, code, limit}, diagnostics y events. Evento: class, line y data. Las mismas formas son las respuestas de see-protocol/1."
+            "texto": "Claves ASCII en inglés y snake_case, independientes del idioma de interfaz. Diagnóstico: code, class, severity, span {start, end} con line y column, related y arguments. Resultado de análisis: tree y diagnostics. Resultado de ejecución: output, termination {kind, code, limit}, diagnostics y events. Evento: class, line, data y source opcional; source contiene revisión, identificador opaco de nodo y tramo cuando procede de una construcción de fuente, o null para un evento sintético. Las mismas formas son las respuestas de see-protocol/1."
           },
           "kind": "definicion"
         },
@@ -5476,7 +5827,23 @@
           "fields": {
             "id": "D2",
             "termino": "lote binario de eventos",
-            "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición de la clase en el alfabeto de ENG.TRACE.EVENTS), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final es la concatenación UTF-8 de los datos de cada evento en JSON canónico, precedida por su longitud total u32."
+            "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición de la clase en el alfabeto de ENG.TRACE.EVENTS), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final contiene, precedido por su longitud total u32, un objeto JSON canónico UTF-8 por evento con las claves data y source; source es null para un evento sintético y contiene revisión, node_id y tramo para un evento originado por el programa. Los desplazamientos apuntan al inicio de cada objeto y las claves se ordenan por puntos de código."
+          },
+          "kind": "definicion"
+        },
+        {
+          "fields": {
+            "id": "D3",
+            "termino": "valores enteros de 64 bits en JSON",
+            "texto": "Los enteros con tipo i64 o u64 se codifican como cadenas decimales ASCII con signo menos solo para negativos, sin ceros iniciales salvo el cero y sin representación de menos cero. Los demás enteros se codifican como números JSON decimales exactos. Un consumidor no convierte una cadena i64 o u64 a un número IEEE 754 de doble precisión."
+          },
+          "kind": "definicion"
+        },
+        {
+          "fields": {
+            "id": "D4",
+            "termino": "propiedad de los lotes y texto",
+            "texto": "Las cadenas conservan sus escalares Unicode sin normalización y se codifican como UTF-8. Un lote binario es una respuesta propia e inmutable hasta que el consumidor la descarta. Un envoltorio Wasm copia los bytes necesarios antes de la siguiente llamada que pueda crecer la memoria; ninguna vista prestada de memoria Wasm sobrevive a esa llamada."
           },
           "kind": "definicion"
         },
@@ -5485,12 +5852,42 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "El JSON canónico es UTF-8, sin espacios entre símbolos, con las claves de cada objeto ordenadas por puntos de código y con los números enteros en decimal exacto.",
+            "texto": "El JSON canónico es UTF-8, sin espacios entre símbolos y con las claves de cada objeto ordenadas por puntos de código. Los enteros i64 y u64 siguen D3 y el resto de números enteros se escribe en decimal exacto. Las cadenas preservan los escalares y bytes UTF-8 del texto fuente sin normalización.",
             "verificacion": [
-              "C1"
+              "C1",
+              "C2"
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "source": "Algoritmo P\nEscribir \"é🧩\";\nFinAlgoritmo\n",
+                "wire_response": "{\"kind\":\"document\",\"id\":\"9007199254740993\"}"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "decoded_id": "9007199254740993",
+                "source_equal": true,
+                "source_utf8_hex": "416c676f7269746d6f20500a4573637269626972202265cc81f09fa7a9223b0a46696e416c676f7269746d6f0a"
+              }
+            },
+            "id": "C2",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         },
         {
           "fields": {
@@ -5555,7 +5952,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
-            "texto": "Los lotes de eventos se codifican en el binario columnar de D2. Decodificar un lote binario produce los mismos eventos que su codificación JSON, y codificar y decodificar en cualquiera de las dos formas devuelve el valor original.",
+            "texto": "Los lotes de eventos se codifican en el binario columnar de D2. Decodificar un lote binario produce los mismos eventos, incluidos datos y fuente, que su codificación JSON; codificar y decodificar en cualquiera de las dos formas devuelve el valor original.",
             "verificacion": [
               "P1"
             ]
@@ -5574,9 +5971,239 @@
             "regla": "R2"
           },
           "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Los bytes de una respuesta binaria no dependen de la vida de la sesión después de que el transporte los entrega. El consumidor puede conservar o descartar la respuesta; el emisor puede reutilizar su almacenamiento solo después de completar esa entrega. En Wasm, el adaptador copia cualquier segmento necesario antes de una operación que pueda crecer la memoria lineal.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "memory_growth_before_next_decode": true,
+                "response_bytes": [
+                  80,
+                  76,
+                  69,
+                  86,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  153,
+                  0,
+                  0,
+                  0,
+                  123,
+                  34,
+                  100,
+                  97,
+                  116,
+                  97,
+                  34,
+                  58,
+                  123,
+                  125,
+                  44,
+                  34,
+                  115,
+                  111,
+                  117,
+                  114,
+                  99,
+                  101,
+                  34,
+                  58,
+                  123,
+                  34,
+                  110,
+                  111,
+                  100,
+                  101,
+                  95,
+                  105,
+                  100,
+                  34,
+                  58,
+                  34,
+                  110,
+                  34,
+                  44,
+                  34,
+                  114,
+                  101,
+                  118,
+                  105,
+                  115,
+                  105,
+                  111,
+                  110,
+                  95,
+                  105,
+                  100,
+                  34,
+                  58,
+                  34,
+                  114,
+                  34,
+                  44,
+                  34,
+                  115,
+                  112,
+                  97,
+                  110,
+                  34,
+                  58,
+                  123,
+                  34,
+                  101,
+                  110,
+                  100,
+                  34,
+                  58,
+                  123,
+                  34,
+                  99,
+                  111,
+                  108,
+                  117,
+                  109,
+                  110,
+                  34,
+                  58,
+                  50,
+                  44,
+                  34,
+                  108,
+                  105,
+                  110,
+                  101,
+                  34,
+                  58,
+                  49,
+                  125,
+                  44,
+                  34,
+                  101,
+                  110,
+                  100,
+                  95,
+                  98,
+                  121,
+                  116,
+                  101,
+                  34,
+                  58,
+                  34,
+                  49,
+                  34,
+                  44,
+                  34,
+                  115,
+                  116,
+                  97,
+                  114,
+                  116,
+                  34,
+                  58,
+                  123,
+                  34,
+                  99,
+                  111,
+                  108,
+                  117,
+                  109,
+                  110,
+                  34,
+                  58,
+                  49,
+                  44,
+                  34,
+                  108,
+                  105,
+                  110,
+                  101,
+                  34,
+                  58,
+                  49,
+                  125,
+                  44,
+                  34,
+                  115,
+                  116,
+                  97,
+                  114,
+                  116,
+                  95,
+                  98,
+                  121,
+                  116,
+                  101,
+                  34,
+                  58,
+                  34,
+                  48,
+                  34,
+                  125,
+                  125,
+                  125
+                ],
+                "transport": "wasm"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "borrowed_view_retained": false,
+                "response_owned": true,
+                "source_equal_after_growth": true,
+                "survives_next_call": true
+              }
+            },
+            "id": "C3",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "06a26998eb2ed71a98920b2b9fe04039c6dd717c179c551eef9b2580c1cf63ea",
+      "hash": "071a0992b52a1a3e3e8b55a03d38dbe9fb18c61229ee2adb2ac1f1ab7548f9c3",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -5604,10 +6231,1339 @@
         "resumen": "Un esquema con JSON canónico y lotes binarios columnares.",
         "revisado_por": [],
         "sujetos": [
-          "engine"
+          "engine",
+          "app"
         ],
         "titulo": "Formato de intercambio",
         "titulo_en": "Wire format",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El editor consulta TOOL.SERVICE.COMPLETION con el texto, revisión, perfil del pseudocódigo y posición del cursor actuales. No mantiene una tabla paralela de palabras, firmas, ámbitos ni candidatos.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 31,
+                "document": "Algoritmo P\nDefinir total Como \nFinAlgoritmo\n",
+                "interface_language": "en",
+                "profile": "es"
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "candidates_include": [
+                  "Entero",
+                  "Real",
+                  "Logico",
+                  "Caracter",
+                  "Cadena"
+                ],
+                "source": "TOOL.SERVICE.COMPLETION"
+              }
+            },
+            "id": "C1",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 21,
+                "document": "algorithm P\nwrite \"🧩\";\nendAlgorithm\n",
+                "interface_language": "es",
+                "profile": "en"
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "candidate_matches_service": true,
+                "position_unit": "utf16",
+                "service_position_unit": "utf8"
+              }
+            },
+            "id": "C2",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "El cursor del editor se expresa en unidades de código UTF-16 desde cero. El adaptador convierte el límite seleccionado a desplazamiento UTF-8 para el servicio y convierte cada tramo de edición devuelto a UTF-16. Un cursor dentro de un par sustituto se rechaza sin solicitar candidatos ni modificar el documento.",
+            "verificacion": [
+              "C3",
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 24,
+                "document": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n",
+                "expected_boundary": "after_supplementary_scalar"
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "round_trip_utf16": 24,
+                "service_offset_utf8": 26
+              }
+            },
+            "id": "C3",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 23,
+                "document": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n",
+                "invalid_reason": "inside_surrogate_pair"
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "document_changed": false,
+                "error": "usage",
+                "request_sent": false
+              }
+            },
+            "id": "C4",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Cada solicitud de completado se asocia a una revisión monotónica del documento. Una respuesta de una revisión sustituida se descarta aunque llegue después y no puede alterar candidatos, selección ni texto de la revisión vigente.",
+            "verificacion": [
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "requests": [
+                  {
+                    "document": "Algoritmo P\nDefinir x Como \nFinAlgoritmo\n",
+                    "revision": 1
+                  },
+                  {
+                    "document": "Algoritmo P\nDefinir x Como Real;\nFinAlgoritmo\n",
+                    "revision": 2
+                  }
+                ],
+                "responses": [
+                  2,
+                  1
+                ]
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "stale_response_applied": false,
+                "visible_revision": 2
+              }
+            },
+            "id": "C5",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "El perfil del pseudocódigo y el idioma de interfaz son parámetros independientes. Cambiar el idioma de interfaz solo cambia la prosa y etiquetas localizadas; no cambia los lexemas, firmas, identidad ni orden normativo de candidatos del perfil activo.",
+            "verificacion": [
+              "C6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "document": "Algoritmo P\nFinAlgoritmo\n",
+                "interface_languages": [
+                  "es",
+                  "en"
+                ],
+                "profile": "es",
+                "query": "algorithm_header"
+              },
+              "scenario": "completion"
+            },
+            "espera": {
+              "aplicacion": {
+                "candidate_lexemes_equal": true,
+                "localized_labels_may_differ": true
+              }
+            },
+            "id": "C6",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "8c6588fb0931630d12c698d68e1da2cedd3e70dc8ee63ef9fe2a55d7fa524015",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.SERVICE.COMPLETION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.VERSIONING",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.WIRE-FORMAT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SOURCE.POSITION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "app",
+        "duenos": [
+          "responsable-aplicacion"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "APP.EDITOR.COMPLETION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "El editor consume el servicio Rust y mantiene posiciones, revisiones y perfiles coherentes.",
+        "revisado_por": [],
+        "sujetos": [
+          "app"
+        ],
+        "titulo": "Completado en el editor",
+        "titulo_en": "Editor completion",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Solo lib/engine consume la API Rust y sus enlaces nativos o Wasm. Los contratos de domain/model, domain/ports y application no contienen ni importan tipos del motor, del transporte o generados; composition selecciona adaptadores y presentation consume solo estado de aplicación.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "file": "lib/domain/model/source_range.dart",
+                "import": "package:pseudolearn_app/engine/bridge/core_api.dart"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "accepted": false,
+                "reason": "layer_direction"
+              }
+            },
+            "id": "C1",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "file": "lib/engine/analysis/core_program_analyzer.dart",
+                "import": "package:pseudolearn_app/engine/bridge/core_api.dart"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "accepted": true,
+                "reason": "engine_adapter"
+              }
+            },
+            "id": "C2",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Los adaptadores Dart y Rust satisfacen los mismos puertos segregados y devuelven exclusivamente modelos del dominio. La app no reimplementa análisis, ejecución, completado, semántica ni recorridos del lenguaje; los emisores, diagramas y comprobaciones estructurales consumen API.PROGRAM.VIEW.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "adapters": [
+                  "dart",
+                  "rust"
+                ],
+                "output_type": "ProgramAnalysis",
+                "port": "ProgramAnalyzer"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "language_logic_in_app": false,
+                "same_port_contract": true
+              }
+            },
+            "id": "C3",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Cada recurso pertenece a una sesión y a una revisión. Liberar un documento libera análisis y ejecuciones descendientes; volver a liberar un identificador, consultar uno desconocido o negociar una versión incompatible devuelve un error tipado sin alterar otros recursos.",
+            "verificacion": [
+              "C4",
+              "C5",
+              "C6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "operations": [
+                  "create_document",
+                  "create_analysis",
+                  "start",
+                  "release_document",
+                  "release_document"
+                ]
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "descendants_released": true,
+                "second_release": {
+                  "error": "usage"
+                }
+              }
+            },
+            "id": "C4",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "operation": "negotiate",
+                "protocol": "see-protocol/99",
+                "resource_count_before": 0
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "error": "version",
+                "resource_count_after": 0
+              }
+            },
+            "id": "C5",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "operation": "query",
+                "resource_count_before": 1,
+                "resource_id": "unknown"
+              },
+              "scenario": "boundary"
+            },
+            "espera": {
+              "aplicacion": {
+                "error": "usage",
+                "resource_count_after": 1,
+                "unrelated_resources_unchanged": true
+              }
+            },
+            "id": "C6",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "3d4e0b42f99046c2159749773e00240f3998f9e159f1066c649e540c17e3b473",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "API.MODEL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.ERRORS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.VERSIONING",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.WIRE-FORMAT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.PROGRAM.VIEW",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "app",
+        "duenos": [
+          "responsable-aplicacion"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "APP.ENGINE.BOUNDARY",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "El transporte Rust queda en engine y los recursos tienen propiedad y cierre explícitos.",
+        "revisado_por": [],
+        "sujetos": [
+          "app"
+        ],
+        "titulo": "Frontera del motor de la app",
+        "titulo_en": "Application engine boundary",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Cada ritmo se evalúa tras cada evento y se detiene inmediatamente si la ejecución termina o solicita entrada. nextStatement se detiene en el primer evento posterior que cambia el foco proyectado: statement_entered de una sentencia ejecutable que no sea contenedor, decision, call o return. statement_exited, output e input_received no cambian el foco por sí solos. overBlock se detiene en el primer cambio de foco cuyo nodo no es el nodo enfocado inicialmente y cuya profundidad de bloque no excede la inicial. outOfBlock se detiene en el primer cambio de foco cuya profundidad no excede la profundidad inicial menos uno y cuyo nodo no es el bloque contenedor inicial. toEnd continúa hasta terminación, límite o cancelación. El adaptador deriva identidad y profundidad estructurales de source y API.PROGRAM.VIEW; no usa líneas como identidad. Si no se alcanza la condición, la ejecución continúa por lotes cooperativos de hasta 25 eventos y devuelve el control al planificador entre lotes.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3",
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "from_line": 2,
+                "pace": "nextStatement",
+                "program": "Algoritmo P\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "line": 3,
+                "stop_event": "statement_entered"
+              }
+            },
+            "id": "C1",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "from_line": 2,
+                "pace": "overBlock",
+                "program": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nFinSi\nEscribir 2;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "line": 5,
+                "stop_event": "statement_entered"
+              }
+            },
+            "id": "C2",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "from_line": 2,
+                "pace": "outOfBlock",
+                "program": "SubProceso Uno()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nUno();\nEscribir 2;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "line": 6,
+                "stop_event": "statement_entered"
+              }
+            },
+            "id": "C3",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "pace": "toEnd",
+                "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "output": "1\n",
+                "termination": "completed"
+              }
+            },
+            "id": "C4",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Los cuatro ritmos producen la misma salida, terminación, entrada consumida y orden de efectos que la misma ejecución hasta el mismo punto observable. Cambiar el ritmo solo cambia el evento donde se devuelve el control a la interfaz.",
+            "verificacion": [
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "paces": [
+                  "nextStatement",
+                  "overBlock",
+                  "outOfBlock",
+                  "toEnd"
+                ],
+                "programs": {
+                  "en": "algorithm P\ndefine a, b, c, i as integer;\na <- 0;\nb <- 1;\nfor i <- 1 to 20 do\nc <- a + b;\na <- b;\nb <- c;\nendFor\nwrite a;\nendAlgorithm\n",
+                  "es": "Algoritmo P\nDefinir a, b, c, i Como Entero;\na <- 0;\nb <- 1;\nPara i <- 1 Hasta 20 Hacer\nc <- a + b;\na <- b;\nb <- c;\nFinPara\nEscribir a;\nFinAlgoritmo\n"
+                }
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "output": "6765\n",
+                "pace_results_equal": true,
+                "termination": "completed"
+              }
+            },
+            "id": "C5",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "El adaptador procesa lotes cooperativos de hasta 25 eventos y devuelve el control al planificador entre lotes, sin perder ni duplicar eventos. Pausa, entrada y cancelación se observan entre lotes. La cancelación conserva los eventos y efectos ya completados y no produce eventos ni efectos posteriores a la respuesta de cancelación.",
+            "verificacion": [
+              "C6",
+              "C7"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "batch_size": 25,
+                "cancel_after_batches": 2,
+                "pace": "toEnd",
+                "program": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras Verdadero Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "completed_effects_match_events": true,
+                "events_ordered": true,
+                "no_events_after_cancel": true,
+                "termination": "cancelled"
+              }
+            },
+            "id": "C6",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "inputs": [
+                  "5"
+                ],
+                "pace": "toEnd",
+                "program": "Algoritmo P\nDefinir x Como Entero;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "after_input": {
+                  "output": "antes\n5\n",
+                  "termination": "completed"
+                },
+                "first_stop": "awaiting_input"
+              }
+            },
+            "id": "C7",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "El presupuesto de trabajo y tiempo de una ejecución es independiente del ritmo visual. toEnd no elimina los límites del anfitrión; al alcanzarlos devuelve limit_reached con los eventos y efectos completados hasta ese punto.",
+            "verificacion": [
+              "C8",
+              "C9"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "pace": "toEnd",
+                "program": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 100 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n",
+                "statement_limit": 3
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "statement_limit": 3,
+                "termination": "limit_reached"
+              }
+            },
+            "id": "C8",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "pace": "toEnd",
+                "program": "Algoritmo P\nDefinir x Como Entero;\nx <- 1 / 0;\nEscribir x;\nFinAlgoritmo\n"
+              },
+              "scenario": "pace"
+            },
+            "espera": {
+              "aplicacion": {
+                "code": "divisionByZero",
+                "events_before_failure_preserved": true,
+                "later_events_absent": true,
+                "termination": "failed"
+              }
+            },
+            "id": "C9",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "c713f32305793b69416c3fee6275df1a88ec9220da17be91afd30c5258a7de26",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "API.EXECUTE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.STATE.QUERY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.TRACE.STEP",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.TRACE.EVENTS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.INPUT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.LIMITS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "app",
+        "duenos": [
+          "responsable-aplicacion"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "APP.EXEC.PACE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Los cuatro controles didácticos fijan eventos de parada, no velocidades temporales.",
+        "revisado_por": [],
+        "sujetos": [
+          "app"
+        ],
+        "titulo": "Ritmos de ejecución",
+        "titulo_en": "Execution paces",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "La tabla muestra el tipo de cada valor y preserva el estado sin valor. Un arreglo conserva su rango, dimensiones, índices desde cero y orden de celdas; una dimensión de tamaño cero se muestra como una colección vacía, no como ausencia.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "program": "Algoritmo P\nDimension vacio[0] Como Entero;\nFinAlgoritmo\n",
+                "query": "array"
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "array": {
+                  "cells": [],
+                  "dimensions": [
+                    0
+                  ],
+                  "indices": [],
+                  "rank": 1
+                }
+              }
+            },
+            "id": "C1",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "program": "Algoritmo P\nDimension matriz[2, 2] Como Entero;\nmatriz[0, 1] <- 7;\nFinAlgoritmo\n",
+                "query": "array"
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "array": {
+                  "cells_by_index": {
+                    "0,0": {
+                      "uninitialized": true
+                    },
+                    "0,1": {
+                      "value": "7"
+                    },
+                    "1,0": {
+                      "uninitialized": true
+                    },
+                    "1,1": {
+                      "uninitialized": true
+                    }
+                  },
+                  "dimensions": [
+                    2,
+                    2
+                  ],
+                  "rank": 2
+                }
+              }
+            },
+            "id": "C2",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Un objeto se representa una vez por identidad y sus referencias se muestran como enlaces. Alias conservan la misma identidad; campos heredados conservan su origen; autorreferencias y ciclos mutuos no expanden recursivamente la vista.",
+            "verificacion": [
+              "C3",
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "program": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir a, alias Como Nodo;\na <- Nuevo Nodo();\nalias <- a;\na.siguiente <- a;\nFinAlgoritmo\n",
+                "query": "object_graph"
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "objects": {
+                  "1": {
+                    "class": "Nodo",
+                    "fields": {
+                      "siguiente": {
+                        "ref": "1"
+                      }
+                    }
+                  }
+                },
+                "references": {
+                  "a": "1",
+                  "alias": "1"
+                }
+              }
+            },
+            "id": "C3",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "program": "Clase Base\nPublico Definir valor Como Entero;\nFinClase\nClase Hija Hereda De Base\nFinClase\nAlgoritmo P\nDefinir x Como Hija;\nx <- Nuevo Hija();\nx.valor <- 9;\nFinAlgoritmo\n",
+                "query": "object_graph"
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "objects": {
+                  "1": {
+                    "class": "Hija",
+                    "fields": {
+                      "valor": {
+                        "declared_in": "Base",
+                        "value": "9"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "id": "C4",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Toda proyección corresponde al evento solicitado y declara el horizonte retenido. Consultar un evento anterior al horizonte devuelve error de uso; consultar un evento vigente no cambia la continuación de la ejecución ni sus efectos.",
+            "verificacion": [
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "program": "Algoritmo P\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n",
+                "query_event": 0,
+                "retention_events": 1
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "continuation_unchanged": true,
+                "query": {
+                  "error": "usage"
+                }
+              }
+            },
+            "id": "C5",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Las colecciones grandes se consultan por páginas acotadas. Cada página declara si fue truncada y entrega un cursor opaco ligado a recurso, revisión, evento, consulta y límite; un cursor de otra consulta, evento, ejecución o recurso devuelve error de uso. La interfaz ofrece continuar, truncar o paginar explícitamente y nunca presenta un prefijo como colección completa.",
+            "verificacion": [
+              "C6",
+              "C7"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "page_size": 2,
+                "program": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
+                "query": "array"
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "first_page": {
+                  "indices": [
+                    0,
+                    1
+                  ],
+                  "next_cursor": "opaque",
+                  "truncated": true
+                },
+                "last_page": {
+                  "indices": [
+                    4
+                  ],
+                  "next_cursor": null,
+                  "truncated": false
+                }
+              }
+            },
+            "id": "C6",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "page_size": 1,
+                "program": "Algoritmo P\nDimension a[2] Como Entero;\nFinAlgoritmo\n",
+                "reuse_cursor_for_event": 1
+              },
+              "scenario": "snapshot"
+            },
+            "espera": {
+              "aplicacion": {
+                "next_query": {
+                  "error": "usage"
+                },
+                "previous_page_unchanged": true
+              }
+            },
+            "id": "C7",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "befd0f3e1090f6f06d3c40bdce024e4c92caf4e9adcf3642d467cc13f936640a",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "API.STATE.QUERY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.PROGRAM.VIEW",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "ENG.STATE.SNAPSHOT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "MEM.IDENTITY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.ARRAY.DIMENSION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "app",
+        "duenos": [
+          "responsable-aplicacion"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "APP.EXEC.SNAPSHOT-VIEW",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "La vista preserva forma, identidad, relaciones y horizonte del estado consultado.",
+        "revisado_por": [],
+        "sujetos": [
+          "app"
+        ],
+        "titulo": "Proyección del estado de ejecución",
+        "titulo_en": "Execution state projection",
         "version": "0.1.0"
       }
     },
@@ -11281,10 +13237,11 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
-            "texto": "Cada evento lleva la línea de inicio del tramo de su nodo fuente y los datos de su clase. statement_entered y statement_exited usan la sentencia; decision, la condición o el selector; call, la expresión de llamada; return, la misma expresión de llamada; output e input_*, la sentencia Escribir o Leer; failure, la operación que falló.",
+            "texto": "Cada evento lleva la línea de inicio del tramo de su nodo fuente, los datos de su clase y una referencia source con revisión, node_id y tramo de API.PROGRAM.VIEW. statement_entered y statement_exited usan la sentencia; decision, la condición o el selector; call, la expresión de llamada; return, la misma expresión de llamada; output e input_*, la sentencia Escribir o Leer; failure, la operación que falló. El identificador y el tramo pertenecen a la misma revisión que la ejecución y no se reconstruyen únicamente desde el número de línea.",
             "verificacion": [
               "C2",
-              "C3"
+              "C3",
+              "C14"
             ]
           },
           "kind": "regla"
@@ -12011,14 +13968,58 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "eventos": [
+                {
+                  "clase": "statement_entered",
+                  "fuente": "nodo_programa",
+                  "linea": 2
+                },
+                {
+                  "clase": "output",
+                  "datos": {
+                    "texto": "1\n"
+                  },
+                  "fuente": "nodo_programa",
+                  "linea": 2
+                },
+                {
+                  "clase": "statement_exited",
+                  "fuente": "nodo_programa",
+                  "linea": 2
+                }
+              ]
+            },
+            "id": "C14",
+            "operacion": "trace",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "73954f7cb64f055be4a097f93ba9eaee3d7b393aa3c66d546b899066175aa6dd",
+      "hash": "c8ea8aa6e79d3fc8599b797a9b78c95ac94be5644fe5f6cff41c87a840b0bede",
       "metadata": {
         "cambio": null,
         "depende_de": [
           {
             "id": "ENG.EXEC.MODEL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "API.PROGRAM.VIEW",
             "tipo": "usa",
             "version": ">=0.1.0, <1.0.0"
           }
@@ -12037,7 +14038,8 @@
         "revisado_por": [],
         "sujetos": [
           "reference",
-          "engine"
+          "engine",
+          "app"
         ],
         "titulo": "Eventos observables de la ejecución",
         "titulo_en": "Observable execution events",
@@ -29908,10 +31910,18 @@
       "blocks": [
         {
           "fields": {
+            "id": "D1",
+            "termino": "unidades y artefacto medido",
+            "texto": "KiB equivale a 1024 bytes y MiB a 1048576 bytes. La biblioteca nativa se mide por ABI tras enlace de release y eliminación de símbolos de depuración, antes de empaquetar Flutter; incluye pseudolearn_bridge y pseudolearn_api, y excluye Flutter, recursos de la app y datos de depuración. El módulo Wasm se mide tras optimización y se comprime en modo genérico Brotli con quality 11 y lgwin 22; se cuentan todos los bytes del flujo comprimido. No se incluyen el pegamento JavaScript, HTML, el consumidor mínimo ni sus fixtures. La medición nativa obligatoria de R8 cubre ios-arm64; android-arm64 aplica el mismo límite cuando se añada esa ABI en una fase futura, sin exigir distribuir Flutter para Android ni bloquear la aceptación de R8 mientras la biblioteca Android no exista."
+          },
+          "kind": "definicion"
+        },
+        {
+          "fields": {
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "La biblioteca móvil del núcleo ocupa como máximo 3 MiB por ABI y el módulo Wasm como máximo 600 KiB comprimido con brotli.",
+            "texto": "La biblioteca Rust del puente ocupa como máximo 3 MiB por ABI nativo medido y el módulo Wasm como máximo 600 KiB según D1. La medición obligatoria de R8 es ios-arm64; android-arm64 queda sujeto al mismo límite cuando exista esa biblioteca en una fase futura.",
             "verificacion": [
               "M1",
               "M2"
@@ -29925,12 +31935,14 @@
             "id": "M1",
             "metrica": "tamano_biblioteca_movil",
             "plataformas": [
-              "ios-arm64",
-              "android-arm64"
+              "ios-arm64"
             ],
-            "protocolo": "PERF.PROTOCOL#R1",
+            "protocolo": "PERF.PROTOCOL#R2",
             "provisional": true,
             "suite": "artefactos de release",
+            "sujetos": [
+              "app"
+            ],
             "umbral": 3,
             "unidad": "MiB"
           },
@@ -29944,16 +31956,19 @@
             "plataformas": [
               "wasm32"
             ],
-            "protocolo": "PERF.PROTOCOL#R1",
+            "protocolo": "PERF.PROTOCOL#R2",
             "provisional": true,
             "suite": "artefactos de release",
+            "sujetos": [
+              "engine"
+            ],
             "umbral": 600,
             "unidad": "KiB"
           },
           "kind": "medicion"
         }
       ],
-      "hash": "27e614a82c6ee0d968c5fdf9dacb5fd6615a0d7f4b158fc34ee55eae920d90bd",
+      "hash": "7c654c08d641547f8c4d7ee5caa0c59dfd3f82780d3a8c13ad4bd7bfc0412713",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -29976,7 +31991,8 @@
         "resumen": "Presupuesto de tamaño de la biblioteca móvil y del Wasm.",
         "revisado_por": [],
         "sujetos": [
-          "engine"
+          "engine",
+          "app"
         ],
         "titulo": "Tamaño de los artefactos",
         "titulo_en": "Artifact size",
@@ -30313,9 +32329,22 @@
             ]
           },
           "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R7",
+            "justificacion": "El arnés registra el límite del reloj alrededor de la petición completa de la app y valida los efectos después de la captura.",
+            "texto": "La latencia de la app se mide de extremo a extremo desde el planificador que pide el avance hasta que el estado proyectado queda disponible para el dominio. El intervalo incluye enlace, transporte, serialización y decodificación; excluye compilación, creación de sesión y pintura de UI. Cada iteración inicia una ejecución nueva sobre un documento preparado y verifica fuera del intervalo evento, estado y salida esperados.",
+            "verificacion": [
+              "estructural"
+            ]
+          },
+          "kind": "regla"
         }
       ],
-      "hash": "e4ad95eb63b2be5757df60ef23a7e76f762b643b11e2d69079410ea6969d6558",
+      "hash": "d42bea7cbfdecc2acea1d42f9ff145ac7caf5f1ed250e2213c8418fd2b8247e8",
       "metadata": {
         "cambio": null,
         "depende_de": [],
@@ -30332,7 +32361,8 @@
         "resumen": "Procesos, iteraciones, estadística, puntos de cambio y publicación de resultados.",
         "revisado_por": [],
         "sujetos": [
-          "engine"
+          "engine",
+          "app"
         ],
         "titulo": "Protocolo de medición",
         "titulo_en": "Measurement protocol",
@@ -31049,6 +33079,9 @@
             "protocolo": "PERF.PROTOCOL#R1",
             "provisional": true,
             "suite": "PERF.SUITE.AWFY-CORE",
+            "sujetos": [
+              "engine"
+            ],
             "umbral": 1,
             "unidad": "ms"
           },
@@ -31065,6 +33098,9 @@
             "protocolo": "PERF.PROTOCOL#R1",
             "provisional": true,
             "suite": "PERF.SUITE.AWFY-CORE",
+            "sujetos": [
+              "engine"
+            ],
             "umbral": 0.1,
             "unidad": "ms"
           },
@@ -31093,13 +33129,47 @@
             "protocolo": "PERF.PROTOCOL#R1",
             "provisional": true,
             "suite": "PERF.SUITE.AWFY-CORE",
+            "sujetos": [
+              "engine"
+            ],
             "umbral": 50,
+            "unidad": "ms"
+          },
+          "kind": "medicion"
+        },
+        {
+          "fields": {
+            "clase": "sistema",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Una vez disponible la composición Rust de la app, el percentil 95 de un avance hasta el siguiente punto observable y su consulta de estado es como máximo 1 ms en el dispositivo más modesto soportado. La medición incluye planificación de la app, cruce del enlace, serialización, avance Rust, transporte, decodificación y proyección de dominio; excluye compilación, creación de sesión y pintura de UI. No se sustituye por M2 ni por un paso directo del sujeto engine.",
+            "verificacion": [
+              "M4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M4",
+            "metrica": "latencia_puente_p95",
+            "plataformas": [
+              "app-dispositivo-modesto"
+            ],
+            "protocolo": "PERF.PROTOCOL#R7",
+            "provisional": true,
+            "suite": "PERF.SUITE.AWFY-CORE",
+            "sujetos": [
+              "app"
+            ],
+            "umbral": 1,
             "unidad": "ms"
           },
           "kind": "medicion"
         }
       ],
-      "hash": "400a4c136e8caf7c2bcd0a42967fd9d8a4c3426e7fc3d0b157a63d127b54fb91",
+      "hash": "a062540b90459cdb40ff3146afbc09a05694103a10b648bd4bde74355e010988",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -31122,7 +33192,8 @@
         "resumen": "Percentil 95 del tiempo de un paso observado.",
         "revisado_por": [],
         "sujetos": [
-          "engine"
+          "engine",
+          "app"
         ],
         "titulo": "Latencia de paso observado",
         "titulo_en": "Observed step latency",

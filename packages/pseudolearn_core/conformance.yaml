@@ -187,7 +187,7 @@
       "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "exento",
-      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado."
+      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado. El sujeto congelado tampoco expone identidad de nodo y tramo de fuente; el requisito corresponde a la API Rust de R8."
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R3",

@@ -23,6 +23,7 @@ pub fn build(
         "ir" => ir(case, fields),
         "cli" => cli(case, fields),
         "service" => service(case, fields),
+        "app" => app(case, fields)?,
         "analyze" => {
             fields.insert("kind".to_owned(), json!("analyze"));
             fields.insert(
@@ -31,6 +32,9 @@ pub fn build(
             );
         }
         _ => execution(case, selection, vocabulary, fields)?,
+    }
+    if expects_program_view(selection.expected) {
+        fields.insert("include_program_view".to_owned(), json!(true));
     }
     Ok(request)
 }
@@ -43,14 +47,52 @@ pub fn operation(case: &Block) -> &str {
 }
 
 pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
-    match operation(case) {
+    let mut capabilities = match operation(case) {
         "analyze" => vec!["analyze"],
         "trace" => vec!["execute", "observe"],
         "ir" => vec!["ir"],
         "cli" => vec!["cli"],
         "service" => vec!["service"],
+        "app" => vec!["app"],
         _ => vec!["execute"],
+    };
+    let expects_program_view = case.fields.get("espera").is_some_and(expects_program_view)
+        || case
+            .fields
+            .get("esperas")
+            .and_then(Value::as_object)
+            .is_some_and(|expected| expected.values().any(expects_program_view));
+    if expects_program_view {
+        capabilities.push("program_view");
     }
+    if case.fields.contains_key("paginacion") {
+        capabilities.push("state_pages");
+    }
+    capabilities
+}
+
+fn expects_program_view(expected: &Value) -> bool {
+    expected.get("vista_programa").is_some()
+        || expected
+            .get("eventos")
+            .and_then(Value::as_array)
+            .is_some_and(|events| events.iter().any(|event| event.get("fuente").is_some()))
+}
+
+fn app(case: &Block, fields: &mut Map<String, Value>) -> Result<(), String> {
+    let application = case
+        .fields
+        .get("aplicacion")
+        .and_then(Value::as_object)
+        .ok_or("Missing application case input")?;
+    fields.insert("kind".to_owned(), json!("app"));
+    for name in ["scenario", "input"] {
+        let value = application
+            .get(name)
+            .ok_or("Incomplete application case input")?;
+        fields.insert(name.to_owned(), value.clone());
+    }
+    Ok(())
 }
 
 fn program(case: &Block, profile: &str, vocabulary: &Vocabulary) -> Result<String, String> {
@@ -88,6 +130,9 @@ fn execution(
         json!(if observed { "events" } else { "none" }),
     );
     fields.insert("limits".to_owned(), limits(case));
+    if let Some(page) = case.fields.get("paginacion") {
+        fields.insert("state_page".to_owned(), page.clone());
+    }
     observation_options(case, selection, fields);
     Ok(())
 }

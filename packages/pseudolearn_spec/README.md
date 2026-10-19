@@ -9,9 +9,10 @@ Fuera de alcance de producto: motor Rust y API integrada del motor. El paquete s
 generativa con oráculos independientes; no implementa la API de observación de memoria del sujeto.
 Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad y shell para el protocolo de sujetos. La prueba de permisos Unix usa un shell aislado únicamente para fijar `umask 077` antes de lanzar el compilador.
 Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisiones, contrastar un sujeto.
-Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE` y
-propiedades completas de observación (B7.3). Los sujetos Rust ya cubren análisis y las pruebas directas
-de B4; no se anticipa la capacidad integrada pendiente.
+Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE`,
+propiedades completas de observación y ejecución de casos `app`. Los sujetos Rust ya cubren análisis y
+las pruebas directas de B4; los contratos de app se validan y exportan, pero todavía no existe un
+adaptador ejecutable para ese sujeto.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -83,9 +84,13 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
 - Los casos admiten semilla explícita; la ausencia conserva 42. La comparación preserva resultados desfavorables y exenciones específicas de reglas con resolución declarada.
 - E-10 mide colisiones sobre programas locales con procedencia explícita. El estudio humano de E-14 requiere participantes y construcciones de la evolución del lenguaje; no se atribuyen resultados humanos a comprobaciones técnicas.
 
-- Problema: el corpus del motor necesita observar trazas, RI, CLI y mediciones sin crear otro formato.
+- Problema: el corpus del motor necesita observar trazas, RI, CLI, casos de app y mediciones sin crear otro formato.
   Elección: `see/1` crece de forma compatible con los bloques `medicion` (prefijo M), `instruccion` (O) y
-  `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli` y `service`. Las tablas que deciden la validez
+  `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli`, `service` y `app`. Los casos `app`
+  conservan `scenario` e `input`, se comparan bajo `espera.aplicacion` y no se ejecutan con el sujeto
+  `engine`. Los casos que consultan la vista pública piden `program_view`; las consultas paginadas llevan
+  `paginacion` y requieren `state_pages`. La validación rechaza escenarios, entradas, cursores y operaciones
+  mal formados. Las tablas que deciden la validez
   (alfabeto `traceEvents`, `cliConventions` con códigos de salida y aperturas, catálogo `cliMessages`,
   `diagnostics`, `vocabulary`) se leen de bloques `definicion`; ningún alfabeto vive en el código.
   `instruccion` lleva `nombre` además de `firma` porque las coberturas citan instrucciones por nombre

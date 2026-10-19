@@ -11,12 +11,18 @@
   ],
   "sujetos": [
     "reference",
-    "engine"
+    "engine",
+    "app"
   ],
   "resumen": "Alfabeto cerrado de eventos, su nodo fuente, sus datos y su orden.",
   "depende_de": [
     {
       "id": "ENG.EXEC.MODEL",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.PROGRAM.VIEW",
       "version": ">=0.1.0, <1.0.0",
       "tipo": "usa"
     }
@@ -134,10 +140,11 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada evento lleva la línea de inicio del tramo de su nodo fuente y los datos de su clase. statement_entered y statement_exited usan la sentencia; decision, la condición o el selector; call, la expresión de llamada; return, la misma expresión de llamada; output e input_*, la sentencia Escribir o Leer; failure, la operación que falló.",
+  "texto": "Cada evento lleva la línea de inicio del tramo de su nodo fuente, los datos de su clase y una referencia source con revisión, node_id y tramo de API.PROGRAM.VIEW. statement_entered y statement_exited usan la sentencia; decision, la condición o el selector; call, la expresión de llamada; return, la misma expresión de llamada; output e input_*, la sentencia Escribir o Leer; failure, la operación que falló. El identificador y el tramo pertenecen a la misma revisión que la ejecución y no se reconstruyen únicamente desde el número de línea.",
   "verificacion": [
     "C2",
-    "C3"
+    "C3",
+    "C14"
   ]
 }
 ```
@@ -861,6 +868,26 @@
     ]
   },
   "programa": "Algoritmo P\nEscribir Sin Saltar;\nEscribir Verdadero Sin Saltar;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "eventos": [
+      {"clase": "statement_entered", "linea": 2, "fuente": "nodo_programa"},
+      {"clase": "output", "linea": 2, "datos": {"texto": "1\n"}, "fuente": "nodo_programa"},
+      {"clase": "statement_exited", "linea": 2, "fuente": "nodo_programa"}
+    ]
+  },
+  "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

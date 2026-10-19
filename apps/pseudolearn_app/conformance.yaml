@@ -1,0 +1,110 @@
+sujeto: app
+paquete: apps/pseudolearn_app
+activadas:
+  - APP.ENGINE.BOUNDARY
+  - APP.EXEC.PACE
+  - APP.EXEC.SNAPSHOT-VIEW
+  - APP.EDITOR.COMPLETION
+  - API.PROGRAM.VIEW
+  - API.WIRE-FORMAT
+  - PERF.ARTIFACT.SIZE
+  - PERF.VM.STEP-LATENCY
+  - PERF.PROTOCOL
+fases_cerradas: []
+vinculos:
+  - regla: APP.ENGINE.BOUNDARY@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.ENGINE.BOUNDARY@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.ENGINE.BOUNDARY@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.PACE@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.PACE@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.PACE@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.PACE@0.1.0#R4
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R4
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EDITOR.COMPLETION@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EDITOR.COMPLETION@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EDITOR.COMPLETION@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: APP.EDITOR.COMPLETION@0.1.0#R4
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.PROGRAM.VIEW@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.PROGRAM.VIEW@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.PROGRAM.VIEW@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.WIRE-FORMAT@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.WIRE-FORMAT@0.1.0#R2
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: API.WIRE-FORMAT@0.1.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: PERF.VM.STEP-LATENCY@0.2.0#R3
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: PERF.PROTOCOL@0.1.0#R7
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8
+  - regla: PERF.ARTIFACT.SIZE@0.1.0#R1
+    verificacion: ejecutor
+    estado: pendiente
+    resuelve_en: R8

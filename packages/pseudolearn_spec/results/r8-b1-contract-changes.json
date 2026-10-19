@@ -1,0 +1,339 @@
+{
+  "format": "r8-b1-contract-evidence/1",
+  "baseline_revision": "fd3acf319bcdcd073ca3a3c1cc4222ba22ccdcb4",
+  "generated_diff": "r8-b1-contract-diff.json",
+  "version_policy": "Se conservan todas las versiones existentes; las cinco especificaciones nuevas comienzan en 0.1.0. No se añaden bloques de cambio.",
+  "decisions": [
+    "Los emisores, diagramas y comprobaciones estructurales comparten una vista pública inmutable del programa.",
+    "Android queda como ABI futura de la biblioteca; R8 no exige distribuir Flutter para Android ni compilar esa ABI.",
+    "La entrega web comprende pseudolearn_wasm y un consumidor mínimo de navegador, no Flutter web.",
+    "El servicio incremental se consume con el contrato vigente, sin exigir reutilización semántica por unidad."
+  ],
+  "changes": [
+    {
+      "id": "API.PROGRAM.VIEW",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Proyección inmutable de unidades, nodos, tipos, símbolos, relaciones y tramos para diagramas, emisores y comprobaciones estructurales.",
+      "impact": [
+        "API.EXECUTE",
+        "API.PROGRAM.VIEW",
+        "API.STATE.QUERY",
+        "API.WIRE-FORMAT",
+        "APP.EDITOR.COMPLETION",
+        "APP.ENGINE.BOUNDARY",
+        "APP.EXEC.PACE",
+        "APP.EXEC.SNAPSHOT-VIEW",
+        "ENG.STATE.INCREMENTAL",
+        "ENG.STATE.SNAPSHOT",
+        "ENG.TRACE.EVENTS",
+        "ENG.TRACE.STEP",
+        "IR.INSTRUCTIONS",
+        "IR.LOWERING",
+        "IR.OBSERVATION-POINTS",
+        "IR.SOURCE-MAP",
+        "IR.WELL-FORMEDNESS",
+        "TOOL.CLI.BUILD",
+        "TOOL.CLI.CHECK",
+        "TOOL.CLI.CONVENTIONS",
+        "TOOL.CLI.FORMAT",
+        "TOOL.CLI.IR",
+        "TOOL.CLI.MESSAGES",
+        "TOOL.CLI.RUN",
+        "TOOL.CLI.TRANSLATE"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "API.STATE.QUERY",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata",
+        "verificacion_anadida"
+      ],
+      "see_review_required": true,
+      "rationale": "Consultas paginadas con cursor ligado a recurso, revisión, ejecución, consulta, evento y tamaño.",
+      "impact": [
+        "API.STATE.QUERY",
+        "APP.EXEC.PACE",
+        "APP.EXEC.SNAPSHOT-VIEW"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "API.VERSIONING",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "requiere_revision"
+      ],
+      "see_review_required": true,
+      "rationale": "Vocabulario de capacidades opcionales y anuncio solo cuando la función está disponible.",
+      "impact": [
+        "API.VERSIONING",
+        "APP.EDITOR.COMPLETION",
+        "APP.ENGINE.BOUNDARY"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "API.WIRE-FORMAT",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata",
+        "requiere_revision",
+        "verificacion_anadida"
+      ],
+      "see_review_required": true,
+      "rationale": "Enteros tipados sin pérdida, procedencia de eventos en el formato binario y copias seguras de buffers Wasm.",
+      "impact": [
+        "API.WIRE-FORMAT",
+        "APP.EDITOR.COMPLETION",
+        "APP.ENGINE.BOUNDARY",
+        "TOOL.CLI.BUILD",
+        "TOOL.CLI.CHECK",
+        "TOOL.CLI.CONVENTIONS",
+        "TOOL.CLI.FORMAT",
+        "TOOL.CLI.IR",
+        "TOOL.CLI.MESSAGES",
+        "TOOL.CLI.RUN",
+        "TOOL.CLI.TRANSLATE"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "APP.EDITOR.COMPLETION",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Completado Rust con posiciones UTF-16/UTF-8, revisión vigente y perfiles independientes del idioma de interfaz.",
+      "impact": [
+        "APP.EDITOR.COMPLETION"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "APP.ENGINE.BOUNDARY",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Frontera de capas, adaptadores segregados y propiedad, liberación y errores tipados de recursos.",
+      "impact": [
+        "APP.ENGINE.BOUNDARY"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "APP.EXEC.PACE",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Semántica de los cuatro ritmos, lotes cooperativos, entrada, cancelación, fallos y límites.",
+      "impact": [
+        "APP.EXEC.PACE"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "APP.EXEC.SNAPSHOT-VIEW",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Proyección de arreglos y grafos de objetos con identidad, horizonte y paginación.",
+      "impact": [
+        "APP.EXEC.SNAPSHOT-VIEW"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "ENG.TRACE.EVENTS",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "requiere_revision",
+        "verificacion_anadida"
+      ],
+      "see_review_required": true,
+      "rationale": "Asociación de eventos observables con nodo fuente y tramo de la misma revisión.",
+      "impact": [
+        "API.EXECUTE",
+        "API.STATE.QUERY",
+        "API.WIRE-FORMAT",
+        "APP.EDITOR.COMPLETION",
+        "APP.ENGINE.BOUNDARY",
+        "APP.EXEC.PACE",
+        "APP.EXEC.SNAPSHOT-VIEW",
+        "ENG.STATE.INCREMENTAL",
+        "ENG.STATE.SNAPSHOT",
+        "ENG.TRACE.EVENTS",
+        "ENG.TRACE.STEP",
+        "IR.INSTRUCTIONS",
+        "IR.LOWERING",
+        "IR.OBSERVATION-POINTS",
+        "IR.SOURCE-MAP",
+        "IR.WELL-FORMEDNESS",
+        "TOOL.CLI.BUILD",
+        "TOOL.CLI.CHECK",
+        "TOOL.CLI.CONVENTIONS",
+        "TOOL.CLI.FORMAT",
+        "TOOL.CLI.IR",
+        "TOOL.CLI.MESSAGES",
+        "TOOL.CLI.RUN",
+        "TOOL.CLI.TRANSLATE"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "PERF.ARTIFACT.SIZE",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata",
+        "requiere_revision"
+      ],
+      "see_review_required": true,
+      "rationale": "Unidades binarias y alcance medible de iOS, Wasm y la futura ABI Android.",
+      "impact": [
+        "PERF.ARTIFACT.SIZE"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "PERF.PROTOCOL",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata"
+      ],
+      "see_review_required": true,
+      "rationale": "Intervalo de medición de extremo a extremo para avance y proyección de estado de la app.",
+      "impact": [
+        "APP.EDITOR.COMPLETION",
+        "PERF.AOT.LEVEL",
+        "PERF.ARTIFACT.SIZE",
+        "PERF.BASELINE.REFERENCE",
+        "PERF.FRONTEND.THROUGHPUT",
+        "PERF.PROTOCOL",
+        "PERF.SUITE.AWFY-CORE",
+        "PERF.VM.STEP-LATENCY",
+        "PERF.VM.THROUGHPUT",
+        "TOOL.LSP.CAPABILITIES",
+        "TOOL.SERVICE.COMPLETION",
+        "TOOL.SERVICE.HOVER",
+        "TOOL.SERVICE.INCREMENTAL",
+        "TOOL.SERVICE.NAVIGATION"
+      ],
+      "status": "experimental"
+    },
+    {
+      "id": "PERF.VM.STEP-LATENCY",
+      "version": "0.2.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "ampliacion_candidata",
+        "requiere_revision"
+      ],
+      "see_review_required": true,
+      "rationale": "Presupuesto p95 de la ida completa por el puente de la app.",
+      "impact": [
+        "PERF.VM.STEP-LATENCY"
+      ],
+      "status": "experimental"
+    }
+  ],
+  "independent_expected_value_review": [
+    {
+      "cases": [
+        "APP.EXEC.PACE#C5"
+      ],
+      "expected": "6765\n",
+      "basis": "Recurrencia F0=0, F1=1 aplicada veinte veces; se comparan los cuatro ritmos sobre la misma salida y terminación."
+    },
+    {
+      "cases": [
+        "APP.EDITOR.COMPLETION#C3",
+        "APP.EDITOR.COMPLETION#C4"
+      ],
+      "expected": {
+        "after_scalar": {
+          "cursor_utf16": 24,
+          "service_offset_utf8": 26
+        },
+        "inside_surrogate": 23
+      },
+      "basis": "El prefijo incluye un escalar suplementario que ocupa dos unidades UTF-16 y cuatro bytes UTF-8; la posición entre sustitutos no es un límite válido."
+    },
+    {
+      "cases": [
+        "API.PROGRAM.VIEW#C3"
+      ],
+      "expected": {
+        "statement_span_utf8": {
+          "start_byte": "12",
+          "end_byte": "28"
+        },
+        "line_columns": {
+          "start": [
+            2,
+            1
+          ],
+          "end": [
+            2,
+            14
+          ]
+        }
+      },
+      "basis": "Se cuenta el prefijo ASCII hasta la segunda línea y el tramo de la sentencia por puntos de código, incluyendo el emoji suplementario como un punto de código."
+    },
+    {
+      "cases": [
+        "API.WIRE-FORMAT#C2"
+      ],
+      "expected": {
+        "large_identifier": "9007199254740993",
+        "source_encoding": "UTF-8 sin normalizar"
+      },
+      "basis": "El identificador se conserva como cadena decimal; la fuente contiene e + U+0301 y el emoji como bytes UTF-8 exactos."
+    },
+    {
+      "cases": [
+        "API.WIRE-FORMAT#C3"
+      ],
+      "expected": {
+        "binary_batch_bytes": 186,
+        "payload_bytes": 153
+      },
+      "basis": "Vector PLEV construido desde D2: cabecera de 16 bytes, cuatro columnas de un evento, longitud u32 del pool y objeto JSON canónico con data y source."
+    },
+    {
+      "cases": [
+        "APP.EXEC.SNAPSHOT-VIEW#C1",
+        "APP.EXEC.SNAPSHOT-VIEW#C2",
+        "APP.EXEC.SNAPSHOT-VIEW#C3",
+        "APP.EXEC.SNAPSHOT-VIEW#C4"
+      ],
+      "expected": "Dimensiones, celdas sin inicializar, identidades compartidas por alias, ciclo y origen heredado se derivan directamente de cada programa de entrada.",
+      "basis": "Los esperados se revisaron a partir de las dimensiones y asignaciones expresadas en los programas; no proceden de la app ni del adaptador Rust."
+    }
+  ],
+  "execution_scope": "El sujeto app aún no tiene lanzador de conformidad; sus reglas permanecen pendientes en apps/pseudolearn_app/conformance.yaml. Este informe no declara conformidad de ejecución.",
+  "review_status": "La clasificación y el impacto quedan registrados; todas las especificaciones permanecen experimentales y see diff conserva review_required=true donde corresponde."
+}

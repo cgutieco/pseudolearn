@@ -65,6 +65,7 @@ fn check_block(block: &Block, errors: &mut Vec<String>) {
     }
     if block.kind == "caso" {
         check_case(block, errors);
+        check_app_case(block, errors);
     }
 }
 
@@ -76,7 +77,7 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles rigor espera origen",
-            "programa programas programa_ri cli servicio limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
+            "programa programas programa_ri cli servicio aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
         ),
         "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),
@@ -85,7 +86,7 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         "pregunta" => ("id texto", ""),
         "medicion" => (
             "id metrica unidad suite comparador umbral provisional plataformas protocolo",
-            "",
+            "sujetos",
         ),
         "instruccion" => (
             "id nombre firma clases_de_valor semantica trampas efectos observacion",
@@ -156,6 +157,7 @@ fn check_program(block: &Block, errors: &mut Vec<String>) {
         "ir" => Some("programa_ri"),
         "cli" => Some("cli"),
         "service" => Some("servicio"),
+        "app" => return,
         _ => None,
     };
     if let Some(source) = operation_source {
@@ -174,5 +176,16 @@ fn check_program(block: &Block, errors: &mut Vec<String>) {
             .is_some_and(|value| value.is_object())
     {
         errors.push("SEE-SCHEMA: case program required".to_owned());
+    }
+}
+
+fn check_app_case(block: &Block, errors: &mut Vec<String>) {
+    let application = block.fields.get("aplicacion");
+    if field(block, "operacion") == "app" && !application.is_some_and(serde_json::Value::is_object)
+    {
+        errors.push("SEE-APP-CASE: application input required".to_owned());
+    }
+    if field(block, "operacion") != "app" && application.is_some() {
+        errors.push("SEE-APP-CASE: application input requires app operation".to_owned());
     }
 }

@@ -10,7 +10,8 @@
     "responsable-rendimiento"
   ],
   "sujetos": [
-    "engine"
+    "engine",
+    "app"
   ],
   "resumen": "Percentil 95 del tiempo de un paso observado.",
   "depende_de": [
@@ -48,6 +49,7 @@
   "comparador": "<=",
   "umbral": 1,
   "provisional": true,
+  "sujetos": ["engine"],
   "plataformas": [
     "dispositivo-modesto"
   ],
@@ -64,6 +66,7 @@
   "comparador": "<=",
   "umbral": 0.1,
   "provisional": true,
+  "sujetos": ["engine"],
   "plataformas": [
     "macos-arm64"
   ],
@@ -92,9 +95,35 @@
   "comparador": "<=",
   "umbral": 50,
   "provisional": true,
+  "sujetos": ["engine"],
   "plataformas": [
     "macos-arm64"
   ],
   "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "Una vez disponible la composición Rust de la app, el percentil 95 de un avance hasta el siguiente punto observable y su consulta de estado es como máximo 1 ms en el dispositivo más modesto soportado. La medición incluye planificación de la app, cruce del enlace, serialización, avance Rust, transporte, decodificación y proyección de dominio; excluye compilación, creación de sesión y pintura de UI. No se sustituye por M2 ni por un paso directo del sujeto engine.",
+  "verificacion": ["M4"]
+}
+```
+
+```medicion
+{
+  "id": "M4",
+  "metrica": "latencia_puente_p95",
+  "unidad": "ms",
+  "suite": "PERF.SUITE.AWFY-CORE",
+  "comparador": "<=",
+  "umbral": 1,
+  "provisional": true,
+  "sujetos": ["app"],
+  "plataformas": ["app-dispositivo-modesto"],
+  "protocolo": "PERF.PROTOCOL#R7"
 }
 ```

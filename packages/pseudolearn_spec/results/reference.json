@@ -9,7 +9,7 @@
     "DIAG.SEVERITY.POLICY": "0ac4149c1b225ac1787f5d4825d9ed30f06326812b2109f3ffccc1a71599a0fe",
     "ENG.EXEC.MODEL": "c81a9522f733a7445cd0e0976fc22c6ff059d0303428c7a41a40b0896839494a",
     "ENG.INPUT": "9ab89a5606f87e7fe611bb19cac974ec4e6224fe36d5d7f2f57cbd3b53dbd33b",
-    "ENG.TRACE.EVENTS": "73954f7cb64f055be4a097f93ba9eaee3d7b393aa3c66d546b899066175aa6dd",
+    "ENG.TRACE.EVENTS": "c8ea8aa6e79d3fc8599b797a9b78c95ac94be5644fe5f6cff41c87a840b0bede",
     "LANG.ARRAY.ACCESS": "0f6ce95654bf66555f6738cfb1046d22e1fc3dbd4d948c72478a864e00eb74b8",
     "LANG.ARRAY.DIMENSION": "49206d07667b2fbb8f2aac2c88eeb7bae675b5fad562ae5c4b761eef2ea5c36f",
     "LANG.CLASS.CONSTRUCTOR": "c580e4d41cac2d2065084b4e1884bc9b3b99844c571757f60079ee2e2ad75d1a",
@@ -9564,6 +9564,40 @@
       "specification": "ENG.TRACE.EVENTS",
       "strictness": "flexible",
       "verdict": "cumple"
+    },
+    {
+      "actual": null,
+      "case": "C14",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "fuente": "nodo_programa",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "fuente": "nodo_programa",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "fuente": "nodo_programa",
+            "linea": 2
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
     },
     {
       "actual": {

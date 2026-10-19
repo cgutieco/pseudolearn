@@ -83,3 +83,71 @@ fn validates_loop_poll_cancellation_ordinal() -> Result<(), String> {
     }
     Ok(())
 }
+
+#[test]
+fn application_cases_require_a_known_scenario_and_input_object() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    {
+        let case = specification.blocks.last_mut().ok_or("Missing case")?;
+        case.fields
+            .insert("operacion".to_owned(), serde_json::json!("app"));
+        case.fields.insert(
+            "aplicacion".to_owned(),
+            serde_json::json!({"scenario": "pace", "input": {"pace": "nextStatement"}}),
+        );
+    }
+    assert!(see_validation::schema::check(&specification).is_empty());
+    specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing case")?
+        .fields
+        .insert(
+            "aplicacion".to_owned(),
+            serde_json::json!({"scenario": "unknown", "input": {}}),
+        );
+    assert!(!see_validation::schema::check(&specification).is_empty());
+    specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing case")?
+        .fields
+        .insert(
+            "aplicacion".to_owned(),
+            serde_json::json!({"scenario": "pace"}),
+        );
+    assert!(!see_validation::schema::check(&specification).is_empty());
+    Ok(())
+}
+
+#[test]
+fn application_inputs_are_rejected_on_non_application_cases() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    let case = specification.blocks.last_mut().ok_or("Missing case")?;
+    case.fields.insert(
+        "aplicacion".to_owned(),
+        serde_json::json!({"scenario": "pace", "input": {}}),
+    );
+    let errors = see_validation::schema::check(&specification);
+    assert!(errors.iter().any(|error| error.starts_with("SEE-APP-CASE")));
+    Ok(())
+}
+
+#[test]
+fn paginated_state_cases_reject_invalid_cursor_types_and_page_sizes() -> Result<(), String> {
+    for pagination in [
+        serde_json::json!({"query": "array_cells", "event": 0, "page_size": 0, "cursor": null}),
+        serde_json::json!({"query": "array_cells", "event": 0, "page_size": 2, "cursor": 4}),
+        serde_json::json!({"query": "array_cells", "event": -1, "page_size": 2, "cursor": null}),
+    ] {
+        let mut specification = support::specification()?;
+        specification
+            .blocks
+            .last_mut()
+            .ok_or("Missing case")?
+            .fields
+            .insert("paginacion".to_owned(), pagination);
+        assert!(!see_validation::schema::check(&specification).is_empty());
+    }
+    Ok(())
+}

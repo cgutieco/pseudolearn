@@ -9,6 +9,7 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Conformidad integrada de `API.EXECUTE` | Recursos de ejecución, entrada y observación | B7.3 |
+| Vista pública inmutable del programa para nodos, fuentes y relaciones estructurales | Análisis y mapa de fuente | pendiente |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -73,6 +74,8 @@ Problema: una ejecución por lotes no debe copiar ni suspender la máquina al fi
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo respetando los observables del corpus.
 Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
 Alternativas descartadas y fundamento: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
+
+Problema: los emisores, diagramas y comprobaciones estructurales consumían árboles internos del núcleo Dart. Elección: la API publicará una vista inmutable por revisión con unidades, nodos, relaciones, tramos y eventos enlazados por identificador opaco. La vista no revela índices del CST, HIR ni bytecode y el consumidor no vuelve a analizar el texto.
 
 Problema: posiciones públicas y unidades recuperadas deben describir el texto, no desplazamientos internos.
 Elección: la API convierte cada tramo UTF-8 a pares línea/columna y expone el esquema de unidades

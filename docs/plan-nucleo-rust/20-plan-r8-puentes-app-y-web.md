@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0 ejecutado; B1–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0 y B1 ejecutados; B2–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> La autorización vigente cubre B0 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
+> La autorización vigente cubre B1 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -58,13 +58,13 @@ trabajo. La planificación puede completarse dejando estas puertas explícitas; 
 
 | ID | Decisión o tensión | Propuesta para revisión | Bloque dependiente |
 |---|---|---|---|
-| D-R8-01 | D-P07: emisores Python/Rust y diagramas usan AST Dart | Conservar las funciones actuales mediante una vista pública de programa, inmutable y especificada en `API.*`; compartirla entre diagramas, emisores y comprobaciones estructurales. Alternativa: retirar funciones con autorización explícita | B1, B3, B5 |
+| D-R8-01 | D-P07: emisores Python/Rust y diagramas usan AST Dart | **Resuelta:** conservar emisores, diagramas y comprobaciones estructurales mediante `API.PROGRAM.VIEW`, una vista pública inmutable que todos comparten | B1, B3, B5 |
 | D-R8-02 | Puertos síncronos y micro-lotes en hilo principal frente al transporte generado | Validar una superficie síncrona acotada para consultas y avance con presupuesto. Si la herramienta obliga a asincronía o hilos, presentar el cambio de contrato y README antes de alterar puertos o composición | B2–B4 |
-| D-R8-03 | Android aparece en el plan de arquitectura, pero no en plataformas actuales de la app; `PERF.ARTIFACT.SIZE#M1` también lo nombra | Confirmar si se exige biblioteca Android medible sin app distribuida o se amplía el producto. No declarar la medición Android «no aplicable» ni añadir una plataforma unilateralmente | B1, B6, B8 |
-| D-R8-04 | Wasm obligatorio frente a ausencia de `web/` Flutter | Entregar `pseudolearn_wasm` y un consumidor mínimo de prueba en navegador. Decidir por separado si R8 debe incluir andamiaje Flutter web y sus adaptadores de persistencia/autenticación | B1, B7 |
+| D-R8-03 | Android aparece en el plan de arquitectura, pero no en plataformas actuales de la app; `PERF.ARTIFACT.SIZE#M1` también lo nombra | **Resuelta:** Android sigue en la hoja de ruta; R8 fija el límite futuro de su biblioteca nativa, pero no exige compilarla ni distribuir la app Flutter en Android | B1, B6, B8 |
+| D-R8-04 | Wasm obligatorio frente a ausencia de `web/` Flutter | **Resuelta:** R8 entrega `pseudolearn_wasm` y un consumidor mínimo de navegador; no incorpora una app Flutter web | B1, B7 |
 | D-R8-05 | Código generado puede contener comentarios, atributos o `unsafe` incompatibles con las reglas actuales | Inspeccionar una generación de prueba fuera del producto; someter cualquier excepción mínima al contrato de reglas y documentarla. No borrar comentarios de código generado ni ampliar exenciones de forma global | B2, B3, B7 |
-| D-R8-06 | Versiones congeladas y prohibición de bloque `cambio` en 07 §3 frente a `SPEC-CHANGE-CLASSIFIED` | Mantener versiones existentes y proponer clasificación e impacto en evidencia separada de revisión, sin bloque `cambio`; confirmar su compatibilidad antes de editar contratos | B1 |
-| D-R8-07 | Reformulación de `TOOL.SERVICE.INCREMENTAL#R2` durante R7 pendiente de ratificación | Obtener resolución sobre el contrato que consumirá la app. No añadir reutilización semántica como requisito implícito de R8 | B1, B5 |
+| D-R8-06 | Versiones congeladas y prohibición de bloque `cambio` en 07 §3 frente a `SPEC-CHANGE-CLASSIFIED` | **Resuelta:** conservar versiones congeladas y registrar clasificación e impacto en evidencia separada, sin bloques `cambio` | B1 |
+| D-R8-07 | Reformulación de `TOOL.SERVICE.INCREMENTAL#R2` durante R7 pendiente de ratificación | **Resuelta:** consumir el contrato incremental vigente sin exigir reutilización semántica ni crear deuda para ratificarla después | B1, B5 |
 | D-R8-08 | Dispositivo más modesto requerido por la aceptación, sin modelo fijado aquí | Fijar dispositivo físico, SO, modo release y acceso a medición antes de cerrar el protocolo. El simulador y Apple M2 no sustituyen esa evidencia tras incorporar el puente | B0, B8 |
 
 Las decisiones de producto corresponden a la persona responsable. Las elecciones de versión de
@@ -76,46 +76,46 @@ no prescribe versiones no contrastadas ni supone que una receta de integración 
 
 ### 4.1. Cuatro contratos `APP.*` del catálogo
 
-Los nombres de reglas y casos siguientes son una propuesta de autoría, no contratos ya vigentes.
-Cada regla debe tener casos o propiedades ejecutables y cada observable debe ser obtenible de la app.
+Los cuatro contratos de esta sección quedaron definidos en B1 como especificaciones experimentales.
+Cada regla tiene casos ejecutables y cada observable queda ligado al comportamiento de la app, del
+servicio Rust o de la API pública, según su responsable.
 
 Los cuatro ritmos actuales son `StepPace.nextStatement`, `overBlock`, `outOfBlock` y `toEnd`, definidos
 en `lib/application/execution/step_pace.dart`. No son cuatro velocidades temporales: determinan dónde
-se detiene el avance. B1 debe conservar esa distinción al relacionarlos con los eventos de la VM.
+se detiene el avance. B1 conserva esa distinción al relacionarlos con los eventos de la VM.
 
-| Contrato nuevo | Reglas propuestas | Casos mínimos y oráculo |
+| Contrato nuevo | Reglas | Casos mínimos y oráculo |
 |---|---|---|
 | `APP.ENGINE.BOUNDARY` | R1: solo `engine/` consume la API y transportes; R2: ambos adaptadores satisfacen los puertos sin lógica de lenguaje en la app; R3: recursos y fallos tienen ciclo de vida definido | Rechazo deliberado de import Rust/generado en dominio o aplicación; liberación, cierre repetido, identificador inválido, versión incompatible y fallo interno. Verificador estructural con caso negativo y pruebas de frontera |
 | `APP.EXEC.PACE` | R1: fijar los cuatro ritmos existentes a partir de eventos observables; R2: mismo resultado y orden de efectos con cualquier ritmo; R3: micro-lotes cooperativos y pausa/entrada/cancelación sin pérdida; R4: presupuesto de ejecución distinto del ritmo visual | `Fib(20)`, bucles, subprocesos, recursión, entrada válida/inválida/agotada, error y bucle no terminante cancelado. Esperados derivados de `ENG.*` y `API.EXECUTE`; no copiar contadores accidentales del intérprete Dart |
 | `APP.EXEC.SNAPSHOT-VIEW` | R1: primitivas y arreglos con forma e índices; R2: objetos con identidad, campos, herencia, alias y ciclos; R3: estado coherente con el evento seleccionado y límites de retención; R4: paginación y truncamiento explícitos | Arreglo vacío y multidimensional, arreglo de objetos, dos alias, autorreferencia y ciclo mutuo, ausencia, campos heredados, salida de ámbito, recursión y consulta fuera del horizonte. Validar valores y relaciones, no solo una captura visual |
 | `APP.EDITOR.COMPLETION` | R1: consumir `TOOL.SERVICE.COMPLETION`; R2: convertir posiciones correctamente; R3: no aplicar una respuesta de revisión antigua; R4: conservar perfil e idioma de interfaz independientes | Documentos incompletos, miembros, ámbitos y sombreado, cierres, plantillas bilingües válidas, cursor con UTF-8/UTF-16 y ediciones consecutivas. Comparar proyecciones con consultas reales del servicio |
 
-Crear los archivos correspondientes en `packages/pseudolearn_spec/specifications/app/`, con sujeto
-`app`, estado `experimental` y versión inicial conforme a la política resuelta en B1. Registrar sujeto,
-adaptador y vínculos donde SEE los resuelve realmente; no suponer que basta añadir un YAML.
+Los archivos viven en `packages/pseudolearn_spec/specifications/app/`, con sujeto `app` y estado
+`experimental`. El manifiesto conserva las reglas en `pendiente` hasta que B8 tenga un adaptador
+ejecutable; no existe aún un lanzador de SEE para la app.
 
 ### 4.2. Extensiones de API y rendimiento
 
-1. Auditar `API.MODEL`, `API.ANALYZE`, `API.EXECUTE`, `API.STATE.QUERY`, `API.ERRORS`,
-   `API.VERSIONING` y `API.WIRE-FORMAT`: identificar operaciones, errores y capacidades que ya existen.
-2. Si se aprueba conservar emisores y diagramas, especificar la vista de programa antes de crearla.
-   Debe describir unidades, sentencias, expresiones, relaciones de clases, identificadores y tramos;
-   su representación pública no expone índices internos del CST, HIR o bytecode como contrato duradero.
-   La vista es una proyección del motor, no un segundo parser en Dart.
-3. Definir identidad de nodos por revisión y asociación evento–fuente–diagrama. Una edición invalida
-   ejecuciones o escenas anteriores mediante una política explícita; no reutilizar índices por coincidencia.
-4. Especificar enteros de 64 bits sin pérdida en Dart/JavaScript, identificadores opacos, Unicode,
-   propiedad y vigencia de buffers, cursores de paginación y liberación de recursos.
-5. Extender sujetos o mediciones de `PERF.VM.STEP-LATENCY` y `PERF.ARTIFACT.SIZE` para que SEE pueda
-   observar la frontera real. No marcar `app` en `cumple` por una medición exclusiva del sujeto `engine`.
-6. Generar lock, exportación y recursos consumidores mediante sus herramientas. No editar artefactos
-   generados a mano (`GEN-NO-HAND-COPY`). Registrar clasificación, impacto y revisión según D-R8-06.
+1. La auditoría B1 revisó `API.MODEL`, `API.ANALYZE`, `API.EXECUTE`, `API.STATE.QUERY`, `API.ERRORS`,
+   `API.VERSIONING` y `API.WIRE-FORMAT`, distinguiendo operaciones y capacidades existentes de las nuevas.
+2. `API.PROGRAM.VIEW` conserva emisores y diagramas con una proyección de unidades, sentencias,
+   expresiones, relaciones de clases, identificadores y tramos; no expone índices internos del CST,
+   HIR o bytecode ni crea un segundo parser en Dart.
+3. La vista liga nodos y eventos por revisión del documento. Una edición invalida ejecuciones o escenas
+   anteriores; los consumidores no pueden reutilizar índices por coincidencia.
+4. `API.WIRE-FORMAT` fija enteros de 64 bits sin pérdida en Dart/JavaScript, identificadores opacos,
+   Unicode, propiedad y vigencia de buffers, cursores de paginación y liberación de recursos.
+5. `PERF.VM.STEP-LATENCY` mide el coste completo del puente mediante el sujeto `app`. `PERF.ARTIFACT.SIZE`
+   mide iOS arm64 con el sujeto `app` y Wasm con `engine`; Android queda como ABI futura y no bloquea R8.
+6. B1 generó lock y exportación con sus herramientas, y registró clasificación e impacto en evidencia
+   separada. No se editaron artefactos generados a mano (`GEN-NO-HAND-COPY`) ni se añadieron bloques `cambio`.
 
-Los presupuestos actuales son ≤1 ms p95 para avanzar y consultar estado en dispositivo modesto,
-≤0,1 ms en Apple M2 como sustituto mientras no existe puente, ≤50 ms p95 para posicionarse y consultar
-estado retenido en M2, ≤3 MiB por ABI móvil y ≤600 KiB de Wasm comprimido con Brotli. B1 debe precisar
-qué mediciones son normativas para cada transporte; no trasladar automáticamente la sustitución M2
-a una app que ya tiene puente, ni elevar umbrales después de medir.
+B1 fija ≤1 ms p95 para avanzar y consultar estado a través de la app en un dispositivo modesto,
+≤0,1 ms en Apple M2 para el motor directo, y ≤50 ms p95 para posicionarse y consultar estado retenido
+en M2. El tamaño máximo es ≤3 MiB para la biblioteca iOS arm64 y ≤600 KiB para Wasm comprimido con
+Brotli; el límite de 3 MiB se aplicará a Android cuando esa ABI futura se implemente. No trasladar
+automáticamente la sustitución M2 a una app que ya tiene puente ni elevar umbrales después de medir.
 
 ## 5. Arquitectura de integración propuesta
 
@@ -181,20 +181,50 @@ modificando su implementación.
 - [x] Presentar D-R8-01 a D-R8-08 con alternativas, impacto y evidencia disponible.
 
 **Puerta:** línea base reproducible y decisiones de alcance resueltas antes del bloque dependiente.
-La falta de dispositivo o runner no se convierte en test aprobado ni en cierre con exclusión tácita. El inventario
-y las decisiones pendientes constan en el registro de B0; B1 no empieza hasta resolverlas.
+Las respuestas de 2026-10-19 resolvieron D-R8-01, D-R8-03, D-R8-04, D-R8-06 y D-R8-07, suficientes
+para autorizar B1. D-R8-02 y D-R8-05 se resuelven en B2; D-R8-08 antes de la medición de B8. La falta
+de dispositivo o runner no se convierte en test aprobado ni en cierre con exclusión tácita.
 
 ### B1 · Especificaciones y casos antes del producto
 
-- [ ] Redactar los cuatro `APP.*`, sus dependencias, casos felices, infelices y límites.
-- [ ] Precisar los cuatro ritmos a partir de la app vigente y la unidad observable de Rust.
-- [ ] Incorporar la vista pública decidida en D-P07 y las garantías de transporte faltantes en `API.*`.
-- [ ] Definir sujetos, métricas y ámbito de Android/web; fijar protocolo y unidades de tamaños.
-- [ ] Revisar esperados independientemente del adaptador; registrar clasificación e impacto.
-- [ ] Actualizar lock/exportación con los generadores y añadir casos negativos al soporte nuevo de SEE.
+- [x] Redactar los cuatro `APP.*`, sus dependencias, casos felices, infelices y límites.
+- [x] Precisar los cuatro ritmos a partir de la app vigente y la unidad observable de Rust.
+- [x] Incorporar la vista pública decidida en D-P07 y las garantías de transporte faltantes en `API.*`.
+- [x] Definir sujetos, métricas y ámbito de Android/web; fijar protocolo y unidades de tamaños.
+- [x] Revisar esperados independientemente del adaptador; registrar clasificación e impacto.
+- [x] Actualizar lock/exportación con los generadores y añadir casos negativos al soporte nuevo de SEE.
 
 **Puerta:** `see validate`, `see lock --check`, `see export --check` verdes; ninguna regla huérfana.
 Una implementación pendiente permanece pendiente, con casos que todavía no pasan; no se falsea `cumple`.
+
+#### Registro de B1 · 2026-10-19
+
+**Qué se construyó.** Se añadieron `API.PROGRAM.VIEW` y los cuatro contratos `APP.*`; se precisaron las
+consultas paginadas, capacidades, formato de transporte, trazas y métricas. SEE ahora valida casos de
+app, paginación y vistas del programa, con comprobaciones negativas. Se actualizaron los README de los
+miembros y se registraron las reglas de app en `conformance.yaml`.
+
+**Resultado de los tests.** `cargo test --workspace --quiet`: 166 pasaron, 0 fallaron y 0 se
+omitieron, en 76 binarios de tests. `cargo xtask verify` volvió a ejecutar el workspace y terminó sin
+fallos.
+
+**Resultado de los verificadores.** `cargo xtask verify` aprobó `cargo-deny`, `rust-checks all`,
+`rust-checks toolchain`, `see validate` (161 especificaciones), `see lock --check` y `see export --check`.
+La conformidad de `reference` ejecutó 1181 observaciones y conservó 134 divergencias; el comando cerró
+con código 0. `git diff --check` no reportó errores.
+
+**Decisiones que conviene conocer.** Se conservarán emisores, diagramas y aserciones mediante una vista
+inmutable. Android permanece en la hoja de ruta y no requiere distribuir Flutter para Android; la web
+usará Wasm con un consumidor mínimo. Las versiones existentes permanecen congeladas y el impacto se
+documenta en evidencia separada, sin bloques `cambio`. Se consume el contrato incremental vigente sin
+exigir reutilización semántica. Los cinco contratos nuevos son experimentales; las reglas de app y las
+capacidades de motor no implementadas continúan `pendiente`. La app aún no dispone de un lanzador de SEE;
+su conformidad y ejecución real corresponden a bloques posteriores. D-R8-02/D-R8-05 esperan B2 y
+D-R8-08 espera a la medición de B8.
+
+La evidencia de clasificación, impacto y revisión independiente de esperados vive en
+`packages/pseudolearn_spec/results/r8-b1-contract-changes.json`; el resumen producido por SEE está en
+`packages/pseudolearn_spec/results/r8-b1-contract-diff.json`.
 
 ### B2 · Prueba de viabilidad del transporte
 
@@ -296,7 +326,7 @@ Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión 
 - [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0 reflejan su ejecución; B1–B9 siguen pendientes.
+comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0 y B1 reflejan su ejecución; B2–B9 siguen pendientes.
 
 ### Registro de B0 · 2026-10-19
 
@@ -383,22 +413,22 @@ workflow `verify-monorepo.yml` ejecuta tests de la app en `xcode-27`, pruebas de
 y benchmarks Rust en macOS, Linux y Windows; no contiene una matriz de ejecución de la app Flutter para
 simulador, macOS x86_64 o Windows.
 
-#### Decisiones de alcance presentadas
+#### Registro de decisiones de alcance
 
 | ID | Alternativas y efecto | Evidencia disponible | Estado |
 |---|---|---|---|
-| D-R8-01 | Conservar diagramas, emisores y aserciones estructurales mediante una vista pública inmutable; o retirarlos con decisión explícita. Afecta B1, B3 y B5. | Hay 39 consumidores Dart del núcleo en 12 subdirectorios de `engine/` y puertos segregados para estas responsabilidades. | Pendiente de resolución. |
+| D-R8-01 | Conservar diagramas, emisores y aserciones estructurales mediante una vista pública inmutable; o retirarlos con decisión explícita. Afecta B1, B3 y B5. | Hay 39 consumidores Dart del núcleo en 12 subdirectorios de `engine/` y puertos segregados para estas responsabilidades. | Resuelta: conservarlos mediante `API.PROGRAM.VIEW`; implementación en B3–B5. |
 | D-R8-02 | Mantener una superficie síncrona acotada si el transporte lo permite; o cambiar puertos y composición si la herramienta obliga a asincronía/hilos. Afecta B2–B4. | Los puertos examinados son síncronos; no se ha probado generador ni transporte. | Pendiente de prueba y resolución antes de editar puertos. |
-| D-R8-03 | Medir una biblioteca Android sin distribuir app Flutter; o ampliar producto y distribución Android. Afecta B1, B6 y B8. | Android aparece como objetivo en arquitectura/performance, pero no en README, scaffold ni workflows de la app. | Pendiente de decisión de producto. |
-| D-R8-04 | Entregar `pseudolearn_wasm` con consumidor mínimo de navegador; o incluir Flutter web y sus adaptadores de persistencia/autenticación. Afecta B1 y B7. | No hay `web/` en la app; el workflow web existente despliega otro producto (`apps/fe-pseudolearn`). | Pendiente de decisión de alcance Flutter web. |
+| D-R8-03 | Medir una biblioteca Android sin distribuir app Flutter; o ampliar producto y distribución Android. Afecta B1, B6 y B8. | Android aparece como objetivo en arquitectura/performance, pero no en README, scaffold ni workflows de la app. | Resuelta: Android sigue en la hoja de ruta; R8 no exige compilarlo ni distribuir la app Flutter. |
+| D-R8-04 | Entregar `pseudolearn_wasm` con consumidor mínimo de navegador; o incluir Flutter web y sus adaptadores de persistencia/autenticación. Afecta B1 y B7. | No hay `web/` en la app; el workflow web existente despliega otro producto (`apps/fe-pseudolearn`). | Resuelta: `pseudolearn_wasm` con consumidor mínimo; sin Flutter web. |
 | D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | No se ha ejecutado aún una generación de prueba; las reglas actuales prohíben comentarios y `unsafe` salvo fronteras ya declaradas. | Pendiente de evidencia de B2. |
-| D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Pendiente de confirmación de compatibilidad. |
-| D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Pendiente de decisión. |
+| D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Resuelta: versiones congeladas; clasificación e impacto en evidencia separada, sin bloque `cambio`. |
+| D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Resuelta: consumir el contrato vigente sin exigir reutilización semántica ni crear dependencia futura de ratificación. |
 | D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | Hay iPhone físico iOS 27.0.1, pero el modelo no fue identificado. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Pendiente de selección y disponibilidad verificable. |
 
-**Resultado de la puerta:** B0 levantó y publicó toda la evidencia solicitada. No se aprueba aún la entrada a
-B1: permanecen abiertas las ocho decisiones y faltan confirmar el dispositivo modesto, el simulador iOS y la
-ejecución de macOS x86_64. Ninguna plataforma faltante se cuenta como prueba aprobada.
+**Resultado de la puerta:** B0 levantó la evidencia solicitada. Las decisiones pendientes no requeridas
+por B1 continúan ligadas a B2 y B8; el dispositivo modesto, el simulador iOS y macOS x86_64 siguen sin
+contar como pruebas aprobadas y no son criterios de la puerta documental de B1.
 
 ## 7. Protocolo reproducible de E-NR2
 

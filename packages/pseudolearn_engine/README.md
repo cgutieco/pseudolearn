@@ -235,6 +235,12 @@ Alternativas descartadas: El corpus API define recursos y codificaciones; se rec
 ### conformance
 
 Problema: adapta la api al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir`, `service` y `cli` (esta última a través del binario `pseudo`).
+
+La vista pública del programa es una proyección inmutable asociada a una revisión del documento. Los
+consumidores de diagramas, emisores y comprobaciones estructurales usan esa misma proyección; sus
+identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. La asociación de un
+evento de ejecución con un nodo y un tramo pertenece a la misma revisión. La API aún no implementa
+esta capacidad.
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
 ### service

@@ -10,7 +10,8 @@
     "responsable-rendimiento"
   ],
   "sujetos": [
-    "engine"
+    "engine",
+    "app"
   ],
   "resumen": "Procesos, iteraciones, estadística, puntos de cambio y publicación de resultados.",
   "depende_de": [],
@@ -95,5 +96,16 @@
     "estructural"
   ],
   "justificacion": "El arnés de pseudolearn_benchmarks y el miembro ceiling implementan la regla y sus tests la comprueban con casos negativos."
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "La latencia de la app se mide de extremo a extremo desde el planificador que pide el avance hasta que el estado proyectado queda disponible para el dominio. El intervalo incluye enlace, transporte, serialización y decodificación; excluye compilación, creación de sesión y pintura de UI. Cada iteración inicia una ejecución nueva sobre un documento preparado y verifica fuera del intervalo evento, estado y salida esperados.",
+  "verificacion": ["estructural"],
+  "justificacion": "El arnés registra el límite del reloj alrededor de la petición completa de la app y valida los efectos después de la captura."
 }
 ```

@@ -712,6 +712,9 @@
                   },
                   "datos": {
                     "type": "object"
+                  },
+                  "fuente": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -893,6 +896,12 @@
               "type": "string"
             },
             "json": {
+              "type": "object"
+            },
+            "aplicacion": {
+              "type": "object"
+            },
+            "vista_programa": {
               "type": "object"
             }
           },
@@ -1080,6 +1089,9 @@
                     },
                     "datos": {
                       "type": "object"
+                    },
+                    "fuente": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1262,6 +1274,9 @@
               },
               "json": {
                 "type": "object"
+              },
+              "vista_programa": {
+                "type": "object"
               }
             },
             "required": [],
@@ -1324,7 +1339,8 @@
             "trace",
             "ir",
             "cli",
-            "service"
+            "service",
+            "app"
           ]
         },
         "produce": {
@@ -1406,6 +1422,62 @@
         "cancelacion_prueba": {
           "type": "integer",
           "minimum": 0
+        },
+        "aplicacion": {
+          "type": "object",
+          "properties": {
+            "scenario": {
+              "type": "string",
+              "enum": [
+                "boundary",
+                "pace",
+                "snapshot",
+                "completion"
+              ]
+            },
+            "input": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "scenario",
+            "input"
+          ],
+          "additionalProperties": false
+        },
+        "paginacion": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1
+            },
+            "event": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "page_size": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "query",
+            "event",
+            "page_size",
+            "cursor"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -1690,6 +1762,14 @@
         "protocolo": {
           "type": "string",
           "minLength": 1
+        },
+        "sujetos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
         }
       },
       "required": [

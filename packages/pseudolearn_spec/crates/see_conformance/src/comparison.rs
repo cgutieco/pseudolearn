@@ -129,16 +129,48 @@ fn events(expected: &Value, actual: Option<&Value>) -> bool {
     else {
         return false;
     };
-    expected.len() == actual.len()
-        && expected
-            .iter()
-            .zip(actual)
-            .all(|(expected, actual)| event_matches(expected, actual))
+    if expected.len() != actual.len() {
+        return false;
+    }
+    let mut sources = std::collections::BTreeMap::new();
+    expected
+        .iter()
+        .zip(actual)
+        .all(|(expected, actual)| event_matches(expected, actual, &mut sources))
 }
 
-fn event_matches(expected: &Value, actual: &Value) -> bool {
+fn event_matches(
+    expected: &Value,
+    actual: &Value,
+    sources: &mut std::collections::BTreeMap<String, (Value, Value, Value)>,
+) -> bool {
     let empty = Value::Object(serde_json::Map::new());
+    let source_matches = expected.get("fuente").is_none_or(|source| {
+        let Some(marker) = source.as_str() else {
+            return false;
+        };
+        let Some(actual_source) = actual.get("source") else {
+            return false;
+        };
+        let Some(revision) = actual_source.get("revision_id") else {
+            return false;
+        };
+        let Some(node) = actual_source.get("node_id") else {
+            return false;
+        };
+        let Some(span) = actual_source.get("span") else {
+            return false;
+        };
+        let identity = (revision.clone(), node.clone(), span.clone());
+        if let Some(previous) = sources.get(marker) {
+            previous == &identity
+        } else {
+            sources.insert(marker.to_owned(), identity);
+            true
+        }
+    });
     expected.get("clase") == actual.get("class")
         && expected.get("linea") == actual.get("line")
         && expected.get("datos").unwrap_or(&empty) == actual.get("data").unwrap_or(&empty)
+        && source_matches
 }

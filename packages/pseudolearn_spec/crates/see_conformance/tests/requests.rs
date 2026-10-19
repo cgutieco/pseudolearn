@@ -46,6 +46,57 @@ fn builds_observed_execution_with_limits_cancellation_and_state_query() -> Resul
 }
 
 #[test]
+fn requests_program_views_only_when_the_expected_observation_needs_them() -> Result<(), String> {
+    let fields = json!({"operacion": "analyze", "programa": "Algoritmo P\nFinAlgoritmo\n"});
+    let analyze_case = case(fields)?;
+    let built = request(
+        json!({"operacion": "analyze", "programa": "Algoritmo P\nFinAlgoritmo\n"}),
+        json!({"vista_programa": {"unidades": []}}),
+    )?;
+    assert_eq!(built.get("include_program_view"), Some(&json!(true)));
+    assert_eq!(required_capabilities(&analyze_case), ["analyze"]);
+    let mut view_case = analyze_case;
+    view_case
+        .fields
+        .insert("espera".to_owned(), json!({"vista_programa": {}}));
+    assert_eq!(
+        required_capabilities(&view_case),
+        ["analyze", "program_view"]
+    );
+    let traced = case(json!({"operacion": "trace"}))?;
+    let mut sourced_trace = traced;
+    sourced_trace.fields.insert(
+        "espera".to_owned(),
+        json!({"eventos": [{"clase": "statement_entered", "linea": 2, "fuente": "nodo_programa"}]}),
+    );
+    assert_eq!(
+        required_capabilities(&sourced_trace),
+        ["execute", "observe", "program_view"]
+    );
+    Ok(())
+}
+
+#[test]
+fn passes_state_page_parameters_to_the_execution_subject() -> Result<(), String> {
+    let built = request(
+        json!({
+            "operacion": "trace",
+            "paginacion": {"query": "array_cells", "event": 2, "page_size": 2, "cursor": null}
+        }),
+        json!({"estado_en": {"evento": 2, "estado": {}}}),
+    )?;
+    assert_eq!(
+        built.get("state_page"),
+        Some(&json!({"query": "array_cells", "event": 2, "page_size": 2, "cursor": null}))
+    );
+    assert_eq!(
+        required_capabilities(&case(json!({"operacion": "trace", "paginacion": {}}))?),
+        ["execute", "observe", "state_pages"]
+    );
+    Ok(())
+}
+
+#[test]
 fn builds_tool_requests_and_declares_required_capabilities() -> Result<(), String> {
     let ir = request(
         json!({"operacion": "ir", "programa_ri": "module {}\n"}),
@@ -66,6 +117,7 @@ fn builds_tool_requests_and_declares_required_capabilities() -> Result<(), Strin
         ("trace", vec!["execute", "observe"]),
         ("ir", vec!["ir"]),
         ("cli", vec!["cli"]),
+        ("app", vec!["app"]),
         ("analyze", vec!["analyze"]),
         ("", vec!["execute"]),
     ] {
@@ -74,6 +126,31 @@ fn builds_tool_requests_and_declares_required_capabilities() -> Result<(), Strin
             capabilities
         );
     }
+    Ok(())
+}
+
+#[test]
+fn builds_application_case_requests_without_treating_inputs_as_programs() -> Result<(), String> {
+    let built = request(
+        json!({
+            "operacion": "app",
+            "aplicacion": {
+                "scenario": "pace",
+                "input": {"pace": "nextStatement", "program": "Algoritmo P\nFinAlgoritmo\n"}
+            }
+        }),
+        json!({"aplicacion": {"settled": true}}),
+    )?;
+    assert_eq!(built.get("kind"), Some(&json!("app")));
+    assert_eq!(built.get("scenario"), Some(&json!("pace")));
+    assert_eq!(
+        built.get("input"),
+        Some(&json!({"pace": "nextStatement", "program": "Algoritmo P\nFinAlgoritmo\n"}))
+    );
+    assert_eq!(
+        required_capabilities(&case(json!({"operacion": "app"}))?),
+        ["app"]
+    );
     Ok(())
 }
 

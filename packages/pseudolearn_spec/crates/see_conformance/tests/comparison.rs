@@ -52,3 +52,90 @@ fn observes_order_when_requested_without_changing_multiset_comparison() {
         .is_empty()
     );
 }
+
+#[test]
+fn compares_application_results_and_program_view_subsets() {
+    let expected = json!({
+        "aplicacion": {"decoded_id": "9007199254740993", "source_equal": true},
+        "vista_programa": {
+            "units": [{"kind": "algorithm", "name": "P", "order": 0}],
+            "node_kinds_include": ["statement", "expression"],
+            "child_order": "source"
+        }
+    });
+    let actual = json!({
+        "app": {"decoded_id": "9007199254740993", "source_equal": true, "extra": true},
+        "program_view": {
+            "units": [{"kind": "algorithm", "name": "P", "order": 0, "node_id": "opaque"}],
+            "nodes": [{"kind": "statement"}, {"kind": "expression"}, {"kind": "identifier"}],
+            "child_order": "source"
+        }
+    });
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let wrong = json!({
+        "app": {"decoded_id": "9007199254740992", "source_equal": true},
+        "program_view": {"units": [], "nodes": [{"kind": "statement"}], "child_order": "source"}
+    });
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
+fn source_event_expectations_reject_missing_or_mismatched_provenance() {
+    let expected = json!({"eventos": [
+        {"clase": "statement_entered", "linea": 2, "fuente": "nodo_programa"},
+        {"clase": "output", "linea": 2, "fuente": "nodo_programa"}
+    ]});
+    let actual = json!({"events": [
+        {"class": "statement_entered", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
+        {"class": "output", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}}
+    ]});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let wrong = json!({"events": [
+        {"class": "statement_entered", "line": 2, "source": {"revision_id": "r1", "node_id": "n1", "span": {"start_byte": "0", "end_byte": "1"}}},
+        {"class": "output", "line": 2, "source": {"revision_id": "r1", "node_id": "n2", "span": {"start_byte": "0", "end_byte": "1"}}}
+    ]});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
+fn compares_program_node_spans_without_requiring_private_node_ids() {
+    let expected = json!({"vista_programa": {
+        "nodes_include": [{
+            "kind": "statement",
+            "span": {"start_byte": "12", "end_byte": "28", "start": {"line": 2, "column": 1}, "end": {"line": 2, "column": 14}}
+        }]
+    }});
+    let actual = json!({"program_view": {"nodes": [
+        {"kind": "statement", "node_id": "opaque-a", "span": {"start_byte": "12", "end_byte": "28", "start": {"line": 2, "column": 1}, "end": {"line": 2, "column": 14}}},
+        {"kind": "expression", "node_id": "opaque-b"}
+    ]}});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let wrong = json!({"program_view": {"nodes": [
+        {"kind": "statement", "node_id": "opaque-a", "span": {"start_byte": "12", "end_byte": "27", "start": {"line": 2, "column": 1}, "end": {"line": 2, "column": 14}}}
+    ]}});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
+fn checks_node_identity_and_references_within_one_program_revision() {
+    let expected = json!({"vista_programa": {
+        "node_ids_unique": true,
+        "references_same_revision": true
+    }});
+    let actual = json!({"program_view": {
+        "revision_id": "revision-a",
+        "nodes": [
+            {"node_id": "node-a", "child_node_ids": ["node-b"]},
+            {"node_id": "node-b", "parent_node_id": "node-a", "child_node_ids": []}
+        ]
+    }});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let wrong = json!({"program_view": {
+        "revision_id": "revision-a",
+        "nodes": [
+            {"node_id": "node-a", "child_node_ids": ["missing"]},
+            {"node_id": "node-a", "parent_node_id": "node-a", "child_node_ids": []}
+        ]
+    }});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}

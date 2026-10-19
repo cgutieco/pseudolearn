@@ -111,6 +111,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Firma Authenticode en instalador directo Inno Setup | Decidir proveedor (Artifact Signing de Azure, certificado OV) si se mantiene la distribución directa fuera de la Store | Abierto |
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
+| Adaptadores del sujeto `app` sobre la API Rust                  | Frontera de recursos, vista pública del programa y transporte verificable                                                               | Pendiente; `conformance.yaml` conserva las reglas de app en `pendiente` hasta disponer del adaptador ejecutable |
 
 ---
 
@@ -204,6 +205,10 @@ dart run tool/check_design_system.dart
 # 5. Suite completa de tests unitarios, de arquitectura y widgets
 flutter test
 ```
+
+Los contratos `APP.*` están registrados como reglas pendientes en `conformance.yaml`. El sujeto SEE no
+dispone todavía de un proceso adaptador, por lo que esas reglas no se informan como cumplidas ni se
+ejecutan desde esta guía.
 
 ### 2.6 Despliegue y distribución
 
