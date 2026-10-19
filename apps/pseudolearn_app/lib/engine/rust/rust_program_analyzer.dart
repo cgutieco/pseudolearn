@@ -19,7 +19,11 @@ final class RustProgramAnalyzer implements ProgramAnalyzer {
     required UiLanguageId languageId,
   }) {
     final profile = rustProfileName(profileId);
-    final handle = _api.open(source: sourceCode, profile: profile);
+    final handle = _api.open(
+      source: sourceCode,
+      profile: profile,
+      locale: rustLocaleName(languageId),
+    );
     try {
       final report = _api.report(handle);
       final projection = RustDiagnosticProjection(

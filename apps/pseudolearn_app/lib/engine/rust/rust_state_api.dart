@@ -19,14 +19,15 @@ final class RustStateApi {
     }
   }
 
-  int? arrayLength(int execution, int event, int reference) {
+  List<int>? arrayShape(int execution, int event, int reference) {
     final page = _page(
       execution,
       event,
       query: 'array_cells',
       target: reference,
     );
-    return page?['total'] as int?;
+    final dimensions = page?['dimensions'] as List<Object?>?;
+    return dimensions?.cast<int>();
   }
 
   Map<String, Object?>? objectOf(int execution, int event, int reference) {

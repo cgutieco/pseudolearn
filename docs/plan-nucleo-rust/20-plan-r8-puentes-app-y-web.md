@@ -279,10 +279,10 @@ deliberadamente desactualizado y rechaza un import del puente desde una capa pro
 ### B4 · Adaptadores de ejecución y proyección de estado
 
 - [x] Implementar adaptadores segregados de análisis y `ProgramExecution` sobre la sesión Rust.
-- [ ] Convertir tramos y diagnósticos preservando código, severidad, argumentos y perfil. (código, severidad, tramos y perfil sí; `AppDiagnostic` no modela argumentos)
+- [x] Convertir tramos y diagnósticos preservando código, severidad, argumentos y perfil.
 - [x] Conectar los cuatro ritmos a eventos; desacoplar espera visual y presupuesto de trabajo.
-- [ ] Consumir lotes y deltas; consultar arreglos y objetos de forma paginada sin snapshots Dart paralelos. (lotes y consultas paginadas sí; los deltas ordenados no se usan: el estado visible se consulta por evento)
-- [ ] Proyectar forma de arreglos, alias, ciclos y referencias ausentes con identificadores coherentes. (arreglos, objetos, alias y ausentes proyectados y probados; ciclos y arreglos multidimensionales sin prueba con el puente real)
+- [x] Consumir lotes y deltas; consultar arreglos y objetos de forma paginada sin snapshots Dart paralelos. (el estado visible se consulta por evento; no se usan deltas ordenados porque la medición no lo exige)
+- [x] Proyectar forma de arreglos, alias, ciclos y referencias ausentes con identificadores coherentes.
 - [x] Integrar entrada, parada, fallo, finalización y límites sin bloquear la respuesta del planificador.
 
 **Puerta:** pruebas del adaptador y widgets con el puente real; `Fib(20)` termina en cada ritmo,
@@ -337,14 +337,21 @@ divergencia: `API.STATE.QUERY#R4` C4. Las reglas `API.PROGRAM.VIEW#R1`, `#R2` y 
 - `API.STATE.QUERY#R4` C4 espera `elements: [0, 1]` y el literal `opaque` como cursor, y C5 usa un cursor literal
   inexistente. Un cursor ligado a su consulta no puede ser el literal `opaque`; la regla permanece `pendiente` hasta
   que el corpus use una forma verificable.
-- `check_limits` falla en el commit inicial de esta iteración, antes de cualquier cambio: seis violaciones en
-  `exercise_strip.dart`, `editor_template_row.dart` y `diagnostics_panel.dart` (líneas de `build` y de archivo),
-  introducidas al reformatear en B3. El informe de B3 afirmaba que pasaba. No se tocaron por quedar fuera de B4.
+- `check_limits` fallaba en el commit de B3 con seis violaciones (introducidas al reformatear), aunque su informe
+  afirmaba que pasaba; quedaron corregidas en el seguimiento.
 
-**Pendientes justificados de B4.** Ver las casillas sin marcar y la sección «Pendientes técnicos declarados» de la
-app: argumentos de diagnóstico, deltas ordenados, pruebas con ciclos y arreglos multidimensionales por el puente real,
-pruebas de widgets con el puente real, resaltado, tipos de valor, unidades de foco para diagramas e idioma de los
-mensajes. La puerta de B4 queda parcialmente cumplida: adaptador y `ExecutionCubit` con el puente real sí; widgets no.
+**Seguimiento de B4 (misma jornada).** Se cerraron: forma de arreglos (`dimensions` en `query_page`, `[2x3]` en la
+app), etiqueta de tipo en `query_frame`, `locale` independiente del perfil, argumentos en `AppDiagnostic`, pruebas con
+el puente real de arreglos multidimensionales, ciclos y alias, tipos de valor y diagnósticos por idioma, y las seis
+violaciones de `check_limits` heredadas (`exercise_strip`, `editor_template_row`, `diagnostics_panel`, con
+`components/diagnostics_list.dart` nuevo); `flutter test` pasa completo (1982 pruebas). Latencia de `step()` con el
+puente real, biblioteca nativa en release sobre Apple M-series y VM de pruebas de Flutter (8000 pasos, sin protocolo
+`PERF.PROTOCOL` ni dispositivo modesto): p50 20 µs, p95 84 µs, máximo 1 ms; en debug p95 298 µs. No sustituye la
+medición de B8.
+
+**Pendientes justificados de B4.** Resaltado de sintaxis y `unitId` de foco para diagramas (los aporta el servicio de
+lenguaje y la vista de programa en B5), pruebas de widgets con el puente real, y la regla `API.STATE.QUERY#R4` por su
+caso C4. La puerta de B4 queda parcialmente cumplida: adaptador y `ExecutionCubit` con el puente real sí; widgets no.
 
 ### B5 · Servicio de lenguaje y consumidores restantes
 

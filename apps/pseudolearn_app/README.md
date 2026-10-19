@@ -113,8 +113,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Adaptadores del sujeto `app` sobre la API Rust                  | Lanzador de SEE y vínculos regla–prueba del sujeto `app`                                                                                   | Pendiente; `conformance.yaml` conserva las reglas de app en `pendiente` hasta disponer del adaptador ejecutable |
-| Resaltado, tipos de valor y unidades de foco en la ruta Rust    | La API no expone tokens, el tipo de cada valor (texto, carácter, entero) ni identificadores de unidad del diagrama; `RustProgramAnalyzer` devuelve resaltado vacío, `RustWatchRows` muestra el texto crudo y `ExecutionFocus.unitId` queda sin valor | Abierto; lo resuelven el servicio de lenguaje y la vista pública del programa en el consumo de diagramas |
-| Idioma de los mensajes de diagnóstico en la ruta Rust           | El motor renderiza mensajes con el perfil sintáctico; la interfaz no puede elegir otro idioma hasta que la API negocie un idioma de interfaz | Abierto |
+| Resaltado y unidades de foco en la ruta Rust                    | La API no expone tokens ni identificadores de unidad del diagrama; `RustProgramAnalyzer` devuelve resaltado vacío y `ExecutionFocus.unitId` queda sin valor | Abierto; lo resuelven el servicio de lenguaje y la vista pública del programa en el consumo de diagramas |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
 ---
@@ -2076,7 +2075,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   implementa sobre cualquier función de envío y `native_rust_transport.dart` es el único archivo que importa los
   enlaces generados. `RustProgramAnalyzer` implementa `ProgramAnalyzer` y `RustProgramExecution` implementa
   `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta foco, pila de bloques y filas de
-  observación. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
+  observación (texto y carácter se muestran entre comillas según la etiqueta de tipo que añade la API; los arreglos como `[2x3]` con sus dimensiones). El idioma de los mensajes de diagnóstico se negocia con un `locale` independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
   `blockPosition` y `nodeId`, que el adaptador reproduce con las mismas reglas que el observador del núcleo Dart
   (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El estado se consulta por
   evento y solo de los marcos activos; arreglos y objetos se describen por consulta paginada (`[n]`, `Clase#id`) sin

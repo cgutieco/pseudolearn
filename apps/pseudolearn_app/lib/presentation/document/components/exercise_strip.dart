@@ -29,35 +29,48 @@ final class ExerciseStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppThemeExtension.of(context);
-    final border = BorderSide(
-      color: theme.colors.borders.subtle,
-      width: BorderMetricsTokens.widthHairline,
-    );
     final header = _ExerciseStripHeader(
       exercise: sessionState.exercise,
       isCompleted: sessionState.isCompleted || sessionState.isSolved,
       isExpanded: isExpanded,
       onToggleExpand: onToggleExpand,
     );
-    final body = isExpanded
-        ? _ExerciseStripBodyDispatcher(
-            exerciseId: exerciseId,
-            sessionState: sessionState,
-            onCheck: onCheck,
-          )
-        : null;
+    return _StripSurface(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          header,
+          if (isExpanded)
+            _ExerciseStripBodyDispatcher(
+              exerciseId: exerciseId,
+              sessionState: sessionState,
+              onCheck: onCheck,
+            ),
+        ],
+      ),
+    );
+  }
+}
 
+final class _StripSurface extends StatelessWidget {
+  final Widget child;
+
+  const _StripSurface({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppThemeExtension.of(context);
+    final border = BorderSide(
+      color: theme.colors.borders.subtle,
+      width: BorderMetricsTokens.widthHairline,
+    );
     return Container(
       decoration: BoxDecoration(
         color: theme.colors.surfaces.subtle,
         border: Border(bottom: border),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [header, ?body],
-      ),
+      child: child,
     );
   }
 }
@@ -79,12 +92,6 @@ final class _ExerciseStripHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final title = exercise?.title ?? l10n.exerciseNotFoundTitle;
-    final icon = isExpanded
-        ? Icons.keyboard_arrow_up
-        : Icons.keyboard_arrow_down;
-    final semantic = isExpanded
-        ? l10n.exerciseStripCollapse
-        : l10n.exerciseStripExpand;
 
     return Container(
       height: 36,
@@ -104,14 +111,29 @@ final class _ExerciseStripHeader extends StatelessWidget {
           if (exercise != null)
             _HeaderBadges(exercise: exercise!, isCompleted: isCompleted),
           const SizedBox(width: SpacingTokens.space2),
-          AppIconButton(
-            icon: icon,
-            semanticLabel: semantic,
-            variant: AppButtonVariant.tertiary,
-            onPressed: onToggleExpand,
-          ),
+          _ExpandToggle(isExpanded: isExpanded, onToggleExpand: onToggleExpand),
         ],
       ),
+    );
+  }
+}
+
+final class _ExpandToggle extends StatelessWidget {
+  final bool isExpanded;
+  final VoidCallback onToggleExpand;
+
+  const _ExpandToggle({required this.isExpanded, required this.onToggleExpand});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AppIconButton(
+      icon: isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+      semanticLabel: isExpanded
+          ? l10n.exerciseStripCollapse
+          : l10n.exerciseStripExpand,
+      variant: AppButtonVariant.tertiary,
+      onPressed: onToggleExpand,
     );
   }
 }

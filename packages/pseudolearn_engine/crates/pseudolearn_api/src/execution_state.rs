@@ -178,7 +178,7 @@ pub(crate) fn query(
         "query_frame" | "query_variables" => {
             let view = capture_frame(machine, index("frame")?)
                 .map_err(|error| usage(&error.to_string()))?;
-            let view = frame(&view);
+            let view = crate::typed_values::typed_frame(&view);
             Ok(if operation == "query_variables" {
                 view.get("variables").cloned().unwrap_or(Value::Null)
             } else {

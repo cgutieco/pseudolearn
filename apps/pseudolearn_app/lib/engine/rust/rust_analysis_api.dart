@@ -12,12 +12,17 @@ final class RustAnalysisApi {
 
   const RustAnalysisApi(this._transport);
 
-  RustAnalysisHandle open({required String source, required String profile}) {
+  RustAnalysisHandle open({
+    required String source,
+    required String profile,
+    String? locale,
+  }) {
     final created =
         _transport.call('create_analysis', {
               'program': source,
               'profile': profile,
               'strictness': 'strict',
+              'locale': ?locale,
             })
             as Map<String, Object?>;
     return RustAnalysisHandle(

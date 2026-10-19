@@ -290,7 +290,9 @@ void main() {
                   ? {
                       'unidad': 'P',
                       'variables': {
-                        'n': {'valor': '4'},
+                        'n': {'valor': '4', 'tipo': 'entero'},
+                    's': {'valor': 'hi', 'tipo': 'texto'},
+                    'c': {'valor': 'x', 'tipo': 'caracter'},
                         'v': {'ref': 1},
                         'o': {'ref': 2},
                         'x': {'sin_valor': true},
@@ -305,7 +307,7 @@ void main() {
                       detail: 'frame',
                     ),
               'query_page': (arguments) => arguments['target'] == 1
-                  ? {'total': 3}
+                  ? {'total': 6, 'dimensions': [2, 3]}
                   : throw const RustBridgeFailure(
                       family: 'usage',
                       detail: 'array',
@@ -321,7 +323,9 @@ void main() {
           for (final row in execution.step().variables) row.name: row,
         };
         expect(rows['n']?.formattedValue, '4');
-        expect(rows['v']?.formattedValue, '[3]');
+      expect(rows['s']?.formattedValue, '"hi"');
+      expect(rows['c']?.formattedValue, "'x'");
+        expect(rows['v']?.formattedValue, '[2x3]');
         expect(rows['v']?.identityBadge, 1);
         expect(rows['o']?.formattedValue, 'Vehiculo#2');
         expect(rows['x']?.isAbsent, isTrue);

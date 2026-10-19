@@ -67,6 +67,7 @@ final class RustProgramExecution implements ProgramExecution {
     final handle = _analysis.open(
       source: sourceCode,
       profile: rustProfileName(profileId),
+      locale: rustLocaleName(languageId),
     );
     final report = _analysis.report(handle);
     if (!_isExecutable(report)) {

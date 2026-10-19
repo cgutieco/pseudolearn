@@ -93,6 +93,27 @@ void main() {
       expect(profiles, ['es', 'en']);
     });
 
+    test('the interface language selects the message locale', () {
+      final locales = <Object?>[];
+      final transport = FakeRustTransport({
+        'create_analysis': (arguments) {
+          locales.add(arguments['locale']);
+          return {'resource': 2, 'document': 1};
+        },
+        'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
+        'release': (_) => null,
+      });
+      final analyzer = analyzerFor(transport);
+      for (final language in UiLanguageId.values) {
+        analyzer.analyze(
+          sourceCode: '',
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: language,
+        );
+      }
+      expect(locales, [null, 'es', 'en']);
+    });
+
     test('resources are released even when the report fails', () {
       final transport = FakeRustTransport({
         'create_analysis': (_) => {'resource': 2, 'document': 1},

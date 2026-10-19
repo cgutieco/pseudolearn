@@ -130,6 +130,87 @@ void main() {
     execution.stop();
   });
 
+  test('multidimensional arrays expose their shape', () async {
+    final execution = RustProgramExecution(transport);
+    execution.startExecution(
+      sourceCode: 'Algoritmo P\nDimension m[2,3] Como Entero;\nFinAlgoritmo\n',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+    );
+    var step = execution.step();
+    var shape = false;
+    while (!step.isTerminal) {
+      shape =
+          shape || step.variables.any((row) => row.formattedValue == '[2x3]');
+      step = execution.step();
+    }
+    expect(shape, isTrue);
+    execution.stop();
+  });
+
+  test('cyclic and aliased objects keep coherent identities', () async {
+    final execution = RustProgramExecution(transport);
+    execution.startExecution(
+      sourceCode:
+          'Clase N\nPublico Definir otro Como N;\nFinClase\n'
+          'Algoritmo P\nDefinir a, b, c Como N;\na <- Nuevo N();\nb <- Nuevo N();\n'
+          'a.otro <- b;\nb.otro <- a;\nc <- a;\nFinAlgoritmo\n',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+    );
+    var step = execution.step();
+    while (!step.isTerminal) {
+      step = execution.step();
+    }
+    expect(step.isFinished, isTrue);
+    final rows = {for (final row in step.variables) row.name: row};
+    expect(rows['a']?.identityBadge, isNotNull);
+    expect(rows['b']?.identityBadge, isNot(rows['a']?.identityBadge));
+    expect(rows['c']?.identityBadge, rows['a']?.identityBadge);
+    execution.stop();
+  });
+
+  test('values are formatted by their type', () async {
+    final execution = RustProgramExecution(transport);
+    execution.startExecution(
+      sourceCode:
+          'Algoritmo P\nDefinir t Como Cadena;\nDefinir k Como Caracter;\n'
+          't <- "hola";\nk <- \'z\';\nFinAlgoritmo\n',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+    );
+    var step = execution.step();
+    while (!step.isTerminal) {
+      step = execution.step();
+    }
+    final rows = {
+      for (final row in step.variables) row.name: row.formattedValue,
+    };
+    expect(rows['t'], '"hola"');
+    expect(rows['k'], "'z'");
+    execution.stop();
+  });
+
+  test('diagnostics keep arguments and follow the interface language', () {
+    final analyzer = RustProgramAnalyzer(RustAnalysisApi(transport));
+    const program = 'Algoritmo P\nEscribir inexistente;\nFinAlgoritmo\n';
+    final spanish = analyzer.analyze(
+      sourceCode: program,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+    );
+    final english = analyzer.analyze(
+      sourceCode: program,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.english,
+    );
+    expect(spanish.diagnostics.first.arguments, isNotEmpty);
+    expect(
+      spanish.diagnostics.first.message,
+      isNot(english.diagnostics.first.message),
+    );
+  });
+
   test('a non terminating loop is cancelled by stop', () async {
     final execution = RustProgramExecution(transport);
     execution.startExecution(

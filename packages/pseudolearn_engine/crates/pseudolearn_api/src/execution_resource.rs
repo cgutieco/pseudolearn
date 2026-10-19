@@ -77,6 +77,10 @@ impl ExecutionResource {
         })
     }
 
+    pub(crate) fn use_locale(&mut self, locale: String) {
+        self.profile = locale;
+    }
+
     pub(crate) fn attach_view(&mut self, view: crate::program_view::ProgramView) {
         self.view = Some(view);
     }

@@ -74,16 +74,22 @@ final class RustWatchRows {
     final text = fields['valor'] as String?;
     return WatchRow(
       name: label.$1,
-      formattedValue: text ?? _absent,
+      formattedValue: text == null ? _absent : _typed(text, fields['tipo']),
       scopeName: label.$2,
       isAbsent: text == null,
     );
   }
 
+  String _typed(String text, Object? kind) => switch (kind) {
+    'caracter' => "'$text'",
+    'texto' => '"$text"',
+    _ => text,
+  };
+
   WatchRow _referenceRow(_QueryPoint point, _Label label, int reference) {
-    final length = _state.arrayLength(point.execution, point.event, reference);
-    final description = length != null
-        ? '[$length]'
+    final shape = _state.arrayShape(point.execution, point.event, reference);
+    final description = shape != null
+        ? '[${shape.join('x')}]'
         : '${_state.objectOf(point.execution, point.event, reference)?['clase']}#$reference';
     return WatchRow(
       name: label.$1,

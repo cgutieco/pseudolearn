@@ -7,6 +7,7 @@ use std::collections::BTreeMap;
 pub struct ApiSession {
     next_identifier: u64,
     nonce: u64,
+    pub(crate) locales: BTreeMap<u64, String>,
     pub(crate) resources: BTreeMap<u64, Resource>,
 }
 
@@ -101,9 +102,9 @@ impl ApiSession {
                 let request = parse_analysis(arguments)?;
                 (self.insert(Resource::Document(request.clone()))?, request)
             };
-        Ok(
-            json!({"resource":self.insert(Resource::Analysis {document,request})?,"document":document}),
-        )
+        let analysis = self.insert(Resource::Analysis { document, request })?;
+        self.remember_locale(analysis, arguments);
+        Ok(json!({"resource":analysis,"document":document}))
     }
 
     fn document(&self, arguments: &Value) -> Result<Value, ApiError> {
@@ -116,9 +117,15 @@ impl ApiSession {
     }
 
     fn analysis(&self, arguments: &Value) -> Result<Value, ApiError> {
-        match self.resources.get(&identifier(arguments)?) {
+        let analysis = identifier(arguments)?;
+        match self.resources.get(&analysis) {
             Some(Resource::Analysis { request, .. }) => {
-                serde_json::to_value(execute_analyze(request)).map_err(serialization)
+                let mut report =
+                    serde_json::to_value(execute_analyze(request)).map_err(serialization)?;
+                if let Some(locale) = self.locale_of(analysis) {
+                    crate::locale_operations::relocalize(&mut report, locale);
+                }
+                Ok(report)
             }
             _ => Err(usage("invalid analysis")),
         }
@@ -144,6 +151,9 @@ impl ApiSession {
         execution_request.strictness = request.strictness.clone();
         let mut execution = Box::new(ExecutionResource::start(&execution_request)?);
         execution.attach_view(view);
+        if let Some(locale) = self.locale_of(analysis) {
+            execution.use_locale(locale.to_owned());
+        }
         Ok(json!({"resource":self.insert(Resource::Execution {analysis,execution})?}))
     }
 

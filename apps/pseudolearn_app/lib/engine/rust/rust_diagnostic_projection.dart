@@ -15,6 +15,9 @@ final class RustDiagnosticProjection {
       message: diagnostic['message'] as String,
       severity: _severityOf(diagnostic['severity'] as String),
       primaryRange: _rangeOf(diagnostic['span'] as Map<String, Object?>),
+      arguments: Map.unmodifiable(
+        diagnostic['arguments'] as Map<String, Object?>? ?? const {},
+      ),
       relatedRanges: [
         for (final related in diagnostic['related'] as List<Object?>)
           _relatedOf(related as Map<String, Object?>),

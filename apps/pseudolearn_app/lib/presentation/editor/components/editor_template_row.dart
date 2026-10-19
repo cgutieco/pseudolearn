@@ -51,11 +51,6 @@ final class _TemplateChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     final radius = BorderRadius.circular(RadiusTokens.radiusSm);
-    final chipBorder = Border.all(
-      color: theme.colors.borders.subtle,
-      width: BorderMetricsTokens.widthHairline,
-    );
-
     return InkWell(
       onTap: onTap,
       borderRadius: radius,
@@ -67,7 +62,10 @@ final class _TemplateChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colors.surfaces.defaultSurface,
             borderRadius: radius,
-            border: chipBorder,
+            border: Border.all(
+              color: theme.colors.borders.subtle,
+              width: BorderMetricsTokens.widthHairline,
+            ),
           ),
           child: AppText(
             template.label,

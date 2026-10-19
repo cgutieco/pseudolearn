@@ -1,6 +1,7 @@
 use crate::ApiError;
 use crate::execution_resource::usage;
-use crate::execution_state::{frame, query_object, value};
+use crate::execution_state::{query_object, value};
+use crate::typed_values::typed_frame;
 use pseudolearn_runtime as runtime;
 use pseudolearn_timeline::{ArraySliceRange, capture_array_slice, capture_frame};
 use pseudolearn_vm::Machine;
@@ -60,7 +61,15 @@ pub(crate) fn page(
     let end = offset.saturating_add(elements.len());
     let truncated = end < total;
     let next_cursor = truncated.then(|| format!("{binding:016x}.{end:x}"));
-    Ok(json!({"elements":elements,"truncated":truncated,"next_cursor":next_cursor,"total":total}))
+    let mut response =
+        json!({"elements":elements,"truncated":truncated,"next_cursor":next_cursor,"total":total});
+    if let (true, Some(fields)) = (request.query == "array_cells", response.as_object_mut()) {
+        fields.insert(
+            "dimensions".to_owned(),
+            json!(array_dimensions(machine, request.target)?),
+        );
+    }
+    Ok(response)
 }
 
 fn elements(
@@ -73,7 +82,7 @@ fn elements(
         "frame_variables" => {
             let view = capture_frame(machine, target_index(request)?)
                 .map_err(|error| usage(&error.to_string()))?;
-            let variables = frame(&view)
+            let variables = typed_frame(&view)
                 .get("variables")
                 .cloned()
                 .unwrap_or(Value::Null);
@@ -105,6 +114,18 @@ fn array_cells(
     )
     .map_err(|error| usage(&error.to_string()))?;
     Ok((cells.iter().map(value).collect(), total))
+}
+
+fn array_dimensions(machine: &Machine<'_>, ordinal: u64) -> Result<Vec<u64>, ApiError> {
+    let heap = machine.heap();
+    let handle = runtime::live_allocation_handles(heap)
+        .into_iter()
+        .find(|handle| runtime::allocation_ordinal(heap, *handle) == Ok(ordinal))
+        .filter(|handle| runtime::is_array_allocation(heap, *handle))
+        .ok_or_else(|| usage("invalid array reference"))?;
+    runtime::array_dimensions(heap, handle)
+        .map(<[u64]>::to_vec)
+        .map_err(|_| usage("invalid array reference"))
 }
 
 fn array_cell_count(machine: &Machine<'_>, ordinal: u64) -> Result<usize, ApiError> {

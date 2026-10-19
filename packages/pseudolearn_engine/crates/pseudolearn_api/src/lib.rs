@@ -40,12 +40,14 @@ pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
 mod event_source;
 mod execution_capture;
 mod execution_resource;
+mod locale_operations;
 mod program_view;
 mod program_view_kind;
 mod program_view_operations;
 mod program_view_relations;
 mod resources;
 mod state_pages;
+mod typed_values;
 pub use program_view_operations::analysis_program_view;
 pub use resources::ApiSession;
 

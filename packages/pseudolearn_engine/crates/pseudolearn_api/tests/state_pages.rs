@@ -149,3 +149,39 @@ fn empty_array_has_no_cells() -> Result<(), String> {
     assert_eq!(result.pointer("/value/truncated"), Some(&json!(false)));
     Ok(())
 }
+
+#[test]
+fn array_pages_report_dimensions_for_multidimensional_arrays() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let started = execution(
+        &mut session,
+        "Algoritmo P\nDimension m[2,3] Como Entero;\nFinAlgoritmo\n",
+    )?;
+    let result = session.call("query_page", &page(&started, 1, 4, None));
+    assert_eq!(result.pointer("/value/dimensions"), Some(&json!([2, 3])));
+    assert_eq!(result.pointer("/value/total"), Some(&json!(6)));
+    assert_eq!(result.pointer("/value/truncated"), Some(&json!(true)));
+    Ok(())
+}
+
+#[test]
+fn frame_queries_tag_scalar_values_with_their_type() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let started = execution(
+        &mut session,
+        "Algoritmo P\nDefinir n Como Entero;\nDefinir t Como Cadena;\nn <- 4;\nt <- \"hola\";\nFinAlgoritmo\n",
+    )?;
+    let frame = session.call(
+        "query_frame",
+        &json!({"resource":started,"event":7,"frame":0}),
+    );
+    assert_eq!(
+        frame.pointer("/value/variables/n"),
+        Some(&json!({"valor":"4","tipo":"entero"}))
+    );
+    assert_eq!(
+        frame.pointer("/value/variables/t/tipo"),
+        Some(&json!("texto"))
+    );
+    Ok(())
+}

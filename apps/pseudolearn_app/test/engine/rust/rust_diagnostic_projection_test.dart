@@ -21,8 +21,10 @@ void main() {
         'message': 'm',
         'severity': 'warning',
         'span': span(2, 1, 3),
+        'arguments': {'lexeme': '@'},
         'related': <Object?>[],
       });
+      expect(diagnostic.arguments, {'lexeme': '@'});
       expect(diagnostic.code, 'unrecognizedCharacter');
       expect(diagnostic.severity, AppSeverity.warning);
       expect(diagnostic.primaryRange.startOffset, 2);
