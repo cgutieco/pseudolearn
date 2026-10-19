@@ -41,7 +41,8 @@ cargo run --manifest-path ../../../packages/pseudolearn_rust_checks/Cargo.toml -
 
 `Cargo.lock` fija el grafo consumido por la app. La compilación Native Assets usa los destinos del
 `rust-toolchain.toml`; los comandos de generación y comprobación no necesitan un checkout previo del
-repositorio para hallar archivos auxiliares.
+repositorio para hallar archivos auxiliares. El toolchain y Cargo se requieren al compilar; el framework
+macOS, el archive iOS y el bundle Windows contienen la biblioteca para su carga en tiempo de ejecución.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -66,6 +67,11 @@ su límite `catch_unwind`.
 `flutter_rust_bridge` y `flutter_rust_bridge_hooks` se fijan en `2.13.0`. Native Assets compila y
 empaqueta la biblioteca con el SDK de Rust fijado. El módulo `native` compila la API sin activar la
 feature `native` de `pseudolearn_api`, por lo que el puente no incorpora Cranelift.
+
+El build de Release macOS conserva los slices arm64 y x86_64 en `pseudolearn_bridge.framework`. iOS
+compila para dispositivo y simulador. Windows instala el DLL junto al ejecutable a través de
+`windows/CMakeLists.txt`; los paquetes de distribución contienen ese directorio completo. La firma
+restringida de macOS se aplica después del build, cuando el workflow ya instaló el perfil de tienda.
 
 El árbol de `flutter_rust_bridge` trae `syn 2.0.119` para sus macros y `syn 3.0.9` por
 `delegate-attr`; `deny.toml` mantiene prohibidas las versiones duplicadas y omite solo `syn@3.0.9`,

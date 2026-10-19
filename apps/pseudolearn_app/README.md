@@ -125,7 +125,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 
 ### 2.1 Requisitos previos y plataformas objetivo
 
-- **SDKs:** Flutter SDK `3.47.5` exacto (fijado en `environment.flutter` de `pubspec.yaml`, ver §4.47), Dart SDK `^3.9.0`.
+- **SDKs:** Flutter SDK `3.47.5` exacto (fijado en `environment.flutter` de `pubspec.yaml`, ver §4.47), Dart SDK `^3.9.0` y Rust `1.99.0` mediante `native/rust-toolchain.toml` para compilar la biblioteca. Rust y Cargo solo se necesitan durante builds; el paquete instalado contiene el código nativo.
 - **Plataformas objetivo primarias:** macOS 13+ (Apple Silicon y x86_64), iOS 16+ (iPhone y iPad), Windows 10/11 (x64).
 - **Plataformas secundarias:** Linux (GTK), Web (WASM). Son objetivo declarado, **no andamiaje
   existente**: el proyecto contiene las carpetas `ios/`, `macos/` y `windows/`. Toda afirmación sobre el comportamiento en
@@ -188,13 +188,12 @@ flutter build windows --release
 # Ruta de salida: build/windows/x64/runner/Release/
 ```
 
-La configuración *Release* del target `Runner` en `macos/Runner.xcodeproj` usa `CODE_SIGN_STYLE = Manual` y
-`CODE_SIGN_IDENTITY = "-"` (ad-hoc) a propósito: este build nunca queda firmado con una identidad real
-en este paso. La firma con el certificado *Apple Distribution* la aplica después
-`.github/workflows/push-production-macos.yml` (§2.6), tanto si se compila en CI como si alguien lo compila a
-mano. La firma automática (`Automatic`) que trae el proyecto por defecto en Debug/Profile exige una
-sesión de Xcode con Apple ID y un perfil de aprovisionamiento, algo que un runner de CI no tiene y que
-esta build de producción no necesita.
+El target `Runner` de Release en `macos/Runner.xcodeproj` usa `CODE_SIGN_STYLE = Manual` y
+`CODE_SIGNING_ALLOWED = NO`: el build produce un bundle sin firma porque sus entitlements restringidos
+requieren el perfil de Mac App Store que el workflow instala después de compilar. El workflow
+`.github/workflows/push-production-macos.yml` (§2.6) incorpora el perfil, firma el framework Rust y los
+frameworks anidados, y firma el `.app`. `flutter build macos --release` no necesita una cuenta Apple ni
+un perfil en el equipo de desarrollo.
 
 ### 2.5 Pruebas y verificación inmediata
 
@@ -219,7 +218,20 @@ dart run tool/check_design_system.dart
 # 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets, equivalencia de puertos)
 cargo build --release --locked --lib --manifest-path native/Cargo.toml
 flutter test
+
+# 7. Humo funcional en el primer simulador iPhone disponible
+SIMULATOR_ID=$(xcrun simctl list devices available --json | python3 -c 'import json, sys; devices = json.load(sys.stdin)["devices"].values(); print(next((device["udid"] for runtime in devices for device in runtime if device["name"].startswith("iPhone")), ""))')
+flutter test --no-pub --device-id "$SIMULATOR_ID" integration_test/native_engine_smoke_test.dart
+
+# 8. Humo de los bindings sobre el asset generado para macOS Release
+FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
+  flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
 ```
+
+El humo de plataforma inicia el puente real y recorre análisis, completado, entrada y consulta de arreglos.
+Los builds de Windows ejecutan la integración en la app y las pruebas FFI contra
+`build/native_assets/windows`; también verifican que el DLL aparezca en el bundle, el MSIX, el instalador
+y el ZIP portable.
 
 Los contratos `APP.*` están registrados como reglas pendientes en `conformance.yaml`. El sujeto SEE no
 dispone todavía de un proceso adaptador, por lo que esas reglas no se informan como cumplidas ni se
@@ -229,7 +241,9 @@ ejecutan desde esta guía.
 
 - **Distribución en macOS:** Automatizada por `.github/workflows/push-production-macos.yml`, en la raíz del
   monorepo. Un disparo manual (`workflow_dispatch`) hace que un runner
-  `macos-14` compile el `.app` en modo release, le embeba el perfil de aprovisionamiento de *Mac App
+  `macos-15` compile el `.app` universal en modo release, compruebe las arquitecturas arm64/x86_64 del
+  ejecutable y de `pseudolearn_bridge.framework`, y ejecute el humo Rust contra el asset generado. Después le
+  embebe el perfil de aprovisionamiento de *Mac App
   Store*, firme sus frameworks anidados y el bundle con un certificado *Apple Distribution*, lo empaquete
   con `productbuild` en un `.pkg` firmado con un certificado *Mac Installer Distribution*, y lo valide y
   suba a App Store Connect con `xcrun altool` autenticado por API Key. El canal de macOS es el mismo que
@@ -311,7 +325,8 @@ ejecutan desde esta guía.
   `IOS_APP_STORE` con todos los certificados de distribución y lo borra al terminar (los perfiles guardados caducan o
   quedan `INVALID` cuando cambian las capacidades del App ID, por eso no se guarda uno en un secreto). La firma pasa a
   manual solo en el runner, añadiendo ajustes a `ios/Flutter/Release.xcconfig` antes de `flutter build ipa`; el
-  proyecto versionado conserva la firma automática. Tras `altool --upload-app` espera a que la compilación quede
+  proyecto versionado conserva la firma automática. Antes de subir, extrae el `.ipa`, comprueba arm64 y la firma del
+  framework Rust y valida la firma profunda de la app. Tras `altool --upload-app` espera a que la compilación quede
   `VALID`, declara el cifrado como exento si falta, crea (o reutiliza) la versión editable de la App Store con
   `releaseType` manual, rellena *Novedades* desde `CHANGELOG.json`, y asocia la compilación. **No envía a revisión**:
   ese paso lo da la persona en App Store Connect. Si la versión de `pubspec.yaml` ya está publicada, el workflow se
@@ -319,8 +334,9 @@ ejecutan desde esta guía.
 - **Distribución en Windows (Microsoft Store):** Automatizada por `.github/workflows/push-production-windows-store.yml`.
   Un despacho manual (`workflow_dispatch`) en runner `windows-latest` compila la versión release con
   `--dart-define-from-file=dart_define.ci.json`, verifica la presencia de los redistribuibles de Visual C++
-  (`msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`), y empaqueta el bundle mediante `dart run msix:pack`
-  en `PseudoLearn-Store.msix` configurado con la identidad de Partner Center (`CESARGUTIERREZ.PseudoLearn`,
+  (`msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`) y del DLL Rust en el bundle y el MSIX. Ejecuta el
+  smoke del puente y la integración en la app antes de empaquetar el bundle con `dart run msix:pack` en
+  `PseudoLearn-Store.msix`, configurado con la identidad de Partner Center (`CESARGUTIERREZ.PseudoLearn`,
   `CN=EDFD3B2E-83F3-4BC3-9577-7798545994BB`, Store ID `9MXZB1XDWP9J`). El paquete declara la capacidad `runFullTrust`,
   el protocolo `pseudolearn://` para captura de callbacks de autenticación y la asociación de archivos `.pseudo`.
   Microsoft Store firma el paquete oficialmente tras la certificación en Partner Center.
@@ -334,7 +350,8 @@ ejecutan desde esta guía.
   - **Runtime de Visual C++ local a la aplicación:** `windows/CMakeLists.txt` incluye
     `InstallRequiredSystemLibraries` y copia `msvcp140.dll`, `vcruntime140.dll` y `vcruntime140_1.dll` junto a
     `pseudolearn.exe`, así que el instalador y el `.zip` arrancan en un Windows sin el redistribuible instalado. El
-    workflow falla antes de empaquetar si falta alguna. Se descartó instalar `vc_redist.x64.exe` desde Inno Setup:
+    workflow falla antes de empaquetar si falta alguna; después instala en modo silencioso y comprueba el DLL Rust en
+    el instalador y el ZIP portable. Se descartó instalar `vc_redist.x64.exe` desde Inno Setup:
     exige elevación UAC y el instalador es por usuario.
   - **Versión del ejecutable:** el workflow pasa la versión del tag como `--build-name`, de modo que el recurso de
     versión de `pseudolearn.exe` coincide con la del instalador.
@@ -2125,6 +2142,24 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   [llamadas síncronas](https://cjycode.com/flutter_rust_bridge/guides/concurrency/sync-dart),
   [modelo de concurrencia](https://cjycode.com/flutter_rust_bridge/guides/concurrency/overview),
   [Native Assets](https://github.com/fzyzcjy/flutter_rust_bridge/blob/master/website/docs/manual/integrate/03-native-assets.md).
+
+### 4.50 Carga y distribución del puente nativo por plataforma
+
+- **Problema:** la biblioteca Rust debe estar disponible al arrancar la app, conservar las arquitecturas declaradas y
+  viajar en cada artefacto sin requerir un checkout ni una instalación de Rust en el dispositivo.
+- **Elección:** `hook/build.dart` compila con el toolchain exacto y registra la biblioteca como Native Asset. Flutter
+  produce una app macOS universal y un `pseudolearn_bridge.framework` con slices arm64/x86_64; iOS compila la
+  biblioteca para dispositivo y simulador; Windows copia `pseudolearn_bridge.dll` al bundle mediante CMake. Los
+  workflows prueban el asset generado y verifican su presencia en el MSIX, el instalador y el ZIP portable. La
+  ejecución de la app usa el cargador de FRB, no `native/target`.
+- **Firma de macOS:** Release desactiva la firma de Xcode. El workflow agrega el perfil restringido de Mac App Store y
+  firma el framework Rust y el bundle después del build. La compilación local entrega un `.app` sin firma.
+- **Android:** la biblioteca Android sigue en la hoja de ruta. Los builds de R8 no compilan ni distribuyen la app
+  Flutter para Android.
+- **Alternativas descartadas:** cargar binarios desde el checkout o compilar Rust en el dispositivo exigiría
+  herramientas de desarrollo al usuario; incorporar Android en estos builds ampliaría el alcance de distribución.
+- **Fuentes:** [Native Assets de flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/manual/integrate/native-assets),
+  [hooks de Dart](https://dart.dev/tools/hooks).
 
 ---
 

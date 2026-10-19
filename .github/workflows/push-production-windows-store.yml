@@ -31,6 +31,15 @@ jobs:
       - name: Install app dependencies
         run: flutter pub get
 
+      - name: Select pinned Rust toolchain
+        working-directory: apps/pseudolearn_app/native
+        run: |
+          $toolchain = (Select-String -Path rust-toolchain.toml -Pattern '^channel\s*=\s*"([^"]+)"').Matches[0].Groups[1].Value
+          rustup toolchain install $toolchain --profile minimal --component rustfmt --component clippy --target x86_64-pc-windows-msvc
+          "RUSTUP_TOOLCHAIN=$toolchain" >> $env:GITHUB_ENV
+          rustup show
+          rustc --version
+
       - name: Resolve release version
         id: resolve-version
         shell: pwsh
@@ -68,6 +77,19 @@ jobs:
             --build-name=$env:VERSION `
             --build-number=$env:GITHUB_RUN_NUMBER
 
+      - name: Verify and exercise bundled Rust asset
+        shell: pwsh
+        run: |
+          $nativeAsset = "build\native_assets\windows\pseudolearn_bridge.dll"
+          $bundleAsset = "build\windows\x64\runner\Release\pseudolearn_bridge.dll"
+          if (-not (Test-Path $nativeAsset) -or -not (Test-Path $bundleAsset)) {
+            throw "The Rust native asset is missing from the Windows build or application bundle."
+          }
+          $env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR = (Resolve-Path "build\native_assets\windows").Path
+          flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+          Remove-Item Env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR
+          flutter test --no-pub --device-id windows integration_test/native_engine_smoke_test.dart
+
       - name: Verify bundled Visual C++ runtime
         shell: pwsh
         run: |
@@ -90,6 +112,20 @@ jobs:
             --output-path $outputPath `
             --output-name PseudoLearn-Store `
             -v
+
+      - name: Verify the Rust asset is inside the MSIX
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path "packaging\windows\Output\PseudoLearn-Store.msix"))
+          try {
+            $library = $archive.Entries | Where-Object { $_.FullName -match '(^|/)pseudolearn_bridge\.dll$' }
+            if ($null -eq $library) {
+              throw "The packaged MSIX does not contain pseudolearn_bridge.dll."
+            }
+          } finally {
+            $archive.Dispose()
+          }
 
       - name: Upload MSIX artifact to GitHub Actions
         uses: actions/upload-artifact@v7

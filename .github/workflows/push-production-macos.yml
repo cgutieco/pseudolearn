@@ -26,6 +26,19 @@ jobs:
       - name: Install app dependencies
         run: flutter pub get
 
+      - name: Select pinned Rust toolchain
+        working-directory: apps/pseudolearn_app/native
+        run: |
+          TOOLCHAIN=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$TOOLCHAIN" --profile minimal \
+            --component rustfmt \
+            --component clippy \
+            --target aarch64-apple-darwin \
+            --target x86_64-apple-darwin
+          echo "RUSTUP_TOOLCHAIN=$TOOLCHAIN" >> "$GITHUB_ENV"
+          rustup show
+          rustc --version
+
       - name: Write build-time auth configuration
         run: |
           cat > dart_define.ci.json <<JSON
@@ -41,6 +54,18 @@ jobs:
           flutter build macos --release \
             --dart-define-from-file=dart_define.ci.json \
             --build-number="$GITHUB_RUN_NUMBER"
+
+      - name: Verify universal application and Rust asset
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          APP_EXECUTABLE=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Contents/Info.plist")
+          BRIDGE_FRAMEWORK="$APP_PATH/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
+          test -f "$APP_PATH/Contents/Resources/Assets.car"
+          test -f "$BRIDGE_FRAMEWORK"
+          lipo -verify_arch arm64 x86_64 "$APP_PATH/Contents/MacOS/$APP_EXECUTABLE"
+          lipo -verify_arch arm64 x86_64 "$BRIDGE_FRAMEWORK"
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
+            flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
 
       - name: Import distribution certificates into a temporary keychain
         env:

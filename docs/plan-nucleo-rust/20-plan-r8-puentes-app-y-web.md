@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> Las autorizaciones cubrieron B3, B4 y una iteración de B5; no autorizan la publicación de aplicaciones.
+> Las autorizaciones cubrieron B3, B4, una iteración de B5 y B6; no autorizan la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -437,12 +437,40 @@ se tocó B6. La regeneración del puente no cambió (`native/` sin modificacione
 - [ ] iOS: integrar biblioteca de dispositivo y simulador, empaquetado y enlace según herramienta validada.
 - [ ] macOS: construir y cargar arm64/x86_64 con recursos y firma de biblioteca incluidos.
 - [ ] Windows x64: construir, cargar y empaquetar DLL y dependencias en instalador, portable y MSIX.
-- [ ] Resolver Android conforme a D-R8-03; si se exige, compilar y medir las ABI aprobadas.
+- [x] Resolver Android conforme a D-R8-03; si se exige, compilar y medir las ABI aprobadas.
 - [ ] Asegurar que el empaquetado funciona sin un checkout de desarrollo ni Rust instalado en el equipo usuario.
 - [ ] Ejecutar humo funcional en cada objetivo; distinguir build cruzado, simulación y ejecución real.
 
 **Puerta:** arranque, análisis, completado, ejecución, entrada y consulta de estructuras por plataforma.
 Un binario compilado sin ejecución en su objetivo no satisface «la app ejecuta».
+
+#### Registro de una iteración de B6 · 2026-10-19
+
+**Qué se implementó.** Se comprobó la carga Native Assets en los builds de iOS y macOS y se reforzaron los
+workflows manuales para seleccionar el toolchain fijado, ejercitar el puente, verificar arquitecturas y exigir que
+el DLL viaje en el bundle de Windows, el MSIX, el instalador y el ZIP portable. El build macOS queda sin firma de
+Xcode; su workflow incorpora el perfil restringido y firma el framework Rust y la app después del build. Android
+queda en hoja de ruta conforme a D-R8-03: B6 no compila ni distribuye la app Flutter para Android.
+
+**Evidencia local.** `cargo build --release --locked --lib` compiló `aarch64-apple-ios`, `aarch64-apple-ios-sim`,
+`x86_64-apple-ios` y `x86_64-apple-darwin`. `flutter build macos --release --no-pub --no-version-check` produjo
+`PseudoLearn.app` y `pseudolearn_bridge.framework` universales arm64/x86_64 con `Assets.car`. `flutter build ipa
+--no-codesign --no-pub` produjo un archive iOS arm64 que contiene el framework Rust y los recursos. El humo
+`integration_test/native_engine_smoke_test.dart` pasó en un simulador iPhone 18 Pro y cubrió análisis, completado,
+entrada y consulta de un arreglo a través de la composición Rust.
+
+**Verificaciones locales.** La suite del puente pasó con 18 pruebas contra el Native Asset Release de macOS;
+`flutter analyze --fatal-infos --fatal-warnings`, `dart run tool/check_limits.dart`, `dart run tool/check_content.dart`,
+`dart run tool/check_design_system.dart`, el formato Dart y `git diff --check` terminaron en verde. El smoke de
+integración actualizado pasó en el simulador iPhone 18 Pro.
+
+**Estado de la puerta.** El smoke de integración macOS no pudo compilar Debug porque Xcode requiere un perfil de
+desarrollo que no está instalado; el build Release sí produce el bundle universal y su framework incluido, pero no
+se considera prueba de ejecución de la app. Las comprobaciones CI de archivos, firmas y arquitecturas están
+incorporadas a los workflows; no se ejecutaron porque esta iteración no despachó builds remotos. No se dispone de
+runner Windows ni de un iPhone físico en este entorno. El archive iOS no sustituye la ejecución en un dispositivo.
+Por ello las casillas de plataformas y la puerta de B6 continúan abiertas. La distribución Windows aún requiere
+evidencia de ejecución en runner Windows. No se inició B7.
 
 ### B7 · Módulo Wasm y consumidor real en navegador
 

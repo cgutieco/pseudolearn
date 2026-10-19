@@ -34,6 +34,34 @@ jobs:
       - name: Install app dependencies
         run: flutter pub get
 
+      - name: Select pinned Rust toolchain
+        working-directory: apps/pseudolearn_app/native
+        run: |
+          TOOLCHAIN=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$TOOLCHAIN" --profile minimal \
+            --component rustfmt \
+            --component clippy \
+            --target aarch64-apple-ios \
+            --target aarch64-apple-ios-sim \
+            --target x86_64-apple-ios \
+            --target aarch64-apple-darwin \
+            --target x86_64-apple-darwin
+          echo "RUSTUP_TOOLCHAIN=$TOOLCHAIN" >> "$GITHUB_ENV"
+          rustup show
+          rustc --version
+
+      - name: Run native engine smoke test in iOS Simulator
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available --json | python3 -c 'import json, sys; devices = json.load(sys.stdin)["devices"].values(); print(next((device["udid"] for runtime in devices for device in runtime if device["name"].startswith("iPhone")), ""))')
+          if [ -z "$SIMULATOR_ID" ]; then
+            echo "No available iPhone simulator is installed on this runner" >&2
+            exit 1
+          fi
+          xcrun simctl boot "$SIMULATOR_ID" || true
+          xcrun simctl bootstatus "$SIMULATOR_ID" -b
+          flutter test --no-pub --device-id "$SIMULATOR_ID" integration_test/native_engine_smoke_test.dart
+          xcrun simctl shutdown "$SIMULATOR_ID"
+
       - name: Install App Store Connect API key
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -153,6 +181,24 @@ jobs:
             --build-name="$APP_VERSION" \
             --build-number="$BUILD_NUMBER" \
             --export-options-plist="$RUNNER_TEMP/ExportOptions.plist"
+
+      - name: Verify Rust bridge in signed iOS package
+        run: |
+          IPA_PATH=$(find build/ios/ipa -maxdepth 1 -name '*.ipa' -print -quit)
+          if [ -z "$IPA_PATH" ]; then
+            echo "The signed iOS package was not produced" >&2
+            exit 1
+          fi
+          PACKAGE_PATH="$RUNNER_TEMP/ios-package"
+          mkdir -p "$PACKAGE_PATH"
+          ditto -x -k "$IPA_PATH" "$PACKAGE_PATH"
+          APP_PATH=$(find "$PACKAGE_PATH/Payload" -maxdepth 1 -name '*.app' -print -quit)
+          BRIDGE_FRAMEWORK="$APP_PATH/Frameworks/pseudolearn_bridge.framework"
+          test -f "$APP_PATH/Assets.car"
+          test -f "$BRIDGE_FRAMEWORK/pseudolearn_bridge"
+          lipo -verify_arch arm64 "$BRIDGE_FRAMEWORK/pseudolearn_bridge"
+          codesign --verify --strict --verbose=2 "$BRIDGE_FRAMEWORK"
+          codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
       - name: Upload package to App Store Connect
         run: |

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
@@ -12,6 +9,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
+import 'package:pseudolearn_app/engine/rust/rust_completion_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_analyzer.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
@@ -25,9 +23,7 @@ void main() {
   late RustTransport transport;
 
   setUpAll(() async {
-    await RustLib.init(
-      externalLibrary: ExternalLibrary.open(_nativeLibraryPath()),
-    );
+    await RustLib.init();
   });
 
   setUp(() => transport = openNativeTransport());
@@ -292,6 +288,18 @@ void main() {
     expect(valid.isExecutable, isTrue);
   });
 
+  test('contextual completion uses the Rust language service', () {
+    const sourceCode = 'Algoritmo P\nEscri';
+    final result = RustCompletionSource(transport).complete(
+      sourceCode: sourceCode,
+      profileId: SyntaxProfileId.classicSpanish,
+      cursorUtf16: sourceCode.length,
+      revision: 4,
+    );
+    expect(result.isSuccessful, isTrue);
+    expect(result.candidates, isNotEmpty);
+  });
+
   test('closed sessions reject further calls', () {
     transport.close();
     transport.close();
@@ -300,14 +308,4 @@ void main() {
       throwsA(isA<RustBridgeFailure>()),
     );
   });
-}
-
-String _nativeLibraryPath() {
-  if (Platform.isMacOS) {
-    return 'native/target/debug/libpseudolearn_bridge.dylib';
-  }
-  if (Platform.isWindows) {
-    return 'native/target/debug/pseudolearn_bridge.dll';
-  }
-  return 'native/target/debug/libpseudolearn_bridge.so';
 }
