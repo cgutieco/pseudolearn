@@ -34,3 +34,6 @@ __pycache__/
 # Rust
 target/
 packages/*/Cargo.lock
+
+# Node.js
+node_modules/
