@@ -1,0 +1,15 @@
+{
+  "format": "see-measurements/1",
+  "measurements": [
+    {
+      "reference": "TOOL.SERVICE.COMPLETION@0.1.0#M1",
+      "suite": "servicio",
+      "metric": "latencia_p95",
+      "unit": "milisegundos",
+      "comparator": "<=",
+      "threshold": 50.0,
+      "measured": 0.037,
+      "status": "cumple"
+    }
+  ]
+}

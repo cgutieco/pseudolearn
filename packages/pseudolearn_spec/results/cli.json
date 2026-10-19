@@ -3,9 +3,11 @@
     "TOOL.CLI.BUILD": "40807da29b406fb1912c1aa7080b71f0547cdfbad7dd2f540cf7743daa04e4e3",
     "TOOL.CLI.CHECK": "20b97d4dad48bbb348fc15172d5936098bda438bc0bfa52b13bf84ada11e2f2e",
     "TOOL.CLI.CONVENTIONS": "2a79ffa665241c3353c5eb1cb940d6411b3e4a48bfd0275480311ebb2a839da5",
+    "TOOL.CLI.FORMAT": "564cb579505d8235abd963dbc25723d9eb6dc4b0fccb00400ac50399801e5b7f",
     "TOOL.CLI.IR": "00579ae55647d1f47d0966d1bb28dcf5f7e308cce642efbcebbf1d8d1f1e04c9",
     "TOOL.CLI.MESSAGES": "a3802f34410790b18e22abc28dffe5670c25d84a5edebf0fccbf25e0e2f70e22",
-    "TOOL.CLI.RUN": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca"
+    "TOOL.CLI.RUN": "f6a8511573078ee4e66de5e5e7d11a6dab1fdba7fb6cd33c246864b05e8cdfca",
+    "TOOL.CLI.TRANSLATE": "1ec8c3399053d7a5d330d6264d4eaabe4f5615fcfa7adef898c797a6ddea2931"
   },
   "observations": [
     {
@@ -882,6 +884,89 @@
         "exit_code": 0,
         "json": null,
         "kind": "cli",
+        "output": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: el archivo requiere formateo: p.pseudo\n",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": "",
+        "salida_error": "pseudo: el archivo requiere formateo: p.pseudo\n"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.CLI.FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "invalido.pseudo:2:1: error: Algoritmo sin cerrar al final del archivo [unclosedAlgorithm]\n",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
         "output": "module P es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:11\n  %0 = const.i64 1 @2:10-2:11\n  out.write %0, newline @2:1-2:11\n  stmt.exit @2:1-2:11\n  return @3:1-3:13\n}\n"
       },
       "case": "C1",
@@ -1208,6 +1293,89 @@
       "profile": "es",
       "rule": "R4",
       "specification": "TOOL.CLI.RUN",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Algorithm Principal\n  Write 1;\nEndAlgorithm\n"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Algorithm Principal\n  Write 1;\nEndAlgorithm\n",
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.CLI.TRANSLATE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "",
+        "exit_code": 0,
+        "json": null,
+        "kind": "cli",
+        "output": "Algoritmo Principal\n  Escribir 1;\nFinAlgoritmo\n"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 0,
+        "salida": "Algoritmo Principal\n  Escribir 1;\nFinAlgoritmo\n",
+        "salida_error": ""
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "TOOL.CLI.TRANSLATE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "colision.pseudo:2:5: error: «fin» es una palabra reservada de este perfil, equivalente a fin. Elegí otro nombre. [reservedLexemeUsedAsName]\n",
+        "exit_code": 1,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 1,
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "TOOL.CLI.TRANSLATE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "error_output": "pseudo: falta la opción requerida --hacia (--to)\n",
+        "exit_code": 2,
+        "json": null,
+        "kind": "cli",
+        "output": ""
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "codigo_salida": 2,
+        "salida": "",
+        "salida_error": "pseudo: falta la opción requerida --hacia (--to)\n"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.CLI.TRANSLATE",
       "strictness": "estricto",
       "verdict": "cumple"
     }

@@ -131,6 +131,36 @@
   },
   {
     "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.FORMAT@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.FORMAT@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.FORMAT@0.1.0#R3",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -196,6 +226,36 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R4",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.TRANSLATE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.TRANSLATE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "cli"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.CLI.TRANSLATE@0.1.0#R3",
     "state": "experimental",
     "subject": "cli"
   }

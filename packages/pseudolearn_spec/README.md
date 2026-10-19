@@ -22,7 +22,7 @@ Desarrollo: `cargo run -p see_cli --bin see -- validate`.
 Compilación: `cargo build --release`; binario `target/release/see`.
 Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro de corpus.
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
-`lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject reference [--only ID]`,
+`lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject <reference|engine|aot|service|cli> [--only ID]`,
 `matrix`, `feature <nombre>`, `export [--check]`.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
@@ -85,7 +85,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
 
 - Problema: el corpus del motor necesita observar trazas, RI, CLI y mediciones sin crear otro formato.
   Elección: `see/1` crece de forma compatible con los bloques `medicion` (prefijo M), `instruccion` (O) y
-  `cobertura` (V), y con las operaciones de caso `trace`, `ir` y `cli`. Las tablas que deciden la validez
+  `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli` y `service`. Las tablas que deciden la validez
   (alfabeto `traceEvents`, `cliConventions` con códigos de salida y aperturas, catálogo `cliMessages`,
   `diagnostics`, `vocabulary`) se leen de bloques `definicion`; ningún alfabeto vive en el código.
   `instruccion` lleva `nombre` además de `firma` porque las coberturas citan instrucciones por nombre

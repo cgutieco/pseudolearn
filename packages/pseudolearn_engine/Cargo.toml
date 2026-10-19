@@ -18,6 +18,7 @@ members = [
     "crates/pseudolearn_vm",
     "crates/pseudolearn_vm_tracer",
     "crates/pseudolearn_timeline",
+    "crates/pseudolearn_service",
     "crates/pseudolearn_api",
     "crates/pseudolearn_conformance",
     "crates/pseudolearn_bench_worker",

@@ -7,7 +7,17 @@ use pseudolearn_api::{
 use serde_json::{Value, json};
 use std::io::{BufRead, Write};
 
+mod lsp_handler;
+mod service_handler;
+mod service_inspection;
+
 fn main() {
+    let raw_arguments: Vec<String> = std::env::args().skip(1).collect();
+    let is_service = raw_arguments
+        .windows(2)
+        .any(|pair| matches!(pair, [flag, value] if flag == "--subject" && value == "service"))
+        || raw_arguments.iter().any(|arg| arg == "service");
+
     let mut session = pseudolearn_api::ApiSession::default();
     let stdin = std::io::stdin();
     let locked_stdin = stdin.lock();
@@ -24,21 +34,55 @@ fn main() {
             Ok(value) => value,
             Err(_) => continue,
         };
-        let kind = parsed.get("kind").and_then(Value::as_str).unwrap_or("");
-        match kind {
-            "hello" => respond_hello(),
-            "shutdown" => {
-                respond_shutdown();
-                break;
-            }
-            "analyze" => respond_analyze(&parsed),
-            "ir" => respond_ir(&parsed),
-            "execute" => respond_execute(&parsed),
-            "probe" => send_response(&pseudolearn_api::probe(&parsed)),
-            "api" => respond_api(&mut session, &parsed),
-            _ => respond_unsupported(),
+        if !dispatch_request(&mut session, &parsed, is_service) {
+            break;
         }
     }
+}
+
+fn dispatch_request(
+    session: &mut pseudolearn_api::ApiSession,
+    parsed: &Value,
+    is_service: bool,
+) -> bool {
+    let kind = parsed.get("kind").and_then(Value::as_str).unwrap_or("");
+    match kind {
+        "hello" => {
+            if is_service {
+                respond_hello_service();
+            } else {
+                respond_hello();
+            }
+        }
+        "shutdown" => {
+            respond_shutdown();
+            return false;
+        }
+        "service" => {
+            let outcome = service_handler::handle_service_request(parsed);
+            send_response(&json!({ "kind": "service", "service": outcome }));
+        }
+        "analyze" => respond_analyze(parsed),
+        "ir" => respond_ir(parsed),
+        "execute" => respond_execute(parsed),
+        "probe" => send_response(&pseudolearn_api::probe(parsed)),
+        "api" => respond_api(session, parsed),
+        _ => respond_unsupported(),
+    }
+    true
+}
+
+fn respond_hello_service() {
+    let response = json!({
+        "kind": "hello",
+        "protocol": PROTOCOL_VERSION,
+        "subject": "service",
+        "subject_version": ENGINE_VERSION,
+        "capabilities": ["service"],
+        "profiles": supported_profiles(),
+        "strictness": supported_strictness(),
+    });
+    send_response(&response);
 }
 
 fn respond_hello() {

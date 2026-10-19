@@ -1,0 +1,112 @@
+{
+  "experiment": "E-20",
+  "status": "passed",
+  "machine": "Apple M2 / macOS arm64",
+  "samples": 30,
+  "operations": [
+    {
+      "operation": "pseudo comprobar (small)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 2.809,
+        "median": 2.764,
+        "mad": 0.088,
+        "iqr": 0.282,
+        "p95": 3.117,
+        "min": 2.506,
+        "max": 3.286
+      }
+    },
+    {
+      "operation": "pseudo comprobar (1000 lines)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 3.496,
+        "median": 3.469,
+        "mad": 0.096,
+        "iqr": 0.22,
+        "p95": 3.689,
+        "min": 3.259,
+        "max": 3.874
+      }
+    },
+    {
+      "operation": "pseudo ejecutar (small)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 3.771,
+        "median": 2.868,
+        "mad": 0.125,
+        "iqr": 0.31,
+        "p95": 7.965,
+        "min": 2.675,
+        "max": 19.258
+      }
+    },
+    {
+      "operation": "pseudo formatear (small)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 2.835,
+        "median": 2.82,
+        "mad": 0.098,
+        "iqr": 0.199,
+        "p95": 3.018,
+        "min": 2.678,
+        "max": 3.09
+      }
+    },
+    {
+      "operation": "pseudo formatear (1000 lines)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 4.413,
+        "median": 4.419,
+        "mad": 0.133,
+        "iqr": 0.267,
+        "p95": 4.628,
+        "min": 4.09,
+        "max": 4.821
+      }
+    },
+    {
+      "operation": "pseudo traducir (small)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 2.769,
+        "median": 2.748,
+        "mad": 0.083,
+        "iqr": 0.201,
+        "p95": 3.005,
+        "min": 2.533,
+        "max": 3.116
+      }
+    },
+    {
+      "operation": "pseudo traducir (1000 lines)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 4.444,
+        "median": 4.424,
+        "mad": 0.077,
+        "iqr": 0.166,
+        "p95": 4.671,
+        "min": 4.188,
+        "max": 4.693
+      }
+    },
+    {
+      "operation": "pseudo lsp (handshake + open + diagnostics)",
+      "samples": 30,
+      "latency_ms": {
+        "mean": 4.258,
+        "median": 4.267,
+        "mad": 0.116,
+        "iqr": 0.252,
+        "p95": 4.508,
+        "min": 3.759,
+        "max": 4.6
+      }
+    }
+  ]
+}

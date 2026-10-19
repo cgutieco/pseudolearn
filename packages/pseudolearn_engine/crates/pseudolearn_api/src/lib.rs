@@ -6,6 +6,7 @@ mod diagnostic_conversion;
 pub mod errors;
 pub mod ir_execution;
 pub mod model;
+pub mod service;
 pub mod versioning;
 pub mod wire;
 

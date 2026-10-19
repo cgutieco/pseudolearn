@@ -86,9 +86,10 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 5 | pseudolearn_library | Implementa conversiones, redondeo e intrínsecos matemáticos correctamente redondeados | runtime, diagnostics |
 | 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, acceso a memoria, celdas, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
 | 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampa fría compartida con identidad por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
+| 6 | pseudolearn_service | Proporciona análisis incremental por unidad, autocompletado bilingüe, hover, formateo canónico, traducción y sesión LSP | source, diagnostics, lexicon, syntax, semantic |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
-| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline |
+| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
 | tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
 | tooling | pseudolearn_vm_dispatch | Genera la forma de despacho de la VM desde la tabla de formas y `IR.INSTRUCTIONS` | ninguna |
@@ -96,12 +97,12 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 
 
 texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor.
-El backend nativo consume la misma RI. diagnostics y lexicon suministran datos generados a las etapas.
+El backend nativo consume la misma RI; pseudolearn_service consume el árbol sintáctico y el análisis semántico. diagnostics y lexicon suministran datos generados a las etapas.
 
 `crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
 Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
 Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; el anfitrión orquesta ejecuciones independientes.
-`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI, y el adaptador `aot`. service y wasm se declaran con sus carpetas al empezar sus fases; no son capas presentes del modo declarativo.
+`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI, y el adaptador `aot`. pseudolearn_service reside en el nivel 6 y alimenta a pseudolearn_api; wasm se declara con su carpeta al abordar su hito.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -234,8 +235,14 @@ Alternativas descartadas: El corpus API define recursos y codificaciones; se rec
 
 ### conformance
 
-Problema: adapta la api al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
+Problema: adapta la api al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir`, `service` y `cli` (esta última a través del binario `pseudo`).
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
+
+### service
+
+Problema: proporcionar herramientas de desarrollo de alta respuesta (autocompletado sensible al contexto, navegación, información emergente, formateo canónico, traducción y servidor LSP) sin introducir dependencias externas masivas ni duplicar el árbol sintáctico.
+Elección: sesión de documento incremental (`DocumentSession`) que particiona el documento por unidades de nivel superior (`UnitFingerprint`) sobre el árbol postorden existente; autocompletado bilingüe determinista (`TOOL.SERVICE.COMPLETION`) sensible a contexto y plantillas sintácticas; formateador canónico idempotente (`TOOL.FORMAT.STYLE`); traductor bilingüe libre de colisiones (`TOOL.TRANSLATE.ROUND-TRIP`); y servidor de Language Server Protocol (`LspServerSession`) sobre JSON-RPC con conversión exacta entre desplazamientos byte UTF-8 y posiciones línea/columna UTF-16 (`TOOL.LSP.CAPABILITIES`).
+Alternativas descartadas: frameworks externos de computación incremental (Salsa, Rowan) se descartan por su sobrecarga de memoria, dependencias pesadas y acoplamiento; reanálisis total sin caché se descarta por exceder el presupuesto de latencia en archivos grandes.
 
 Problema: una máscara puede convertir un índice inválido en otro registro válido. Elección: bancos con capacidad creciente en potencias de dos y acceso indexado comprobado después de validar bytecode; el relleno de capacidad no amplía la ventana lógica.
 Alternativa descartada: enmascarar índices de bytecode, porque puede ocultar un operando fuera de ventana.

@@ -287,12 +287,28 @@
       "TOOL.CLI.BUILD",
       "TOOL.CLI.CHECK",
       "TOOL.CLI.CONVENTIONS",
+      "TOOL.CLI.FORMAT",
       "TOOL.CLI.IR",
       "TOOL.CLI.MESSAGES",
-      "TOOL.CLI.RUN"
+      "TOOL.CLI.RUN",
+      "TOOL.CLI.TRANSLATE"
+    ],
+    "TOOL.FORMAT": [
+      "TOOL.FORMAT.STYLE"
+    ],
+    "TOOL.LSP": [
+      "TOOL.LSP.CAPABILITIES"
     ],
     "TOOL.SERVICE": [
-      "TOOL.SERVICE.LOSSLESS-TREE"
+      "TOOL.SERVICE.COMPLETION",
+      "TOOL.SERVICE.HOVER",
+      "TOOL.SERVICE.INCREMENTAL",
+      "TOOL.SERVICE.LOSSLESS-TREE",
+      "TOOL.SERVICE.NAVIGATION",
+      "TOOL.SERVICE.NODE-IDENTITY"
+    ],
+    "TOOL.TRANSLATE": [
+      "TOOL.TRANSLATE.ROUND-TRIP"
     ]
   },
   "format": "see-export/1",
@@ -34354,6 +34370,207 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "pseudo formatear <archivo> (alias format) imprime en stdout el programa formateado con código de salida 0. Con --escribir (alias --write y -w) actualiza el archivo en disco e informa en stdout.",
+            "verificacion": [
+              "C1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Con --verificar (alias --check), no escribe el código formateado en stdout ni modifica el archivo: devuelve 0 si el archivo ya está en forma canónica y 1 con mensaje en stderr si requiere formateo.",
+            "verificacion": [
+              "C2",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Si el archivo contiene errores sintácticos o no existe, devuelve el código de salida correspondiente (1 para errores del programa, 2 para archivo faltante) sin modificar el archivo en disco.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n"
+              },
+              "argumentos": [
+                "formatear",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+              "salida_error": ""
+            },
+            "id": "C1",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "formatear",
+                "--verificar",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "",
+              "salida_error": ""
+            },
+            "id": "C2",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "algoritmo Principal\ndefinir x como entero\nfinalgoritmo\n"
+              },
+              "argumentos": [
+                "formatear",
+                "--verificar",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 1,
+              "salida": "",
+              "salida_error": "pseudo: el archivo requiere formateo: p.pseudo\n"
+            },
+            "id": "C3",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "invalido.pseudo": "Algoritmo SinFin\n"
+              },
+              "argumentos": [
+                "formatear",
+                "invalido.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 1,
+              "salida": ""
+            },
+            "id": "C4",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "564cb579505d8235abd963dbc25723d9eb6dc4b0fccb00400ac50399801e5b7f",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.CLI.CONVENTIONS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.CLI.MESSAGES",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.FORMAT.STYLE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.CLI.FORMAT",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "pseudo formatear aplica el formato canónico a archivos de código fuente.",
+        "revisado_por": [],
+        "sujetos": [
+          "cli"
+        ],
+        "titulo": "Orden formatear de la CLI",
+        "titulo_en": "Format CLI command",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "pseudo ri analiza el archivo y, sin errores, escribe en la salida estándar la RI canónica de IR.TEXT-FORMAT, aceptada por IR.WELL-FORMEDNESS, con código 0. Con errores escribe los diagnósticos en la salida de error y termina con código 1.",
             "verificacion": [
               "C1",
@@ -35464,6 +35681,1522 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
+            "texto": "pseudo traducir <archivo> --hacia <es|en> (alias translate, --to) emite en stdout (o en la ruta indicada por -o, --salida o --output) el programa traducido al perfil destino con código de salida 0.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Si el programa contiene un identificador que colisiona con una palabra reservada del perfil destino o tiene errores de análisis, escribe el diagnóstico correspondiente en stderr y termina con código 1.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Si falta la opción requerida --hacia (alias --to) o su valor no es un perfil válido (es o en), escribe el mensaje de error de uso en stderr y termina con código 2.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo Principal\n  Escribir 1;\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "traducir",
+                "--hacia",
+                "en",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "Algorithm Principal\n  Write 1;\nEndAlgorithm\n",
+              "salida_error": ""
+            },
+            "id": "C1",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algorithm Principal\n  Write 1;\nEndAlgorithm\n"
+              },
+              "argumentos": [
+                "translate",
+                "--to",
+                "es",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 0,
+              "salida": "Algoritmo Principal\n  Escribir 1;\nFinAlgoritmo\n",
+              "salida_error": ""
+            },
+            "id": "C2",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "colision.pseudo": "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n"
+              },
+              "argumentos": [
+                "translate",
+                "--to",
+                "es",
+                "colision.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 1,
+              "salida": ""
+            },
+            "id": "C3",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "cli": {
+              "archivos": {
+                "p.pseudo": "Algoritmo P\nFinAlgoritmo\n"
+              },
+              "argumentos": [
+                "traducir",
+                "p.pseudo"
+              ],
+              "entorno": {}
+            },
+            "espera": {
+              "codigo_salida": 2,
+              "salida": "",
+              "salida_error": "pseudo: falta la opción requerida --hacia (--to)\n"
+            },
+            "id": "C4",
+            "operacion": "cli",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "1ec8c3399053d7a5d330d6264d4eaabe4f5615fcfa7adef898c797a6ddea2931",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.CLI.CONVENTIONS",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.CLI.MESSAGES",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.TRANSLATE.ROUND-TRIP",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.CLI.TRANSLATE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "pseudo traducir convierte código fuente entre perfiles es y en.",
+        "revisado_por": [],
+        "sujetos": [
+          "cli"
+        ],
+        "titulo": "Orden traducir de la CLI",
+        "titulo_en": "Translate CLI command",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El formateador aplica sangría de 2 espacios por nivel de bloque, cero tabuladores, una línea en blanco entre unidades de nivel superior y a lo sumo una línea en blanco consecutiva dentro de un bloque.",
+            "verificacion": [
+              "C1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Las palabras clave se escriben en la forma canónica del perfil activo; los identificadores de usuario nunca se renombran y sus usos resueltos adoptan la grafía exacta de su declaración.",
+            "verificacion": [
+              "C1",
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "La asignación <- y los operadores binarios van rodeados de un espacio; las comas van seguidas de un espacio; el punto y coma se añade o conserva al final de cada sentencia simple en perfiles eststrict y se omite en perfiles flexible.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Todo comentario de línea y de bloque se conserva en su posición relativa; aplicar el formateador por segunda vez produce exactamente el mismo texto y no altera los diagnósticos semánticos del programa.",
+            "verificacion": [
+              "C3",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "formateado": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "algoritmo Principal\ndefinir x como entero\nx<-1+2\nescribir x\nfinalgoritmo",
+              "suboperacion": "format"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Flexible\n  x := 1;\n  y <- 2;\nFinAlgoritmo\n",
+              "suboperacion": "format"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "formateado": "// cabecera\nAlgoritmo Comentarios\n  // comentario interior\n  x <- 1;  // fin de linea\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "// cabecera\n\n\nAlgoritmo Comentarios\n// comentario interior\n\n\nx <- 1; // fin de linea\nFinAlgoritmo\n",
+              "suboperacion": "format"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "formateado": "Algorithm Main\n  Define x As Integer;\n  Write x;\nEndAlgorithm\n"
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "algorithm Main\ndefine x as integer;\nwrite x;\nendalgorithm",
+              "suboperacion": "format"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "todos los programas válidos del corpus en ambos perfiles"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto service mediante comprobación de idempotencia.",
+            "oraculo": "Igualdad estricta byte a byte entre el formateo simple y el doble formateo.",
+            "propiedad": "El formateador es idempotente: formatear dos veces produce idéntico texto.",
+            "regla": "R4"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "95646ef96efc06c8fa67ebe39725805106ee4ccc064bbd4f7480d031c52b4a28",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.SYNTAX.GRAMMAR",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.PROFILE.VOCABULARY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.LOSSLESS-TREE",
+            "tipo": "usa",
+            "version": ">=0.2.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.FORMAT.STYLE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Formateador canónico con preservación exacta de comentarios, sangría de 2 espacios e idempotencia.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Estilo y formateador canónico",
+        "titulo_en": "Canonical formatter style",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Al recibir initialize, el servidor responde con el objeto capabilities que declara textDocumentSync, completionProvider, hoverProvider, signatureHelpProvider, definitionProvider, referencesProvider, documentHighlightProvider, documentSymbolProvider y documentFormattingProvider, adoptando el idioma de locale. Ante shutdown devuelve null y ante exit finaliza limpiamente.",
+            "verificacion": [
+              "C1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Tras didOpen y didChange, el servidor actualiza la sesión incremental y emite notificación textDocument/publishDiagnostics con posiciones 0-indexadas y mensajes localizados. Al recibir didClose, libera la sesión y publica lista vacía de diagnósticos.",
+            "verificacion": [
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Las peticiones textDocument/completion, textDocument/hover, textDocument/signatureHelp, textDocument/definition, textDocument/references, textDocument/documentHighlight, textDocument/documentSymbol y textDocument/formatting devuelven resultados coherentes con el motor convirtiendo entre posiciones 1-indexadas del motor y posiciones 0-indexadas de LSP.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "capacidades_anunciadas": true,
+                "cierre_limpio": true
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "mensajes": [
+                {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "initialize",
+                  "params": {
+                    "capabilities": {},
+                    "locale": "es"
+                  }
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "initialized",
+                  "params": {}
+                },
+                {
+                  "id": 2,
+                  "jsonrpc": "2.0",
+                  "method": "shutdown"
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "exit"
+                }
+              ],
+              "suboperacion": "lsp"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "diagnosticos_corregidos": 0,
+                "diagnosticos_iniciales": 1
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "mensajes": [
+                {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "initialize",
+                  "params": {
+                    "locale": "es"
+                  }
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/didOpen",
+                  "params": {
+                    "textDocument": {
+                      "languageId": "pseudolearn",
+                      "text": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- \"error\";\nFinAlgoritmo\n",
+                      "uri": "file:///prueba.pseudo",
+                      "version": 1
+                    }
+                  }
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/didChange",
+                  "params": {
+                    "contentChanges": [
+                      {
+                        "range": {
+                          "end": {
+                            "character": 14,
+                            "line": 2
+                          },
+                          "start": {
+                            "character": 7,
+                            "line": 2
+                          }
+                        },
+                        "text": "42"
+                      }
+                    ],
+                    "textDocument": {
+                      "uri": "file:///prueba.pseudo",
+                      "version": 2
+                    }
+                  }
+                }
+              ],
+              "suboperacion": "lsp"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "consultas_respondidas": true
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "mensajes": [
+                {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "initialize",
+                  "params": {
+                    "locale": "es"
+                  }
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/didOpen",
+                  "params": {
+                    "textDocument": {
+                      "languageId": "pseudolearn",
+                      "text": "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
+                      "uri": "file:///consultas.pseudo",
+                      "version": 1
+                    }
+                  }
+                },
+                {
+                  "id": 2,
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/definition",
+                  "params": {
+                    "position": {
+                      "character": 12,
+                      "line": 3
+                    },
+                    "textDocument": {
+                      "uri": "file:///consultas.pseudo"
+                    }
+                  }
+                },
+                {
+                  "id": 3,
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/hover",
+                  "params": {
+                    "position": {
+                      "character": 4,
+                      "line": 2
+                    },
+                    "textDocument": {
+                      "uri": "file:///consultas.pseudo"
+                    }
+                  }
+                }
+              ],
+              "suboperacion": "lsp"
+            }
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "f1dbf551583ca4fa2a8e0bfe7375d43b24db878dd19e74c2c405b08bf5c62fd6",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.SERVICE.INCREMENTAL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.COMPLETION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.NAVIGATION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.HOVER",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.FORMAT.STYLE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.LSP.CAPABILITIES",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación y diagnósticos.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Capacidades del servidor LSP",
+        "titulo_en": "LSP server capabilities",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El servicio ofrece candidatos acordes con la posición del cursor (sentencia, expresión, tipo tras Como/:, miembro tras ., cabecera de unidad) y no ofrece candidatos dentro de comentarios ni literales de cadena.",
+            "verificacion": [
+              "C1",
+              "C6",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "En posición de expresión o sentencia se incluyen las variables, constantes y parámetros visibles en el alcance actual; tras <instancia>. se ofrecen únicamente los campos y métodos de la clase estática del receptor y sus superclases.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Cuando existen bloques abiertos sin cerrar, el servicio propone como candidato prioritario el token de cierre correspondiente al bloque abierto más interno.",
+            "verificacion": [
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Todas las palabras clave, funciones estándar y marcadores de plantilla se emiten exclusivamente en el idioma del perfil activo (es o en). Si el prefijo escrito coincide con un término del otro idioma, se sugiere el término canónico del perfil activo indicando la correspondencia bilingüe.",
+            "verificacion": [
+              "C4",
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R5",
+            "texto": "Para un mismo documento, perfil y posición de cursor, la lista de candidatos devuelta es estrictamente determinista en contenido y orden.",
+            "verificacion": [
+              "C1",
+              "M1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "contiene": [
+                  "Entero",
+                  "Real",
+                  "Logico",
+                  "Caracter",
+                  "Cadena"
+                ],
+                "excluye": [
+                  "Escribir",
+                  "Mientras"
+                ]
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Definir total Como \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 22,
+                "line": 2
+              },
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "primer_candidato": "FinMientras"
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 3
+              },
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "contiene": [
+                  "x",
+                  "Mover"
+                ],
+                "excluye": [
+                  "Escribir",
+                  "Algoritmo"
+                ]
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Clase Punto\n  x;\n  SubProceso Mover()\n  FinSubProceso\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  p.\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 10
+              },
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+              }
+            },
+            "esperas": {
+              "en": {
+                "servicio": {
+                  "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+                }
+              },
+              "es": {
+                "servicio": {
+                  "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+                }
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es",
+              "en"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "construccion": "switch",
+              "suboperacion": "completion_template"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "sugerencia_bilingue": {
+                  "etiqueta": "Mientras",
+                  "origen": "while"
+                }
+              }
+            },
+            "id": "C5",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  whi\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 2
+              },
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "vacio": true
+              }
+            },
+            "id": "C6",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  // Escr\n  s <- \"Escr\";\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 10,
+                "line": 2
+              },
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "todas las plantillas sintácticas del servicio insertadas en su contexto válido"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto service verificando cada plantilla del catálogo.",
+            "oraculo": "Ausencia de diagnósticos de error sintáctico tras inserción de plantilla.",
+            "propiedad": "El 100 % de las plantillas insertadas en un programa base producen un árbol sin errores sintácticos nuevos.",
+            "regla": "R1"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M1",
+            "metrica": "latencia_p95",
+            "plataformas": [
+              "macos-aarch64",
+              "linux-x86_64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": false,
+            "suite": "servicio",
+            "umbral": 50.0,
+            "unidad": "milisegundos"
+          },
+          "kind": "medicion"
+        }
+      ],
+      "hash": "f8ea708c629cdb092ac81ae7205fa6d1bfc7f29e66cc41c671034277066e4f02",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.SYNTAX.GRAMMAR",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.PROFILE.VOCABULARY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.TYPES.INTEGER",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.CLASS.DECLARATION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.INCREMENTAL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "PERF.PROTOCOL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.COMPLETION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Autocompletado de código sensible al contexto, bilingüe, con plantillas sintácticas y cierre de bloques.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Servicio de autocompletado",
+        "titulo_en": "Code completion service",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Al posicionar el cursor sobre una variable, constante, parámetro, campo, clase o subproceso, el servicio devuelve su categoría, su tipo estático (indicando si fue declarado o inferido en modo flexible) y, para subprocesos/métodos, su firma canónica con modos de paso.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Sobre una función intrínseca de la biblioteca estándar (no sombreada) o palabra clave, devuelve su firma y descripción breve en el idioma solicitado.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Cuando el cursor está dentro de la lista de argumentos de una llamada, el servicio devuelve la firma del invocable y el índice del parámetro activo.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "inferido": false,
+                "tipo": "Entero"
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Definir contador Como Entero;\n  contador <- 1;\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 3
+              },
+              "suboperacion": "hover"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "inferido": true,
+                "tipo": "Real"
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  x <- 3.14\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 3,
+                "line": 2
+              },
+              "suboperacion": "hover"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "firma": "Intercambiar(a Por Referencia, b Por Valor)",
+                "parametro_activo": 1
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "SubProceso Intercambiar(a Por Referencia, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Definir x, y Como Entero;\n  Intercambiar(x, );\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 19,
+                "line": 6
+              },
+              "suboperacion": "signature_help"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "es_intrinseca": true,
+                "identificador": "subcadena"
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  s <- subcadena(\"hola\", 1, 2);\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 10,
+                "line": 2
+              },
+              "suboperacion": "hover"
+            }
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "1419638858d073906b23cd014bef48890a4bad6bae568496ee5f44459cbb90f5",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.TYPES.INTEGER",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SUBPROGRAM.CALL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LIB.CORE.MATH",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LIB.CORE.TEXT",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.INCREMENTAL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.HOVER",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Información de tipo estático, firmas de subprocesos y ayuda contextual sobre llamadas.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Información emergente y ayuda de firmas",
+        "titulo_en": "Hover and signature help service",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Tras cualquier secuencia de ediciones incrementales sobre una sesión de documento, el texto reconstruido, el árbol sintáctico, los diagnósticos y el modelo semántico producidos por el análisis incremental son idénticos a los obtenidos analizando el documento resultante desde cero.",
+            "verificacion": [
+              "C1",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Cuando una edición modifica únicamente el cuerpo de una unidad de nivel superior sin alterar su firma ni las firmas de las demás unidades del documento, el servicio reutiliza el análisis semántico de las unidades cuyas huellas no cambiaron.",
+            "verificacion": [
+              "C2",
+              "C3",
+              "M1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Durante la escritura con bloques abiertos o expresiones truncadas, la sesión incremental actualiza los diagnósticos y conserva los símbolos declarados antes del punto de edición.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "coincide_con_frio": true
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "equivalencia_frio",
+              "documento": "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n",
+              "ediciones": [
+                {
+                  "rango": {
+                    "end": {
+                      "column": 1,
+                      "line": 3
+                    },
+                    "start": {
+                      "column": 1,
+                      "line": 3
+                    }
+                  },
+                  "texto": "  x <- \"hola\";\n"
+                },
+                {
+                  "rango": {
+                    "end": {
+                      "column": 14,
+                      "line": 3
+                    },
+                    "start": {
+                      "column": 8,
+                      "line": 3
+                    }
+                  },
+                  "texto": "42"
+                }
+              ],
+              "suboperacion": "incremental"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "reanalizadas": 1,
+                "reutilizadas": 2
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "reutilizacion_unidades",
+              "documento": "SubProceso Uno()\n  x <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  y <- 2;\nFinSubProceso\n\nAlgoritmo Tres\n  z <- 3;\nFinAlgoritmo\n",
+              "ediciones": [
+                {
+                  "rango": {
+                    "end": {
+                      "column": 9,
+                      "line": 6
+                    },
+                    "start": {
+                      "column": 8,
+                      "line": 6
+                    }
+                  },
+                  "texto": "20"
+                }
+              ],
+              "suboperacion": "incremental"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "invalido_firmas": true
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "invalidation_firma",
+              "documento": "SubProceso Sumar(a)\nFinSubProceso\n\nAlgoritmo Principal\n  Sumar(1, 2);\nFinAlgoritmo\n",
+              "ediciones": [
+                {
+                  "rango": {
+                    "end": {
+                      "column": 19,
+                      "line": 1
+                    },
+                    "start": {
+                      "column": 18,
+                      "line": 1
+                    }
+                  },
+                  "texto": "a, b)"
+                }
+              ],
+              "suboperacion": "incremental"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "simbolos_previos_conservados": true
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "estado_incompleto",
+              "documento": "Algoritmo Principal\n  Definir limite Como Entero;\n  limite <- 10;\n  Si limite > 0 Entonces\n",
+              "suboperacion": "incremental"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "secuencias de ediciones aleatorias sobre programas del corpus"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto service mediante comprobación incremental.",
+            "oraculo": "Igualdad de texto, árbol, diagnósticos y tipos con el análisis en frío.",
+            "propiedad": "El estado tras k ediciones incrementales es idéntico al análisis desde cero del texto resultante.",
+            "regla": "R1"
+          },
+          "kind": "propiedad"
+        },
+        {
+          "fields": {
+            "comparador": "<=",
+            "id": "M1",
+            "metrica": "latencia_p95",
+            "plataformas": [
+              "macos-aarch64",
+              "linux-x86_64"
+            ],
+            "protocolo": "PERF.PROTOCOL#R1",
+            "provisional": false,
+            "suite": "servicio",
+            "umbral": 16.0,
+            "unidad": "milisegundos"
+          },
+          "kind": "medicion"
+        }
+      ],
+      "hash": "f07efc6265ad86e32ff1463fd48b9e79a311928c4cebed4118b44705a2fa4423",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.SERVICE.LOSSLESS-TREE",
+            "tipo": "usa",
+            "version": ">=0.2.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.NODE-IDENTITY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "PERF.PROTOCOL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.INCREMENTAL",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Sesión de documento y reanálisis incremental por unidad con equivalencia al análisis en frío.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Análisis incremental de documentos",
+        "titulo_en": "Incremental document analysis",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
             "texto": "Para todo texto fuente UTF-8 válido, la reimpresión del árbol conserva el prefijo BOM inicial, que no es un token del lenguaje, y concatena los fragmentos originales de sus tokens, trivia (espacios, saltos de línea y comentarios) y fragmentos con error, reproduciendo exactamente el texto original byte a byte. La entrada UTF-8 inválida es un fallo de entrada según LANG.SOURCE.ENCODING y no se decodifica con pérdida para construir un árbol.",
             "verificacion": [
               "P1"
@@ -35549,6 +37282,722 @@
         "titulo": "Árbol sin pérdida",
         "titulo_en": "Lossless tree",
         "version": "0.2.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Dada una posición de cursor sobre un uso o declaración de variable, constante, parámetro, subproceso, función, clase, campo o método, el servicio devuelve el rango exacto de su declaración en el alcance correspondiente.",
+            "verificacion": [
+              "C1",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Dada una posición sobre un símbolo, devuelve en orden de aparición todos los rangos del documento que referencian ese mismo símbolo semántico, sin confundirlo con símbolos homónimos de otros alcances.",
+            "verificacion": [
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "El resaltado de documento devuelve las ocurrencias del símbolo bajo el cursor clasificando cada una como lectura o escritura/declaración.",
+            "verificacion": [
+              "C4"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "definicion": {
+                  "end": {
+                    "column": 16,
+                    "line": 2
+                  },
+                  "start": {
+                    "column": 11,
+                    "line": 2
+                  }
+                }
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 13,
+                "line": 4
+              },
+              "suboperacion": "definition"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "referencias": [
+                  {
+                    "end": {
+                      "column": 12,
+                      "line": 2
+                    },
+                    "start": {
+                      "column": 11,
+                      "line": 2
+                    }
+                  },
+                  {
+                    "end": {
+                      "column": 4,
+                      "line": 3
+                    },
+                    "start": {
+                      "column": 3,
+                      "line": 3
+                    }
+                  }
+                ]
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "SubProceso Uno()\n  Definir i Como Entero;\n  i <- 1;\nFinSubProceso\n\nSubProceso Dos()\n  Definir i Como Entero;\n  i <- 2;\nFinSubProceso\n",
+              "posicion": {
+                "column": 3,
+                "line": 3
+              },
+              "suboperacion": "references"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "definicion": {
+                  "end": {
+                    "column": 15,
+                    "line": 2
+                  },
+                  "start": {
+                    "column": 10,
+                    "line": 2
+                  }
+                }
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Clase Punto\n  Metodo Mover()\n  FinMetodo\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  p.Mover();\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 8
+              },
+              "suboperacion": "definition"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "destacados": [
+                  {
+                    "rango": {
+                      "end": {
+                        "column": 4,
+                        "line": 2
+                      },
+                      "start": {
+                        "column": 3,
+                        "line": 2
+                      }
+                    },
+                    "tipo": "write"
+                  },
+                  {
+                    "rango": {
+                      "end": {
+                        "column": 13,
+                        "line": 3
+                      },
+                      "start": {
+                        "column": 12,
+                        "line": 3
+                      }
+                    },
+                    "tipo": "read"
+                  }
+                ]
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  x <- 1;\n  Escribir x;\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 3,
+                "line": 2
+              },
+              "suboperacion": "highlight"
+            }
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "810c825f2b9c32efc2e4aa54de52035be79be63ef847d65a66750cf6e529e93f",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.DECL.VARIABLE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SUBPROGRAM.CALL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.CLASS.DECLARATION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.INCREMENTAL",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.NAVIGATION",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Definición, referencias y resaltado de ocurrencias con resolución semántica de alcance.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Navegación de código y referencias",
+        "titulo_en": "Code navigation service",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Todo nodo del árbol sintáctico posee un identificador estable determinado por su unidad superior contenedora (Algoritmo, SubProceso, Clase y miembro), su categoría sintáctica y su posición estructural relativa dentro de esa unidad.",
+            "verificacion": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Una edición de texto contenida dentro de una unidad de nivel superior no altera el identificador estable de ninguna otra unidad de nivel superior ni de los nodos contenidos en ellas.",
+            "verificacion": [
+              "C1",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Añadir, modificar o eliminar una sentencia dentro de un bloque conserva el identificador estable de la unidad contenedora, de sus parámetros y de las sentencias anteriores al punto de edición.",
+            "verificacion": [
+              "C2",
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "conservados": true
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "unidades_vecinas_estables",
+              "documento": "SubProceso Previo()\nFinSubProceso\n\nAlgoritmo Principal\n  x <- 1;\nFinAlgoritmo\n\nSubProceso Posterior()\nFinSubProceso\n",
+              "edicion": {
+                "rango": {
+                  "end": {
+                    "column": 9,
+                    "line": 5
+                  },
+                  "start": {
+                    "column": 3,
+                    "line": 5
+                  }
+                },
+                "texto": "x <- 2;\n  y <- 3;"
+              },
+              "suboperacion": "node_identity"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "conservados": true
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "sentencias_previas_estables",
+              "documento": "Algoritmo Principal\n  Si x > 0 Entonces\n    Escribir x;\n  FinSi\nFinAlgoritmo\n",
+              "edicion": {
+                "rango": {
+                  "end": {
+                    "column": 1,
+                    "line": 4
+                  },
+                  "start": {
+                    "column": 1,
+                    "line": 4
+                  }
+                },
+                "texto": "    Escribir 2;\n"
+              },
+              "suboperacion": "node_identity"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "conservados": true
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "nodos_semanticos_estables",
+              "documento": "Algoritmo Principal\n  x <- 1;\nFinAlgoritmo\n",
+              "edicion": {
+                "rango": {
+                  "end": {
+                    "column": 1,
+                    "line": 2
+                  },
+                  "start": {
+                    "column": 1,
+                    "line": 2
+                  }
+                },
+                "texto": "  // comentario\n"
+              },
+              "suboperacion": "node_identity"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "conservados": true
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "comprobacion": "otras_unidades_invariantes",
+              "documento": "SubProceso Uno()\nFinSubProceso\n\nSubProceso Dos()\nFinSubProceso\n",
+              "edicion": {
+                "rango": {
+                  "end": {
+                    "column": 15,
+                    "line": 1
+                  },
+                  "start": {
+                    "column": 12,
+                    "line": 1
+                  }
+                },
+                "texto": "Renombrado"
+              },
+              "suboperacion": "node_identity"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "programas multi-unidad del corpus con ediciones sintácticas en un cuerpo de unidad"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto service mediante comprobación de identidad de nodos.",
+            "oraculo": "Invarianza estricta de identificadores estables de nodos ajenos.",
+            "propiedad": "Los identificadores de nodos en todas las demás unidades permanecen invariantes tras la edición.",
+            "regla": "R1"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "d741b4e13b712a7448e8971dff8527febc32c392e217d55f247b56e950b79cf3",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "TOOL.SERVICE.LOSSLESS-TREE",
+            "tipo": "usa",
+            "version": ">=0.2.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.NODE-IDENTITY",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Identificadores estables deterministas para nodos del árbol sintáctico ante ediciones incrementales.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Identidad estable de nodos sintácticos",
+        "titulo_en": "Syntax node identity",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "El traductor convierte todas las palabras clave, tipos primitivos, operadores verbales y llamadas a funciones estándar no sombreadas del perfil de origen al perfil de destino, conservando la modalidad.",
+            "verificacion": [
+              "C1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Los nombres de usuario, literales y comentarios se conservan intactos; si una función estándar está sombreada por una declaración de usuario, esa ocurrencia no se traduce.",
+            "verificacion": [
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "Si un identificador de usuario coincide con una palabra reservada del perfil destino, el servicio reporta el diagnóstico reservedLexemeUsedAsName con la posición exacta y no emite traducción silenciosa con colisión.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Para todo programa en forma canónica libre de colisiones, la doble traducción origen hacia destino y de vuelta hacia origen devuelve un texto idéntico al original.",
+            "verificacion": [
+              "C1",
+              "C4",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "traducido": "Algorithm Principal\n  Define x As Real;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n",
+                "vuelta": "Algoritmo Principal\n  Definir x Como Real;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Definir x Como Real;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n",
+              "hacia": "en",
+              "suboperacion": "translate_roundtrip"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Sombras\n  Definir longitud Como Entero;\n  longitud <- 5;\n  s <- mayusculas(\"texto\");\nFinAlgoritmo\n",
+              "hacia": "en",
+              "suboperacion": "translate"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "colision": "reservedLexemeUsedAsName"
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n",
+              "hacia": "es",
+              "suboperacion": "translate"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "traducido": "Algorithm Alias\nEndAlgorithm\n",
+                "vuelta": "Algoritmo Alias\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Proceso Alias\nFinProceso\n",
+              "hacia": "en",
+              "suboperacion": "translate_roundtrip"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "generador": {
+              "programas": "programas válidos del corpus sin colisiones con el vocabulario del otro idioma"
+            },
+            "id": "P1",
+            "justificacion": "La ejecuta el sujeto service mediante comprobación de doble traducción.",
+            "oraculo": "Igualdad byte a byte entre el programa canónico de origen y la doble traducción.",
+            "propiedad": "La doble traducción sobre la forma canónica es la identidad.",
+            "regla": "R4"
+          },
+          "kind": "propiedad"
+        }
+      ],
+      "hash": "2fc15bac4487f39861b7f1d734850728ba0c7503105ef4ccb317f2ba704147b8",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.PROFILE.TRANSLATION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.PROFILE.VOCABULARY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.LOSSLESS-TREE",
+            "tipo": "usa",
+            "version": ">=0.2.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.FORMAT.STYLE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.TRANSLATE.ROUND-TRIP",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Traductor de código entre perfiles es y en con preservación de nombres de usuario y detección de colisiones.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Traducción bilingüe de ida y vuelta",
+        "titulo_en": "Bilingual round-trip translation",
+        "version": "0.1.0"
       }
     }
   ]

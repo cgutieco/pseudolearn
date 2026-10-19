@@ -29,6 +29,17 @@ const AOT_ARGUMENTS: &[&str] = &[
     "--see-adapter",
     "aot",
 ];
+const SERVICE_ARGUMENTS: &[&str] = &[
+    "run",
+    "-p",
+    "pseudolearn_conformance",
+    "--bin",
+    "conformance_adapter",
+    "--quiet",
+    "--",
+    "--subject",
+    "service",
+];
 
 fn launch_of(subject: &str) -> Option<AdapterLaunch> {
     let (directory, program, arguments) = match subject {
@@ -36,6 +47,7 @@ fn launch_of(subject: &str) -> Option<AdapterLaunch> {
         "engine" => ("../pseudolearn_engine", "cargo", ENGINE_ARGUMENTS),
         "cli" => (CLI_DIRECTORY, "cargo", CLI_ARGUMENTS),
         "aot" => (CLI_DIRECTORY, "cargo", AOT_ARGUMENTS),
+        "service" => ("../pseudolearn_engine", "cargo", SERVICE_ARGUMENTS),
         _ => return None,
     };
     Some(AdapterLaunch {

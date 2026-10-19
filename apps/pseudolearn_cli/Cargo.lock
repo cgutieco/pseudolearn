@@ -332,6 +332,7 @@ dependencies = [
  "pseudolearn_lowering",
  "pseudolearn_runtime",
  "pseudolearn_semantic",
+ "pseudolearn_service",
  "pseudolearn_source",
  "pseudolearn_syntax",
  "pseudolearn_timeline",
@@ -431,6 +432,19 @@ dependencies = [
  "pseudolearn_lexicon",
  "pseudolearn_source",
  "pseudolearn_syntax",
+]
+
+[[package]]
+name = "pseudolearn_service"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_diagnostics",
+ "pseudolearn_lexicon",
+ "pseudolearn_semantic",
+ "pseudolearn_source",
+ "pseudolearn_syntax",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

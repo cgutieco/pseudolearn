@@ -1,0 +1,22 @@
+{
+  "experiment": "E-09",
+  "status": "passed",
+  "machine": "Apple M2 / macOS arm64",
+  "protocol": "PERF.PROTOCOL#R1",
+  "programs_evaluated": 172,
+  "queries_evaluated": 731,
+  "template_validity_percent": 100.0,
+  "precision_at_1_percent": 64.2,
+  "precision_at_5_percent": 88.6,
+  "keystrokes_saved_percent": 38.4,
+  "latency": {
+    "unit": "milliseconds",
+    "mean": 0.03,
+    "median": 0.029,
+    "mad": 0.002,
+    "iqr": 0.004,
+    "p95": 0.037,
+    "min": 0.022,
+    "max": 0.101
+  }
+}

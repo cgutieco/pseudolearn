@@ -6,7 +6,10 @@ mod build_command;
 mod check_command;
 mod error;
 mod execution_options;
+mod format_command;
 mod ir_command;
+mod locale_resolution;
+mod lsp_command;
 mod messages;
 mod native_cache;
 mod native_linker;
@@ -16,6 +19,7 @@ mod preferences_command;
 mod run_command;
 mod runtime_archive;
 mod trace_output;
+mod translate_command;
 
 use check_command::execute_check;
 use error::CliError;
@@ -72,6 +76,9 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
         "ejecutar" | "run" => run_command::execute_run(&options),
         "compilar" | "build" => build_command::execute_build(&options),
+        "formatear" | "format" => format_command::execute_format(&options),
+        "traducir" | "translate" => translate_command::execute_translate(&options),
+        "lsp" => Ok(lsp_command::execute_lsp(&options)),
         other => Err(CliError::Usage(unknown_command(
             &options.interface_language,
             other,

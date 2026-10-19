@@ -2,12 +2,12 @@
 
 ## 1. Qué es y qué no es
 
-Binario pseudo para comprobar, ejecutar, compilar e inspeccionar programas. Análisis, preferencias, ejecución, compilación nativa e inspección de RI implementados sobre la API pública.
+Binario pseudo para comprobar, ejecutar, compilar, formatear, traducir e inspeccionar programas, e interactuar mediante un servidor de lenguaje (LSP). Análisis, preferencias, ejecución, compilación nativa, formateo, traducción e inspección de RI implementados sobre la API pública.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| formatear/format, traducir/translate, lsp | Servicio de lenguaje | R7 |
+| Ninguno declarado | | |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -43,6 +43,12 @@ Opciones: --rigor/--strictness, --traza/--trace, --json. La ayuda muestra forma 
 La sustitución de argumentos recorre la plantilla una sola vez, preservando llaves en lexemas del usuario.
 Los tramos públicos ya contienen línea y columna; la CLI los presenta sin convertir offsets.
 La prosa de diagnóstico se renderiza por código y argumentos en el idioma de interfaz.
+
+formatear/format: aplica el estilo canónico al programa mediante el servicio de lenguaje de la API. Con `--verificar` (`--check`) no emite código ni modifica el disco: retorna 0 si el archivo ya está en forma canónica y 1 con mensaje en stderr si requiere formateo. Con `--escribir` (`--write`, `-w`) actualiza el archivo en disco e informa su ruta. Si el archivo contiene errores sintácticos o no existe, retorna código 1 o 2 respectivamente sin tocar el disco.
+
+traducir/translate: realiza traducción bilingüe del código fuente hacia el perfil indicado por la opción requerida `--hacia` (`--to`). Detecta colisiones de identificadores con palabras reservadas del perfil destino y emite el diagnóstico `reservedLexemeUsedAsName` con código de salida 1. Falta de opción o perfil no válido emite error de uso con código 2.
+
+lsp: ejecuta el servidor de lenguaje sobre entrada y salida estándar bajo el protocolo JSON-RPC 2.0 y framing `Content-Length`. Atiende métodos de inicialización, cierre y capacidades de diagnóstico, compleción, definición, referencias, resaltado y formateo documental.
 
 compilar/build: lee y analiza la fuente con la API (`build_native_object`), y solo si no hay errores enlaza el objeto con
 la biblioteca del runtime incrustada en `pseudo` (`include_bytes!`) usando el driver `cc`, en un directorio temporal que se
@@ -101,6 +107,7 @@ omisión, la fuente sin extensión, el permiso de ejecución, el fallo de ejecuc
 y posición), el programa inválido sin salida, entrada ausente e ilegible, `-o` sin valor, enlazador ausente (`PATH` vacío) sin
 salida ni temporales propios (`pseudo_link_*`; `TMPDIR` se redirige y se ignora la caché del toolchain `xcrun_db`) y una salida previa que un fallo no sustituye.
 `tests/aot_adapter_tests.rs` cubre el adaptador `aot` con procesos reales: identidad y capacidades, ejecución con entradas, fallo con salida previa y tramo, entrada agotada, presupuesto de sentencias, programa rechazado, petición no admitida, reutilización de un ejecutable y ausencia de temporales propios (`pseudo_aot_*` y `pseudo_link_*`) con y sin `shutdown`. La caché temporal `xcrun_db` pertenece al toolchain del sistema.
+`tests/service_cli_tests.rs` cubre las órdenes formatear/format, traducir/translate y el loop LSP en modo stdio, incluyendo opciones de verificación, escritura in-place, reporte de colisiones, argumentos obligatorios e inicialización y apagado JSON-RPC.
 Tests de precedencia de cada fuente de idioma, alias equivalentes, aperturas bilingües, BOM, trivia, texto vacío, argumentos inválidos y error operativo.
 Conformidad contra casos cli del corpus en ambos idiomas; --json estable al cambiar idioma.
 Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify al implementar.

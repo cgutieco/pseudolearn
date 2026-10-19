@@ -11,6 +11,11 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         | PropertyExecutor::FusedFirstTrap => "execute",
         PropertyExecutor::ObservationCorrespondence => "observe",
         PropertyExecutor::GcTransparency | PropertyExecutor::IdentityStability => "gc_stress",
+        PropertyExecutor::ServiceNodeIdentity
+        | PropertyExecutor::ServiceIncremental
+        | PropertyExecutor::ServiceCompletionTemplates
+        | PropertyExecutor::ServiceFormat
+        | PropertyExecutor::ServiceTranslate => "service",
         _ => "api",
     };
     declaration
@@ -70,6 +75,16 @@ fn check_extended(
             }
             crate::property_recording::check(executor, scenario, subject)
         }
+        _ => check_syntax_or_service(executor, scenario, subject),
+    }
+}
+
+fn check_syntax_or_service(
+    executor: PropertyExecutor,
+    scenario: &Scenario,
+    subject: &mut impl PropertySubject,
+) -> Result<Option<(Value, Value)>, String> {
+    match executor {
         PropertyExecutor::LosslessReprint
         | PropertyExecutor::LosslessRecovery
         | PropertyExecutor::LoweringValidity
@@ -80,6 +95,11 @@ fn check_extended(
         PropertyExecutor::FirstTrap | PropertyExecutor::FusedFirstTrap => {
             crate::property_traps::check(executor, scenario, subject)
         }
+        PropertyExecutor::ServiceNodeIdentity
+        | PropertyExecutor::ServiceIncremental
+        | PropertyExecutor::ServiceCompletionTemplates
+        | PropertyExecutor::ServiceFormat
+        | PropertyExecutor::ServiceTranslate => Ok(None),
         _ => Err("SEE-PROPERTY: executor unavailable".to_owned()),
     }
 }

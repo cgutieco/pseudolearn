@@ -1,0 +1,256 @@
+---
+{
+  "formato": "see/1",
+  "id": "TOOL.LSP.CAPABILITIES",
+  "titulo": "Capacidades del servidor LSP",
+  "dominio": "herramienta",
+  "estado": "experimental",
+  "version": "0.1.0",
+  "duenos": [
+    "responsable-herramientas"
+  ],
+  "sujetos": [
+    "service"
+  ],
+  "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación y diagnósticos.",
+  "depende_de": [
+    {
+      "id": "TOOL.SERVICE.INCREMENTAL",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "TOOL.SERVICE.COMPLETION",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "TOOL.SERVICE.NAVIGATION",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "TOOL.SERVICE.HOVER",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "TOOL.FORMAT.STYLE",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "titulo_en": "LSP server capabilities"
+}
+---
+
+# Capacidades del servidor LSP
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Al recibir initialize, el servidor responde con el objeto capabilities que declara textDocumentSync, completionProvider, hoverProvider, signatureHelpProvider, definitionProvider, referencesProvider, documentHighlightProvider, documentSymbolProvider y documentFormattingProvider, adoptando el idioma de locale. Ante shutdown devuelve null y ante exit finaliza limpiamente.",
+  "verificacion": [
+    "C1"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Tras didOpen y didChange, el servidor actualiza la sesión incremental y emite notificación textDocument/publishDiagnostics con posiciones 0-indexadas y mensajes localizados. Al recibir didClose, libera la sesión y publica lista vacía de diagnósticos.",
+  "verificacion": [
+    "C2"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las peticiones textDocument/completion, textDocument/hover, textDocument/signatureHelp, textDocument/definition, textDocument/references, textDocument/documentHighlight, textDocument/documentSymbol y textDocument/formatting devuelven resultados coherentes con el motor convirtiendo entre posiciones 1-indexadas del motor y posiciones 0-indexadas de LSP.",
+  "verificacion": [
+    "C3"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "capacidades_anunciadas": true,
+      "cierre_limpio": true
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {}
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "initialized",
+        "params": {}
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "shutdown"
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "exit"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "diagnosticos_iniciales": 1,
+      "diagnosticos_corregidos": 0
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": { "locale": "es" }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///prueba.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- \"error\";\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didChange",
+        "params": {
+          "textDocument": {
+            "uri": "file:///prueba.pseudo",
+            "version": 2
+          },
+          "contentChanges": [
+            {
+              "range": {
+                "start": { "line": 2, "character": 7 },
+                "end": { "line": 2, "character": 14 }
+              },
+              "text": "42"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "consultas_respondidas": true
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": { "locale": "es" }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///consultas.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/definition",
+        "params": {
+          "textDocument": { "uri": "file:///consultas.pseudo" },
+          "position": { "line": 3, "character": 12 }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "textDocument/hover",
+        "params": {
+          "textDocument": { "uri": "file:///consultas.pseudo" },
+          "position": { "line": 2, "character": 4 }
+        }
+      }
+    ]
+  }
+}
+```

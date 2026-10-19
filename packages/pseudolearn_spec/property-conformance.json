@@ -234,11 +234,42 @@
       "executor": "native_environment",
       "seed": 42,
       "samples": 10
+    },
+    {
+      "reference": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#P1",
+      "executor": "service_node_identity",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "TOOL.SERVICE.INCREMENTAL@0.1.0#P1",
+      "executor": "service_incremental",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "TOOL.SERVICE.COMPLETION@0.1.0#P1",
+      "executor": "service_completion_templates",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "TOOL.FORMAT.STYLE@0.1.0#P1",
+      "executor": "service_format",
+      "seed": 42,
+      "samples": 10
+    },
+    {
+      "reference": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#P1",
+      "executor": "service_translate",
+      "seed": 42,
+      "samples": 10
     }
   ],
   "subjects": [
     "engine",
     "cli",
-    "aot"
+    "aot",
+    "service"
   ]
 }

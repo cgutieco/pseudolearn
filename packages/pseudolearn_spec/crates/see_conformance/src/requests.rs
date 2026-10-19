@@ -22,6 +22,7 @@ pub fn build(
     match operation(case) {
         "ir" => ir(case, fields),
         "cli" => cli(case, fields),
+        "service" => service(case, fields),
         "analyze" => {
             fields.insert("kind".to_owned(), json!("analyze"));
             fields.insert(
@@ -47,6 +48,7 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
         "trace" => vec!["execute", "observe"],
         "ir" => vec!["ir"],
         "cli" => vec!["cli"],
+        "service" => vec!["service"],
         _ => vec!["execute"],
     }
 }
@@ -147,5 +149,15 @@ fn cli(case: &Block, fields: &mut Map<String, Value>) {
     ] {
         let value = invocation.get(name).cloned().unwrap_or(default);
         fields.insert(wire.to_owned(), value);
+    }
+}
+
+fn service(case: &Block, fields: &mut Map<String, Value>) {
+    let invocation = case_value(case, "servicio", json!({}));
+    fields.insert("kind".to_owned(), json!("service"));
+    if let Some(map) = invocation.as_object() {
+        for (key, value) in map {
+            fields.insert(key.clone(), value.clone());
+        }
     }
 }

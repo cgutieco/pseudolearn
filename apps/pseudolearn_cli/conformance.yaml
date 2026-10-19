@@ -5,7 +5,9 @@
     "TOOL.CLI.BUILD",
     "TOOL.CLI.CHECK",
     "TOOL.CLI.CONVENTIONS",
-    "TOOL.CLI.MESSAGES"
+    "TOOL.CLI.FORMAT",
+    "TOOL.CLI.MESSAGES",
+    "TOOL.CLI.TRANSLATE"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -106,6 +108,36 @@
     },
     {
       "regla": "TOOL.CLI.BUILD@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.FORMAT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.FORMAT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.FORMAT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

@@ -32,7 +32,7 @@ pub fn manifest_path(root: &Path, subject: &str) -> Option<PathBuf> {
         "reference" => "../pseudolearn_core/conformance.yaml",
         "engine" => "../pseudolearn_engine/conformance.yaml",
         "aot" => "../pseudolearn_engine/conformance-aot.yaml",
-        "service" => "../pseudolearn_service/conformance.yaml",
+        "service" => "../pseudolearn_engine/conformance-service.yaml",
         "cli" => "../../apps/pseudolearn_cli/conformance.yaml",
         "app" => "../../apps/pseudolearn_app/conformance.yaml",
         _ => return None,

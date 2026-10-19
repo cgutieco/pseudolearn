@@ -1,0 +1,316 @@
+[
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.FORMAT.STYLE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.FORMAT.STYLE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.FORMAT.STYLE@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.FORMAT.STYLE@0.1.0#R4",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 3,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R4",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "servicio"
+      }
+    ],
+    "reason": "Verificado mediante medicion M1 en suite de rendimiento.",
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R5",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.HOVER@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.HOVER@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.HOVER@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": false,
+        "suite": "servicio"
+      }
+    ],
+    "reason": null,
+    "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": "Verificado mediante propiedad sintactica P1.",
+    "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": "Verificado mediante propiedad sintactica P2.",
+    "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "exento",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": "Verificado mediante invariante estructural cubierto por propiedad P1.",
+    "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R4",
+    "state": "experimental",
+    "subject": "service"
+  }
+]

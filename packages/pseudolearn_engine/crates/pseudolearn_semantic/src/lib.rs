@@ -25,6 +25,8 @@ mod operator_tokens;
 mod operator_types;
 mod operators;
 mod postfix_checker;
+pub mod service_analysis;
+pub mod service_model;
 mod session;
 mod statement_checker;
 pub mod statement_model;
@@ -42,6 +44,10 @@ pub use hir::{
     FunctionKind, HirClass, HirField, HirFunction, HirLocal, HirModule, Passing, SemanticModel,
 };
 pub use identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, StatementId, TypeId};
+pub use service_analysis::{
+    ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,
+    analyze_for_service,
+};
 pub use session::SemanticOptions;
 pub use statement_model::{HirCase, HirDimension, HirStatement, StatementColumns};
 pub use types::{Type, TypeInterner, ValueClass};

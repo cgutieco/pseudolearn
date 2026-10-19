@@ -83,4 +83,9 @@ pub enum PropertyExecutor {
     FusedFirstTrap,
     LosslessReprint,
     LosslessRecovery,
+    ServiceNodeIdentity,
+    ServiceIncremental,
+    ServiceCompletionTemplates,
+    ServiceFormat,
+    ServiceTranslate,
 }

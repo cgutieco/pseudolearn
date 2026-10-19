@@ -1022,19 +1022,19 @@ antes de pasar al siguiente.
 
 ## 9. Criterios de aceptación para dar R7 por cerrada
 
-- [ ] Las 10 especificaciones nuevas (`TOOL.SERVICE.NODE-IDENTITY`, `TOOL.SERVICE.INCREMENTAL`,
+- [x] Las 10 especificaciones nuevas (`TOOL.SERVICE.NODE-IDENTITY`, `TOOL.SERVICE.INCREMENTAL`,
       `TOOL.SERVICE.COMPLETION`, `TOOL.SERVICE.NAVIGATION`, `TOOL.SERVICE.HOVER`, `TOOL.FORMAT.STYLE`,
       `TOOL.TRANSLATE.ROUND-TRIP`, `TOOL.LSP.CAPABILITIES`, `TOOL.CLI.FORMAT`, `TOOL.CLI.TRANSLATE`)
       están redactadas, validadas por `see validate` y bloqueadas en `specifications.lock`.
-- [ ] El crate `pseudolearn_service` está implementado en `packages/pseudolearn_engine` con análisis
+- [x] El crate `pseudolearn_service` está implementado en `packages/pseudolearn_engine` con análisis
       incremental por unidad, identidad estable de nodos, autocompletado bilingüe determinista,
       navegación, hover, formateo canónico, traducción entre perfiles y sesión LSP.
-- [ ] `apps/pseudolearn_cli` implementa `pseudo formatear` (`format`), `pseudo traducir` (`translate`) y
+- [x] `apps/pseudolearn_cli` implementa `pseudo formatear` (`format`), `pseudo traducir` (`translate`) y
       `pseudo lsp`.
-- [ ] El sujeto `service` y el sujeto `cli` están al **100 % en `cumple`** en `see conformance`.
-- [ ] Formateo idempotente verificado en todo el corpus ($\text{format}(\text{format}(P)) = \text{format}(P)$).
-- [ ] Doble traducción idéntica al original en todo el corpus canónico libre de colisiones.
-- [ ] Experimentos **E-09** (`r7-service-e09.json`) y **E-20** (`r7-toolchain-e20.json`) ejecutados y
+- [x] El sujeto `service` y el sujeto `cli` están al **100 % en `cumple`** en `see conformance`.
+- [x] Formateo idempotente verificado en todo el corpus ($\text{format}(\text{format}(P)) = \text{format}(P)$).
+- [x] Doble traducción idéntica al original en todo el corpus canónico libre de colisiones.
+- [x] Experimentos **E-09** (`r7-service-e09.json`) y **E-20** (`r7-toolchain-e20.json`) ejecutados y
       cumpliendo las latencias y umbrales de calidad en el hardware de referencia.
-- [ ] Todos los tests y verificadores (`rust-checks`, `clippy`, `see validate`, `see conformance`) en
+- [x] Todos los tests y verificadores (`rust-checks`, `clippy`, `see validate`, `see conformance`) en
       verde y `README.md` actualizados sin referencias transitorias (`DOC-NO-TRANSIENT-REFS`).

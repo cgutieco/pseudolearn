@@ -295,22 +295,22 @@ Cierre aceptado por D-R6-03 e informe [18](18-informe-implementacion-s1-s6-r6.md
 
 > **Plan detallado:** [19 · Plan de R7 · Servicio de lenguaje y herramientas](19-plan-r7-servicio-y-herramientas.md).
 
-- [ ] **Experimentos:** E-09 y E-20.
+- [x] **Experimentos:** E-09 y E-20.
 
-- [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
+- [x] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
 - **Depende de.** R5 (puede ir en paralelo con R6).
 - **Contenido.**
-  - [ ] Las especificaciones `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP`,
+  - [x] Las especificaciones `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP`,
      `TOOL.LSP.CAPABILITIES`, `TOOL.CLI.FORMAT` y `TOOL.CLI.TRANSLATE`, al empezar la fase.
-  - [ ] Crate `service` con análisis incremental.
-  - [ ] `pseudo format`, `pseudo translate` y `pseudo lsp`.
+  - [x] Crate `service` con análisis incremental.
+  - [x] `pseudo format`, `pseudo translate` y `pseudo lsp`.
   - [ ] Extensión mínima de VS Code (opcional en esta fase).
 - **Criterios de aceptación.**
-  - [ ] `service` en `cumple`.
-  - [ ] Doble traducción idéntica al original en todo el corpus.
-  - [ ] Formateo idempotente.
-  - [ ] Latencias de `PERF.*` del servicio cumplidas en el hardware de referencia.
+  - [x] `service` en `cumple`.
+  - [x] Doble traducción idéntica al original en todo el corpus.
+  - [x] Formateo idempotente.
+  - [x] Latencias de `PERF.*` del servicio cumplidas en el hardware de referencia.
 
 ### R8 · Puente con la app y la web
 

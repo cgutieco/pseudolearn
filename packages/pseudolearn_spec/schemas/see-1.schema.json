@@ -882,6 +882,9 @@
             "ri": {
               "type": "object"
             },
+            "servicio": {
+              "type": "object"
+            },
             "codigo_salida": {
               "type": "integer",
               "minimum": 0
@@ -1247,6 +1250,9 @@
               "ri": {
                 "type": "object"
               },
+              "servicio": {
+                "type": "object"
+              },
               "codigo_salida": {
                 "type": "integer",
                 "minimum": 0
@@ -1317,7 +1323,8 @@
             "execute",
             "trace",
             "ir",
-            "cli"
+            "cli",
+            "service"
           ]
         },
         "produce": {
@@ -1370,6 +1377,9 @@
             "argumentos"
           ],
           "additionalProperties": false
+        },
+        "servicio": {
+          "type": "object"
         },
         "limites": {
           "type": "object",

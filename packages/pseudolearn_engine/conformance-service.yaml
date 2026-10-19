@@ -1,0 +1,172 @@
+{
+  "sujeto": "service",
+  "paquete": "packages/pseudolearn_engine",
+  "activadas": [
+    "TOOL.FORMAT.STYLE",
+    "TOOL.LSP.CAPABILITIES",
+    "TOOL.SERVICE.COMPLETION",
+    "TOOL.SERVICE.HOVER",
+    "TOOL.SERVICE.INCREMENTAL",
+    "TOOL.SERVICE.LOSSLESS-TREE",
+    "TOOL.SERVICE.NAVIGATION",
+    "TOOL.SERVICE.NODE-IDENTITY",
+    "TOOL.TRANSLATE.ROUND-TRIP"
+  ],
+  "fases_cerradas": [],
+  "vinculos": [
+    {
+      "regla": "TOOL.FORMAT.STYLE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Verificado mediante medicion M1 en suite de rendimiento."
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Verificado mediante propiedad sintactica P1."
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Verificado mediante propiedad sintactica P2."
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Verificado mediante invariante estructural cubierto por propiedad P1."
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    }
+  ]
+}

@@ -1,0 +1,889 @@
+{
+  "corpus_hashes": {
+    "TOOL.FORMAT.STYLE": "95646ef96efc06c8fa67ebe39725805106ee4ccc064bbd4f7480d031c52b4a28",
+    "TOOL.LSP.CAPABILITIES": "f1dbf551583ca4fa2a8e0bfe7375d43b24db878dd19e74c2c405b08bf5c62fd6",
+    "TOOL.SERVICE.COMPLETION": "f8ea708c629cdb092ac81ae7205fa6d1bfc7f29e66cc41c671034277066e4f02",
+    "TOOL.SERVICE.HOVER": "1419638858d073906b23cd014bef48890a4bad6bae568496ee5f44459cbb90f5",
+    "TOOL.SERVICE.INCREMENTAL": "f07efc6265ad86e32ff1463fd48b9e79a311928c4cebed4118b44705a2fa4423",
+    "TOOL.SERVICE.LOSSLESS-TREE": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
+    "TOOL.SERVICE.NAVIGATION": "810c825f2b9c32efc2e4aa54de52035be79be63ef847d65a66750cf6e529e93f",
+    "TOOL.SERVICE.NODE-IDENTITY": "d741b4e13b712a7448e8971dff8527febc32c392e217d55f247b56e950b79cf3",
+    "TOOL.TRANSLATE.ROUND-TRIP": "2fc15bac4487f39861b7f1d734850728ba0c7503105ef4ccb317f2ba704147b8"
+  },
+  "observations": [
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "formateado": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "formateado": "Algoritmo Principal\n  Definir x Como Entero;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.FORMAT.STYLE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "formateado": "Algoritmo Flexible\n  x <- 1\n  y <- 2\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.FORMAT.STYLE",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "formateado": "// cabecera\nAlgoritmo Comentarios\n  // comentario interior\n  x <- 1;  // fin de linea\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "formateado": "// cabecera\nAlgoritmo Comentarios\n  // comentario interior\n  x <- 1;  // fin de linea\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.FORMAT.STYLE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "formateado": "Algorithm Main\n  Define x As Integer;\n  Write x;\nEndAlgorithm\n"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "formateado": "Algorithm Main\n  Define x As Integer;\n  Write x;\nEndAlgorithm\n"
+        }
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "TOOL.FORMAT.STYLE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "capacidades_anunciadas": true,
+          "cierre_limpio": true
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "capacidades_anunciadas": true,
+          "cierre_limpio": true
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.LSP.CAPABILITIES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "diagnosticos_corregidos": 0,
+          "diagnosticos_iniciales": 1
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "diagnosticos_corregidos": 0,
+          "diagnosticos_iniciales": 1
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.LSP.CAPABILITIES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "consultas_respondidas": true
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "consultas_respondidas": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.LSP.CAPABILITIES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "contiene": [
+            "Entero",
+            "Real",
+            "Logico",
+            "Caracter",
+            "Cadena"
+          ],
+          "excluye": [
+            "Escribir",
+            "Mientras"
+          ]
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "contiene": [
+            "Entero",
+            "Real",
+            "Logico",
+            "Caracter",
+            "Cadena"
+          ],
+          "excluye": [
+            "Escribir",
+            "Mientras"
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "primer_candidato": "FinMientras"
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "primer_candidato": "FinMientras"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "contiene": [
+            "x",
+            "Mover"
+          ],
+          "excluye": [
+            "Escribir",
+            "Algoritmo"
+          ]
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "contiene": [
+            "x",
+            "Mover"
+          ],
+          "excluye": [
+            "Escribir",
+            "Algoritmo"
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "plantilla": "Segun expresion Hacer\n  Caso valor:\n    \n  De Otro Modo:\n    \nFinSegun"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "plantilla": "Switch expression Do\n  Case value:\n    \n  Otherwise:\n    \nEndSwitch"
+        }
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "sugerencia_bilingue": {
+            "etiqueta": "Mientras",
+            "origen": "while"
+          }
+        }
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "sugerencia_bilingue": {
+            "etiqueta": "Mientras",
+            "origen": "while"
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "vacio": true
+        }
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "vacio": true
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "inferido": false,
+          "tipo": "Entero"
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "inferido": false,
+          "tipo": "Entero"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.HOVER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "inferido": true,
+          "tipo": "Real"
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "inferido": true,
+          "tipo": "Real"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.HOVER",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "firma": "Intercambiar(a Por Referencia, b Por Valor)",
+          "parametro_activo": 1
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "firma": "Intercambiar(a Por Referencia, b Por Valor)",
+          "parametro_activo": 1
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.HOVER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "es_intrinseca": true,
+          "identificador": "subcadena"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "es_intrinseca": true,
+          "identificador": "subcadena"
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.HOVER",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "coincide_con_frio": true
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "coincide_con_frio": true
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.INCREMENTAL",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "reanalizadas": 1,
+          "reutilizadas": 2
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "reanalizadas": 1,
+          "reutilizadas": 2
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.INCREMENTAL",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "invalido_firmas": true
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "invalido_firmas": true
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.INCREMENTAL",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "simbolos_previos_conservados": true
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "simbolos_previos_conservados": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.INCREMENTAL",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "definicion": {
+            "end": {
+              "column": 16,
+              "line": 2
+            },
+            "start": {
+              "column": 11,
+              "line": 2
+            }
+          }
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "definicion": {
+            "end": {
+              "column": 16,
+              "line": 2
+            },
+            "start": {
+              "column": 11,
+              "line": 2
+            }
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.NAVIGATION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "referencias": [
+            {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            },
+            {
+              "end": {
+                "column": 4,
+                "line": 3
+              },
+              "start": {
+                "column": 3,
+                "line": 3
+              }
+            }
+          ]
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "referencias": [
+            {
+              "end": {
+                "column": 12,
+                "line": 2
+              },
+              "start": {
+                "column": 11,
+                "line": 2
+              }
+            },
+            {
+              "end": {
+                "column": 4,
+                "line": 3
+              },
+              "start": {
+                "column": 3,
+                "line": 3
+              }
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.NAVIGATION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "definicion": {
+            "end": {
+              "column": 15,
+              "line": 2
+            },
+            "start": {
+              "column": 10,
+              "line": 2
+            }
+          }
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "definicion": {
+            "end": {
+              "column": 15,
+              "line": 2
+            },
+            "start": {
+              "column": 10,
+              "line": 2
+            }
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.NAVIGATION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "destacados": [
+            {
+              "rango": {
+                "end": {
+                  "column": 4,
+                  "line": 2
+                },
+                "start": {
+                  "column": 3,
+                  "line": 2
+                }
+              },
+              "tipo": "write"
+            },
+            {
+              "rango": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "start": {
+                  "column": 12,
+                  "line": 3
+                }
+              },
+              "tipo": "read"
+            }
+          ]
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "destacados": [
+            {
+              "rango": {
+                "end": {
+                  "column": 4,
+                  "line": 2
+                },
+                "start": {
+                  "column": 3,
+                  "line": 2
+                }
+              },
+              "tipo": "write"
+            },
+            {
+              "rango": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "start": {
+                  "column": 12,
+                  "line": 3
+                }
+              },
+              "tipo": "read"
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.NAVIGATION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "conservados": true
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "conservados": true
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.NODE-IDENTITY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "conservados": true
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "conservados": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.NODE-IDENTITY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "conservados": true
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "conservados": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.NODE-IDENTITY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "conservados": true
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "conservados": true
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.NODE-IDENTITY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "traducido": "Algorithm Principal\n  Define x As Real;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n",
+          "vuelta": "Algoritmo Principal\n  Definir x Como Real;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "traducido": "Algorithm Principal\n  Define x As Real;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n",
+          "vuelta": "Algoritmo Principal\n  Definir x Como Real;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.TRANSLATE.ROUND-TRIP",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "traducido": "Algorithm Sombras\n  Define longitud As Integer;\n  longitud <- 5;\n  s <- uppercase(\"texto\");\nEndAlgorithm\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.TRANSLATE.ROUND-TRIP",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "colision": "reservedLexemeUsedAsName"
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "colision": "reservedLexemeUsedAsName"
+        }
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "TOOL.TRANSLATE.ROUND-TRIP",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "traducido": "Algorithm Alias\nEndAlgorithm\n",
+          "vuelta": "Algoritmo Alias\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "traducido": "Algorithm Alias\nEndAlgorithm\n",
+          "vuelta": "Algoritmo Alias\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.TRANSLATE.ROUND-TRIP",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    }
+  ],
+  "protocol": "see-protocol/1",
+  "stderr": "",
+  "subject": "service",
+  "subject_version": "0.1.0"
+}

@@ -54,7 +54,12 @@
               "native_cleanup",
               "native_permissions",
               "native_exit",
-              "native_environment"
+              "native_environment",
+              "service_node_identity",
+              "service_incremental",
+              "service_completion_templates",
+              "service_format",
+              "service_translate"
             ]
           },
           "seed": {
