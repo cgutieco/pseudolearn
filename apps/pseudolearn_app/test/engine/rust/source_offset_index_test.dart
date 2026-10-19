@@ -15,6 +15,23 @@ void main() {
       expect(index.offsetOf(1, 4), 4);
     });
 
+    test('converts UTF-16 cursor offsets to UTF-8 boundaries', () {
+      final index = SourceOffsetIndex('a🧩b');
+      expect(index.utf8OffsetAtUtf16(1), 1);
+      expect(index.utf8OffsetAtUtf16(2), isNull);
+      expect(index.utf8OffsetAtUtf16(3), 5);
+      expect(index.utf8OffsetAtUtf16(4), 6);
+    });
+
+    test('converts UTF-8 edit offsets to UTF-16 boundaries', () {
+      final index = SourceOffsetIndex('a🧩b');
+      expect(index.utf16OffsetAtUtf8(1), 1);
+      expect(index.utf16OffsetAtUtf8(2), isNull);
+      expect(index.utf16OffsetAtUtf8(5), 3);
+      expect(index.utf16OffsetAtUtf8(6), 4);
+      expect(index.utf16OffsetAtUtf8(7), isNull);
+    });
+
     test('clamps positions beyond the source', () {
       final index = SourceOffsetIndex('ab');
       expect(index.offsetOf(9, 9), 2);

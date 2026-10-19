@@ -10,7 +10,11 @@ fn range_json(range: Range) -> Value {
 }
 
 pub fn handle_completion(request: &ServiceRequest<'_>) -> Value {
-    let candidates = request.session().queries().complete(position_of(request));
+    let candidates = request
+        .session()
+        .queries()
+        .complete_with_edit(position_of(request))
+        .entries;
     let labels: Vec<&str> = candidates
         .iter()
         .map(|entry| entry.label.as_str())
@@ -32,7 +36,11 @@ pub fn handle_completion(request: &ServiceRequest<'_>) -> Value {
             json!({ "rango": rank })
         }
         "determinista" => {
-            let again = request.session().queries().complete(position_of(request));
+            let again = request
+                .session()
+                .queries()
+                .complete_with_edit(position_of(request))
+                .entries;
             json!({ "determinista": !candidates.is_empty() && again == candidates })
         }
         other => json!({ "error": format!("unsupported projection: {other}") }),

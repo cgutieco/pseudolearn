@@ -85,6 +85,55 @@
       "state": "experimental",
       "version": "0.1.0"
     },
+    "API.PROGRAM.VIEW@0.2.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "2b83b0aad37af6840b2a39954a8fc0993216b673a69f7ba986d1479e1e7fc080",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
+    "API.PROGRAM.VIEW@0.3.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "04df136e507cd7f5aa04722b434a02162f4fcec34ae0eab92bbdf74d88e2a060",
+      "state": "experimental",
+      "version": "0.3.0"
+    },
+    "API.PROGRAM.VIEW@0.4.0": {
+      "edition": {},
+      "elements": {
+        "C1": "caso",
+        "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
+        "R1": "regla",
+        "R2": "regla",
+        "R3": "regla"
+      },
+      "hash": "a2cc6355ccbe9efd614324c5a7c9718096d36a05003b8f52f7f6182a2a64e175",
+      "state": "experimental",
+      "version": "0.4.0"
+    },
     "API.STATE.QUERY@0.1.0": {
       "edition": {},
       "elements": {
@@ -113,6 +162,30 @@
       "hash": "25a2423d46a17be03c77e183d3b3e13d1f85908b2bf88d73dc9017e430bb9ce8",
       "state": "experimental",
       "version": "0.1.0"
+    },
+    "API.VERSIONING@0.2.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "34268cd7fd1303deaa55947d4fbb59eb0be0b00423e457ad91d3fab50ed4b9e3",
+      "state": "experimental",
+      "version": "0.2.0"
+    },
+    "API.VERSIONING@0.3.0": {
+      "edition": {},
+      "elements": {
+        "P1": "propiedad",
+        "P2": "propiedad",
+        "R1": "regla",
+        "R2": "regla"
+      },
+      "hash": "56744ac3202d23d9cb8281ebcc655775eae6c2bbe6933aae846de6b39d613b4a",
+      "state": "experimental",
+      "version": "0.3.0"
     },
     "API.WIRE-FORMAT@0.1.0": {
       "edition": {},
@@ -4335,13 +4408,15 @@
         "C2": "caso",
         "C3": "caso",
         "C4": "caso",
+        "C5": "caso",
+        "C6": "caso",
         "R1": "regla",
         "R2": "regla",
         "R3": "regla"
       },
-      "hash": "5bad2625575636fc6d5bde91a96cc123865f64859f14709ca4bfadd580d9cc92",
+      "hash": "a2cc6355ccbe9efd614324c5a7c9718096d36a05003b8f52f7f6182a2a64e175",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.4.0"
     },
     "API.STATE.QUERY": {
       "edition": {},
@@ -4368,9 +4443,9 @@
         "R1": "regla",
         "R2": "regla"
       },
-      "hash": "25a2423d46a17be03c77e183d3b3e13d1f85908b2bf88d73dc9017e430bb9ce8",
+      "hash": "56744ac3202d23d9cb8281ebcc655775eae6c2bbe6933aae846de6b39d613b4a",
       "state": "experimental",
-      "version": "0.1.0"
+      "version": "0.3.0"
     },
     "API.WIRE-FORMAT": {
       "edition": {},

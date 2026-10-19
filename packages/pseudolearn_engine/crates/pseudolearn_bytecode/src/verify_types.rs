@@ -18,8 +18,8 @@ pub(crate) fn verify(
 ) -> Result<(), BytecodeError> {
     match instruction.opcode {
         Opcode::ArrayNew => arrays::verify_array_new(function, instruction),
-        Opcode::ArrayLoad => arrays::verify_array_access(function, instruction, false),
-        Opcode::ArrayStore => arrays::verify_array_access(function, instruction, true),
+        Opcode::ArrayLoad => arrays::verify_array_access(module, function, instruction, false),
+        Opcode::ArrayStore => arrays::verify_array_access(module, function, instruction, true),
         Opcode::CellElement => references::verify_cell_element(function, instruction),
         Opcode::CellField => references::verify_cell_field(module, function, instruction),
         Opcode::ObjectLoad => references::verify_object_load(module, function, instruction),
@@ -97,17 +97,6 @@ fn require_assignable(
 ) -> Result<(), BytecodeError> {
     if actual.is_some_and(|actual| crate::class_verification::assignable(module, actual, expected))
     {
-        Ok(())
-    } else {
-        Err(TYPE_ERROR)
-    }
-}
-
-fn require_same_type(
-    actual: Option<&ValueType>,
-    expected: &ValueType,
-) -> Result<(), BytecodeError> {
-    if actual == Some(expected) {
         Ok(())
     } else {
         Err(TYPE_ERROR)

@@ -14,6 +14,8 @@ final class EditorState extends Equatable {
   final bool isSaving;
   final bool isDirty;
   final List<CompletionItem> completions;
+  final List<CompletionItem> contextualCompletions;
+  final int completionRevision;
   final List<EditorKey> keys;
   final SourceEdit? pendingEdit;
   final bool showsKeyBar;
@@ -27,6 +29,8 @@ final class EditorState extends Equatable {
     this.isSaving = false,
     this.isDirty = false,
     this.completions = const [],
+    this.contextualCompletions = const [],
+    this.completionRevision = 0,
     this.keys = const [],
     this.pendingEdit,
     this.showsKeyBar = false,
@@ -34,16 +38,18 @@ final class EditorState extends Equatable {
   });
 
   const EditorState.initial({this.showsKeyBar = false})
-      : document = null,
-        sourceCode = '',
-        report = const AnalysisReport.empty(),
-        selectedDiagnostic = null,
-        isSaving = false,
-        isDirty = false,
-        completions = const [],
-        keys = const [],
-        pendingEdit = null,
-        errorMessage = null;
+    : document = null,
+      sourceCode = '',
+      report = const AnalysisReport.empty(),
+      selectedDiagnostic = null,
+      isSaving = false,
+      isDirty = false,
+      completions = const [],
+      contextualCompletions = const [],
+      completionRevision = 0,
+      keys = const [],
+      pendingEdit = null,
+      errorMessage = null;
 
   EditorState copyWith({
     Document? document,
@@ -53,6 +59,8 @@ final class EditorState extends Equatable {
     bool? isSaving,
     bool? isDirty,
     List<CompletionItem>? completions,
+    List<CompletionItem>? contextualCompletions,
+    int? completionRevision,
     List<EditorKey>? keys,
     SourceEdit? pendingEdit,
     String? errorMessage,
@@ -65,6 +73,9 @@ final class EditorState extends Equatable {
       isSaving: isSaving ?? this.isSaving,
       isDirty: isDirty ?? this.isDirty,
       completions: completions ?? this.completions,
+      contextualCompletions:
+          contextualCompletions ?? this.contextualCompletions,
+      completionRevision: completionRevision ?? this.completionRevision,
       keys: keys ?? this.keys,
       pendingEdit: pendingEdit ?? this.pendingEdit,
       showsKeyBar: showsKeyBar,
@@ -74,16 +85,18 @@ final class EditorState extends Equatable {
 
   @override
   List<Object?> get props => [
-        document,
-        sourceCode,
-        report,
-        selectedDiagnostic,
-        isSaving,
-        isDirty,
-        completions,
-        keys,
-        pendingEdit,
-        showsKeyBar,
-        errorMessage,
-      ];
+    document,
+    sourceCode,
+    report,
+    selectedDiagnostic,
+    isSaving,
+    isDirty,
+    completions,
+    contextualCompletions,
+    completionRevision,
+    keys,
+    pendingEdit,
+    showsKeyBar,
+    errorMessage,
+  ];
 }

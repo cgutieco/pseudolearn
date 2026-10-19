@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "Proceso SumaDeMatriz2x2\n    Dimension datos[2, 2] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 1 Hacer\n        Para columna <- 0 Hasta 1 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- 0;\n    Para fila <- 0 Hasta 1 Hacer\n        Para columna <- 0 Hasta 1 Hacer\n            total <- total + datos[fila, columna];\n        FinPara\n    FinPara\n    Escribir total;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaDeMatriz2x2    Dimension datos[2, 2] Como Entero;    Definir fila Como Entero;    Definir columna Como Entero;    Definir total Como Entero;    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            Leer datos[fila, columna];        FinPara    FinPara    total <- 0;    Para fila <- 0 Hasta 1 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 1 Con Paso 1 Hacer\n            total <- total + datos[fila, columna];        FinPara    FinPara    Escribir total;FinProceso"
 }

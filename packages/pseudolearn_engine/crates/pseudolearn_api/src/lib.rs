@@ -26,6 +26,7 @@ pub use wire::{deserialize_from_str, serialize_to_string};
 
 pub use diagnostic_conversion::render_diagnostic;
 
+mod editor_vocabulary;
 mod execution;
 mod execution_model;
 mod execution_state;
@@ -43,9 +44,12 @@ mod execution_resource;
 mod locale_operations;
 mod program_view;
 mod program_view_kind;
+mod program_view_members;
 mod program_view_operations;
 mod program_view_relations;
+mod program_view_tree;
 mod resources;
+mod service_completion;
 mod state_pages;
 mod typed_values;
 pub use program_view_operations::analysis_program_view;

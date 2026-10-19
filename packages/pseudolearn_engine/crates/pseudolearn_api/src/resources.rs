@@ -60,6 +60,9 @@ impl ApiSession {
             "start" | "start_execution" => self.start(arguments),
             "program_view" | "query_node" => self.program_view_operation(operation, arguments),
             "query_page" => self.query_page_operation(arguments),
+            "complete" => crate::service_completion::complete(arguments),
+            "completion_templates" => crate::service_completion::templates(arguments),
+            "editor_vocabulary" => crate::editor_vocabulary::query(arguments),
             "release" => self.release(identifier(arguments)?),
             "version" => Ok(json!({"version":crate::ENGINE_VERSION,"editions":["2026"],
                 "capabilities":crate::supported_capabilities()})),
@@ -69,6 +72,8 @@ impl ApiSession {
                 "advance",
                 "input",
                 "cancel",
+                "complete",
+                "completion_templates",
                 "query_state",
                 "release"
             ])),

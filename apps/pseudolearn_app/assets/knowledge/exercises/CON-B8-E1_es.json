@@ -14,5 +14,5 @@
     {"inputs": ["1", "10"], "expectedOutputs": ["1"], "expected": "numerico"},
     {"inputs": ["4", "1", "2", "3", "4"], "expectedOutputs": ["0"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso ContarAprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir aprobados Como Entero;\n    Leer cantidad;\n    aprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota >= 5 Entonces\n            aprobados <- aprobados + 1;\n        FinSi\n    FinPara\n    Escribir aprobados;\nFinProceso\n"
+  "referenceSolution": "Proceso ContarAprobados    Definir cantidad Como Entero;    Definir i Como Entero;    Definir nota Como Entero;    Definir aprobados Como Entero;    Leer cantidad;    aprobados <- 0;    Para i <- 1 Hasta cantidad Con Paso 1 Hacer\n        Leer nota;        Si nota >= 5 Entonces            aprobados <- aprobados + 1;        FinSi    FinPara    Escribir aprobados;FinProceso"
 }

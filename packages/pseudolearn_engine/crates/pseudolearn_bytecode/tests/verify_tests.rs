@@ -1,6 +1,6 @@
 use pseudolearn_bytecode::{
-    BytecodeError, BytecodeOperand, Register, RegisterClass, VerificationRule, compile_module,
-    verify_bytecode,
+    BytecodeError, BytecodeOperand, Opcode, Register, RegisterClass, ValueType, VerificationRule,
+    compile_module, verify_bytecode,
 };
 use pseudolearn_ir::{BlockId, parse_module};
 
@@ -132,6 +132,71 @@ fn rejects_incompatible_block_argument_class() {
         verify_bytecode(&module),
         Err(BytecodeError::Verification(VerificationRule::ValueClass))
     );
+}
+
+#[test]
+fn accepts_subclass_values_in_base_type_arrays() {
+    let source = "module P es\nclass Base {}\nclass Derived : Base {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = array.new array<obj<Base>, 1>, %0 @1:1-1:2\n  %2 = object.new Derived @1:1-1:2\n  %3 = const.i64 0\n  array.store %1, %3, %2 @1:1-1:2\n  return\n}\n";
+    let parsed = parse_module(source);
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        assert!(compile_module(&module).is_ok());
+    }
+}
+
+#[test]
+fn rejects_unrelated_values_in_base_type_arrays() {
+    let source = "module P es\nclass Base {}\nclass Other {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = array.new array<obj<Other>, 1>, %0 @1:1-1:2\n  %2 = object.new Other @1:1-1:2\n  %3 = const.i64 0\n  array.store %1, %3, %2 @1:1-1:2\n  return\n}\n";
+    let parsed = parse_module(source);
+    assert!(parsed.is_ok());
+    if let Ok(module) = parsed {
+        let compiled = compile_module(&module);
+        assert!(compiled.is_ok());
+        let candidate = compiled.ok().map(|verified| verified.module().clone());
+        assert!(candidate.is_some());
+        let Some(mut compiled_module) = candidate else {
+            return;
+        };
+        let function = compiled_module.functions.first_mut();
+        assert!(function.is_some());
+        let Some(function) = function else {
+            return;
+        };
+        let instruction = function
+            .fast
+            .instructions
+            .iter_mut()
+            .find(|instruction| instruction.opcode == Opcode::ArrayNew);
+        assert!(instruction.is_some());
+        let Some(instruction) = instruction else {
+            return;
+        };
+        let destination = instruction.destination;
+        let array_type = ValueType::Array {
+            element: Box::new(ValueType::Object("Base".to_owned())),
+            dimension_rank: 1,
+        };
+        let operand = instruction.operands.first_mut();
+        assert!(operand.is_some());
+        if let Some(BytecodeOperand::Type(value_type)) = operand {
+            *value_type = array_type.clone();
+        }
+        let Some(destination) = destination else {
+            return;
+        };
+        let register_type = function
+            .reference_types
+            .get_mut(usize::from(destination.index));
+        assert!(register_type.is_some());
+        if let Some(register_type) = register_type {
+            *register_type = array_type;
+        }
+        function.probed = function.fast.clone();
+        assert_eq!(
+            verify_bytecode(&compiled_module),
+            Err(BytecodeError::Verification(VerificationRule::ValueClass))
+        );
+    }
 }
 
 #[test]

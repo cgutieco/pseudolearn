@@ -17,7 +17,8 @@ impl LspServer {
                 let position = position_from_request(session.text(), message);
                 session
                     .queries()
-                    .complete(position)
+                    .complete_with_edit(position)
+                    .entries
                     .into_iter()
                     .enumerate()
                     .map(|(rank, entry)| {

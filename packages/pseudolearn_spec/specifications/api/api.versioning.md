@@ -5,7 +5,7 @@
   "titulo": "Versión y capacidades de la API",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -25,7 +25,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "API versioning"
+  "titulo_en": "API versioning",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Los consumidores pueden negociar service_completion y generated_vocabulary antes de consultar autocompletado, plantillas y lexemas del perfil activo.",
+    "impacto_implementaciones": "La declaración de capacidades reconoce service_completion y generated_vocabulary y el borde ofrece operaciones para candidatos contextuales, plantillas verificadas y palabras generadas.",
+    "justificacion": "El editor conecta los servicios Rust sin mantener tablas duplicadas de palabras o construcciones.",
+    "revisado_por": "persona-responsable"
+  }
 }
 ---
 
@@ -36,7 +43,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view y state_pages. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
+    "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion y generated_vocabulary. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
   "verificacion": [
     "P1"
   ]

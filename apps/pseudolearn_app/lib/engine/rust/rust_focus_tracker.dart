@@ -37,7 +37,7 @@ final class RustFocusTracker {
     final node = _view.node(event.nodeId);
     if (node == null) return;
     _stack.enter(node.id);
-    if (_view.isContainer(node)) return;
+    if (rustNodeIsContainer(_view, node)) return;
     _focusOn(node.id, node, ExecutionFocusKind.statement);
   }
 

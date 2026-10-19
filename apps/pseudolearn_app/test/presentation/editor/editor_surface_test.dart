@@ -89,7 +89,7 @@ Widget _surface({
           body: EditorSurface(
             editorState: editorState,
             executionState: executionState,
-            onCodeChanged: (_) {},
+            onCodeChanged: (_, _) {},
             onDiagnosticSelected: (_) {},
             onKeyPressed: onKeyPressed,
             onRun: onRun,

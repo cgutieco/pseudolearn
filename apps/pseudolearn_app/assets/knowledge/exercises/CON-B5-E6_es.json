@@ -101,6 +101,6 @@
       "requirement": "El enunciado pide resolverlo con un arreglo."
     }
   ],
-  "referenceSolution": "Proceso DiagonalPrincipal\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- datos[0, 0] + datos[1, 1] + datos[2, 2];\n    Escribir total;\nFinProceso\n",
+  "referenceSolution": "Proceso DiagonalPrincipal    Dimension datos[3, 3] Como Entero;    Definir fila Como Entero;    Definir columna Como Entero;    Definir total Como Entero;    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            Leer datos[fila, columna];        FinPara    FinPara    total <- datos[0, 0] + datos[1, 1] + datos[2, 2];    Escribir total;FinProceso",
   "starterCode": "Proceso DiagonalPrincipal\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- 0;\n    Para fila <- 0 Hasta 2 Hacer\n        Para columna <- 0 Hasta 2 Hacer\n            total <- total + datos[fila, columna];\n        FinPara\n    FinPara\n    Escribir total;\nFinProceso\n"
 }

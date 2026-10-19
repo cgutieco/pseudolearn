@@ -44,13 +44,13 @@
       "samples": 100
     },
     {
-      "reference": "API.VERSIONING@0.1.0#P1",
+      "reference": "API.VERSIONING@0.3.0#P1",
       "executor": "version_negotiation",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.VERSIONING@0.1.0#P2",
+      "reference": "API.VERSIONING@0.3.0#P2",
       "executor": "capability_negotiation",
       "seed": 42,
       "samples": 100

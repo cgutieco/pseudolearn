@@ -8,12 +8,38 @@ use crate::positions::offset_at;
 use crate::spelling::keyword_spelling;
 use pseudolearn_lexicon::{KeywordKind, Profile};
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CompletionTextEdit {
+    pub start_utf8: usize,
+    pub end_utf8: usize,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CompletionResult {
+    pub entries: Vec<CompletionEntry>,
+    pub text_edit: CompletionTextEdit,
+}
+
 pub fn complete_at_position(query: &CompletionQuery) -> Vec<CompletionEntry> {
+    complete_at_position_with_edit(query).entries
+}
+
+pub fn complete_at_position_with_edit(query: &CompletionQuery) -> CompletionResult {
     let offset = offset_at(query.source.as_str(), query.position);
     let context = analyze_cursor(query.tree, query.source, offset);
     if context.kind == CursorKind::Inert {
-        return Vec::new();
+        return CompletionResult {
+            entries: Vec::new(),
+            text_edit: CompletionTextEdit {
+                start_utf8: offset,
+                end_utf8: offset,
+            },
+        };
     }
+    let text_edit = CompletionTextEdit {
+        start_utf8: context.prefix_start,
+        end_utf8: offset,
+    };
     let scope = SourceScope {
         analysis: query.analysis,
         context: &context,
@@ -22,7 +48,10 @@ pub fn complete_at_position(query: &CompletionQuery) -> Vec<CompletionEntry> {
     };
     let mut pool = CandidatePool::default();
     fill_pool(&scope, &mut pool);
-    pool.finish(&context.prefix, query.profile)
+    CompletionResult {
+        entries: pool.finish(&context.prefix, query.profile),
+        text_edit,
+    }
 }
 
 fn fill_pool(scope: &SourceScope<'_>, pool: &mut CandidatePool) {

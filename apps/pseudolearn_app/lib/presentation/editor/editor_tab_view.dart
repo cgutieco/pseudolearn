@@ -9,7 +9,8 @@ import 'editor_surface.dart';
 final class EditorTabView extends StatelessWidget {
   final EditorState editorState;
   final ExecutionState executionState;
-  final ValueChanged<String> onCodeChanged;
+  final EditorCodeChanged onCodeChanged;
+  final ValueChanged<int>? onCursorMoved;
   final EditorKeyPressed onKeyPressed;
   final ValueChanged<AppDiagnostic> onDiagnosticSelected;
   final VoidCallback onDismissStatusBanner;
@@ -21,6 +22,7 @@ final class EditorTabView extends StatelessWidget {
     required this.editorState,
     required this.executionState,
     required this.onCodeChanged,
+    this.onCursorMoved,
     required this.onKeyPressed,
     required this.onDiagnosticSelected,
     required this.onDismissStatusBanner,
@@ -43,6 +45,7 @@ final class EditorTabView extends StatelessWidget {
             editorState: editorState,
             executionState: executionState,
             onCodeChanged: onCodeChanged,
+            onCursorMoved: onCursorMoved,
             onDiagnosticSelected: onDiagnosticSelected,
             onKeyPressed: onKeyPressed,
             onRun: onRun,
@@ -71,22 +74,22 @@ final class _EditorExecutionStatusBanner extends StatelessWidget {
 
     return switch (status) {
       ExecutionStatus.stepLimitReached => StatusBanner(
-          severity: AppSeverity.warning,
-          title: l10n.bannerStepLimitTitle,
-          message: l10n.bannerStepLimitBody,
-          onDismiss: onDismiss,
-        ),
+        severity: AppSeverity.warning,
+        title: l10n.bannerStepLimitTitle,
+        message: l10n.bannerStepLimitBody,
+        onDismiss: onDismiss,
+      ),
       ExecutionStatus.haltedWithError => StatusBanner(
-          severity: AppSeverity.error,
-          title: l10n.bannerErrorTitle,
-          message: haltMessage ?? l10n.executionRuntimeError,
-          onDismiss: onDismiss,
-        ),
+        severity: AppSeverity.error,
+        title: l10n.bannerErrorTitle,
+        message: haltMessage ?? l10n.executionRuntimeError,
+        onDismiss: onDismiss,
+      ),
       ExecutionStatus.finishedSuccess => StatusBanner(
-          severity: AppSeverity.success,
-          title: l10n.bannerSuccessTitle,
-          onDismiss: onDismiss,
-        ),
+        severity: AppSeverity.success,
+        title: l10n.bannerSuccessTitle,
+        onDismiss: onDismiss,
+      ),
       _ => const SizedBox.shrink(),
     };
   }

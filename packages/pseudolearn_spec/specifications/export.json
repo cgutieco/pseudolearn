@@ -5213,7 +5213,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
+            "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Cada relación de miembro identifica el nodo público que la representa. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
             "verificacion": [
               "C1",
               "C2"
@@ -5230,13 +5230,21 @@
                 "node_kinds_include": [
                   "declaration",
                   "statement",
-                  "expression"
+                  "expression",
+                  "symbol",
+                  "type"
                 ],
                 "units": [
                   {
                     "kind": "algorithm",
                     "name": "P",
-                    "order": 0
+                    "order": 0,
+                    "span": {
+                      "start": {
+                        "column": 1,
+                        "line": 1
+                      }
+                    }
                   }
                 ]
               }
@@ -5264,6 +5272,22 @@
                   {
                     "base": "Base",
                     "class": "Hija"
+                  }
+                ],
+                "members": [
+                  {
+                    "arity": 0,
+                    "class": "Base",
+                    "kind": "method",
+                    "name": "valor",
+                    "visibility": "public"
+                  },
+                  {
+                    "arity": 0,
+                    "class": "Hija",
+                    "kind": "method",
+                    "name": "valor",
+                    "visibility": "public"
                   }
                 ],
                 "methods": [
@@ -5312,9 +5336,10 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
-            "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y puede incluir parent_node_id; toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
+            "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
             "verificacion": [
-              "C3"
+              "C3",
+              "C5"
             ]
           },
           "kind": "regla"
@@ -5352,6 +5377,82 @@
               "es"
             ],
             "programa": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n",
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "arbol": "presente",
+              "vista_programa": {
+                "child_roles_include": [
+                  {
+                    "role": "else_body",
+                    "syntax_kind": "conditional"
+                  }
+                ],
+                "syntax_kinds_include": [
+                  "conditional",
+                  "while_loop",
+                  "output"
+                ]
+              }
+            },
+            "id": "C5",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\nSi verdadero Entonces\nMientras falso Hacer\nEscribir 1;\nFinMientras\nFinSi\nFinAlgoritmo\n",
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "vista_programa": {
+                "members": [
+                  {
+                    "class": "Caja",
+                    "dimensions": 0,
+                    "kind": "field",
+                    "name": "saldo",
+                    "type": "Entero"
+                  },
+                  {
+                    "class": "Caja",
+                    "dimensions": 2,
+                    "kind": "field",
+                    "name": "matriz",
+                    "type": "Entero"
+                  }
+                ],
+                "nodes_include": [
+                  {
+                    "dimensions": 3,
+                    "syntax_kind": "parameter"
+                  }
+                ]
+              }
+            },
+            "id": "C6",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Clase Caja\nDefinir saldo Como Entero;\nDimension matriz[2, 3] Como Entero;\nMetodo ajustar(monto[,,] Como Entero)\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
             "regla": "R2",
             "rigor": [
               "estricto"
@@ -5401,9 +5502,15 @@
           "kind": "caso"
         }
       ],
-      "hash": "5bad2625575636fc6d5bde91a96cc123865f64859f14709ca4bfadd580d9cc92",
+      "hash": "a2cc6355ccbe9efd614324c5a7c9718096d36a05003b8f52f7f6182a2a64e175",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "Cada relación de hijo declara su papel; los miembros y parámetros exponen tipo y dimensiones cuando corresponda, y cada miembro de clase incluye una identidad que resuelve en la misma vista.",
+          "impacto_usuarios": "Diagramas, emisores y comprobaciones pueden distinguir ramas, seguir cada miembro hasta su nodo y conservar tramos de unidad.",
+          "justificacion": "Los consumidores deben proyectar representaciones fieles desde una vista compartida sin volver a analizar el texto ni depender de la estructura privada del CST.",
+          "revisado_por": "persona-responsable"
+        },
         "depende_de": [
           {
             "id": "API.MODEL",
@@ -5454,7 +5561,7 @@
         ],
         "titulo": "Vista pública del programa",
         "titulo_en": "Public program view",
-        "version": "0.1.0"
+        "version": "0.4.0"
       }
     },
     {
@@ -5732,7 +5839,7 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view y state_pages. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
+            "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion y generated_vocabulary. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
             "verificacion": [
               "P1"
             ]
@@ -5778,9 +5885,15 @@
           "kind": "propiedad"
         }
       ],
-      "hash": "25a2423d46a17be03c77e183d3b3e13d1f85908b2bf88d73dc9017e430bb9ce8",
+      "hash": "56744ac3202d23d9cb8281ebcc655775eae6c2bbe6933aae846de6b39d613b4a",
       "metadata": {
-        "cambio": null,
+        "cambio": {
+          "clase": "ampliacion",
+          "impacto_implementaciones": "La declaración de capacidades reconoce service_completion y generated_vocabulary y el borde ofrece operaciones para candidatos contextuales, plantillas verificadas y palabras generadas.",
+          "impacto_usuarios": "Los consumidores pueden negociar service_completion y generated_vocabulary antes de consultar autocompletado, plantillas y lexemas del perfil activo.",
+          "justificacion": "El editor conecta los servicios Rust sin mantener tablas duplicadas de palabras o construcciones.",
+          "revisado_por": "persona-responsable"
+        },
         "depende_de": [
           {
             "id": "API.MODEL",
@@ -5810,7 +5923,7 @@
         ],
         "titulo": "Versión y capacidades de la API",
         "titulo_en": "API versioning",
-        "version": "0.1.0"
+        "version": "0.3.0"
       }
     },
     {

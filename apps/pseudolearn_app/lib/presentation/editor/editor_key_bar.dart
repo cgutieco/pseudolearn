@@ -30,11 +30,26 @@ final class _EditorKeyBarState extends State<EditorKeyBar> {
   void _toggleTemplates() => setState(() => _showsTemplates = !_showsTemplates);
 
   void _pressTemplate(CompletionItem item) {
-    widget.onKeyPressed(EditorKey.template(
-      label: item.label,
-      insertion: item.template,
-      caretOffset: item.caretOffset,
-    ));
+    final replacementRange = item.replacementRange;
+    final revision = item.revision;
+    if (replacementRange != null && revision != null) {
+      widget.onKeyPressed(
+        EditorKey.completion(
+          label: item.label,
+          insertion: item.template,
+          replacementRange: replacementRange,
+          revision: revision,
+        ),
+      );
+      return;
+    }
+    widget.onKeyPressed(
+      EditorKey.template(
+        label: item.label,
+        insertion: item.template,
+        caretOffset: item.caretOffset,
+      ),
+    );
   }
 
   @override
@@ -104,11 +119,17 @@ final class _KeyRow extends StatelessWidget {
       child: Row(
         children: [
           _TemplatesToggle(
-              isOpen: showsTemplates, onPressed: onToggleTemplates),
-          ...keys.map((key) => Expanded(
-                child: EditorKeyCap(
-                    editorKey: key, onPressed: () => onKeyPressed(key)),
-              )),
+            isOpen: showsTemplates,
+            onPressed: onToggleTemplates,
+          ),
+          ...keys.map(
+            (key) => Expanded(
+              child: EditorKeyCap(
+                editorKey: key,
+                onPressed: () => onKeyPressed(key),
+              ),
+            ),
+          ),
         ],
       ),
     );

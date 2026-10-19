@@ -60,6 +60,7 @@ fn compares_application_results_and_program_view_subsets() {
         "vista_programa": {
             "units": [{"kind": "algorithm", "name": "P", "order": 0}],
             "node_kinds_include": ["statement", "expression"],
+            "syntax_kinds_include": ["conditional"],
             "child_order": "source"
         }
     });
@@ -67,7 +68,7 @@ fn compares_application_results_and_program_view_subsets() {
         "app": {"decoded_id": "9007199254740993", "source_equal": true, "extra": true},
         "program_view": {
             "units": [{"kind": "algorithm", "name": "P", "order": 0, "node_id": "opaque"}],
-            "nodes": [{"kind": "statement"}, {"kind": "expression"}, {"kind": "identifier"}],
+            "nodes": [{"kind": "statement", "syntax_kind": "conditional"}, {"kind": "expression"}, {"kind": "identifier"}],
             "child_order": "source"
         }
     });
@@ -76,6 +77,26 @@ fn compares_application_results_and_program_view_subsets() {
         "app": {"decoded_id": "9007199254740992", "source_equal": true},
         "program_view": {"units": [], "nodes": [{"kind": "statement"}], "child_order": "source"}
     });
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
+fn compares_public_syntax_kinds_without_requiring_private_node_details() {
+    let expected = json!({"vista_programa": {
+        "syntax_kinds_include": ["conditional", "while_loop"],
+        "child_roles_include": [
+            {"syntax_kind":"conditional","role":"else_body"}
+        ]
+    }});
+    let actual = json!({"program_view": {"nodes": [
+        {"kind": "statement", "syntax_kind": "conditional", "child_roles":[{"node_id":"n2","role":"else_body"}]},
+        {"kind": "statement", "syntax_kind": "while_loop"}
+    ]}});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    let wrong = json!({"program_view": {"nodes": [
+        {"kind": "statement", "syntax_kind": "conditional", "child_roles":[{"node_id":"n2","role":"then_body"}]},
+        {"kind": "statement", "syntax_kind": "for_loop"}
+    ]}});
     assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
 }
 

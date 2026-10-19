@@ -34,6 +34,7 @@ pub(super) fn verify_array_new(
 }
 
 pub(super) fn verify_array_access(
+    module: &BytecodeModule,
     function: &BytecodeFunction,
     instruction: &Instruction,
     stores: bool,
@@ -64,7 +65,8 @@ pub(super) fn verify_array_access(
     }
     if stores {
         let source = instruction.operands.get(end).ok_or(TYPE_ERROR)?;
-        return require_same_type(operand_type(function, source).as_ref(), element);
+        let source_type = operand_type(function, source).ok_or(TYPE_ERROR)?;
+        return require_assignable(module, Some(&source_type), element);
     }
     require_destination(instruction, function, element)
 }

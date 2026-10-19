@@ -34,7 +34,9 @@ pub fn check_instruction_types(
     if let Some(result) = check_intrinsics(operation, operands, &get_type)? {
         return Ok(Some(result));
     }
-    if let Some(result) = crate::type_checker_collections::check(operation, operands, &get_type)? {
+    if let Some(result) =
+        crate::type_checker_collections::check(operation, operands, &get_type, module)?
+    {
         return Ok(Some(result));
     }
     if let Some(result) = check_texts(operation, operands, &get_type)? {

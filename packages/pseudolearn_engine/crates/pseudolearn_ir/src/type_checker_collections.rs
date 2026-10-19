@@ -1,15 +1,16 @@
 use crate::type_checker_helpers::TypeError;
-use crate::{IrType, Operand, Operation, ValueId};
+use crate::{IrType, Module, Operand, Operation, ValueId};
 
 pub(crate) fn check(
     operation: Operation,
     operands: &[Operand],
     get_type: &impl Fn(ValueId) -> Option<IrType>,
+    module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
     match operation {
         Operation::ArrayNew => new_array(operands, get_type),
         Operation::ArrayLoad | Operation::CellElement => array_read(operation, operands, get_type),
-        Operation::ArrayStore => array_store(operands, get_type),
+        Operation::ArrayStore => array_store(operands, get_type, module),
         Operation::TextCharAt => text_position(operands, get_type),
         Operation::TextToInteger => convert_text(operands, get_type, IrType::I64),
         Operation::TextToReal => convert_text(operands, get_type, IrType::F64),
@@ -80,6 +81,7 @@ fn array_read(
 fn array_store(
     operands: &[Operand],
     get_type: &impl Fn(ValueId) -> Option<IrType>,
+    module: &Module,
 ) -> Result<Option<IrType>, TypeError> {
     let Some(Operand::Value(value)) = operands.last() else {
         return Err(TypeError);
@@ -87,8 +89,9 @@ fn array_store(
     let sources = operands
         .get(..operands.len().saturating_sub(1))
         .ok_or(TypeError)?;
-    let element = array_read(Operation::ArrayLoad, sources, get_type)?;
-    if element != get_type(*value) {
+    let element = array_read(Operation::ArrayLoad, sources, get_type)?.ok_or(TypeError)?;
+    let value_type = get_type(*value).ok_or(TypeError)?;
+    if !crate::assignability::assignable(module, &value_type, &element) {
         return Err(TypeError);
     }
     Ok(Some(IrType::Unit))

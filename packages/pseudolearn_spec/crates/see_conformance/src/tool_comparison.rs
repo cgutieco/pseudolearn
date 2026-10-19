@@ -24,6 +24,8 @@ fn program_view(expected: &Value, actual: Option<&Value>) -> bool {
         .iter()
         .all(|(name, value)| match name.as_str() {
             "node_kinds_include" => includes_node_kinds(value, actual),
+            "syntax_kinds_include" => includes_syntax_kinds(value, actual),
+            "child_roles_include" => includes_child_roles(value, actual),
             "node_ids_unique" => value.as_bool() == Some(true) && node_ids_unique(actual),
             "references_same_revision" => {
                 value.as_bool() == Some(true) && references_same_revision(actual)
@@ -32,6 +34,30 @@ fn program_view(expected: &Value, actual: Option<&Value>) -> bool {
             "child_order" => actual.get("child_order") == Some(value),
             _ => subset(value, actual.get(name)),
         })
+}
+
+fn includes_child_roles(expected: &Value, view: &Value) -> bool {
+    let Some(expected_roles) = expected.as_array() else {
+        return false;
+    };
+    let Some(nodes) = view.get("nodes").and_then(Value::as_array) else {
+        return false;
+    };
+    expected_roles.iter().all(|expected_role| {
+        let expected_syntax = expected_role.get("syntax_kind");
+        let expected_role_name = expected_role.get("role");
+        nodes.iter().any(|node| {
+            node.get("syntax_kind") == expected_syntax
+                && node
+                    .get("child_roles")
+                    .and_then(Value::as_array)
+                    .is_some_and(|roles| {
+                        roles
+                            .iter()
+                            .any(|role| role.get("role") == expected_role_name)
+                    })
+        })
+    })
 }
 
 fn includes_node_kinds(expected: &Value, view: &Value) -> bool {
@@ -45,6 +71,20 @@ fn includes_node_kinds(expected: &Value, view: &Value) -> bool {
         nodes
             .iter()
             .any(|node| node.get("kind") == Some(expected_kind))
+    })
+}
+
+fn includes_syntax_kinds(expected: &Value, view: &Value) -> bool {
+    let Some(expected_kinds) = expected.as_array() else {
+        return false;
+    };
+    let Some(nodes) = view.get("nodes").and_then(Value::as_array) else {
+        return false;
+    };
+    expected_kinds.iter().all(|expected_kind| {
+        nodes
+            .iter()
+            .any(|node| node.get("syntax_kind") == Some(expected_kind))
     })
 }
 
@@ -108,6 +148,27 @@ fn references_same_revision(view: &Value) -> bool {
         .iter()
         .filter_map(|node| node.get("node_id").and_then(Value::as_str))
         .collect();
+    let units_resolve = view
+        .get("units")
+        .and_then(Value::as_array)
+        .is_some_and(|units| {
+            units.iter().all(|unit| {
+                unit.get("node_id")
+                    .and_then(Value::as_str)
+                    .is_some_and(|identifier| identifiers.contains(identifier))
+            })
+        });
+    let members_resolve = view
+        .get("members")
+        .and_then(Value::as_array)
+        .is_some_and(|members| {
+            members.iter().all(|member| {
+                member
+                    .get("node_id")
+                    .and_then(Value::as_str)
+                    .is_some_and(|identifier| identifiers.contains(identifier))
+            })
+        });
     nodes.iter().all(|node| {
         let children_resolve = node
             .get("child_node_ids")
@@ -119,13 +180,23 @@ fn references_same_revision(view: &Value) -> bool {
                         .is_some_and(|identifier| identifiers.contains(identifier))
                 })
             });
+        let roles_resolve = node
+            .get("child_roles")
+            .and_then(Value::as_array)
+            .is_some_and(|roles| {
+                roles.iter().all(|role| {
+                    role.get("node_id")
+                        .and_then(Value::as_str)
+                        .is_some_and(|identifier| identifiers.contains(identifier))
+                })
+            });
         let parent_resolves = node.get("parent_node_id").is_none_or(|parent| {
             parent
                 .as_str()
                 .is_some_and(|identifier| identifiers.contains(identifier))
         });
-        children_resolve && parent_resolves
-    })
+        children_resolve && roles_resolve && parent_resolves
+    }) && units_resolve && members_resolve
 }
 
 fn intermediate_representation(expected: &Value, actual: &Value) -> bool {

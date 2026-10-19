@@ -12,8 +12,11 @@ motor y cómo se construye su experiencia interactiva**.
 **Estado:** Arquitectura hexagonal implementada; superficies de biblioteca, documento (con cuatro pestañas sincronizadas
 por `NodeId`), introducción con laboratorio en vivo, base de conocimiento y ajustes operativas; tres notaciones de
 diagrama (ordinograma, estructograma y diagrama de clases) trazadas determinísticamente. La suite Flutter pasa y el
-análisis estático estricto no informa incidencias. El puente Rust–Dart compila y sus pruebas FFI,
-generación y límites pasan. Los adaptadores de análisis y ejecución esperan capacidades públicas de la API Rust.
+análisis estático estricto no informa incidencias. El puente Rust–Dart compila y sus pruebas FFI, generación y límites
+pasan. `buildDartEngineServices` agrupa los adaptadores Dart que usa la composición local y `buildRustEngineServices`
+agrupa sus pares Rust de análisis, ejecución, completado, vocabulario, estructura de ejercicios y diagramas sobre
+`API.PROGRAM.VIEW`. La composición Rust aún no incluye exportación ni referencia de sintaxis; B5 permanece abierto
+hasta que esos consumidores y la equivalencia observable cubran toda la base de conocimiento.
 
 ---
 
@@ -684,9 +687,11 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 - **Problema:** El uso de localizadores globales o contenedores dinámicos permite solicitar dependencias desde cualquier
   punto de la interfaz y oculta el acoplamiento.
 - **Elección:** `AppDependencies` declara todas las dependencias en campos `final`. En producción,
-  `buildLocalDependencies` instancia los adaptadores concretos. No se permite ningún condicional (`if`, `switch`,
-  ternario) en `composition/`. Los tests inyectan fakes directamente en el constructor de `AppDependencies`. Los ajustes
-  dinámicos (perfil de sintaxis, idioma de interfaz) se pasan como parámetros en los métodos de los puertos.
+  `buildLocalDependencies` usa el conjunto estático `DartEngineServices`. `RustEngineServices` agrupa la familia Rust
+  disponible sin selección dinámica, pero aún no puede construir `AppDependencies` porque le faltan exportación y
+  referencia de sintaxis. No se permite ningún condicional (`if`, `switch`, ternario) en `composition/`. Los tests
+  inyectan fakes directamente en el constructor de `AppDependencies`. Los ajustes dinámicos (perfil de sintaxis, idioma
+  de interfaz) se pasan como parámetros en los métodos de los puertos.
 - **Alternativas descartadas y por qué:**
     - *`get_it`:* Descartado por permitir acceso global desde métodos `build`.
     - *`injectable` / `build_runner`:* Descartado por introducir generación de código para una raíz que se resuelve
@@ -2079,8 +2084,11 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `blockPosition` y `nodeId`, que el adaptador reproduce con las mismas reglas que el observador del núcleo Dart
   (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El estado se consulta por
   evento y solo de los marcos activos; arreglos y objetos se describen por consulta paginada (`[n]`, `Clase#id`) sin
-  materializar el montón. `buildRustEngineServices` en composición ensambla análisis y ejecución sin respaldo del
-  núcleo Dart; el ensamblado completo de `AppDependencies` llega con el resto de consumidores.
+  materializar el montón. `RustCompletionSource`, las fuentes de plantillas y vocabulario y los lectores de
+  construcciones y aserciones estructurales usan las operaciones públicas del servicio. Los tres adaptadores de
+  diagramas construyen sus modelos desde `program_view`, que aporta roles de hijos, unidades, miembros, tipos,
+  dimensiones e identidades compatibles con los eventos. `buildRustEngineServices` ensambla esos puertos sin respaldo
+  del núcleo Dart; los emisores y la referencia de sintaxis todavía no forman parte de ese conjunto.
 - **Verificación del puente:** `bash tool/bridge.sh clean-checkout` crea un árbol de trabajo limpio, instala
   dependencias, regenera los enlaces y exige que no difieran del estado que se verifica. Requiere
   `flutter_rust_bridge_codegen 2.13.0` y `cargo-expand 1.0.127` instalados. El archivo Dart generado se versiona tal

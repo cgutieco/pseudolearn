@@ -16,9 +16,12 @@ Map<String, Object?> node(
   int line, {
   List<String> children = const [],
   String? parent,
+  String? syntaxKind,
 }) => {
   'node_id': id,
   'kind': kind,
+  'syntax_kind':
+      syntaxKind ?? (kind == 'declaration' ? 'algorithm_unit' : 'output'),
   'span': {
     'start': {'line': line, 'column': 1},
     'end': {'line': line, 'column': 5},
@@ -62,12 +65,26 @@ FakeRustTransport transportWith({
     'analysis': (_) => {'tree': true, 'diagnostics': diagnostics},
     'program_view': (_) => {
       'revision_id': 'rev1',
+      'units': [
+        {
+          'kind': 'algorithm',
+          'name': 'P',
+          'order': 0,
+          'node_id': 'n0',
+          'span': {
+            'start': {'line': 1, 'column': 1},
+            'end': {'line': 3, 'column': 14},
+          },
+        },
+      ],
       'nodes':
           nodes ??
           [
             node('n0', 'declaration', 1, children: ['n1']),
             node('n1', 'statement', 2, parent: 'n0'),
           ],
+      'members': <Object?>[],
+      'inheritance': <Object?>[],
     },
     'start': (_) => {'resource': 3},
     'advance': (_) =>
@@ -127,8 +144,15 @@ void main() {
         transportWith(
           nodes: [
             node('n0', 'declaration', 1, children: ['n1']),
-            node('n1', 'statement', 2, children: ['n2'], parent: 'n0'),
-            node('n2', 'statement', 3, parent: 'n1'),
+            node(
+              'n1',
+              'statement',
+              2,
+              children: ['n2'],
+              parent: 'n0',
+              syntaxKind: 'statement',
+            ),
+            node('n2', 'statement', 3, parent: 'n1', syntaxKind: 'conditional'),
           ],
           batches: [
             batch(
@@ -291,8 +315,8 @@ void main() {
                       'unidad': 'P',
                       'variables': {
                         'n': {'valor': '4', 'tipo': 'entero'},
-                    's': {'valor': 'hi', 'tipo': 'texto'},
-                    'c': {'valor': 'x', 'tipo': 'caracter'},
+                        's': {'valor': 'hi', 'tipo': 'texto'},
+                        'c': {'valor': 'x', 'tipo': 'caracter'},
                         'v': {'ref': 1},
                         'o': {'ref': 2},
                         'x': {'sin_valor': true},
@@ -307,7 +331,10 @@ void main() {
                       detail: 'frame',
                     ),
               'query_page': (arguments) => arguments['target'] == 1
-                  ? {'total': 6, 'dimensions': [2, 3]}
+                  ? {
+                      'total': 6,
+                      'dimensions': [2, 3],
+                    }
                   : throw const RustBridgeFailure(
                       family: 'usage',
                       detail: 'array',
@@ -323,8 +350,8 @@ void main() {
           for (final row in execution.step().variables) row.name: row,
         };
         expect(rows['n']?.formattedValue, '4');
-      expect(rows['s']?.formattedValue, '"hi"');
-      expect(rows['c']?.formattedValue, "'x'");
+        expect(rows['s']?.formattedValue, '"hi"');
+        expect(rows['c']?.formattedValue, "'x'");
         expect(rows['v']?.formattedValue, '[2x3]');
         expect(rows['v']?.identityBadge, 1);
         expect(rows['o']?.formattedValue, 'Vehiculo#2');

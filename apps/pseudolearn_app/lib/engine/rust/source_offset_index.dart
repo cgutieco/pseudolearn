@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../domain/model/analysis/source_range.dart';
 
 final class SourceOffsetIndex {
@@ -25,6 +27,26 @@ final class SourceOffsetIndex {
     return offset.clamp(0, _source.length);
   }
 
+  int? utf8OffsetAtUtf16(int offset) {
+    if (offset < 0 || offset > _source.length) return null;
+    if (offset > 0 && offset < _source.length) {
+      final previous = _source.codeUnitAt(offset - 1);
+      final current = _source.codeUnitAt(offset);
+      if (_isHighSurrogate(previous) && _isLowSurrogate(current)) return null;
+    }
+    return utf8.encode(_source.substring(0, offset)).length;
+  }
+
+  int? utf16OffsetAtUtf8(int offset) {
+    final bytes = utf8.encode(_source);
+    if (offset < 0 || offset > bytes.length) return null;
+    try {
+      return utf8.decode(bytes.sublist(0, offset)).length;
+    } on FormatException {
+      return null;
+    }
+  }
+
   SourceRange rangeOf({
     required int startLine,
     required int startColumn,
@@ -43,4 +65,10 @@ final class SourceOffsetIndex {
 
   String textBetween(SourceRange range) =>
       _source.substring(range.startOffset, range.endOffset);
+
+  bool _isHighSurrogate(int codeUnit) =>
+      codeUnit >= 0xD800 && codeUnit <= 0xDBFF;
+
+  bool _isLowSurrogate(int codeUnit) =>
+      codeUnit >= 0xDC00 && codeUnit <= 0xDFFF;
 }

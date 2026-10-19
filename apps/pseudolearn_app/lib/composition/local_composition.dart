@@ -21,30 +21,15 @@ import '../data/progress/sqlite_progress_history.dart';
 import '../domain/ports/account_deletion_gateway.dart';
 import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/clock.dart';
-import '../domain/ports/exercise_checker.dart';
 import '../domain/ports/identifier_generator.dart';
 import '../domain/ports/incoming_link_source.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
-import '../domain/ports/program_analyzer.dart';
 import '../domain/ports/progress_history.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import '../engine/analysis/analysis_cache.dart';
-import '../engine/analysis/core_program_analyzer.dart';
-import '../engine/analysis/core_program_construct_reader.dart';
-import '../engine/classdiagram/core_class_diagram_builder.dart';
-import '../engine/completion/profile_completion_source.dart';
-import '../engine/diagram/flowchart_layout.dart';
-import '../engine/editing/lexicon_source_editor.dart';
-import '../engine/editing/profile_key_source.dart';
-import '../engine/execution/core_program_execution.dart';
-import '../engine/exercise/behaviour_checker.dart';
-import '../engine/exercise/exercise_check_runner.dart';
-import '../engine/exercise/structural_assertion_checker.dart';
-import '../engine/export/core_program_exporter.dart';
-import '../engine/knowledge/syntax_reference_generator.dart';
-import '../engine/structogram/structogram_layout.dart';
 import 'app_dependencies.dart';
+import 'dart_engine_services.dart';
 import 'sync_composition.dart';
 
 final class _LocalStores {
@@ -59,18 +44,6 @@ final class _LocalStores {
   });
 }
 
-final class _EngineServices {
-  final ProgramAnalyzer analyzer;
-  final AnalysisCache analyses;
-  final SyntaxReferenceSource syntaxReference;
-
-  const _EngineServices({
-    required this.analyzer,
-    required this.analyses,
-    required this.syntaxReference,
-  });
-}
-
 final class _AccountServices {
   final AuthGateway authGateway;
   final AccountDeletionGateway deletionGateway;
@@ -80,6 +53,24 @@ final class _AccountServices {
     required this.authGateway,
     required this.deletionGateway,
     required this.incomingLinks,
+  });
+}
+
+final class _DependencyAssembly {
+  final Clock clock;
+  final IdentifierGenerator identifiers;
+  final _LocalStores stores;
+  final SyncServices sync;
+  final _AccountServices account;
+  final DartEngineServices engine;
+
+  const _DependencyAssembly({
+    required this.clock,
+    required this.identifiers,
+    required this.stores,
+    required this.sync,
+    required this.account,
+    required this.engine,
   });
 }
 
@@ -110,75 +101,69 @@ AppDependencies buildLocalDependencies({
 }) {
   final identifierGenerator = RandomIdentifierGenerator();
   final analyses = AnalysisCache();
+  final engine = buildDartEngineServices(analysisCache: analyses);
   final supabaseClient = buildSupabaseClient();
   final account = _buildAccountServices(supabaseClient);
   const clock = SystemClock();
   return _assembleDependencies(
-    clock: clock,
-    identifiers: identifierGenerator,
-    stores: _LocalStores(
-      preferences: FilePreferencesStore(directory: documentsDirectory),
-      progress: ReviewPromptingProgressStore(
-        inner: progressStore,
-        prompt: const PlatformStoreReviewPrompt(),
-      ),
-      history: SqliteProgressHistory(index.database),
-    ),
-    sync: buildSyncServices(
-      index: index,
-      documentsDirectory: documentsDirectory,
-      client: supabaseClient,
-      authGateway: account.authGateway,
-      identifiers: identifierGenerator,
+    _DependencyAssembly(
       clock: clock,
-    ),
-    account: account,
-    engine: _EngineServices(
-      analyzer: CoreProgramAnalyzer(analyses: analyses),
-      analyses: analyses,
-      syntaxReference: const SyntaxReferenceGenerator(),
+      identifiers: identifierGenerator,
+      stores: _LocalStores(
+        preferences: FilePreferencesStore(directory: documentsDirectory),
+        progress: ReviewPromptingProgressStore(
+          inner: progressStore,
+          prompt: const PlatformStoreReviewPrompt(),
+        ),
+        history: SqliteProgressHistory(index.database),
+      ),
+      sync: buildSyncServices(
+        index: index,
+        documentsDirectory: documentsDirectory,
+        client: supabaseClient,
+        authGateway: account.authGateway,
+        identifiers: identifierGenerator,
+        clock: clock,
+      ),
+      account: account,
+      engine: engine,
     ),
   );
 }
 
-AppDependencies _assembleDependencies({
-  required Clock clock,
-  required IdentifierGenerator identifiers,
-  required _LocalStores stores,
-  required SyncServices sync,
-  required _AccountServices account,
-  required _EngineServices engine,
-}) {
+AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
   return AppDependencies(
-    clock: clock,
-    identifiers: identifiers,
-    preferences: stores.preferences,
-    documentRepository: sync.repository,
-    authGateway: account.authGateway,
-    incomingLinkSource: account.incomingLinks,
-    accountDeletionGateway: account.deletionGateway,
-    localAccountDataPurger: sync.accountDataPurger,
-    remoteProgressStore: sync.remoteProgressStore,
-    syncQueue: sync.queue,
-    connectivityMonitor: sync.connectivity,
-    syncCoordinator: sync.coordinator,
-    programAnalyzer: engine.analyzer,
-    createProgramExecution: () => CoreProgramExecution(analyses: engine.analyses),
-    flowchartBuilder: FlowchartLayout(analyses: engine.analyses),
-    structogramBuilder: StructogramLayout(analyses: engine.analyses),
-    classDiagramBuilder: CoreClassDiagramBuilder(analyses: engine.analyses),
-    completionSource: const ProfileCompletionSource(),
-    sourceEditor: const LexiconSourceEditor(),
-    editorKeySource: const ProfileKeySource(),
+    clock: assembly.clock,
+    identifiers: assembly.identifiers,
+    preferences: assembly.stores.preferences,
+    documentRepository: assembly.sync.repository,
+    authGateway: assembly.account.authGateway,
+    incomingLinkSource: assembly.account.incomingLinks,
+    accountDeletionGateway: assembly.account.deletionGateway,
+    localAccountDataPurger: assembly.sync.accountDataPurger,
+    remoteProgressStore: assembly.sync.remoteProgressStore,
+    syncQueue: assembly.sync.queue,
+    connectivityMonitor: assembly.sync.connectivity,
+    syncCoordinator: assembly.sync.coordinator,
+    programAnalyzer: assembly.engine.analyzer,
+    createProgramExecution: assembly.engine.createProgramExecution,
+    flowchartBuilder: assembly.engine.flowchartBuilder,
+    structogramBuilder: assembly.engine.structogramBuilder,
+    classDiagramBuilder: assembly.engine.classDiagramBuilder,
+    completionSource: assembly.engine.completionSource,
+    sourceEditor: assembly.engine.sourceEditor,
+    editorKeySource: assembly.engine.editorKeySource,
     textEntryModality: const PlatformTextEntryModality(),
     appVersionSource: const PlatformAppVersionSource(),
-    knowledgeRepository: _buildKnowledgeRepository(engine.syntaxReference),
-    syntaxReferenceSource: engine.syntaxReference,
-    programExporter: CoreProgramExporter(analyses: engine.analyses),
-    localProgressStore: stores.progress,
-    progressHistory: stores.history,
-    programConstructReader: CoreProgramConstructReader(analyses: engine.analyses),
-    exerciseChecker: _buildExerciseChecker(engine.analyses, engine.analyzer),
+    knowledgeRepository: _buildKnowledgeRepository(
+      assembly.engine.syntaxReferenceSource,
+    ),
+    syntaxReferenceSource: assembly.engine.syntaxReferenceSource,
+    programExporter: assembly.engine.programExporter,
+    localProgressStore: assembly.stores.progress,
+    progressHistory: assembly.stores.history,
+    programConstructReader: assembly.engine.programConstructReader,
+    exerciseChecker: assembly.engine.exerciseChecker,
   );
 }
 
@@ -188,18 +173,5 @@ BundledKnowledgeRepository _buildKnowledgeRepository(
   return BundledKnowledgeRepository(
     markers: MarkerResolver(reference: syntaxRef),
     assetLoader: rootBundle.loadString,
-  );
-}
-
-ExerciseChecker _buildExerciseChecker(
-  AnalysisCache analyses,
-  ProgramAnalyzer analyzer,
-) {
-  return ExerciseCheckRunner(
-    behaviour: BehaviourChecker(
-      execution: CoreProgramExecution(analyses: analyses),
-      analyzer: analyzer,
-    ),
-    structure: StructuralAssertionChecker(analyses: analyses),
   );
 }

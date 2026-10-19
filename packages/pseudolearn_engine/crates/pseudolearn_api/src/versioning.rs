@@ -13,6 +13,7 @@ pub fn supported_strictness() -> Vec<&'static str> {
 pub fn supported_capabilities() -> Vec<&'static str> {
     vec![
         "analyze",
+        "interface_language",
         "ir",
         "execute",
         "observe",
@@ -21,5 +22,7 @@ pub fn supported_capabilities() -> Vec<&'static str> {
         "api",
         "program_view",
         "state_pages",
+        "service_completion",
+        "generated_vocabulary",
     ]
 }

@@ -33,6 +33,9 @@ final class LexiconSourceEditor implements SourceEditor {
     required SyntaxProfileId profileId,
     required int revision,
   }) {
+    if (key.kind == EditorKeyKind.completion) {
+      return _applyCompletion(sourceCode, key, revision);
+    }
     final range = caret.clampedTo(sourceCode.length);
     final lineStart = _lineStartAt(sourceCode, range.lower);
     final unit = sourceCode.contains(_tabIndent) ? _tabIndent : _spaceIndent;
@@ -53,6 +56,28 @@ final class LexiconSourceEditor implements SourceEditor {
       unit: unit,
       key: key,
       profileId: profileId,
+      revision: revision,
+    );
+  }
+
+  SourceEdit _applyCompletion(String sourceCode, EditorKey key, int revision) {
+    final replacementRange = key.replacementRange;
+    if (replacementRange == null) {
+      return SourceEdit(
+        sourceCode: sourceCode,
+        caret: CaretRange.collapsed(0),
+        revision: revision,
+      );
+    }
+    final range = replacementRange.clampedTo(sourceCode.length);
+    final updated = sourceCode.replaceRange(
+      range.lower,
+      range.upper,
+      key.insertion,
+    );
+    return SourceEdit(
+      sourceCode: updated,
+      caret: CaretRange.collapsed(range.lower + key.insertion.length),
       revision: revision,
     );
   }
@@ -88,8 +113,11 @@ final class LexiconSourceEditor implements SourceEditor {
         : _shiftedOffset(key: key, indent: indent);
 
     return SourceEdit(
-      sourceCode:
-          sourceCode.replaceRange(range.lower, range.upper, '$opening$body'),
+      sourceCode: sourceCode.replaceRange(
+        range.lower,
+        range.upper,
+        '$opening$body',
+      ),
       caret: CaretRange.collapsed(range.lower + opening.length + shift),
       revision: revision,
     );
@@ -106,7 +134,10 @@ final class LexiconSourceEditor implements SourceEditor {
     final removed = _removableIndent(indent, unit);
     if (removed.isEmpty) {
       return SourceEdit(
-          sourceCode: sourceCode, caret: range, revision: revision);
+        sourceCode: sourceCode,
+        caret: range,
+        revision: revision,
+      );
     }
     final cut = lineStart + removed.length;
     final caret = range.lower < cut ? lineStart : range.lower - removed.length;
@@ -134,8 +165,10 @@ final class LexiconSourceEditor implements SourceEditor {
     final indent = _leadingWhitespace(sourceCode, lineStart);
     if (key.kind != EditorKeyKind.template) return indent;
     final profile = ProfileCatalog.toLanguageProfile(profileId);
-    final line =
-        sourceCode.substring(lineStart, _lineEndAt(sourceCode, lineStart));
+    final line = sourceCode.substring(
+      lineStart,
+      _lineEndAt(sourceCode, lineStart),
+    );
     return _opensBlock(line, profile) ? '$indent$unit' : indent;
   }
 
@@ -152,8 +185,10 @@ final class LexiconSourceEditor implements SourceEditor {
   }
 
   int _shiftedOffset({required EditorKey key, required String indent}) {
-    final raw = (key.caretOffset ?? key.insertion.length)
-        .clamp(0, key.insertion.length);
+    final raw = (key.caretOffset ?? key.insertion.length).clamp(
+      0,
+      key.insertion.length,
+    );
     final head = key.insertion.substring(0, raw);
     return raw + '\n'.allMatches(head).length * indent.length;
   }

@@ -147,6 +147,8 @@ Alternativas descartadas: Arenas con índices tipados evitan referencias enlazad
 Problema: define la representación intermedia verificada. Elección: CFG SSA con parámetros de bloque; clases de valor; celdas; `observe` con masa de sentencia; pureza derivada de efectos; verificador; formato textual con ida y vuelta; catálogo generado de la exportación de `IR.INSTRUCTIONS`.
 Alternativas descartadas: SSA con parámetros de bloque permite compartir semántica con Cranelift. Las banderas pegajosas de IEEE 754 inspiran acumulación de trampas; se rechaza perder la primera trampa o hacer visible un efecto posterior.
 
+El verificador aplica la asignabilidad de clases a bloques, celdas y elementos de arreglos. Una instancia de subclase puede ocupar un destino declarado con la clase base; una clase no relacionada sigue siendo inválida.
+
 ### lowering
 
 Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna.
@@ -230,6 +232,9 @@ Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elecc
 
 La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
+`editor_vocabulary` devuelve los lexemas de `pseudolearn_lexicon` para el perfil elegido y las grafías de
+los operadores de edición; la app Rust consume esa respuesta en sus teclas y su editor, sin copiar el
+vocabulario generado.
 Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
 
 ### wasm
@@ -250,8 +255,10 @@ Problema: adapta la api al protocolo de conformidad por procesos. Elección: Bin
 
 La vista pública del programa es una proyección inmutable asociada a una revisión del documento. Los
 consumidores de diagramas, emisores y comprobaciones estructurales usan esa misma proyección; sus
-identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. La asociación de un
-evento de ejecución con un nodo y un tramo pertenece a la misma revisión. La API implementa
+identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. Las relaciones de
+hijo declaran su papel sintáctico; los campos exponen tipo y dimensiones y los parámetros su cantidad
+de dimensiones, para que la app no vuelva a analizar el texto. La asociación de un evento de ejecución
+con un nodo y un tramo pertenece a la misma revisión. La API implementa
 `program_view` y `state_pages`; el adaptador de conformidad devuelve la vista cuando el análisis la solicita
 y resuelve la página de estado de una ejecución observada. La referencia `source` de los eventos viaja en JSON;
 el formato binario columnar aún no la transporta.

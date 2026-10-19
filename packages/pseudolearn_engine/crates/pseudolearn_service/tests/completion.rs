@@ -9,7 +9,8 @@ fn complete_marked(marked: &str, profile: Profile) -> Vec<CompletionEntry> {
     let (clean, position) = split_cursor(marked);
     DocumentSession::new(clean, profile, true)
         .queries()
-        .complete(position)
+        .complete_with_edit(position)
+        .entries
 }
 
 fn labels(entries: &[CompletionEntry]) -> Vec<&str> {

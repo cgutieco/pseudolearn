@@ -57,7 +57,8 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
       ),
     ),
     BlocProvider<TraceCubit>(
-        create: (_) => TraceCubit(executionStates: execution.stream)),
+      create: (_) => TraceCubit(executionStates: execution.stream),
+    ),
     BlocProvider<ExportCubit>(
       create: (_) => ExportCubit(
         exporter: dependencies.programExporter,
@@ -74,6 +75,7 @@ BlocProvider<EditorCubit> createEditorProvider(AppDependencies dependencies) {
       repository: dependencies.documentRepository,
       analyzer: dependencies.programAnalyzer,
       completionSource: dependencies.completionSource,
+      contextualCompletionSource: dependencies.contextualCompletionSource,
       keySource: dependencies.editorKeySource,
       sourceEditor: dependencies.sourceEditor,
       textEntry: dependencies.textEntryModality,
@@ -95,7 +97,8 @@ BlocProvider<SyncCubit> createSyncProvider(AppDependencies dependencies) {
 }
 
 BlocProvider<DashboardCubit> createDashboardProvider(
-    AppDependencies dependencies) {
+  AppDependencies dependencies,
+) {
   return BlocProvider<DashboardCubit>(
     create: (_) => DashboardCubit(
       loader: DashboardLoader(
@@ -138,9 +141,8 @@ List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
       ),
     ),
     BlocProvider<SpecificationCubit>(
-      create: (_) => SpecificationCubit(
-        repository: dependencies.knowledgeRepository,
-      ),
+      create: (_) =>
+          SpecificationCubit(repository: dependencies.knowledgeRepository),
     ),
     ...createExerciseProviders(dependencies),
   ];

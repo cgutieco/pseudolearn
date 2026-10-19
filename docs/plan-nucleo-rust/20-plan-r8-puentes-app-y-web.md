@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 iterado con la puerta abierta (ver su registro); B6–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> La autorización vigente cubre B3 y B4 en una iteración; no autoriza la publicación de aplicaciones.
+> Las autorizaciones cubrieron B3, B4 y una iteración de B5; no autorizan la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -355,16 +355,39 @@ caso C4. La puerta de B4 queda parcialmente cumplida: adaptador y `ExecutionCubi
 
 ### B5 · Servicio de lenguaje y consumidores restantes
 
-- [ ] Conectar completado al servicio Rust, con revisión de documento y conversión UTF-16/UTF-8.
-- [ ] Reutilizar vocabulario generado; eliminar tablas duplicadas en el camino Rust.
-- [ ] Adaptar diagramas, emisores y aserciones estructurales a la vista pública aprobada.
-- [ ] Ejecutar comprobaciones de ejercicios mediante Rust, sin usar el núcleo Dart como respaldo.
-- [ ] Crear conjuntos de composición Dart/Rust estáticos; mantener el dominio libre de ambos transportes.
+- [x] Conectar completado al servicio Rust, con revisión de documento y conversión UTF-16/UTF-8.
+- [x] Reutilizar vocabulario generado; eliminar tablas duplicadas en el camino Rust.
+- [x] Adaptar diagramas y aserciones estructurales a la vista pública aprobada.
+- [ ] Adaptar emisores Python y Rust a la vista pública aprobada.
+- [x] Ejecutar comprobaciones de ejercicios mediante Rust, sin usar el núcleo Dart como respaldo.
+- [x] Crear el conjunto de composición Dart estático; mantener el dominio libre de ambos transportes.
+- [ ] Completar el conjunto Rust e integrarlo en `AppDependencies` sin respaldo Dart.
 - [ ] Verificar equivalencia observable de los puertos con sus diferencias conocidas contrastadas con el corpus.
 
 **Puerta:** todos los ejercicios ejecutables de la base de conocimiento clasificados y ejecutados;
 plantillas válidas en ambos perfiles; diagnósticos, diagramas y exportación respetan D-P07.
 No basta una muestra de ejercicios elegida por conveniencia ni un `all_passed` sin resultados individuales.
+
+#### Registro de una iteración de B5 · 2026-10-19
+
+Se conectaron el completado contextual y las plantillas al servicio Rust, con revisión del documento y conversión de
+posiciones entre UTF-16 y UTF-8. El editor Rust consume el vocabulario generado para ambos perfiles. Los diagramas y
+las aserciones estructurales leen `API.PROGRAM.VIEW`; la suite de referencia de ejercicios ejecuta los 190 casos
+mediante el puente Rust y no usa el motor Dart como respaldo. La composición Dart quedó agrupada en
+`DartEngineServices`. `RustEngineServices` agrupa los adaptadores disponibles, aunque todavía no incluye un emisor ni
+una fuente de referencia de sintaxis, por lo que no construye una composición `AppDependencies` completa.
+
+Pasaron `cargo xtask verify`, `flutter test --no-pub` (2193 pruebas), `flutter analyze --fatal-infos --fatal-warnings`,
+`dart check_content.dart`, `dart check_limits.dart` y `git diff --check`. La prueba FFI recorrió 190/190 ejercicios
+ejecutables en ambos perfiles.
+
+La puerta sigue abierta: la exportación Python/Rust y la equivalencia observable de todos los puertos están pendientes.
+Además, D-R8-01 asigna los emisores a `API.PROGRAM.VIEW`, pero la vista disponible no expone referencias de resolución
+suficientes para traducir sin ambigüedad identificadores y funciones integradas. Ampliarla implica un conflicto con
+D-R8-06: esta iteración amplió `API.VERSIONING` y `API.PROGRAM.VIEW`, incluyó bloques `cambio` y cambió sus versiones,
+mientras D-R8-06 había resuelto congelarlas y registrar la clasificación fuera del corpus. Se conserva el cambio de
+trabajo para revisión; hace falta decidir si se mantiene el contrato congelado y se busca otra implementación conforme,
+o si se autoriza reclasificar y versionar las capacidades y referencias semánticas necesarias para completar B5.
 
 ### B6 · Integración y builds de las plataformas nativas
 

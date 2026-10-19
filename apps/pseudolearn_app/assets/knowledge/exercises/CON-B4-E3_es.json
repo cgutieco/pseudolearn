@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con un bucle Para."}
   ],
-  "referenceSolution": "Proceso SumaDeRango\n    Definir inicio Como Entero;\n    Definir fin Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer inicio;\n    Leer fin;\n    total <- 0;\n    Para i <- inicio Hasta fin Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaDeRango    Definir inicio Como Entero;    Definir fin Como Entero;    Definir i Como Entero;    Definir total Como Entero;    Leer inicio;    Leer fin;    total <- 0;    Para i <- inicio Hasta fin Con Paso 1 Hacer\n        total <- total + i;    FinPara    Escribir total;FinProceso"
 }

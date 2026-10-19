@@ -79,12 +79,15 @@ fn lower_switch_case(
     context: &mut StatementContext<'_, '_>,
 ) -> BlockId {
     let (check_block, exit_block) = blocks;
-    context.builder.set_current_block(check_block);
     let case_body_block = context.builder.create_block();
     let following_check_block = context.builder.create_block();
 
-    let condition = evaluate_case_labels(&case.labels, (selector.0, selector.1), context);
-    emit_case_branch(condition, (case_body_block, following_check_block), context);
+    lower_case_labels(
+        &case.labels,
+        (selector.0, selector.1),
+        (check_block, case_body_block, following_check_block),
+        context,
+    );
 
     context.builder.set_current_block(case_body_block);
     let ordinal = context.builder.next_value();
@@ -103,29 +106,6 @@ fn lower_switch_case(
     execute_case_body(&case.body, (case_body_block, exit_block), context);
 
     following_check_block
-}
-
-fn emit_case_branch(
-    condition: ValueId,
-    targets: (BlockId, BlockId),
-    context: &mut StatementContext<'_, '_>,
-) {
-    let (case_body_block, following_check_block) = targets;
-    context.builder.emit_void(
-        Operation::Branch,
-        vec![
-            Operand::Value(condition),
-            Operand::BlockTarget {
-                target_block: case_body_block,
-                arguments: vec![],
-            },
-            Operand::BlockTarget {
-                target_block: following_check_block,
-                arguments: vec![],
-            },
-        ],
-        None,
-    );
 }
 
 fn execute_case_body(
@@ -156,41 +136,92 @@ fn execute_case_body(
     }
 }
 
-fn evaluate_case_labels(
+fn lower_case_labels(
     labels: &[ExpressionId],
+    selector: (ValueId, Option<IrSpan>),
+    targets: (BlockId, BlockId, BlockId),
+    context: &mut StatementContext<'_, '_>,
+) {
+    let (initial_check, case_body, following_check) = targets;
+    if labels.is_empty() {
+        emit_no_case_match(initial_check, following_check, context);
+        return;
+    }
+    let mut check_block = initial_check;
+    for (index, label) in labels.iter().copied().enumerate() {
+        context.builder.set_current_block(check_block);
+        let next_check = if index.saturating_add(1) < labels.len() {
+            context.builder.create_block()
+        } else {
+            following_check
+        };
+        let condition = compare_case_label(label, selector, context);
+        emit_case_branch(condition, (case_body, next_check), context);
+        check_block = next_check;
+    }
+}
+
+fn compare_case_label(
+    label: ExpressionId,
     selector: (ValueId, Option<IrSpan>),
     context: &mut StatementContext<'_, '_>,
 ) -> ValueId {
     let (selector_value, span) = selector;
-    let mut matched_condition = None;
-    for &label in labels {
-        let label_value = lower_expression(
-            label,
-            context.expression_context,
-            context.environment,
-            context.builder,
-        );
-        let match_value = context.builder.next_value();
-        context.builder.emit_with_target(
-            Operation::IntCmp,
-            vec![
-                Operand::Predicate(PredicateKind::Equal),
-                Operand::Value(selector_value),
-                Operand::Value(label_value),
-            ],
-            (Some(match_value), span),
-        );
-        matched_condition = Some(match_value);
-    }
-    matched_condition.unwrap_or_else(|| {
-        let fallback = context.builder.next_value();
-        context.builder.emit_with_target(
-            Operation::ConstBool,
-            vec![Operand::LiteralBool(false)],
-            (Some(fallback), None),
-        );
-        fallback
-    })
+    let label_value = lower_expression(
+        label,
+        context.expression_context,
+        context.environment,
+        context.builder,
+    );
+    let match_value = context.builder.next_value();
+    context.builder.emit_with_target(
+        Operation::IntCmp,
+        vec![
+            Operand::Predicate(PredicateKind::Equal),
+            Operand::Value(selector_value),
+            Operand::Value(label_value),
+        ],
+        (Some(match_value), span),
+    );
+    match_value
+}
+
+fn emit_no_case_match(
+    check_block: BlockId,
+    following_check: BlockId,
+    context: &mut StatementContext<'_, '_>,
+) {
+    context.builder.set_current_block(check_block);
+    let condition = context.builder.next_value();
+    context.builder.emit_with_target(
+        Operation::ConstBool,
+        vec![Operand::LiteralBool(false)],
+        (Some(condition), None),
+    );
+    emit_case_branch(condition, (following_check, following_check), context);
+}
+
+fn emit_case_branch(
+    condition: ValueId,
+    targets: (BlockId, BlockId),
+    context: &mut StatementContext<'_, '_>,
+) {
+    let (case_body_block, following_check_block) = targets;
+    context.builder.emit_void(
+        Operation::Branch,
+        vec![
+            Operand::Value(condition),
+            Operand::BlockTarget {
+                target_block: case_body_block,
+                arguments: vec![],
+            },
+            Operand::BlockTarget {
+                target_block: following_check_block,
+                arguments: vec![],
+            },
+        ],
+        None,
+    );
 }
 
 fn lower_switch_default(

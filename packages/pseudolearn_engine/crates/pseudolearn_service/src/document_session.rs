@@ -1,4 +1,4 @@
-use crate::completion::{CompletionEntry, CompletionQuery, complete_at_position};
+use crate::completion::{CompletionQuery, CompletionResult, complete_at_position_with_edit};
 use crate::formatter::{FormatOptions, format_source};
 use crate::hover::{HoverOutcome, SignatureHelp, hover_at_position, signature_help_at_position};
 use crate::navigation::{
@@ -127,7 +127,7 @@ pub struct SessionQueries<'session> {
 }
 
 impl SessionQueries<'_> {
-    pub fn complete(&self, position: Position) -> Vec<CompletionEntry> {
+    pub fn complete_with_edit(&self, position: Position) -> CompletionResult {
         let query = CompletionQuery {
             source: &self.session.source,
             tree: &self.session.tree,
@@ -135,7 +135,7 @@ impl SessionQueries<'_> {
             position,
             profile: self.session.profile,
         };
-        complete_at_position(&query)
+        complete_at_position_with_edit(&query)
     }
 
     pub fn definition(&self, position: Position) -> Option<Range> {

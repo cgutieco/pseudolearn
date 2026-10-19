@@ -6,18 +6,19 @@ import '../../domain/model/editor/caret_range.dart';
 import '../../domain/model/editor/editor_key.dart';
 import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
-import 'code_field.dart';
 import 'components/editor_diagnostics_strip.dart';
-import 'components/editor_key_shortcuts.dart';
+import 'components/editor_field.dart';
 import 'editor_key_bar.dart';
 import 'highlight_controller.dart';
 
 typedef EditorKeyPressed = void Function(EditorKey key, CaretRange caret);
+typedef EditorCodeChanged = void Function(String sourceCode, int cursorUtf16);
 
 final class EditorSurface extends StatefulWidget {
   final EditorState editorState;
   final ExecutionState executionState;
-  final ValueChanged<String> onCodeChanged;
+  final EditorCodeChanged onCodeChanged;
+  final ValueChanged<int>? onCursorMoved;
   final ValueChanged<AppDiagnostic> onDiagnosticSelected;
   final EditorKeyPressed onKeyPressed;
   final VoidCallback onRun;
@@ -28,6 +29,7 @@ final class EditorSurface extends StatefulWidget {
     required this.editorState,
     required this.executionState,
     required this.onCodeChanged,
+    this.onCursorMoved,
     required this.onDiagnosticSelected,
     required this.onKeyPressed,
     required this.onRun,
@@ -42,12 +44,14 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   late final HighlightController _controller;
   late final FocusNode _focusNode;
   int _appliedRevision = 0;
+  int _reportedCursor = -1;
 
   @override
   void initState() {
     super.initState();
     _controller = HighlightController(text: widget.editorState.sourceCode);
     _focusNode = FocusNode();
+    _controller.addListener(_reportCursorChange);
 
     _appliedRevision = widget.editorState.pendingEdit?.revision ?? 0;
   }
@@ -56,13 +60,33 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   void didUpdateWidget(EditorSurface oldWidget) {
     super.didUpdateWidget(oldWidget);
     _syncController(oldWidget.editorState.sourceCode);
+    _reportCursorChange();
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_reportCursorChange);
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _reportCursorChange() {
+    final selection = _controller.selection;
+    if (_controller.text != widget.editorState.sourceCode ||
+        !selection.isCollapsed ||
+        selection.baseOffset < 0 ||
+        selection.baseOffset == _reportedCursor) {
+      return;
+    }
+    _reportedCursor = selection.baseOffset;
+    widget.onCursorMoved?.call(_reportedCursor);
+  }
+
+  void _onCodeChanged(String sourceCode) {
+    final cursor = _controller.selection.baseOffset;
+    _reportedCursor = cursor;
+    widget.onCodeChanged(sourceCode, cursor);
   }
 
   void _syncController(String previousSourceCode) {
@@ -117,12 +141,12 @@ final class _EditorSurfaceState extends State<EditorSurface> {
     return Column(
       children: [
         Expanded(
-          child: _EditorField(
+          child: EditorField(
             controller: _controller,
             focusNode: _focusNode,
             editorState: widget.editorState,
             executionState: widget.executionState,
-            onCodeChanged: widget.onCodeChanged,
+            onCodeChanged: _onCodeChanged,
             onKeyPressed: _press,
           ),
         ),
@@ -178,46 +202,12 @@ final class _UnderFieldBars extends StatelessWidget {
         if (offersKeyBar)
           EditorKeyBar(
             keys: editorState.keys,
-            templates: editorState.completions,
+            templates: editorState.contextualCompletions.isNotEmpty
+                ? editorState.contextualCompletions
+                : editorState.completions,
             onKeyPressed: onKeyPressed,
           ),
       ],
-    );
-  }
-}
-
-final class _EditorField extends StatelessWidget {
-  final HighlightController controller;
-  final FocusNode focusNode;
-  final EditorState editorState;
-  final ExecutionState executionState;
-  final ValueChanged<String> onCodeChanged;
-  final ValueChanged<EditorKey> onKeyPressed;
-
-  const _EditorField({
-    required this.controller,
-    required this.focusNode,
-    required this.editorState,
-    required this.executionState,
-    required this.onCodeChanged,
-    required this.onKeyPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return EditorKeyShortcuts(
-      onIndent: () => onKeyPressed(const EditorKey.indent()),
-      onDedent: () => onKeyPressed(const EditorKey.dedent()),
-      onReleaseFocus: focusNode.unfocus,
-      child: CodeField(
-        controller: controller,
-        focusNode: focusNode,
-        highlightSpans: editorState.report.highlightSpans,
-        focus:
-            executionState.isInFlight ? executionState.currentStep.focus : null,
-        isReadOnly: executionState.isInFlight,
-        onChanged: onCodeChanged,
-      ),
     );
   }
 }

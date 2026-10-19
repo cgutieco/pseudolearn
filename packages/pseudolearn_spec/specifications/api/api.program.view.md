@@ -5,7 +5,7 @@
   "titulo": "Vista pública del programa",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "duenos": ["responsable-motor"],
   "sujetos": ["engine", "app"],
   "resumen": "Proyección inmutable y portable para diagramas, emisores y comprobaciones estructurales.",
@@ -17,7 +17,14 @@
     {"id": "LANG.SYNTAX.GRAMMAR", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
     {"id": "LANG.CLASS.INHERITANCE", "version": ">=0.1.0, <1.0.0", "tipo": "usa"}
   ],
-  "titulo_en": "Public program view"
+  "titulo_en": "Public program view",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Diagramas, emisores y comprobaciones pueden distinguir ramas, seguir cada miembro hasta su nodo y conservar tramos de unidad.",
+    "impacto_implementaciones": "Cada relación de hijo declara su papel; los miembros y parámetros exponen tipo y dimensiones cuando corresponda, y cada miembro de clase incluye una identidad que resuelve en la misma vista.",
+    "justificacion": "Los consumidores deben proyectar representaciones fieles desde una vista compartida sin volver a analizar el texto ni depender de la estructura privada del CST.",
+    "revisado_por": "persona-responsable"
+  }
 }
 ---
 
@@ -28,7 +35,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
+  "texto": "Una sesión que negocia program_view devuelve una proyección de solo lectura asociada a una revisión inmutable del documento. La proyección contiene las unidades de nivel superior en orden de fuente, con clase, nombre y tramo; los nodos disponibles de declaraciones, sentencias, expresiones, tipos y símbolos resueltos; las relaciones de composición entre ellos; y las relaciones de herencia, miembros y sobrescritura. Cada relación de miembro identifica el nodo público que la representa. Diagramas, emisores Python y Rust y comprobaciones estructurales consumen esta misma proyección. No expone índices, direcciones ni disposiciones privadas del CST, HIR o bytecode, y no obliga al consumidor a volver a analizar el texto.",
   "verificacion": ["C1", "C2"]
 }
 ```
@@ -44,8 +51,8 @@
   "espera": {
     "arbol": "presente",
     "vista_programa": {
-      "units": [{"kind": "algorithm", "name": "P", "order": 0}],
-      "node_kinds_include": ["declaration", "statement", "expression"],
+      "units": [{"kind": "algorithm", "name": "P", "order": 0, "span": {"start": {"line": 1, "column": 1}}}],
+      "node_kinds_include": ["declaration", "statement", "expression", "symbol", "type"],
       "child_order": "source"
     }
   },
@@ -70,7 +77,11 @@
         {"kind": "algorithm", "name": "P", "order": 2}
       ],
       "inheritance": [{"class": "Hija", "base": "Base"}],
-      "methods": [{"class": "Hija", "name": "valor", "overrides": "Base.valor"}]
+      "methods": [{"class": "Hija", "name": "valor", "overrides": "Base.valor"}],
+      "members": [
+        {"class": "Base", "name": "valor", "kind": "method", "visibility": "public", "arity": 0},
+        {"class": "Hija", "name": "valor", "kind": "method", "visibility": "public", "arity": 0}
+      ]
     }
   },
   "programa": "Clase Base\nMetodo valor() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nClase Hija Hereda De Base\nMetodo valor() Como Entero\nRetornar 2;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
@@ -83,8 +94,8 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y puede incluir parent_node_id; toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
-  "verificacion": ["C3"]
+  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
+  "verificacion": ["C3", "C5"]
 }
 ```
 
@@ -104,6 +115,50 @@
     }
   },
   "programa": "Algoritmo P\nEscribir \"🧩\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "vista_programa": {
+      "syntax_kinds_include": ["conditional", "while_loop", "output"],
+      "child_roles_include": [{"syntax_kind":"conditional","role":"else_body"}]
+    }
+  },
+  "programa": "Algoritmo P\nSi verdadero Entonces\nMientras falso Hacer\nEscribir 1;\nFinMientras\nFinSi\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "vista_programa": {
+      "members": [
+        {"class": "Caja", "name": "saldo", "kind": "field", "type": "Entero", "dimensions": 0},
+        {"class": "Caja", "name": "matriz", "kind": "field", "type": "Entero", "dimensions": 2}
+      ],
+      "nodes_include": [
+        {"syntax_kind": "parameter", "dimensions": 3}
+      ]
+    }
+  },
+  "programa": "Clase Caja\nDefinir saldo Como Entero;\nDimension matriz[2, 3] Como Entero;\nMetodo ajustar(monto[,,] Como Entero)\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

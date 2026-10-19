@@ -149,10 +149,7 @@ void main() {
         profileId: SyntaxProfileId.english,
       );
 
-      expect(
-        edit.sourceCode,
-        'Proceso P\nSi condicion Entonces\n  \nFinSi',
-      );
+      expect(edit.sourceCode, 'Proceso P\nSi condicion Entonces\n  \nFinSi');
     });
 
     test('does not open a fresh line on an empty document', () {
@@ -179,6 +176,25 @@ void main() {
         edit.sourceCode,
         'Proceso P\n\tSi condicion Entonces\n\t  \n\tFinSi',
       );
+    });
+  });
+
+  group('LexiconSourceEditor · completions', () {
+    test('replaces the service range without adding template indentation', () {
+      final result = _editor.applyKey(
+        sourceCode: 'whi\n',
+        caret: const CaretRange.collapsed(3),
+        key: const EditorKey.completion(
+          label: 'Mientras',
+          insertion: 'Mientras',
+          replacementRange: CaretRange(start: 0, end: 3),
+          revision: 4,
+        ),
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(result.sourceCode, 'Mientras\n');
+      expect(result.caret, const CaretRange.collapsed(8));
     });
   });
 
@@ -233,17 +249,20 @@ void main() {
       expect(edit.caret, const CaretRange(start: 4, end: 4));
     });
 
-    test('the dedent key parks the caret at the start of the line it emptied', () {
-      const source = '  a';
+    test(
+      'the dedent key parks the caret at the start of the line it emptied',
+      () {
+        const source = '  a';
 
-      final edit = _apply(
-        sourceCode: source,
-        caret: const CaretRange.collapsed(1),
-        key: const EditorKey.dedent(),
-      );
+        final edit = _apply(
+          sourceCode: source,
+          caret: const CaretRange.collapsed(1),
+          key: const EditorKey.dedent(),
+        );
 
-      expect(edit.sourceCode, 'a');
-      expect(edit.caret, const CaretRange.collapsed(0));
-    });
+        expect(edit.sourceCode, 'a');
+        expect(edit.caret, const CaretRange.collapsed(0));
+      },
+    );
   });
 }

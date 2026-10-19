@@ -121,6 +121,26 @@ fn rejects_unrelated_values_stored_through_base_typed_cells() {
 }
 
 #[test]
+fn accepts_derived_values_stored_in_base_typed_arrays() {
+    let source = "module P es\nclass Base {}\nclass Derived : Base {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = array.new array<obj<Base>, 1>, %0 @1:1-1:2\n  %2 = object.new Derived @1:1-1:2\n  %3 = const.i64 0\n  array.store %1, %3, %2 @1:1-1:2\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Ok(()));
+    }
+}
+
+#[test]
+fn rejects_unrelated_values_stored_in_base_typed_arrays() {
+    let source = "module P es\nclass Base {}\nclass Other {}\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 1\n  %1 = array.new array<obj<Base>, 1>, %0 @1:1-1:2\n  %2 = object.new Other @1:1-1:2\n  %3 = const.i64 0\n  array.store %1, %3, %2 @1:1-1:2\n  return\n}\n";
+    let module = parse_module(source);
+    assert!(module.is_ok());
+    if let Ok(parsed) = module {
+        assert_eq!(verify_module(&parsed), Err("IR.WELL-FORMEDNESS#R3"));
+    }
+}
+
+#[test]
 fn rejects_mass_mismatch_as_rule6() {
     let source = "module P es\nfunc @main() -> unit {\nb0() mass 2:\n  stmt.enter @1:1-1:2\n  stmt.exit @1:1-1:2\n  return\n}\n";
     let module = parse_module(source);

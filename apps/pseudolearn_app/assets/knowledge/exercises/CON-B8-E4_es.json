@@ -69,6 +69,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso ContarReprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir reprobados Como Entero;\n    Leer cantidad;\n    reprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota < 5 Entonces\n            reprobados <- reprobados + 1;\n        FinSi\n    FinPara\n    Escribir reprobados;\nFinProceso\n",
+  "referenceSolution": "Proceso ContarReprobados    Definir cantidad Como Entero;    Definir i Como Entero;    Definir nota Como Entero;    Definir reprobados Como Entero;    Leer cantidad;    reprobados <- 0;    Para i <- 1 Hasta cantidad Con Paso 1 Hacer\n        Leer nota;        Si nota < 5 Entonces            reprobados <- reprobados + 1;        FinSi    FinPara    Escribir reprobados;FinProceso",
   "starterCode": "Proceso ContarAprobados\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir nota Como Entero;\n    Definir aprobados Como Entero;\n    Leer cantidad;\n    aprobados <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer nota;\n        Si nota >= 5 Entonces\n            aprobados <- aprobados + 1;\n        FinSi\n    FinPara\n    Escribir aprobados;\nFinProceso\n"
 }

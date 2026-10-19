@@ -90,7 +90,7 @@ fn query_rank(
     let (truncated, position) = truncated_query(&program.text, probe, typed);
     let session = DocumentSession::new(truncated, program.profile, false);
     let started = Instant::now();
-    let entries = session.queries().complete(position);
+    let entries = session.queries().complete_with_edit(position).entries;
     let elapsed = started.elapsed().as_secs_f64() * 1000.0;
     let wanted = program.profile.fold_word(&probe.expected);
     let rank = entries

@@ -59,7 +59,7 @@ fn large_document_latency() -> Result<Value, String> {
     let mut samples = Vec::new();
     for _ in 0..30 {
         let begun = Instant::now();
-        let entries = session.queries().complete(position);
+        let entries = session.queries().complete_with_edit(position).entries;
         samples.push(begun.elapsed().as_secs_f64() * 1000.0);
         if entries.is_empty() {
             return Err("No candidates in the large document".to_owned());

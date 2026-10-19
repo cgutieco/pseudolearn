@@ -14,5 +14,5 @@
     {"inputs": ["2", "6", "6"], "expectedOutputs": ["2"], "expected": "numerico"},
     {"inputs": ["1", "4"], "expectedOutputs": ["0"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso ContarFinesDeSemana\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir dia Como Entero;\n    Definir cuenta Como Entero;\n    Leer cantidad;\n    cuenta <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer dia;\n        Si dia = 6 O dia = 7 Entonces\n            cuenta <- cuenta + 1;\n        FinSi\n    FinPara\n    Escribir cuenta;\nFinProceso\n"
+  "referenceSolution": "Proceso ContarFinesDeSemana    Definir cantidad Como Entero;    Definir i Como Entero;    Definir dia Como Entero;    Definir cuenta Como Entero;    Leer cantidad;    cuenta <- 0;    Para i <- 1 Hasta cantidad Con Paso 1 Hacer\n        Leer dia;        Si dia = 6 O dia = 7 Entonces            cuenta <- cuenta + 1;        FinSi    FinPara    Escribir cuenta;FinProceso"
 }

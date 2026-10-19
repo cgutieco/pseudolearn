@@ -4,6 +4,7 @@ import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/class_diagram_builder.dart';
 import '../domain/ports/clock.dart';
 import '../domain/ports/completion_source.dart';
+import '../domain/ports/contextual_completion_source.dart';
 import '../domain/ports/connectivity_monitor.dart';
 import '../domain/ports/document_repository.dart';
 import '../domain/ports/editor_key_source.dart';
@@ -47,6 +48,7 @@ final class AppDependencies {
   final StructogramBuilder structogramBuilder;
   final ClassDiagramBuilder classDiagramBuilder;
   final CompletionSource completionSource;
+  final ContextualCompletionSource? contextualCompletionSource;
   final SourceEditor sourceEditor;
   final EditorKeySource editorKeySource;
   final TextEntryModality textEntryModality;
@@ -78,6 +80,7 @@ final class AppDependencies {
     required this.structogramBuilder,
     required this.classDiagramBuilder,
     required this.completionSource,
+    this.contextualCompletionSource,
     required this.sourceEditor,
     required this.editorKeySource,
     required this.textEntryModality,

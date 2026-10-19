@@ -69,5 +69,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso SumaDePares\n    Definir cantidad Como Entero;\n    Definir i Como Entero;\n    Definir valor Como Entero;\n    Definir suma Como Entero;\n    Leer cantidad;\n    suma <- 0;\n    Para i <- 1 Hasta cantidad Hacer\n        Leer valor;\n        Si valor mod 2 = 0 Entonces\n            suma <- suma + valor;\n        FinSi\n    FinPara\n    Escribir suma;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaDePares    Definir cantidad Como Entero;    Definir i Como Entero;    Definir valor Como Entero;    Definir suma Como Entero;    Leer cantidad;    suma <- 0;    Para i <- 1 Hasta cantidad Con Paso 1 Hacer\n        Leer valor;        Si valor mod 2 = 0 Entonces            suma <- suma + valor;        FinSi    FinPara    Escribir suma;FinProceso"
 }

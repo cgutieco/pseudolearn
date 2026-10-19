@@ -38,7 +38,10 @@ pub mod translator;
 pub mod type_names;
 pub mod unit_partition;
 
-pub use completion::{CompletionEntry, CompletionKind, CompletionQuery, complete_at_position};
+pub use completion::{
+    CompletionEntry, CompletionKind, CompletionQuery, CompletionResult, CompletionTextEdit,
+    complete_at_position, complete_at_position_with_edit,
+};
 pub use completion_templates::{get_template, template_constructions};
 pub use document_session::{DocumentOptions, DocumentSession, LanguageService, TextEdit};
 pub use edit_probe::{IdentityCheck, IncrementalProbe};

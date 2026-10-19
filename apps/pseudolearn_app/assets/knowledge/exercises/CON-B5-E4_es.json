@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "Proceso BuscarValor\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Definir objetivo Como Entero;\n    Definir indice Como Entero;\n    Para i <- 0 Hasta 4 Hacer\n        Leer numeros[i];\n    FinPara\n    Leer objetivo;\n    indice <- -1;\n    Para i <- 0 Hasta 4 Hacer\n        Si numeros[i] = objetivo Entonces\n            indice <- i;\n        FinSi\n    FinPara\n    Escribir indice;\nFinProceso\n"
+  "referenceSolution": "Proceso BuscarValor    Dimension numeros[5] Como Entero;    Definir i Como Entero;    Definir objetivo Como Entero;    Definir indice Como Entero;    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];    FinPara    Leer objetivo;    indice <- -1;    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Si numeros[i] = objetivo Entonces            indice <- i;        FinSi    FinPara    Escribir indice;FinProceso"
 }
