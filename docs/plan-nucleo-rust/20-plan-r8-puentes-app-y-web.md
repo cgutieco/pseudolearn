@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** propuesta de ejecución, pendiente de autorización de R8. Fecha: 2026-10-19.
+> **Estado:** B0 ejecutado; B1–B9 siguen pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> Este encargo autoriza redactar el plan; no iniciar su implementación ni publicar aplicaciones.
+> La autorización vigente cubre B0 solamente; no autoriza los bloques siguientes ni la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -173,15 +173,16 @@ modificando su implementación.
 
 ### B0 · Línea base, inventario y disponibilidad de plataformas
 
-- [ ] Confirmar rama y árbol de trabajo; conservar cambios ajenos. Registrar revisión y herramientas.
-- [ ] Leer README y reglas de cada miembro afectado, incluidos verificadores y arnés si se modifican.
-- [ ] Repetir verificaciones base de motor, SEE y app; separar fallos heredados de los nuevos.
-- [ ] Inventariar todos los puertos y consumidores de Dart, recursos de ejercicios y flujos de publicación.
-- [ ] Preparar matriz de hardware/runners: iOS físico y simulador, macOS arm64/x86_64, Windows x64 y navegador.
-- [ ] Presentar D-R8-01 a D-R8-08 con alternativas, impacto y evidencia disponible.
+- [x] Confirmar rama y árbol de trabajo; conservar cambios ajenos. Registrar revisión y herramientas.
+- [x] Leer README y reglas de cada miembro afectado, incluidos verificadores y arnés si se modifican.
+- [x] Repetir verificaciones base de motor, SEE y app; separar fallos heredados de los nuevos.
+- [x] Inventariar todos los puertos y consumidores de Dart, recursos de ejercicios y flujos de publicación.
+- [x] Preparar matriz de hardware/runners: iOS físico y simulador, macOS arm64/x86_64, Windows x64 y navegador.
+- [x] Presentar D-R8-01 a D-R8-08 con alternativas, impacto y evidencia disponible.
 
 **Puerta:** línea base reproducible y decisiones de alcance resueltas antes del bloque dependiente.
-La falta de dispositivo o runner no se convierte en test aprobado ni en cierre con exclusión tácita.
+La falta de dispositivo o runner no se convierte en test aprobado ni en cierre con exclusión tácita. El inventario
+y las decisiones pendientes constan en el registro de B0; B1 no empieza hasta resolverlas.
 
 ### B1 · Especificaciones y casos antes del producto
 
@@ -295,7 +296,109 @@ Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión 
 - [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. Este plan no marca ninguna tarea como ejecutada.
+comprobación remota obligatoria, R8 permanece abierta. Las tareas de B0 reflejan su ejecución; B1–B9 siguen pendientes.
+
+### Registro de B0 · 2026-10-19
+
+#### Revisión, herramientas y verificaciones
+
+La revisión inspeccionada fue `f5c4d00397c33c796c2215c3c26d1043c169ff0f`, en
+`feature/agregar-ruta-de-especificacion`, con el árbol limpio antes de ejecutar comandos. Se leyeron los
+README y archivos de reglas de `pseudolearn_engine`, `pseudolearn_spec` y `pseudolearn_app`; no se modificaron
+verificadores ni arneses.
+
+| Herramienta | Versión o entorno observado |
+|---|---|
+| Git | 2.54.0 (Apple Git-157) |
+| Rust y Cargo | 1.99.0, toolchain fijado por los miembros Rust afectados |
+| cargo-deny | 0.20.2 |
+| Flutter y Dart | Flutter 3.47.5; Dart 3.13.4 |
+| Xcode y sistema | Xcode 27.0 (27A266a); macOS 27.0.1, host Darwin arm64 |
+| Node.js y pnpm | Node.js 22.23.3; pnpm 12.8.1 |
+| Navegador | Chrome 154.0.8037.99 |
+
+| Miembro | Verificación ejecutada | Resultado observado |
+|---|---|---|
+| `packages/pseudolearn_engine` | `cargo xtask verify` | Aprobada; tests, Clippy, reglas Rust y `cargo-deny` terminaron en código 0. |
+| `packages/pseudolearn_spec` | `cargo xtask verify` | Aprobada; 156 especificaciones validadas, lock y exportación vigentes; 1.180 observaciones de `reference` y 134 divergencias reportadas por SEE. El comando terminó en código 0. |
+| `packages/pseudolearn_engine` contra SEE | `cargo run -p see_cli --bin see -- conform --subject engine` | 1.512 observaciones, cero divergencias; código 0. |
+| `packages/pseudolearn_engine` contra SEE, filtro auxiliar | `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze` | Código 1 con cinco `SEE-REGRESSION` por reglas sin observaciones en el subconjunto: `LANG.CONTROL.FOR@0.3.1#R1–R4` y `LANG.SOURCE.ENCODING@0.2.0#R2`. La corrida completa del motor sí pasa. Los resultados parciales que generó el filtro se restauraron al contenido de la revisión inspeccionada. |
+| `apps/pseudolearn_app` | `flutter analyze --fatal-infos --fatal-warnings`; los tres scripts Dart del README; `flutter test` | Análisis y scripts aprobados; 1.948 tests aprobados. |
+
+La primera invocación de Cargo y Dart desde el sandbox no podía escribir los locks/cachés globales requeridos;
+se repitió con las rutas de Rust y Dart fijadas y el acceso necesario a esas cachés. No se atribuyen esos
+errores de permisos a los paquetes. La conformidad `reference` conserva 134 divergencias como línea base
+del sujeto congelado; no hubo cambios de código en esta ejecución.
+
+#### Inventario de puertos y consumidores Dart
+
+`apps/pseudolearn_app/lib/domain/ports/` contiene 33 puertos:
+
+| Responsabilidad | Puertos |
+|---|---|
+| Núcleo de lenguaje y representación | `ProgramAnalyzer`, `ProgramConstructReader`, `ProgramExecution`, `ProgramExporter`, `CompletionSource`, `SourceEditor`, `ExerciseChecker`, `SyntaxReferenceSource`, `ClassDiagramBuilder`, `FlowchartBuilder`, `StructogramBuilder` |
+| Documentos y conocimiento | `DocumentRepository`, `KnowledgeRepository` |
+| Cuenta, enlaces y servicios externos | `AccountDeletionGateway`, `AuthGateway`, `IncomingLinkSource`, `LocalAccountDataPurger`, `ExternalUrlLauncher` |
+| Progreso, sincronización y preferencias | `LocalProgressStore`, `ProgressHistory`, `ProgressSyncStore`, `RemoteDocumentStore`, `RemoteProgressStore`, `SyncCoordinator`, `SyncQueue`, `PreferencesStore` |
+| Entorno y utilidades de aplicación | `AppVersionSource`, `Clock`, `ConnectivityMonitor`, `EditorKeySource`, `IdentifierGenerator`, `StoreReviewPrompt`, `TextEntryModality` |
+
+La búsqueda de `package:pseudolearn_core/` encontró 39 archivos, todos bajo `lib/engine/`; dominio y
+aplicación no importan el núcleo directamente. Los consumidores se agrupan así:
+
+| Directorio | Archivos consumidores |
+|---|---|
+| `analysis/` | `core_program_analyzer.dart`, `program_analysis.dart` |
+| `classdiagram/` | `class_attribute_reader.dart`, `class_model_extractor.dart`, `member_signature_printer.dart` |
+| `completion/` | `profile_completion_source.dart` |
+| `diagram/` | `block_builder.dart`, `executable_units.dart`, `flowchart_layout.dart`, `statement_caption.dart`, `type_lexeme.dart` |
+| `editing/` | `lexicon_source_editor.dart`, `profile_key_source.dart` |
+| `execution/` | `core_program_execution.dart`, `projecting_observer.dart`, `watch_row_projection.dart` |
+| `exercise/` | `program_structure.dart`, `structural_assertion_checker.dart` |
+| `export/` | `python_code_emitter.dart`, `python_expression_emitter.dart`, `python_statement_emitter.dart`, `rust_code_emitter.dart`, `rust_expression_emitter.dart`, `rust_statement_emitter.dart` |
+| `knowledge/` | `builtin_signature_text.dart`, `engine_marker_resolver.dart`, `reference_tables.dart`, `syntax_reference_generator.dart` |
+| `mapping/` | `compound_statement_index.dart`, `diagnostic_projection.dart`, `node_span_index.dart`, `profile_catalog.dart`, `span_projection.dart`, `unit_membership_index.dart` |
+| `printing/` | `pseudocode_printer.dart`, `statement_printer.dart`, `structure_printer.dart` |
+| `structogram/` | `structogram_builder.dart`, `structogram_layout.dart` |
+
+Los contratos de análisis, ejecución, completado, edición, comprobación de ejercicios, exportación y diagramas
+son puertos segregados existentes. Las firmas revisadas para análisis, ejecución, completado, edición y
+construcción no declaran `Future`, `Stream` ni métodos `async`; la compatibilidad síncrona del transporte
+sigue pendiente de probarse en B2. La app conserva además 172 ejemplos, 190 archivos de ejercicios y 30
+módulos bajo `assets/knowledge/`; `check_content.dart` los validó.
+
+#### Disponibilidad de hardware y runners
+
+| Objetivo | Evidencia | Estado de B0 |
+|---|---|---|
+| iOS físico | Flutter detecta un iPhone conectado con iOS 27.0.1; el modelo no se expuso en la consulta disponible. | Dispositivo presente; aún no se sabe si satisface el requisito de “dispositivo modesto”. |
+| iOS simulador | `xcrun simctl list devices available` no pudo conectar con CoreSimulator ni descubrir runtimes. El job `xcode-27` de la app ejecuta tests, pero no acredita por sí solo un arranque en simulador. | No disponible localmente; runner remoto de simulador por confirmar. |
+| macOS arm64 | Host local Darwin arm64, Flutter anuncia macOS `darwin-arm64`; Xcode 27. | Disponible localmente. |
+| macOS x86_64 | La app lo declara como objetivo. Los workflows `macos-15` y `xcode-27` no fijan ni registran arquitectura en sus pasos. | No confirmado; no excluirlo por falta de ejecución local. |
+| Windows x64 | `push-production-windows-r2.yml` y `push-production-windows-store.yml` usan `windows-latest`; el repositorio no ofrece host Windows local. | Runner de publicación configurado; build/ejecución de la app no se ejecutaron desde B0. |
+| Navegador | Chrome 154 está disponible; existe `push-production-web.yml`, pero construye y publica `apps/fe-pseudolearn` con pnpm. `apps/pseudolearn_app/web/` no existe. | Navegador disponible; la publicación web existente no es Flutter web ni un consumidor del Wasm de R8. |
+| Android y Linux | No existen carpetas `android/` ni `linux/` en la app. | Alcance Android sigue en D-R8-03; Linux queda sin andamiaje. |
+
+Los workflows productivos existentes son manuales para iOS, macOS, dos canales Windows y el sitio web. El
+workflow `verify-monorepo.yml` ejecuta tests de la app en `xcode-27`, pruebas del frontend web en `macos-26`
+y benchmarks Rust en macOS, Linux y Windows; no contiene una matriz de ejecución de la app Flutter para
+simulador, macOS x86_64 o Windows.
+
+#### Decisiones de alcance presentadas
+
+| ID | Alternativas y efecto | Evidencia disponible | Estado |
+|---|---|---|---|
+| D-R8-01 | Conservar diagramas, emisores y aserciones estructurales mediante una vista pública inmutable; o retirarlos con decisión explícita. Afecta B1, B3 y B5. | Hay 39 consumidores Dart del núcleo en 12 subdirectorios de `engine/` y puertos segregados para estas responsabilidades. | Pendiente de resolución. |
+| D-R8-02 | Mantener una superficie síncrona acotada si el transporte lo permite; o cambiar puertos y composición si la herramienta obliga a asincronía/hilos. Afecta B2–B4. | Los puertos examinados son síncronos; no se ha probado generador ni transporte. | Pendiente de prueba y resolución antes de editar puertos. |
+| D-R8-03 | Medir una biblioteca Android sin distribuir app Flutter; o ampliar producto y distribución Android. Afecta B1, B6 y B8. | Android aparece como objetivo en arquitectura/performance, pero no en README, scaffold ni workflows de la app. | Pendiente de decisión de producto. |
+| D-R8-04 | Entregar `pseudolearn_wasm` con consumidor mínimo de navegador; o incluir Flutter web y sus adaptadores de persistencia/autenticación. Afecta B1 y B7. | No hay `web/` en la app; el workflow web existente despliega otro producto (`apps/fe-pseudolearn`). | Pendiente de decisión de alcance Flutter web. |
+| D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | No se ha ejecutado aún una generación de prueba; las reglas actuales prohíben comentarios y `unsafe` salvo fronteras ya declaradas. | Pendiente de evidencia de B2. |
+| D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Pendiente de confirmación de compatibilidad. |
+| D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Pendiente de decisión. |
+| D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | Hay iPhone físico iOS 27.0.1, pero el modelo no fue identificado. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Pendiente de selección y disponibilidad verificable. |
+
+**Resultado de la puerta:** B0 levantó y publicó toda la evidencia solicitada. No se aprueba aún la entrada a
+B1: permanecen abiertas las ocho decisiones y faltan confirmar el dispositivo modesto, el simulador iOS y la
+ejecución de macOS x86_64. Ninguna plataforma faltante se cuenta como prueba aprobada.
 
 ## 7. Protocolo reproducible de E-NR2
 
