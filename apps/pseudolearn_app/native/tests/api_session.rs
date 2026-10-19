@@ -44,10 +44,15 @@ fn version_reports_only_available_capabilities() {
         return;
     };
     assert!(capabilities.iter().any(|value| value == "execute"));
-    assert!(!capabilities.iter().any(|value| value == "program_view"));
+    for announced in ["program_view", "state_pages"] {
+        assert!(capabilities.iter().any(|value| value == announced));
+        assert_eq!(
+            send(session, "negotiate", json!({"capabilities":announced})),
+            json!({"value":null})
+        );
+    }
     assert_eq!(
-        send(session, "negotiate", json!({"capabilities":"program_view"}))
-            .pointer("/failure/family"),
+        send(session, "negotiate", json!({"capabilities":"unknown"})).pointer("/failure/family"),
         Some(&json!("version"))
     );
     assert!(close_session(session).is_ok());

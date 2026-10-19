@@ -136,6 +136,7 @@ pub struct TraceEvent {
     pub class: TraceClass,
     pub line: u32,
     pub depth: u32,
+    pub span: Option<pseudolearn_bytecode::SourceSpan>,
     pub payload: Option<EventPayload>,
 }
 

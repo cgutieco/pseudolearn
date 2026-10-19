@@ -42,7 +42,7 @@ pub fn prepare_program(
 pub fn execute_prepared(prepared: &PreparedProgram, request: &ExecuteRequest) -> ExecuteResponse {
     let program = &prepared.program;
     let warnings = &prepared.warnings;
-    if request.state_at.is_none() {
+    if request.state_at.is_none() && request.state_page.is_none() {
         return execute_bulk(program, warnings, request);
     }
     let options = options(request);
@@ -62,33 +62,27 @@ pub(crate) fn run_request(
     request: &ExecuteRequest,
     warnings: &[ApiDiagnostic],
 ) -> ExecuteResponse {
-    let mut state_at = None;
-    let maximum = u64::MAX;
-    let mut exit = RunExit::LimitReached {
-        kind: pseudolearn_vm::LimitKind::Time,
+    let captured = crate::execution_capture::run_capturing(machine, request);
+    let page_failed = request.state_page.is_some() && !matches!(captured.page, Some(Ok(_)));
+    let state_at = match captured.page {
+        Some(Ok(page)) => Some(page),
+        _ => captured.state,
     };
-    let mut previous_count = 0;
-    for _ in 0..maximum {
-        let outcome = machine.step_instruction();
-        let count = machine_events(machine).len();
-        if request.state_at == Some(count.saturating_sub(1)) && count > previous_count {
-            state_at = Some(crate::execution_state::capture(machine));
-        }
-        previous_count = count;
-        if let Some(outcome) = outcome {
-            exit = outcome;
-            break;
-        }
-    }
+    let exit = captured.exit;
+    let view = event_view(request);
     ExecuteResponse {
         kind: "execute".to_owned(),
         output: machine_output(machine).to_owned(),
-        termination: crate::execution_wire::termination(&exit),
+        termination: if page_failed {
+            json!({"kind":"failed","code":"usage"})
+        } else {
+            crate::execution_wire::termination(&exit)
+        },
         diagnostics: with_compile_warnings(warnings, diagnostics(machine, &exit, &request.profile)),
         events: if request.observe == "events" {
             machine_events(machine)
                 .iter()
-                .map(crate::execution_wire::event)
+                .map(|event| crate::execution_wire::event_with_source(event, view.as_ref()))
                 .collect()
         } else {
             Vec::new()
@@ -184,6 +178,7 @@ fn execute_bulk(
         diagnostics.push(crate::execution_wire::diagnostic(trap, &request.profile));
     }
     let diagnostics = with_compile_warnings(warnings, diagnostics);
+    let view = event_view(request);
     ExecuteResponse {
         kind: "execute".to_owned(),
         output: result.output,
@@ -193,7 +188,7 @@ fn execute_bulk(
             result
                 .events
                 .iter()
-                .map(crate::execution_wire::event)
+                .map(|event| crate::execution_wire::event_with_source(event, view.as_ref()))
                 .collect()
         } else {
             Vec::new()
@@ -201,4 +196,16 @@ fn execute_bulk(
         inputs_consumed: result.inputs_consumed,
         state_at: None,
     }
+}
+
+fn event_view(request: &ExecuteRequest) -> Option<crate::program_view::ProgramView> {
+    if request.observe != "events" {
+        return None;
+    }
+    let analysis = crate::AnalyzeRequest {
+        program: request.program.clone(),
+        profile: request.profile.clone(),
+        strictness: request.strictness.clone(),
+    };
+    crate::program_view::ProgramView::build(&analysis, "rev0".to_owned()).ok()
 }

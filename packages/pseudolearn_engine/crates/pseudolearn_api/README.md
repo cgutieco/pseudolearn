@@ -9,7 +9,8 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Conformidad integrada de `API.EXECUTE` | Recursos de ejecución, entrada y observación | B7.3 |
-| Vista pública inmutable del programa para nodos, fuentes y relaciones estructurales | Análisis y mapa de fuente | pendiente |
+| Reglas `API.PROGRAM.VIEW#R3` y `API.STATE.QUERY#R4` en conformidad | La primera depende del sujeto app; en la segunda el caso C4 espera un cursor literal que ningún cursor ligado a su consulta puede producir | pendiente |
+| Serialización de `source` en el formato binario de eventos | El formato columnar no transporta la referencia del evento; el JSON sí | pendiente |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -84,7 +85,18 @@ errores léxicos o sintácticos. El idioma de presentación se resuelve al rende
 mediante su código y argumentos, sin modificar códigos, tramos ni salida del programa.
 Se rechaza que la CLI tenga que reconstruir posiciones o traducir un mensaje ya presentado.
 
-La extensión de ejecución pendiente usa recursos con identificador para iniciar, avanzar, entregar
+La vista pública del programa (`program_view`) se proyecta desde el árbol sintáctico del documento: unidades en
+orden, nodos de declaración, sentencia y expresión con identificadores opacos por revisión, tramos con
+desplazamientos UTF-8 como cadenas decimales, herencia y sobrescrituras. Cada evento de una ejecución con sesión
+lleva `source` (revisión, nodo y tramo): la máquina registra el tramo de la instrucción que lo emite y la API lo
+resuelve contra la vista por coincidencia exacta de línea y columna de inicio y fin, con preferencia de expresión
+para decisiones, llamadas y retornos y de sentencia para el resto; si no hay coincidencia exacta usa el nodo más
+interno que lo contiene. Se descarta resolver por línea, que confunde sentencias de una misma línea. `state_pages`
+añade `query_page` (`array_cells`, `frame_variables`, `object_fields`) con cursores de la forma «huella.desplazamiento»
+cuya huella cubre sesión, ejecución, revisión, consulta, destino, evento y tamaño de página; cualquier discrepancia es
+un error de uso que no altera la ejecución.
+
+La extensión de ejecución usa recursos con identificador para iniciar, avanzar, entregar
 entrada, cancelar y posicionarse. Las consultas se refieren a un instante y al horizonte retenido;
 la reproducción no altera la continuación presente. JSON canónico y binario columnar comparten datos.
 Solo se anuncian capacidades implementadas. El borde convierte defectos imposibles a internalFault,

@@ -35,6 +35,7 @@ impl Machine<'_> {
                 class: TraceClass::Output,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::Output {
                     texto: text.to_owned(),
                 }),

@@ -15,24 +15,28 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::StatementEntered,
             line: 1,
             depth: 1,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::StatementExited,
             line: 1,
             depth: 1,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::InputRequested,
             line: 2,
             depth: 1,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::InputReceived,
             line: 2,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::InputReceived {
                 texto: "42".to_owned(),
             }),
@@ -41,6 +45,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Decision,
             line: 3,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::Decision {
                 rama: "verdadero".to_owned(),
                 indice: None,
@@ -50,6 +55,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Decision,
             line: 4,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::Decision {
                 rama: "caso".to_owned(),
                 indice: Some(2),
@@ -59,6 +65,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Call,
             line: 5,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::Call {
                 nombre: "calcular".to_owned(),
             }),
@@ -67,6 +74,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Output,
             line: 6,
             depth: 2,
+            span: None,
             payload: Some(EventPayload::Output {
                 texto: "hola\n\"mundo\"".to_owned(),
             }),
@@ -75,6 +83,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Return,
             line: 7,
             depth: 2,
+            span: None,
             payload: Some(EventPayload::Return {
                 nombre: "calcular".to_owned(),
             }),
@@ -83,6 +92,7 @@ fn encodes_and_decodes_all_trace_classes_and_payloads() {
             class: TraceClass::Failure,
             line: 8,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::Failure {
                 codigo: "divisionByZero".to_owned(),
             }),
@@ -127,6 +137,7 @@ fn rejects_corrupted_pool_length() {
         class: TraceClass::Output,
         line: 1,
         depth: 1,
+        span: None,
         payload: Some(EventPayload::Output {
             texto: "mensaje".to_owned(),
         }),

@@ -24,7 +24,10 @@ Desde `apps/pseudolearn_app`:
 ```bash
 bash tool/bridge.sh generate
 bash tool/bridge.sh check
+bash tool/bridge.sh clean-checkout
 ```
+
+`clean-checkout` exige `flutter_rust_bridge_codegen 2.13.0` y `cargo-expand 1.0.127` instalados.
 
 Desde este directorio:
 
@@ -96,7 +99,7 @@ avance, consultas y liberación. `cargo clippy`, rustfmt, `cargo-deny` y `rust-c
 crate y sus dependencias. Desde la raíz de la app, `bash tool/test_bridge.sh` compila el `cdylib` y
 prueba las llamadas Dart por FFI. `bash tool/bridge.sh check` regenera desde la configuración
 versionada y falla si los archivos generados cambian; debe terminar sin diferencias desde un checkout
-limpio.
+limpio; `bash tool/bridge.sh clean-checkout` lo comprueba en un árbol de trabajo nuevo. Los tests de integración también cubren `program_view`, `query_node` y `query_page` a través del puente.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

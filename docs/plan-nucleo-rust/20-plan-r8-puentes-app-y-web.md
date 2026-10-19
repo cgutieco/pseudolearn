@@ -1,6 +1,6 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B2 ejecutados; B3 implementado localmente con la comprobación de checkout limpio pendiente; B4 sin iniciar por capacidades de API ausentes; B5–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 > La autorización vigente cubre B3 y B4 en una iteración; no autoriza la publicación de aplicaciones.
 >
@@ -269,7 +269,7 @@ hook y su matriz de plataformas siguen dentro de B3 y B6.
 - [x] Crear `native/` con README, reglas, toolchain, manifiesto, auditoría y pruebas propias.
 - [x] Exponer sesiones, recursos y operaciones de la API; transportar errores tipados y capacidades reales.
 - [x] Generar enlaces en `lib/engine/bridge/`; versionar lo consumido por el build según la política del repo.
-- [ ] Ejecutar la orden documentada de regeneración y comprobación de árbol limpio desde un checkout limpio.
+- [x] Ejecutar la orden documentada de regeneración y comprobación de árbol limpio desde un checkout limpio.
 - [x] Verificar liberación, identificadores inválidos, cancelación repetida, fallo interno y límites.
 - [x] Cubrir decodificación inválida, lote truncado, versión desconocida y propiedad de buffers.
 
@@ -278,17 +278,17 @@ deliberadamente desactualizado y rechaza un import del puente desde una capa pro
 
 ### B4 · Adaptadores de ejecución y proyección de estado
 
-- [ ] Implementar adaptadores segregados de análisis y `ProgramExecution` sobre la sesión Rust.
-- [ ] Convertir tramos y diagnósticos preservando código, severidad, argumentos y perfil.
-- [ ] Conectar los cuatro ritmos a eventos; desacoplar espera visual y presupuesto de trabajo.
-- [ ] Consumir lotes y deltas; consultar arreglos y objetos de forma paginada sin snapshots Dart paralelos.
-- [ ] Proyectar forma de arreglos, alias, ciclos y referencias ausentes con identificadores coherentes.
-- [ ] Integrar entrada, parada, fallo, finalización y límites sin bloquear la respuesta del planificador.
+- [x] Implementar adaptadores segregados de análisis y `ProgramExecution` sobre la sesión Rust.
+- [ ] Convertir tramos y diagnósticos preservando código, severidad, argumentos y perfil. (código, severidad, tramos y perfil sí; `AppDiagnostic` no modela argumentos)
+- [x] Conectar los cuatro ritmos a eventos; desacoplar espera visual y presupuesto de trabajo.
+- [ ] Consumir lotes y deltas; consultar arreglos y objetos de forma paginada sin snapshots Dart paralelos. (lotes y consultas paginadas sí; los deltas ordenados no se usan: el estado visible se consulta por evento)
+- [ ] Proyectar forma de arreglos, alias, ciclos y referencias ausentes con identificadores coherentes. (arreglos, objetos, alias y ausentes proyectados y probados; ciclos y arreglos multidimensionales sin prueba con el puente real)
+- [x] Integrar entrada, parada, fallo, finalización y límites sin bloquear la respuesta del planificador.
 
 **Puerta:** pruebas del adaptador y widgets con el puente real; `Fib(20)` termina en cada ritmo,
 arreglos y grafo de objetos son inspeccionables y un bucle no terminante puede cancelarse.
 
-#### Registro de la iteración B3–B4 · 2026-10-19
+#### Registro de la iteración B3 · 2026-10-19
 
 B3 añade `pseudolearn_bridge` con `flutter_rust_bridge` 2.13.0 y Native Assets. El registro de sesiones
 confina `ApiSession` al hilo invocador; cada llamada transporta JSON por valor y no conserva buffers
@@ -306,12 +306,45 @@ La regeneración se comprobó en el árbol de trabajo, no en un checkout limpio 
 negativa de generación detectó un enlace Dart alterado y lo regeneró; la prueba de capas rechazó el
 import del puente desde dominio.
 
-B4 no puede consumir todavía una identidad estructural de foco ni afirmar que una colección paginada
-esté completa. La API pública actual no anuncia `program_view` ni `state_pages`; los eventos contienen
-línea y clase sin `source.node_id`, y las consultas no aceptan cursores opacos. `APP.EXEC.PACE` prohíbe
-derivar identidad desde la línea y `APP.EXEC.SNAPSHOT-VIEW` exige paginación verificable. Crear los
-adaptadores con la superficie actual incumpliría esos contratos; los seis ítems de B4 permanecen
-pendientes hasta implementar las capacidades correspondientes en la API Rust.
+### Registro de B3 (cierre) y B4 · 2026-10-19
+
+**Cierre de B3.** `bash tool/bridge.sh check` solo comparaba el árbol de trabajo antes y después de regenerar.
+Se añadió `bash tool/bridge.sh clean-checkout`, que crea un árbol de trabajo limpio, aplica el estado a verificar,
+instala dependencias, regenera y exige ausencia de diferencias. Su primera ejecución encontró un defecto real: el
+`frb_generated.dart` versionado difería de la salida del generador (`final` frente a `var`, resultado de una pasada
+posterior de `dart fix`). Se versionó la salida pura del generador y la comprobación termina sin diferencias.
+
+**API Rust.** Cada evento de una sesión lleva `source` (revisión, nodo y tramo): `TraceEvent` registra el tramo de
+la instrucción que lo emite y la API lo resuelve contra la vista del documento por coincidencia exacta de línea y
+columna, no por línea. Se añadieron `program_view`, `query_node` y `query_page` (`array_cells`, `frame_variables`,
+`object_fields`) con cursores opacos ligados a sesión, revisión, ejecución, consulta, destino, evento y tamaño, y se
+anuncian las capacidades `program_view` y `state_pages`. La ejecución de un paso (`execute` con `state_page`) y el
+análisis con `include_program_view` funcionan para el adaptador de conformidad.
+
+**Adaptadores Dart** (`lib/engine/rust/`): transporte JSON con fallos tipados, `RustProgramAnalyzer`,
+`RustProgramExecution` (foco, pila de bloques, salida, entrada, fallo y límites), filas de observación paginadas y
+`buildRustEngineServices` en composición, sin respaldo del núcleo Dart.
+
+**Pruebas y verificadores.** `cargo xtask verify` del motor (tests, Clippy estricto, reglas Rust, `cargo-deny`)
+terminó en verde; 15 tests nuevos de API (`program_view`, `event_source`, `state_pages`). Las pruebas del puente
+(`cargo test --locked`, 11 en total, Clippy estricto) y `bash tool/test_bridge.sh` (13 pruebas Dart por FFI real,
+entre ellas `Fib(20)` terminando en los cuatro ritmos, arreglos y objetos inspeccionables, un bucle infinito
+cancelado, entrada, fallo en ejecución y análisis) pasan. `flutter analyze --fatal-infos --fatal-warnings`,
+`check_content` y `check_design_system` pasan. `conform --subject engine` ejecuta 1521 observaciones con una
+divergencia: `API.STATE.QUERY#R4` C4. Las reglas `API.PROGRAM.VIEW#R1`, `#R2` y `ENG.TRACE.EVENTS#R2` pasan a `cumple`.
+
+**Observaciones que requieren decisión.**
+- `API.STATE.QUERY#R4` C4 espera `elements: [0, 1]` y el literal `opaque` como cursor, y C5 usa un cursor literal
+  inexistente. Un cursor ligado a su consulta no puede ser el literal `opaque`; la regla permanece `pendiente` hasta
+  que el corpus use una forma verificable.
+- `check_limits` falla en el commit inicial de esta iteración, antes de cualquier cambio: seis violaciones en
+  `exercise_strip.dart`, `editor_template_row.dart` y `diagnostics_panel.dart` (líneas de `build` y de archivo),
+  introducidas al reformatear en B3. El informe de B3 afirmaba que pasaba. No se tocaron por quedar fuera de B4.
+
+**Pendientes justificados de B4.** Ver las casillas sin marcar y la sección «Pendientes técnicos declarados» de la
+app: argumentos de diagnóstico, deltas ordenados, pruebas con ciclos y arreglos multidimensionales por el puente real,
+pruebas de widgets con el puente real, resaltado, tipos de valor, unidades de foco para diagramas e idioma de los
+mensajes. La puerta de B4 queda parcialmente cumplida: adaptador y `ExecutionCubit` con el puente real sí; widgets no.
 
 ### B5 · Servicio de lenguaje y consumidores restantes
 

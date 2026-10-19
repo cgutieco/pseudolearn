@@ -19,5 +19,7 @@ pub fn supported_capabilities() -> Vec<&'static str> {
         "seek",
         "gc_stress",
         "api",
+        "program_view",
+        "state_pages",
     ]
 }

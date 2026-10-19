@@ -163,13 +163,15 @@ impl<'program> Machine<'program> {
         }
     }
 
-    pub(crate) fn current_line(&self) -> u32 {
+    pub(crate) fn current_span(&self) -> Option<pseudolearn_bytecode::SourceSpan> {
         let position = self.cursor.program_counter.saturating_sub(1);
         self.current
             .span(position, self.probed)
             .or(self.current.declaration_span)
-            .map(|span| span.start_line)
-            .unwrap_or(1)
+    }
+
+    pub(crate) fn current_line(&self) -> u32 {
+        self.current_span().map(|span| span.start_line).unwrap_or(1)
     }
 
     pub(crate) fn current_depth(&self) -> u32 {
@@ -187,6 +189,7 @@ impl<'program> Machine<'program> {
                 class: TraceClass::Failure,
                 line,
                 depth,
+                span: trap.span.or_else(|| self.current_span()),
                 payload: Some(EventPayload::Failure {
                     codigo: trap.code.to_owned(),
                 }),

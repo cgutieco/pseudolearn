@@ -70,6 +70,7 @@ fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {
         class,
         line: number("line")?,
         depth: number("depth")?,
+        span: None,
         payload: payload(class, value.get("data"))?,
     })
 }

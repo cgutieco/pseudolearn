@@ -709,9 +709,7 @@
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La API todavía no asocia cada evento con el node_id y el tramo de API.PROGRAM.VIEW; R8 implementará esa proyección."
+      "estado": "cumple"
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
@@ -1142,30 +1140,26 @@
     {
       "regla": "API.PROGRAM.VIEW@0.1.0#R1",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "estado": "cumple"
     },
     {
       "regla": "API.PROGRAM.VIEW@0.1.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "estado": "cumple"
     },
     {
       "regla": "API.PROGRAM.VIEW@0.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "justificacion": "Su único caso pertenece al sujeto app; la API rechaza la revisión ajena en sus pruebas y la conformidad se activa con el adaptador app."
     },
     {
       "regla": "API.STATE.QUERY@0.1.0#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "justificacion": "La API pagina con cursores ligados a su consulta; el caso C4 espera elements [0,1] y el literal opaque como cursor, que ninguna implementación con cursores ligados puede producir, y queda por resolver en el corpus."
     },
     {
       "regla": "API.WIRE-FORMAT@0.1.0#R3",

@@ -144,6 +144,7 @@ impl Machine<'_> {
                 class: TraceClass::InputRequested,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: None,
             });
             self.input_requested_emitted = true;
@@ -167,6 +168,7 @@ impl Machine<'_> {
                 class: TraceClass::InputReceived,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::InputReceived {
                     texto: text.to_owned(),
                 }),

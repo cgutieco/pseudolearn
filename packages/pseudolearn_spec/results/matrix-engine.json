@@ -101,6 +101,36 @@
   },
   {
     "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.PROGRAM.VIEW@0.1.0#R1",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.PROGRAM.VIEW@0.1.0#R2",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "Su único caso pertenece al sujeto app; la API rechaza la revisión ajena en sus pruebas y la conformidad se activa con el adaptador app.",
+    "rule": "API.PROGRAM.VIEW@0.1.0#R3",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -130,6 +160,16 @@
     "subject": "engine"
   },
   {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": "La API pagina con cursores ligados a su consulta; el caso C4 espera elements [0,1] y el literal opaque como cursor, que ninguna implementación con cursores ligados puede producir, y queda por resolver en el corpus.",
+    "rule": "API.STATE.QUERY@0.1.0#R4",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
     "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
@@ -151,7 +191,7 @@
   },
   {
     "binding": "exento",
-    "cases": 1,
+    "cases": 2,
     "measured": "no aplicable",
     "measurements": [],
     "reason": "El caso C1 es de operación cli y lo ejecuta el sujeto cli; el motor no recibe argumentos de línea de órdenes y su JSON canónico lo cubre la propiedad de ida y vuelta del formato de eventos.",
@@ -160,12 +200,22 @@
     "subject": "engine"
   },
   {
-    "binding": "cumple",
+    "binding": "pendiente",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
-    "reason": null,
+    "reason": "El codificador actual no transporta la referencia source; R8 añadirá y verificará su ida y vuelta.",
     "rule": "API.WIRE-FORMAT@0.1.0#R2",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "rule": "API.WIRE-FORMAT@0.1.0#R3",
     "state": "experimental",
     "subject": "engine"
   },
@@ -541,7 +591,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 8,
+    "cases": 9,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -1920,24 +1970,24 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "pendiente",
     "cases": 0,
     "measured": "no aplicable",
     "measurements": [
       {
         "id": "M1",
-        "protocol": "PERF.PROTOCOL#R1",
+        "protocol": "PERF.PROTOCOL#R2",
         "provisional": true,
         "suite": "artefactos de release"
       },
       {
         "id": "M2",
-        "protocol": "PERF.PROTOCOL#R1",
+        "protocol": "PERF.PROTOCOL#R2",
         "provisional": true,
         "suite": "artefactos de release"
       }
     ],
-    "reason": null,
+    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
     "rule": "PERF.ARTIFACT.SIZE@0.1.0#R1",
     "state": "experimental",
     "subject": "engine"
@@ -2030,6 +2080,16 @@
     "subject": "engine"
   },
   {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "rule": "PERF.PROTOCOL@0.1.0#R7",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
     "binding": "sin vinculo",
     "cases": 80,
     "measured": "cumple",
@@ -2086,6 +2146,23 @@
     ],
     "reason": null,
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R2",
+    "state": "experimental",
+    "subject": "engine"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M4",
+        "protocol": "PERF.PROTOCOL#R7",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "rule": "PERF.VM.STEP-LATENCY@0.2.0#R3",
     "state": "experimental",
     "subject": "engine"
   },

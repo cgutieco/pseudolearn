@@ -94,6 +94,7 @@ impl<'program> Machine<'program> {
             class: TraceClass::Call,
             line,
             depth,
+            span: self.current_span(),
             payload: Some(EventPayload::Call { nombre: name }),
         });
     }
@@ -261,6 +262,7 @@ impl<'program> Machine<'program> {
             class: TraceClass::Return,
             line,
             depth,
+            span: self.current_span(),
             payload: Some(EventPayload::Return {
                 nombre: callee_name,
             }),

@@ -61,6 +61,7 @@ impl Machine<'_> {
                 class: TraceClass::StatementEntered,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: None,
             });
         }
@@ -74,6 +75,7 @@ impl Machine<'_> {
                 class: TraceClass::StatementExited,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: None,
             });
         }
@@ -103,6 +105,7 @@ impl Machine<'_> {
                 class: TraceClass::Decision,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::Decision { rama, indice: None }),
             });
         }
@@ -118,6 +121,7 @@ impl Machine<'_> {
                 class: TraceClass::Decision,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::Decision {
                     rama: "caso".to_string(),
                     indice: Some(case_index),
@@ -134,6 +138,7 @@ impl Machine<'_> {
                 class: TraceClass::Decision,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::Decision {
                     rama: "otro".to_string(),
                     indice: None,
@@ -150,6 +155,7 @@ impl Machine<'_> {
                 class: TraceClass::Decision,
                 line,
                 depth,
+                span: self.current_span(),
                 payload: Some(EventPayload::Decision {
                     rama: "ninguna".to_string(),
                     indice: None,

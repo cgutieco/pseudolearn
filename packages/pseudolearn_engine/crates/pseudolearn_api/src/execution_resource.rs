@@ -32,6 +32,7 @@ pub(crate) struct ExecutionResource {
     cancelled: Arc<AtomicBool>,
     profile: String,
     warnings: Vec<ApiDiagnostic>,
+    view: Option<crate::program_view::ProgramView>,
 }
 
 impl ExecutionResource {
@@ -72,7 +73,12 @@ impl ExecutionResource {
             cancelled,
             profile: request.profile.clone(),
             warnings,
+            view: None,
         })
+    }
+
+    pub(crate) fn attach_view(&mut self, view: crate::program_view::ProgramView) {
+        self.view = Some(view);
     }
 
     pub(crate) fn advance(&mut self, maximum: usize) -> Result<Value, ApiError> {
@@ -96,6 +102,7 @@ impl ExecutionResource {
             &self.machine,
             (0, self.terminal.as_ref()),
             (&self.profile, &self.warnings),
+            self.view.as_ref(),
         );
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
@@ -130,6 +137,13 @@ impl ExecutionResource {
         arguments: &Value,
     ) -> Result<Value, ApiError> {
         crate::execution_state::query(&self.machine_at(event)?, operation, arguments)
+    }
+
+    pub(crate) fn query_page(&self, arguments: &Value, scope: &str) -> Result<Value, ApiError> {
+        let request = crate::state_pages::PageRequest::parse(arguments)?;
+        let revision = self.view.as_ref().map_or("", |view| view.revision());
+        let machine = self.machine_at(request.event)?;
+        crate::state_pages::page(&machine, &request, &format!("{scope}|{revision}"))
     }
 
     pub(crate) fn horizon(&self) -> Value {
@@ -207,12 +221,13 @@ fn advance_response(
     machine: &Machine<'_>,
     (start, terminal): (usize, Option<&RunExit>),
     (profile, warnings): (&str, &[ApiDiagnostic]),
+    view: Option<&crate::program_view::ProgramView>,
 ) -> Value {
     let events: Vec<_> = machine_events(machine)
         .get(start..)
         .unwrap_or_default()
         .iter()
-        .map(crate::execution_wire::event)
+        .map(|event| crate::execution_wire::event_with_source(event, view))
         .collect();
     let termination = terminal
         .map(crate::execution_wire::termination)

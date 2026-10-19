@@ -15,7 +15,7 @@ pub(crate) fn capture(machine: &Machine<'_>) -> Value {
     json!({"marcos":frames,"objetos":objects})
 }
 
-fn value(value: &VariableValue) -> Value {
+pub(crate) fn value(value: &VariableValue) -> Value {
     match value {
         VariableValue::Undefined => json!({"sin_valor":true}),
         VariableValue::ArrayReference {
@@ -133,7 +133,7 @@ fn raw_value(machine: &Machine<'_>, word: u64, kind: ValueKind) -> Option<Value>
     Some(json!({"valor":value}))
 }
 
-fn frame(frame: &pseudolearn_timeline::FrameView) -> Value {
+pub(crate) fn frame(frame: &pseudolearn_timeline::FrameView) -> Value {
     let variables: Map<_, _> = frame
         .variables
         .iter()
@@ -212,7 +212,7 @@ fn query_array_slice(
     Ok(json!(values.iter().map(value).collect::<Vec<_>>()))
 }
 
-fn query_object(machine: &Machine<'_>, ordinal: u64) -> Result<Value, crate::ApiError> {
+pub(crate) fn query_object(machine: &Machine<'_>, ordinal: u64) -> Result<Value, crate::ApiError> {
     use crate::execution_resource::usage;
     let handle = runtime::live_allocation_handles(machine.heap())
         .into_iter()

@@ -132,10 +132,21 @@ fn respond_analyze(request_value: &Value) {
         strictness,
     };
     let response = execute_analyze(&request);
-    let serialized = match serde_json::to_value(&response) {
+    let mut serialized = match serde_json::to_value(&response) {
         Ok(value) => value,
         Err(_) => return,
     };
+    let wants_view = request_value
+        .get("include_program_view")
+        .and_then(Value::as_bool)
+        .unwrap_or(false);
+    if let (true, Some(fields), Some(view)) = (
+        wants_view,
+        serialized.as_object_mut(),
+        pseudolearn_api::analysis_program_view(&request),
+    ) {
+        fields.insert("program_view".to_owned(), view);
+    }
     send_response(&serialized);
 }
 

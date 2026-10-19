@@ -251,8 +251,10 @@ Problema: adapta la api al protocolo de conformidad por procesos. Elección: Bin
 La vista pública del programa es una proyección inmutable asociada a una revisión del documento. Los
 consumidores de diagramas, emisores y comprobaciones estructurales usan esa misma proyección; sus
 identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. La asociación de un
-evento de ejecución con un nodo y un tramo pertenece a la misma revisión. La API aún no implementa
-esta capacidad.
+evento de ejecución con un nodo y un tramo pertenece a la misma revisión. La API implementa
+`program_view` y `state_pages`; el adaptador de conformidad devuelve la vista cuando el análisis la solicita
+y resuelve la página de estado de una ejecución observada. La referencia `source` de los eventos viaja en JSON;
+el formato binario columnar aún no la transporta.
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
 ### service

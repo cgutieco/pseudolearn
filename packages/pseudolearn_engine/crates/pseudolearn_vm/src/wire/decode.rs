@@ -114,6 +114,7 @@ fn decode_events(
             class,
             line,
             depth,
+            span: None,
             payload,
         });
     }

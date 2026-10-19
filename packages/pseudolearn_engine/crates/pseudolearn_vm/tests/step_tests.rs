@@ -9,18 +9,21 @@ fn sample_execution_trace() -> Vec<TraceEvent> {
             class: TraceClass::StatementEntered,
             line: 1,
             depth: 1,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::StatementEntered,
             line: 2,
             depth: 1,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::Call,
             line: 2,
             depth: 1,
+            span: None,
             payload: Some(EventPayload::Call {
                 nombre: "sub".to_owned(),
             }),
@@ -29,12 +32,14 @@ fn sample_execution_trace() -> Vec<TraceEvent> {
             class: TraceClass::StatementEntered,
             line: 10,
             depth: 2,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::Output,
             line: 10,
             depth: 2,
+            span: None,
             payload: Some(EventPayload::Output {
                 texto: "hola\n".to_owned(),
             }),
@@ -43,12 +48,14 @@ fn sample_execution_trace() -> Vec<TraceEvent> {
             class: TraceClass::StatementEntered,
             line: 11,
             depth: 2,
+            span: None,
             payload: None,
         },
         TraceEvent {
             class: TraceClass::Return,
             line: 12,
             depth: 2,
+            span: None,
             payload: Some(EventPayload::Return {
                 nombre: "sub".to_owned(),
             }),
@@ -57,6 +64,7 @@ fn sample_execution_trace() -> Vec<TraceEvent> {
             class: TraceClass::StatementEntered,
             line: 3,
             depth: 1,
+            span: None,
             payload: None,
         },
     ]

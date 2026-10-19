@@ -112,7 +112,10 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Firma Authenticode en instalador directo Inno Setup | Decidir proveedor (Artifact Signing de Azure, certificado OV) si se mantiene la distribución directa fuera de la Store | Abierto |
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
-| Adaptadores del sujeto `app` sobre la API Rust                  | Frontera de recursos, vista pública del programa y transporte verificable                                                               | Pendiente; `conformance.yaml` conserva las reglas de app en `pendiente` hasta disponer del adaptador ejecutable |
+| Adaptadores del sujeto `app` sobre la API Rust                  | Lanzador de SEE y vínculos regla–prueba del sujeto `app`                                                                                   | Pendiente; `conformance.yaml` conserva las reglas de app en `pendiente` hasta disponer del adaptador ejecutable |
+| Resaltado, tipos de valor y unidades de foco en la ruta Rust    | La API no expone tokens, el tipo de cada valor (texto, carácter, entero) ni identificadores de unidad del diagrama; `RustProgramAnalyzer` devuelve resaltado vacío, `RustWatchRows` muestra el texto crudo y `ExecutionFocus.unitId` queda sin valor | Abierto; lo resuelven el servicio de lenguaje y la vista pública del programa en el consumo de diagramas |
+| Idioma de los mensajes de diagnóstico en la ruta Rust           | El motor renderiza mensajes con el perfil sintáctico; la interfaz no puede elegir otro idioma hasta que la API negocie un idioma de interfaz | Abierto |
+| Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
 ---
 
@@ -148,6 +151,7 @@ flutter pub get
 # Regeneración y comprobación del puente Rust–Dart
 bash tool/bridge.sh generate
 bash tool/bridge.sh check
+bash tool/bridge.sh clean-checkout
 
 # Verificación de fuentes tipográficas empaquetadas
 dart run tool/check_design_system.dart
@@ -2064,9 +2068,24 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   reglas Rust propias. `native/src/api.rs` expone creación, llamada y cierre de sesión; las operaciones y
   capacidades siguen siendo las de `pseudolearn_api`. El registro libera los recursos descendientes cuando se
   cierra una sesión. `hook/build.dart` compila la biblioteca por Native Assets sin incorporar el feature `native`.
-- **Capacidades API pendientes:** El API actual todavía no publica `API.PROGRAM.VIEW` ni cursores opacos para páginas de estado.
-  Los adaptadores de ejecución requieren ambas garantías para conservar identidad estructural y presentar como
-  completa una vista paginada; no se reconstruyen identidades desde líneas.
+- **Identidad estructural y páginas:** La API anuncia `program_view` y `state_pages`. Cada evento lleva
+  `source.node_id` resuelto por coincidencia exacta del tramo (línea y columna de inicio y fin) contra la vista del
+  documento, nunca por línea; dos sentencias en una misma línea tienen identidades distintas. Las consultas
+  paginadas usan cursores opacos ligados a sesión, revisión, ejecución, consulta, evento y tamaño de página.
+- **Adaptadores (`lib/engine/rust/`):** `RustTransport` es la única frontera que ve JSON; `JsonRustTransport` la
+  implementa sobre cualquier función de envío y `native_rust_transport.dart` es el único archivo que importa los
+  enlaces generados. `RustProgramAnalyzer` implementa `ProgramAnalyzer` y `RustProgramExecution` implementa
+  `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta foco, pila de bloques y filas de
+  observación. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
+  `blockPosition` y `nodeId`, que el adaptador reproduce con las mismas reglas que el observador del núcleo Dart
+  (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El estado se consulta por
+  evento y solo de los marcos activos; arreglos y objetos se describen por consulta paginada (`[n]`, `Clase#id`) sin
+  materializar el montón. `buildRustEngineServices` en composición ensambla análisis y ejecución sin respaldo del
+  núcleo Dart; el ensamblado completo de `AppDependencies` llega con el resto de consumidores.
+- **Verificación del puente:** `bash tool/bridge.sh clean-checkout` crea un árbol de trabajo limpio, instala
+  dependencias, regenera los enlaces y exige que no difieran del estado que se verifica. Requiere
+  `flutter_rust_bridge_codegen 2.13.0` y `cargo-expand 1.0.127` instalados. El archivo Dart generado se versiona tal
+  como lo emite el generador, sin pasadas posteriores de `dart fix`.
 - **Alternativas descartadas:** Exponer `ApiSession` como objeto opaco exige `Sync`; no satisface el tipo de máquina
   actual. Las llamadas asíncronas o un worker cambian el contrato de los puertos. Cargokit se descarta porque FRB
   ofrece el backend Native Assets en la versión fijada y la app ya mantiene su versión exacta de Flutter.

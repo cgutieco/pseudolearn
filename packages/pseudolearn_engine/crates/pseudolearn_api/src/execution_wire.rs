@@ -3,6 +3,20 @@ use pseudolearn_diagnostics::{DiagnosticArgument, DiagnosticCode};
 use pseudolearn_vm::{LimitKind, RunExit, TraceEvent, VmTrap};
 use serde_json::{Value, json};
 
+pub(crate) fn event_with_source(
+    event: &TraceEvent,
+    view: Option<&crate::program_view::ProgramView>,
+) -> Value {
+    let mut value = self::event(event);
+    if let (Some(view), Some(fields)) = (view, value.as_object_mut()) {
+        fields.insert(
+            "source".to_owned(),
+            crate::event_source::source_of(view, event),
+        );
+    }
+    value
+}
+
 pub(crate) fn event(event: &TraceEvent) -> Value {
     let mut value = json!({"class":event.class.as_str(),"line":event.line,"depth":event.depth});
     if let Some(payload) = &event.payload

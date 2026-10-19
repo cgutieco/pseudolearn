@@ -6,10 +6,11 @@ use std::collections::BTreeMap;
 #[derive(Default)]
 pub struct ApiSession {
     next_identifier: u64,
-    resources: BTreeMap<u64, Resource>,
+    nonce: u64,
+    pub(crate) resources: BTreeMap<u64, Resource>,
 }
 
-enum Resource {
+pub(crate) enum Resource {
     Document(AnalyzeRequest),
     Analysis {
         document: u64,
@@ -21,7 +22,16 @@ enum Resource {
     },
 }
 
+static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+
 impl ApiSession {
+    pub(crate) fn session_nonce(&mut self) -> u64 {
+        if self.nonce == 0 {
+            self.nonce = SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        }
+        self.nonce
+    }
+
     pub fn call(&mut self, operation: &str, arguments: &Value) -> Value {
         let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             self.dispatch(operation, arguments)
@@ -47,6 +57,8 @@ impl ApiSession {
             "document" => self.document(arguments),
             "analysis" => self.analysis(arguments),
             "start" | "start_execution" => self.start(arguments),
+            "program_view" | "query_node" => self.program_view_operation(operation, arguments),
+            "query_page" => self.query_page_operation(arguments),
             "release" => self.release(identifier(arguments)?),
             "version" => Ok(json!({"version":crate::ENGINE_VERSION,"editions":["2026"],
                 "capabilities":crate::supported_capabilities()})),
@@ -118,15 +130,20 @@ impl ApiSession {
             .and_then(Value::as_u64)
             .or_else(|| arguments.get("resource").and_then(Value::as_u64))
             .ok_or_else(|| usage("missing analysis"))?;
-        let Some(Resource::Analysis { request, .. }) = self.resources.get(&analysis) else {
+        let Some(Resource::Analysis { document, request }) = self.resources.get(&analysis) else {
             return Err(usage("invalid analysis"));
         };
+        let view = crate::program_view::ProgramView::build(
+            request,
+            crate::program_view_operations::revision_of(*document),
+        )?;
         let mut execution_request: ExecuteRequest =
             serde_json::from_value(arguments.clone()).map_err(serialization)?;
         execution_request.program = request.program.clone();
         execution_request.profile = request.profile.clone();
         execution_request.strictness = request.strictness.clone();
-        let execution = Box::new(ExecutionResource::start(&execution_request)?);
+        let mut execution = Box::new(ExecutionResource::start(&execution_request)?);
+        execution.attach_view(view);
         Ok(json!({"resource":self.insert(Resource::Execution {analysis,execution})?}))
     }
 

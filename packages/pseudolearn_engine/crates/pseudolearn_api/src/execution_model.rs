@@ -22,6 +22,8 @@ pub struct ExecuteRequest {
     pub cancel_at_statement: Option<u64>,
     pub cancel_at_poll: Option<u64>,
     pub state_at: Option<usize>,
+    pub state_page: Option<serde_json::Value>,
+    pub include_program_view: bool,
     pub gc_stress: bool,
 }
 
@@ -38,6 +40,8 @@ impl Default for ExecuteRequest {
             cancel_at_statement: None,
             cancel_at_poll: None,
             state_at: None,
+            state_page: None,
+            include_program_view: false,
             gc_stress: false,
         }
     }

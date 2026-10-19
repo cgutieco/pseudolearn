@@ -226,4 +226,5 @@ user_facing_strings_exempt:
   - lib/presentation/l10n/
   - lib/engine/diagram/diagram_vocabulary.dart
   - lib/engine/mapping/diagnostic_projection.dart
+  - lib/engine/rust/rust_related_label.dart
   - lib/engine/knowledge/
