@@ -13,10 +13,10 @@ motor y cómo se construye su experiencia interactiva**.
 por `NodeId`), introducción con laboratorio en vivo, base de conocimiento y ajustes operativas; tres notaciones de
 diagrama (ordinograma, estructograma y diagrama de clases) trazadas determinísticamente. La suite Flutter pasa y el
 análisis estático estricto no informa incidencias. El puente Rust–Dart compila y sus pruebas FFI, generación y límites
-pasan. `buildDartEngineServices` agrupa los adaptadores Dart que usa la composición local y `buildRustEngineServices`
-agrupa sus pares Rust de análisis, ejecución, completado, vocabulario, estructura de ejercicios y diagramas sobre
-`API.PROGRAM.VIEW`. La composición Rust aún no incluye exportación ni referencia de sintaxis; B5 permanece abierto
-hasta que esos consumidores y la equivalencia observable cubran toda la base de conocimiento.
+pasan. `buildDartEngineServices` y `buildRustEngineServices` implementan la misma interfaz `EngineServices`; la
+composición Rust cubre análisis, ejecución, completado, vocabulario, referencia de sintaxis, exportación, estructura de
+ejercicios y diagramas sobre `API.PROGRAM.VIEW`, sin ningún archivo alcanzable que importe `pseudolearn_core`. La
+suite `test/equivalence/` contrasta ambas composiciones sobre 362 programas de la base de conocimiento.
 
 ---
 
@@ -216,7 +216,8 @@ dart run tool/check_content.dart
 # 5. Verificación de integridad del sistema de diseño
 dart run tool/check_design_system.dart
 
-# 6. Suite completa de tests unitarios, de arquitectura y widgets
+# 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets, equivalencia de puertos)
+cargo build --release --locked --lib --manifest-path native/Cargo.toml
 flutter test
 ```
 
@@ -687,9 +688,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 - **Problema:** El uso de localizadores globales o contenedores dinámicos permite solicitar dependencias desde cualquier
   punto de la interfaz y oculta el acoplamiento.
 - **Elección:** `AppDependencies` declara todas las dependencias en campos `final`. En producción,
-  `buildLocalDependencies` usa el conjunto estático `DartEngineServices`. `RustEngineServices` agrupa la familia Rust
-  disponible sin selección dinámica, pero aún no puede construir `AppDependencies` porque le faltan exportación y
-  referencia de sintaxis. No se permite ningún condicional (`if`, `switch`, ternario) en `composition/`. Los tests
+  `buildLocalDependencies` usa el conjunto estático `DartEngineServices` y `buildRustLocalDependencies` el conjunto
+  `RustEngineServices`; ambos implementan `EngineServices` y comparten un único ensamblado privado, de modo que la
+  elección de composición ocurre en el punto de entrada y no dentro de ningún servicio. No se permite ningún condicional (`if`, `switch`, ternario) en `composition/`. Los tests
   inyectan fakes directamente en el constructor de `AppDependencies`. Los ajustes dinámicos (perfil de sintaxis, idioma
   de interfaz) se pasan como parámetros en los métodos de los puertos.
 - **Alternativas descartadas y por qué:**
@@ -774,6 +775,15 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
       con métodos `&mut self`, constructor estático `pub fn new() -> Self`, y tipado estricto con funciones
       idiomáticas (
       `parse::<i64>()`, `.sqrt()`, `format!`).
+- **Ruta Rust (`engine/rust/export/`):** `RustProgramExporter` lee `API.PROGRAM.VIEW` y no usa el AST Dart. Un lector
+  de formas (`StatementShapeReader`, `UnitShapeReader`) convierte la vista en registros tipados de sentencias y
+  unidades; `ViewExpressionWriter` recorre las expresiones con reglas de destino inyectadas como datos
+  (`PythonExpressionRules`, `RustExpressionRules`), y `PythonShapeEmitter` y `RustShapeEmitter` conservan la forma de
+  salida de los emisores Dart. Operadores, literales, funciones incorporadas resueltas, receptor de superclase,
+  salida sin salto y tipos primitivos llegan como atributos de la vista calculados por el motor; la app no interpreta
+  lexemas del perfil. Sobre 362 programas y dos destinos la salida es idéntica a la de los emisores Dart. Se
+  conservan sus particularidades heredadas (`.pow()` en Rust, `x as f64` sin paréntesis); corregirlas es una decisión
+  de producto aparte.
 - **La primera línea del código generado es la firma de la marca** (`targetCodeHeader`), en el comentario de línea que
   cada destino usa. Es la única parte de la marca que sale de la aplicación: el código equivalente se pega en un
   trabajo, en un chat o en un repositorio, y va firmado. La firma tiene un solo dueño y no una copia por emisor, porque
@@ -2087,8 +2097,23 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   materializar el montón. `RustCompletionSource`, las fuentes de plantillas y vocabulario y los lectores de
   construcciones y aserciones estructurales usan las operaciones públicas del servicio. Los tres adaptadores de
   diagramas construyen sus modelos desde `program_view`, que aporta roles de hijos, unidades, miembros, tipos,
-  dimensiones e identidades compatibles con los eventos. `buildRustEngineServices` ensambla esos puertos sin respaldo
-  del núcleo Dart; los emisores y la referencia de sintaxis todavía no forman parte de ese conjunto.
+  dimensiones e identidades compatibles con los eventos. `RustProgramExporter` produce el código equivalente y
+  `RustSyntaxReferenceSource` resuelve marcadores y tablas con `reference_vocabulary`, `editor_vocabulary` y
+  `diagnostic_template`; la app solo conserva el orden de presentación. `buildRustEngineServices` ensambla todos los
+  puertos sin respaldo del núcleo Dart y `rust_composition_isolation_test.dart` recorre las importaciones alcanzables
+  desde él para comprobarlo.
+- **Rigor del análisis:** la composición Dart usa perfiles flexibles (terminador de sentencia opcional); los
+  adaptadores Rust piden el rigor `flexible` mediante `rustStrictness`, único valor compartido por análisis,
+  completado y severidades de los marcadores de diagnóstico.
+- **Diferencias conocidas entre composiciones** (la suite de equivalencia exige que sean exactamente estas):
+  Rust informa `unusedParameter` como advertencia (el corpus declara códigos propios para parámetros no usados) y no
+  duplica diagnósticos que el analizador Dart repite; los diagramas Rust rotulan con el texto fuente del usuario en
+  lugar de un texto normalizado, por lo que la suite compara unidades y formas de nodo, no rótulos; las listas de
+  funciones y palabras de la referencia salen en orden alfabético de identidad y los tipos con su ortografía de
+  palabra clave (`Entero`); las plantillas del editor son las verificadas por el servicio de lenguaje.
+- **Biblioteca nativa de las pruebas:** `test/` carga `native/target/release/` y no la recompila. Antes de
+  `flutter test` ejecute `cargo build --release --locked --lib --manifest-path native/Cargo.toml` (lo hace
+  `tool/test_bridge.sh`); `native_library_freshness_test.dart` falla si la biblioteca es anterior a cualquier fuente Rust.
 - **Verificación del puente:** `bash tool/bridge.sh clean-checkout` crea un árbol de trabajo limpio, instala
   dependencias, regenera los enlaces y exige que no difieran del estado que se verifica. Requiere
   `flutter_rust_bridge_codegen 2.13.0` y `cargo-expand 1.0.127` instalados. El archivo Dart generado se versiona tal

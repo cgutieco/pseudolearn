@@ -9,6 +9,8 @@ import '../diagram/layout_block.dart';
 import '../diagram/node_factory.dart';
 import '../diagram/node_sizing.dart';
 import '../diagram/text_metrics.dart';
+import 'rust_diagram_captions.dart';
+import 'rust_editor_vocabulary.dart';
 import 'rust_executable_unit_reader.dart';
 import 'rust_flowchart_block_builder.dart';
 import 'rust_program_view.dart';
@@ -18,10 +20,12 @@ import 'rust_transport.dart';
 final class RustFlowchartBuilder implements FlowchartBuilder {
   final RustProgramViewSource _views;
   final RustExecutableUnitReader _units;
+  final RustEditorVocabulary _words;
 
   RustFlowchartBuilder(RustTransport transport)
     : _views = RustProgramViewSource(transport),
-      _units = const RustExecutableUnitReader();
+      _units = const RustExecutableUnitReader(),
+      _words = RustEditorVocabulary(transport);
 
   @override
   DiagramProgram buildDiagram({
@@ -29,6 +33,7 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
   }) {
+    final captions = RustDiagramCaptions.load(_words, profileId);
     final view = _views.load(
       sourceCode: sourceCode,
       profileId: profileId,
@@ -39,7 +44,7 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
     final entries = _units.read(view, vocabulary: vocabulary);
     final scenes = <String, DiagramScene>{};
     for (final entry in entries) {
-      scenes[entry.unit.id] = _scene(entry, view, vocabulary);
+      scenes[entry.unit.id] = _scene(entry, view, (vocabulary, captions));
     }
     return DiagramProgram(
       units: entries.map((entry) => entry.unit).toList(),
@@ -50,24 +55,23 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
   DiagramScene _scene(
     RustExecutableUnit entry,
     RustProgramView view,
-    DiagramVocabulary vocabulary,
+    (DiagramVocabulary, RustDiagramCaptions) words,
   ) {
+    final (vocabulary, captions) = words;
     final nodes = NodeFactory(const NodeSizing(TextMetrics()));
     final blocks = RustFlowchartBlockBuilder(
       view: view,
       nodes: nodes,
       vocabulary: vocabulary,
+      captions: captions,
     );
     final start = _terminal(
       nodes,
       vocabulary.start,
       entry.node.range.startLine,
     );
-    final statements = rustChildrenOf(
-      view,
-      entry.body,
-    ).any((node) => node.syntaxKind == 'statement');
-    final body = statements ? blocks.sequence(entry.body) : null;
+    final hasStatements = rustStatementsOf(view, entry.body).isNotEmpty;
+    final body = hasStatements ? blocks.sequence(entry.body) : null;
     final end = _terminal(nodes, vocabulary.end, entry.node.range.endLine);
     return _toScene(LayoutBlock.stack([start, ?body, end]));
   }

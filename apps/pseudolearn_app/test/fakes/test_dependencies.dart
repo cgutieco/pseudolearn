@@ -24,6 +24,7 @@ import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.d
 import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
 import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
+import 'package:pseudolearn_app/composition/engine_services.dart';
 import 'fake_account_deletion_gateway.dart';
 import 'fake_auth_gateway.dart';
 import 'fake_clock.dart';
@@ -68,6 +69,7 @@ AppDependencies buildTestDependencies({
   SyncCoordinator? syncCoordinator,
   FakeTextEntryModality? textEntryModality,
   FakeAppVersionSource? appVersionSource,
+  EngineServices? engine,
 }) {
   return AppDependencies(
     clock: clock ?? FakeClock(DateTime(2026, 8, 15, 12, 0)),
@@ -82,23 +84,31 @@ AppDependencies buildTestDependencies({
     syncQueue: syncQueue ?? FakeSyncQueue(),
     connectivityMonitor: connectivityMonitor ?? FakeConnectivityMonitor(),
     syncCoordinator: syncCoordinator ?? FakeSyncCoordinator(),
-    programAnalyzer: CoreProgramAnalyzer(),
-    createProgramExecution: CoreProgramExecution.new,
-    flowchartBuilder: FlowchartLayout(),
-    structogramBuilder: StructogramLayout(),
-    classDiagramBuilder: CoreClassDiagramBuilder(),
-    completionSource: const ProfileCompletionSource(),
-    sourceEditor: const LexiconSourceEditor(),
-    editorKeySource: const ProfileKeySource(),
+    programAnalyzer: engine?.analyzer ?? CoreProgramAnalyzer(),
+    createProgramExecution: engine?.createProgramExecution ?? CoreProgramExecution.new,
+    flowchartBuilder: engine?.flowchartBuilder ?? FlowchartLayout(),
+    structogramBuilder: engine?.structogramBuilder ?? StructogramLayout(),
+    classDiagramBuilder: engine?.classDiagramBuilder ?? CoreClassDiagramBuilder(),
+    completionSource: engine?.completionSource ?? const ProfileCompletionSource(),
+    contextualCompletionSource: engine?.contextualCompletionSource,
+    sourceEditor: engine?.sourceEditor ?? const LexiconSourceEditor(),
+    editorKeySource: engine?.editorKeySource ?? const ProfileKeySource(),
     textEntryModality: textEntryModality ?? const FakeTextEntryModality(),
     appVersionSource: appVersionSource ?? const FakeAppVersionSource(),
     knowledgeRepository: knowledgeRepository ?? FakeKnowledgeRepository(),
-    syntaxReferenceSource: syntaxReferenceSource ?? FakeSyntaxReferenceSource(),
-    programExporter: programExporter ?? FakeProgramExporter(),
+    syntaxReferenceSource:
+        syntaxReferenceSource ??
+        engine?.syntaxReferenceSource ??
+        FakeSyntaxReferenceSource(),
+    programExporter:
+        programExporter ?? engine?.programExporter ?? FakeProgramExporter(),
     localProgressStore: localProgressStore ?? InMemoryLocalProgressStore(),
     progressHistory: progressHistory ?? InMemoryProgressHistory(),
     programConstructReader:
-        programConstructReader ?? FakeProgramConstructReader(),
-    exerciseChecker: exerciseChecker ?? FakeExerciseChecker(),
+        programConstructReader ??
+        engine?.programConstructReader ??
+        FakeProgramConstructReader(),
+    exerciseChecker:
+        exerciseChecker ?? engine?.exerciseChecker ?? FakeExerciseChecker(),
   );
 }

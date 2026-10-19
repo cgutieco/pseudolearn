@@ -1,7 +1,6 @@
 import 'package:pseudolearn_core/pseudolearn_core.dart';
 import '../../domain/model/knowledge/content_block.dart';
 import '../../domain/model/knowledge/knowledge_entry.dart';
-import '../../domain/model/knowledge/knowledge_entry_type.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/knowledge/content_marker.dart';
 import '../../domain/model/knowledge/marker_resolution.dart';
@@ -9,6 +8,7 @@ import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/ports/syntax_reference_source.dart';
 import '../mapping/profile_catalog.dart';
 import 'engine_marker_resolver.dart';
+import 'reference_entries.dart';
 
 final class SyntaxReferenceGenerator implements SyntaxReferenceSource {
   final EngineMarkerResolver _markers;
@@ -31,24 +31,7 @@ final class SyntaxReferenceGenerator implements SyntaxReferenceSource {
   }
 
   @override
-  List<KnowledgeEntry> getReferenceEntries() {
-    return [
-      const KnowledgeEntry(
-        id: 'reference-classic-spanish',
-        type: KnowledgeEntryType.reference,
-        title: 'Referencia de sintaxis (Español)',
-        summary: 'Resumen completo de palabras reservadas, tipos y operadores del perfil español clásico.',
-        profileId: SyntaxProfileId.classicSpanish,
-      ),
-      const KnowledgeEntry(
-        id: 'reference-english',
-        type: KnowledgeEntryType.reference,
-        title: 'Syntax Reference (English)',
-        summary: 'Comprehensive summary of reserved keywords, types, and operators for the English profile.',
-        profileId: SyntaxProfileId.english,
-      ),
-    ];
-  }
+  List<KnowledgeEntry> getReferenceEntries() => referenceEntries;
 
   @override
   List<ContentBlock> getBlocksForProfile(SyntaxProfileId profileId) {

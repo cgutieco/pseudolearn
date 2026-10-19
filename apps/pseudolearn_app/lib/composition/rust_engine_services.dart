@@ -24,20 +24,40 @@ import '../engine/rust/rust_program_execution.dart';
 import '../engine/rust/rust_structural_assertion_checker.dart';
 import '../engine/rust/rust_structogram_builder.dart';
 import '../engine/rust/rust_template_source.dart';
+import '../engine/rust/rust_syntax_reference_source.dart';
 import '../engine/rust/rust_transport.dart';
+import '../engine/rust/export/rust_program_exporter.dart';
+import '../domain/ports/program_exporter.dart';
+import '../domain/ports/syntax_reference_source.dart';
+import 'engine_services.dart';
 
-final class RustEngineServices {
+final class RustEngineServices implements EngineServices {
+  @override
   final ProgramAnalyzer analyzer;
+  @override
   final ProgramExecution Function() createProgramExecution;
+  @override
   final CompletionSource completionSource;
+  @override
   final ContextualCompletionSource contextualCompletionSource;
+  @override
   final SourceEditor sourceEditor;
+  @override
   final EditorKeySource editorKeySource;
+  @override
   final ProgramConstructReader programConstructReader;
+  @override
   final ExerciseChecker exerciseChecker;
+  @override
   final FlowchartBuilder flowchartBuilder;
+  @override
   final StructogramBuilder structogramBuilder;
+  @override
   final ClassDiagramBuilder classDiagramBuilder;
+  @override
+  final SyntaxReferenceSource syntaxReferenceSource;
+  @override
+  final ProgramExporter programExporter;
 
   const RustEngineServices({
     required this.analyzer,
@@ -51,6 +71,8 @@ final class RustEngineServices {
     required this.flowchartBuilder,
     required this.structogramBuilder,
     required this.classDiagramBuilder,
+    required this.syntaxReferenceSource,
+    required this.programExporter,
   });
 }
 
@@ -69,6 +91,8 @@ RustEngineServices buildRustEngineServices(RustTransport transport) {
     flowchartBuilder: RustFlowchartBuilder(transport),
     structogramBuilder: RustStructogramBuilder(transport),
     classDiagramBuilder: RustClassDiagramBuilder(transport),
+    syntaxReferenceSource: RustSyntaxReferenceSource(transport),
+    programExporter: RustProgramExporter(transport),
     exerciseChecker: RustExerciseChecker(
       behaviour: BehaviourChecker(
         execution: RustProgramExecution(transport),

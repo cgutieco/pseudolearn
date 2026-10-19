@@ -32,6 +32,7 @@ pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewK
         | NodeKind::FieldDeclaration
         | NodeKind::Declaration
         | NodeKind::DimensionDeclaration
+        | NodeKind::Dimensioned
         | NodeKind::Parameters
         | NodeKind::Parameter => Some(ViewKind::Declaration),
         NodeKind::Body
@@ -76,6 +77,7 @@ fn declaration_or_statement_name(kind: NodeKind) -> Option<&'static str> {
         NodeKind::FieldDeclaration => "field_declaration",
         NodeKind::Declaration => "declaration",
         NodeKind::DimensionDeclaration => "dimension_declaration",
+        NodeKind::Dimensioned => "dimensioned",
         NodeKind::Parameters => "parameters",
         NodeKind::Parameter => "parameter",
         NodeKind::Body => "body",

@@ -5,7 +5,7 @@
   "titulo": "Versión y capacidades de la API",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -25,14 +25,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "API versioning",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Los consumidores pueden negociar service_completion y generated_vocabulary antes de consultar autocompletado, plantillas y lexemas del perfil activo.",
-    "impacto_implementaciones": "La declaración de capacidades reconoce service_completion y generated_vocabulary y el borde ofrece operaciones para candidatos contextuales, plantillas verificadas y palabras generadas.",
-    "justificacion": "El editor conecta los servicios Rust sin mantener tablas duplicadas de palabras o construcciones.",
-    "revisado_por": "persona-responsable"
-  }
+  "titulo_en": "API versioning"
 }
 ---
 
@@ -68,7 +61,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY.",
+  "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY. generated_vocabulary se anuncia solo cuando el borde ofrece los lexemas, las funciones incorporadas con su firma, la tabla de precedencia y las plantillas de mensaje de diagnóstico del perfil activo, todos derivados de los datos del lenguaje y no de tablas del consumidor.",
   "verificacion": [
     "P2"
   ]

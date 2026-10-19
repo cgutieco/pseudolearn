@@ -32,7 +32,7 @@ final class RustCompletionSource implements ContextualCompletionSource {
           _transport.call('complete', {
                 'program': sourceCode,
                 'profile': rustProfileName(profileId),
-                'strictness': 'strict',
+                'strictness': rustStrictness,
                 'revision': revision.toString(),
                 'cursor_utf8': cursorUtf8.toString(),
               })

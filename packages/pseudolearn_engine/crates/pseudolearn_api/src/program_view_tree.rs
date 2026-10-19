@@ -76,6 +76,7 @@ impl NodeCollector<'_> {
             children: Vec::new(),
             child_roles: Vec::new(),
             dimensions: parameter_dimensions(self.tree, index),
+            attributes: Vec::new(),
         });
         self.link_parent(ordinal, pending_node);
         Some(ordinal)
@@ -172,7 +173,9 @@ fn child_role(tree: &SyntaxTree, parent: usize, child: usize) -> &'static str {
             loop_role(parent_node.kind, child_node.kind)
         }
         NodeKind::Switch => switch_role(child_node.kind),
-        NodeKind::AlgorithmUnit | NodeKind::Subroutine => unit_role(child_node.kind),
+        NodeKind::AlgorithmUnit | NodeKind::Subroutine | NodeKind::Subprogram => {
+            unit_role(child_node.kind)
+        }
         NodeKind::ClassUnit => class_role(child_node.kind),
         NodeKind::MethodMember | NodeKind::ConstructorMember => member_role(child_node.kind),
         NodeKind::Parameters => "parameter",

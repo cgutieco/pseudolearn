@@ -22,6 +22,7 @@ final class RustExecutableUnitReader {
     required DiagramVocabulary vocabulary,
   }) {
     final entries = <RustExecutableUnit>[];
+    final classMethods = <RustExecutableUnit>[];
     for (final unit in view.units) {
       final node = view.nodeById(unit.nodeId);
       if (node == null) continue;
@@ -30,7 +31,7 @@ final class RustExecutableUnitReader {
           view: view,
           className: unit.name,
           vocabulary: vocabulary,
-          entries: entries,
+          entries: classMethods,
         );
         continue;
       }
@@ -46,11 +47,13 @@ final class RustExecutableUnitReader {
         ),
       );
     }
-    entries.sort(
-      (left, right) =>
-          left.node.range.startOffset.compareTo(right.node.range.startOffset),
+    final algorithms = entries.where(
+      (entry) => entry.unit.kind == DiagramUnitKind.algorithm,
     );
-    return List.unmodifiable(entries);
+    final subroutines = entries.where(
+      (entry) => entry.unit.kind == DiagramUnitKind.subroutine,
+    );
+    return List.unmodifiable([...algorithms, ...subroutines, ...classMethods]);
   }
 
   RustExecutableUnit _topLevelEntry({

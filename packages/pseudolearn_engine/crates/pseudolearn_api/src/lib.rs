@@ -26,6 +26,7 @@ pub use wire::{deserialize_from_str, serialize_to_string};
 
 pub use diagnostic_conversion::render_diagnostic;
 
+mod diagnostic_template;
 mod editor_vocabulary;
 mod execution;
 mod execution_model;
@@ -34,6 +35,7 @@ mod execution_wire;
 mod fault_injection;
 mod probes;
 mod recording_options;
+mod reference_vocabulary;
 mod stepping;
 pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_program};
 pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
@@ -43,10 +45,12 @@ mod execution_capture;
 mod execution_resource;
 mod locale_operations;
 mod program_view;
+mod program_view_annotations;
 mod program_view_kind;
 mod program_view_members;
 mod program_view_operations;
 mod program_view_relations;
+mod program_view_tokens;
 mod program_view_tree;
 mod resources;
 mod service_completion;

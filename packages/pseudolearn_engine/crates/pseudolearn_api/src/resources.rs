@@ -63,6 +63,8 @@ impl ApiSession {
             "complete" => crate::service_completion::complete(arguments),
             "completion_templates" => crate::service_completion::templates(arguments),
             "editor_vocabulary" => crate::editor_vocabulary::query(arguments),
+            "reference_vocabulary" => crate::reference_vocabulary::query(arguments),
+            "diagnostic_template" => crate::diagnostic_template::query(arguments),
             "release" => self.release(identifier(arguments)?),
             "version" => Ok(json!({"version":crate::ENGINE_VERSION,"editions":["2026"],
                 "capabilities":crate::supported_capabilities()})),

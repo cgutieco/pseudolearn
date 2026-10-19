@@ -1,5 +1,6 @@
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/analysis/source_range.dart';
+import 'rust_view_semantics.dart';
 import 'source_offset_index.dart';
 
 part 'rust_program_view_builder.dart';
@@ -13,6 +14,7 @@ final class RustViewNode {
   final int? dimensions;
   final List<int> children;
   final Map<int, String> childRoles;
+  final RustViewSemantics semantics;
 
   const RustViewNode({
     required this.id,
@@ -23,6 +25,7 @@ final class RustViewNode {
     required this.dimensions,
     required this.children,
     required this.childRoles,
+    this.semantics = RustViewSemantics.none,
   });
 }
 

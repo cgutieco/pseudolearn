@@ -1,4 +1,5 @@
 import '../domain/ports/class_diagram_builder.dart';
+import '../domain/ports/contextual_completion_source.dart';
 import '../domain/ports/completion_source.dart';
 import '../domain/ports/editor_key_source.dart';
 import '../domain/ports/exercise_checker.dart';
@@ -25,21 +26,37 @@ import '../engine/exercise/structural_assertion_checker.dart';
 import '../engine/export/core_program_exporter.dart';
 import '../engine/knowledge/syntax_reference_generator.dart';
 import '../engine/structogram/structogram_layout.dart';
+import 'engine_services.dart';
 
-final class DartEngineServices {
+final class DartEngineServices implements EngineServices {
   final AnalysisCache analyses;
+  @override
   final ProgramAnalyzer analyzer;
+  @override
   final ProgramExecution Function() createProgramExecution;
+  @override
   final FlowchartBuilder flowchartBuilder;
+  @override
   final StructogramBuilder structogramBuilder;
+  @override
   final ClassDiagramBuilder classDiagramBuilder;
+  @override
   final CompletionSource completionSource;
+  @override
   final SourceEditor sourceEditor;
+  @override
   final EditorKeySource editorKeySource;
+  @override
   final SyntaxReferenceSource syntaxReferenceSource;
+  @override
   final ProgramExporter programExporter;
+  @override
   final ProgramConstructReader programConstructReader;
+  @override
   final ExerciseChecker exerciseChecker;
+
+  @override
+  ContextualCompletionSource? get contextualCompletionSource => null;
 
   const DartEngineServices({
     required this.analyses,

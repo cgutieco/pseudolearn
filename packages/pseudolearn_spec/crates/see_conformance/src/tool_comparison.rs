@@ -133,6 +133,8 @@ fn node_ids_unique(view: &Value) -> bool {
     })
 }
 
+type Identifiers<'view> = std::collections::BTreeSet<&'view str>;
+
 fn references_same_revision(view: &Value) -> bool {
     if !view
         .get("revision_id")
@@ -144,59 +146,55 @@ fn references_same_revision(view: &Value) -> bool {
     let Some(nodes) = view.get("nodes").and_then(Value::as_array) else {
         return false;
     };
-    let identifiers: std::collections::BTreeSet<_> = nodes
+    let identifiers: Identifiers<'_> = nodes
         .iter()
         .filter_map(|node| node.get("node_id").and_then(Value::as_str))
         .collect();
-    let units_resolve = view
-        .get("units")
+    collection_resolves(view, "units", &identifiers)
+        && collection_resolves(view, "members", &identifiers)
+        && nodes.iter().all(|node| node_resolves(node, &identifiers))
+}
+
+fn collection_resolves(view: &Value, name: &str, identifiers: &Identifiers<'_>) -> bool {
+    view.get(name)
         .and_then(Value::as_array)
-        .is_some_and(|units| {
-            units.iter().all(|unit| {
-                unit.get("node_id")
-                    .and_then(Value::as_str)
-                    .is_some_and(|identifier| identifiers.contains(identifier))
-            })
-        });
-    let members_resolve = view
-        .get("members")
-        .and_then(Value::as_array)
-        .is_some_and(|members| {
-            members.iter().all(|member| {
-                member
+        .is_none_or(|entries| {
+            entries.iter().all(|entry| {
+                entry
                     .get("node_id")
                     .and_then(Value::as_str)
                     .is_some_and(|identifier| identifiers.contains(identifier))
             })
+        })
+}
+
+fn node_resolves(node: &Value, identifiers: &Identifiers<'_>) -> bool {
+    let children_resolve = node
+        .get("child_node_ids")
+        .and_then(Value::as_array)
+        .is_none_or(|children| {
+            children.iter().all(|child| {
+                child
+                    .as_str()
+                    .is_some_and(|identifier| identifiers.contains(identifier))
+            })
         });
-    nodes.iter().all(|node| {
-        let children_resolve = node
-            .get("child_node_ids")
-            .and_then(Value::as_array)
-            .is_some_and(|children| {
-                children.iter().all(|child| {
-                    child
-                        .as_str()
-                        .is_some_and(|identifier| identifiers.contains(identifier))
-                })
-            });
-        let roles_resolve = node
-            .get("child_roles")
-            .and_then(Value::as_array)
-            .is_some_and(|roles| {
-                roles.iter().all(|role| {
-                    role.get("node_id")
-                        .and_then(Value::as_str)
-                        .is_some_and(|identifier| identifiers.contains(identifier))
-                })
-            });
-        let parent_resolves = node.get("parent_node_id").is_none_or(|parent| {
-            parent
-                .as_str()
-                .is_some_and(|identifier| identifiers.contains(identifier))
+    let roles_resolve = node
+        .get("child_roles")
+        .and_then(Value::as_array)
+        .is_none_or(|roles| {
+            roles.iter().all(|role| {
+                role.get("node_id")
+                    .and_then(Value::as_str)
+                    .is_some_and(|identifier| identifiers.contains(identifier))
+            })
         });
-        children_resolve && roles_resolve && parent_resolves
-    }) && units_resolve && members_resolve
+    let parent_resolves = node.get("parent_node_id").is_none_or(|parent| {
+        parent
+            .as_str()
+            .is_some_and(|identifier| identifiers.contains(identifier))
+    });
+    children_resolve && roles_resolve && parent_resolves
 }
 
 fn intermediate_representation(expected: &Value, actual: &Value) -> bool {

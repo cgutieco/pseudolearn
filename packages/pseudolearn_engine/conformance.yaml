@@ -1051,12 +1051,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.VERSIONING@0.3.0#R1",
+      "regla": "API.VERSIONING@0.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.VERSIONING@0.3.0#R2",
+      "regla": "API.VERSIONING@0.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -1138,17 +1138,17 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.4.0#R1",
+      "regla": "API.PROGRAM.VIEW@0.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.4.0#R2",
+      "regla": "API.PROGRAM.VIEW@0.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.4.0#R3",
+      "regla": "API.PROGRAM.VIEW@0.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "R8",

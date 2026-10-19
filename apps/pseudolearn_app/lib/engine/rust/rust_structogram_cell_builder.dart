@@ -3,26 +3,27 @@ import '../../domain/model/diagram/structogram_metrics.dart';
 import '../diagram/diagram_vocabulary.dart';
 import '../diagram/text_metrics.dart';
 import '../structogram/structogram_cell.dart';
+import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
 
 final class RustStructogramCellBuilder {
   final RustProgramView _view;
   final DiagramVocabulary _vocabulary;
   final TextMetrics _text;
+  final RustDiagramCaptions _captions;
 
   const RustStructogramCellBuilder({
     required RustProgramView view,
     required DiagramVocabulary vocabulary,
+    required RustDiagramCaptions captions,
     TextMetrics text = const TextMetrics(),
   }) : _view = view,
        _vocabulary = vocabulary,
+       _captions = captions,
        _text = text;
 
   StructogramCell buildBody(RustViewNode body) {
-    final statements = rustChildrenOf(
-      _view,
-      body,
-    ).where((node) => node.syntaxKind == 'statement').toList();
+    final statements = rustStatementsOf(_view, body);
     if (statements.isEmpty) return _emptyCell();
     return StructogramStack([
       for (final statement in statements) _statement(statement),
@@ -49,7 +50,7 @@ final class RustStructogramCellBuilder {
 
   StructogramCell _conditional(RustViewNode wrapper, RustViewNode node) =>
       StructogramBranch(
-        headerLines: _wrap(_caption(_view.childForRole(node, 'condition'))),
+        headerLines: _wrap(_question(_view.childForRole(node, 'condition'))),
         isBinary: true,
         nodeId: wrapper.id,
         sourceLine: wrapper.range.startLine,
@@ -85,7 +86,9 @@ final class RustStructogramCellBuilder {
       );
     }
     return StructogramBranch(
-      headerLines: _wrap(_caption(_view.childForRole(node, 'selector'))),
+      headerLines: _wrap(
+        _captions.selector(_caption(_view.childForRole(node, 'selector'))),
+      ),
       isBinary: false,
       nodeId: wrapper.id,
       sourceLine: wrapper.range.startLine,
@@ -98,7 +101,7 @@ final class RustStructogramCellBuilder {
         headerLines: _wrap(
           node.syntaxKind == 'for_loop'
               ? _header(node)
-              : _caption(_view.childForRole(node, 'condition')),
+              : _question(_view.childForRole(node, 'condition')),
         ),
         position: StructogramLoopPosition.header,
         nodeId: wrapper.id,
@@ -108,7 +111,7 @@ final class RustStructogramCellBuilder {
 
   StructogramCell _postTestLoop(RustViewNode wrapper, RustViewNode node) =>
       StructogramLoop(
-        headerLines: _wrap(_caption(_view.childForRole(node, 'condition'))),
+        headerLines: _wrap(_question(_view.childForRole(node, 'condition'))),
         position: StructogramLoopPosition.footer,
         nodeId: wrapper.id,
         sourceLine: wrapper.range.endLine,
@@ -134,10 +137,7 @@ final class RustStructogramCellBuilder {
 
   StructogramCell _branch(RustViewNode? body) {
     if (body == null) return _emptyCell();
-    final hasStatements = rustChildrenOf(
-      _view,
-      body,
-    ).any((child) => child.syntaxKind == 'statement');
+    final hasStatements = rustStatementsOf(_view, body).isNotEmpty;
     return hasStatements ? buildBody(body) : _emptyCell();
   }
 
@@ -151,7 +151,8 @@ final class RustStructogramCellBuilder {
 
   String _header(RustViewNode node) {
     final parts = rustChildrenForRole(_view, node, 'loop_header');
-    return parts.isEmpty ? _caption(node) : parts.map(_caption).join(' ');
+    if (parts.isEmpty) return _caption(node);
+    return _captions.loopHeader(parts.map(_caption).toList());
   }
 
   String _caption(RustViewNode? node) {
@@ -161,6 +162,9 @@ final class RustStructogramCellBuilder {
         ? text.substring(0, text.length - 1).trimRight()
         : text;
   }
+
+  String _question(RustViewNode? condition) =>
+      _vocabulary.asQuestion(_caption(condition));
 
   String _firstLine(String text) => text.split('\n').first.trim();
 

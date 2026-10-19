@@ -5,7 +5,7 @@
   "titulo": "Vista pública del programa",
   "dominio": "motor",
   "estado": "experimental",
-  "version": "0.4.0",
+  "version": "0.1.0",
   "duenos": ["responsable-motor"],
   "sujetos": ["engine", "app"],
   "resumen": "Proyección inmutable y portable para diagramas, emisores y comprobaciones estructurales.",
@@ -17,14 +17,7 @@
     {"id": "LANG.SYNTAX.GRAMMAR", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
     {"id": "LANG.CLASS.INHERITANCE", "version": ">=0.1.0, <1.0.0", "tipo": "usa"}
   ],
-  "titulo_en": "Public program view",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Diagramas, emisores y comprobaciones pueden distinguir ramas, seguir cada miembro hasta su nodo y conservar tramos de unidad.",
-    "impacto_implementaciones": "Cada relación de hijo declara su papel; los miembros y parámetros exponen tipo y dimensiones cuando corresponda, y cada miembro de clase incluye una identidad que resuelve en la misma vista.",
-    "justificacion": "Los consumidores deben proyectar representaciones fieles desde una vista compartida sin volver a analizar el texto ni depender de la estructura privada del CST.",
-    "revisado_por": "persona-responsable"
-  }
+  "titulo_en": "Public program view"
 }
 ---
 
@@ -94,8 +87,8 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Una edición produce una revisión nueva y no promete conservar identificadores.",
-  "verificacion": ["C3", "C5"]
+  "texto": "La vista incluye revision_id opaco y una lista nodes. Cada nodo declara node_id opaco único dentro de esa revisión, kind de categoría y syntax_kind estable de la construcción del lenguaje, span con desplazamientos UTF-8 de inicio inclusivo y fin exclusivo codificados como cadenas decimales, y posiciones start/end de línea y columna desde uno medidas en puntos de código Unicode. Cada nodo incluye child_node_ids y child_roles en el mismo orden; cada relación child_roles identifica node_id y el papel sintáctico de esa relación. Puede incluir parent_node_id. Los nodos parameter incluyen dimensions con la cantidad de dimensiones declaradas. Los miembros field incluyen type con el lexema de su tipo declarado y dimensions con la cantidad de dimensiones declaradas. Toda referencia resuelve a un nodo de la misma vista. Los nodos de expresión declaran semántica independiente del perfil: los de operaciones binarias incluyen operators con la identidad canónica de cada operador entre operandos consecutivos (add, subtract, multiply, divide, integer_divide, modulo, power, equal, not_equal, less_than, less_than_or_equal, greater_than, greater_than_or_equal, and, or); los unarios incluyen operator (negate, positive, not); los literales incluyen literal con type (integer, real, string, character, boolean) y value; una llamada a función incorporada no oculta por un subprograma homónimo incluye builtin con la identidad canónica de la función; un acceso con receptor de superclase incluye receiver con valor super y, si nombra al constructor, super_constructor verdadero; cada array de una declaración de dimensiones es un nodo dimensioned; los subprogramas declaran los roles signature y body; las salidas sin salto de línea incluyen without_newline verdadero; y los tipos primitivos incluyen primitive con su identidad canónica. Una edición produce una revisión nueva y no promete conservar identificadores.",
+  "verificacion": ["C3", "C5", "C7"]
 }
 ```
 
@@ -134,7 +127,7 @@
       "child_roles_include": [{"syntax_kind":"conditional","role":"else_body"}]
     }
   },
-  "programa": "Algoritmo P\nSi verdadero Entonces\nMientras falso Hacer\nEscribir 1;\nFinMientras\nFinSi\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nSi verdadero Entonces\nMientras falso Hacer\nEscribir 1;\nFinMientras\nSino\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -151,7 +144,8 @@
     "vista_programa": {
       "members": [
         {"class": "Caja", "name": "saldo", "kind": "field", "type": "Entero", "dimensions": 0},
-        {"class": "Caja", "name": "matriz", "kind": "field", "type": "Entero", "dimensions": 2}
+        {"class": "Caja", "name": "matriz", "kind": "field", "type": "Entero", "dimensions": 2},
+        {"class": "Caja", "name": "ajustar", "kind": "method", "visibility": "public", "arity": 1}
       ],
       "nodes_include": [
         {"syntax_kind": "parameter", "dimensions": 3}
@@ -159,6 +153,31 @@
     }
   },
   "programa": "Clase Caja\nDefinir saldo Como Entero;\nDimension matriz[2, 3] Como Entero;\nMetodo ajustar(monto[,,] Como Entero)\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "vista_programa": {
+      "nodes_include": [
+        {"syntax_kind": "postfix", "builtin": "squareRoot"},
+        {"syntax_kind": "addition", "operators": ["add"]},
+        {"syntax_kind": "unary", "operator": "negate"},
+        {"syntax_kind": "literal", "literal": {"type": "integer", "value": "4"}},
+        {"syntax_kind": "output", "without_newline": true},
+        {"syntax_kind": "type", "primitive": "real"}
+      ]
+    }
+  },
+  "programa": "Algoritmo P\nDefinir x Como Real;\nx <- Raiz(4) + -1;\nEscribir x Sin Saltar;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

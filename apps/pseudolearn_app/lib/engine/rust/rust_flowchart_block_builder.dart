@@ -5,26 +5,27 @@ import '../diagram/layout_block.dart';
 import '../diagram/node_factory.dart';
 import '../diagram/post_test_loop_block.dart';
 import '../diagram/pre_test_loop_block.dart';
+import 'rust_diagram_captions.dart';
 import 'rust_program_view.dart';
 
 final class RustFlowchartBlockBuilder {
   final RustProgramView _view;
   final NodeFactory _nodes;
   final DiagramVocabulary _vocabulary;
+  final RustDiagramCaptions _captions;
 
   const RustFlowchartBlockBuilder({
     required RustProgramView view,
     required NodeFactory nodes,
     required DiagramVocabulary vocabulary,
+    required RustDiagramCaptions captions,
   }) : _view = view,
        _nodes = nodes,
-       _vocabulary = vocabulary;
+       _vocabulary = vocabulary,
+       _captions = captions;
 
   LayoutBlock sequence(RustViewNode body) {
-    final statements = rustChildrenOf(
-      _view,
-      body,
-    ).where((node) => node.syntaxKind == 'statement').toList();
+    final statements = rustStatementsOf(_view, body);
     if (statements.isEmpty) return LayoutBlock.fromNode(_nodes.connector());
     return LayoutBlock.stack(statements.map(_statement).toList());
   }
@@ -97,7 +98,7 @@ final class RustFlowchartBlockBuilder {
       );
     }
     return BranchBlocks.selection(
-      selector: _decision(wrapper, _view.childForRole(node, 'selector')),
+      selector: _selector(wrapper, _view.childForRole(node, 'selector')),
       junction: _nodes.connector(),
       columns: columns.isEmpty ? [_emptyCase()] : columns,
     );
@@ -143,6 +144,14 @@ final class RustFlowchartBlockBuilder {
         nodeId: owner.id,
       );
 
+  DiagramNode _selector(RustViewNode owner, RustViewNode? selector) =>
+      _nodes.create(
+        shape: DiagramShape.decision,
+        text: _captions.selector(_caption(selector)),
+        sourceLine: owner.range.startLine,
+        nodeId: owner.id,
+      );
+
   DiagramNode _simpleNode(RustViewNode wrapper, RustViewNode node) =>
       _nodes.create(
         shape: _shape(node),
@@ -166,11 +175,7 @@ final class RustFlowchartBlockBuilder {
   }
 
   LayoutBlock _branch(RustViewNode? body) {
-    if (body == null ||
-        !rustChildrenOf(
-          _view,
-          body,
-        ).any((child) => child.syntaxKind == 'statement')) {
+    if (body == null || rustStatementsOf(_view, body).isEmpty) {
       return const LayoutBlock.lane(0.0);
     }
     return sequence(body);
@@ -185,7 +190,7 @@ final class RustFlowchartBlockBuilder {
   String _header(RustViewNode node) {
     final parts = rustChildrenForRole(_view, node, 'loop_header');
     if (parts.isEmpty) return _caption(node);
-    return parts.map(_caption).join(' ');
+    return _captions.loopHeader(parts.map(_caption).toList());
   }
 
   String _caption(RustViewNode? node) {

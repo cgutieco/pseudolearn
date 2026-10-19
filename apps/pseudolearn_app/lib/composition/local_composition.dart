@@ -29,7 +29,10 @@ import '../domain/ports/progress_history.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import '../engine/analysis/analysis_cache.dart';
 import 'app_dependencies.dart';
+import '../engine/rust/rust_transport.dart';
 import 'dart_engine_services.dart';
+import 'engine_services.dart';
+import 'rust_engine_services.dart';
 import 'sync_composition.dart';
 
 final class _LocalStores {
@@ -62,7 +65,7 @@ final class _DependencyAssembly {
   final _LocalStores stores;
   final SyncServices sync;
   final _AccountServices account;
-  final DartEngineServices engine;
+  final EngineServices engine;
 
   const _DependencyAssembly({
     required this.clock,
@@ -98,10 +101,32 @@ AppDependencies buildLocalDependencies({
   required Directory documentsDirectory,
   required MetadataIndex index,
   required LocalProgressStore progressStore,
+}) => _buildLocalDependencies(
+  documentsDirectory: documentsDirectory,
+  index: index,
+  progressStore: progressStore,
+  engine: buildDartEngineServices(analysisCache: AnalysisCache()),
+);
+
+AppDependencies buildRustLocalDependencies({
+  required Directory documentsDirectory,
+  required MetadataIndex index,
+  required LocalProgressStore progressStore,
+  required RustTransport transport,
+}) => _buildLocalDependencies(
+  documentsDirectory: documentsDirectory,
+  index: index,
+  progressStore: progressStore,
+  engine: buildRustEngineServices(transport),
+);
+
+AppDependencies _buildLocalDependencies({
+  required Directory documentsDirectory,
+  required MetadataIndex index,
+  required LocalProgressStore progressStore,
+  required EngineServices engine,
 }) {
   final identifierGenerator = RandomIdentifierGenerator();
-  final analyses = AnalysisCache();
-  final engine = buildDartEngineServices(analysisCache: analyses);
   final supabaseClient = buildSupabaseClient();
   final account = _buildAccountServices(supabaseClient);
   const clock = SystemClock();
@@ -151,6 +176,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     structogramBuilder: assembly.engine.structogramBuilder,
     classDiagramBuilder: assembly.engine.classDiagramBuilder,
     completionSource: assembly.engine.completionSource,
+    contextualCompletionSource: assembly.engine.contextualCompletionSource,
     sourceEditor: assembly.engine.sourceEditor,
     editorKeySource: assembly.engine.editorKeySource,
     textEntryModality: const PlatformTextEntryModality(),

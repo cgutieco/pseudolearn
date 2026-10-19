@@ -1,6 +1,6 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 iterado con la puerta abierta (ver su registro); B6–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6–B9 pendientes de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 > Las autorizaciones cubrieron B3, B4 y una iteración de B5; no autorizan la publicación de aplicaciones.
 >
@@ -358,11 +358,11 @@ caso C4. La puerta de B4 queda parcialmente cumplida: adaptador y `ExecutionCubi
 - [x] Conectar completado al servicio Rust, con revisión de documento y conversión UTF-16/UTF-8.
 - [x] Reutilizar vocabulario generado; eliminar tablas duplicadas en el camino Rust.
 - [x] Adaptar diagramas y aserciones estructurales a la vista pública aprobada.
-- [ ] Adaptar emisores Python y Rust a la vista pública aprobada.
+- [x] Adaptar emisores Python y Rust a la vista pública aprobada.
 - [x] Ejecutar comprobaciones de ejercicios mediante Rust, sin usar el núcleo Dart como respaldo.
 - [x] Crear el conjunto de composición Dart estático; mantener el dominio libre de ambos transportes.
-- [ ] Completar el conjunto Rust e integrarlo en `AppDependencies` sin respaldo Dart.
-- [ ] Verificar equivalencia observable de los puertos con sus diferencias conocidas contrastadas con el corpus.
+- [x] Completar el conjunto Rust e integrarlo en `AppDependencies` sin respaldo Dart.
+- [x] Verificar equivalencia observable de los puertos con sus diferencias conocidas contrastadas con el corpus.
 
 **Puerta:** todos los ejercicios ejecutables de la base de conocimiento clasificados y ejecutados;
 plantillas válidas en ambos perfiles; diagnósticos, diagramas y exportación respetan D-P07.
@@ -388,6 +388,49 @@ D-R8-06: esta iteración amplió `API.VERSIONING` y `API.PROGRAM.VIEW`, incluyó
 mientras D-R8-06 había resuelto congelarlas y registrar la clasificación fuera del corpus. Se conserva el cambio de
 trabajo para revisión; hace falta decidir si se mantiene el contrato congelado y se busca otra implementación conforme,
 o si se autoriza reclasificar y versionar las capacidades y referencias semánticas necesarias para completar B5.
+
+#### Registro del cierre de B5 · 2026-10-19
+
+**Resolución de decisiones.** El conflicto con D-R8-06 era aparente: la política de versiones permite modificar el
+cuerpo de una especificación sin subir su versión ni usar bloques `cambio`. `API.PROGRAM.VIEW` y `API.VERSIONING`
+volvieron a 0.1.0 sin bloque, se reancló su hash retirando las claves exactas de `history` y de los anclajes
+activos, y su clasificación vive en `results/r8-b1-contract-changes.json`. Los bloques `cambio` de
+`PERF.AOT.LEVEL` y `PERF.SUITE.AWFY-CORE` son anteriores y pertenecen a R6; no se tocaron.
+
+**Qué se construyó.** El motor añade a `API.PROGRAM.VIEW` semántica independiente del perfil (operadores, literales,
+función incorporada no oculta, receptor de superclase, salida sin salto, tipo primitivo, nodos `dimensioned` y roles
+de subprogramas) y las operaciones `reference_vocabulary` y `diagnostic_template`. La app gana `RustProgramExporter`
+(emisores Python y Rust sobre la vista), `RustSyntaxReferenceSource`, la interfaz `EngineServices` con las dos
+composiciones estáticas y `buildRustLocalDependencies`. Un recorrido de importaciones prueba que ningún archivo
+alcanzable desde la composición Rust importa `pseudolearn_core`.
+
+**Defectos encontrados al contrastar.** Los diagramas Rust ignoraban toda sentencia compuesta (las fixtures
+fabricadas las envolvían en un nodo que el motor no produce); los subprogramas no tenían roles de hijo y no
+aparecían como unidades; el adaptador usaba rigor estricto frente al flexible de la composición Dart; los rótulos de
+selector y de cabecera de bucle no usaban los lexemas del perfil; y las pruebas de `test/` cargaban una biblioteca
+nativa `release` precompilada que nada recompilaba, así que el «190/190» anterior no probaba el código vigente. Se
+añadió una prueba de frescura de esa biblioteca. En el corpus, el comparador de SEE exigía colecciones y roles que
+sus propias pruebas no proporcionaban y el crate `see_conformance` incumplía `cargo fmt` y el límite de líneas;
+los casos `C5` y `C6` de la vista nunca se habían ejecutado y tenían esperados incorrectos.
+
+**Pruebas.** `cargo xtask verify` del motor: 859 pruebas, Clippy estricto, reglas Rust y `cargo-deny` en verde.
+`cargo xtask verify` de SEE en verde (161 especificaciones, `lock --check`, `export --check`); `conform --subject
+engine`: 1524 observaciones y una divergencia (`API.STATE.QUERY#R4` C4, ya conocida). `flutter test`: 2228 pruebas;
+`flutter analyze --fatal-infos --fatal-warnings`, `check_limits`, `check_content`, `check_design_system` y
+`bash tool/test_bridge.sh` (17 pruebas FFI) en verde.
+
+**Puerta.** Los 190 ejercicios (95 por perfil) se clasifican (58 conductuales, 132 con aserciones estructurales,
+ninguno no ejecutable) y se ejecutan uno a uno mediante Rust con resultado individual. Las plantillas del editor
+forman programas cuyos únicos errores son marcadores de posición, en ambos perfiles. La suite de equivalencia
+compara 362 programas: exportación idéntica en 724 comparaciones, mismos veredictos de ejercicios,
+construcciones, marcadores de la referencia, teclas, unidades y formas de diagrama, con las diferencias conocidas
+listadas en el README de la app (`unusedParameter` solo en Rust, rótulos con texto fuente, orden de listas de la
+referencia, plantillas verificadas por el servicio).
+
+**Pendientes justificados.** Resaltado de sintaxis y `unitId` de foco en la ruta Rust; el comparador de SEE para la
+regla `API.STATE.QUERY#R4`; la clasificación de las pruebas de widgets con el puente real; y la decisión de producto
+sobre las particularidades heredadas de los emisores (`.pow()`, `x as f64`). No se ejecutó una comprobación remota ni
+se tocó B6. La regeneración del puente no cambió (`native/` sin modificaciones).
 
 ### B6 · Integración y builds de las plataformas nativas
 

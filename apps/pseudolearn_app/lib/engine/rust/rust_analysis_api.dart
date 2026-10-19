@@ -1,3 +1,4 @@
+import 'rust_profile_name.dart';
 import 'rust_transport.dart';
 
 final class RustAnalysisHandle {
@@ -21,7 +22,7 @@ final class RustAnalysisApi {
         _transport.call('create_analysis', {
               'program': source,
               'profile': profile,
-              'strictness': 'strict',
+              'strictness': rustStrictness,
               'locale': ?locale,
             })
             as Map<String, Object?>;

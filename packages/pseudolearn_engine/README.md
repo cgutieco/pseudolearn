@@ -234,7 +234,10 @@ La compilación para `execute` conserva los diagnósticos `Warning` del análisi
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
 `editor_vocabulary` devuelve los lexemas de `pseudolearn_lexicon` para el perfil elegido y las grafías de
 los operadores de edición; la app Rust consume esa respuesta en sus teclas y su editor, sin copiar el
-vocabulario generado.
+vocabulario generado. `reference_vocabulary` añade, por perfil, las funciones incorporadas con su lexema, firma
+y tipo de retorno, la tabla de precedencia y la etiqueta de identificador; `diagnostic_template` devuelve la
+plantilla de mensaje de un código en el idioma pedido y su severidad según el rigor. Con ellas la referencia de
+sintaxis de la app no mantiene tablas propias.
 Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
 
 ### wasm
@@ -258,7 +261,13 @@ consumidores de diagramas, emisores y comprobaciones estructurales usan esa mism
 identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. Las relaciones de
 hijo declaran su papel sintáctico; los campos exponen tipo y dimensiones y los parámetros su cantidad
 de dimensiones, para que la app no vuelva a analizar el texto. La asociación de un evento de ejecución
-con un nodo y un tramo pertenece a la misma revisión. La API implementa
+con un nodo y un tramo pertenece a la misma revisión. Los nodos de expresión declaran semántica independiente del
+perfil, calculada con los tokens y el análisis semántico: `operators` y `operator` con identidades canónicas,
+`literal` con tipo y valor, `builtin` en la llamada a función incorporada que ningún subprograma homónimo oculta,
+`receiver` y `super_constructor` en accesos con receptor de superclase, `without_newline` en salidas y `primitive` en
+tipos primitivos; cada array de una declaración de dimensiones es un nodo `dimensioned` y los subprogramas declaran
+los roles `signature` y `body`. Así los emisores y los diagramas no interpretan lexemas ni vuelven a resolver
+nombres. La API implementa
 `program_view` y `state_pages`; el adaptador de conformidad devuelve la vista cuando el análisis la solicita
 y resuelve la página de estado de una ejecución observada. La referencia `source` de los eventos viaja en JSON;
 el formato binario columnar aún no la transporta.

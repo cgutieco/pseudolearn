@@ -6,6 +6,7 @@ import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/domain/model/analysis/analysis_report.dart';
+import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
@@ -268,13 +269,20 @@ void main() {
   test('analyzer reports diagnostics with source ranges', () {
     final analyzer = RustProgramAnalyzer(RustAnalysisApi(transport));
     final report = analyzer.analyze(
-      sourceCode: 'Algoritmo P\nEscribir inexistente;\nFinAlgoritmo\n',
+      sourceCode:
+          'Algoritmo P\nDefinir a Como Entero;\na <- "texto";\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
     expect(report.isExecutable, isFalse);
     expect(report.hasErrors, isTrue);
-    expect(report.diagnostics.first.primaryRange.startLine, 2);
+    expect(
+      report.diagnostics
+          .firstWhere((diagnostic) => diagnostic.severity == AppSeverity.error)
+          .primaryRange
+          .startLine,
+      3,
+    );
     final valid = analyzer.analyze(
       sourceCode: 'Algoritmo P\nEscribir "🧩";\nFinAlgoritmo\n',
       profileId: SyntaxProfileId.classicSpanish,

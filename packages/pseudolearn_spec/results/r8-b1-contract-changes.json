@@ -18,7 +18,7 @@
         "ampliacion_candidata"
       ],
       "see_review_required": true,
-      "rationale": "Proyección inmutable de unidades, nodos, tipos, símbolos, relaciones y tramos para diagramas, emisores y comprobaciones estructurales.",
+      "rationale": "Proyección inmutable de unidades, nodos, tipos, relaciones y tramos, con operadores canónicos, literales tipados, funciones incorporadas resueltas, receptor de superclase, salida sin salto y tipos primitivos para diagramas, emisores y comprobaciones estructurales.",
       "impact": [
         "API.EXECUTE",
         "API.PROGRAM.VIEW",

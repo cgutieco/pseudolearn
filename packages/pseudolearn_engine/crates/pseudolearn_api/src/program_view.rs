@@ -1,3 +1,4 @@
+use crate::program_view_annotations::AnnotationContext;
 use crate::program_view_kind::ViewKind;
 use crate::{AnalyzeRequest, ApiError};
 use pseudolearn_diagnostics::DiagnosticCode;
@@ -22,6 +23,7 @@ pub(crate) struct ViewNode {
     pub(crate) children: Vec<usize>,
     pub(crate) child_roles: Vec<&'static str>,
     pub(crate) dimensions: Option<usize>,
+    pub(crate) attributes: crate::program_view_annotations::Attributes,
 }
 
 pub(crate) struct ProgramView {
@@ -44,14 +46,15 @@ impl ProgramView {
         if tree.has_errors {
             return Err(crate::execution_resource::usage("analysis has errors"));
         }
-        let nodes = crate::program_view_tree::collect_nodes(&tree, &source);
-        let mut by_span: BTreeMap<SpanKey, Vec<usize>> = BTreeMap::new();
-        for (ordinal, node) in nodes.iter().enumerate() {
-            by_span
-                .entry((node.start, node.end))
-                .or_default()
-                .push(ordinal);
-        }
+        let mut nodes = crate::program_view_tree::collect_nodes(&tree, &source);
+        let context = AnnotationContext {
+            tree: &tree,
+            source: &source,
+            profile,
+            strict,
+        };
+        crate::program_view_annotations::annotate(&mut nodes, &context);
+        let by_span = index_by_span(&nodes);
         let schema = crate::diagnostic_conversion::schema(&tree, &source);
         let (inheritance, methods) =
             crate::program_view_relations::inheritance_and_methods(&tree, &source);
@@ -118,6 +121,11 @@ impl ProgramView {
         if let (Some(dimensions), Some(fields)) = (node.dimensions, value.as_object_mut()) {
             fields.insert("dimensions".to_owned(), json!(dimensions));
         }
+        if let Some(fields) = value.as_object_mut() {
+            for (name, attribute) in &node.attributes {
+                fields.insert((*name).to_owned(), attribute.clone());
+            }
+        }
         Some(value)
     }
 
@@ -135,6 +143,17 @@ impl ProgramView {
             "members": self.members,
         })
     }
+}
+
+fn index_by_span(nodes: &[ViewNode]) -> BTreeMap<SpanKey, Vec<usize>> {
+    let mut by_span: BTreeMap<SpanKey, Vec<usize>> = BTreeMap::new();
+    for (ordinal, node) in nodes.iter().enumerate() {
+        by_span
+            .entry((node.start, node.end))
+            .or_default()
+            .push(ordinal);
+    }
+    by_span
 }
 
 pub(crate) fn span_json(node: &ViewNode) -> Value {

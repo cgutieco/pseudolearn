@@ -160,3 +160,22 @@ fn checks_node_identity_and_references_within_one_program_revision() {
     }});
     assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
 }
+
+#[test]
+fn units_and_members_must_resolve_to_nodes_of_the_same_view() {
+    let expected = json!({"vista_programa": {"references_same_revision": true}});
+    let resolved = json!({"program_view": {
+        "revision_id": "revision-a",
+        "nodes": [{"node_id": "node-a", "child_node_ids": []}],
+        "units": [{"node_id": "node-a"}],
+        "members": [{"node_id": "node-a"}]
+    }});
+    let dangling = json!({"program_view": {
+        "revision_id": "revision-a",
+        "nodes": [{"node_id": "node-a", "child_node_ids": []}],
+        "units": [{"node_id": "node-a"}],
+        "members": [{"node_id": "elsewhere"}]
+    }});
+    assert!(see_conformance::comparison::compare(&expected, &resolved).is_empty());
+    assert!(!see_conformance::comparison::compare(&expected, &dangling).is_empty());
+}

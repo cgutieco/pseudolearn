@@ -198,6 +198,14 @@ FakeRustTransport _transport({bool valid = true}) => FakeRustTransport({
     'members': <Object?>[],
     'inheritance': <Object?>[],
   },
+  'editor_vocabulary': (_) => {
+    'keywords': [
+      ['assignment', '<-'],
+      ['to', 'Hasta'],
+      ['step', 'Con Paso'],
+      ['switchKeyword', 'Segun'],
+    ],
+  },
   'release': (_) => null,
 });
 

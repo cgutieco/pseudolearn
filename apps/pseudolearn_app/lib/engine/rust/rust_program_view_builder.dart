@@ -28,6 +28,7 @@ final class _RustViewNodeBuilder {
       text: RustProgramView._textOf(span, _offsets),
       range: RustProgramView._rangeOf(span, _offsets),
       dimensions: node['dimensions'] as int?,
+      semantics: RustViewSemantics.fromJson(node),
       children: [
         for (final child in node['child_node_ids'] as List<Object?>)
           _ordinals[child as String]!,
@@ -107,6 +108,9 @@ List<RustViewNode> rustChildrenForRole(
   for (final child in rustChildrenOf(view, node))
     if (node.childRoles[child.id.value] == role) child,
 ];
+
+List<RustViewNode> rustStatementsOf(RustProgramView view, RustViewNode body) =>
+    rustChildrenForRole(view, body, 'statement');
 
 bool rustNodeIsContainer(RustProgramView view, RustViewNode node) {
   if (node.syntaxKind != 'statement') return false;
