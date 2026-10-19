@@ -9,10 +9,9 @@ Fuera de alcance de producto: motor Rust y API integrada del motor. El paquete s
 generativa con oráculos independientes; no implementa la API de observación de memoria del sujeto.
 Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad y shell para el protocolo de sujetos. La prueba de permisos Unix usa un shell aislado únicamente para fijar `umask 077` antes de lanzar el compilador.
 Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisiones, contrastar un sujeto.
-Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE`,
-propiedades completas de observación y ejecución de casos `app`. Los sujetos Rust ya cubren análisis y
-las pruebas directas de B4; los contratos de app se validan y exportan, pero todavía no existe un
-adaptador ejecutable para ese sujeto.
+Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE` y
+propiedades completas de observación. El sujeto `app` ya tiene un adaptador ejecutable sobre FRB; las
+reglas siguen pendientes porque la captura actual contiene divergencias.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -23,7 +22,7 @@ Desarrollo: `cargo run -p see_cli --bin see -- validate`.
 Compilación: `cargo build --release`; binario `target/release/see`.
 Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro de corpus.
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
-`lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject <reference|engine|aot|service|cli> [--only ID]`,
+`lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject <reference|engine|aot|service|cli|app> [--only ID]`,
 `matrix`, `feature <nombre>`, `export [--check]`.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
@@ -102,6 +101,10 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   aplicable a cumple. Las reglas verificadas solo por mediciones se informan no aplicables con la
   procedencia de cada medición: `see conform` no mide rendimiento. Se descarta tratar `pendiente` como
   `no aplicable`, porque ocultaría trabajo exigible al motor.
+- Problema: los casos de app declaran colecciones y cursores cuyo orden o codificación no son parte de su
+  contrato. Elección: `candidates_include` compara pertenencia sin imponer orden y `next_cursor: "opaque"`
+  exige un valor no vacío sin fijar su representación. Se descarta comparar el marcador literalmente,
+  porque exigiría que cada transporte compartiera la misma codificación interna.
 - Problema: la cobertura de la RI debe comprobarse sin interpretar la prosa de las reglas. Elección:
   cuando el corpus contiene instrucciones, cada regla de `LANG` o `LIB` de clase `semantica`, `ejecucion` o
   `ampliacion` tiene exactamente una `cobertura` con instrucciones existentes o un motivo `sin_ri`; las
@@ -169,7 +172,9 @@ y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fue
 
 Cada sujeto lee su manifiesto de vínculos en una ruta fija (`bindings::manifest_path`) y se lanza con una descripción de
 datos (`subject_adapters`): `reference` con Dart, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
-(`--see-adapter` y `--see-adapter aot`). `aot` ejecuta los casos `execute` contra ejecutables reales; los casos de análisis,
+(`--see-adapter` y `--see-adapter aot`), y `app` con `dart run tool/see_app_adapter.dart` desde la raíz de
+`apps/pseudolearn_app`. El adaptador app inicializa el transporte FRB generado y ejecuta análisis, ejecución,
+consulta de estado, completado y llamadas de propiedades API por esa frontera. `aot` ejecuta los casos `execute` contra ejecutables reales; los casos de análisis,
 representación intermedia y traza quedan `no aplicable` o `pendiente` por capacidad. Las propiedades se ejecutan con
 `conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
 cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un

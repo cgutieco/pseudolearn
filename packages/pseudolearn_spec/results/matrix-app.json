@@ -1,0 +1,422 @@
+[
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.PROGRAM.VIEW@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.PROGRAM.VIEW@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.PROGRAM.VIEW@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.WIRE-FORMAT@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.WIRE-FORMAT@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "API.WIRE-FORMAT@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.ENGINE.BOUNDARY@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.ENGINE.BOUNDARY@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 3,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.ENGINE.BOUNDARY@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.PACE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.PACE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.PACE@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "incumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.PACE@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.SNAPSHOT-VIEW@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.SNAPSHOT-VIEW@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.SNAPSHOT-VIEW@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EXEC.SNAPSHOT-VIEW@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 9,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 24,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 8,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R5",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 4,
+    "measured": "no aplicable",
+    "measurements": [],
+    "reason": null,
+    "rule": "ENG.TRACE.EVENTS@0.1.0#R6",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R2",
+        "provisional": true,
+        "suite": "artefactos de release"
+      },
+      {
+        "id": "M2",
+        "protocol": "PERF.PROTOCOL#R2",
+        "provisional": true,
+        "suite": "artefactos de release"
+      }
+    ],
+    "reason": null,
+    "rule": "PERF.ARTIFACT.SIZE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R5",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R6",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "sin evidencia",
+    "measurements": [],
+    "reason": null,
+    "rule": "PERF.PROTOCOL@0.1.0#R7",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M1",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      },
+      {
+        "id": "M2",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": null,
+    "rule": "PERF.VM.STEP-LATENCY@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "sin vinculo",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M3",
+        "protocol": "PERF.PROTOCOL#R1",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": null,
+    "rule": "PERF.VM.STEP-LATENCY@0.2.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "pendiente",
+    "cases": 0,
+    "measured": "no aplicable",
+    "measurements": [
+      {
+        "id": "M4",
+        "protocol": "PERF.PROTOCOL#R7",
+        "provisional": true,
+        "suite": "PERF.SUITE.AWFY-CORE"
+      }
+    ],
+    "reason": null,
+    "rule": "PERF.VM.STEP-LATENCY@0.2.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  }
+]

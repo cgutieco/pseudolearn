@@ -13,6 +13,14 @@ pub fn matches(name: &str, value: &Value, actual: &Value) -> bool {
     }
 }
 
+fn includes_candidates(expected: &Value, actual: Option<&Value>) -> bool {
+    let (Some(expected), Some(actual)) = (expected.as_array(), actual.and_then(Value::as_array))
+    else {
+        return false;
+    };
+    expected.iter().all(|candidate| actual.contains(candidate))
+}
+
 fn program_view(expected: &Value, actual: Option<&Value>) -> bool {
     let Some(actual) = actual else {
         return false;
@@ -107,9 +115,18 @@ fn subset(expected: &Value, actual: Option<&Value>) -> bool {
         return false;
     };
     match (expected, actual) {
-        (Value::Object(expected), Value::Object(actual)) => expected
-            .iter()
-            .all(|(name, value)| subset(value, actual.get(name))),
+        (Value::Object(expected), Value::Object(actual)) => expected.iter().all(|(name, value)| {
+            if name == "next_cursor" && value.as_str() == Some("opaque") {
+                return actual
+                    .get(name)
+                    .and_then(Value::as_str)
+                    .is_some_and(|cursor| !cursor.is_empty());
+            }
+            if name == "candidates_include" {
+                return includes_candidates(value, actual.get(name));
+            }
+            subset(value, actual.get(name))
+        }),
         (Value::Array(expected), Value::Array(actual)) => {
             expected.len() == actual.len()
                 && expected

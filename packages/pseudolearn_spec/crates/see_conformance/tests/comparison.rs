@@ -81,6 +81,28 @@ fn compares_application_results_and_program_view_subsets() {
 }
 
 #[test]
+fn treats_opaque_page_cursors_as_values_and_rejects_wrong_projection() {
+    let expected = json!({"aplicacion": {"first_page": {
+        "indices": [0, 1],
+        "truncated": true,
+        "next_cursor": "opaque"
+    }}});
+    let actual = json!({"app": {"first_page": {
+        "indices": [0, 1],
+        "truncated": true,
+        "next_cursor": "9a3c.2"
+    }}});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+
+    let wrong = json!({"app": {"first_page": {
+        "indices": [0],
+        "truncated": false,
+        "next_cursor": ""
+    }}});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
 fn compares_public_syntax_kinds_without_requiring_private_node_details() {
     let expected = json!({"vista_programa": {
         "syntax_kinds_include": ["conditional", "while_loop"],

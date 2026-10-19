@@ -1,0 +1,45 @@
+{
+  "format": "r8-artifact-size/1",
+  "capturedAt": "2026-10-19T22:55:40.955701Z",
+  "gitHead": "3797f736989428b1f523c8408361ee5991784c83",
+  "workingTreeDirty": true,
+  "toolchain": {
+    "flutter": "3.47.5",
+    "dart": "3.13.4",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "wasmBindgen": "wasm-bindgen 0.2.129",
+    "brotli": "brotli 1.2.0"
+  },
+  "artifacts": {
+    "ios-arm64": {
+      "path": "apps/pseudolearn_app/build/ios/Release-iphoneos/native_assets/pseudolearn_bridge.framework/pseudolearn_bridge",
+      "bytes": 2802880,
+      "sha256": "92ba41ee887a97d4d24ce01a50aa01fe2e70ad7cd5b801fc8d2d13287e1027d0",
+      "architecture": "arm64",
+      "limitBytes": 3145728,
+      "withinLimit": true,
+      "detachedDebugSymbols": true,
+      "uuid": "CBA2CFE9-D59B-3CA5-92E3-36315D442AED"
+    },
+    "wasm32": {
+      "path": "packages/pseudolearn_engine/target/wasm-browser/pkg/pseudolearn_wasm_bg.wasm",
+      "bytes": 2224403,
+      "sha256": "a48117822ae2eb3732f55cca560e44324bbe87352a03396e24efaaa2bb9e356b",
+      "compression": {
+        "format": "brotli",
+        "quality": 11,
+        "window": 22,
+        "bytes": 493755,
+        "sha256": "cbb57002545b9477460fafae43ed68d9ad0bff4bcb9bfae7b188a1fb4a7ac879"
+      },
+      "limitBytes": 614400,
+      "withinLimit": true
+    }
+  },
+  "commands": [
+    "flutter build ios --release --no-codesign",
+    "bash tool/wasm.sh build",
+    "dart run tool/capture_bridge_artifacts.dart"
+  ],
+  "verdict": "passed"
+}

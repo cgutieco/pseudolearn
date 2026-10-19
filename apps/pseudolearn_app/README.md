@@ -115,7 +115,9 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Firma Authenticode en instalador directo Inno Setup | Decidir proveedor (Artifact Signing de Azure, certificado OV) si se mantiene la distribución directa fuera de la Store | Abierto |
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
-| Adaptadores del sujeto `app` sobre la API Rust                  | Lanzador de SEE y vínculos regla–prueba del sujeto `app`                                                                                   | Pendiente; `conformance.yaml` conserva las reglas de app en `pendiente` hasta disponer del adaptador ejecutable |
+| Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
+| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medidos: 2.67 MiB y 482.18 KiB; ambos cumplen su presupuesto en `packages/pseudolearn_spec/results/r8-artifact-size.json` |
+| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 31 de 32 observaciones APP pasan y `API.WIRE-FORMAT#P1` detecta tramos de origen ausentes en eventos |
 | Resaltado y unidades de foco en la ruta Rust                    | La API no expone tokens ni identificadores de unidad del diagrama; `RustProgramAnalyzer` devuelve resaltado vacío y `ExecutionFocus.unitId` queda sin valor | Abierto; lo resuelven el servicio de lenguaje y la vista pública del programa en el consumo de diagramas |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
@@ -223,19 +225,35 @@ flutter test
 SIMULATOR_ID=$(xcrun simctl list devices available --json | python3 -c 'import json, sys; devices = json.load(sys.stdin)["devices"].values(); print(next((device["udid"] for runtime in devices for device in runtime if device["name"].startswith("iPhone")), ""))')
 flutter test --no-pub --device-id "$SIMULATOR_ID" integration_test/native_engine_smoke_test.dart
 
-# 8. Humo de los bindings sobre el asset generado para macOS Release
+# 8. Humo Profile en un iPhone físico conectado por USB o Wi-Fi
+DEVICE_ID="<UDID del iPhone físico>"
+flutter drive --profile --no-pub --device-id "$DEVICE_ID" \
+  --driver=test_driver/integration_test.dart \
+  --target=integration_test/native_engine_smoke_test.dart
+
+# 9. Humo de los bindings sobre el asset generado para macOS Release
 FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
   flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+
+# 10. Conformidad de la composición de app desde el miembro de especificaciones
+cd ../../packages/pseudolearn_spec
+cargo run -p see_cli --bin see -- conform --subject app
 ```
 
 El humo de plataforma inicia el puente real y recorre análisis, completado, entrada y consulta de arreglos.
+`flutter drive` no admite Release para integración nativa; Profile sirve para el humo funcional, no reemplaza
+las mediciones Release de E-NR2. `flutter build ios --release --no-codesign` compila el artefacto de tamaño sin
+instalarlo en un dispositivo.
 Los builds de Windows ejecutan la integración en la app y las pruebas FFI contra
 `build/native_assets/windows`; también verifican que el DLL aparezca en el bundle, el MSIX, el instalador
 y el ZIP portable.
 
-Los contratos `APP.*` están registrados como reglas pendientes en `conformance.yaml`. El sujeto SEE no
-dispone todavía de un proceso adaptador, por lo que esas reglas no se informan como cumplidas ni se
-ejecutan desde esta guía.
+`tool/see_app_adapter.dart` implementa el proceso SEE y abre `openNativeTransport()`, por lo que los
+escenarios de app llaman el puente FRB generado para consultar el motor. `see conform --subject app`
+guarda las observaciones completas en `packages/pseudolearn_spec/results/app.json` y la matriz en
+`matrix-app.json`; `see conform --subject app --operation properties` envía las propiedades API por el
+mismo transporte y guarda `properties-app.json`. El manifiesto conserva sus reglas como pendientes hasta
+que todas las divergencias se resuelvan y la campaña de medición de B8 esté completa.
 
 ### 2.6 Despliegue y distribución
 
@@ -2160,6 +2178,39 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   herramientas de desarrollo al usuario; incorporar Android en estos builds ampliaría el alcance de distribución.
 - **Fuentes:** [Native Assets de flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/manual/integrate/native-assets),
   [hooks de Dart](https://dart.dev/tools/hooks).
+
+### 4.51 El sujeto SEE de app atraviesa el transporte generado
+
+- **Problema:** las reglas de integración de la app necesitan observar el comportamiento que llega a la interfaz, y
+  una respuesta prefabricada no prueba ni el transporte ni la proyección que consume la app.
+- **Elección:** `tool/see_app_adapter.dart` negocia una sesión SEE por JSONL, inicializa FRB y abre
+  `openNativeTransport()`. Sus escenarios llaman las API de análisis, ejecución, estado y completado usadas por los
+  adaptadores de `lib/engine/rust/`; las respuestas se forman a partir de valores recibidos en esa sesión.
+  `conformance.yaml` mantiene los vínculos pendientes mientras cualquier regla tenga divergencias observadas.
+- **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
+  `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el
+  contrato no declara.
+- **Verificación actual:** `see conform --subject app` ejecuta 95 observaciones; 31 de 32 observaciones APP
+  pasan. La divergencia restante es `APP.EXEC.PACE#C9`: su programa asigna `1 / 0` a un entero, pero la división
+  produce un real y la conversión a entero no está permitida por el corpus. El error observado es de tipos antes
+  de ejecutar, mientras el caso espera `divisionByZero`; el caso requiere clasificación antes de cerrar B8.
+  `see conform --subject app --operation properties` también usa el transporte real y detecta en
+  `API.WIRE-FORMAT#P1` que la proyección de eventos pierde los tramos de origen exigidos por el contrato.
+  Ninguno de los resultados sustituye las mediciones Release de E-NR2.
+- **Alternativas descartadas:** duplicar el motor Rust dentro del ejecutor, responder con valores constantes o
+  simular las llamadas de transporte ocultaría fallos de recursos, conversión de posiciones y proyección.
+
+### 4.52 Captura reproducible de tamaños nativos y Wasm
+
+- **Elección:** después de `flutter build ios --release --no-codesign` y `bash tool/wasm.sh build`,
+  `dart run tool/capture_bridge_artifacts.dart` en `packages/pseudolearn_benchmarks` registra hashes,
+  arquitectura, símbolos dSYM separados, toolchain y bytes Brotli en `packages/pseudolearn_spec/results/`.
+- **Medición observada:** el framework ios-arm64 ocupa 2,802,880 bytes (2.67 MiB) y el Wasm comprimido
+  493,755 bytes (482.18 KiB). Ambos quedan dentro de 3 MiB y 600 KiB; el JSON conserva los hashes y comandos.
+- **Límite:** el build iOS Release se generó sin firma y se midió antes de empaquetar Flutter. El iPhone 17
+  con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
+  quedó visible la pantalla inicial; no se atribuyen tiempos de ejecución a esa captura. `flutter drive --release`
+  no admite esta integración nativa.
 
 ---
 

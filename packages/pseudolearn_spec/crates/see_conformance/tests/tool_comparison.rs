@@ -36,3 +36,13 @@ fn rejects_reordered_events_wrong_limits_and_missing_tool_fields() {
         assert!(!compare(&expected, &actual).is_empty(), "{expected}");
     }
 }
+
+#[test]
+fn candidate_inclusion_is_order_independent_and_rejects_missing_items() {
+    let expected = json!({"aplicacion": {"candidates_include": ["Entero", "Real"]}});
+    let actual = json!({"app": {"candidates_include": ["Real", "Cadena", "Entero"]}});
+    assert!(compare(&expected, &actual).is_empty());
+
+    let wrong = json!({"app": {"candidates_include": ["Real", "Cadena"]}});
+    assert!(!compare(&expected, &wrong).is_empty());
+}

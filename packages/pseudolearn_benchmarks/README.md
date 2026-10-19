@@ -30,6 +30,11 @@ ejecuta diez procesos del trabajador público y conserva treinta rondas de 28 co
 1.000, 10.000 y 50.000 líneas, ambos perfiles, ambos rigores, entradas incompletas y el corpus.
 `tool/frontend_statistics.dart` rechaza muestras incompletas o duplicadas, calcula IC 95 % sobre medias
 por proceso y p95 sobre las 300 latencias; no elimina muestras ni relaja umbrales.
+Los artefactos de R8 se miden después de construir el framework iOS arm64 Release y el paquete Wasm
+canónico. Desde este paquete, `dart run tool/capture_bridge_artifacts.dart` registra revisión, estado
+del árbol, versiones, rutas, arquitecturas, hashes, bytes del flujo Brotli Q11/lgwin22 y cumplimiento
+de límites en `packages/pseudolearn_spec/results/r8-artifact-size.json`. La orden exige los dos builds
+previos, no recompila, y falla si el framework no tiene símbolos separados o algún presupuesto excede.
 La comparación temprana de R5 se recoge con `dart run tool/r5_vm_tracer.dart`. Las tres cargas
 emparejadas viven en `tool/data/r5-vm-workloads.json`; el worker Rust compila RI verificada a bytecode
 y lo carga en la forma de despacho de la VM antes del cronómetro, y dentro del intervalo solo ejecuta. Cada worker de `reference` analiza el mismo texto

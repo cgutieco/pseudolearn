@@ -20,6 +20,7 @@ const ENGINE_ARGUMENTS: &[&str] = &[
     "--quiet",
 ];
 const CLI_ARGUMENTS: &[&str] = &["run", "--bin", "pseudo", "--quiet", "--", "--see-adapter"];
+const APP_ARGUMENTS: &[&str] = &["run", "tool/see_app_adapter.dart"];
 const AOT_ARGUMENTS: &[&str] = &[
     "run",
     "--bin",
@@ -48,6 +49,7 @@ fn launch_of(subject: &str) -> Option<AdapterLaunch> {
         "cli" => (CLI_DIRECTORY, "cargo", CLI_ARGUMENTS),
         "aot" => (CLI_DIRECTORY, "cargo", AOT_ARGUMENTS),
         "service" => ("../pseudolearn_engine", "cargo", SERVICE_ARGUMENTS),
+        "app" => ("../../apps/pseudolearn_app", "dart", APP_ARGUMENTS),
         _ => return None,
     };
     Some(AdapterLaunch {

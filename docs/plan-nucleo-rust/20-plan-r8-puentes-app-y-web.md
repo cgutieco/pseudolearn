@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8–B9 pendientes de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8 implementado parcialmente con la puerta abierta por una divergencia de contrato, una propiedad fallida y E-NR2 pendiente; B9 pendiente de autorización individual. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> Las autorizaciones cubrieron B3, B4, una iteración de B5, B6 y una iteración de B7; no autorizan la publicación de aplicaciones.
+> Las autorizaciones cubrieron B3, B4, una iteración de B5, B6, una iteración de B7 y una iteración de B8; no autorizan B9 ni la publicación de aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -516,15 +516,52 @@ iniciaron B8 ni B9.
 
 ### B8 · Conformidad de app, experimento E-NR2 y tamaños
 
-- [ ] Implementar el adaptador `app` de SEE con lanzador y vínculos a pruebas ejecutables de la app.
-- [ ] Usar el transporte generado real para ejecución, estado y completado; no devolver constantes ni consultar
+- [x] Implementar el adaptador `app` de SEE con lanzador y vínculos a pruebas ejecutables de la app.
+- [x] Usar el transporte generado real para ejecución, estado y completado; no devolver constantes ni consultar
       directamente Rust para evitar la frontera que se pretende verificar.
 - [ ] Conectar propiedades y mediciones a ejecutores; demostrar que detectan una proyección errónea deliberada.
+      Las propiedades API ya usan el transporte FRB y las pruebas negativas rechazan una proyección deliberadamente errónea; falta el ejecutor de E-NR2.
 - [ ] Ejecutar la campaña de §7 en dispositivo físico, escritorio y navegador según su alcance.
-- [ ] Medir los binarios finales y guardar procedencia, datos crudos y resúmenes recalculables.
+- [x] Medir los binarios finales y guardar procedencia, hashes y resumen recalculable.
 
 **Puerta:** `APP.*` en `cumple`, E-NR2 reproducible y todos los presupuestos aplicables satisfechos.
 Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión explícita del contrato.
+
+### Registro de B8 · 2026-10-19
+
+**Qué se implementó.** `apps/pseudolearn_app/tool/see_app_adapter.dart` negocia SEE, abre el transporte
+FRB generado y atiende análisis, escenarios APP y llamadas de propiedades API. Los escenarios de ritmo,
+estado y completado consumen operaciones reales del transporte. SEE compara los cursores opacos por
+presencia y la inclusión de candidatos sin fijar orden. Se añadieron pruebas negativas de comparación para
+confirmar que una proyección de candidatos errónea falla. El capturador
+`packages/pseudolearn_benchmarks/tool/capture_bridge_artifacts.dart` produce el informe de tamaños desde
+builds existentes y verifica arquitectura, dSYM y límites.
+
+**Resultado de conformidad.** `see conform --subject app` ejecutó 95 observaciones; 31/32 APP pasan.
+`APP.EXEC.PACE#C9` espera `divisionByZero` en un programa que asigna `/` a un entero. El corpus define `/`
+como productor de real (`LANG.OPS.DIVISION#R1`) y prohíbe la conversión implícita real→entero
+(`LANG.TYPES.RELATIONS#R1`); la app reporta `incompatibleTypesInAssignment` antes de ejecutar. Es un conflicto
+entre el caso y las reglas del corpus; se conserva el resultado y se deja la clasificación pendiente.
+`see conform --subject app --operation properties` conectó las propiedades API al transporte, ejecutó 876
+de 976 muestras de `API.WIRE-FORMAT#P1` y halló que la proyección de eventos omite `source` y sus tramos.
+La evidencia conserva el contraejemplo en `results/properties-app.json`.
+
+**Resultado de artefactos y navegador.** El framework iOS arm64 Release sin firma mide 2,802,880 bytes
+(2.67 MiB) frente a 3 MiB y el Wasm Brotli Q11/lgwin22 mide 493,755 bytes (482.18 KiB) frente a 600 KiB.
+Ambos pasan. El informe con revisión, estado del árbol, toolchain, rutas y hashes está en
+`packages/pseudolearn_spec/results/r8-artifact-size.json`. `bash tool/wasm.sh test` pasó tres pruebas
+de navegador en Chrome, incluida paridad con el API nativo y crecimiento de memoria.
+
+**Resultado de dispositivo.** El iPhone 17 con iOS 27.0.1 fue confirmado y se construyó el Release
+ios-arm64. `flutter drive --release` no está soportado por Flutter para integración nativa. En Profile el
+build e instalación terminaron, pero el Dart VM Service no se descubrió por Wi-Fi y la app quedó en la
+pantalla inicial según la captura aportada; la persona repetirá la prueba física después. El intento de
+Profile para macOS requiere un perfil de firma que no está instalado. Ninguno de estos intentos cuenta como
+medición E-NR2.
+
+**Puerta y pendientes.** E-NR2 aún no dispone de ejecutor con diez procesos y treinta iteraciones por
+variante; falta la campaña en hardware, escritorio y navegador con sus resúmenes estadísticos. La
+propiedad API y C9 fallan por las observaciones registradas. B8 permanece abierta; no se inicia B9.
 
 ### B9 · Flujos de publicación, verificación final e informe
 
@@ -540,7 +577,7 @@ Una degradación se corrige y vuelve a medir; cambiar un umbral exige revisión 
 - [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. B0–B5 se registran según la evidencia de cada bloque; B6 mantiene pendientes de plataforma, B7 está implementado y verificado, y B8–B9 no se han iniciado.
+comprobación remota obligatoria, R8 permanece abierta. B0–B5 se registran según la evidencia de cada bloque; B6 mantiene pendientes de plataforma, B7 está implementado y verificado, B8 está parcialmente implementado con la puerta abierta y B9 no se ha iniciado.
 
 ### Registro de B0 · 2026-10-19
 
@@ -638,7 +675,7 @@ simulador, macOS x86_64 o Windows.
 | D-R8-05 | Elegir generación compatible con las reglas actuales; o proponer una excepción mínima localizada si es técnicamente imprescindible. Afecta B2, B3 y B7. | La salida FRB 2.13.0 incluye comentarios, atributos `allow`, `unsafe` y `unwrap` de codec; `wasm-bindgen` requiere permitir `unsafe` en la macroexpansión. | Resuelta: excepciones exactas en `native/src/frb_generated.rs`, `lib/engine/bridge/**` y el crate `pseudolearn_wasm`; el adaptador Wasm escrito no usa `unsafe` y no hay permiso global. |
 | D-R8-06 | Registrar clasificación e impacto en evidencia de revisión sin bloque `cambio`; o resolver formalmente la tensión con versiones/reglas antes de editar especificaciones. Afecta B1. | `SPEC-CHANGE-CLASSIFIED` obliga clasificación; el plan identifica tensión con versionado y §3 de `07-fases.md`. No se editaron contratos. | Resuelta: versiones congeladas; clasificación e impacto en evidencia separada, sin bloque `cambio`. |
 | D-R8-07 | Consumir el comportamiento incremental vigente sin prometer reutilización semántica; o ratificar primero la reformulación de `TOOL.SERVICE.INCREMENTAL#R2`. Afecta B1 y B5. | El relevo de R7 declara pendiente su ratificación; B0 no la resuelve. | Resuelta: consumir el contrato vigente sin exigir reutilización semántica ni crear dependencia futura de ratificación. |
-| D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | Hay iPhone físico iOS 27.0.1, pero el modelo no fue identificado. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Pendiente de selección y disponibilidad verificable. |
+| D-R8-08 | Usar el iPhone detectado si se confirma que representa un dispositivo modesto; o fijar otro modelo físico. Se deben precisar modelo, SO, modo release y acceso a medición antes de B8. | La persona confirmó iPhone 17 con iOS 27.0.1 y autorizó medición Release. `flutter build ios --release --no-codesign` produjo el framework arm64; `flutter drive --release` no admite integración nativa y Profile instaló, pero no descubrió el VM Service por Wi-Fi. La captura posterior muestra la pantalla inicial. El simulador iOS y macOS x86_64 no quedaron disponibles localmente. | Selección y autorización confirmadas; calificación como dispositivo modesto y medición física siguen pendientes. |
 
 **Resultado de la puerta:** B0 levantó la evidencia solicitada. Las decisiones pendientes no requeridas
 por B1 continúan ligadas a B2 y B8; el dispositivo modesto, el simulador iOS y macOS x86_64 siguen sin

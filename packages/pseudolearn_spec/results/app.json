@@ -1,0 +1,6953 @@
+{
+  "corpus_hashes": {
+    "API.PROGRAM.VIEW": "34241951279a5197e12b90e9fcfb0bc69ba6ed4beadb91b494bd38bb76d65218",
+    "API.WIRE-FORMAT": "071a0992b52a1a3e3e8b55a03d38dbe9fb18c61229ee2adb2ac1f1ab7548f9c3",
+    "APP.EDITOR.COMPLETION": "8c6588fb0931630d12c698d68e1da2cedd3e70dc8ee63ef9fe2a55d7fa524015",
+    "APP.ENGINE.BOUNDARY": "3d4e0b42f99046c2159749773e00240f3998f9e159f1066c649e540c17e3b473",
+    "APP.EXEC.PACE": "c713f32305793b69416c3fee6275df1a88ec9220da17be91afd30c5258a7de26",
+    "APP.EXEC.SNAPSHOT-VIEW": "befd0f3e1090f6f06d3c40bdce024e4c92caf4e9adcf3642d467cc13f936640a",
+    "ENG.TRACE.EVENTS": "c8ea8aa6e79d3fc8599b797a9b78c95ac94be5644fe5f6cff41c87a840b0bede",
+    "PERF.ARTIFACT.SIZE": "7c654c08d641547f8c4d7ee5caa0c59dfd3f82780d3a8c13ad4bd7bfc0412713",
+    "PERF.PROTOCOL": "d42bea7cbfdecc2acea1d42f9ff145ac7caf5f1ed250e2213c8418fd2b8247e8",
+    "PERF.VM.STEP-LATENCY": "a062540b90459cdb40ff3146afbc09a05694103a10b648bd4bde74355e010988"
+  },
+  "observations": [
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "total"
+            },
+            "class": "semantic",
+            "code": "variableAssignedNeverRead",
+            "message": "Variable asignada pero nunca leída: total",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 14,
+                "line": 2
+              },
+              "start": {
+                "column": 9,
+                "line": 2
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [],
+          "members": [],
+          "methods": [],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "rev1.n1",
+                "rev1.n2"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n1",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev1.n2",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev1.n0",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 4
+                },
+                "end_byte": "67",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev1.n1",
+              "parent_node_id": "rev1.n0",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 1
+                },
+                "end_byte": "11",
+                "start": {
+                  "column": 11,
+                  "line": 1
+                },
+                "start_byte": "10"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev1.n3",
+                "rev1.n7"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n3",
+                  "role": "statement"
+                },
+                {
+                  "node_id": "rev1.n7",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev1.n2",
+              "parent_node_id": "rev1.n0",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 4
+                },
+                "end_byte": "55",
+                "start": {
+                  "column": 12,
+                  "line": 1
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev1.n4"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n4",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev1.n3",
+              "parent_node_id": "rev1.n2",
+              "span": {
+                "end": {
+                  "column": 27,
+                  "line": 2
+                },
+                "end_byte": "38",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev1.n5",
+                "rev1.n6"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n5",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev1.n6",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev1.n4",
+              "parent_node_id": "rev1.n3",
+              "span": {
+                "end": {
+                  "column": 26,
+                  "line": 2
+                },
+                "end_byte": "37",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "declaration"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev1.n5",
+              "parent_node_id": "rev1.n4",
+              "span": {
+                "end": {
+                  "column": 14,
+                  "line": 2
+                },
+                "end_byte": "25",
+                "start": {
+                  "column": 9,
+                  "line": 2
+                },
+                "start_byte": "20"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev1.n6",
+              "parent_node_id": "rev1.n4",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 26,
+                  "line": 2
+                },
+                "end_byte": "37",
+                "start": {
+                  "column": 20,
+                  "line": 2
+                },
+                "start_byte": "31"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "rev1.n8"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n8",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev1.n7",
+              "parent_node_id": "rev1.n2",
+              "span": {
+                "end": {
+                  "column": 16,
+                  "line": 3
+                },
+                "end_byte": "54",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "39"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev1.n9",
+                "rev1.na"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.n9",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev1.na",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev1.n8",
+              "parent_node_id": "rev1.n7",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 3
+                },
+                "end_byte": "53",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "39"
+              },
+              "syntax_kind": "assignment_statement"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "node_id": "rev1.n9",
+              "parent_node_id": "rev1.n8",
+              "span": {
+                "end": {
+                  "column": 6,
+                  "line": 3
+                },
+                "end_byte": "44",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "39"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev1.nb",
+                "rev1.nc"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev1.nb",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev1.nc",
+                  "role": "child"
+                }
+              ],
+              "kind": "expression",
+              "node_id": "rev1.na",
+              "operators": [
+                "add"
+              ],
+              "parent_node_id": "rev1.n8",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 3
+                },
+                "end_byte": "53",
+                "start": {
+                  "column": 10,
+                  "line": 3
+                },
+                "start_byte": "48"
+              },
+              "syntax_kind": "addition"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "2"
+              },
+              "node_id": "rev1.nb",
+              "parent_node_id": "rev1.na",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 3
+                },
+                "end_byte": "49",
+                "start": {
+                  "column": 10,
+                  "line": 3
+                },
+                "start_byte": "48"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "3"
+              },
+              "node_id": "rev1.nc",
+              "parent_node_id": "rev1.na",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 3
+                },
+                "end_byte": "53",
+                "start": {
+                  "column": 14,
+                  "line": 3
+                },
+                "start_byte": "52"
+              },
+              "syntax_kind": "literal"
+            }
+          ],
+          "revision_id": "rev1",
+          "units": [
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "rev1.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 4
+                },
+                "end_byte": "67",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 4
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "vista_programa": {
+          "child_order": "source",
+          "node_kinds_include": [
+            "declaration",
+            "statement",
+            "expression",
+            "symbol",
+            "type"
+          ],
+          "units": [
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "order": 0,
+              "span": {
+                "start": {
+                  "column": 1,
+                  "line": 1
+                }
+              }
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [
+            {
+              "base": "Base",
+              "class": "Hija"
+            }
+          ],
+          "members": [
+            {
+              "arity": 0,
+              "class": "Base",
+              "kind": "method",
+              "name": "valor",
+              "node_id": "rev3.n2",
+              "visibility": "public"
+            },
+            {
+              "arity": 0,
+              "class": "Hija",
+              "kind": "method",
+              "name": "valor",
+              "node_id": "rev3.nd",
+              "visibility": "public"
+            }
+          ],
+          "methods": [
+            {
+              "class": "Hija",
+              "name": "valor",
+              "overrides": "Base.valor"
+            }
+          ],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "rev3.n1",
+                "rev3.n2"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n1",
+                  "role": "name_or_base"
+                },
+                {
+                  "node_id": "rev3.n2",
+                  "role": "member"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev3.n0",
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 5
+                },
+                "end_byte": "68",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "class_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.n1",
+              "parent_node_id": "rev3.n0",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 1
+                },
+                "end_byte": "10",
+                "start": {
+                  "column": 7,
+                  "line": 1
+                },
+                "start_byte": "6"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n3",
+                "rev3.n4",
+                "rev3.n5",
+                "rev3.n6"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n3",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev3.n4",
+                  "role": "parameters"
+                },
+                {
+                  "node_id": "rev3.n5",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev3.n6",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev3.n2",
+              "parent_node_id": "rev3.n0",
+              "span": {
+                "end": {
+                  "column": 10,
+                  "line": 4
+                },
+                "end_byte": "59",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "method_member"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.n3",
+              "parent_node_id": "rev3.n2",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 2
+                },
+                "end_byte": "23",
+                "start": {
+                  "column": 8,
+                  "line": 2
+                },
+                "start_byte": "18"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "declaration",
+              "node_id": "rev3.n4",
+              "parent_node_id": "rev3.n2",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 2
+                },
+                "end_byte": "25",
+                "start": {
+                  "column": 13,
+                  "line": 2
+                },
+                "start_byte": "23"
+              },
+              "syntax_kind": "parameters"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev3.n5",
+              "parent_node_id": "rev3.n2",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 27,
+                  "line": 2
+                },
+                "end_byte": "37",
+                "start": {
+                  "column": 21,
+                  "line": 2
+                },
+                "start_byte": "31"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n7"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n7",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n6",
+              "parent_node_id": "rev3.n2",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 4
+                },
+                "end_byte": "50",
+                "start": {
+                  "column": 27,
+                  "line": 2
+                },
+                "start_byte": "37"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n8"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n8",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n7",
+              "parent_node_id": "rev3.n6",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 3
+                },
+                "end_byte": "49",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n9"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n9",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n8",
+              "parent_node_id": "rev3.n7",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 3
+                },
+                "end_byte": "48",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "return_statement"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "1"
+              },
+              "node_id": "rev3.n9",
+              "parent_node_id": "rev3.n8",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 3
+                },
+                "end_byte": "48",
+                "start": {
+                  "column": 10,
+                  "line": 3
+                },
+                "start_byte": "47"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "rev3.nb",
+                "rev3.nc",
+                "rev3.nd"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.nb",
+                  "role": "name_or_base"
+                },
+                {
+                  "node_id": "rev3.nc",
+                  "role": "name_or_base"
+                },
+                {
+                  "node_id": "rev3.nd",
+                  "role": "member"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev3.na",
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 10
+                },
+                "end_byte": "152",
+                "start": {
+                  "column": 1,
+                  "line": 6
+                },
+                "start_byte": "69"
+              },
+              "syntax_kind": "class_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.nb",
+              "parent_node_id": "rev3.na",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 6
+                },
+                "end_byte": "79",
+                "start": {
+                  "column": 7,
+                  "line": 6
+                },
+                "start_byte": "75"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.nc",
+              "parent_node_id": "rev3.na",
+              "span": {
+                "end": {
+                  "column": 26,
+                  "line": 6
+                },
+                "end_byte": "94",
+                "start": {
+                  "column": 22,
+                  "line": 6
+                },
+                "start_byte": "90"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev3.ne",
+                "rev3.nf",
+                "rev3.n10",
+                "rev3.n11"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.ne",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev3.nf",
+                  "role": "parameters"
+                },
+                {
+                  "node_id": "rev3.n10",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev3.n11",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev3.nd",
+              "parent_node_id": "rev3.na",
+              "span": {
+                "end": {
+                  "column": 10,
+                  "line": 9
+                },
+                "end_byte": "143",
+                "start": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start_byte": "95"
+              },
+              "syntax_kind": "method_member"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.ne",
+              "parent_node_id": "rev3.nd",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 7
+                },
+                "end_byte": "107",
+                "start": {
+                  "column": 8,
+                  "line": 7
+                },
+                "start_byte": "102"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "declaration",
+              "node_id": "rev3.nf",
+              "parent_node_id": "rev3.nd",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 7
+                },
+                "end_byte": "109",
+                "start": {
+                  "column": 13,
+                  "line": 7
+                },
+                "start_byte": "107"
+              },
+              "syntax_kind": "parameters"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev3.n10",
+              "parent_node_id": "rev3.nd",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 27,
+                  "line": 7
+                },
+                "end_byte": "121",
+                "start": {
+                  "column": 21,
+                  "line": 7
+                },
+                "start_byte": "115"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n12"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n12",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n11",
+              "parent_node_id": "rev3.nd",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 9
+                },
+                "end_byte": "134",
+                "start": {
+                  "column": 27,
+                  "line": 7
+                },
+                "start_byte": "121"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n13"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n13",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n12",
+              "parent_node_id": "rev3.n11",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 8
+                },
+                "end_byte": "133",
+                "start": {
+                  "column": 1,
+                  "line": 8
+                },
+                "start_byte": "122"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n14"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n14",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev3.n13",
+              "parent_node_id": "rev3.n12",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 8
+                },
+                "end_byte": "132",
+                "start": {
+                  "column": 1,
+                  "line": 8
+                },
+                "start_byte": "122"
+              },
+              "syntax_kind": "return_statement"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "2"
+              },
+              "node_id": "rev3.n14",
+              "parent_node_id": "rev3.n13",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 8
+                },
+                "end_byte": "132",
+                "start": {
+                  "column": 10,
+                  "line": 8
+                },
+                "start_byte": "131"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "rev3.n16",
+                "rev3.n17"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev3.n16",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev3.n17",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev3.n15",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 12
+                },
+                "end_byte": "177",
+                "start": {
+                  "column": 1,
+                  "line": 11
+                },
+                "start_byte": "153"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev3.n16",
+              "parent_node_id": "rev3.n15",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 11
+                },
+                "end_byte": "164",
+                "start": {
+                  "column": 11,
+                  "line": 11
+                },
+                "start_byte": "163"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "statement",
+              "node_id": "rev3.n17",
+              "parent_node_id": "rev3.n15",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 12
+                },
+                "end_byte": "165",
+                "start": {
+                  "column": 12,
+                  "line": 11
+                },
+                "start_byte": "164"
+              },
+              "syntax_kind": "body"
+            }
+          ],
+          "revision_id": "rev3",
+          "units": [
+            {
+              "kind": "class",
+              "name": "Base",
+              "node_id": "rev3.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 5
+                },
+                "end_byte": "68",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            },
+            {
+              "kind": "class",
+              "name": "Hija",
+              "node_id": "rev3.na",
+              "order": 1,
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 10
+                },
+                "end_byte": "152",
+                "start": {
+                  "column": 1,
+                  "line": 6
+                },
+                "start_byte": "69"
+              }
+            },
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "rev3.n15",
+              "order": 2,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 12
+                },
+                "end_byte": "177",
+                "start": {
+                  "column": 1,
+                  "line": 11
+                },
+                "start_byte": "153"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "class",
+            "name": "Base",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 5
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          },
+          {
+            "kind": "class",
+            "name": "Hija",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 10
+              },
+              "start": {
+                "column": 1,
+                "line": 6
+              }
+            }
+          },
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 12
+              },
+              "start": {
+                "column": 1,
+                "line": 11
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "vista_programa": {
+          "inheritance": [
+            {
+              "base": "Base",
+              "class": "Hija"
+            }
+          ],
+          "members": [
+            {
+              "arity": 0,
+              "class": "Base",
+              "kind": "method",
+              "name": "valor",
+              "visibility": "public"
+            },
+            {
+              "arity": 0,
+              "class": "Hija",
+              "kind": "method",
+              "name": "valor",
+              "visibility": "public"
+            }
+          ],
+          "methods": [
+            {
+              "class": "Hija",
+              "name": "valor",
+              "overrides": "Base.valor"
+            }
+          ],
+          "units": [
+            {
+              "kind": "class",
+              "name": "Base",
+              "order": 0
+            },
+            {
+              "kind": "class",
+              "name": "Hija",
+              "order": 1
+            },
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "order": 2
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [],
+          "members": [],
+          "methods": [],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "rev5.n1",
+                "rev5.n2"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev5.n1",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev5.n2",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev5.n0",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "end_byte": "41",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev5.n1",
+              "parent_node_id": "rev5.n0",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 1
+                },
+                "end_byte": "11",
+                "start": {
+                  "column": 11,
+                  "line": 1
+                },
+                "start_byte": "10"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev5.n3"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev5.n3",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev5.n2",
+              "parent_node_id": "rev5.n0",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 3
+                },
+                "end_byte": "29",
+                "start": {
+                  "column": 12,
+                  "line": 1
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev5.n4"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev5.n4",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev5.n3",
+              "parent_node_id": "rev5.n2",
+              "span": {
+                "end": {
+                  "column": 14,
+                  "line": 2
+                },
+                "end_byte": "28",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev5.n5"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev5.n5",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev5.n4",
+              "parent_node_id": "rev5.n3",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 2
+                },
+                "end_byte": "27",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "output"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "character",
+                "value": "🧩"
+              },
+              "node_id": "rev5.n5",
+              "parent_node_id": "rev5.n4",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 2
+                },
+                "end_byte": "27",
+                "start": {
+                  "column": 10,
+                  "line": 2
+                },
+                "start_byte": "21"
+              },
+              "syntax_kind": "literal"
+            }
+          ],
+          "revision_id": "rev5",
+          "units": [
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "rev5.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "end_byte": "41",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 3
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "vista_programa": {
+          "node_ids_unique": true,
+          "nodes_include": [
+            {
+              "kind": "statement",
+              "span": {
+                "end": {
+                  "column": 14,
+                  "line": 2
+                },
+                "end_byte": "28",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              }
+            }
+          ],
+          "references_same_revision": true
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [],
+          "members": [],
+          "methods": [],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "rev7.n1",
+                "rev7.n2"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n1",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev7.n2",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev7.n0",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 9
+                },
+                "end_byte": "114",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev7.n1",
+              "parent_node_id": "rev7.n0",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 1
+                },
+                "end_byte": "11",
+                "start": {
+                  "column": 11,
+                  "line": 1
+                },
+                "start_byte": "10"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev7.n3"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n3",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n2",
+              "parent_node_id": "rev7.n0",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 9
+                },
+                "end_byte": "102",
+                "start": {
+                  "column": 12,
+                  "line": 1
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev7.n4",
+                "rev7.n5",
+                "rev7.nc"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n4",
+                  "role": "condition"
+                },
+                {
+                  "node_id": "rev7.n5",
+                  "role": "then_body"
+                },
+                {
+                  "node_id": "rev7.nc",
+                  "role": "else_body"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n3",
+              "parent_node_id": "rev7.n2",
+              "span": {
+                "end": {
+                  "column": 6,
+                  "line": 8
+                },
+                "end_byte": "101",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "conditional"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "boolean",
+                "value": "true"
+              },
+              "node_id": "rev7.n4",
+              "parent_node_id": "rev7.n3",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 2
+                },
+                "end_byte": "24",
+                "start": {
+                  "column": 4,
+                  "line": 2
+                },
+                "start_byte": "15"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "rev7.n6"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n6",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n5",
+              "parent_node_id": "rev7.n3",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 6
+                },
+                "end_byte": "79",
+                "start": {
+                  "column": 22,
+                  "line": 2
+                },
+                "start_byte": "33"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev7.n7",
+                "rev7.n8"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n7",
+                  "role": "condition"
+                },
+                {
+                  "node_id": "rev7.n8",
+                  "role": "body"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n6",
+              "parent_node_id": "rev7.n5",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 5
+                },
+                "end_byte": "78",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "34"
+              },
+              "syntax_kind": "while_loop"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "boolean",
+                "value": "false"
+              },
+              "node_id": "rev7.n7",
+              "parent_node_id": "rev7.n6",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 3
+                },
+                "end_byte": "48",
+                "start": {
+                  "column": 10,
+                  "line": 3
+                },
+                "start_byte": "43"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "rev7.n9"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.n9",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n8",
+              "parent_node_id": "rev7.n6",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 5
+                },
+                "end_byte": "67",
+                "start": {
+                  "column": 21,
+                  "line": 3
+                },
+                "start_byte": "54"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev7.na"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.na",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.n9",
+              "parent_node_id": "rev7.n8",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 4
+                },
+                "end_byte": "66",
+                "start": {
+                  "column": 1,
+                  "line": 4
+                },
+                "start_byte": "55"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev7.nb"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.nb",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.na",
+              "parent_node_id": "rev7.n9",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 4
+                },
+                "end_byte": "65",
+                "start": {
+                  "column": 1,
+                  "line": 4
+                },
+                "start_byte": "55"
+              },
+              "syntax_kind": "output"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "1"
+              },
+              "node_id": "rev7.nb",
+              "parent_node_id": "rev7.na",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 4
+                },
+                "end_byte": "65",
+                "start": {
+                  "column": 10,
+                  "line": 4
+                },
+                "start_byte": "64"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "rev7.nd"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.nd",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.nc",
+              "parent_node_id": "rev7.n3",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 8
+                },
+                "end_byte": "96",
+                "start": {
+                  "column": 5,
+                  "line": 6
+                },
+                "start_byte": "83"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev7.ne"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.ne",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.nd",
+              "parent_node_id": "rev7.nc",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 7
+                },
+                "end_byte": "95",
+                "start": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start_byte": "84"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "rev7.nf"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev7.nf",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "rev7.ne",
+              "parent_node_id": "rev7.nd",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 7
+                },
+                "end_byte": "94",
+                "start": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start_byte": "84"
+              },
+              "syntax_kind": "output"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "2"
+              },
+              "node_id": "rev7.nf",
+              "parent_node_id": "rev7.ne",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 7
+                },
+                "end_byte": "94",
+                "start": {
+                  "column": 10,
+                  "line": 7
+                },
+                "start_byte": "93"
+              },
+              "syntax_kind": "literal"
+            }
+          ],
+          "revision_id": "rev7",
+          "units": [
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "rev7.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 9
+                },
+                "end_byte": "114",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 9
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "arbol": "presente",
+        "vista_programa": {
+          "child_roles_include": [
+            {
+              "role": "else_body",
+              "syntax_kind": "conditional"
+            }
+          ],
+          "syntax_kinds_include": [
+            "conditional",
+            "while_loop",
+            "output"
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [
+          {
+            "arguments": {
+              "lexeme": "monto"
+            },
+            "class": "semantic",
+            "code": "unusedParameter",
+            "message": "Parámetro nunca usado: monto",
+            "related": [],
+            "severity": "warning",
+            "span": {
+              "end": {
+                "column": 21,
+                "line": 4
+              },
+              "start": {
+                "column": 16,
+                "line": 4
+              }
+            }
+          }
+        ],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [],
+          "members": [
+            {
+              "class": "Caja",
+              "dimensions": 0,
+              "kind": "field",
+              "name": "saldo",
+              "node_id": "rev9.n2",
+              "type": "Entero",
+              "visibility": "public"
+            },
+            {
+              "class": "Caja",
+              "dimensions": 2,
+              "kind": "field",
+              "name": "matriz",
+              "node_id": "rev9.n6",
+              "type": "Entero",
+              "visibility": "public"
+            },
+            {
+              "arity": 1,
+              "class": "Caja",
+              "kind": "method",
+              "name": "ajustar",
+              "node_id": "rev9.nd",
+              "visibility": "public"
+            }
+          ],
+          "methods": [],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "rev9.n1",
+                "rev9.n2",
+                "rev9.n6",
+                "rev9.nd"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n1",
+                  "role": "name_or_base"
+                },
+                {
+                  "node_id": "rev9.n2",
+                  "role": "member"
+                },
+                {
+                  "node_id": "rev9.n6",
+                  "role": "member"
+                },
+                {
+                  "node_id": "rev9.nd",
+                  "role": "member"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n0",
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 6
+                },
+                "end_byte": "130",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "class_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev9.n1",
+              "parent_node_id": "rev9.n0",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 1
+                },
+                "end_byte": "10",
+                "start": {
+                  "column": 7,
+                  "line": 1
+                },
+                "start_byte": "6"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n3"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n3",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n2",
+              "parent_node_id": "rev9.n0",
+              "span": {
+                "end": {
+                  "column": 27,
+                  "line": 2
+                },
+                "end_byte": "37",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "field_declaration"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n4",
+                "rev9.n5"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n4",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev9.n5",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n3",
+              "parent_node_id": "rev9.n2",
+              "span": {
+                "end": {
+                  "column": 26,
+                  "line": 2
+                },
+                "end_byte": "36",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "declaration"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev9.n4",
+              "parent_node_id": "rev9.n3",
+              "span": {
+                "end": {
+                  "column": 14,
+                  "line": 2
+                },
+                "end_byte": "24",
+                "start": {
+                  "column": 9,
+                  "line": 2
+                },
+                "start_byte": "19"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev9.n5",
+              "parent_node_id": "rev9.n3",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 26,
+                  "line": 2
+                },
+                "end_byte": "36",
+                "start": {
+                  "column": 20,
+                  "line": 2
+                },
+                "start_byte": "30"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n7"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n7",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n6",
+              "parent_node_id": "rev9.n0",
+              "span": {
+                "end": {
+                  "column": 36,
+                  "line": 3
+                },
+                "end_byte": "73",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "field_declaration"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n8",
+                "rev9.nc"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n8",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev9.nc",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n7",
+              "parent_node_id": "rev9.n6",
+              "span": {
+                "end": {
+                  "column": 35,
+                  "line": 3
+                },
+                "end_byte": "72",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "dimension_declaration"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n9",
+                "rev9.na",
+                "rev9.nb"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n9",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev9.na",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev9.nb",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n8",
+              "parent_node_id": "rev9.n7",
+              "span": {
+                "end": {
+                  "column": 23,
+                  "line": 3
+                },
+                "end_byte": "60",
+                "start": {
+                  "column": 11,
+                  "line": 3
+                },
+                "start_byte": "48"
+              },
+              "syntax_kind": "dimensioned"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "node_id": "rev9.n9",
+              "parent_node_id": "rev9.n8",
+              "span": {
+                "end": {
+                  "column": 17,
+                  "line": 3
+                },
+                "end_byte": "54",
+                "start": {
+                  "column": 11,
+                  "line": 3
+                },
+                "start_byte": "48"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "2"
+              },
+              "node_id": "rev9.na",
+              "parent_node_id": "rev9.n8",
+              "span": {
+                "end": {
+                  "column": 19,
+                  "line": 3
+                },
+                "end_byte": "56",
+                "start": {
+                  "column": 18,
+                  "line": 3
+                },
+                "start_byte": "55"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "3"
+              },
+              "node_id": "rev9.nb",
+              "parent_node_id": "rev9.n8",
+              "span": {
+                "end": {
+                  "column": 22,
+                  "line": 3
+                },
+                "end_byte": "59",
+                "start": {
+                  "column": 21,
+                  "line": 3
+                },
+                "start_byte": "58"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev9.nc",
+              "parent_node_id": "rev9.n7",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 35,
+                  "line": 3
+                },
+                "end_byte": "72",
+                "start": {
+                  "column": 29,
+                  "line": 3
+                },
+                "start_byte": "66"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "rev9.ne",
+                "rev9.nf",
+                "rev9.n13"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.ne",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev9.nf",
+                  "role": "parameters"
+                },
+                {
+                  "node_id": "rev9.n13",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.nd",
+              "parent_node_id": "rev9.n0",
+              "span": {
+                "end": {
+                  "column": 10,
+                  "line": 5
+                },
+                "end_byte": "121",
+                "start": {
+                  "column": 1,
+                  "line": 4
+                },
+                "start_byte": "74"
+              },
+              "syntax_kind": "method_member"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev9.ne",
+              "parent_node_id": "rev9.nd",
+              "span": {
+                "end": {
+                  "column": 15,
+                  "line": 4
+                },
+                "end_byte": "88",
+                "start": {
+                  "column": 8,
+                  "line": 4
+                },
+                "start_byte": "81"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n10"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n10",
+                  "role": "parameter"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.nf",
+              "parent_node_id": "rev9.nd",
+              "span": {
+                "end": {
+                  "column": 38,
+                  "line": 4
+                },
+                "end_byte": "111",
+                "start": {
+                  "column": 15,
+                  "line": 4
+                },
+                "start_byte": "88"
+              },
+              "syntax_kind": "parameters"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n11",
+                "rev9.n12"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n11",
+                  "role": "child"
+                },
+                {
+                  "node_id": "rev9.n12",
+                  "role": "child"
+                }
+              ],
+              "dimensions": 3,
+              "kind": "declaration",
+              "node_id": "rev9.n10",
+              "parent_node_id": "rev9.nf",
+              "span": {
+                "end": {
+                  "column": 37,
+                  "line": 4
+                },
+                "end_byte": "110",
+                "start": {
+                  "column": 16,
+                  "line": 4
+                },
+                "start_byte": "89"
+              },
+              "syntax_kind": "parameter"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev9.n11",
+              "parent_node_id": "rev9.n10",
+              "span": {
+                "end": {
+                  "column": 21,
+                  "line": 4
+                },
+                "end_byte": "94",
+                "start": {
+                  "column": 16,
+                  "line": 4
+                },
+                "start_byte": "89"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "rev9.n12",
+              "parent_node_id": "rev9.n10",
+              "primitive": "integer",
+              "span": {
+                "end": {
+                  "column": 37,
+                  "line": 4
+                },
+                "end_byte": "110",
+                "start": {
+                  "column": 31,
+                  "line": 4
+                },
+                "start_byte": "104"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "statement",
+              "node_id": "rev9.n13",
+              "parent_node_id": "rev9.nd",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 5
+                },
+                "end_byte": "112",
+                "start": {
+                  "column": 38,
+                  "line": 4
+                },
+                "start_byte": "111"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "rev9.n15",
+                "rev9.n16"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "rev9.n15",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "rev9.n16",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "rev9.n14",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 8
+                },
+                "end_byte": "155",
+                "start": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start_byte": "131"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "rev9.n15",
+              "parent_node_id": "rev9.n14",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 7
+                },
+                "end_byte": "142",
+                "start": {
+                  "column": 11,
+                  "line": 7
+                },
+                "start_byte": "141"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "statement",
+              "node_id": "rev9.n16",
+              "parent_node_id": "rev9.n14",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 8
+                },
+                "end_byte": "143",
+                "start": {
+                  "column": 12,
+                  "line": 7
+                },
+                "start_byte": "142"
+              },
+              "syntax_kind": "body"
+            }
+          ],
+          "revision_id": "rev9",
+          "units": [
+            {
+              "kind": "class",
+              "name": "Caja",
+              "node_id": "rev9.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 9,
+                  "line": 6
+                },
+                "end_byte": "130",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            },
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "rev9.n14",
+              "order": 1,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 8
+                },
+                "end_byte": "155",
+                "start": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start_byte": "131"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "class",
+            "name": "Caja",
+            "span": {
+              "end": {
+                "column": 9,
+                "line": 6
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          },
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 8
+              },
+              "start": {
+                "column": 1,
+                "line": 7
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "vista_programa": {
+          "members": [
+            {
+              "class": "Caja",
+              "dimensions": 0,
+              "kind": "field",
+              "name": "saldo",
+              "type": "Entero"
+            },
+            {
+              "class": "Caja",
+              "dimensions": 2,
+              "kind": "field",
+              "name": "matriz",
+              "type": "Entero"
+            },
+            {
+              "arity": 1,
+              "class": "Caja",
+              "kind": "method",
+              "name": "ajustar",
+              "visibility": "public"
+            }
+          ],
+          "nodes_include": [
+            {
+              "dimensions": 3,
+              "syntax_kind": "parameter"
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "diagnostics": [],
+        "kind": "analyze",
+        "program_view": {
+          "child_order": "source",
+          "inheritance": [],
+          "members": [],
+          "methods": [],
+          "nodes": [
+            {
+              "child_node_ids": [
+                "revb.n1",
+                "revb.n2"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n1",
+                  "role": "signature"
+                },
+                {
+                  "node_id": "revb.n2",
+                  "role": "body"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "revb.n0",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 5
+                },
+                "end_byte": "87",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              },
+              "syntax_kind": "algorithm_unit"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "revb.n1",
+              "parent_node_id": "revb.n0",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 1
+                },
+                "end_byte": "11",
+                "start": {
+                  "column": 11,
+                  "line": 1
+                },
+                "start_byte": "10"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "revb.n3",
+                "revb.n7",
+                "revb.n11"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n3",
+                  "role": "statement"
+                },
+                {
+                  "node_id": "revb.n7",
+                  "role": "statement"
+                },
+                {
+                  "node_id": "revb.n11",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n2",
+              "parent_node_id": "revb.n0",
+              "span": {
+                "end": {
+                  "column": 1,
+                  "line": 5
+                },
+                "end_byte": "75",
+                "start": {
+                  "column": 12,
+                  "line": 1
+                },
+                "start_byte": "11"
+              },
+              "syntax_kind": "body"
+            },
+            {
+              "child_node_ids": [
+                "revb.n4"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n4",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n3",
+              "parent_node_id": "revb.n2",
+              "span": {
+                "end": {
+                  "column": 21,
+                  "line": 2
+                },
+                "end_byte": "32",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "revb.n5",
+                "revb.n6"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n5",
+                  "role": "child"
+                },
+                {
+                  "node_id": "revb.n6",
+                  "role": "child"
+                }
+              ],
+              "kind": "declaration",
+              "node_id": "revb.n4",
+              "parent_node_id": "revb.n3",
+              "span": {
+                "end": {
+                  "column": 20,
+                  "line": 2
+                },
+                "end_byte": "31",
+                "start": {
+                  "column": 1,
+                  "line": 2
+                },
+                "start_byte": "12"
+              },
+              "syntax_kind": "declaration"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "symbol",
+              "node_id": "revb.n5",
+              "parent_node_id": "revb.n4",
+              "span": {
+                "end": {
+                  "column": 10,
+                  "line": 2
+                },
+                "end_byte": "21",
+                "start": {
+                  "column": 9,
+                  "line": 2
+                },
+                "start_byte": "20"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "type",
+              "node_id": "revb.n6",
+              "parent_node_id": "revb.n4",
+              "primitive": "real",
+              "span": {
+                "end": {
+                  "column": 20,
+                  "line": 2
+                },
+                "end_byte": "31",
+                "start": {
+                  "column": 16,
+                  "line": 2
+                },
+                "start_byte": "27"
+              },
+              "syntax_kind": "type"
+            },
+            {
+              "child_node_ids": [
+                "revb.n8"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n8",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n7",
+              "parent_node_id": "revb.n2",
+              "span": {
+                "end": {
+                  "column": 19,
+                  "line": 3
+                },
+                "end_byte": "51",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "33"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "revb.n9",
+                "revb.na"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n9",
+                  "role": "child"
+                },
+                {
+                  "node_id": "revb.na",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n8",
+              "parent_node_id": "revb.n7",
+              "span": {
+                "end": {
+                  "column": 18,
+                  "line": 3
+                },
+                "end_byte": "50",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "33"
+              },
+              "syntax_kind": "assignment_statement"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "node_id": "revb.n9",
+              "parent_node_id": "revb.n8",
+              "span": {
+                "end": {
+                  "column": 2,
+                  "line": 3
+                },
+                "end_byte": "34",
+                "start": {
+                  "column": 1,
+                  "line": 3
+                },
+                "start_byte": "33"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "revb.nb",
+                "revb.nf"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.nb",
+                  "role": "child"
+                },
+                {
+                  "node_id": "revb.nf",
+                  "role": "child"
+                }
+              ],
+              "kind": "expression",
+              "node_id": "revb.na",
+              "operators": [
+                "add"
+              ],
+              "parent_node_id": "revb.n8",
+              "span": {
+                "end": {
+                  "column": 18,
+                  "line": 3
+                },
+                "end_byte": "50",
+                "start": {
+                  "column": 6,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "addition"
+            },
+            {
+              "builtin": "squareRoot",
+              "child_node_ids": [
+                "revb.nc",
+                "revb.nd"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.nc",
+                  "role": "child"
+                },
+                {
+                  "node_id": "revb.nd",
+                  "role": "child"
+                }
+              ],
+              "kind": "expression",
+              "node_id": "revb.nb",
+              "parent_node_id": "revb.na",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "end_byte": "45",
+                "start": {
+                  "column": 6,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "postfix"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "node_id": "revb.nc",
+              "parent_node_id": "revb.nb",
+              "span": {
+                "end": {
+                  "column": 10,
+                  "line": 3
+                },
+                "end_byte": "42",
+                "start": {
+                  "column": 6,
+                  "line": 3
+                },
+                "start_byte": "38"
+              },
+              "syntax_kind": "identifier"
+            },
+            {
+              "child_node_ids": [
+                "revb.ne"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.ne",
+                  "role": "child"
+                }
+              ],
+              "kind": "expression",
+              "node_id": "revb.nd",
+              "parent_node_id": "revb.nb",
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 3
+                },
+                "end_byte": "45",
+                "start": {
+                  "column": 10,
+                  "line": 3
+                },
+                "start_byte": "42"
+              },
+              "syntax_kind": "arguments"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "4"
+              },
+              "node_id": "revb.ne",
+              "parent_node_id": "revb.nd",
+              "span": {
+                "end": {
+                  "column": 12,
+                  "line": 3
+                },
+                "end_byte": "44",
+                "start": {
+                  "column": 11,
+                  "line": 3
+                },
+                "start_byte": "43"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "revb.n10"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n10",
+                  "role": "child"
+                }
+              ],
+              "kind": "expression",
+              "node_id": "revb.nf",
+              "operator": "negate",
+              "parent_node_id": "revb.na",
+              "span": {
+                "end": {
+                  "column": 18,
+                  "line": 3
+                },
+                "end_byte": "50",
+                "start": {
+                  "column": 16,
+                  "line": 3
+                },
+                "start_byte": "48"
+              },
+              "syntax_kind": "unary"
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "literal": {
+                "type": "integer",
+                "value": "1"
+              },
+              "node_id": "revb.n10",
+              "parent_node_id": "revb.nf",
+              "span": {
+                "end": {
+                  "column": 18,
+                  "line": 3
+                },
+                "end_byte": "50",
+                "start": {
+                  "column": 17,
+                  "line": 3
+                },
+                "start_byte": "49"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "child_node_ids": [
+                "revb.n12"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n12",
+                  "role": "statement"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n11",
+              "parent_node_id": "revb.n2",
+              "span": {
+                "end": {
+                  "column": 23,
+                  "line": 4
+                },
+                "end_byte": "74",
+                "start": {
+                  "column": 1,
+                  "line": 4
+                },
+                "start_byte": "52"
+              },
+              "syntax_kind": "statement"
+            },
+            {
+              "child_node_ids": [
+                "revb.n13"
+              ],
+              "child_roles": [
+                {
+                  "node_id": "revb.n13",
+                  "role": "child"
+                }
+              ],
+              "kind": "statement",
+              "node_id": "revb.n12",
+              "parent_node_id": "revb.n11",
+              "span": {
+                "end": {
+                  "column": 22,
+                  "line": 4
+                },
+                "end_byte": "73",
+                "start": {
+                  "column": 1,
+                  "line": 4
+                },
+                "start_byte": "52"
+              },
+              "syntax_kind": "output",
+              "without_newline": true
+            },
+            {
+              "child_node_ids": [],
+              "child_roles": [],
+              "kind": "expression",
+              "node_id": "revb.n13",
+              "parent_node_id": "revb.n12",
+              "span": {
+                "end": {
+                  "column": 11,
+                  "line": 4
+                },
+                "end_byte": "62",
+                "start": {
+                  "column": 10,
+                  "line": 4
+                },
+                "start_byte": "61"
+              },
+              "syntax_kind": "identifier"
+            }
+          ],
+          "revision_id": "revb",
+          "units": [
+            {
+              "kind": "algorithm",
+              "name": "P",
+              "node_id": "revb.n0",
+              "order": 0,
+              "span": {
+                "end": {
+                  "column": 13,
+                  "line": 5
+                },
+                "end_byte": "87",
+                "start": {
+                  "column": 1,
+                  "line": 1
+                },
+                "start_byte": "0"
+              }
+            }
+          ]
+        },
+        "schema": [
+          {
+            "kind": "algorithm",
+            "name": "P",
+            "span": {
+              "end": {
+                "column": 13,
+                "line": 5
+              },
+              "start": {
+                "column": 1,
+                "line": 1
+              }
+            }
+          }
+        ],
+        "tree": true
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "vista_programa": {
+          "nodes_include": [
+            {
+              "builtin": "squareRoot",
+              "syntax_kind": "postfix"
+            },
+            {
+              "operators": [
+                "add"
+              ],
+              "syntax_kind": "addition"
+            },
+            {
+              "operator": "negate",
+              "syntax_kind": "unary"
+            },
+            {
+              "literal": {
+                "type": "integer",
+                "value": "4"
+              },
+              "syntax_kind": "literal"
+            },
+            {
+              "syntax_kind": "output",
+              "without_newline": true
+            },
+            {
+              "primitive": "real",
+              "syntax_kind": "type"
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "error": "usage",
+          "unrelated_resources_unchanged": true
+        },
+        "kind": "app"
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "error": "usage",
+          "unrelated_resources_unchanged": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "API.PROGRAM.VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "decoded_id": "9007199254740993",
+          "source_equal": true,
+          "source_utf8_hex": "416c676f7269746d6f20500a4573637269626972202265cc81f09fa7a9223b0a46696e416c676f7269746d6f0a"
+        },
+        "kind": "app"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "decoded_id": "9007199254740993",
+          "source_equal": true,
+          "source_utf8_hex": "416c676f7269746d6f20500a4573637269626972202265cc81f09fa7a9223b0a46696e416c676f7269746d6f0a"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "API.WIRE-FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": null,
+      "case": "C1",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "codigo_salida": 1,
+        "json": {
+          "files": [
+            {
+              "diagnostics": [
+                {
+                  "arguments": {
+                    "lexeme": "total"
+                  },
+                  "class": "semantic",
+                  "code": "undeclaredVariable",
+                  "related": [],
+                  "severity": "error",
+                  "span": {
+                    "end": {
+                      "column": 15,
+                      "line": 2
+                    },
+                    "start": {
+                      "column": 10,
+                      "line": 2
+                    }
+                  }
+                }
+              ],
+              "path": "p.pseudo"
+            }
+          ]
+        },
+        "salida_error": ""
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "API.WIRE-FORMAT",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": {
+        "app": {
+          "borrowed_view_retained": false,
+          "response_owned": true,
+          "source_equal_after_growth": true,
+          "survives_next_call": true
+        },
+        "kind": "app"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "borrowed_view_retained": false,
+          "response_owned": true,
+          "source_equal_after_growth": true,
+          "survives_next_call": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "API.WIRE-FORMAT",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "candidates_include": [
+            "Cadena",
+            "Caracter",
+            "Entero",
+            "Logico",
+            "Real"
+          ],
+          "source": "TOOL.SERVICE.COMPLETION"
+        },
+        "kind": "app"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "candidates_include": [
+            "Entero",
+            "Real",
+            "Logico",
+            "Caracter",
+            "Cadena"
+          ],
+          "source": "TOOL.SERVICE.COMPLETION"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "candidate_matches_service": true,
+          "position_unit": "utf16",
+          "service_position_unit": "utf8"
+        },
+        "kind": "app"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "candidate_matches_service": true,
+          "position_unit": "utf16",
+          "service_position_unit": "utf8"
+        }
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "round_trip_utf16": 24,
+          "service_offset_utf8": 26
+        },
+        "kind": "app"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "round_trip_utf16": 24,
+          "service_offset_utf8": 26
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "document_changed": false,
+          "error": "usage",
+          "request_sent": false
+        },
+        "kind": "app"
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "document_changed": false,
+          "error": "usage",
+          "request_sent": false
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "stale_response_applied": false,
+          "visible_revision": 2
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "stale_response_applied": false,
+          "visible_revision": 2
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "candidate_lexemes_equal": true,
+          "localized_labels_may_differ": true
+        },
+        "kind": "app"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "candidate_lexemes_equal": true,
+          "localized_labels_may_differ": true
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "candidate_lexemes_equal": true,
+          "localized_labels_may_differ": true
+        },
+        "kind": "app"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "candidate_lexemes_equal": true,
+          "localized_labels_may_differ": true
+        }
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "accepted": false,
+          "reason": "layer_direction"
+        },
+        "kind": "app"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "accepted": false,
+          "reason": "layer_direction"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "accepted": true,
+          "reason": "engine_adapter"
+        },
+        "kind": "app"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "accepted": true,
+          "reason": "engine_adapter"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "language_logic_in_app": false,
+          "output_type": "AnalysisReport",
+          "same_port_contract": true
+        },
+        "kind": "app"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "language_logic_in_app": false,
+          "same_port_contract": true
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "descendants_released": true,
+          "execution_resource": 21,
+          "second_release": {
+            "error": "usage"
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "descendants_released": true,
+          "second_release": {
+            "error": "usage"
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "error": "version",
+          "resource_count_after": 0,
+          "resource_count_before": 0
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "error": "version",
+          "resource_count_after": 0
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "error": "usage",
+          "resource_count_after": 1,
+          "resource_count_before": 1,
+          "unrelated_resources_unchanged": true
+        },
+        "kind": "app"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "error": "usage",
+          "resource_count_after": 1,
+          "unrelated_resources_unchanged": true
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.ENGINE.BOUNDARY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "cooperative_steps": 3,
+          "line": 3,
+          "output": "1\n",
+          "stop_event": "statement_entered",
+          "termination": "running"
+        },
+        "kind": "app"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "line": 3,
+          "stop_event": "statement_entered"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "cooperative_steps": 6,
+          "line": 5,
+          "output": "1\n",
+          "stop_event": "statement_entered",
+          "termination": "running"
+        },
+        "kind": "app"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "line": 5,
+          "stop_event": "statement_entered"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "cooperative_steps": 10,
+          "line": 6,
+          "output": "1\n2\n",
+          "stop_event": "statement_entered",
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "line": 6,
+          "stop_event": "statement_entered"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "cooperative_steps": 4,
+          "line": 2,
+          "output": "1\n",
+          "stop_event": "statement_entered",
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "output": "1\n",
+          "termination": "completed"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        }
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "output": "6765\n",
+          "pace_results_equal": true,
+          "termination": "completed"
+        }
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "completed_effects_match_events": true,
+          "events_ordered": true,
+          "no_events_after_cancel": true,
+          "termination": "cancelled"
+        },
+        "kind": "app"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "completed_effects_match_events": true,
+          "events_ordered": true,
+          "no_events_after_cancel": true,
+          "termination": "cancelled"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "after_input": {
+            "output": "antes\n5\n",
+            "termination": "completed"
+          },
+          "first_stop": "awaiting_input"
+        },
+        "kind": "app"
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "after_input": {
+            "output": "antes\n5\n",
+            "termination": "completed"
+          },
+          "first_stop": "awaiting_input"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "output": "",
+          "statement_limit": 3,
+          "termination": "limit_reached"
+        },
+        "kind": "app"
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "statement_limit": 3,
+          "termination": "limit_reached"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "code": "incompatibleTypesInAssignment",
+          "events_before_failure_preserved": true,
+          "later_events_absent": true,
+          "output": "",
+          "termination": "failed"
+        },
+        "kind": "app"
+      },
+      "case": "C9",
+      "differences": [
+        "Mismatch: aplicacion"
+      ],
+      "expected": {
+        "aplicacion": {
+          "code": "divisionByZero",
+          "events_before_failure_preserved": true,
+          "later_events_absent": true,
+          "termination": "failed"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "APP.EXEC.PACE",
+      "strictness": "estricto",
+      "verdict": "incumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "array": {
+            "cells": [],
+            "dimensions": [
+              0
+            ],
+            "indices": [],
+            "rank": 1
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "array": {
+            "cells": [],
+            "dimensions": [
+              0
+            ],
+            "indices": [],
+            "rank": 1
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "array": {
+            "cells": [
+              {
+                "uninitialized": true
+              },
+              {
+                "value": "7"
+              },
+              {
+                "uninitialized": true
+              },
+              {
+                "uninitialized": true
+              }
+            ],
+            "cells_by_index": {
+              "0,0": {
+                "uninitialized": true
+              },
+              "0,1": {
+                "value": "7"
+              },
+              "1,0": {
+                "uninitialized": true
+              },
+              "1,1": {
+                "uninitialized": true
+              }
+            },
+            "dimensions": [
+              2,
+              2
+            ],
+            "indices": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "rank": 2
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "array": {
+            "cells_by_index": {
+              "0,0": {
+                "uninitialized": true
+              },
+              "0,1": {
+                "value": "7"
+              },
+              "1,0": {
+                "uninitialized": true
+              },
+              "1,1": {
+                "uninitialized": true
+              }
+            },
+            "dimensions": [
+              2,
+              2
+            ],
+            "rank": 2
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "objects": {
+            "1": {
+              "class": "Nodo",
+              "fields": {
+                "siguiente": {
+                  "declared_in": "Nodo",
+                  "ref": "1"
+                }
+              }
+            }
+          },
+          "references": {
+            "a": "1",
+            "alias": "1"
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "objects": {
+            "1": {
+              "class": "Nodo",
+              "fields": {
+                "siguiente": {
+                  "ref": "1"
+                }
+              }
+            }
+          },
+          "references": {
+            "a": "1",
+            "alias": "1"
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "objects": {
+            "1": {
+              "class": "Hija",
+              "fields": {
+                "valor": {
+                  "declared_in": "Base",
+                  "value": "9"
+                }
+              }
+            }
+          },
+          "references": {
+            "x": "1"
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "objects": {
+            "1": {
+              "class": "Hija",
+              "fields": {
+                "valor": {
+                  "declared_in": "Base",
+                  "value": "9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "continuation_unchanged": true,
+          "query": {
+            "error": "usage"
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "continuation_unchanged": true,
+          "query": {
+            "error": "usage"
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "first_page": {
+            "indices": [
+              0,
+              1
+            ],
+            "next_cursor": "82f9df2473bee7f6.2",
+            "truncated": true
+          },
+          "last_page": {
+            "indices": [
+              4
+            ],
+            "next_cursor": null,
+            "truncated": false
+          }
+        },
+        "kind": "app"
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "first_page": {
+            "indices": [
+              0,
+              1
+            ],
+            "next_cursor": "opaque",
+            "truncated": true
+          },
+          "last_page": {
+            "indices": [
+              4
+            ],
+            "next_cursor": null,
+            "truncated": false
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "next_query": {
+            "error": "usage"
+          },
+          "previous_page_unchanged": true
+        },
+        "kind": "app"
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "next_query": {
+            "error": "usage"
+          },
+          "previous_page_unchanged": true
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "APP.EXEC.SNAPSHOT-VIEW",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": null,
+      "case": "C1",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C1",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C1",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C1",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C2",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          },
+          {
+            "clase": "input_received",
+            "datos": {
+              "texto": "4"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "4\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C2",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          },
+          {
+            "clase": "input_received",
+            "datos": {
+              "texto": "4"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "4\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "4\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C2",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          },
+          {
+            "clase": "input_received",
+            "datos": {
+              "texto": "4"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "4\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C2",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          },
+          {
+            "clase": "input_received",
+            "datos": {
+              "texto": "4"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "4\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "4\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "failure",
+            "datos": {
+              "codigo": "divisionByZero"
+            },
+            "linea": 4
+          }
+        ],
+        "fallo": {
+          "codigo": "divisionByZero"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "failure",
+            "datos": {
+              "codigo": "divisionByZero"
+            },
+            "linea": 4
+          }
+        ],
+        "fallo": {
+          "codigo": "divisionByZero"
+        },
+        "salida": ""
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "failure",
+            "datos": {
+              "codigo": "divisionByZero"
+            },
+            "linea": 4
+          }
+        ],
+        "fallo": {
+          "codigo": "divisionByZero"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "failure",
+            "datos": {
+              "codigo": "divisionByZero"
+            },
+            "linea": 4
+          }
+        ],
+        "fallo": {
+          "codigo": "divisionByZero"
+        },
+        "salida": ""
+      },
+      "profile": "en",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "awaiting_input"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "awaiting_input"
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "awaiting_input"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "input_requested",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "awaiting_input"
+      },
+      "profile": "en",
+      "rule": "R3",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C5",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C5",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C5",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C5",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C6",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C6",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C6",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C6",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C7",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C7",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C7",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C7",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "negativa"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C8",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C8",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C8",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C8",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "afirmativa"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C9",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "2\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C9",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "2\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C9",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "2\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C9",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "indice": 1,
+              "rama": "caso"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 4
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "2\n"
+            },
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 4
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "2\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C10",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "ninguna"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C10",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "ninguna"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C10",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "ninguna"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C10",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "decision",
+            "datos": {
+              "rama": "ninguna"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          }
+        ],
+        "salida": "",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R4",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C11",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C11",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C11",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C11",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "1\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C12",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "5\n"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "5\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C12",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "5\n"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "5\n",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C12",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "5\n"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "5\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C12",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 5
+          },
+          {
+            "clase": "call",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "return",
+            "datos": {
+              "nombre": "f"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "5\n"
+            },
+            "linea": 5
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 5
+          }
+        ],
+        "salida": "5\n",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R5",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C13",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "Verdadero"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "Verdadero",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C13",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "Verdadero"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "Verdadero",
+        "terminacion": "completed"
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C13",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "true"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "true",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R6",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C13",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 2
+          },
+          {
+            "clase": "statement_entered",
+            "linea": 3
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "true"
+            },
+            "linea": 3
+          },
+          {
+            "clase": "statement_exited",
+            "linea": 3
+          }
+        ],
+        "salida": "true",
+        "terminacion": "completed"
+      },
+      "profile": "en",
+      "rule": "R6",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C14",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "eventos": [
+          {
+            "clase": "statement_entered",
+            "fuente": "nodo_programa",
+            "linea": 2
+          },
+          {
+            "clase": "output",
+            "datos": {
+              "texto": "1\n"
+            },
+            "fuente": "nodo_programa",
+            "linea": 2
+          },
+          {
+            "clase": "statement_exited",
+            "fuente": "nodo_programa",
+            "linea": 2
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "ENG.TRACE.EVENTS",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    }
+  ],
+  "protocol": "see-protocol/1",
+  "stderr": "Running build hooks...Running build hooks...",
+  "subject": "app",
+  "subject_version": "0.1.0"
+}
