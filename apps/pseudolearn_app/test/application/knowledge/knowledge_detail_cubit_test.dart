@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/knowledge/diagram_block_resolver.dart';
 import 'package:pseudolearn_app/application/knowledge/knowledge_detail_cubit.dart';
@@ -16,7 +17,6 @@ import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_section.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
 import '../../fakes/fake_clock.dart';
 import '../../fakes/fake_identifier_generator.dart';
 import '../../fakes/fake_knowledge_repository.dart';
@@ -79,7 +79,8 @@ void main() {
     const exercise = Exercise(
       id: 'CON-B1-E1',
       title: 'Sumar dos números',
-      statement: 'Escribe un algoritmo que sume dos números y muestre el resultado.',
+      statement:
+          'Escribe un algoritmo que sume dos números y muestre el resultado.',
       level: ExerciseLevel.reproduce,
       kind: ExerciseKind.complete,
       moduleId: 'CON-B1',
@@ -126,7 +127,10 @@ void main() {
             HeadingBlock(level: 1, text: 'Capítulo 1'),
             ParagraphBlock(text: 'Los algoritmos son secuencias de pasos.'),
             HeadingBlock(level: 2, text: 'Variables'),
-            DiagramBlock(code: _diagramSource, notation: DiagramNotation.flowchart),
+            DiagramBlock(
+              code: _diagramSource,
+              notation: DiagramNotation.flowchart,
+            ),
           ],
           'specification/tipos_es.md': const [
             HeadingBlock(level: 1, text: 'Tipos primitivos'),
@@ -183,47 +187,53 @@ void main() {
       expect(entryState.content, isNull);
     });
 
-    test('Loads a module entry, marks it visited, and resolves code highlights', () async {
-      await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
+    test(
+      'Loads a module entry, marks it visited, and resolves code highlights',
+      () async {
+        await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
 
-      final state = cubit.state.forEntry('CON-B1');
-      expect(state.status, equals(KnowledgeDetailStatus.success));
-      expect(state.entry, equals(moduleEntry));
-      expect(state.content, isA<ModuleDetailContent>());
+        final state = cubit.state.forEntry('CON-B1');
+        expect(state.status, equals(KnowledgeDetailStatus.success));
+        expect(state.entry, equals(moduleEntry));
+        expect(state.content, isA<ModuleDetailContent>());
 
-      final content = state.content as ModuleDetailContent;
-      expect(content.module.id, equals('CON-B1'));
-      expect(content.module.sections.length, equals(2));
-      expect(content.headings.length, equals(1));
-      expect(content.headings.first.text, equals('Declaración'));
-      expect(await progressStore.isModuleVisited('CON-B1'), isTrue);
+        final content = state.content as ModuleDetailContent;
+        expect(content.module.id, equals('CON-B1'));
+        expect(content.module.sections.length, equals(2));
+        expect(content.headings.length, equals(1));
+        expect(content.headings.first.text, equals('Declaración'));
+        expect(await progressStore.isModuleVisited('CON-B1'), isTrue);
 
-      final devSection = content.module.sections[1];
-      final codeBlock = devSection.blocks.whereType<CodeBlock>().first;
-      expect(codeBlock.highlightSpans.isNotEmpty, isTrue);
-    });
+        final devSection = content.module.sections[1];
+        final codeBlock = devSection.blocks.whereType<CodeBlock>().first;
+        expect(codeBlock.highlightSpans.isNotEmpty, isTrue);
+      },
+    );
 
-    test('Loads a specification section entry with anchor and backlink', () async {
-      await cubit.loadEntry(
-        'esp-i-tipos',
-        UiLanguageId.spanish,
-        anchor: 'tipos',
-        fromModuleId: 'CON-B1',
-      );
+    test(
+      'Loads a specification section entry with anchor and backlink',
+      () async {
+        await cubit.loadEntry(
+          'esp-i-tipos',
+          UiLanguageId.spanish,
+          anchor: 'tipos',
+          fromModuleId: 'CON-B1',
+        );
 
-      final state = cubit.state.forEntry('esp-i-tipos');
-      expect(state.status, equals(KnowledgeDetailStatus.success));
-      expect(state.entry, equals(specEntry));
-      expect(state.content, isA<SpecificationDetailContent>());
+        final state = cubit.state.forEntry('esp-i-tipos');
+        expect(state.status, equals(KnowledgeDetailStatus.success));
+        expect(state.entry, equals(specEntry));
+        expect(state.content, isA<SpecificationDetailContent>());
 
-      final content = state.content as SpecificationDetailContent;
-      expect(content.selectedAnchor, equals('tipos'));
-      expect(content.fromModuleId, equals('CON-B1'));
-      expect(content.fromModuleTitle, equals('Datos'));
-      expect(content.blocks.length, equals(2));
-      expect(content.headings.length, equals(1));
-      expect(content.headings.first.text, equals('Tipos primitivos'));
-    });
+        final content = state.content as SpecificationDetailContent;
+        expect(content.selectedAnchor, equals('tipos'));
+        expect(content.fromModuleId, equals('CON-B1'));
+        expect(content.fromModuleTitle, equals('Datos'));
+        expect(content.blocks.length, equals(2));
+        expect(content.headings.length, equals(1));
+        expect(content.headings.first.text, equals('Tipos primitivos'));
+      },
+    );
 
     test('Loads a document with diagram blocks and resolves scenes', () async {
       await cubit.loadEntry('contact-support', UiLanguageId.spanish);
@@ -231,7 +241,7 @@ void main() {
       final state = cubit.state.forEntry('contact-support');
       final document = state.content as DocumentDetailContent;
       final diagram = document.blocks.whereType<DiagramBlock>().single;
-      final expectedScene = FlowchartLayout()
+      final expectedScene = nativeTestEngine.flowchartBuilder
           .buildDiagram(
             sourceCode: _diagramSource,
             profileId: SyntaxProfileId.classicSpanish,
@@ -256,32 +266,38 @@ void main() {
       expect(content.isCompleted, isFalse);
     });
 
-    test('Loads an exercise entry with isCompleted true when progress store has it', () async {
-      await progressStore.markExerciseCompleted('CON-B1-E1');
-      await cubit.loadEntry('CON-B1-E1', UiLanguageId.spanish);
+    test(
+      'Loads an exercise entry with isCompleted true when progress store has it',
+      () async {
+        await progressStore.markExerciseCompleted('CON-B1-E1');
+        await cubit.loadEntry('CON-B1-E1', UiLanguageId.spanish);
 
-      final state = cubit.state.forEntry('CON-B1-E1');
-      final content = state.content as ExerciseDetailContent;
-      expect(content.isCompleted, isTrue);
-    });
+        final state = cubit.state.forEntry('CON-B1-E1');
+        final content = state.content as ExerciseDetailContent;
+        expect(content.isCompleted, isTrue);
+      },
+    );
 
-    test('Exercise entry whose bundled content is missing transitions to notFound', () async {
-      const orphanExerciseEntry = KnowledgeEntry(
-        id: 'CON-B1-E404',
-        type: KnowledgeEntryType.exercise,
-        title: 'Ejercicio sin datos',
-        summary: 'Entrada de catálogo sin ejercicio empaquetado.',
-        path: 'exercises/CON-B1-E404_es.json',
-      );
-      knowledgeRepo.entries = [...knowledgeRepo.entries, orphanExerciseEntry];
+    test(
+      'Exercise entry whose bundled content is missing transitions to notFound',
+      () async {
+        const orphanExerciseEntry = KnowledgeEntry(
+          id: 'CON-B1-E404',
+          type: KnowledgeEntryType.exercise,
+          title: 'Ejercicio sin datos',
+          summary: 'Entrada de catálogo sin ejercicio empaquetado.',
+          path: 'exercises/CON-B1-E404_es.json',
+        );
+        knowledgeRepo.entries = [...knowledgeRepo.entries, orphanExerciseEntry];
 
-      await cubit.loadEntry('CON-B1-E404', UiLanguageId.spanish);
+        await cubit.loadEntry('CON-B1-E404', UiLanguageId.spanish);
 
-      final state = cubit.state.forEntry('CON-B1-E404');
-      expect(state.status, equals(KnowledgeDetailStatus.notFound));
-      expect(state.entry, isNull);
-      expect(state.content, isNull);
-    });
+        final state = cubit.state.forEntry('CON-B1-E404');
+        expect(state.status, equals(KnowledgeDetailStatus.notFound));
+        expect(state.entry, isNull);
+        expect(state.content, isNull);
+      },
+    );
 
     test('Non-existent entry transitions to notFound status', () async {
       await cubit.loadEntry('non-existent-id', UiLanguageId.spanish);
@@ -301,74 +317,92 @@ void main() {
       expect(state.errorMessage, isNotNull);
     });
 
-    test('Loads a specification section in English resolving english profile', () async {
-      const englishSpecEntry = KnowledgeEntry(
-        id: 'esp-o-clases',
-        type: KnowledgeEntryType.specificationSection,
-        title: 'Classes',
-        summary: 'Class declarations.',
-        path: 'specification/esp-o-clases_en.md',
-      );
-      knowledgeRepo = FakeKnowledgeRepository(
-        entries: const [englishSpecEntry],
-        blocksByPath: {
-          'specification/esp-o-clases_en.md': const [
-            HeadingBlock(level: 1, text: 'Classes'),
-            ParagraphBlock(text: 'Class notation.'),
-          ],
-        },
-      );
-      final deps = buildTestDependencies(
-        knowledgeRepository: knowledgeRepo,
-        syntaxReferenceSource: referenceSource,
-        repository: documentRepo,
-        clock: clock,
-        identifiers: idGen,
-      );
-      final englishCubit = KnowledgeDetailCubit(
-        repository: deps.knowledgeRepository,
-        referenceSource: deps.syntaxReferenceSource,
-        analyzer: deps.programAnalyzer,
-        progressStore: progressStore,
-        diagramResolver: DiagramBlockResolver(
-          flowchartBuilder: deps.flowchartBuilder,
-          structogramBuilder: deps.structogramBuilder,
-          classDiagramBuilder: deps.classDiagramBuilder,
-        ),
-      );
+    test(
+      'Loads a specification section in English resolving english profile',
+      () async {
+        const englishSpecEntry = KnowledgeEntry(
+          id: 'esp-o-clases',
+          type: KnowledgeEntryType.specificationSection,
+          title: 'Classes',
+          summary: 'Class declarations.',
+          path: 'specification/esp-o-clases_en.md',
+        );
+        knowledgeRepo = FakeKnowledgeRepository(
+          entries: const [englishSpecEntry],
+          blocksByPath: {
+            'specification/esp-o-clases_en.md': const [
+              HeadingBlock(level: 1, text: 'Classes'),
+              ParagraphBlock(text: 'Class notation.'),
+            ],
+          },
+        );
+        final deps = buildTestDependencies(
+          knowledgeRepository: knowledgeRepo,
+          syntaxReferenceSource: referenceSource,
+          repository: documentRepo,
+          clock: clock,
+          identifiers: idGen,
+        );
+        final englishCubit = KnowledgeDetailCubit(
+          repository: deps.knowledgeRepository,
+          referenceSource: deps.syntaxReferenceSource,
+          analyzer: deps.programAnalyzer,
+          progressStore: progressStore,
+          diagramResolver: DiagramBlockResolver(
+            flowchartBuilder: deps.flowchartBuilder,
+            structogramBuilder: deps.structogramBuilder,
+            classDiagramBuilder: deps.classDiagramBuilder,
+          ),
+        );
 
-      await englishCubit.loadEntry('esp-o-clases', UiLanguageId.english);
+        await englishCubit.loadEntry('esp-o-clases', UiLanguageId.english);
 
-      final state = englishCubit.state.forEntry('esp-o-clases');
-      expect(state.status, equals(KnowledgeDetailStatus.success));
-      expect(state.entry, equals(englishSpecEntry));
-      expect(state.content, isA<SpecificationDetailContent>());
-      await englishCubit.close();
-    });
+        final state = englishCubit.state.forEntry('esp-o-clases');
+        expect(state.status, equals(KnowledgeDetailStatus.success));
+        expect(state.entry, equals(englishSpecEntry));
+        expect(state.content, isA<SpecificationDetailContent>());
+        await englishCubit.close();
+      },
+    );
 
     test('saveScrollOffset remembers offset across module reload', () async {
       await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
       cubit.saveScrollOffset('CON-B1', 320.0);
 
       final state = cubit.state.forEntry('CON-B1');
-      expect((state.content as ModuleDetailContent).scrollOffset, equals(320.0));
+      expect(
+        (state.content as ModuleDetailContent).scrollOffset,
+        equals(320.0),
+      );
       expect(cubit.getScrollOffset('CON-B1'), equals(320.0));
 
       await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
       final reloadedState = cubit.state.forEntry('CON-B1');
-      expect((reloadedState.content as ModuleDetailContent).scrollOffset, equals(320.0));
+      expect(
+        (reloadedState.content as ModuleDetailContent).scrollOffset,
+        equals(320.0),
+      );
     });
 
     test('Preserves state isolation between multiple loaded entries', () async {
       await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
-      expect(cubit.state.forEntry('CON-B1').status, equals(KnowledgeDetailStatus.success));
+      expect(
+        cubit.state.forEntry('CON-B1').status,
+        equals(KnowledgeDetailStatus.success),
+      );
       expect(cubit.state.forEntry('CON-B1').entry, equals(moduleEntry));
 
       await cubit.loadEntry('esp-i-tipos', UiLanguageId.spanish);
-      expect(cubit.state.forEntry('esp-i-tipos').status, equals(KnowledgeDetailStatus.success));
+      expect(
+        cubit.state.forEntry('esp-i-tipos').status,
+        equals(KnowledgeDetailStatus.success),
+      );
       expect(cubit.state.forEntry('esp-i-tipos').entry, equals(specEntry));
 
-      expect(cubit.state.forEntry('CON-B1').status, equals(KnowledgeDetailStatus.success));
+      expect(
+        cubit.state.forEntry('CON-B1').status,
+        equals(KnowledgeDetailStatus.success),
+      );
       expect(cubit.state.forEntry('CON-B1').entry, equals(moduleEntry));
     });
   });

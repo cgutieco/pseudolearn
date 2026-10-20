@@ -1,0 +1,1920 @@
+{
+  "conformance": [
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.CATALOG@0.5.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.CLASSES@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.CLASSES@0.2.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.MESSAGES@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.MODEL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.ORDERING@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "DIAG.SEVERITY.POLICY@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.EXEC.MODEL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.EXEC.MODEL@0.2.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.EXEC.MODEL@0.2.0#R3",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.INPUT@0.1.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.INPUT@0.1.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.INPUT@0.1.0#R3",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.INPUT@0.1.0#R4",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.ARRAY.ACCESS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.ARRAY.DIMENSION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.COPY@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.DECLARATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.FIELDS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.INHERITANCE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.METHODS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.OVERRIDE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R3",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R4",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R5",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.FOR@0.3.1#R6",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.IF@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.REPEAT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.SWITCH@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.CONTROL.WHILE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.DECL.DESIGNATOR@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.DECL.UNUSED@0.2.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.DECL.VARIABLE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.EDITION.MODEL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.IO.INPUT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.IO.OUTPUT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.COMMENT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.ARITHMETIC@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.COMPARISON@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.CONCATENATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.DIVISION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.LOGICAL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.POWER@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.OPS.PRECEDENCE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.PROFILE.MODEL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SOURCE.ENCODING@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SOURCE.ENCODING@0.2.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SOURCE.POSITION@0.2.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.STMT.TERMINATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.ARRAY@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.BOOLEAN@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.CHARACTER@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.CLASS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.INFERENCE@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.INTEGER@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.INTEGER@0.2.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.INTEGER@0.2.0#R3",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.REAL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.RELATIONS@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LANG.TYPES.TEXT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.COPY@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.MATH@0.3.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.RANDOM@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.CORE.TEXT@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "LIB.MODEL@0.2.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.IDENTITY@0.1.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.IDENTITY@0.1.0#R2",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.IDENTITY@0.1.0#R3",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.IDENTITY@0.1.0#R4",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.VALUE.COPY@0.1.0#R1",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.VALUE.COPY@0.1.0#R2",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.VALUE.COPY@0.1.0#R3",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "MEM.VALUE.COPY@0.1.0#R4",
+      "state": "estable",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "PERF.BASELINE.REFERENCE@0.2.0#R1",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "PERF.BASELINE.REFERENCE@0.2.0#R2",
+      "state": "experimental",
+      "subject": "reference"
+    },
+    {
+      "binding": "no aplicable",
+      "cases": 0,
+      "measured": "no aplicable",
+      "measurements": [],
+      "reason": "retired subject; historical evidence preserved",
+      "rule": "PERF.BASELINE.REFERENCE@0.2.0#R3",
+      "state": "experimental",
+      "subject": "reference"
+    }
+  ],
+  "ir_coverage": [
+    {
+      "instructions": [
+        "array.load",
+        "array.store",
+        "cell.element"
+      ],
+      "rule": "LANG.ARRAY.ACCESS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "array.new"
+      ],
+      "rule": "LANG.ARRAY.DIMENSION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.new",
+        "call",
+        "return"
+      ],
+      "rule": "LANG.CLASS.CONSTRUCTOR#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.copy"
+      ],
+      "rule": "LANG.CLASS.COPY#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.CLASS.DECLARATION#R1",
+      "without_ir": "La declaración define la tabla de clases del módulo de IR.MODEL; sus restricciones son estáticas."
+    },
+    {
+      "instructions": [
+        "object.new",
+        "object.load",
+        "object.store"
+      ],
+      "rule": "LANG.CLASS.FIELDS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.new",
+        "call.virtual"
+      ],
+      "rule": "LANG.CLASS.INHERITANCE#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.new",
+        "call",
+        "value.require"
+      ],
+      "rule": "LANG.CLASS.INSTANTIATION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.load",
+        "object.store",
+        "call.virtual",
+        "value.require"
+      ],
+      "rule": "LANG.CLASS.MEMBER-ACCESS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call.virtual",
+        "return"
+      ],
+      "rule": "LANG.CLASS.METHODS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.CLASS.OUT-OF-SCOPE#R1",
+      "without_ir": "Diagnósticos pedagógicos del análisis; ningún programa con esas formas llega a la RI."
+    },
+    {
+      "instructions": [
+        "call.virtual",
+        "call"
+      ],
+      "rule": "LANG.CLASS.OVERRIDE#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call",
+        "object.load",
+        "object.store"
+      ],
+      "rule": "LANG.CLASS.SELF-AND-SUPER#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "jump",
+        "branch"
+      ],
+      "rule": "LANG.CONTROL.FOR#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "loop.check_step"
+      ],
+      "rule": "LANG.CONTROL.FOR#R2",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.cmp",
+        "branch",
+        "decide.bool"
+      ],
+      "rule": "LANG.CONTROL.FOR#R3",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.add",
+        "jump"
+      ],
+      "rule": "LANG.CONTROL.FOR#R4",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.CONTROL.FOR#R5",
+      "without_ir": "Advertencia del análisis estático."
+    },
+    {
+      "instructions": [
+        "int.add",
+        "int.cmp"
+      ],
+      "rule": "LANG.CONTROL.FOR#R6",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "branch",
+        "decide.bool"
+      ],
+      "rule": "LANG.CONTROL.IF#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "branch",
+        "decide.bool"
+      ],
+      "rule": "LANG.CONTROL.REPEAT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.cmp",
+        "char.cmp",
+        "text.cmp",
+        "bool.cmp",
+        "branch",
+        "decide.case",
+        "decide.default",
+        "decide.none"
+      ],
+      "rule": "LANG.CONTROL.SWITCH#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "branch",
+        "decide.bool",
+        "jump"
+      ],
+      "rule": "LANG.CONTROL.WHILE#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "array.store",
+        "object.store",
+        "cell.element",
+        "cell.field"
+      ],
+      "rule": "LANG.DECL.DESIGNATOR#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "value.undefined",
+        "value.require",
+        "cell.load"
+      ],
+      "rule": "LANG.DECL.UNINITIALIZED#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.DECL.UNUSED#R1",
+      "without_ir": "Advertencias del análisis estático."
+    },
+    {
+      "instructions": [
+        "value.undefined"
+      ],
+      "rule": "LANG.DECL.VARIABLE#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.EDITION.MODEL#R1",
+      "without_ir": "Metadato del corpus sin representación en la RI."
+    },
+    {
+      "instructions": [
+        "in.read"
+      ],
+      "rule": "LANG.IO.INPUT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "out.write"
+      ],
+      "rule": "LANG.IO.OUTPUT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "out.write",
+        "text.format"
+      ],
+      "rule": "LANG.IO.VALUE-FORMAT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "const.char"
+      ],
+      "rule": "LANG.LEXICAL.CHARACTER-LITERAL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.COMMENT#R1",
+      "without_ir": "Los comentarios no llegan a la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.ERRORS#R1",
+      "without_ir": "Un error léxico impide producir RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.IDENTIFIER#R1",
+      "without_ir": "La identidad de nombres se resuelve antes de la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.KEYWORD#R1",
+      "without_ir": "Política léxica sin representación en la RI."
+    },
+    {
+      "instructions": [
+        "const.i64",
+        "const.f64"
+      ],
+      "rule": "LANG.LEXICAL.NUMBER-LITERAL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.OPERATOR-TOKEN#R1",
+      "without_ir": "La tokenización precede a la RI."
+    },
+    {
+      "instructions": [
+        "const.str",
+        "const.char"
+      ],
+      "rule": "LANG.LEXICAL.TEXT-LITERAL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.LEXICAL.WHITESPACE#R1",
+      "without_ir": "La trivia no llega a la RI."
+    },
+    {
+      "instructions": [
+        "int.add",
+        "int.sub",
+        "int.mul",
+        "int.neg",
+        "real.add",
+        "real.sub",
+        "real.mul",
+        "real.neg",
+        "int.to_real"
+      ],
+      "rule": "LANG.OPS.ARITHMETIC#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.cmp",
+        "real.cmp",
+        "char.cmp",
+        "text.cmp",
+        "bool.cmp",
+        "ref.cmp",
+        "int.to_real"
+      ],
+      "rule": "LANG.OPS.COMPARISON#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "text.concat"
+      ],
+      "rule": "LANG.OPS.CONCATENATION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "real.div",
+        "int.div",
+        "int.mod",
+        "int.to_real"
+      ],
+      "rule": "LANG.OPS.DIVISION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "bool.not",
+        "branch"
+      ],
+      "rule": "LANG.OPS.LOGICAL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.pow",
+        "real.pow",
+        "int.to_real"
+      ],
+      "rule": "LANG.OPS.POWER#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.OPS.PRECEDENCE#R1",
+      "without_ir": "La agrupación se resuelve al analizar; la RI recibe expresiones ya agrupadas."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.PROFILE.MODEL#R1",
+      "without_ir": "Los ejes de perfil se resuelven antes de la RI; el vocabulario solo fija la representación lógica de text.format."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.PROFILE.STRICTNESS#R1",
+      "without_ir": "El rigor solo afecta al análisis."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.PROFILE.TRANSLATION#R1",
+      "without_ir": "La traducción opera sobre el texto fuente."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.PROFILE.VOCABULARY#R1",
+      "without_ir": "El vocabulario opera sobre el texto fuente."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.PROGRAM.STRUCTURE#R1",
+      "without_ir": "La estructura determina las funciones del módulo de IR.MODEL."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SOURCE.ENCODING#R1",
+      "without_ir": "La decodificación precede a la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SOURCE.ENCODING#R2",
+      "without_ir": "La normalización de nombres precede a la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SOURCE.POSITION#R1",
+      "without_ir": "Los tramos llegan a la RI como datos de IR.SOURCE-MAP."
+    },
+    {
+      "instructions": [
+        "array.store",
+        "object.store",
+        "cell.store"
+      ],
+      "rule": "LANG.STMT.ASSIGNMENT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.STMT.TERMINATION#R1",
+      "without_ir": "La terminación de sentencias es sintáctica."
+    },
+    {
+      "instructions": [
+        "cell.local",
+        "cell.element",
+        "cell.field",
+        "cell.load",
+        "cell.store"
+      ],
+      "rule": "LANG.SUBPROGRAM.BY-REFERENCE#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call"
+      ],
+      "rule": "LANG.SUBPROGRAM.CALL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call",
+        "return"
+      ],
+      "rule": "LANG.SUBPROGRAM.DECLARATION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "return",
+        "in.read"
+      ],
+      "rule": "LANG.SUBPROGRAM.INTERACTIONS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call",
+        "cell.local"
+      ],
+      "rule": "LANG.SUBPROGRAM.PARAMETERS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "call"
+      ],
+      "rule": "LANG.SUBPROGRAM.RECURSION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "return",
+        "trap.missing_return"
+      ],
+      "rule": "LANG.SUBPROGRAM.RETURN#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SUBPROGRAM.SCOPE#R1",
+      "without_ir": "Los ámbitos se resuelven antes de la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SYNTAX.GRAMMAR#R1",
+      "without_ir": "La gramática precede a la RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SYNTAX.RECOVERY#R1",
+      "without_ir": "Un programa con errores sintácticos no produce RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.SYNTAX.RECOVERY#R2",
+      "without_ir": "Un programa con errores sintácticos no produce RI."
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.TYPES.ARRAY#R1",
+      "without_ir": "Restricciones estáticas del tipo; el acceso por elementos está cubierto por LANG.ARRAY.ACCESS."
+    },
+    {
+      "instructions": [
+        "const.bool",
+        "bool.not",
+        "bool.cmp",
+        "text.format"
+      ],
+      "rule": "LANG.TYPES.BOOLEAN#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "const.char",
+        "char.code"
+      ],
+      "rule": "LANG.TYPES.CHARACTER#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.div",
+        "array.load",
+        "value.require"
+      ],
+      "rule": "LANG.TYPES.CHECKING-LEVELS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "ref.cmp"
+      ],
+      "rule": "LANG.TYPES.CLASS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LANG.TYPES.INFERENCE#R1",
+      "without_ir": "La inferencia fija tipos antes de la RI."
+    },
+    {
+      "instructions": [
+        "const.i64",
+        "text.format"
+      ],
+      "rule": "LANG.TYPES.INTEGER#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.add"
+      ],
+      "rule": "LANG.TYPES.INTEGER#R2",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.add"
+      ],
+      "rule": "LANG.TYPES.INTEGER#R3",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "real.add",
+        "real.sub",
+        "real.mul",
+        "real.div",
+        "text.format"
+      ],
+      "rule": "LANG.TYPES.REAL#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "int.to_real"
+      ],
+      "rule": "LANG.TYPES.RELATIONS#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "text.length",
+        "text.char_at",
+        "text.concat"
+      ],
+      "rule": "LANG.TYPES.TEXT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "text.format",
+        "text.to_integer",
+        "text.to_real"
+      ],
+      "rule": "LIB.CORE.CONVERSION#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "object.copy"
+      ],
+      "rule": "LIB.CORE.COPY#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "math.sqrt",
+        "math.abs",
+        "math.ln",
+        "math.exp",
+        "math.sin",
+        "math.cos",
+        "math.atan",
+        "int.to_real"
+      ],
+      "rule": "LIB.CORE.MATH#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "host.random"
+      ],
+      "rule": "LIB.CORE.RANDOM#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "real.trunc",
+        "real.round",
+        "int.to_real"
+      ],
+      "rule": "LIB.CORE.ROUNDING#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [
+        "text.length",
+        "text.char_at",
+        "char.code",
+        "char.from_code"
+      ],
+      "rule": "LIB.CORE.TEXT#R1",
+      "without_ir": null
+    },
+    {
+      "instructions": [],
+      "rule": "LIB.MODEL#R1",
+      "without_ir": "Nombres y firmas estáticos; cada función incorporada tiene instrucción propia en las coberturas de LIB.CORE."
+    }
+  ],
+  "states": {
+    "API": {
+      "estable": 6,
+      "experimental": 2
+    },
+    "APP": {
+      "experimental": 4
+    },
+    "DIAG": {
+      "estable": 7
+    },
+    "ENG": {
+      "estable": 6,
+      "experimental": 2
+    },
+    "IR": {
+      "estable": 6,
+      "experimental": 1
+    },
+    "LANG": {
+      "estable": 66,
+      "experimental": 6
+    },
+    "LIB": {
+      "estable": 7
+    },
+    "MEM": {
+      "estable": 2,
+      "experimental": 1
+    },
+    "PERF": {
+      "experimental": 8
+    },
+    "RT": {
+      "estable": 5
+    },
+    "SEE": {
+      "borrador": 3,
+      "estable": 12
+    },
+    "TOOL": {
+      "estable": 17
+    }
+  }
+}

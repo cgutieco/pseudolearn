@@ -63,6 +63,9 @@ class Box
         this.content <- aContent;
     endMethod
 endClass
+
+algorithm Test
+endAlgorithm
 ```
 
 {{diagnostico:constructorVisibilityNotAllowed}}
@@ -84,6 +87,9 @@ class Box
         this.content <- aContent;
     endMethod
 endClass
+
+algorithm Test
+endAlgorithm
 ```
 
 {{diagnostico:duplicateConstructor}}

@@ -1,0 +1,235 @@
+{
+  "review": "revision-independiente-automatizada-r9",
+  "phase_closed": false,
+  "promoted": [
+    "API.ANALYZE",
+    "API.ERRORS",
+    "API.EXECUTE",
+    "API.MODEL",
+    "API.STATE.QUERY",
+    "API.VERSIONING",
+    "DIAG.CATALOG",
+    "DIAG.CLASSES",
+    "DIAG.ENGINE.INTERNAL-FAULT",
+    "DIAG.MESSAGES",
+    "DIAG.MODEL",
+    "DIAG.ORDERING",
+    "DIAG.SEVERITY.POLICY",
+    "ENG.EXEC.EFFECT-ORDER",
+    "ENG.EXEC.MODEL",
+    "ENG.INPUT",
+    "ENG.STATE.INCREMENTAL",
+    "ENG.STATE.SNAPSHOT",
+    "ENG.TRACE.STEP",
+    "IR.INSTRUCTIONS",
+    "IR.LOWERING",
+    "IR.MODEL",
+    "IR.SOURCE-MAP",
+    "IR.TEXT-FORMAT",
+    "IR.WELL-FORMEDNESS",
+    "LIB.CORE.CONVERSION",
+    "LIB.CORE.COPY",
+    "LIB.CORE.MATH",
+    "LIB.CORE.RANDOM",
+    "LIB.CORE.ROUNDING",
+    "LIB.CORE.TEXT",
+    "LIB.MODEL",
+    "MEM.MANAGED.UNOBSERVABLE",
+    "MEM.VALUE.COPY",
+    "RT.ABI",
+    "RT.FAULT.REPORTING",
+    "RT.HOST.INTERFACE",
+    "RT.LINKING",
+    "RT.PROCESS",
+    "SEE.ADAPTER.PROTOCOL",
+    "SEE.CHANGE.CLASSIFICATION",
+    "SEE.CONFORMANCE.FILE",
+    "SEE.CONFORMANCE.MATRIX",
+    "SEE.FEATURE-MANIFEST",
+    "SEE.GENERATION",
+    "SEE.GRAPH",
+    "SEE.IMPACT",
+    "SEE.LOCK",
+    "SEE.ORACLE.POLICY",
+    "SEE.VALIDATION",
+    "SEE.VERSIONING",
+    "TOOL.CLI.BUILD",
+    "TOOL.CLI.CHECK",
+    "TOOL.CLI.CONVENTIONS",
+    "TOOL.CLI.FORMAT",
+    "TOOL.CLI.IR",
+    "TOOL.CLI.MESSAGES",
+    "TOOL.CLI.RUN",
+    "TOOL.CLI.TRANSLATE",
+    "TOOL.FORMAT.STYLE",
+    "TOOL.LSP.CAPABILITIES",
+    "TOOL.SERVICE.COMPLETION",
+    "TOOL.SERVICE.HOVER",
+    "TOOL.SERVICE.INCREMENTAL",
+    "TOOL.SERVICE.LOSSLESS-TREE",
+    "TOOL.SERVICE.NAVIGATION",
+    "TOOL.SERVICE.NODE-IDENTITY",
+    "TOOL.TRANSLATE.ROUND-TRIP"
+  ],
+  "numeric_versions_preserved": true,
+  "excluded_app_contracts_pending_final_evidence": true,
+  "excluded_performance_platform_and_aot_debt": true,
+  "see_evidence": {
+    "subject": "see",
+    "kind": "member-tests-and-validators",
+    "tests_passed": 188,
+    "bindings": [
+      {
+        "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R1",
+        "verificacion": "crates/see_conformance/tests/protocol.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R2",
+        "verificacion": "crates/see_conformance/tests/protocol.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CHANGE.CLASSIFICATION@0.1.0#R1",
+        "verificacion": "crates/see_change/tests/classification.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CHANGE.CLASSIFICATION@0.1.0#R2",
+        "verificacion": "crates/see_change/tests/classification.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CONFORMANCE.FILE@0.1.0#R1",
+        "verificacion": "crates/see_validation/tests/bindings.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CONFORMANCE.FILE@0.1.0#R2",
+        "verificacion": "crates/see_validation/tests/bindings.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R1",
+        "verificacion": "crates/see_report/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R2",
+        "verificacion": "crates/see_report/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.FEATURE-MANIFEST@0.1.0#R1",
+        "verificacion": "crates/see_report/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.FORMAT@0.3.0#R1",
+        "verificacion": "crates/see_format/tests/parsing.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.GENERATION@0.2.0#R1",
+        "verificacion": "crates/see_cli/tests/commands.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.GRAPH@0.1.0#R1",
+        "verificacion": "crates/see_graph/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.GRAPH@0.1.0#R2",
+        "verificacion": "crates/see_graph/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.IDENTITY@0.2.0#R1",
+        "verificacion": "crates/see_validation/tests/identity.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.IMPACT@0.1.0#R1",
+        "verificacion": "crates/see_graph/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.LIFECYCLE@0.1.0#R1",
+        "verificacion": "crates/see_validation/tests/lifecycle.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.LOCK@0.1.0#R1",
+        "verificacion": "crates/see_change/tests/locking.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.ORACLE.POLICY@0.1.0#R1",
+        "verificacion": "crates/see_conformance/tests/comparison.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.ORACLE.POLICY@0.1.0#R2",
+        "verificacion": "crates/see_conformance/tests/comparison.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VALIDATION@0.3.0#R1",
+        "verificacion": "crates/see_validation/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VALIDATION@0.3.0#R2",
+        "verificacion": "crates/see_validation/tests/lib.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VERSIONING@0.1.0#R1",
+        "verificacion": "crates/see_validation/tests/lifecycle.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VERSIONING@0.1.0#R2",
+        "verificacion": "crates/see_validation/tests/lifecycle.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.FORMAT@0.3.0#R2",
+        "verificacion": "crates/see_validation/tests/schema.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.GENERATION@0.2.0#R2",
+        "verificacion": "crates/see_export/tests/resources.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VALIDATION@0.3.0#R3",
+        "verificacion": "crates/see_validation/tests/resources.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.ADAPTER.PROTOCOL@0.3.0#R3",
+        "verificacion": "crates/see_conformance/tests/execution.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.CONFORMANCE.MATRIX@0.2.0#R3",
+        "verificacion": "crates/see_report/tests/coverage.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.FORMAT@0.3.0#R3",
+        "verificacion": "crates/see_validation/tests/schema.rs",
+        "estado": "cumple"
+      },
+      {
+        "regla": "SEE.VALIDATION@0.3.0#R4",
+        "verificacion": "crates/see_validation/tests/lib.rs",
+        "estado": "cumple"
+      }
+    ],
+    "adapter_execution_claimed": false
+  }
+}

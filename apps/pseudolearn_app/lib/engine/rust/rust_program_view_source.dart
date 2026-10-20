@@ -17,6 +17,21 @@ final class RustProgramViewSource {
     required SyntaxProfileId profileId,
     UiLanguageId languageId = UiLanguageId.spanish,
   }) {
+    return _load(sourceCode, profileId, languageId, rejects: _anyError);
+  }
+
+  RustProgramView? loadStructure({
+    required String sourceCode,
+    required SyntaxProfileId profileId,
+    UiLanguageId languageId = UiLanguageId.spanish,
+  }) => _load(sourceCode, profileId, languageId, rejects: _syntaxError);
+
+  RustProgramView? _load(
+    String sourceCode,
+    SyntaxProfileId profileId,
+    UiLanguageId languageId, {
+    required bool Function(Map<String, Object?>) rejects,
+  }) {
     RustAnalysisHandle? handle;
     try {
       handle = _analysis.open(
@@ -27,8 +42,7 @@ final class RustProgramViewSource {
       final report = _analysis.report(handle);
       final diagnostics = (report['diagnostics'] as List<Object?>)
           .cast<Map<String, Object?>>();
-      if (report['tree'] != true ||
-          diagnostics.any((diagnostic) => diagnostic['severity'] == 'error')) {
+      if (report['tree'] != true || diagnostics.any(rejects)) {
         return null;
       }
       return RustProgramView.fromJson(
@@ -42,3 +56,9 @@ final class RustProgramViewSource {
     }
   }
 }
+
+bool _anyError(Map<String, Object?> diagnostic) =>
+    diagnostic['severity'] == 'error';
+
+bool _syntaxError(Map<String, Object?> diagnostic) =>
+    _anyError(diagnostic) && diagnostic['class'] != 'semantic';

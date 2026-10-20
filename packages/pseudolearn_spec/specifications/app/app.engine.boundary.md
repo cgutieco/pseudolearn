@@ -6,17 +6,48 @@
   "dominio": "app",
   "estado": "experimental",
   "version": "0.1.0",
-  "duenos": ["responsable-aplicacion"],
-  "sujetos": ["app"],
+  "duenos": [
+    "responsable-aplicacion"
+  ],
+  "sujetos": [
+    "app"
+  ],
   "resumen": "El transporte Rust queda en engine y los recursos tienen propiedad y cierre explícitos.",
   "depende_de": [
-    {"id": "API.MODEL", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.ERRORS", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.VERSIONING", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.WIRE-FORMAT", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.PROGRAM.VIEW", "version": ">=0.1.0, <1.0.0", "tipo": "usa"}
+    {
+      "id": "API.MODEL",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.ERRORS",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.VERSIONING",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.WIRE-FORMAT",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.PROGRAM.VIEW",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    }
   ],
-  "titulo_en": "Application engine boundary"
+  "titulo_en": "Application engine boundary",
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica autorizada.",
+    "impacto_implementaciones": "Los casos de dirección de dependencias apuntan a archivos conservados y reales.",
+    "justificacion": "El retiro elimina las rutas antiguas sin alterar el contrato de capas.",
+    "revisado_por": "revision-independiente-automatizada"
+  }
 }
 ---
 
@@ -42,7 +73,7 @@
   "operacion": "app",
   "aplicacion": {
     "scenario": "boundary",
-    "input": {"file": "lib/domain/model/source_range.dart", "import": "package:pseudolearn_app/engine/bridge/core_api.dart"}
+    "input": {"file": "lib/domain/model/analysis/source_range.dart", "import": "package:pseudolearn_app/engine/bridge/frb_generated.dart"}
   },
   "espera": {"aplicacion": {"accepted": false, "reason": "layer_direction"}}
 }
@@ -58,7 +89,7 @@
   "operacion": "app",
   "aplicacion": {
     "scenario": "boundary",
-    "input": {"file": "lib/engine/analysis/core_program_analyzer.dart", "import": "package:pseudolearn_app/engine/bridge/core_api.dart"}
+    "input": {"file": "lib/engine/rust/rust_program_analyzer.dart", "import": "package:pseudolearn_app/engine/bridge/frb_generated.dart"}
   },
   "espera": {"aplicacion": {"accepted": true, "reason": "engine_adapter"}}
 }

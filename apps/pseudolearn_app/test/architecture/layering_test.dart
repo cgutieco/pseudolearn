@@ -45,11 +45,13 @@ final class ArchitectureConfig {
     final layerList = <LayerRule>[];
     for (final layerMap in yaml['layers'] as YamlList) {
       final map = layerMap as YamlMap;
-      final mayImportList = (map['may_import'] as YamlList?)
+      final mayImportList =
+          (map['may_import'] as YamlList?)
               ?.map((entry) => entry.toString())
               .toSet() ??
           <String>{};
-      final layerForbidden = (map['forbidden_imports'] as YamlList?)
+      final layerForbidden =
+          (map['forbidden_imports'] as YamlList?)
               ?.map((entry) => entry.toString())
               .toList() ??
           const <String>[];
@@ -65,12 +67,14 @@ final class ArchitectureConfig {
       );
     }
 
-    final globalForbidden = (yaml['forbidden_imports'] as YamlList?)
+    final globalForbidden =
+        (yaml['forbidden_imports'] as YamlList?)
             ?.map((entry) => entry.toString())
             .toList() ??
         const <String>[];
 
-    final entrypointList = (yaml['entrypoints'] as YamlList?)
+    final entrypointList =
+        (yaml['entrypoints'] as YamlList?)
             ?.map((entry) => entry.toString())
             .toList() ??
         const <String>[];
@@ -101,8 +105,7 @@ final class ArchitectureConfig {
   LayerRule? layerForPath(String relativePath) {
     final normalized = p.normalize(relativePath).replaceAll(r'\', '/');
     for (final layer in layers) {
-      if (normalized == layer.path ||
-          normalized.startsWith('${layer.path}/')) {
+      if (normalized == layer.path || normalized.startsWith('${layer.path}/')) {
         return layer;
       }
     }
@@ -173,18 +176,24 @@ List<ArchitectureViolation> validateArchitecture({
             ? p.basename(entity.path)
             : '$parentRelative/${p.basename(entity.path)}';
 
-        final isDeclared = config.layers.any((layer) =>
-            layer.path == relPath || layer.path.startsWith('$relPath/'));
+        final isDeclared = config.layers.any(
+          (layer) =>
+              layer.path == relPath || layer.path.startsWith('$relPath/'),
+        );
 
         if (!isDeclared) {
           violations.add(
             ArchitectureViolation(
               filePath: relPath,
               violationType: 'undeclared_layer',
-              message: 'Directory "$relPath" is not declared in architecture.yaml',
+              message:
+                  'Directory "$relPath" is not declared in architecture.yaml',
             ),
           );
-        } else if (config.layers.any((layer) => layer.path.startsWith('$relPath/') && layer.path != relPath)) {
+        } else if (config.layers.any(
+          (layer) =>
+              layer.path.startsWith('$relPath/') && layer.path != relPath,
+        )) {
           checkLayerDeclared(entity, relPath);
         }
       }
@@ -198,8 +207,9 @@ List<ArchitectureViolation> validateArchitecture({
 
     final relativeToSource = p.relative(entity.path, from: sourceRootDir.path);
     final relativeToRoot = p.relative(entity.path, from: packageRoot);
-    final isEntrypoint = config.entrypoints.any((ep) =>
-        ep == relativeToRoot || p.basename(ep) == p.basename(entity.path));
+    final isEntrypoint = config.entrypoints.any(
+      (ep) => ep == relativeToRoot || p.basename(ep) == p.basename(entity.path),
+    );
 
     final sourceLayer = config.layerForPath(relativeToSource);
     if (sourceLayer == null && !isEntrypoint) {
@@ -334,7 +344,7 @@ void main() {
         'test',
         'architecture',
         'fixtures',
-        'widget_importing_core',
+        'widget_importing_engine',
       );
       final violations = validateArchitecture(
         config: config,
@@ -342,31 +352,36 @@ void main() {
         customSourceRoot: fixturePath,
       );
       expect(
-        violations.any((v) =>
-            v.violationType == 'layer_forbidden_import' ||
-            v.violationType == 'layer_direction'),
+        violations.any(
+          (v) =>
+              v.violationType == 'layer_forbidden_import' ||
+              v.violationType == 'layer_direction',
+        ),
         isTrue,
       );
     });
 
-    test('Negative fixture: domain importing generated bridge fails layer check', () {
-      final fixturePath = p.join(
-        packageRoot,
-        'test',
-        'architecture',
-        'fixtures',
-        'domain_importing_bridge',
-      );
-      final violations = validateArchitecture(
-        config: config,
-        packageRoot: packageRoot,
-        customSourceRoot: fixturePath,
-      );
-      expect(
-        violations.any((v) => v.violationType == 'layer_direction'),
-        isTrue,
-      );
-    });
+    test(
+      'Negative fixture: domain importing generated bridge fails layer check',
+      () {
+        final fixturePath = p.join(
+          packageRoot,
+          'test',
+          'architecture',
+          'fixtures',
+          'domain_importing_bridge',
+        );
+        final violations = validateArchitecture(
+          config: config,
+          packageRoot: packageRoot,
+          customSourceRoot: fixturePath,
+        );
+        expect(
+          violations.any((v) => v.violationType == 'layer_direction'),
+          isTrue,
+        );
+      },
+    );
 
     test('Negative fixture: cubit importing flutter fails layer check', () {
       final fixturePath = p.join(
@@ -387,24 +402,27 @@ void main() {
       );
     });
 
-    test('Negative fixture: presentation using Platform fails identifier check', () {
-      final fixturePath = p.join(
-        packageRoot,
-        'test',
-        'architecture',
-        'fixtures',
-        'presentation_using_platform',
-      );
-      final violations = validateArchitecture(
-        config: config,
-        packageRoot: packageRoot,
-        customSourceRoot: fixturePath,
-      );
-      expect(
-        violations.any((v) => v.violationType == 'forbidden_identifier'),
-        isTrue,
-      );
-    });
+    test(
+      'Negative fixture: presentation using Platform fails identifier check',
+      () {
+        final fixturePath = p.join(
+          packageRoot,
+          'test',
+          'architecture',
+          'fixtures',
+          'presentation_using_platform',
+        );
+        final violations = validateArchitecture(
+          config: config,
+          packageRoot: packageRoot,
+          customSourceRoot: fixturePath,
+        );
+        expect(
+          violations.any((v) => v.violationType == 'forbidden_identifier'),
+          isTrue,
+        );
+      },
+    );
 
     test('Negative fixture: undeclared layer folder fails check', () {
       final fixturePath = p.join(

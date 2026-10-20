@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'collect.dart';
+import 'measurement_environment.dart';
 import 'frontend_statistics.dart';
 
 Future<void> main(List<String> arguments) async {

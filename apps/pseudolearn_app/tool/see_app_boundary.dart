@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:pseudolearn_app/composition/dart_engine_services.dart';
 import 'package:pseudolearn_app/composition/rust_engine_services.dart';
 import 'package:pseudolearn_app/domain/model/analysis/analysis_report.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
@@ -115,9 +114,7 @@ Map<String, Object?> _layerResult(String file, Object? imported) {
 }
 
 Map<String, Object?> _portResult(RustTransport transport) {
-  final dartServices = buildDartEngineServices();
   final rustServices = buildRustEngineServices(transport);
-  final ProgramAnalyzer dartAnalyzer = dartServices.analyzer;
   final ProgramAnalyzer rustAnalyzer = rustServices.analyzer;
   final source = File(
     'lib/composition/rust_engine_services.dart',
@@ -128,10 +125,9 @@ Map<String, Object?> _portResult(RustTransport transport) {
     languageId: UiLanguageId.spanish,
   );
   return {
-    'same_port_contract':
-        dartAnalyzer.runtimeType != rustAnalyzer.runtimeType &&
-        report.runtimeType == AnalysisReport,
-    'language_logic_in_app': source.contains('package:pseudolearn_core/'),
+    'same_port_contract': report.runtimeType == AnalysisReport,
+    'language_logic_in_app':
+        source.contains('class Parser') || source.contains('class Lexer'),
     'output_type': report.runtimeType.toString(),
   };
 }

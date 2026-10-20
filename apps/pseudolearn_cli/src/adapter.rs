@@ -27,6 +27,7 @@ pub fn run_see_adapter() -> ExitCode {
                 return ExitCode::SUCCESS;
             }
             "cli" => respond_cli(&parsed),
+            "ir" => send_response(&crate::adapter_ir::verify(&parsed)),
             _ => respond_unsupported(),
         }
     }
@@ -39,7 +40,7 @@ fn respond_hello() {
         "protocol": "see-protocol/1",
         "subject": "cli",
         "subject_version": "0.1.0",
-        "capabilities": ["cli"],
+        "capabilities": ["cli", "ir"],
         "profiles": ["es", "en"],
         "strictness": ["strict", "flexible"]
     });

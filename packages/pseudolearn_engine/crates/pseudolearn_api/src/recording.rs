@@ -10,6 +10,8 @@ struct Recording {
     previous: Value,
     historical: Vec<Value>,
     capture: bool,
+    count: usize,
+    digest: Option<crate::recording_digest::EventDigest>,
 }
 
 pub(crate) fn record(session: &mut ApiSession, arguments: &Value) -> Result<Value, ApiError> {
@@ -73,6 +75,12 @@ fn record_execution(
         initial,
         historical: Vec::new(),
         capture,
+        count: 0,
+        digest: arguments
+            .pointer("/options/summarize_events")
+            .and_then(Value::as_bool)
+            .unwrap_or(false)
+            .then(crate::recording_digest::EventDigest::default),
     };
     let terminal = drive(session, resource, arguments, (&mut recording, pending))?;
     result(
@@ -124,26 +132,48 @@ fn append(
         .and_then(Value::as_array)
         .ok_or_else(|| usage("missing events"))?
     {
-        let index = recording.events.len();
-        if !recording.capture {
-            recording.events.push(event.clone());
-            continue;
-        }
-        let state =
-            value(session.call("query_state", &json!({"resource":resource,"event":index})))?;
-        recording.deltas.push(json!(crate::state_changes::between(
-            &recording.previous,
-            &state
-        )));
-        recording.previous = state.clone();
-        recording.events.push(event.clone());
-        recording.states.push(state);
-        if seeking {
-            value(session.call("seek", &json!({"resource":resource,"event":0})))?;
-        }
-        let historical = value(session.call("seek", &json!({"resource":resource,"event":index})))?;
-        recording.historical.push(historical);
+        append_event(session, resource, event, (&mut *recording, seeking))?;
     }
+    Ok(())
+}
+
+fn append_event(
+    session: &mut ApiSession,
+    resource: &Value,
+    event: &Value,
+    tracking: (&mut Recording, bool),
+) -> Result<(), ApiError> {
+    let (recording, seeking) = tracking;
+    let index = recording.count;
+    recording.count = index
+        .checked_add(1)
+        .ok_or_else(|| usage("event count overflow"))?;
+    if !recording.capture {
+        if let Some(digest) = recording.digest.as_mut() {
+            digest.append(event)?;
+        } else {
+            recording.events.push(event.clone());
+        }
+        if seeking {
+            let historical = seek_event(session, resource, index)?;
+            recording.historical.push(historical);
+        }
+        return Ok(());
+    }
+    let state = value(session.call("query_state", &json!({"resource":resource,"event":index})))?;
+    recording.deltas.push(json!(crate::state_changes::between(
+        &recording.previous,
+        &state
+    )));
+    recording.previous = state.clone();
+    recording.events.push(event.clone());
+    recording.states.push(state);
+    let historical = if seeking {
+        seek_event(session, resource, index)?
+    } else {
+        value(session.call("seek", &json!({"resource":resource,"event":index})))?
+    };
+    recording.historical.push(historical);
     Ok(())
 }
 
@@ -167,6 +197,9 @@ fn result(
         .collect();
     if let Some(fields) = terminal.as_object_mut() {
         fields.insert("events".to_owned(), json!(recording.events));
+        if let Some(digest) = recording.digest {
+            fields.insert("event_summary".to_owned(), digest.finish());
+        }
         fields.insert("states".to_owned(), json!(recording.states));
         fields.insert("retained_views".to_owned(), json!(recording.states));
         fields.insert("historical_states".to_owned(), json!(recording.historical));
@@ -187,4 +220,9 @@ pub(crate) fn value(response: Value) -> Result<Value, ApiError> {
         .get("value")
         .cloned()
         .ok_or_else(|| usage(&response.to_string()))
+}
+
+fn seek_event(session: &mut ApiSession, resource: &Value, index: usize) -> Result<Value, ApiError> {
+    value(session.call("seek", &json!({"resource":resource,"event":0})))?;
+    value(session.call("seek", &json!({"resource":resource,"event":index})))
 }

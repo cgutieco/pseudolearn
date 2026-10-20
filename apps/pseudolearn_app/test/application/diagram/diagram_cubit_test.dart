@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_cubit.dart';
 import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
@@ -7,9 +8,6 @@ import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_notation.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 
 import '../../fakes/fake_diagram_builders.dart';
@@ -61,9 +59,9 @@ void main() {
 
     setUp(() {
       cubit = DiagramCubit(
-        flowchartBuilder: FlowchartLayout(),
-        structogramBuilder: StructogramLayout(),
-        classDiagramBuilder: CoreClassDiagramBuilder(),
+        flowchartBuilder: nativeTestEngine.flowchartBuilder,
+        structogramBuilder: nativeTestEngine.structogramBuilder,
+        classDiagramBuilder: nativeTestEngine.classDiagramBuilder,
       );
     });
 
@@ -129,61 +127,65 @@ FinAlgoritmo
       expect(cubit.state.scene.nodes, isNotEmpty);
     });
 
-    test('syncWithFocus automatically switches active unit when focus changes',
-        () {
-      cubit.updateDiagram(
-        sourceCode: _referenceOOP,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    test(
+      'syncWithFocus automatically switches active unit when focus changes',
+      () {
+        cubit.updateDiagram(
+          sourceCode: _referenceOOP,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
 
-      const focusInAcelerar = ExecutionFocus(
-        nodeId: ProgramNodeId(10),
-        range: SourceRange(
-          startOffset: 0,
-          endOffset: 10,
-          startLine: 12,
-          startColumn: 1,
-          endLine: 12,
-          endColumn: 10,
-        ),
-        kind: ExecutionFocusKind.statement,
-        unitId: 'method_Vehiculo_Acelerar',
-      );
+        const focusInAcelerar = ExecutionFocus(
+          nodeId: ProgramNodeId(10),
+          range: SourceRange(
+            startOffset: 0,
+            endOffset: 10,
+            startLine: 12,
+            startColumn: 1,
+            endLine: 12,
+            endColumn: 10,
+          ),
+          kind: ExecutionFocusKind.statement,
+          unitId: 'method_Vehiculo_Acelerar',
+        );
 
-      cubit.syncWithFocus(focusInAcelerar);
-      expect(cubit.state.selectedUnitId, 'method_Vehiculo_Acelerar');
+        cubit.syncWithFocus(focusInAcelerar);
+        expect(cubit.state.selectedUnitId, 'method_Vehiculo_Acelerar');
 
-      const focusBackInAlgo = ExecutionFocus(
-        nodeId: ProgramNodeId(1),
-        range: SourceRange(
-          startOffset: 0,
-          endOffset: 10,
-          startLine: 35,
-          startColumn: 1,
-          endLine: 35,
-          endColumn: 10,
-        ),
-        kind: ExecutionFocusKind.statement,
-        unitId: 'alg_PruebaVehiculos',
-      );
+        const focusBackInAlgo = ExecutionFocus(
+          nodeId: ProgramNodeId(1),
+          range: SourceRange(
+            startOffset: 0,
+            endOffset: 10,
+            startLine: 35,
+            startColumn: 1,
+            endLine: 35,
+            endColumn: 10,
+          ),
+          kind: ExecutionFocusKind.statement,
+          unitId: 'alg_PruebaVehiculos',
+        );
 
-      cubit.syncWithFocus(focusBackInAlgo);
-      expect(cubit.state.selectedUnitId, 'alg_PruebaVehiculos');
-    });
+        cubit.syncWithFocus(focusBackInAlgo);
+        expect(cubit.state.selectedUnitId, 'alg_PruebaVehiculos');
+      },
+    );
 
-    test('invalid source produces empty diagram state with hasValidAst false',
-        () {
-      cubit.updateDiagram(
-        sourceCode: 'Algoritmo !!! @@ ##',
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    test(
+      'invalid source produces empty diagram state with hasValidAst false',
+      () {
+        cubit.updateDiagram(
+          sourceCode: 'Algoritmo !!! @@ ##',
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
 
-      expect(cubit.state.hasValidAst, isFalse);
-      expect(cubit.state.units, isEmpty);
-      expect(cubit.state.scene.nodes, isEmpty);
-    });
+        expect(cubit.state.hasValidAst, isFalse);
+        expect(cubit.state.units, isEmpty);
+        expect(cubit.state.scene.nodes, isEmpty);
+      },
+    );
   });
 
   group('DiagramCubit notation, against hand-written port doubles', () {
@@ -193,10 +195,10 @@ FinAlgoritmo
     late DiagramCubit cubit;
 
     void update() => cubit.updateDiagram(
-          sourceCode: 'cualquiera',
-          profileId: SyntaxProfileId.classicSpanish,
-          languageId: UiLanguageId.spanish,
-        );
+      sourceCode: 'cualquiera',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+    );
 
     setUp(() {
       flowchart = FakeFlowchartBuilder();
@@ -248,19 +250,21 @@ FinAlgoritmo
 
     test('changing notation keeps the unit the execution focus imposed', () {
       update();
-      cubit.syncWithFocus(const ExecutionFocus(
-        nodeId: ProgramNodeId(2),
-        range: SourceRange(
-          startOffset: 0,
-          endOffset: 1,
-          startLine: 2,
-          startColumn: 1,
-          endLine: 2,
-          endColumn: 2,
+      cubit.syncWithFocus(
+        const ExecutionFocus(
+          nodeId: ProgramNodeId(2),
+          range: SourceRange(
+            startOffset: 0,
+            endOffset: 1,
+            startLine: 2,
+            startColumn: 1,
+            endLine: 2,
+            endColumn: 2,
+          ),
+          kind: ExecutionFocusKind.statement,
+          unitId: 'sub_B',
         ),
-        kind: ExecutionFocusKind.statement,
-        unitId: 'sub_B',
-      ));
+      );
       cubit.selectNotation(DiagramNotation.structogram);
       expect(cubit.state.selectedUnitId, 'sub_B');
     });

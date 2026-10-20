@@ -59,7 +59,8 @@
               "service_incremental",
               "service_completion_templates",
               "service_format",
-              "service_translate"
+              "service_translate",
+              "program_revision"
             ]
           },
           "seed": {

@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,8 +11,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/execution_overlay_painter.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_painter.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_tab_view.dart';
@@ -34,14 +33,15 @@ Proceso Factorial
 FinProceso
 ''';
 
-DiagramProgram _flowchartOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _flowchartOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramProgram _structogramOf(String source) =>
-    StructogramLayout().buildDiagram(
+    nativeTestEngine.structogramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
@@ -50,27 +50,26 @@ DiagramProgram _structogramOf(String source) =>
 DiagramState _stateOf(
   String source, {
   DiagramNotation notation = DiagramNotation.flowchart,
-}) =>
-    DiagramState(
-      flowchart: _flowchartOf(source),
-      structogram: _structogramOf(source),
-      classDiagram: const DiagramScene.empty(),
-      notation: notation,
-      hasValidAst: true,
-    );
+}) => DiagramState(
+  flowchart: _flowchartOf(source),
+  structogram: _structogramOf(source),
+  classDiagram: const DiagramScene.empty(),
+  notation: notation,
+  hasValidAst: true,
+);
 
 ExecutionFocus _focusOn(ProgramNodeId nodeId) => ExecutionFocus(
-      nodeId: nodeId,
-      range: const SourceRange(
-        startOffset: 0,
-        endOffset: 1,
-        startLine: 1,
-        startColumn: 1,
-        endLine: 1,
-        endColumn: 2,
-      ),
-      kind: ExecutionFocusKind.statement,
-    );
+  nodeId: nodeId,
+  range: const SourceRange(
+    startOffset: 0,
+    endOffset: 1,
+    startLine: 1,
+    startColumn: 1,
+    endLine: 1,
+    endColumn: 2,
+  ),
+  kind: ExecutionFocusKind.statement,
+);
 
 ProgramNodeId _idSaying(DiagramScene scene, String text) {
   for (final node in scene.nodes) {
@@ -104,7 +103,9 @@ Future<void> _pump(
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
-        body: DesignCanvas(child: FlowchartTabView(state: state, focus: focus)),
+        body: DesignCanvas(
+          child: FlowchartTabView(state: state, focus: focus),
+        ),
       ),
     ),
   );
@@ -114,7 +115,8 @@ Future<void> _pump(
 CustomPainter _structurePainter(WidgetTester tester) {
   final painters = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
   for (final paint in painters) {
-    if (paint.painter is FlowchartPainter || paint.painter is StructogramPainter) {
+    if (paint.painter is FlowchartPainter ||
+        paint.painter is StructogramPainter) {
       return paint.painter!;
     }
   }
@@ -122,19 +124,25 @@ CustomPainter _structurePainter(WidgetTester tester) {
 }
 
 double _currentScale(WidgetTester tester) {
-  final viewer = tester.widget<InteractiveViewer>(find.byType(InteractiveViewer));
+  final viewer = tester.widget<InteractiveViewer>(
+    find.byType(InteractiveViewer),
+  );
   return viewer.transformationController!.value.getMaxScaleOnAxis();
 }
 
 void main() {
   group('the notation switch', () {
-    testWidgets('offers both notations and marks the active one', (tester) async {
+    testWidgets('offers both notations and marks the active one', (
+      tester,
+    ) async {
       await _pump(tester, _stateOf(_factorial));
       expect(find.text('Ordinograma'), findsOneWidget);
       expect(find.text('Estructograma'), findsOneWidget);
     });
 
-    testWidgets('changes which painter draws the structure layer', (tester) async {
+    testWidgets('changes which painter draws the structure layer', (
+      tester,
+    ) async {
       await _pump(tester, _stateOf(_factorial));
       expect(_structurePainter(tester), isA<FlowchartPainter>());
 
@@ -145,8 +153,9 @@ void main() {
       expect(_structurePainter(tester), isA<StructogramPainter>());
     });
 
-    testWidgets('keeps the zoom and the framing when the notation changes',
-        (tester) async {
+    testWidgets('keeps the zoom and the framing when the notation changes', (
+      tester,
+    ) async {
       await _pump(tester, _stateOf(_factorial));
       await tester.tap(find.byIcon(Icons.zoom_in));
       await tester.pumpAndSettle();
@@ -178,10 +187,9 @@ void main() {
         colors: colors,
       );
       expect(
-        painter.shouldRepaint(StructogramPainter(
-          scene: const DiagramScene.empty(),
-          colors: colors,
-        )),
+        painter.shouldRepaint(
+          StructogramPainter(scene: const DiagramScene.empty(), colors: colors),
+        ),
         isTrue,
       );
     });
@@ -197,17 +205,20 @@ void main() {
         colors: colors,
       );
       expect(
-        painter.shouldRepaint(ExecutionOverlayPainter(
-          scene: scene,
-          focus: _focusOn(_idSaying(scene, 'n <- 5')),
-          colors: colors,
-        )),
+        painter.shouldRepaint(
+          ExecutionOverlayPainter(
+            scene: scene,
+            focus: _focusOn(_idSaying(scene, 'n <- 5')),
+            colors: colors,
+          ),
+        ),
         isTrue,
       );
     });
 
-    testWidgets('draws over the structogram without disturbing it',
-        (tester) async {
+    testWidgets('draws over the structogram without disturbing it', (
+      tester,
+    ) async {
       final scene = _structogramOf(_factorial).sceneFor(null);
       await _pump(
         tester,
@@ -220,8 +231,9 @@ void main() {
   });
 
   group('the empty state', () {
-    testWidgets('names the structogram when that is the active notation',
-        (tester) async {
+    testWidgets('names the structogram when that is the active notation', (
+      tester,
+    ) async {
       await _pump(
         tester,
         const DiagramState.initial().copyWith(
@@ -237,8 +249,9 @@ void main() {
       expect(find.byType(InteractiveViewer), findsNothing);
     });
 
-    testWidgets('names the flowchart when that is the active notation',
-        (tester) async {
+    testWidgets('names the flowchart when that is the active notation', (
+      tester,
+    ) async {
       await _pump(tester, const DiagramState.initial());
       expect(
         find.text(

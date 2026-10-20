@@ -76,3 +76,70 @@ fn malformed_host_tape_is_a_usage_failure() {
     let result = record(json!({"host_tape":{"seed":"x"}}));
     assert_eq!(json_at(&result, "/failure/family"), json!("usage"));
 }
+
+fn summarized(program: &str, options: Value) -> Value {
+    ApiSession::default().call("record", &json!({
+        "request":{"program":program,"profile":"es","strictness":"strict","inputs":["21"],"observe":"events"},
+        "options":options
+    }))
+}
+
+#[test]
+fn summaries_cover_events_after_a_long_prefix() {
+    let prefix = format!("Algoritmo P\n{}", "Escribir 7;\n".repeat(150));
+    let first = summarized(
+        &format!("{prefix}Escribir 1;\nFinAlgoritmo\n"),
+        json!({"capture_states":false,"summarize_events":true}),
+    );
+    let second = summarized(
+        &format!("{prefix}Escribir 2;\nFinAlgoritmo\n"),
+        json!({"capture_states":false,"summarize_events":true}),
+    );
+    assert!(
+        json_at(&first, "/value/event_summary/count")
+            .as_u64()
+            .is_some_and(|count| count > 128),
+        "{first}"
+    );
+    assert_ne!(
+        json_at(&first, "/value/event_summary/sha256"),
+        json_at(&second, "/value/event_summary/sha256")
+    );
+    assert_eq!(json_at(&first, "/value/events"), json!([]));
+}
+
+#[test]
+fn summaries_preserve_partition_and_input_equivalence() {
+    let first = summarized(
+        PROGRAM,
+        json!({"capture_states":false,"summarize_events":true,"batch_size":1}),
+    );
+    let second = summarized(
+        PROGRAM,
+        json!({"capture_states":false,"summarize_events":true,"batch_size":64,"input_batch_sizes":[0,1]}),
+    );
+    assert_eq!(
+        json_at(&first, "/value/event_summary"),
+        json_at(&second, "/value/event_summary")
+    );
+    assert_eq!(json_at(&first, "/value/output"), json!("42\n"));
+}
+
+#[test]
+fn seeking_without_snapshots_still_queries_historical_events() {
+    let result = record(json!({"capture_states":false,"seek_every_event":true}));
+    let events = json_at(&result, "/value/events");
+    let historical = json_at(&result, "/value/historical_states");
+    assert!(events.as_array().is_some_and(|values| !values.is_empty()));
+    assert_eq!(
+        events.as_array().map(Vec::len),
+        historical.as_array().map(Vec::len)
+    );
+    assert_eq!(json_at(&result, "/value/states"), json!([]));
+}
+
+#[test]
+fn summaries_reject_incompatible_state_capture() {
+    let response = record(json!({"summarize_events":true}));
+    assert_eq!(json_at(&response, "/failure/family"), json!("usage"));
+}

@@ -51,6 +51,7 @@ fn bindings(corpus: &Corpus, structural: bool) -> Result<Conformance, String> {
         })
         .ok_or("Missing verification fixture")?;
     Ok(Conformance {
+        estado: "activo".to_owned(),
         sujeto: "aot".to_owned(),
         paquete: "test".to_owned(),
         activadas: Vec::new(),

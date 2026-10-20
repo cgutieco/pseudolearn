@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
@@ -9,12 +10,6 @@ import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/analysis_cache.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
-import 'package:pseudolearn_app/engine/export/core_program_exporter.dart';
 
 const _factorial = '''
 Proceso Factorial
@@ -32,22 +27,22 @@ FinProceso
 
 void main() {
   group('the four surfaces share one focus', () {
-    late AnalysisCache analyses;
     late ExecutionCubit execution;
     late DiagramCubit diagram;
     late ExportCubit export;
     late TraceCubit trace;
 
     setUp(() {
-      analyses = AnalysisCache();
-      execution = ExecutionCubit(execution: CoreProgramExecution(analyses: analyses));
+      execution = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      );
       diagram = DiagramCubit(
-        flowchartBuilder: FlowchartLayout(analyses: analyses),
-        structogramBuilder: StructogramLayout(analyses: analyses),
-        classDiagramBuilder: CoreClassDiagramBuilder(analyses: analyses),
+        flowchartBuilder: nativeTestEngine.flowchartBuilder,
+        structogramBuilder: nativeTestEngine.structogramBuilder,
+        classDiagramBuilder: nativeTestEngine.classDiagramBuilder,
       );
       export = ExportCubit(
-        exporter: CoreProgramExporter(analyses: analyses),
+        exporter: nativeTestEngine.programExporter,
         executionStates: execution.stream,
       );
       trace = TraceCubit(executionStates: execution.stream);
@@ -57,7 +52,10 @@ void main() {
         profileId: SyntaxProfileId.classicSpanish,
         languageId: UiLanguageId.spanish,
       );
-      export.updateSource(sourceCode: _factorial, profileId: SyntaxProfileId.classicSpanish);
+      export.updateSource(
+        sourceCode: _factorial,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
     });
 
     tearDown(() async {
@@ -90,8 +88,12 @@ void main() {
         final focus = await step();
         if (execution.state.currentStep.isTerminal) break;
         if (focus == null) continue;
-        expect(sceneHolds(focus.nodeId), isTrue,
-            reason: 'line ${focus.startLine} has no symbol carrying its node identity');
+        expect(
+          sceneHolds(focus.nodeId),
+          isTrue,
+          reason:
+              'line ${focus.startLine} has no symbol carrying its node identity',
+        );
       }
     });
 
@@ -102,7 +104,11 @@ void main() {
         if (execution.state.currentStep.isTerminal) break;
         if (export.state.focusedLines.isNotEmpty) lit++;
       }
-      expect(lit, greaterThan(0), reason: 'no focused statement mapped to a generated line');
+      expect(
+        lit,
+        greaterThan(0),
+        reason: 'no focused statement mapped to a generated line',
+      );
     });
 
     test('the trace records the lines the editor walked, in order', () async {
@@ -120,18 +126,24 @@ void main() {
       }
     });
 
-    test('running the loop returns the focus to the body line more than once', () async {
-      await execution.advance(
-        pace: StepPace.toEnd,
-        sourceCode: _factorial,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    test(
+      'running the loop returns the focus to the body line more than once',
+      () async {
+        await execution.advance(
+          pace: StepPace.toEnd,
+          sourceCode: _factorial,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
 
-      expect(execution.state.status, ExecutionStatus.finishedSuccess);
-      expect(execution.state.outputLines.map((line) => line.text), contains('Factorial: 120'));
-      expect(trace.state.rows.length, greaterThan(5));
-    });
+        expect(execution.state.status, ExecutionStatus.finishedSuccess);
+        expect(
+          execution.state.outputLines.map((line) => line.text),
+          contains('Factorial: 120'),
+        );
+        expect(trace.state.rows.length, greaterThan(5));
+      },
+    );
 
     test('a second run starts the table from scratch', () async {
       await execution.advance(

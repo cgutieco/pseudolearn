@@ -95,7 +95,22 @@ impl ApiSession {
 
     fn create_document(&mut self, arguments: &Value) -> Result<Value, ApiError> {
         let request = parse_analysis(arguments)?;
-        Ok(json!({"resource":self.insert(Resource::Document(request))?}))
+        let previous = arguments
+            .get("previous_document")
+            .map(|value| {
+                value
+                    .as_u64()
+                    .filter(|identifier| {
+                        matches!(self.resources.get(identifier), Some(Resource::Document(_)))
+                    })
+                    .ok_or_else(|| usage("invalid previous document"))
+            })
+            .transpose()?;
+        let resource = self.insert(Resource::Document(request))?;
+        if let Some(previous) = previous {
+            self.release(previous)?;
+        }
+        Ok(json!({"resource":resource}))
     }
 
     fn create_analysis(&mut self, arguments: &Value) -> Result<Value, ApiError> {

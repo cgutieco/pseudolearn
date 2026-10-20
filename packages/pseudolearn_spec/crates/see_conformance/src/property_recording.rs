@@ -2,8 +2,6 @@ use crate::{properties::PropertySubject, property_api as api, property_scenarios
 use see_model::properties::PropertyExecutor;
 use serde_json::{Value, json};
 
-const UNTRACED_STATEMENTS: u64 = 2000;
-
 type Difference = Result<Option<(Value, Value)>, String>;
 
 pub(crate) fn check(
@@ -11,7 +9,7 @@ pub(crate) fn check(
     scenario: &Scenario,
     subject: &mut impl PropertySubject,
 ) -> Difference {
-    let base = record(subject, scenario, json!({"batch_size":1}))?;
+    let base = event_record(subject, scenario, json!({"batch_size":1}))?;
     match executor {
         PropertyExecutor::StepPartition => batches(subject, scenario, &base),
         PropertyExecutor::InputBatching => input_batches(subject, scenario, &base),
@@ -37,15 +35,12 @@ pub(crate) fn record(
     options: Value,
 ) -> Result<Value, String> {
     let mut options = options;
-    let mut request = scenario.request.clone();
+    let request = scenario.request.clone();
     if !scenario.traced
-        && let (Some(fields), Some(settings)) = (request.as_object_mut(), options.as_object_mut())
+        && let Some(settings) = options.as_object_mut()
     {
         settings.insert("capture_states".to_owned(), json!(false));
-        fields.insert(
-            "limits".to_owned(),
-            json!({"statements":UNTRACED_STATEMENTS}),
-        );
+        settings.insert("summarize_events".to_owned(), json!(true));
     }
     api::value(api::call(
         subject,
@@ -54,15 +49,31 @@ pub(crate) fn record(
     )?)
 }
 
+fn event_record(
+    subject: &mut impl PropertySubject,
+    scenario: &Scenario,
+    mut options: Value,
+) -> Result<Value, String> {
+    options
+        .as_object_mut()
+        .ok_or("SEE-PROPERTY: invalid recording settings")?
+        .insert("capture_states".to_owned(), json!(false));
+    record(subject, scenario, options)
+}
+
 fn variant(
     subject: &mut impl PropertySubject,
     scenario: &Scenario,
     base: &Value,
     options: Value,
 ) -> Difference {
-    let actual = record(subject, scenario, options)?;
+    let mut actual = event_record(subject, scenario, options)?;
+    let mut base = base.clone();
+    crate::event_identity::normalize(&mut actual)?;
+    crate::event_identity::normalize(&mut base)?;
     for field in [
         "events",
+        "event_summary",
         "output",
         "termination",
         "diagnostics",

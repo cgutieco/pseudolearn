@@ -37,11 +37,18 @@ pub fn run(
     if !crate::property_comparison::available(binding.executor, subject.declaration()) {
         return crate::property_evidence::pending(binding);
     }
-    let scenarios: Vec<Scenario> =
+    let compilation = binding.executor == see_model::properties::PropertyExecutor::CliIrRoundtrip;
+    let scenarios = if compilation {
+        property_scenarios::compilations(context.corpus, context.vocabulary)?
+    } else {
         property_scenarios::executions(context.corpus, context.vocabulary)?
-            .into_iter()
-            .filter(|scenario| property_scenarios::runnable_by(scenario, subject.declaration()))
-            .collect();
+    };
+    let scenarios: Vec<Scenario> = scenarios
+        .into_iter()
+        .filter(|scenario| {
+            compilation || property_scenarios::runnable_by(scenario, subject.declaration())
+        })
+        .collect();
     run_samples(binding, context, subject, &scenarios)
 }
 
@@ -60,7 +67,9 @@ fn run_samples(
             .ok_or("SEE-PROPERTY: sample overflow")?;
         let scenario = scenario(binding, context, scenarios, sample)?;
         if let Some((expected, actual)) =
-            crate::property_comparison::check(binding.executor, &scenario, subject)?
+            crate::property_comparison::check(binding.executor, &scenario, subject).map_err(
+                |error| format!("{error}; property {}; sample {sample}", binding.reference),
+            )?
         {
             report.counterexample = Some(crate::property_evidence::counterexample(
                 binding,

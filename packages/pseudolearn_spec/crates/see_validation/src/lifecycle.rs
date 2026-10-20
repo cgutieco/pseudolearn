@@ -160,3 +160,28 @@ fn version_step(
             .push("SEE-EDITION: incompatible stable language change needs new edition".to_owned());
     }
 }
+
+pub fn active_subjects(corpus: &see_model::Corpus, active: &[String]) -> Vec<String> {
+    corpus
+        .iter()
+        .filter(|specification| {
+            specification.metadata.estado == "estable"
+                && specification.metadata.id.starts_with("LANG.")
+        })
+        .filter(|specification| {
+            specification
+                .metadata
+                .sujetos
+                .iter()
+                .filter(|subject| active.contains(subject))
+                .count()
+                < 2
+        })
+        .map(|specification| {
+            format!(
+                "SEE-STATE: {} needs two active subjects",
+                specification.metadata.id
+            )
+        })
+        .collect()
+}

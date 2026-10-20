@@ -1,4 +1,0 @@
-enum AccentPolicy {
-  sensitive,
-  insensitive,
-}

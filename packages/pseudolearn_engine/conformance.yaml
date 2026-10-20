@@ -609,9 +609,9 @@
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R6",
-      "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Regla de verificación estructural: la API no expone guarda de tiempo y ninguna petición la configura; la revisión del contrato de límites confirma que la única terminación no determinista queda ausente."
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "ENG.LIMITS@0.2.0#R7",
@@ -693,13 +693,15 @@
       "regla": "PERF.VM.STEP-LATENCY@0.2.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R5"
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "PERF.VM.STEP-LATENCY@0.2.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R5"
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
@@ -898,9 +900,9 @@
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R4",
-      "verificacion": "ejecutor",
-      "estado": "exento",
-      "justificacion": "Regla estructural del corpus: la cobertura de instrucciones por regla de LANG y LIB la verifica `see validate` sobre los bloques cobertura, no el motor."
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "IR.TEXT-FORMAT@0.1.0#R1",
@@ -1079,13 +1081,15 @@
       "regla": "PERF.VM.THROUGHPUT@0.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R5"
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "PERF.VM.THROUGHPUT@0.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R5"
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
@@ -1165,29 +1169,81 @@
       "regla": "API.WIRE-FORMAT@0.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere transporte Wasm real; las comprobaciones nativas no acreditan crecimiento de memoria Wasm. La validación posterior comienza solo en macOS e iOS y no certifica esa frontera."
     },
     {
       "regla": "PERF.ARTIFACT.SIZE@0.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "PERF.PROTOCOL@0.1.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
       "regla": "PERF.VM.STEP-LATENCY@0.2.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento."
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R1",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R2",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R3",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R4",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R5",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.PROTOCOL@0.1.0#R6",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.FRONTEND.THROUGHPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "validacion-plataforma-posterior",
+      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
+    },
+    {
+      "regla": "PERF.FRONTEND.THROUGHPUT@0.1.0#R2",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.SUITE.AWFY-CORE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "PERF.SUITE.AWFY-CORE@0.2.0#R2",
+      "verificacion": "estructural",
+      "estado": "cumple"
     }
   ]
 }

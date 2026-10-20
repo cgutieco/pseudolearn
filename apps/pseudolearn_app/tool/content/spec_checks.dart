@@ -1,22 +1,26 @@
-import 'package:pseudolearn_core/pseudolearn_core.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_block.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/mapping/profile_catalog.dart';
+import 'content_engine.dart';
+import 'package:pseudolearn_app/engine/rust/rust_profile_name.dart';
 import 'loaded_content.dart';
 
 const Map<String, String> exemptSpecificationSections = {
   'esp-i-lexico#2': 'Palabras reservadas de varias palabras: dato del perfil.',
-  'esp-i-operadores#4': 'Esta tabla ordena, no tipa: remite al sistema de tipos.',
-  'esp-i-entrada-salida#5': 'Un valor que no corresponde al tipo: conducta de ejecución.',
+  'esp-i-operadores#4':
+      'Esta tabla ordena, no tipa: remite al sistema de tipos.',
+  'esp-i-entrada-salida#5':
+      'Un valor que no corresponde al tipo: conducta de ejecución.',
   'esp-i-control#0': 'Reglas comunes a las cinco: enuncia lo común.',
-  'esp-i-sistema-de-tipos#1': 'La única conversión implícita entre primitivos: ya mostrada en tipos primitivos.',
+  'esp-i-sistema-de-tipos#1':
+      'La única conversión implícita entre primitivos: ya mostrada en tipos primitivos.',
   'esp-i-sistema-de-tipos#2': 'Rango de los números: fallo de ejecución.',
   'esp-i-sistema-de-tipos#3': 'El tipo de cada operador: tabla de referencia.',
-  'esp-i-sistema-de-tipos#5': 'Quién comprueba qué: reparto de responsabilidad entre niveles.',
+  'esp-i-sistema-de-tipos#5':
+      'Quién comprueba qué: reparto de responsabilidad entre niveles.',
   'esp-i-sistema-de-tipos#11': 'La política de severidad: es política.',
-  'esp-i-funciones-incorporadas#0': 'El catálogo completo: tabla generada por el motor.',
+  'esp-i-funciones-incorporadas#0':
+      'El catálogo completo: tabla generada por el motor.',
 };
 
 List<String> checkSpecificationCoverageAndDiagnostics({
@@ -39,13 +43,16 @@ List<String> checkSpecificationCoverageAndDiagnostics({
         );
       }
 
-      errors.addAll(checkBlockCitedDiagnostics(
-        blocks: sub.blocks,
-        contextName: 'Specification section "$specId" subsection "${sub.heading.text}"',
-        languageCode: language.code,
-        profileId: language.profileId,
-        languageId: language.languageId,
-      ));
+      errors.addAll(
+        checkBlockCitedDiagnostics(
+          blocks: sub.blocks,
+          contextName:
+              'Specification section "$specId" subsection "${sub.heading.text}"',
+          languageCode: language.code,
+          profileId: language.profileId,
+          languageId: language.languageId,
+        ),
+      );
     }
   }
   return errors;
@@ -55,10 +62,7 @@ final class _SpecificationSubsection {
   final HeadingBlock heading;
   final List<ContentBlock> blocks;
 
-  const _SpecificationSubsection({
-    required this.heading,
-    required this.blocks,
-  });
+  const _SpecificationSubsection({required this.heading, required this.blocks});
 }
 
 List<_SpecificationSubsection> _groupSubsections(List<ContentBlock> blocks) {
@@ -69,10 +73,12 @@ List<_SpecificationSubsection> _groupSubsections(List<ContentBlock> blocks) {
   for (final block in blocks) {
     if (block is HeadingBlock && block.level == 2) {
       if (currentHeading != null) {
-        subsections.add(_SpecificationSubsection(
-          heading: currentHeading,
-          blocks: currentBlocks,
-        ));
+        subsections.add(
+          _SpecificationSubsection(
+            heading: currentHeading,
+            blocks: currentBlocks,
+          ),
+        );
       }
       currentHeading = block;
       currentBlocks = [];
@@ -81,10 +87,9 @@ List<_SpecificationSubsection> _groupSubsections(List<ContentBlock> blocks) {
     }
   }
   if (currentHeading != null) {
-    subsections.add(_SpecificationSubsection(
-      heading: currentHeading,
-      blocks: currentBlocks,
-    ));
+    subsections.add(
+      _SpecificationSubsection(heading: currentHeading, blocks: currentBlocks),
+    );
   }
   return subsections;
 }
@@ -136,9 +141,8 @@ Set<String> producedDiagnosticCodes({
   required SyntaxProfileId profileId,
   required UiLanguageId languageId,
 }) {
-  final analyzer = CoreProgramAnalyzer();
+  final analyzer = contentEngine.analyzer;
   final codes = <String>{};
-  final profile = ProfileCatalog.toLanguageProfile(profileId);
   for (final program in programs) {
     final report = analyzer.analyze(
       sourceCode: program,
@@ -148,18 +152,25 @@ Set<String> producedDiagnosticCodes({
     for (final diagnostic in report.diagnostics) {
       codes.add(diagnostic.code);
     }
-    final lexer = Lexer(profile).tokenize(program);
-    final parser = Parser(profile: profile).parse(TokenStream(lexer.tokens));
-    if (parser.program != null) {
-      final res = NameResolver(profile: profile).resolve(parser.program!);
-      final strictCheck = TypeChecker(
-        resolution: res,
-        profile: profile,
-        strictInitialization: true,
-      ).check(parser.program!);
-      for (final d in strictCheck.diagnostics) {
-        codes.add(d.code.name);
+    final strict =
+        contentTransport.call('create_analysis', {
+              'program': program,
+              'profile': rustProfileName(profileId),
+              'locale': rustLocaleName(languageId),
+              'strictness': 'strict',
+            })
+            as Map<String, Object?>;
+    try {
+      final report =
+          contentTransport.call('analysis', {'resource': strict['resource']})
+              as Map<String, Object?>;
+      for (final diagnostic
+          in (report['diagnostics'] as List<Object?>)
+              .cast<Map<String, Object?>>()) {
+        codes.add(diagnostic['code'] as String);
       }
+    } finally {
+      contentTransport.call('release', {'resource': strict['document']});
     }
   }
   return codes;

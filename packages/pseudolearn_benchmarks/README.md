@@ -2,178 +2,108 @@
 
 ## 1. Qué es y qué no es
 
-Arnés E-01 de la API pública del núcleo Dart congelado como `reference`. Mide ejecución y coste de
-observación sin modificar semántica. El corpus define los contratos y los umbrales; el arnés publica la evidencia.
-Carga suma, Fibonacci, burbuja, objetos del anexo, Sieve y Permute de Are We Fast Yet.
-La suite AWFY-core lee los diez programas, entradas y controles de la exportación del corpus: Sieve,
-Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards.
-Se excluyen CD, DeltaBlue, Havlak y Json, fuera del subconjunto vigente.
-La suite usa tamaños reducidos declarados para permitir repeticiones, no reproduce los tiempos del anexo.
-
-El rendimiento de ejecución Rust se recoge con `dart run tool/collect_execution.dart`, usando el trabajador de la API pública y la línea base `results/macos-r3-awfy/summary.json`. La preparación precede al cronómetro; cada muestra crea estado nuevo, conserva su duración cruda y valida salida y terminación. No mide la CLI ni serialización de eventos.
-
-La herramienta `node --no-warnings --no-incremental-marking tool/run_wasi.cjs <módulo.wasm> <directorio-preabierto> [argumentos...]` ejecuta adaptadores, sondas matemáticas y trabajadores WASI con un solo directorio preabierto y entorno vacío. El marcado incremental se desactiva para evitar el fallo reproducido del anfitrión local durante E/S de módulos con memoria grande; no altera el módulo ni los algoritmos medidos.
+Recolectores de rendimiento del núcleo Rust, herramientas estadísticas y archivo de líneas base.
+El corpus define programas, resultados esperados y presupuestos. Los recolectores verifican resultados;
+no convierten salidas del motor en oráculos. Los ejecutores del sujeto histórico están retirados.
+Las capturas de `results/` conservan procedencia y crudos, incluidos resultados desfavorables.
 
 ## 2. Guía operativa y ciclo de vida
 
-Flutter 3.47.5 aporta Dart 3.13.4; Node se fija en `node-version` para JS y Wasm.
-Preparación: `dart pub get`. Verificación: `dart test`, `dart analyze --fatal-infos --fatal-warnings`
-y `dart run tool/check.dart`. Ejecución: `dart run tool/collect.dart --output results/local`.
-Compila ejecutable nativo, JavaScript optimizado y Wasm en `build/`; ejecuta Node con soporte Wasm GC.
-Resultados crudos y resumen en la ruta indicada. Recalcular estadísticas sin repetir mediciones:
-`dart run tool/summarize.dart results/local`. CI conserva artefactos por sistema operativo;
-`results/` contiene solamente evidencias seleccionadas y no es salida del build del motor.
-La línea base AWFY nativa se recoge con `dart run tool/collect_awfy.dart`; evidencia en
-`results/macos-r3-awfy/`. `dart run bin/awfy_worker.dart --verify` comprueba todas las cargas.
-El análisis Rust se mide con `dart run tool/collect_frontend.dart`: captura procedencia antes del build,
-ejecuta diez procesos del trabajador público y conserva treinta rondas de 28 configuraciones. Incluye
-1.000, 10.000 y 50.000 líneas, ambos perfiles, ambos rigores, entradas incompletas y el corpus.
-`tool/frontend_statistics.dart` rechaza muestras incompletas o duplicadas, calcula IC 95 % sobre medias
-por proceso y p95 sobre las 300 latencias; no elimina muestras ni relaja umbrales.
-Los artefactos de R8 se miden después de construir el framework iOS arm64 Release y el paquete Wasm
-canónico. Desde este paquete, `dart run tool/capture_bridge_artifacts.dart` registra revisión, estado
-del árbol, versiones, rutas, arquitecturas, hashes, bytes del flujo Brotli Q11/lgwin22 y cumplimiento
-de límites en `packages/pseudolearn_spec/results/r8-artifact-size.json`. La orden exige los dos builds
-previos, no recompila, y falla si el framework no tiene símbolos separados o algún presupuesto excede.
-La comparación temprana de R5 se recoge con `dart run tool/r5_vm_tracer.dart`. Las tres cargas
-emparejadas viven en `tool/data/r5-vm-workloads.json`; el worker Rust compila RI verificada a bytecode
-y lo carga en la forma de despacho de la VM antes del cronómetro, y dentro del intervalo solo ejecuta. Cada worker de `reference` analiza el mismo texto
-antes del cronómetro y crea un intérprete nuevo por iteración. Los crudos se guardan en
-`results/r5-vm-tracer/` y el resumen en `packages/pseudolearn_spec/results/r5-vm-tracer.json`.
-Los perfiles de Mandelbrot y Fibonacci eligen comparación-salto; el bucle entero queda reservado para
-la validación fuera de muestra. Los perfiles y el archivo de selección forman parte de la procedencia.
-La captura incluye hashes del motor, del código Dart `reference`, de ambos manifiestos y de la versión
-exacta de Rust antes de compilar; los archivos borrados del árbol de trabajo se omiten de los hashes
-porque ya no forman parte de lo medido. La repetición para cerrar B4 se hizo sin PGO con diez procesos y
-treinta iteraciones por backend y carga: 1.800 muestras emparejadas, cero descartadas y una media
-geométrica de 63,44× frente al umbral de 30×. Mandelbrot obtuvo 69,79× (IC 95 %: 60,94–76,79), el bucle
-entero 80,78× (78,38–84,56) y Fibonacci 45,28× (44,87–45,69). Se cumple el umbral y no fue necesario
-repetir RR-01. Los crudos y el resumen están en `results/r5-vm-tracer/`; la captura B3 anterior, con
-76,72× y la escalera RR-01 completa, se conserva separada en `results/r5-vm-tracer-b3/`. En ambas
-capturas la estacionariedad queda sin demostrar y se conservan todas las muestras.
-El experimento histórico E-NR1 se conserva intacto en `results/r6-aot-initial/` y `results/r6-aot/`. Su global 5,8× agrega cocientes de medias, compara capturas independientes y no certifica el contrato de medianas por familia. Sus perfiles crudos no están conservados; la atribución anterior de celdas a Sieve y NBody no se sostiene ante los contadores nuevos.
+Requisitos: Dart aportado por Flutter fijado en la app; Node fijado en `node-version`; Rust exacto de
+cada miembro. Desde este directorio: `dart pub get`, `dart test`,
+`dart analyze --fatal-infos --fatal-warnings` y `dart run tool/check.dart`.
+Formato: `dart format --output=none --set-exit-if-changed lib tool test`.
 
-Desde `packages/pseudolearn_engine`, `cargo run --release -p pseudolearn_bench_worker -- paired ../pseudolearn_benchmarks/results/<nombre-nuevo>` compara AOT y V1F (variante 4) en diez procesos por carga y treinta parejas por proceso, alternando el orden. Cada muestra tiene estado nuevo preparado antes del reloj. AOT usa entrada y salida en memoria dentro de la función principal; V1F incluye el formateo de su resultado. La API de VM incluye la creación de máquina y por eso su aceleración se etiqueta separadamente. El arnés verifica una ejecución previa en otro proceso y valida también cada salida medida. Un directorio existente se rechaza.
+- `dart run tool/collect_frontend.dart <directorio>` mide análisis mediante el trabajador público Rust.
+- `dart run tool/collect_execution.dart <directorio>` mide ejecución preparada con la línea base archivada.
+- `dart run tool/summarize.dart <directorio>` recalcula estadísticas históricas sin ejecutar sujetos retirados.
+- `dart run tool/capture_bridge_artifacts.dart` inspecciona artefactos previamente construidos; no los genera.
+- Desde `ceiling/`: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`.
+- Desde el motor: `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` compara
+  AOT y el techo Rust; `paired-summary <directorio>` recalcula sus estadísticas.
 
-`paired-summary <directorio>` recalcula sin modificar crudos. El estimador principal es la media geométrica por familia de cocientes de medianas de las 300 muestras por carga. El bootstrap emparejado de medias por proceso tiene otro estimador y no proporciona un intervalo de medianas. `capture.json` captura fuentes y configuración antes del runtime y objetos; `emission.json` conserva treinta emisiones, sin análisis ni lowering; `inspection.json` y las carpetas por carga conservan RI, CLIF y ensamblado. `stationarity.json` conserva candidatos, sin descartar muestras ni demostrar estado estable. Frecuencia, afinidad y carga externa siguen sin controlar.
+Las campañas de plataforma y del puente se ejecutan separadamente cuando exista autorización para
+medir macOS e iOS. Las comprobaciones de artefactos y la generación de informes no son un despliegue.
 
-`results/r6-paired-baseline/` y `results/r6-paired-runtime/` conservan las campañas comparables antes y después de reducir copias de diseños, construcción de raíces y recorridos del recolector. La segunda obtiene 3,068× en arreglos, 2,571× en numérica, 3,315× en objetos y 3,761× en recursión; ninguna alcanza 1,30×. Storage pasa aproximadamente de 288 a 170 µs; esto no predice mejora en las demás cargas. Richards emite en 15,7935 ms de mediana y tampoco cumple los 15 ms. Las campañas preceden a la incorporación de la comprobación previa separada: sus salidas medidas están verificadas, pero no se les atribuye retrospectivamente esa prevalidación.
+El ejecutor del puente se prepara con `dart run tool/create_bridge_campaign.dart <campaña-nueva.json>`
+y se ejecuta con `dart run tool/collect_bridge.dart <campaña.json> <directorio-nuevo>`. La configuración
+incluye preparación de binarios, trabajador de API directa y trabajador Dart con FFI generado y modelo
+visible. Captura procedencia antes de compilar, alterna orden por proceso, exige diez procesos y treinta
+iteraciones, conserva errores y rechaza muestras incompletas o duplicadas. Las expectativas se evalúan
+fuera del reloj. La suite consume AWFY del corpus, Fibonacci de veinte, alias, ciclos, arreglos, entrada,
+cancelación, salida abundante, consulta retenida y completado de diez mil líneas. El modelo visible mide
+un paso preparado y comprueba fuera del reloj que Fibonacci termina con el resultado normativo.
 
-`results/r6-paired-validated/` es la campaña con el arnés final: comprobación previa en un proceso separado, hashes de fuentes, trabajador y archivo, diez procesos por carga y treinta parejas por proceso. Las medianas agrupadas por familia dan 3,068199× en arreglos, 2,567189× en numérica, 3,289721× en objetos y 3,859161× en recursión: `PERF.AOT.LEVEL#R1` sigue incumplido en las cuatro. La máxima mediana de emisión es 14,574375 ms, por lo que `PERF.AOT.LEVEL#R3` pasa en esta captura; las capturas anteriores, que fallaron en Richards, se conservan y esta no constituye una exención. La entrada y la salida del programa compilado son en memoria y quedan dentro del intervalo medido. La latencia de la máquina virtual usa la API preparada e incluye la construcción de la máquina, de modo que el denominador no es un intervalo puro de ejecución. De cada campaña se conservan las inspecciones (representación intermedia, CLIF y ensamblado) y los hashes; el directorio de trabajo temporal con el lanzador y el objeto no se conserva.
-
-`results/r6-paired-inline-cells/` conserva la primera campaña formal posterior a tres variantes aisladas: plegado de constantes enteras, comprobación de finitud real sin materializar el booleano y lectura en línea de celdas locales. Las medianas por familia son 2,118× en arreglos, 2,375× en numérica, 3,085× en objetos y 2,278× en recursión; `PERF.AOT.LEVEL#R1` sigue incumplido en las cuatro. Por carga, Permute pasa de 3,86× a 2,28×, Queens de 4,91× a 2,68× y Towers de 1,84× a 1,36×; Storage permanece en 17,10×, de modo que la familia de objetos no puede acercarse a 1,30× sin cambiar el asignador. La emisión máxima es 14,137 ms. Las exploraciones previas a esta campaña no se conservan como evidencia normativa.
-
-`paired-probe <directorio-nuevo>` toma perfiles y contadores en una sesión separada. `results/r6-probe-baseline/`, `r6-probe-layouts/`, `r6-probe-roots/` y `r6-probe-marking/` conservan variantes aisladas, tamaños de Storage 3–6 y perfiles del proceso completo; sus tiempos instrumentados no certifican N3. El contador `heapGrowths` cuenta extensiones de longitud del vector, no realojos físicos. `initializedWords` cuenta escrituras de inicialización explícita, no todas las escrituras del asignador. Los perfiles incluyen AOT, V1F, VM y preparación; no permiten atribuir todo el proceso a AOT.
-
-`results/r6-native-exclusion.json` conserva grafos y comprobación de la API sin `native` para Wasm, iOS arm64 y Android arm64. No acredita aún tamaños ni ausencia de símbolos en los artefactos finales de los puentes. R6 continúa abierta; Cranelift se conserva durante el diagnóstico y la elección de otra técnica depende de la evidencia residual.
-El workspace Rust anidado `ceiling` contiene el experimento E-02 V0–V3, no es el motor.
-Desde ceiling: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`; resultados en
-`results/e02/` de este paquete. Usa la misma versión exacta de Rust del monorepo.
-No requiere secretos ni despliegue. macOS, Linux y Windows son plataformas del recolector.
+Cada escenario declara `setup`, `timed`, `verify` y expectativas independientes por ruta. Los resultados
+se pueden enlazar mediante `$nombre.campo`; las repeticiones son acotadas y solo terminan al satisfacer
+su condición. Cada iteración crea sesión nueva. El informe publica p50/p95, MAD/IQR e intervalo del 95 %
+de medias por proceso con semilla fija, sin descartar muestras ni afirmar estacionariedad. La captura
+de fotogramas se incorpora desde la prueba de plataforma: su ausencia impide certificar el experimento.
+No se confunde el resultado del modelo preparado con tiempo de renderizado ni con latencia por evento.
 
 ## 3. Arquitectura y modelo del sistema
 
-| Capa | Responsabilidad | Puede importar | Prohibido |
-|---|---|---|---|
-| model | Contratos de cargas y resultados | Dart SDK | suite, execution |
-| suite | Programas con resultados esperados | model | execution |
-| execution | Análisis y ejecución mediante API pública | model, pseudolearn_core | suite, imports internos del núcleo |
-| bin | Ejecutar suite y emitir JSON | model, suite, execution | internals del núcleo |
-| tooling | Compilar, recolectar y verificar | API del paquete, SDK, analyzer, yaml; worker interno de VM | modificar el núcleo |
+| Capa | Responsabilidad | Puede importar |
+|---|---|---|
+| model | Cargas y muestras | SDK Dart |
+| suite | Cargas y controles independientes | model |
+| tooling | Recolectar, verificar y resumir | model, suite, SDK, analyzer y yaml |
 
-Las reglas están en `architecture.yaml`; tests reflejan `lib/src` y `tool`.
-El cargador de corpus devuelve un fallo como valor ante exportación inválida y no copia programas.
-Cada proceso analiza las cargas con el perfil español flexible antes de medir; cada repetición crea un intérprete nuevo.
-La observación recibe instantáneas y cuenta eventos sin conservarlos. Se valida terminación y salida
-en ambas configuraciones antes de aceptar la muestra. Un fallo retorna un resultado, no escapa.
-El worker es secuencial, con semilla fija, sin I/O dentro del intervalo medido.
-La guarda de resultado forma parte del programa y fuerza una trampa si el valor calculado diverge del
-control independiente; las muestras aceptadas deben terminar normalmente y validar la salida vacía.
+`architecture.yaml` declara capas y límites. No existe una capa de ejecución del lenguaje en Dart.
+`measurement_environment.dart` captura procedencia y muestrea procesos; los trabajadores Rust o del
+puente realizan las operaciones medidas. `ceiling/` es un workspace experimental independiente.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: cambiar el nivel aceptado y el intervalo altera la lectura de las razones históricas. Elección: las campañas paired versión 2 identifican Cranelift, V1F y umbral 1,70; incluyen conciliación final y conservan tiempo de entrada auxiliar. Las campañas sin versión conservan su contrato. V1F-S es la variante adicional 9 para el nivel optimizado futuro frente a 1,30. Se descarta recalcular campañas anteriores como si compartieran este intervalo.
+**Medir dentro del trabajador.** El arranque del proceso y la preparación no representan el coste del
+motor. El trabajador prepara estado antes del reloj, mide operaciones declaradas y verifica después.
+El recolector captura procedencia antes del build y conserva muestras crudas. Se descarta cronometrar
+una CLI completa para atribuir su latencia al análisis o a la VM.
 
-- **Problema:** la captura puede consagrar un error del intérprete. **Elección:** resultados esperados
-  calculados por la definición de cada carga y validados antes de guardar tiempos.
-  **Descartado:** usar la primera ejecución como resultado normativo.
-- **Problema:** JIT y calentamiento sesgan una ejecución. **Elección:** diez procesos por objetivo,
-  treinta iteraciones por carga y modo. Conservar todas; detectar candidatos de puntos de cambio con segmentos de al menos cinco muestras,
-  diferencia relativa superior al 5 % y diferencia superior a 3,3 errores estándar. No se declara
-  estado estable demostrado; se conservan candidatos y datos completos para el protocolo de R3.
-  **Descartado:** borrar calentamientos o muestras desfavorables. JavaScript produce duraciones
-  observadas en múltiplos de 1 ms; un cero se conserva como dato inferior a esa resolución, no como
-  ejecución de coste nulo. Los intervalos se calculan con todas las muestras.
-- **Problema:** memoria y CPU no tienen API web portátil. **Elección:** muestreo del proceso anfitrión
-  con `ps` en Unix y `Get-Process` en Windows. RSS máxima muestreada es cota inferior del pico;
-  CPU es la última lectura acumulada, incluyendo arranque. La memoria no se atribuye a cada carga.
-  **Descartado:** reportar una estimación como pico exacto o mezclar CPU con tiempo de pared.
-- **Problema:** repeticiones del mismo proceso no son independientes. **Elección:** bootstrap de medias
-  por proceso, semilla reproducible e intervalo 95 %; cocientes observado/no observado emparejados
-  por proceso y media geométrica por familia. **Descartado:** tratar 300 iteraciones como 300 procesos.
-- **Problema:** runners compartidos no fijan frecuencia ni carga externa. **Elección:** publicar
-  hardware, versiones y limitaciones. **Descartado:** comparar máquinas diferentes como mismo hardware.
+**Conservar líneas base.** El retiro de un ejecutor no invalida sus observaciones históricas, pero estas
+no certifican fuentes nuevas. Los datos y resúmenes permanecen disponibles sin reconstruir el sujeto.
+Se descarta sobrescribir resultados desfavorables o presentar una comparación histórica como campaña actual.
 
-Problema: duplicar programas permite medir otra carga. Elección: el arnés AWFY lee la exportación del
-corpus y sus controles; se descarta mantener una segunda copia. El arnés histórico E-01 conserva sus
-cargas para reproducir la evidencia original.
+**Estadística explícita.** Los procesos son las unidades independientes. Se informa el estimador del
+intervalo, p95, resolución y candidatos de cambio; todas las muestras se conservan. Un intervalo de
+medias no certifica una razón de medianas. El experimento AOT alterna el orden de las parejas, crea
+estado nuevo y comprueba salidas antes y durante la captura.
+
+**Fronteras diferentes.** La API directa, la transferencia FFI, el modelo visible y el fotograma son
+intervalos distintos. Dividir tiempo de lote entre eventos no mide la latencia de una pulsación.
+Las pruebas locales de protocolo no sustituyen mediciones físicas ni de distribución.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
-Código inglés, sin comentarios, imports relativos internos y API pública exportada por un único punto.
-Límites en `architecture.yaml`; herramientas y tests exentos de tamaño, no de comentarios.
-El verificador usa AST de Dart y sus tokens para evitar falsos comentarios dentro de pseudocódigo.
+Código en inglés sin comentarios; documentación en español. Máximos: 300 líneas por archivo,
+40 por función, cuatro parámetros posicionales, tres niveles de anidación y siete métodos públicos.
+Los imports respetan las capas y las herramientas no modifican el motor medido.
 
 ## 6. Decisiones de producto que condicionan el código
 
-El núcleo se congela como `reference`; E-01 mide defectos existentes sin repararlos en Dart.
-`PERF.BASELINE.REFERENCE`, `PERF.SUITE.AWFY-CORE` y `PERF.PROTOCOL` definen la línea base y su protocolo. E-01 publica evidencia inicial
-con sus amenazas a la validez; no afirma rendimiento del futuro motor Rust.
+Los presupuestos pertenecen a `PERF.*`. Un resultado incumplido se conserva como tal; no se ajusta el
+umbral desde el arnés. Las muestras proceden de estado nuevo, semillas fijadas y resultados derivados
+del contrato. Las mediciones futuras no mezclan máquinas ni capturas independientes para atribuir coste FFI.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-Tests de cargas, análisis inválido, programa vacío, entrada requerida, límite de pasos y salida
-incorrecta. El recolector rechaza falta de muestras, objetivos fallidos y métricas ausentes.
-`tool/check.dart` verifica comentarios, capas y límites; cada regla tiene caso negativo.
-El workflow manual autorizado ejecuta tests y mediciones en macOS arm64, Linux x64 y Windows x64,
-sin umbral de tiempo. `collect_metrics=false` permite verificar las mismas fuentes sin repetir una
-medición ya conservada; la verificación habitual se ejecuta en local.
-Evidencia de R0: `results/ci-r0-complete/` conserva 32.400 muestras, 90 procesos y 108 grupos
-validados en macOS, Linux y Windows. Los datos parciales se conservan por separado. La suite AWFY verifica entradas suministradas, rechaza entradas ausentes y compara salidas en ambos modos.
-Los tests del cargador rechazan corpus inválido o incompleto. No hay pendientes operativos del arnés.
+Las pruebas espejo cubren lectura del corpus, entradas inválidas, estadísticas, campañas incompletas,
+artefactos y verificadores negativos. Las cargas de lenguaje se prueban por conformidad en Rust;
+no se mantiene una segunda suite de interpretación en Dart.
+Los informes distinguen pruebas automatizadas, métricas históricas y mediciones todavía no realizadas.
+
+`dart run tool/summarize_bridge.dart <raw.json>` recalcula percentiles, dispersión, candidatos de cambio y cocientes desde los crudos, sin ejecutar procesos de medición.
+
+El resumen empareja puente y directo por escenario, operación y ordinal de proceso, y reutiliza el estimador geométrico por familia con bootstrap reproducible. El modelo de app se informa aparte porque no tiene una operación directa equivalente. Una media no positiva impide calcular un cociente para esa familia y se conserva señalada, sin eliminar sus crudos ni inventar un coste nulo.
+
+La procedencia identifica fuentes antes del build y artefactos release después del build mediante tamaño y SHA-256, junto con `rustc -vV` y los comandos exactos. Los trabajadores publican el menor incremento positivo observado del reloj, medido fuera del intervalo; no se presenta como garantía física de precisión. Los datos de fotogramas se mantienen ausentes hasta su captura en plataforma.
+
+El escenario de modelo Fibonacci configura explícitamente un presupuesto de un millón de pasos en `StepBatchRunner`; el límite interactivo predeterminado de la app sigue siendo diez mil. Esto permite comprobar la finalización en el arnés, sin certificar la experiencia física ni ocultar esa configuración.
+
+Los trabajadores admiten `mode: "smoke"` con una única iteración funcional. El smoke automatizado de la app reduce solo la recursión del modelo a Fib(4), con resultado matemático 3, para verificar sus claves y flujo sin ejecutar la campaña Fib(20). Estas pruebas comprueban claves y expectativas de los escenarios; sus duraciones no integran mediciones ni certificaciones de plataforma. El recolector exige todas las operaciones previstas y rechaza una salida que omita consultas completas.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-El anexo aporta las cuatro cargas básicas y la API de micro-pasos; no se adoptan sus tiempos como
-línea base estadística. Are We Fast Yet aporta Sieve y Permute: se portan sus algoritmos y sus
-resultados de control (669 y 8660). La suite completa usa adaptaciones normativas de PERF.SUITE.AWFY-CORE; se rechazan cargas sin representación en el lenguaje vigente.
-ceiling conserva cuatro variantes de cada algoritmo y usa su propio README y architecture.yaml.
-La metodología conserva repeticiones independientes y resultados desfavorables del protocolo E-01.
-
-### Aviso de licencia de las cargas derivadas de Are We Fast Yet
-
-Copyright (c) 2015-2016 Stefan Marr <git@stefan-marr.de>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the 'Software'), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-El recolector guarda revisión, hashes de cada fuente y configuración antes de compilar y medir; dirty se refiere solo a fuentes y configuración
-del arnés, no a sus salidas. El resumen puede recalcularse sobre los mismos datos crudos sin cambiar
-las mediciones, conservando su entorno original.
-
-`results/r6-paired-inline-allocator/` conserva la campaña posterior a la asignación de objetos en línea, la escritura de celdas locales en línea y el crecimiento amortizado del montón. Las medianas por familia son 2,124× en arreglos, 2,393× en numérica, 2,566× en objetos y 2,253× en recursión; `PERF.AOT.LEVEL#R1` sigue incumplido. Storage pasa de 17,10× a 7,12×. La emisión máxima es 15,296 ms (Richards, 15,30 ms), por lo que `PERF.AOT.LEVEL#R3` incumple en esta captura; las capturas con 14,1–14,6 ms se conservan y no la compensan. La asignación en línea se desactiva tras la primera recolección que libere bloques de su tamaño, de modo que los programas con mucha basura recuperan el camino anterior.
+La suite AWFY-core selecciona diez algoritmos compatibles con el lenguaje vigente. Sus programas y
+controles se consumen desde la exportación del corpus. Los estimadores y presupuestos proceden de
+`PERF.PROTOCOL`; la variabilidad de hardware y la estacionariedad no demostrada se declaran en cada captura.

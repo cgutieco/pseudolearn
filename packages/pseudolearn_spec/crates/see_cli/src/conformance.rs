@@ -50,29 +50,23 @@ pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> 
     let subject = arguments
         .options
         .get("subject")
-        .map_or("reference", String::as_str);
+        .map_or("engine", String::as_str);
     let result_path = if subject == "reference" {
         "results/reference.json".to_owned()
     } else {
         format!("results/{subject}.json")
     };
     let evidence: Evidence = storage::read_json(&arguments.root.join(&result_path))?;
-    let evidence = with_properties(arguments, subject, evidence)?;
     if evidence.subject != subject {
         return Err("SEE-PROTOCOL: evidence subject mismatch".to_owned());
-    }
-    for (id, hash) in &evidence.corpus_hashes {
-        let specification = corpus
-            .iter()
-            .find(|specification| &specification.metadata.id == id)
-            .ok_or("SEE-STALE: unknown evidence specification")?;
-        if &see_change::hash(specification)? != hash {
-            return Err("SEE-STALE: evidence corpus hash mismatch".to_owned());
-        }
     }
     let manifest = crate::bindings::manifest_path(&arguments.root, subject)
         .ok_or("SEE-BINDING: unknown subject")?;
     let conformance = crate::subject_adapters::load_bindings(&manifest)?;
+    let evidence = with_properties(arguments, &conformance, evidence)?;
+    if conformance.estado != "retirado" {
+        validate_hashes(corpus, &evidence)?;
+    }
     let selected = select(arguments, corpus, subject)?;
     let report = serde_json::json!({
         "conformance": see_report::matrix(&selected, &conformance, &evidence),
@@ -128,14 +122,18 @@ fn artifact_paths(subject: &str) -> (String, String) {
 
 fn with_properties(
     arguments: &Arguments,
-    subject: &str,
+    conformance: &Conformance,
     mut evidence: Evidence,
 ) -> Result<Evidence, String> {
+    let subject = &conformance.sujeto;
     let path = arguments
         .root
         .join(format!("results/properties-{subject}.json"));
     if path.exists() {
         let recorded: Evidence = storage::read_json(&path)?;
+        if conformance.estado != "retirado" {
+            validate_hashes(&storage::corpus(&arguments.root)?, &recorded)?;
+        }
         evidence.properties.extend(recorded.properties);
     }
     Ok(evidence)
@@ -150,8 +148,8 @@ fn save(
     let subject = arguments
         .options
         .get("subject")
-        .map_or("reference", String::as_str);
-    let combined = with_properties(arguments, subject, evidence.clone())?;
+        .map_or("engine", String::as_str);
+    let combined = with_properties(arguments, conformance, evidence.clone())?;
     let rows = see_report::matrix(selected, conformance, &combined);
     let (result_file, matrix_file) = artifact_paths(subject);
     storage::artifact(
@@ -178,4 +176,20 @@ fn save(
         evidence.observations.len(),
         divergence_count,
     ))
+}
+
+fn validate_hashes(corpus: &Corpus, evidence: &Evidence) -> Result<(), String> {
+    for (id, hash) in &evidence.corpus_hashes {
+        let specification = corpus
+            .iter()
+            .find(|specification| &specification.metadata.id == id)
+            .ok_or("SEE-STALE: unknown evidence specification")?;
+        if &see_change::hash(specification)? != hash {
+            return Err(format!(
+                "SEE-STALE: {} evidence corpus hash mismatch for {id}",
+                evidence.subject
+            ));
+        }
+    }
+    Ok(())
 }

@@ -26,7 +26,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Wire format"
+  "titulo_en": "Wire format",
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  }
 }
 ---
 
@@ -70,7 +77,10 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "El JSON canónico es UTF-8, sin espacios entre símbolos y con las claves de cada objeto ordenadas por puntos de código. Los enteros i64 y u64 siguen D3 y el resto de números enteros se escribe en decimal exacto. Las cadenas preservan los escalares y bytes UTF-8 del texto fuente sin normalización.",
-  "verificacion": ["C1", "C2"]
+  "verificacion": [
+    "C1",
+    "C2"
+  ]
 }
 ```
 
@@ -78,12 +88,31 @@
 {
   "id": "C2",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "boundary", "input": {"wire_response": "{\"kind\":\"document\",\"id\":\"9007199254740993\"}", "source": "Algoritmo P\nEscribir \"é🧩\";\nFinAlgoritmo\n"}},
-  "espera": {"aplicacion": {"decoded_id": "9007199254740993", "source_equal": true, "source_utf8_hex": "416c676f7269746d6f20500a4573637269626972202265cc81f09fa7a9223b0a46696e416c676f7269746d6f0a"}}
+  "aplicacion": {
+    "scenario": "boundary",
+    "input": {
+      "wire_response": "{\"kind\":\"document\",\"id\":\"9007199254740993\"}",
+      "source": "Algoritmo P\nEscribir \"é🧩\";\nFinAlgoritmo\n"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "decoded_id": "9007199254740993",
+      "source_equal": true,
+      "source_utf8_hex": "416c676f7269746d6f20500a4573637269626972202265cc81f09fa7a9223b0a46696e416c676f7269746d6f0a"
+    }
+  },
+  "sujetos": [
+    "app"
+  ]
 }
 ```
 
@@ -141,7 +170,10 @@
     "archivos": {
       "p.pseudo": "Algoritmo P\nEscribir total;\nFinAlgoritmo\n"
     }
-  }
+  },
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -176,7 +208,9 @@
   "fuerza": "DEBE",
   "clase": "sistema",
   "texto": "Los bytes de una respuesta binaria no dependen de la vida de la sesión después de que el transporte los entrega. El consumidor puede conservar o descartar la respuesta; el emisor puede reutilizar su almacenamiento solo después de completar esa entrega. En Wasm, el adaptador copia cualquier segmento necesario antes de una operación que pueda crecer la memoria lineal.",
-  "verificacion": ["C3"]
+  "verificacion": [
+    "C3"
+  ]
 }
 ```
 
@@ -184,11 +218,219 @@
 {
   "id": "C3",
   "regla": "R3",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "app",
-  "aplicacion": {"scenario": "boundary", "input": {"transport": "wasm", "response_bytes": [80, 76, 69, 86, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 153, 0, 0, 0, 123, 34, 100, 97, 116, 97, 34, 58, 123, 125, 44, 34, 115, 111, 117, 114, 99, 101, 34, 58, 123, 34, 110, 111, 100, 101, 95, 105, 100, 34, 58, 34, 110, 34, 44, 34, 114, 101, 118, 105, 115, 105, 111, 110, 95, 105, 100, 34, 58, 34, 114, 34, 44, 34, 115, 112, 97, 110, 34, 58, 123, 34, 101, 110, 100, 34, 58, 123, 34, 99, 111, 108, 117, 109, 110, 34, 58, 50, 44, 34, 108, 105, 110, 101, 34, 58, 49, 125, 44, 34, 101, 110, 100, 95, 98, 121, 116, 101, 34, 58, 34, 49, 34, 44, 34, 115, 116, 97, 114, 116, 34, 58, 123, 34, 99, 111, 108, 117, 109, 110, 34, 58, 49, 44, 34, 108, 105, 110, 101, 34, 58, 49, 125, 44, 34, 115, 116, 97, 114, 116, 95, 98, 121, 116, 101, 34, 58, 34, 48, 34, 125, 125, 125], "memory_growth_before_next_decode": true}},
-  "espera": {"aplicacion": {"response_owned": true, "survives_next_call": true, "borrowed_view_retained": false, "source_equal_after_growth": true}}
+  "aplicacion": {
+    "scenario": "boundary",
+    "input": {
+      "transport": "wasm",
+      "response_bytes": [
+        80,
+        76,
+        69,
+        86,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        153,
+        0,
+        0,
+        0,
+        123,
+        34,
+        100,
+        97,
+        116,
+        97,
+        34,
+        58,
+        123,
+        125,
+        44,
+        34,
+        115,
+        111,
+        117,
+        114,
+        99,
+        101,
+        34,
+        58,
+        123,
+        34,
+        110,
+        111,
+        100,
+        101,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        110,
+        34,
+        44,
+        34,
+        114,
+        101,
+        118,
+        105,
+        115,
+        105,
+        111,
+        110,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        114,
+        34,
+        44,
+        34,
+        115,
+        112,
+        97,
+        110,
+        34,
+        58,
+        123,
+        34,
+        101,
+        110,
+        100,
+        34,
+        58,
+        123,
+        34,
+        99,
+        111,
+        108,
+        117,
+        109,
+        110,
+        34,
+        58,
+        50,
+        44,
+        34,
+        108,
+        105,
+        110,
+        101,
+        34,
+        58,
+        49,
+        125,
+        44,
+        34,
+        101,
+        110,
+        100,
+        95,
+        98,
+        121,
+        116,
+        101,
+        34,
+        58,
+        34,
+        49,
+        34,
+        44,
+        34,
+        115,
+        116,
+        97,
+        114,
+        116,
+        34,
+        58,
+        123,
+        34,
+        99,
+        111,
+        108,
+        117,
+        109,
+        110,
+        34,
+        58,
+        49,
+        44,
+        34,
+        108,
+        105,
+        110,
+        101,
+        34,
+        58,
+        49,
+        125,
+        44,
+        34,
+        115,
+        116,
+        97,
+        114,
+        116,
+        95,
+        98,
+        121,
+        116,
+        101,
+        34,
+        58,
+        34,
+        48,
+        34,
+        125,
+        125,
+        125
+      ],
+      "memory_growth_before_next_decode": true
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "response_owned": true,
+      "survives_next_call": true,
+      "borrowed_view_retained": false,
+      "source_equal_after_growth": true
+    }
+  },
+  "sujetos": [
+    "app"
+  ]
 }
 ```

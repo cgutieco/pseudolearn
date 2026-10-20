@@ -6,10 +6,7 @@ Ofrece operaciones públicas totales sobre recursos del núcleo. Implementación
 
 Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Conformidad integrada de `API.EXECUTE` | Recursos de ejecución, entrada y observación | B7.3 |
-| Reglas `API.PROGRAM.VIEW#R3` y `API.STATE.QUERY#R4` en conformidad | La primera depende del sujeto app; en la segunda el caso C4 espera un cursor literal que ningún cursor ligado a su consulta puede producir | pendiente |
+Sin pendientes locales declarados.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -40,9 +37,7 @@ principal, que es lo que el trabajador de rendimiento enlaza con un lanzador pro
 La compilación a módulo conserva metadatos laterales de origen que la representación textual no
 transporta. Los tests de integración compilan el corpus exportado y llaman directamente al bytecode y
 la VM; `runtime_edges` cubre ventanas, índices con efectos, subtipos, despacho virtual, copia y ausencia
-bajo las tres políticas de recolección. Esta vía de pruebas no anuncia una capacidad pública de ejecución
-ni implementa otro protocolo. `RunOptions` y los envoltorios existentes se mantienen; `API.EXECUTE` y su
-conformidad integrada pertenecen a B7.3.
+bajo las tres políticas de recolección. Esta vía de pruebas no implementa otro protocolo. `RunOptions` y los envoltorios existentes se mantienen junto con los recursos públicos de ejecución, entrada, cancelación y consultas.
 
 Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_codegen, pseudolearn_aot_rt. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
@@ -52,6 +47,8 @@ Estructuras y algoritmos: Recursos con identificador; operaciones totales que de
 Invariantes: Ningún pánico cruza la frontera.
 
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+
+La creación de un documento admite `previous_document` cuando representa una revisión sucesora. Valida la fuente y el recurso previo antes de crear el nuevo; solo después libera la revisión anterior y sus recursos dependientes. Un destino previo inválido conserva todos los documentos. El identificador nuevo cambia las identidades de nodos aunque el texto sea idéntico; las vistas retenidas del anterior no se pueden consultar. Los documentos ajenos permanecen vivos.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -131,6 +128,9 @@ Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; n
 Contratos: `API.*`, `DIAG.ENGINE.INTERNAL-FAULT`.
 La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
 Los identificadores del usuario, el texto original y la salida del programa se conservan.
+
+
+El registro opcional `summarize_events` con `capture_states: false` calcula SHA-256 incremental de todos los eventos y su cantidad, sin devolver la lista. Normaliza únicamente las identidades opacas por primera aparición, conservando las relaciones de alias y todos los demás datos. Evita respuestas mayores al límite del transporte sin truncar la ejecución ni modificar sus límites. `sha2` queda confinado a esta frontera de serialización; los registros ordinarios conservan los eventos completos.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

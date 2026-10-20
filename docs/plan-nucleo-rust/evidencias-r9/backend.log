@@ -1,0 +1,96 @@
+Task verify deno task fmt && deno task lint && deno task check && deno task architecture && deno task test
+Task fmt deno fmt --check
+Checked 41 files
+Task lint deno lint
+Checked 34 files
+Task check deno check supabase/functions/delete-account/index.ts tool/check_architecture.ts test/
+Task architecture deno run --allow-read=. tool/check_architecture.ts
+Architecture checks passed.
+Task test deno test --allow-read=. test/
+running 11 tests from ./test/functions/delete-account/application/delete_account_test.ts
+non-Apple account is deleted without contacting Apple ... ok (1ms)
+non-Apple account ignores an unexpected Apple code ... ok (790µs)
+Apple account exchanges, revokes and then deletes, in that order ... ok (783µs)
+invalid session is unauthorized and touches nothing else ... ok (357µs)
+Apple account without a fresh code requires re-authentication ... ok (365µs)
+Apple account without Apple configuration is misconfigured ... ok (178µs)
+failed code exchange stops before revoking or deleting ... ok (104µs)
+code from a different Apple ID is rejected without revoking that Apple ID ... ok (83µs)
+failed revocation keeps the account ... ok (228µs)
+failed user deletion after revocation is reported as delete_failed ... ok (85µs)
+retry after a failed deletion revokes the fresh code and deletes ... ok (92µs)
+running 4 tests from ./test/functions/delete-account/http/delete_account_handler_test.ts
+deletes the account and records the outcome ... ok (9ms)
+rejected requests never reach the application ... ok (1ms)
+missing environment answers misconfigured after validating the request ... ok (175µs)
+an adapter exception is contained as unexpected_failure ... ok (1ms)
+running 7 tests from ./test/functions/delete-account/http/delete_account_request_test.ts
+accepts an empty body as a request without Apple code ... ok (4ms)
+accepts and trims the Apple authorization code ... ok (1ms)
+treats an explicit null Apple code as absent ... ok (356µs)
+rejects methods other than POST ... ok (276µs)
+rejects missing or malformed bearer tokens ... ok (398µs)
+accepts a case-insensitive bearer scheme ... ok (129µs)
+rejects bodies that are not a JSON object or carry an invalid code ... ok (288µs)
+running 2 tests from ./test/functions/delete-account/http/delete_account_response_test.ts
+deleted outcome answers 200 with status deleted ... ok (3ms)
+every failure code answers its declared status and echoes the code ... ok (1ms)
+running 5 tests from ./test/functions/delete-account/infrastructure/apple_client_secret_test.ts
+client secret carries Apple's required header and claims ... ok (40ms)
+client secret signature verifies with the matching public key ... ok (1ms)
+lifetime stays far below Apple's six month maximum ... ok (129µs)
+accepts a PEM stored with escaped newlines ... ok (1ms)
+rejects a malformed private key ... ok (1ms)
+running 6 tests from ./test/functions/delete-account/infrastructure/apple_rest_token_client_test.ts
+exchange posts the code with client credentials and returns the refresh token ... ok (5ms)
+exchange falls back to the access token when no refresh token is issued ... ok (244µs)
+exchange fails on invalid_grant, bad JSON, missing tokens or foreign audience ... ok (1ms)
+exchange fails without throwing when the network or the secret fails ... ok (802µs)
+revoke posts the token with its hint and succeeds only on 200 ... ok (427µs)
+revoke reports failure on Apple errors and network failures ... ok (263µs)
+running 3 tests from ./test/functions/delete-account/infrastructure/base64url_test.ts
+round trips text through URL-safe base64 without padding ... ok (1ms)
+encodes bytes that need URL-safe substitutions ... ok (260µs)
+returns null for invalid base64 or invalid UTF-8 ... ok (968µs)
+running 3 tests from ./test/functions/delete-account/infrastructure/environment_test.ts
+reads Supabase and Apple configuration, trimming the URL ... ok (1ms)
+Apple configuration is null when any Apple secret is missing or blank ... ok (207µs)
+environment is null without URL or a usable default secret key ... ok (439µs)
+running 3 tests from ./test/functions/delete-account/infrastructure/jwt_payload_test.ts
+decodes the payload of a three segment token ... ok (1ms)
+returns null for malformed tokens ... ok (779µs)
+isRecord accepts only plain objects ... ok (240µs)
+running 3 tests from ./test/functions/delete-account/infrastructure/supabase_user_deleter_test.ts
+hard deletes the user through the admin endpoint with the secret key only ... ok (4ms)
+any non-2xx answer, including 404, is a failed deletion ... ok (1ms)
+network failure is a failed deletion ... ok (739µs)
+running 6 tests from ./test/functions/delete-account/infrastructure/supabase_user_verifier_test.ts
+verifies the user token against Auth with the secret key on the apikey header ... ok (9ms)
+rejected tokens return null ... ok (628µs)
+network failures propagate so the handler reports unexpected_failure ... ok (607µs)
+extracts the Apple subject from identity data ... ok (68µs)
+falls back to provider_id and then id when identity data lacks the subject ... ok (76µs)
+malformed users and identities are handled without throwing ... ok (43µs)
+running 11 tests from ./test/tool/architecture_rules_test.ts
+a compliant application file has no violations ... ok (1ms)
+negative: a comment anywhere is rejected, including tests and tools ... ok (578µs)
+negative: an inner layer importing an outer layer is rejected ... ok (267µs)
+negative: remote, bare and escaping imports are rejected in function code ... ok (266µs)
+negative: forbidden identifiers are rejected by layer, not as property names ... ok (304µs)
+negative: a function file longer than the limit is rejected, tests are exempt ... ok (2ms)
+a file exactly at the limit is accepted ... ok (538µs)
+negative: undeclared folders and missing layers are reported ... ok (461µs)
+layerOf maps function paths and ignores files outside functions ... ok (276µs)
+resolveRelative normalises dot segments ... ok (282µs)
+importSpecifiers finds static, type, re-export and dynamic imports ... ok (454µs)
+running 7 tests from ./test/tool/source_lexer_test.ts
+finds line and block comments with their line numbers ... ok (1ms)
+comment markers inside strings are not comments ... ok (254µs)
+template literals with nested expressions are not comments ... ok (413µs)
+regex literals containing slashes are not comments ... ok (499µs)
+division is not mistaken for a regex ... ok (356µs)
+unterminated constructs end at the source boundary ... ok (326µs)
+escaped quotes do not end a string early ... ok (282µs)
+
+ok | 71 passed | 0 failed (1s)
+

@@ -9,21 +9,19 @@ Fuera de alcance de producto: motor Rust y API integrada del motor. El paquete s
 generativa con oráculos independientes; no implementa la API de observación de memoria del sujeto.
 Fuera de alcance técnico: imports del núcleo Dart, red durante conformidad y shell para el protocolo de sujetos. La prueba de permisos Unix usa un shell aislado únicamente para fijar `umask 077` antes de lanzar el compilador.
 Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisiones, contrastar un sujeto.
-Pendientes declarados: reducción de contraejemplos (R2/R3); conformidad integrada de `API.EXECUTE` y
-propiedades completas de observación. El sujeto `app` ya tiene un adaptador ejecutable sobre FRB; las
-reglas siguen pendientes porque la captura actual contiene divergencias.
 
 ## 2. Guía operativa y ciclo de vida
 
 Rust exacto según `rust-toolchain.toml`, rustfmt, Clippy y cargo-deny 0.20.2. macOS, Linux y Windows.
-Dart y las dependencias de desarrollo del núcleo son necesarios solo para `reference`.
-Preparación: `cargo fetch`; desde el núcleo, `dart pub get`.
+Dart y la biblioteca nativa de la app se requieren únicamente para verificar el sujeto activo `app`.
+`reference` conserva un manifiesto retirado en `subjects/reference/` y resultados históricos; no tiene lanzador.
+Preparación: `cargo fetch`. Para el sujeto app, `flutter pub get` y el build de su biblioteca nativa desde `apps/pseudolearn_app`.
 Desarrollo: `cargo run -p see_cli --bin see -- validate`.
 Compilación: `cargo build --release`; binario `target/release/see`.
 Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro de corpus.
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
-`lock [--check]`, `diff <rev>`, `impact <ID>`, `conform --subject <reference|engine|aot|service|cli|app> [--only ID]`,
-`matrix`, `feature <nombre>`, `export [--check]`.
+`lock [--check | --refresh ID,ID]`, `diff <rev>`, `impact <ID>`, `conform --subject <engine|aot|service|cli|app> [--only ID]`,
+`matrix [--subject reference]`, `feature <nombre>`, `export [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz solo presenta evidencia histórica como no aplicable.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
 `diff` lee la revisión con Git, sin cambiar el checkout. `lock` conserva versiones históricas y actualiza el estado de
@@ -34,7 +32,7 @@ Conformidad conserva divergencias de reglas exentas sin ocultar los resultados c
 La comparación admite `tokens_include` para exigir identidades y tramos de tokens concretos sin fijar
 la secuencia completa ni excluir la trivia que la API devuelve. El esquema valida la forma de cada
 identidad y tramo antes de abrir un sujeto.
-E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; la evidencia está en results/e10.json. E-14 registra el estudio humano diferido en results/e14.json. La correspondencia completa usa specifications/cases/migration.json y el índice educativo del núcleo.
+E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; la evidencia está en results/e10.json. E-14 registra el estudio humano diferido en results/e14.json. La correspondencia completa usa specifications/cases/migration.json y el índice educativo archivado en `subjects/reference/language-spec.md`.
 Verificación: `cargo xtask verify`; incluye el corpus, anclaje y exportación actualizados.
 La evidencia de E-15 vive en `results/e15.json`: ventana bruta de autoría automatizada por regla,
 resultados y límites de interpretación. No mide autoría humana ni declara descubrimiento ciego.
@@ -67,7 +65,7 @@ ajeno; el tooling ejecuta los verificadores compartidos por proceso.
 
 Flujo: archivos → modelo → validación/grafo/hash → adaptador → comparación → matriz/exportación.
 Ejecución síncrona y determinista. Un proceso por sesión negocia capacidades y procesa JSON por línea.
-Cada petición y respuesta admite hasta un MiB; la sesión de reference usa quince segundos por operación.
+Cada petición y respuesta admite hasta un MiB; las sesiones de conformidad usan tiempos límite explícitos por operación.
 La escritura se ejecuta en un hilo con confirmación y la lectura usa una cola acotada. El cierre exige
 salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, nunca cumplimiento.
 
@@ -91,7 +89,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli`, `service` y `app`. Los casos `app`
   conservan `scenario` e `input`, se comparan bajo `espera.aplicacion` y no se ejecutan con el sujeto
   `engine`. Los casos que consultan la vista pública piden `program_view`; las consultas paginadas llevan
-  `paginacion` y requieren `state_pages`. La validación rechaza escenarios, entradas, cursores y operaciones
+  `paginacion` y requieren `state_pages`; `target` opcional identifica el objeto consultado, con entero no negativo. La validación rechaza escenarios, entradas, cursores y operaciones
   mal formados. Las tablas que deciden la validez
   (alfabeto `traceEvents`, `cliConventions` con códigos de salida y aperturas, catálogo `cliMessages`,
   `diagnostics`, `vocabulary`) se leen de bloques `definicion`; ningún alfabeto vive en el código.
@@ -174,7 +172,7 @@ La exportación conserva el recurso y los generadores lo consumen. Se rechaza fi
 y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
 
 Cada sujeto lee su manifiesto de vínculos en una ruta fija (`bindings::manifest_path`) y se lanza con una descripción de
-datos (`subject_adapters`): `reference` con Dart, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
+datos (`subject_adapters`): `reference` como archivo histórico sin lanzador, `engine` con el adaptador del motor, `cli` y `aot` con el binario `pseudo`
 (`--see-adapter` y `--see-adapter aot`), y `app` con `dart run tool/see_app_adapter.dart` desde la raíz de
 `apps/pseudolearn_app`. El adaptador app inicializa el transporte FRB generado y ejecuta análisis, ejecución,
 consulta de estado, completado y llamadas de propiedades API por esa frontera. `aot` ejecuta los casos `execute` contra ejecutables reales; los casos de análisis,
@@ -182,7 +180,7 @@ representación intermedia y traza quedan `no aplicable` o `pendiente` por capac
 `conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
 cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un
 sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación, códigos, argumentos y tramos de errores, sin
-exenciones) cuando existe `results/aot.json` y guarda `results/r6-differential.json`.
+exenciones) cuando existe `results/aot.json` y guarda `results/differential-active.json`.
 
 El hash normativo incluye identidad, edición, sujetos, dependencias, reemplazos y bloques de contrato; excluye estado,
 versión, revisor, títulos, resumen y prosa. Una edición normativa autorizada que conserva versión sustituye solo la clave
@@ -200,6 +198,33 @@ incremental con el análisis desde cero, estabilidad de la identidad de nodos an
 las plantillas. Un ejecutor que no encuentra contraejemplo en un sujeto sin la capacidad `service` queda `pendiente`, nunca `cumple`.
 Las propiedades de reimpresión y recuperación sin pérdida también las ejecuta el sujeto `service`.
 
+
+El manifiesto admite `estado: activo` o `estado: retirado`; omitirlo mantiene compatibilidad con
+manifiestos activos. Un sujeto retirado conserva identidad, vínculos y resultados sin requerir rutas
+instaladas, aparece como no aplicable en la matriz y no cuenta para la estabilidad del lenguaje.
+Solicitar su ejecución produce `SEE-SUBJECT-RETIRED`. La revisión independiente es un requisito adicional:
+la existencia de un vínculo no demuestra por sí sola conformidad ni estabilidad.
+
+La actualización `see lock --refresh ID,ID` reancla exclusivamente los identificadores autorizados,
+sin cambiar versiones durante el desarrollo. Los demás cambios siguen rechazándose y las identidades
+terminales no admiten actualización. La comprobación ordinaria conserva la inmutabilidad del anclaje.
+El diferencial activo compara engine y aot; no lee ni exige hashes actuales del archivo histórico.
+La puerta local incluye rechazo de dependencias operativas retiradas y sus casos negativos.
+
+Las cargas sin traza declarada se ejecutan completas con sus límites originales. Para evitar exceder el MiB del protocolo, el registro devuelve un resumen SHA-256 incremental y la cantidad de eventos, con identidades de revisión y nodo normalizadas biyectivamente por primera aparición; conserva tramos, alias, orden y datos de cada evento. Las variantes comparan ese resumen junto con salida, terminación, diagnósticos y consumo de entrada. No se sustituye la ejecución por un prefijo.
+
+Las propiedades que comparan particiones de eventos solicitan registros sin snapshots completos; conservan eventos, tramos y cinta. Las propiedades de estado solicitan sus snapshots de forma explícita. Así una prueba de lotes no introduce copias cuadráticas ni supera el límite de transporte al transportar estados que no consulta.
+
+La propiedad CLI de RI recorre las fuentes de casos de análisis, ejecución y traza. Obtiene la RI mediante un proceso real y exige aceptación y reimpresión idéntica mediante la API pública; los fallos y las salidas alteradas tienen negativos del ejecutor.
+
+Las páginas consultadas comparan los campos declarados y reconocen `next_cursor: "opaque"` como una cadena no vacía; los estados completos siguen comparándose exactamente. Los negativos conservan el rechazo de elementos distintos, cursor vacío y estado completo con datos adicionales.
+
+Las comparaciones entre ejecuciones renombran identidades opacas de forma biyectiva, conservando alias, revisiones y tramos. La propiedad de no interferencia de observación compara la ejecución sin consultas de estado auxiliares; estas conservan sus casos de conformidad propios.
+
+Un caso de frontera que solicita transporte Wasm exige la capacidad `wasm`; el adaptador nativo de app no la anuncia. La retención local de respuestas no acredita crecimiento de memoria Wasm.
+
+Los casos pueden restringir `sujetos` a un subconjunto explícito de los declarados; la ausencia conserva la aplicación a todos. Así se separan fronteras de app y CLI sin convertir capacidades ausentes en aprobaciones. La propiedad de revisión de `program_view` usa pares de documentos mínimos idénticos para detectar reutilización incorrecta de identidades entre revisiones y después del cierre.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés sin comentarios, doc/allow/expect, unsafe ni pánicos explícitos. Fallos esperables
@@ -214,14 +239,13 @@ La resolución inválida de un símbolo impide diagnosticar inicialización o ar
 `SEE.FORMAT`, `SEE.IDENTITY` y `SEE.LIFECYCLE` definen el arranque.
 `SEE.VALIDATION`, `SEE.ORACLE.POLICY` y `SEE.CONFORMANCE.MATRIX` separan validez, origen y evidencia.
 Los contratos del lenguaje conservan expectativas normativas aunque `reference` discrepe. El motor Rust
-implementa por bloques los contratos del corpus; R5 y la capacidad integrada `API.EXECUTE` permanecen
-abiertas hasta completar sus puertas. El corpus es la fuente de comportamiento; este README explica
+implementa los contratos del corpus mediante la API integrada; los incumplimientos AOT y las mediciones de plataforma conservan su estado y su evidencia separados. El corpus es la fuente de comportamiento; este README explica
 arquitectura y operación.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
 `cargo xtask verify`: formato, Clippy estricto, tests, seis verificadores Rust, versión de cadena,
-cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see lock --check`, `see export --check` y conformidad reference.
+cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see lock --check`, `see export --check` y conformidad engine.
 Los casos negativos prueban duplicados, regla huérfana, captura sin revisor, hash/version,
 ciclos y perfil faltante; otros prueban esquema, referencias, rango, estados y clasificación.
 Cada rechazo del motor y sus fronteras tiene fixture propio comprobado por su identificador:
@@ -247,3 +271,5 @@ Las aclaraciones de ejecución fijan redondeo binario64 al más cercano con empa
 de ida y vuelta, raíces nocionales que incluyen temporales vivos y sondeos de cancelación en condiciones.
 Los esperados matemáticos añadidos se justifican por intervalos racionales en
 `results/r5-rounding-case-oracle.json`; ninguna captura del sujeto define esos resultados.
+
+Los adaptadores engine y service se compilan en Release para ejecutar las propiedades completas sobre cargas grandes; el plazo máximo por solicitud de propiedades es de 300 segundos. Esto es una puerta funcional y no una medición de rendimiento. El corpus conserva los límites semánticos de cada solicitud.

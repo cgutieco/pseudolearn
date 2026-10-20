@@ -1,14 +1,9 @@
+import '../../fakes/native_test_engine.dart';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/analysis_cache.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 
 String _sourceOf(String fileName) =>
     File('assets/knowledge/examples/$fileName').readAsStringSync();
@@ -18,7 +13,7 @@ List<String> _runToCompletion(
   SyntaxProfileId profileId,
   UiLanguageId languageId,
 ) {
-  final execution = CoreProgramExecution();
+  final execution = nativeTestEngine.createProgramExecution();
   execution.startExecution(
     sourceCode: source,
     profileId: profileId,
@@ -63,38 +58,40 @@ void main() {
       ]);
     });
 
-    test('spanish program feeds procedural notations with a non-empty scene', () {
-      final source = _sourceOf('guided_demo_es.pseudo');
-      final analyses = AnalysisCache();
-      final report = CoreProgramAnalyzer(analyses: analyses).analyze(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
-      final flowchart = FlowchartLayout(analyses: analyses).buildDiagram(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
-      final structogram = StructogramLayout(analyses: analyses).buildDiagram(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
-      final classes = CoreClassDiagramBuilder(analyses: analyses).buildDiagram(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-      );
+    test(
+      'spanish program feeds procedural notations with a non-empty scene',
+      () {
+        final source = _sourceOf('guided_demo_es.pseudo');
+        final report = nativeTestEngine.analyzer.analyze(
+          sourceCode: source,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
+        final flowchart = nativeTestEngine.flowchartBuilder.buildDiagram(
+          sourceCode: source,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
+        final structogram = nativeTestEngine.structogramBuilder.buildDiagram(
+          sourceCode: source,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
+        final classes = nativeTestEngine.classDiagramBuilder.buildDiagram(
+          sourceCode: source,
+          profileId: SyntaxProfileId.classicSpanish,
+        );
 
-      expect(report.isExecutable, isTrue);
-      expect(report.hasErrors, isFalse);
-      expect(flowchart.isNotEmpty, isTrue);
-      expect(structogram.isNotEmpty, isTrue);
-      expect(classes.isEmpty, isTrue);
-    });
+        expect(report.isExecutable, isTrue);
+        expect(report.hasErrors, isFalse);
+        expect(flowchart.isNotEmpty, isTrue);
+        expect(structogram.isNotEmpty, isTrue);
+        expect(classes.isEmpty, isTrue);
+      },
+    );
 
     test('stepping reports a focus before the program terminates', () {
-      final execution = CoreProgramExecution();
+      final execution = nativeTestEngine.createProgramExecution();
       execution.startExecution(
         sourceCode: _sourceOf('guided_demo_es.pseudo'),
         profileId: SyntaxProfileId.classicSpanish,
@@ -108,7 +105,7 @@ void main() {
     });
 
     test('an empty program halts instead of throwing', () {
-      final execution = CoreProgramExecution();
+      final execution = nativeTestEngine.createProgramExecution();
       final started = execution.startExecution(
         sourceCode: '',
         profileId: SyntaxProfileId.classicSpanish,

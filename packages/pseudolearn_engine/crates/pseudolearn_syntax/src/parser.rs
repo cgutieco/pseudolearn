@@ -47,6 +47,9 @@ impl<'tokens> Parser<'tokens> {
         self.state.into_tree()
     }
     fn parse_unit(&mut self, algorithms: &mut u32) -> Result<usize, ()> {
+        if crate::unsupported::reject(&mut self.state) {
+            return Err(());
+        }
         match self.state.kind() {
             TokenKind::Keyword(KeywordKind::Algorithm) => {
                 *algorithms = algorithms.saturating_add(1);

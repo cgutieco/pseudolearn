@@ -39,9 +39,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene el motor de ejecución completo de R5, con todos sus bloques (B0–B8) cerrados.
-La conformidad integrada, el diferencial de 0 no resueltas con reference, y los cuatro experimentos
-E-06, E-12, E-16 y E-17 están verificados en verde.
+El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Las capturas del antiguo sujeto reference y los experimentos E-06, E-12, E-16 y E-17 son evidencia histórica con su procedencia, no una certificación de la revisión actual ni de plataformas pendientes.
 
 El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
 
@@ -303,7 +301,7 @@ acumulación de banderas de trampa fuera de expresiones puras fusionadas.
 
 `crates/pseudolearn_bench_worker` es la herramienta de medición de API pública y solo importa esa API.
 La trazadora de la VM es una herramienta interna distinta: compila antes de medir y llama a la VM
-directamente para ejecutar las mismas cargas que `reference`; no llama a la API de ejecución ni se mezcla
+directamente para ejecutar las cargas conservadas en el corpus; no llama a la API de ejecución ni se mezcla
 con el trabajador público. Ambas conservan procedencia, muestras por proceso y validación de resultados
 según el protocolo de rendimiento.
 

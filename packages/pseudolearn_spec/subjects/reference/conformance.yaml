@@ -1,0 +1,725 @@
+{
+  "sujeto": "reference",
+  "paquete": "packages/pseudolearn_core",
+  "activadas": [
+    "DIAG.CATALOG",
+    "DIAG.CLASSES",
+    "DIAG.ENGINE.INTERNAL-FAULT",
+    "DIAG.MESSAGES",
+    "DIAG.MODEL",
+    "DIAG.ORDERING",
+    "DIAG.SEVERITY.POLICY",
+    "ENG.EXEC.MODEL",
+    "ENG.INPUT",
+    "ENG.TRACE.EVENTS",
+    "LANG.ARRAY.ACCESS",
+    "LANG.ARRAY.DIMENSION",
+    "LANG.CLASS.CONSTRUCTOR",
+    "LANG.CLASS.COPY",
+    "LANG.CLASS.DECLARATION",
+    "LANG.CLASS.FIELDS",
+    "LANG.CLASS.INHERITANCE",
+    "LANG.CLASS.INSTANTIATION",
+    "LANG.CLASS.MEMBER-ACCESS",
+    "LANG.CLASS.METHODS",
+    "LANG.CLASS.OUT-OF-SCOPE",
+    "LANG.CLASS.OVERRIDE",
+    "LANG.CLASS.SELF-AND-SUPER",
+    "LANG.CONTROL.FOR",
+    "LANG.CONTROL.IF",
+    "LANG.CONTROL.REPEAT",
+    "LANG.CONTROL.SWITCH",
+    "LANG.CONTROL.WHILE",
+    "LANG.DECL.DESIGNATOR",
+    "LANG.DECL.UNINITIALIZED",
+    "LANG.DECL.UNUSED",
+    "LANG.DECL.VARIABLE",
+    "LANG.EDITION.MODEL",
+    "LANG.IO.INPUT",
+    "LANG.IO.OUTPUT",
+    "LANG.IO.VALUE-FORMAT",
+    "LANG.LEXICAL.CHARACTER-LITERAL",
+    "LANG.LEXICAL.COMMENT",
+    "LANG.LEXICAL.ERRORS",
+    "LANG.LEXICAL.IDENTIFIER",
+    "LANG.LEXICAL.KEYWORD",
+    "LANG.LEXICAL.NUMBER-LITERAL",
+    "LANG.LEXICAL.OPERATOR-TOKEN",
+    "LANG.LEXICAL.TEXT-LITERAL",
+    "LANG.LEXICAL.WHITESPACE",
+    "LANG.OPS.ARITHMETIC",
+    "LANG.OPS.COMPARISON",
+    "LANG.OPS.CONCATENATION",
+    "LANG.OPS.DIVISION",
+    "LANG.OPS.LOGICAL",
+    "LANG.OPS.POWER",
+    "LANG.OPS.PRECEDENCE",
+    "LANG.PROFILE.MODEL",
+    "LANG.PROFILE.STRICTNESS",
+    "LANG.PROFILE.TRANSLATION",
+    "LANG.PROFILE.VOCABULARY",
+    "LANG.PROGRAM.STRUCTURE",
+    "LANG.SOURCE.ENCODING",
+    "LANG.SOURCE.POSITION",
+    "LANG.STMT.ASSIGNMENT",
+    "LANG.STMT.TERMINATION",
+    "LANG.SUBPROGRAM.BY-REFERENCE",
+    "LANG.SUBPROGRAM.CALL",
+    "LANG.SUBPROGRAM.DECLARATION",
+    "LANG.SUBPROGRAM.INTERACTIONS",
+    "LANG.SUBPROGRAM.PARAMETERS",
+    "LANG.SUBPROGRAM.RECURSION",
+    "LANG.SUBPROGRAM.RETURN",
+    "LANG.SUBPROGRAM.SCOPE",
+    "LANG.SYNTAX.GRAMMAR",
+    "LANG.SYNTAX.RECOVERY",
+    "LANG.TYPES.ARRAY",
+    "LANG.TYPES.BOOLEAN",
+    "LANG.TYPES.CHARACTER",
+    "LANG.TYPES.CHECKING-LEVELS",
+    "LANG.TYPES.CLASS",
+    "LANG.TYPES.INFERENCE",
+    "LANG.TYPES.INTEGER",
+    "LANG.TYPES.REAL",
+    "LANG.TYPES.RELATIONS",
+    "LANG.TYPES.TEXT",
+    "LIB.CORE.CONVERSION",
+    "LIB.CORE.COPY",
+    "LIB.CORE.MATH",
+    "LIB.CORE.RANDOM",
+    "LIB.CORE.ROUNDING",
+    "LIB.CORE.TEXT",
+    "LIB.MODEL",
+    "MEM.IDENTITY",
+    "MEM.VALUE.COPY"
+  ],
+  "fases_cerradas": [
+    "R0",
+    "R1",
+    "R2"
+  ],
+  "vinculos": [
+    {
+      "regla": "DIAG.CATALOG@0.5.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.CLASSES@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.CLASSES@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INVALID-SYMBOL-CASCADE: El chequeo agrega inicialización o aridad sobre símbolos con resolución inválida; se conserva el error original sin añadir consecuencias del símbolo sintético. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.MESSAGES@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.ORDERING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "DIAG.SEVERITY.POLICY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-FLEXIBLE-INITIALIZATION: No emite la advertencia estática de lectura sin inicializar en flexible, aunque la política la declara. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-EMPTY-LOOP-CANCELLATION: el sujeto congelado solo admite cancelación por entrada a sentencia y no atiende cancel_at_poll en condiciones. Se conserva la divergencia; Rust implementa el contrato en R5."
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.INPUT@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado. El sujeto congelado tampoco expone identidad de nodo y tramo de fuente; el requisito corresponde a la API Rust de R8."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-SWITCH-NO-BRANCH: Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-RETURN-EXIT: La sentencia Retornar no produce statement_exited antes del evento return de su llamada. Resolución en R5; reference permanece congelado."
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.ARRAY.ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.ARRAY.DIMENSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.CONSTRUCTOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression después de classInsideAlgorithm en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CLASS.FIELDS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STATIC-MEMBER-CHECK: No informa acceso privado durante análisis aunque el receptor tiene tipo de clase declarado. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CLASS.INHERITANCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.INSTANTIATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.MEMBER-ACCESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STATIC-MEMBER-CHECK: No informa el miembro inexistente durante análisis sobre un receptor de clase conocido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CLASS.METHODS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STRUCTURAL-RECOVERY: Agrega unexpectedTokenInExpression tras methodOutsideClass en el mismo bloque inválido. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CLASS.OUT-OF-SCOPE@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STRUCTURAL-RECOVERY: La recuperación agrega unexpectedStatement al cierre de una construcción estructural ya diagnosticada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CLASS.OVERRIDE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CLASS.SELF-AND-SUPER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-OBJECT-CONTEXT: Acepta Este y Super fuera de métodos sin los diagnósticos sintácticos requeridos. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-37: No emite controlVariableModified sobre la modificación directa del control de un bucle. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.CONTROL.FOR@0.3.1#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.IF@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.REPEAT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.SWITCH@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.WHILE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.DESIGNATOR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.UNINITIALIZED@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.UNUSED@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.VARIABLE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STATEMENT-CASCADE: Tras rechazar un inicializador en declaración agrega missingStatementTerminator sobre la misma sentencia. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.EDITION.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STRUCTURAL-RECOVERY: Agrega un diagnóstico del cierre tras rechazar la construcción ajena a la edición. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.IO.INPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.IO.OUTPUT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.IO.VALUE-FORMAT@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "regla": "LANG.LEXICAL.CHARACTER-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-UNICODE-CHARACTER: Clasifica el literal suplementario como cadena por su longitud UTF-16; un escalar debe ser carácter. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.LEXICAL.COMMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.IDENTIFIER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.KEYWORD@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.NUMBER-LITERAL@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-06: El literal negativo fuera de rango provoca expectedExpression duplicado después del error léxico. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.LEXICAL.OPERATOR-TOKEN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.TEXT-LITERAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.LEXICAL.WHITESPACE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.ARITHMETIC@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.COMPARISON@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.CONCATENATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.DIVISION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.LOGICAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.POWER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.OPS.PRECEDENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.STRICTNESS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.TRANSLATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.VOCABULARY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-SOURCE-BOM: El lexer reconoce el BOM inicial como carácter inválido en vez de excluirlo de los tokens. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SOURCE.ENCODING@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-SOURCE-NFC: No reconoce como el mismo nombre la grafía compuesta y la descompuesta por ausencia de NFC. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SOURCE.POSITION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.STMT.ASSIGNMENT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.STMT.TERMINATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.BY-REFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.CALL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.DECLARATION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.INTERACTIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.PARAMETERS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INVALID-SYMBOL-CASCADE: El parámetro duplicado reduce artificialmente la aridad y provoca argumentCountMismatch en una llamada con dos argumentos para dos parámetros declarados. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RECURSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.RETURN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SUBPROGRAM.SCOPE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-INVALID-SYMBOL-CASCADE: Informa inicialización sobre un identificador cuya resolución ya falló por ausencia de declaración. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SYNTAX.GRAMMAR@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-06: La recuperación emite expectedExpression duplicado para una sentencia malformada. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "H-05: Devuelve árbol nulo ante texto vacío aunque debe conservar estructura recuperable. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.ARRAY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.BOOLEAN@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.CHARACTER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-UNICODE-CHARACTER: El carácter suplementario se tipa como cadena y se rechaza al consultar su código Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.TYPES.CHECKING-LEVELS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.CLASS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INFERENCE@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-STRICT-INFERENCE: Emite inferredVariableType en estricto después del error de declaración; la inferencia informativa pertenece al modo flexible. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.INTEGER@0.2.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.REAL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-NEGATIVE-ZERO: el sujeto congelado presenta -0.0 como 0.0 y pierde el signo binario64. Se conserva la divergencia; Rust implementa el formato en R5."
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.CONVERSION@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.COPY@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.MATH@0.3.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.RANDOM@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.ROUNDING@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.CORE.TEXT@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "REF-UNICODE-CHARACTER: CodigoDe rechaza el literal suplementario que debe ser un carácter, impidiendo la ejecución del caso Unicode. Resolución en R4; reference permanece congelado."
+    },
+    {
+      "regla": "LIB.MODEL@0.2.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "MEM.VALUE.COPY@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    }
+  ],
+  "estado": "retirado"
+}

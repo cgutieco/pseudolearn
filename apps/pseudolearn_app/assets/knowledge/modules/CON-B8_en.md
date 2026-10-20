@@ -67,7 +67,7 @@ algorithm UnconditionalJump
 endAlgorithm
 ```
 
-{{diagnostico:unsupportedStructuredConstruct}}
+{{diagnostico:unexpectedStatement}}
 
 ## A multiple selection that never closes
 

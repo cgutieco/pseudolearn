@@ -10,9 +10,9 @@ struct AdapterLaunch {
 }
 
 const CLI_DIRECTORY: &str = "../../apps/pseudolearn_cli";
-const REFERENCE_ARGUMENTS: &[&str] = &["run", "tool/conformance_adapter.dart"];
 const ENGINE_ARGUMENTS: &[&str] = &[
     "run",
+    "--release",
     "-p",
     "pseudolearn_conformance",
     "--bin",
@@ -32,6 +32,7 @@ const AOT_ARGUMENTS: &[&str] = &[
 ];
 const SERVICE_ARGUMENTS: &[&str] = &[
     "run",
+    "--release",
     "-p",
     "pseudolearn_conformance",
     "--bin",
@@ -44,7 +45,6 @@ const SERVICE_ARGUMENTS: &[&str] = &[
 
 fn launch_of(subject: &str) -> Option<AdapterLaunch> {
     let (directory, program, arguments) = match subject {
-        "reference" => ("../pseudolearn_core", "dart", REFERENCE_ARGUMENTS),
         "engine" => ("../pseudolearn_engine", "cargo", ENGINE_ARGUMENTS),
         "cli" => (CLI_DIRECTORY, "cargo", CLI_ARGUMENTS),
         "aot" => (CLI_DIRECTORY, "cargo", AOT_ARGUMENTS),
@@ -69,15 +69,20 @@ pub(crate) fn subject_configuration(
     corpus: &Corpus,
     subject: &str,
 ) -> Result<(Command, Conformance), String> {
+    let manifest = crate::bindings::manifest_path(&arguments.root, subject)
+        .ok_or("SEE-BINDING: unknown subject")?;
+    let conformance = load_bindings(&manifest)?;
+    if conformance.estado == "retirado" {
+        return Err(format!(
+            "SEE-SUBJECT-RETIRED: {subject} has historical evidence only"
+        ));
+    }
     let launch = launch_of(subject).ok_or("Unknown subject")?;
     let directory = arguments
         .root
         .join(launch.directory)
         .canonicalize()
         .map_err(|error| error.to_string())?;
-    let manifest = crate::bindings::manifest_path(&arguments.root, subject)
-        .ok_or("SEE-BINDING: unknown subject")?;
-    let conformance = load_bindings(&manifest)?;
     let errors = see_validation::bindings::check(corpus, &conformance);
     if !errors.is_empty() {
         return Err(errors.join("\n"));

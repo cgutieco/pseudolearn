@@ -28,6 +28,8 @@ Adaptador de borde → API pública de pseudolearn_engine con la feature `native
 Flujo: argumentos y entorno → configuración explícita → API → presentación o JSON.
 Sin estado global de ejecución. I/O solo en el adaptador; el núcleo recibe capacidades inyectadas.
 
+El adaptador de conformidad CLI anuncia `cli` e `ir`. La propiedad de RI obtiene primero la salida de un proceso real `pseudo ri`, y la entrega al verificador público de la API para exigir aceptación y reimpresión idéntica. El verificador también delimita los programas válidos del corpus; las fuentes no compilables no pertenecen al dominio de esa propiedad. Se recorren casos de análisis, ejecución y traza, además de las muestras generadas, en ambos perfiles y rigores. No se declara pendiente una propiedad que el sujeto ya puede ejecutar.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: separar idioma de lector y autor. Elección: vocabulario por primera apertura significativa después de BOM y trivia; API.ANALYZE recibe perfil explícito.

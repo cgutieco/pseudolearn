@@ -7,13 +7,10 @@ layers:
   - name: suite
     path: suite
     may_import: [model]
-  - name: execution
-    path: execution
-    may_import: [model]
   - name: tooling
     path: tool
-    may_import: [model, suite, execution]
-external_dependencies: [pseudolearn_core]
+    may_import: [model, suite]
+external_dependencies: []
 limits:
   file_lines: 300
   function_lines: 40

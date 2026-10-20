@@ -1,3 +1,4 @@
+import '../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/editor/editor_cubit.dart';
 import 'package:pseudolearn_app/domain/model/completion/completion_item.dart';
@@ -7,10 +8,6 @@ import 'package:pseudolearn_app/domain/model/editor/caret_range.dart';
 import 'package:pseudolearn_app/domain/model/editor/editor_key.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/ports/contextual_completion_source.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/completion/profile_completion_source.dart';
-import 'package:pseudolearn_app/engine/editing/lexicon_source_editor.dart';
-import 'package:pseudolearn_app/engine/editing/profile_key_source.dart';
 import '../fakes/fake_clock.dart';
 import '../fakes/fake_text_entry_modality.dart';
 import '../fakes/in_memory_document_repository.dart';
@@ -54,10 +51,10 @@ void main() {
       clock = FakeClock(DateTime(2026, 8, 15, 12, 0));
       cubit = EditorCubit(
         repository: repo,
-        analyzer: CoreProgramAnalyzer(),
-        completionSource: const ProfileCompletionSource(),
-        keySource: const ProfileKeySource(),
-        sourceEditor: const LexiconSourceEditor(),
+        analyzer: nativeTestEngine.analyzer,
+        completionSource: nativeTestEngine.completionSource,
+        keySource: nativeTestEngine.editorKeySource,
+        sourceEditor: nativeTestEngine.sourceEditor,
         textEntry: const FakeTextEntryModality(),
         clock: clock,
       );
@@ -156,11 +153,11 @@ void main() {
         final completions = _ContextualCompletions();
         cubit = EditorCubit(
           repository: repo,
-          analyzer: CoreProgramAnalyzer(),
-          completionSource: const ProfileCompletionSource(),
+          analyzer: nativeTestEngine.analyzer,
+          completionSource: nativeTestEngine.completionSource,
           contextualCompletionSource: completions,
-          keySource: const ProfileKeySource(),
-          sourceEditor: const LexiconSourceEditor(),
+          keySource: nativeTestEngine.editorKeySource,
+          sourceEditor: nativeTestEngine.sourceEditor,
           textEntry: const FakeTextEntryModality(),
           clock: clock,
         );
@@ -194,11 +191,11 @@ void main() {
           ..responseRevisionOffset = -1;
         cubit = EditorCubit(
           repository: repo,
-          analyzer: CoreProgramAnalyzer(),
-          completionSource: const ProfileCompletionSource(),
+          analyzer: nativeTestEngine.analyzer,
+          completionSource: nativeTestEngine.completionSource,
           contextualCompletionSource: completions,
-          keySource: const ProfileKeySource(),
-          sourceEditor: const LexiconSourceEditor(),
+          keySource: nativeTestEngine.editorKeySource,
+          sourceEditor: nativeTestEngine.sourceEditor,
           textEntry: const FakeTextEntryModality(),
           clock: clock,
         );

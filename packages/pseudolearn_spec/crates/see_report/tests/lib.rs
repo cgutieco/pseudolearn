@@ -7,6 +7,7 @@ use serde_json::json;
 
 fn conformance() -> Conformance {
     Conformance {
+        estado: "activo".to_owned(),
         sujeto: "reference".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec!["LANG.TEST.SAMPLE".to_owned()],
@@ -107,4 +108,25 @@ fn fail(evidence: &mut Evidence) {
         expected: json!({}),
         actual: json!({}),
     });
+}
+
+#[test]
+fn retired_matrix_preserves_historical_failure_without_a_live_regression() -> Result<(), String> {
+    let corpus = vec![support::specification()?];
+    let mut manifest = conformance();
+    manifest.estado = "retirado".to_owned();
+    let mut historical = evidence();
+    fail(&mut historical);
+    let before = serde_json::to_value(&historical).map_err(|error| error.to_string())?;
+    let rows = see_report::matrix(&corpus, &manifest, &historical);
+    assert!(
+        rows.iter()
+            .all(|row| row.get("measured") == Some(&json!("no aplicable")))
+    );
+    assert!(see_report::regressions(&rows, &manifest).is_empty());
+    assert_eq!(
+        before,
+        serde_json::to_value(&historical).map_err(|error| error.to_string())?
+    );
+    Ok(())
 }

@@ -56,6 +56,11 @@ pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
     state.has_superclass = state.keyword(KeywordKind::InheritsFrom);
     if state.has_superclass {
         name(state, DiagnosticCode::ExpectedClassName)?;
+        if state.kind() == TokenKind::Comma {
+            let span = state.span();
+            state.report(DiagnosticCode::MultipleInheritanceNotSupported, span);
+            return Err(());
+        }
     }
     loop {
         state.separators();
@@ -79,6 +84,9 @@ pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
 }
 
 fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> {
+    if crate::unsupported::reject(state) {
+        return Err(());
+    }
     let start = state.token();
     let marker = state.nodes.len();
     let modifier = state.keyword(KeywordKind::PublicVisibility)

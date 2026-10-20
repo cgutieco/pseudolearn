@@ -1,7 +1,7 @@
 use crate::{arguments::Arguments, storage};
 use see_model::{
     Corpus,
-    evidence::{Conformance, Evidence, Observation},
+    evidence::{Evidence, Observation},
 };
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
@@ -10,37 +10,8 @@ type Key = (String, String, String, String, String);
 
 pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> {
     let engine: Evidence = storage::read_json(&arguments.root.join("results/engine.json"))?;
-    let reference: Evidence = storage::read_json(&arguments.root.join("results/reference.json"))?;
     ensure_current(corpus, &engine)?;
-    ensure_current(corpus, &reference)?;
-    let known = Exemptions {
-        core: exempt_rules(arguments)?,
-        registry: registry(arguments)?,
-    };
-    let first = compare(("reference", "engine"), (&reference, &engine), &known);
-    storage::artifact(
-        &arguments.root.join("results/r5-differential.json"),
-        &first.rendered,
-        false,
-    )?;
-    let mut message = summary(&first.report)?;
-    let aot_path = arguments.root.join("results/aot.json");
-    if aot_path.exists() {
-        let aot: Evidence = storage::read_json(&aot_path)?;
-        ensure_current(corpus, &aot)?;
-        let none = Exemptions {
-            core: BTreeMap::new(),
-            registry: Vec::new(),
-        };
-        let second = compare(("engine", "aot"), (&engine, &aot), &none);
-        storage::artifact(
-            &arguments.root.join("results/r6-differential.json"),
-            &second.rendered,
-            false,
-        )?;
-        message = format!("{message}; native: {}", summary(&second.report)?);
-    }
-    Ok(message)
+    compare_active(arguments, corpus, &engine)
 }
 
 struct Comparison {
@@ -87,15 +58,6 @@ fn summary(report: &Report) -> Result<String, String> {
     }
 }
 
-fn registry(arguments: &Arguments) -> Result<Vec<Value>, String> {
-    let value: Value = storage::read_json(&arguments.root.join("differential-exemptions.json"))?;
-    Ok(value
-        .get("exemptions")
-        .and_then(Value::as_array)
-        .cloned()
-        .unwrap_or_default())
-}
-
 fn ensure_current(corpus: &Corpus, evidence: &Evidence) -> Result<(), String> {
     for (id, hash) in &evidence.corpus_hashes {
         let specification = corpus
@@ -110,19 +72,6 @@ fn ensure_current(corpus: &Corpus, evidence: &Evidence) -> Result<(), String> {
         }
     }
     Ok(())
-}
-
-fn exempt_rules(arguments: &Arguments) -> Result<BTreeMap<String, String>, String> {
-    let path = arguments.root.join("../pseudolearn_core/conformance.yaml");
-    let text = std::fs::read_to_string(path).map_err(|error| error.to_string())?;
-    let conformance: Conformance =
-        serde_saphyr::from_str(&text).map_err(|error| error.to_string())?;
-    Ok(conformance
-        .vinculos
-        .into_iter()
-        .filter(|binding| binding.estado == "exento")
-        .map(|binding| (binding.regla, binding.justificacion.unwrap_or_default()))
-        .collect())
 }
 
 fn index(evidence: &Evidence) -> BTreeMap<Key, &Observation> {
@@ -294,4 +243,28 @@ impl Report {
             "uncontracted_differences":self.informational,
             "unresolved_differences":self.unresolved})
     }
+}
+
+fn compare_active(
+    arguments: &Arguments,
+    corpus: &Corpus,
+    engine: &Evidence,
+) -> Result<String, String> {
+    let path = arguments.root.join("results/aot.json");
+    if !path.exists() {
+        return Err("SEE-DIFFERENTIAL: active native evidence is required".to_owned());
+    }
+    let aot: Evidence = storage::read_json(&path)?;
+    ensure_current(corpus, &aot)?;
+    let known = Exemptions {
+        core: BTreeMap::new(),
+        registry: Vec::new(),
+    };
+    let comparison = compare(("engine", "aot"), (engine, &aot), &known);
+    storage::artifact(
+        &arguments.root.join("results/differential-active.json"),
+        &comparison.rendered,
+        false,
+    )?;
+    summary(&comparison.report)
 }

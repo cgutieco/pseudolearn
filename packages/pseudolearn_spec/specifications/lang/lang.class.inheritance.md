@@ -27,7 +27,14 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ]
+  ],
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  }
 }
 ---
 
@@ -41,7 +48,8 @@
   "texto": "Una clase puede heredar de una sola superclase declarada en cualquier orden. Hereda miembros y participa en subtipado nominal. Superclase inexistente y ciclo directo/indirecto son errores semánticos; varias superclases son sintácticas. No se admite sombra de atributo heredado.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3"
   ]
 }
 ```
@@ -98,5 +106,35 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase A\nFinClase\nClase B\nFinClase\nClase C Hereda De A, B\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "class A\nendClass\nclass B\nendClass\nclass C inherits from A, B\nendClass\nalgorithm P\nendAlgorithm\n"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "multipleInheritanceNotSupported",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

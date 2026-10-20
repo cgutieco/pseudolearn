@@ -4,7 +4,7 @@
   "id": "TOOL.SERVICE.INCREMENTAL",
   "titulo": "Análisis incremental de documentos",
   "dominio": "herramienta",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.1.0",
   "duenos": [
     "responsable-herramientas"
@@ -30,7 +30,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Incremental document analysis"
+  "titulo_en": "Incremental document analysis",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       collect_metrics:
-        description: Medir E-01 en macOS, Linux y Windows
+        description: Medir el motor Rust en macOS, Linux y Windows
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
@@ -16,18 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  core:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v7
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
-          cache: true
-      - run: dart pub get
-        working-directory: packages/pseudolearn_core
-      - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart
-        working-directory: packages/pseudolearn_core
   app:
     runs-on: xcode-27
     steps:
@@ -37,6 +25,11 @@ jobs:
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
           cache: true
       - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin
+      - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
         working-directory: apps/pseudolearn_app
       - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_content.dart && dart run tool/check_design_system.dart
         working-directory: apps/pseudolearn_app
@@ -92,8 +85,6 @@ jobs:
         with:
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
           cache: true
-      - run: dart pub get
-        working-directory: packages/pseudolearn_core
       - run: rustup show
         working-directory: packages/pseudolearn_rust_checks
       - run: cargo install cargo-deny --version 0.20.2 --locked
@@ -101,7 +92,11 @@ jobs:
           (cd packages/pseudolearn_rust_checks && cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain ../..)
           while IFS= read -r toolchain; do
             member=$(dirname "$toolchain")
-            (cd "$member" && cargo xtask verify)
+            if [ "$member" = "apps/pseudolearn_app/native" ]; then
+              (cd "$member" && cargo fmt --all --check && cargo clippy --all-targets -- -D warnings && cargo test && cargo deny check)
+            else
+              (cd "$member" && cargo xtask verify)
+            fi
           done < <(git ls-files '*rust-toolchain.toml')
   benchmarks:
     strategy:
@@ -123,13 +118,13 @@ jobs:
         with:
           node-version-file: packages/pseudolearn_benchmarks/node-version
       - run: dart pub get
-      - run: dart format --output=none --set-exit-if-changed lib bin tool test
+      - run: dart format --output=none --set-exit-if-changed lib tool test
       - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart
-      - run: dart run tool/collect.dart --output results/ci
+      - run: dart run tool/collect_frontend.dart
         if: inputs.collect_metrics
       - uses: actions/upload-artifact@v6
         if: always() && inputs.collect_metrics
         with:
-          name: reference-baseline-${{ matrix.os }}
-          path: packages/pseudolearn_benchmarks/results/ci
+          name: rust-frontend-${{ matrix.os }}
+          path: packages/pseudolearn_benchmarks/results/e08r
           if-no-files-found: error

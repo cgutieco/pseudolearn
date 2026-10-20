@@ -16,8 +16,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.3
-  pseudolearn_core:
-    path: ../../packages/pseudolearn_core
   bloc: ^9.2.1
   flutter_bloc: ^9.1.1
   equatable: ^3.0.0

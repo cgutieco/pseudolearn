@@ -50,3 +50,25 @@ pub fn artifact(path: &Path, value: &Value, check: bool) -> Result<String, Strin
     }
     Ok(format!("Verified {}", path.display()))
 }
+
+pub fn valid_for_refresh(root: &Path, authorized: &[String]) -> Result<Corpus, String> {
+    let corpus = corpus(root)?;
+    let mut errors = see_validation::validate(&corpus, &lock(root)?)?;
+    errors.retain(|error| {
+        !corpus.iter().any(|specification| {
+            authorized.contains(&specification.metadata.id)
+                && error
+                    == &format!(
+                        "SEE-HASH: content changed without version: {}@{}",
+                        specification.metadata.id, specification.metadata.version
+                    )
+        })
+    });
+    errors.extend(crate::resources::check(root, &corpus)?);
+    errors.extend(crate::bindings::check(root, &corpus)?);
+    errors.extend(crate::property_registry::check(root, &corpus)?);
+    if !errors.is_empty() {
+        return Err(errors.join("\n"));
+    }
+    Ok(corpus)
+}

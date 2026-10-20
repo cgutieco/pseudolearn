@@ -199,9 +199,9 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
 
 - Rama única de trabajo y publicación: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`). Todas las fases y cambios posteriores continúan en ella; cada fase conserva su autorización individual.
 
-- ADR-001: reescritura completa del núcleo en Rust; Dart queda congelado como sujeto `reference`
-  hasta R9. No se añaden construcciones del lenguaje durante la reescritura. Los hallazgos semánticos
-  se resuelven mediante especificaciones y Rust, no modificando el oráculo Dart.
+- El núcleo del lenguaje es Rust. El sujeto `reference` está retirado; su manifiesto y resultados
+  históricos se conservan en el sistema de especificaciones, sin ejecutor instalado. El corpus es el
+  oráculo normativo y cada cambio observable sigue especificación → casos → tests → código.
 - Cada fase resuelve sus observaciones pertinentes, informa implementación, pruebas, verificadores y
   pendientes justificados, y publica su rama con push ordinario comprobado. Sin coautoría ni atribución
   de autoría de IA en commits. `PHASE-GREEN` exige verificaciones locales en verde; también la comprobación remota cuando la fase
@@ -210,7 +210,7 @@ En `.agents/skills/`, accesibles también desde `.claude/skills`:
 
 
 - El monorepo sostiene cinco cadenas de herramientas, y cada miembro usa solo la suya: `dart` y `flutter`
-  para el núcleo y la app, `python3` con `fonttools` para el motor de marca, `deno` con la CLI de
+  para los recolectores de métricas y la app, `python3` con `fonttools` para el motor de marca, `deno` con la CLI de
   `supabase` para el backend (`apps/pseudolearn_backend`), y `node` con `pnpm` para el frontend web
   (`apps/fe-pseudolearn`). La quinta es `cargo` y `rustup` para los verificadores Rust, `pseudolearn_spec`, `pseudolearn_engine`, `pseudolearn_cli` y los puentes. Cada miembro Rust fija la misma versión exacta en `rust-toolchain.toml`; no hay workspace Cargo raíz. Todas están en el `PATH`; los comandos se documentan sin rutas absolutas.
 - `packages/` aloja lo reutilizable que no se despliega, en el lenguaje que a cada miembro le

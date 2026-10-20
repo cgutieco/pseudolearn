@@ -3,7 +3,16 @@ import '../bridge/frb_generated.dart';
 import 'json_rust_transport.dart';
 import 'rust_transport.dart';
 
-Future<void> initializeNativeBridge() => RustLib.init();
+Future<void>? _initializing;
+
+Future<void> initializeNativeBridge() async {
+  if (RustLib.instance.initialized) return;
+  try {
+    await (_initializing ??= RustLib.init());
+  } finally {
+    _initializing = null;
+  }
+}
 
 RustTransport openNativeTransport() {
   final session = createSession();

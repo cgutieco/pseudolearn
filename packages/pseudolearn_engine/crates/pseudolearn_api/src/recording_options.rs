@@ -3,7 +3,7 @@ use crate::ExecuteRequest;
 use crate::execution_resource::usage;
 use serde_json::Value;
 
-const SUPPORTED: [&str; 7] = [
+const SUPPORTED: [&str; 8] = [
     "batch_size",
     "retention_events",
     "query_all_events",
@@ -11,6 +11,7 @@ const SUPPORTED: [&str; 7] = [
     "host_tape",
     "input_batch_sizes",
     "capture_states",
+    "summarize_events",
 ];
 
 pub(crate) fn validate(options: Option<&Value>) -> Result<(), ApiError> {
@@ -19,6 +20,13 @@ pub(crate) fn validate(options: Option<&Value>) -> Result<(), ApiError> {
         .is_some_and(|fields| fields.keys().any(|key| !SUPPORTED.contains(&key.as_str())));
     if unsupported {
         return Err(usage("unsupported recording option"));
+    }
+    let summarize = options
+        .and_then(|fields| fields.get("summarize_events"))
+        .and_then(Value::as_bool)
+        .unwrap_or(false);
+    if summarize && capture_states(options) {
+        return Err(usage("event summaries require disabled state capture"));
     }
     Ok(())
 }

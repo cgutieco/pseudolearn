@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_state.dart';
 import 'package:pseudolearn_app/application/diagram/focus_frame_projection.dart';
@@ -8,8 +9,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 
 const String _loopProgram = '''
 Proceso Termostato
@@ -32,33 +31,32 @@ const SourceRange _range = SourceRange(
 );
 
 ExecutionFocus _focusOn(ProgramNodeId nodeId) => ExecutionFocus(
-      nodeId: nodeId,
-      range: _range,
-      kind: ExecutionFocusKind.statement,
-    );
+  nodeId: nodeId,
+  range: _range,
+  kind: ExecutionFocusKind.statement,
+);
 
 DiagramState _stateOf(
   String source, {
   DiagramNotation notation = DiagramNotation.flowchart,
   DiagramScene classDiagram = const DiagramScene.empty(),
   ProgramNodeId? focusedMemberNodeId,
-}) =>
-    DiagramState(
-      flowchart: FlowchartLayout().buildDiagram(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      ),
-      structogram: StructogramLayout().buildDiagram(
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      ),
-      classDiagram: classDiagram,
-      notation: notation,
-      focusedMemberNodeId: focusedMemberNodeId,
-      hasValidAst: true,
-    );
+}) => DiagramState(
+  flowchart: nativeTestEngine.flowchartBuilder.buildDiagram(
+    sourceCode: source,
+    profileId: SyntaxProfileId.classicSpanish,
+    languageId: UiLanguageId.spanish,
+  ),
+  structogram: nativeTestEngine.structogramBuilder.buildDiagram(
+    sourceCode: source,
+    profileId: SyntaxProfileId.classicSpanish,
+    languageId: UiLanguageId.spanish,
+  ),
+  classDiagram: classDiagram,
+  notation: notation,
+  focusedMemberNodeId: focusedMemberNodeId,
+  hasValidAst: true,
+);
 
 DiagramNode _firstNodeWithId(DiagramScene scene) {
   for (final node in scene.nodes) {
@@ -68,32 +66,32 @@ DiagramNode _firstNodeWithId(DiagramScene scene) {
 }
 
 DiagramScene _classSceneWith(ProgramNodeId member) => DiagramScene(
-      nodes: [
-        DiagramNode(
-          id: 'frame',
-          shape: DiagramShape.classFrame,
-          lines: const ['C'],
-          x: 0,
-          y: 0,
-          width: 200,
-          height: 120,
-          nodeId: member,
-        ),
-        DiagramNode(
-          id: 'row',
-          shape: DiagramShape.classRow,
-          lines: const ['Hacer()'],
-          x: 8,
-          y: 60,
-          width: 184,
-          height: 24,
-          nodeId: member,
-        ),
-      ],
-      edges: const [],
+  nodes: [
+    DiagramNode(
+      id: 'frame',
+      shape: DiagramShape.classFrame,
+      lines: const ['C'],
+      x: 0,
+      y: 0,
       width: 200,
       height: 120,
-    );
+      nodeId: member,
+    ),
+    DiagramNode(
+      id: 'row',
+      shape: DiagramShape.classRow,
+      lines: const ['Hacer()'],
+      x: 8,
+      y: 60,
+      width: 184,
+      height: 24,
+      nodeId: member,
+    ),
+  ],
+  edges: const [],
+  width: 200,
+  height: 120,
+);
 
 void main() {
   group('FocusFrameProjection · flowchart and structogram', () {
@@ -115,8 +113,10 @@ void main() {
 
     test('the structogram answers with its own cell for the same node', () {
       final flowchartState = _stateOf(_loopProgram);
-      final structogramState =
-          _stateOf(_loopProgram, notation: DiagramNotation.structogram);
+      final structogramState = _stateOf(
+        _loopProgram,
+        notation: DiagramNotation.structogram,
+      );
       final nodeId = _firstNodeWithId(structogramState.scene).nodeId!;
 
       final cell = FocusFrameProjection.frameOf(

@@ -24,10 +24,6 @@ jobs:
           channel: stable
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
 
-      - name: Install core package dependencies
-        working-directory: packages/pseudolearn_core
-        run: dart pub get
-
       - name: Install app dependencies
         run: flutter pub get
 

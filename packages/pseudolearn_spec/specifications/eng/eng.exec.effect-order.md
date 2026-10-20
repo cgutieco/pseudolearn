@@ -4,7 +4,7 @@
   "id": "ENG.EXEC.EFFECT-ORDER",
   "titulo": "Orden de los efectos",
   "dominio": "motor",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.1.0",
   "duenos": [
     "responsable-motor"
@@ -31,7 +31,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Effect order"
+  "titulo_en": "Effect order",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

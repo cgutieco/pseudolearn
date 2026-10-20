@@ -1,3 +1,4 @@
+import '../../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,8 +10,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_tab_view.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
@@ -111,27 +110,28 @@ Proceso Profundo
 FinProceso
 ''';
 
-DiagramProgram _flowchartOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _flowchartOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramProgram _structogramOf(String source) =>
-    StructogramLayout().buildDiagram(
+    nativeTestEngine.structogramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramState _stateOf(String source, {String? unitId}) => DiagramState(
-      flowchart: _flowchartOf(source),
-      structogram: _structogramOf(source),
-      classDiagram: const DiagramScene.empty(),
-      notation: DiagramNotation.structogram,
-      selectedUnitId: unitId,
-      hasValidAst: true,
-    );
+  flowchart: _flowchartOf(source),
+  structogram: _structogramOf(source),
+  classDiagram: const DiagramScene.empty(),
+  notation: DiagramNotation.structogram,
+  selectedUnitId: unitId,
+  hasValidAst: true,
+);
 
 ExecutionFocus? _focusOn(String source, String text) {
   final scene = _structogramOf(source).sceneFor(null);
@@ -195,8 +195,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_factorial),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_factorial_compact_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_factorial_compact_light.png'),
+      );
     });
 
     testWidgets('factorial · medium · dark', (tester) async {
@@ -206,8 +208,10 @@ void main() {
         theme: AppTheme.dark(),
         state: _stateOf(_factorial),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_factorial_medium_dark.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_factorial_medium_dark.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light', (tester) async {
@@ -217,8 +221,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_factorial),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_factorial_expanded_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_factorial_expanded_light.png'),
+      );
     });
 
     testWidgets('factorial · expanded · dark', (tester) async {
@@ -228,8 +234,10 @@ void main() {
         theme: AppTheme.dark(),
         state: _stateOf(_factorial),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_factorial_expanded_dark.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_factorial_expanded_dark.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light · executing', (tester) async {
@@ -240,8 +248,10 @@ void main() {
         state: _stateOf(_factorial),
         focus: _focusOn(_factorial, 'f <- f * i'),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_factorial_active_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_factorial_active_light.png'),
+      );
     });
 
     testWidgets('nested conditionals · light', (tester) async {
@@ -251,8 +261,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_conditional),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_conditional_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_conditional_light.png'),
+      );
     });
 
     testWidgets('the three loops · light', (tester) async {
@@ -262,8 +274,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_loops),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_loops_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_loops_light.png'),
+      );
     });
 
     testWidgets('multiple selection · light', (tester) async {
@@ -273,8 +287,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_selection),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_selection_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_selection_light.png'),
+      );
     });
 
     testWidgets('early exit · light', (tester) async {
@@ -284,8 +300,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_exit, unitId: 'sub_Buscar'),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_exit_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_exit_light.png'),
+      );
     });
 
     testWidgets('deep nesting · light', (tester) async {
@@ -295,8 +313,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_deep),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('structogram_deep_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('structogram_deep_light.png'),
+      );
     });
   });
 }

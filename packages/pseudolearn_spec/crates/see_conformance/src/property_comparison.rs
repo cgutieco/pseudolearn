@@ -10,6 +10,7 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         | PropertyExecutor::FirstTrap
         | PropertyExecutor::FusedFirstTrap => "execute",
         PropertyExecutor::ObservationCorrespondence => "observe",
+        PropertyExecutor::CliIrRoundtrip => "cli",
         PropertyExecutor::GcTransparency | PropertyExecutor::IdentityStability => "gc_stress",
         PropertyExecutor::ServiceNodeIdentity
         | PropertyExecutor::ServiceIncremental
@@ -28,7 +29,8 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         executor,
         PropertyExecutor::LosslessReprint | PropertyExecutor::LosslessRecovery
     );
-    offered(capability) || (syntax_probe && offered("service"))
+    (offered(capability) && (executor != PropertyExecutor::CliIrRoundtrip || offered("ir")))
+        || (syntax_probe && offered("service"))
 }
 
 pub(crate) fn check(
@@ -38,11 +40,13 @@ pub(crate) fn check(
 ) -> Result<Option<(Value, Value)>, String> {
     match executor {
         PropertyExecutor::Determinism => paired(scenario, subject, None),
+        PropertyExecutor::CliIrRoundtrip => crate::property_cli::check(scenario, subject),
         PropertyExecutor::GcTransparency | PropertyExecutor::IdentityStability => {
             paired(scenario, subject, Some(("gc_stress", json!(true))))
         }
         PropertyExecutor::ObservationCorrespondence => observed(scenario, subject),
         PropertyExecutor::LoweringExecution => normative(scenario, subject),
+        PropertyExecutor::ProgramRevision => crate::property_revision::check(scenario, subject),
         PropertyExecutor::ResourceLifecycle
         | PropertyExecutor::UsageErrors
         | PropertyExecutor::VersionNegotiation
@@ -135,6 +139,10 @@ fn observed(
     subject: &mut impl PropertySubject,
 ) -> Result<Option<(Value, Value)>, String> {
     let mut request = scenario.request.clone();
+    if let Some(fields) = request.as_object_mut() {
+        fields.remove("state_page");
+        fields.remove("state_at");
+    }
     request
         .as_object_mut()
         .ok_or("SEE-PROPERTY: request object")?

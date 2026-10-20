@@ -26,7 +26,7 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
     let manifest = root.join("specifications/cases/migration.json");
     if manifest.exists() {
         let manifest = crate::storage::read_json(&manifest)?;
-        let index = std::fs::read_to_string(root.join("../pseudolearn_core/docs/language-spec.md"))
+        let index = std::fs::read_to_string(root.join("subjects/reference/language-spec.md"))
             .map_err(|error| error.to_string())?;
         if let Err(error) = see_validation::migration::check(&manifest, &index, corpus) {
             errors.push(error);

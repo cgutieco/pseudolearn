@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod documentation;
+mod retirement;
 
 fn main() -> std::process::ExitCode {
     match verify() {
@@ -16,6 +17,7 @@ fn verify() -> Result<(), String> {
     if std::env::args().nth(1).as_deref() != Some("verify") {
         return Err("Usage: cargo xtask verify".to_owned());
     }
+    retirement::check(std::path::Path::new("../.."))?;
     documentation::check(std::path::Path::new("../.."))?;
     for arguments in commands() {
         let status = std::process::Command::new("cargo")
@@ -62,7 +64,7 @@ fn commands() -> Vec<Vec<&'static str>> {
         vec!["validate"],
         vec!["lock", "--check"],
         vec!["export", "--check"],
-        vec!["conform", "--subject", "reference"],
+        vec!["conform", "--subject", "engine"],
     ] {
         let mut invocation = vec!["run", "-p", "see_cli", "--bin", "see", "--"];
         invocation.extend(arguments);

@@ -41,6 +41,8 @@ de datos. Las técnicas que requieren medición se aceptan solo tras conservar r
 El conjunto de variables acarreadas por un bucle incluye escrituras anidadas en condicionales,
 selecciones y bucles internos; así cada iteración recibe el valor SSA que dejó la anterior.
 
+La detección de llamada inicial al constructor padre se consulta a semantic. La traducción no redefine esa decisión ni acepta una llamada ordinaria a método como inicialización de superclase.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

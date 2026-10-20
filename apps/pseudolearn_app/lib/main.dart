@@ -9,7 +9,8 @@ import 'data/index/index_schema.dart';
 import 'data/index/metadata_index.dart';
 import 'data/platform/platform_database_factory.dart';
 import 'data/progress/sqlite_local_progress_store.dart';
-import 'engine/bridge/frb_generated.dart';
+import 'engine/rust/native_rust_transport.dart';
+import 'engine/rust/rust_transport.dart';
 
 Future<Directory> resolveDocumentsDirectory() async {
   return getApplicationDocumentsDirectory();
@@ -31,17 +32,41 @@ Future<Database> openLocalDatabase(Directory directory) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RustLib.init();
-  initializePlatformDatabaseFactory();
-  final directory = await resolveDocumentsDirectory();
-  final database = await openLocalDatabase(directory);
-  final index = MetadataIndex(database);
-  final progressStore = SqliteLocalProgressStore(database);
-  runApp(CubitScope(
-    dependencies: buildLocalDependencies(
-      documentsDirectory: directory,
-      index: index,
-      progressStore: progressStore,
-    ),
-  ));
+  RustTransport? openedTransport;
+  try {
+    await initializeNativeBridge();
+    initializePlatformDatabaseFactory();
+    final directory = await resolveDocumentsDirectory();
+    final database = await openLocalDatabase(directory);
+    final index = MetadataIndex(database);
+    final progressStore = SqliteLocalProgressStore(database);
+    final transport = openNativeTransport();
+    openedTransport = transport;
+    AppLifecycleListener(onDetach: () => closeAppTransport(transport));
+    runApp(
+      CubitScope(
+        dependencies: buildLocalDependencies(
+          documentsDirectory: directory,
+          index: index,
+          progressStore: progressStore,
+          transport: transport,
+        ),
+      ),
+    );
+  } on Object catch (error, stack) {
+    closeAppTransport(openedTransport);
+    FlutterError.reportError(
+      FlutterErrorDetails(exception: error, stack: stack),
+    );
+  }
+}
+
+void closeAppTransport(RustTransport? transport) {
+  try {
+    transport?.close();
+  } on Object catch (error, stack) {
+    FlutterError.reportError(
+      FlutterErrorDetails(exception: error, stack: stack),
+    );
+  }
 }

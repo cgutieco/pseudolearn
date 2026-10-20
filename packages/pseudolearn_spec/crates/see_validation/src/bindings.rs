@@ -1,6 +1,12 @@
 use see_model::{Corpus, evidence::Conformance, field};
 
 pub fn check(corpus: &Corpus, conformance: &Conformance) -> Vec<String> {
+    if !["activo", "retirado"].contains(&conformance.estado.as_str()) {
+        return vec!["SEE-SUBJECT-STATE: unknown subject state".to_owned()];
+    }
+    if conformance.estado == "retirado" {
+        return Vec::new();
+    }
     let mut errors = Vec::new();
     let mut seen = std::collections::BTreeSet::new();
     for binding in &conformance.vinculos {

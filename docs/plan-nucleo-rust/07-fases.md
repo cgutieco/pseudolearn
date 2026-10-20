@@ -321,7 +321,7 @@ líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el inform
 
 > **Plan detallado:** [20 · Plan de ejecución de R8 · Puentes con la app y la web](20-plan-r8-puentes-app-y-web.md).
 
-- [ ] **Experimentos:** E-NR2.
+- [ ] **Experimentos:** campaña E-NR2 diferida por autorización a la validación posterior en macOS e iOS; ejecutor local implementado sin certificar plataforma.
 
 - [ ] **Fase terminada:** tareas obligatorias completas, verificadores verdes y push confirmado.
 
@@ -348,15 +348,22 @@ líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el inform
 - **Depende de.** R8 (y R6 si se quiere cerrar con `aot` estable).
 - **Contenido.**
   - [ ] Pasar a `estable` lo que quede en `experimental`.
-  - [ ] Retirar `DartCoreEngine` de la app.
-  - [ ] Retirar `packages/pseudolearn_core` del monorepo: su historia queda en git.
-  - [ ] El sujeto `reference` pasa a `retirado` en el corpus. Sus resultados se conservan como «ya no
+  - [x] Retirar la composición Dart de la app; el arranque usa el transporte Rust generado.
+  - [x] Retirar `packages/pseudolearn_core` del monorepo: su historia queda en git y sus evidencias en SEE.
+  - [x] El sujeto `reference` pasa a `retirado` en el corpus. Sus resultados se conservan como «ya no
      aplica».
-  - [ ] Actualizar `AGENTS.md` §9, el `README.md` raíz y las skills que nombran el núcleo Dart.
+  - [x] Actualizar `AGENTS.md` §9, el `README.md` raíz y las skills que nombran el núcleo Dart.
 - **Criterios de aceptación.**
-  - [ ] Ninguna referencia al núcleo Dart en la app ni en la CI.
+  - [x] Ninguna dependencia operativa del núcleo Dart en la app ni en la CI; verificador con casos negativos.
   - [ ] Matriz sin `pendiente` en el alcance de la reescritura.
   - [ ] Informe final: la matriz, las métricas de rendimiento y lo que se podó.
+
+**Excepciones autorizadas de R9.** Las campañas físicas, distribución y workflows remotos quedan
+fuera de esta iteración. La validación de plataforma posterior se limita inicialmente a macOS e iOS;
+los contratos dependientes conservan su estado. La deuda AOT aceptada no se certifica como estable.
+El contrato documental de la línea base Dart es histórico y no aplicable a sujetos activos.
+
+**Corrección autorizada de C4.** La persona autorizó destino 1 y dos celdas sin valor, además del evento 1. El negativo de cursor usa destino y evento válidos; C6 y C7 aíslan destino y evento inválidos.
 
 ### Después de R9 · Evolución del lenguaje
 

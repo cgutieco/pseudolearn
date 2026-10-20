@@ -1,3 +1,4 @@
+import 'native_test_engine.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
 import 'package:pseudolearn_app/domain/ports/account_deletion_gateway.dart';
 import 'package:pseudolearn_app/domain/ports/auth_gateway.dart';
@@ -16,14 +17,6 @@ import 'package:pseudolearn_app/domain/ports/remote_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
 import 'package:pseudolearn_app/domain/ports/sync_queue.dart';
 import 'package:pseudolearn_app/domain/ports/syntax_reference_source.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/completion/profile_completion_source.dart';
-import 'package:pseudolearn_app/engine/editing/lexicon_source_editor.dart';
-import 'package:pseudolearn_app/engine/editing/profile_key_source.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
 import 'package:pseudolearn_app/composition/engine_services.dart';
 import 'fake_account_deletion_gateway.dart';
 import 'fake_auth_gateway.dart';
@@ -78,21 +71,30 @@ AppDependencies buildTestDependencies({
     documentRepository: repository ?? InMemoryDocumentRepository(),
     authGateway: authGateway ?? FakeAuthGateway(),
     incomingLinkSource: incomingLinkSource ?? FakeIncomingLinkSource(),
-    accountDeletionGateway: accountDeletionGateway ?? FakeAccountDeletionGateway(),
-    localAccountDataPurger: localAccountDataPurger ?? FakeLocalAccountDataPurger(),
+    accountDeletionGateway:
+        accountDeletionGateway ?? FakeAccountDeletionGateway(),
+    localAccountDataPurger:
+        localAccountDataPurger ?? FakeLocalAccountDataPurger(),
     remoteProgressStore: remoteProgressStore ?? FakeRemoteProgressStore(),
     syncQueue: syncQueue ?? FakeSyncQueue(),
     connectivityMonitor: connectivityMonitor ?? FakeConnectivityMonitor(),
     syncCoordinator: syncCoordinator ?? FakeSyncCoordinator(),
-    programAnalyzer: engine?.analyzer ?? CoreProgramAnalyzer(),
-    createProgramExecution: engine?.createProgramExecution ?? CoreProgramExecution.new,
-    flowchartBuilder: engine?.flowchartBuilder ?? FlowchartLayout(),
-    structogramBuilder: engine?.structogramBuilder ?? StructogramLayout(),
-    classDiagramBuilder: engine?.classDiagramBuilder ?? CoreClassDiagramBuilder(),
-    completionSource: engine?.completionSource ?? const ProfileCompletionSource(),
+    programAnalyzer: engine?.analyzer ?? nativeTestEngine.analyzer,
+    createProgramExecution:
+        engine?.createProgramExecution ??
+        nativeTestEngine.createProgramExecution,
+    flowchartBuilder:
+        engine?.flowchartBuilder ?? nativeTestEngine.flowchartBuilder,
+    structogramBuilder:
+        engine?.structogramBuilder ?? nativeTestEngine.structogramBuilder,
+    classDiagramBuilder:
+        engine?.classDiagramBuilder ?? nativeTestEngine.classDiagramBuilder,
+    completionSource:
+        engine?.completionSource ?? nativeTestEngine.completionSource,
     contextualCompletionSource: engine?.contextualCompletionSource,
-    sourceEditor: engine?.sourceEditor ?? const LexiconSourceEditor(),
-    editorKeySource: engine?.editorKeySource ?? const ProfileKeySource(),
+    sourceEditor: engine?.sourceEditor ?? nativeTestEngine.sourceEditor,
+    editorKeySource:
+        engine?.editorKeySource ?? nativeTestEngine.editorKeySource,
     textEntryModality: textEntryModality ?? const FakeTextEntryModality(),
     appVersionSource: appVersionSource ?? const FakeAppVersionSource(),
     knowledgeRepository: knowledgeRepository ?? FakeKnowledgeRepository(),

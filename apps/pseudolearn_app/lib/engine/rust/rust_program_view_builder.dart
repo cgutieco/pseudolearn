@@ -113,7 +113,6 @@ List<RustViewNode> rustStatementsOf(RustProgramView view, RustViewNode body) =>
     rustChildrenForRole(view, body, 'statement');
 
 bool rustNodeIsContainer(RustProgramView view, RustViewNode node) {
-  if (node.syntaxKind != 'statement') return false;
   const compoundKinds = {
     'conditional',
     'switch',
@@ -121,8 +120,9 @@ bool rustNodeIsContainer(RustProgramView view, RustViewNode node) {
     'repeat_loop',
     'for_loop',
   };
-  return rustChildrenOf(
-    view,
-    node,
-  ).any((child) => compoundKinds.contains(child.syntaxKind));
+  return compoundKinds.contains(node.syntaxKind) ||
+      rustChildrenOf(
+        view,
+        node,
+      ).any((child) => compoundKinds.contains(child.syntaxKind));
 }

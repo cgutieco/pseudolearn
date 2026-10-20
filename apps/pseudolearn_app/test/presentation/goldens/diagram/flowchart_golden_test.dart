@@ -1,3 +1,4 @@
+import '../../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,8 +10,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_program.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_tab_view.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
@@ -75,7 +74,8 @@ Proceso Menu
 FinProceso
 ''';
 
-DiagramProgram _programOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _programOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
@@ -102,7 +102,11 @@ ExecutionFocus? _focusOnStatement(String source, int line) {
   return null;
 }
 
-ExecutionFocus? _focusOnDecision(String source, int line, ExecutionBranchKind branch) {
+ExecutionFocus? _focusOnDecision(
+  String source,
+  int line,
+  ExecutionBranchKind branch,
+) {
   final statementFocus = _focusOnStatement(source, line);
   if (statementFocus == null) return null;
   return ExecutionFocus(
@@ -141,7 +145,7 @@ Future<void> _pump(
           child: FlowchartTabView(
             state: DiagramState(
               flowchart: _programOf(source),
-              structogram: StructogramLayout().buildDiagram(
+              structogram: nativeTestEngine.structogramBuilder.buildDiagram(
                 sourceCode: source,
                 profileId: SyntaxProfileId.classicSpanish,
                 languageId: UiLanguageId.spanish,
@@ -161,18 +165,42 @@ Future<void> _pump(
 void main() {
   group('flowchart goldens', () {
     testWidgets('factorial · compact · light', (tester) async {
-      await _pump(tester, size: const Size(420, 900), theme: AppTheme.light(), source: _factorial);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_compact_light.png'));
+      await _pump(
+        tester,
+        size: const Size(420, 900),
+        theme: AppTheme.light(),
+        source: _factorial,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_compact_light.png'),
+      );
     });
 
     testWidgets('factorial · medium · dark', (tester) async {
-      await _pump(tester, size: const Size(760, 900), theme: AppTheme.dark(), source: _factorial);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_medium_dark.png'));
+      await _pump(
+        tester,
+        size: const Size(760, 900),
+        theme: AppTheme.dark(),
+        source: _factorial,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_medium_dark.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light', (tester) async {
-      await _pump(tester, size: const Size(1280, 900), theme: AppTheme.light(), source: _factorial);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_expanded_light.png'));
+      await _pump(
+        tester,
+        size: const Size(1280, 900),
+        theme: AppTheme.light(),
+        source: _factorial,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_expanded_light.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light · executing', (tester) async {
@@ -183,7 +211,10 @@ void main() {
         source: _factorial,
         focus: _focusOnStatement(_factorial, 8),
       );
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_active_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_active_light.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light · loop turning', (tester) async {
@@ -194,7 +225,10 @@ void main() {
         source: _factorial,
         focus: _focusOnDecision(_factorial, 7, ExecutionBranchKind.affirmative),
       );
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_turning_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_turning_light.png'),
+      );
     });
 
     testWidgets('factorial · expanded · light · loop leaving', (tester) async {
@@ -205,27 +239,62 @@ void main() {
         source: _factorial,
         focus: _focusOnDecision(_factorial, 7, ExecutionBranchKind.negative),
       );
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_factorial_leaving_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_factorial_leaving_light.png'),
+      );
     });
 
     testWidgets('nested conditionals · light', (tester) async {
-      await _pump(tester, size: const Size(1280, 900), theme: AppTheme.light(), source: _conditional);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_conditional_light.png'));
+      await _pump(
+        tester,
+        size: const Size(1280, 900),
+        theme: AppTheme.light(),
+        source: _conditional,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_conditional_light.png'),
+      );
     });
 
     testWidgets('nested conditionals · dark', (tester) async {
-      await _pump(tester, size: const Size(1280, 900), theme: AppTheme.dark(), source: _conditional);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_conditional_dark.png'));
+      await _pump(
+        tester,
+        size: const Size(1280, 900),
+        theme: AppTheme.dark(),
+        source: _conditional,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_conditional_dark.png'),
+      );
     });
 
     testWidgets('while and repeat · light', (tester) async {
-      await _pump(tester, size: const Size(1280, 900), theme: AppTheme.light(), source: _loops);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_loops_light.png'));
+      await _pump(
+        tester,
+        size: const Size(1280, 900),
+        theme: AppTheme.light(),
+        source: _loops,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_loops_light.png'),
+      );
     });
 
     testWidgets('selection · light', (tester) async {
-      await _pump(tester, size: const Size(1280, 900), theme: AppTheme.light(), source: _selection);
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('flowchart_selection_light.png'));
+      await _pump(
+        tester,
+        size: const Size(1280, 900),
+        theme: AppTheme.light(),
+        source: _selection,
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('flowchart_selection_light.png'),
+      );
     });
   });
 }

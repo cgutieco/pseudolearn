@@ -1,10 +1,10 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
 
 const _counted = '''
 Algoritmo Contado
@@ -50,32 +50,36 @@ FinAlgoritmo
 
 extension on ExecutionCubit {
   Future<void> step() => advance(
-        pace: StepPace.nextStatement,
-        sourceCode: _counted,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    pace: StepPace.nextStatement,
+    sourceCode: _counted,
+    profileId: SyntaxProfileId.classicSpanish,
+    languageId: UiLanguageId.spanish,
+  );
 
   Future<void> pace(StepPace pace, String source) => advance(
-        pace: pace,
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    pace: pace,
+    sourceCode: source,
+    profileId: SyntaxProfileId.classicSpanish,
+    languageId: UiLanguageId.spanish,
+  );
 
   Future<void> runToEnd(String source) => advance(
-        pace: StepPace.toEnd,
-        sourceCode: source,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    pace: StepPace.toEnd,
+    sourceCode: source,
+    profileId: SyntaxProfileId.classicSpanish,
+    languageId: UiLanguageId.spanish,
+  );
 }
 
 void main() {
   group('ExecutionCubit', () {
     late ExecutionCubit cubit;
 
-    setUp(() => cubit = ExecutionCubit(execution: CoreProgramExecution()));
+    setUp(
+      () => cubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      ),
+    );
     tearDown(() => cubit.close());
 
     test('a manual step settles paused, never running', () async {
@@ -86,25 +90,34 @@ void main() {
       expect(cubit.state.isInFlight, isTrue);
     });
 
-    test('each manual step lands on the next statement, not the next task', () async {
-      final lines = <int?>[];
-      for (var i = 0; i < 8; i++) {
-        await cubit.step();
-        lines.add(cubit.state.currentStep.focus?.startLine);
-        if (cubit.state.currentStep.isTerminal) break;
-      }
+    test(
+      'each manual step lands on the next statement, not the next task',
+      () async {
+        final lines = <int?>[];
+        for (var i = 0; i < 8; i++) {
+          await cubit.step();
+          lines.add(cubit.state.currentStep.focus?.startLine);
+          if (cubit.state.currentStep.isTerminal) break;
+        }
 
-      expect(lines.take(3), [2, 3, 4]);
-      expect(cubit.state.statementNumber, greaterThan(0));
-    });
+        expect(lines.take(3), [2, 3, 4]);
+        expect(cubit.state.statementNumber, greaterThan(0));
+      },
+    );
 
-    test('the counter counts statements, far below the interpreter tasks', () async {
-      await cubit.runToEnd(_counted);
+    test(
+      'the counter counts statements, far below the interpreter tasks',
+      () async {
+        await cubit.runToEnd(_counted);
 
-      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
-      expect(cubit.state.statementNumber, lessThan(cubit.state.currentStep.stepNumber));
-      expect(cubit.state.statementNumber, greaterThan(0));
-    });
+        expect(cubit.state.status, ExecutionStatus.finishedSuccess);
+        expect(
+          cubit.state.statementNumber,
+          lessThan(cubit.state.currentStep.stepNumber),
+        );
+        expect(cubit.state.statementNumber, greaterThan(0));
+      },
+    );
 
     test('twenty consecutive manual steps all advance', () async {
       var lastStepNumber = -1;
@@ -156,16 +169,19 @@ void main() {
       expect(cubit.state.runId, greaterThan(first));
     });
 
-    test('a program awaiting input pauses and resumes with the value', () async {
-      await cubit.runToEnd(_readsInput);
-      expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
-      expect(cubit.state.canStart, isFalse);
+    test(
+      'a program awaiting input pauses and resumes with the value',
+      () async {
+        await cubit.runToEnd(_readsInput);
+        expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
+        expect(cubit.state.canStart, isFalse);
 
-      await cubit.provideInput('7');
+        await cubit.provideInput('7');
 
-      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
-      expect(cubit.state.outputLines.map((line) => line.text), contains('7'));
-    });
+        expect(cubit.state.status, ExecutionStatus.finishedSuccess);
+        expect(cubit.state.outputLines.map((line) => line.text), contains('7'));
+      },
+    );
 
     test('providing input without an execution changes nothing', () async {
       final before = cubit.state;
@@ -227,7 +243,11 @@ void main() {
   group('ExecutionCubit paces', () {
     late ExecutionCubit cubit;
 
-    setUp(() => cubit = ExecutionCubit(execution: CoreProgramExecution()));
+    setUp(
+      () => cubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      ),
+    );
     tearDown(() => cubit.close());
 
     Future<void> stepUntilLine(int line) async {
@@ -239,37 +259,52 @@ void main() {
       fail('never reached line $line');
     }
 
-    test('the loop header is a decision, and only there can a block be skipped', () async {
-      await stepUntilLine(5);
+    test(
+      'the loop header is a decision, and only there can a block be skipped',
+      () async {
+        await stepUntilLine(5);
 
-      expect(cubit.state.currentStep.focus?.isDecision, isTrue);
-      expect(cubit.state.canStepOverBlock, isTrue);
-    });
+        expect(cubit.state.currentStep.focus?.isDecision, isTrue);
+        expect(cubit.state.canStepOverBlock, isTrue);
+      },
+    );
 
-    test('a plain statement offers neither skipping nor leaving a block', () async {
-      await stepUntilLine(2);
+    test(
+      'a plain statement offers neither skipping nor leaving a block',
+      () async {
+        await stepUntilLine(2);
 
-      expect(cubit.state.canStepOverBlock, isFalse);
-      expect(cubit.state.canStepOutOfBlock, isFalse);
-    });
+        expect(cubit.state.canStepOverBlock, isFalse);
+        expect(cubit.state.canStepOutOfBlock, isFalse);
+      },
+    );
 
-    test('skipping the block runs every turn and lands after the loop', () async {
-      await stepUntilLine(5);
-      await cubit.pace(StepPace.overBlock, _loop);
+    test(
+      'skipping the block runs every turn and lands after the loop',
+      () async {
+        await stepUntilLine(5);
+        await cubit.pace(StepPace.overBlock, _loop);
 
-      expect(cubit.state.currentStep.focus?.startLine, equals(8));
-      expect(cubit.state.status, ExecutionStatus.pausedAtStatement);
-      expect(cubit.state.currentStep.variables.map((row) => row.formattedValue), contains('6'));
-    });
+        expect(cubit.state.currentStep.focus?.startLine, equals(8));
+        expect(cubit.state.status, ExecutionStatus.pausedAtStatement);
+        expect(
+          cubit.state.currentStep.variables.map((row) => row.formattedValue),
+          contains('6'),
+        );
+      },
+    );
 
-    test('leaving the block from inside the body lands after the loop', () async {
-      await stepUntilLine(6);
+    test(
+      'leaving the block from inside the body lands after the loop',
+      () async {
+        await stepUntilLine(6);
 
-      expect(cubit.state.canStepOutOfBlock, isTrue);
-      await cubit.pace(StepPace.outOfBlock, _loop);
+        expect(cubit.state.canStepOutOfBlock, isTrue);
+        await cubit.pace(StepPace.outOfBlock, _loop);
 
-      expect(cubit.state.currentStep.focus?.startLine, equals(8));
-    });
+        expect(cubit.state.currentStep.focus?.startLine, equals(8));
+      },
+    );
 
     test('the loop comes back to its condition on every turn', () async {
       final lines = <int?>[];
@@ -282,12 +317,15 @@ void main() {
       expect(lines.take(9), [2, 3, 4, 5, 6, 5, 6, 5, 6]);
     });
 
-    test('the statement counter matches the number of didactic steps', () async {
-      await cubit.pace(StepPace.nextStatement, _loop);
-      await cubit.pace(StepPace.nextStatement, _loop);
-      await cubit.pace(StepPace.nextStatement, _loop);
+    test(
+      'the statement counter matches the number of didactic steps',
+      () async {
+        await cubit.pace(StepPace.nextStatement, _loop);
+        await cubit.pace(StepPace.nextStatement, _loop);
+        await cubit.pace(StepPace.nextStatement, _loop);
 
-      expect(cubit.state.statementNumber, equals(3));
-    });
+        expect(cubit.state.statementNumber, equals(3));
+      },
+    );
   });
 }

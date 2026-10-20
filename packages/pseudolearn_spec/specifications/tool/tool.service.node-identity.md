@@ -4,7 +4,7 @@
   "id": "TOOL.SERVICE.NODE-IDENTITY",
   "titulo": "Identidad estable de nodos sintácticos",
   "dominio": "herramienta",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.1.0",
   "duenos": [
     "responsable-herramientas"
@@ -20,7 +20,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Syntax node identity"
+  "titulo_en": "Syntax node identity",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

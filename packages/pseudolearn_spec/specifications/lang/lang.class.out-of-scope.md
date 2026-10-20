@@ -27,7 +27,14 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ]
+  ],
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  }
 }
 ---
 
@@ -41,7 +48,9 @@
   "texto": "D1 define las formas reconocibles y sus cierres; el reconocimiento solo actúa ante otra palabra de una cabecera o, cuando allow_line lo permite, una apertura sola en su línea. Una asignación o llamada que usa el nombre permanece ordinaria. Interfaces, clases abstractas, miembros estáticos, visibilidad protegida, genéricos y manejo de excepciones no son construcciones de la edición vigente. En posición estructural inequívoca sus formas reconocibles producen diagnóstico pedagógico específico. Estas palabras no se añaden al vocabulario reservado y pueden ser nombres en posiciones ordinarias.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -176,6 +185,66 @@
       ],
       "allow_line": true
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nFinAlgoritmo\nInterfaz Figura\n",
+    "en": "algorithm P\nendAlgorithm\ninterface Shape\n"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unsupportedInterfaceConstruct",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase C\nEstatico Definir total Como Entero;\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "class C\nstatic define total as integer;\nendClass\nalgorithm P\nendAlgorithm\n"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unsupportedStaticConstruct",
+        "severidad": "error"
+      }
+    ]
   }
 }
 ```

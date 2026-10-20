@@ -391,7 +391,7 @@
   },
   {
     "binding": "exento",
-    "cases": 12,
+    "cases": 16,
     "measured": "no aplicable",
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
@@ -431,7 +431,7 @@
   },
   {
     "binding": "exento",
-    "cases": 8,
+    "cases": 12,
     "measured": "no aplicable",
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
@@ -471,7 +471,7 @@
   },
   {
     "binding": "exento",
-    "cases": 8,
+    "cases": 16,
     "measured": "no aplicable",
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",

@@ -264,6 +264,12 @@
       "executor": "service_translate",
       "seed": 42,
       "samples": 10
+    },
+    {
+      "reference": "API.PROGRAM.VIEW@0.1.0#P1",
+      "executor": "program_revision",
+      "seed": 42,
+      "samples": 100
     }
   ],
   "subjects": [

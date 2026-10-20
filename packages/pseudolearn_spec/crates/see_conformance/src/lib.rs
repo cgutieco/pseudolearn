@@ -28,3 +28,18 @@ mod property_traps;
 pub mod target_programs;
 
 mod property_observation;
+
+mod property_revision;
+
+pub mod event_identity;
+
+#[cfg(test)]
+mod property_revision_tests;
+
+mod property_cli;
+
+#[cfg(test)]
+mod property_cli_tests;
+
+#[cfg(test)]
+mod property_recording_tests;

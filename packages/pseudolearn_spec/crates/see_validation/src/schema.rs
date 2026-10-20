@@ -77,7 +77,7 @@ pub fn fields(kind: &str) -> (&'static str, &'static str) {
         ),
         "caso" => (
             "id regla perfiles rigor espera origen",
-            "programa programas programa_ri cli servicio aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla",
+            "programa programas programa_ri cli servicio aplicacion paginacion limites cancelacion cancelacion_prueba esperas entradas etiquetas revisado_por exclusiones perfil_base operacion produce evita semilla sujetos",
         ),
         "definicion" => ("id termino texto", "valor"),
         "error" => ("id situacion clase codigo severidad", ""),

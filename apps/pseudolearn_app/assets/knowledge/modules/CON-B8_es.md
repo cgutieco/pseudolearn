@@ -57,8 +57,7 @@ activan— y decide cuántas veces se cumple la condición del condicional.
 ## Una construcción que el lenguaje reconoce y rechaza a propósito
 
 Un salto incondicional rompería la promesa de que todo estructograma se puede dibujar sin flechas
-sueltas. El lenguaje reconoce la palabra y la rechaza explícitamente, en vez de tratarla como un nombre
-cualquiera.
+sueltas. El analizador rechaza la instrucción porque no pertenece a la gramática del lenguaje.
 
 ```pseudo
 Algoritmo SaltoIncondicional
@@ -68,7 +67,7 @@ Algoritmo SaltoIncondicional
 FinAlgoritmo
 ```
 
-{{diagnostico:unsupportedStructuredConstruct}}
+{{diagnostico:unexpectedStatement}}
 
 ## Una selección múltiple que nunca se cierra
 

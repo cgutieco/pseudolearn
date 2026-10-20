@@ -4,7 +4,7 @@
   "id": "TOOL.SERVICE.LOSSLESS-TREE",
   "titulo": "Árbol sin pérdida",
   "dominio": "herramienta",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.2.0",
   "duenos": [
     "responsable-herramientas"
@@ -31,7 +31,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Lossless tree"
+  "titulo_en": "Lossless tree",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

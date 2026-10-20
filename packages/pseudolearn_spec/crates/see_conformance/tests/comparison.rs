@@ -221,3 +221,23 @@ fn units_and_members_must_resolve_to_nodes_of_the_same_view() {
     assert!(see_conformance::comparison::compare(&expected, &resolved).is_empty());
     assert!(!see_conformance::comparison::compare(&expected, &dangling).is_empty());
 }
+
+#[test]
+fn page_cursor_marker_preserves_element_and_exact_snapshot_checks() {
+    let expected = serde_json::json!({"estado_en":{"estado":{"elements":[{"sin_valor":true}],"truncated":true,"next_cursor":"opaque"}}});
+    let actual = serde_json::json!({"state_at":{"elements":[{"sin_valor":true}],"truncated":true,"next_cursor":"scope.1","total":2}});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+    for changed in [
+        serde_json::json!({"state_at":{"elements":[0],"truncated":true,"next_cursor":"scope.1"}}),
+        serde_json::json!({"state_at":{"elements":[{"sin_valor":true}],"truncated":true,"next_cursor":""}}),
+    ] {
+        assert!(!see_conformance::comparison::compare(&expected, &changed).is_empty());
+    }
+    assert!(
+        !see_conformance::comparison::compare(
+            &serde_json::json!({"estado_en":{"estado":{"marcos":[]}}}),
+            &serde_json::json!({"state_at":{"marcos":[],"extra":true}})
+        )
+        .is_empty()
+    );
+}

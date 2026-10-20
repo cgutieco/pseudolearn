@@ -70,6 +70,8 @@ El análisis para servicios (`analyze_for_service`) conserva, además del módul
 las ocurrencias de cada símbolo (declaración, lectura y escritura, incluidas las declaraciones de campos) y los tipos de
 expresión por intervalo. `service_collection` los recopila desde el módulo ya construido; no vuelve a resolver nombres.
 
+Los constructores comprueban la llamada inicial al constructor de la superclase cuando este exige argumentos. `constructor_rules` publica la consulta estructural del primer constructor padre para que el lowering use el mismo criterio, sin duplicar interpretación del HIR.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

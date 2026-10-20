@@ -10,15 +10,15 @@
     "IR.WELL-FORMEDNESS": "797b289d63f0d54ea8eb487ff26a5a8ba3e90d1e54a3bcb536bfbfe690385d96",
     "LANG.ARRAY.ACCESS": "0f6ce95654bf66555f6738cfb1046d22e1fc3dbd4d948c72478a864e00eb74b8",
     "LANG.ARRAY.DIMENSION": "49206d07667b2fbb8f2aac2c88eeb7bae675b5fad562ae5c4b761eef2ea5c36f",
-    "LANG.CLASS.CONSTRUCTOR": "c580e4d41cac2d2065084b4e1884bc9b3b99844c571757f60079ee2e2ad75d1a",
+    "LANG.CLASS.CONSTRUCTOR": "82646f6d6593e34cb4b2a3fe58efe19eb8dbe696b64434fdcc98a0de522a6a05",
     "LANG.CLASS.COPY": "46a9b93e85ad3445d452eb15b8af17e019864ab9f45e383c2eefda88c8b2c474",
     "LANG.CLASS.DECLARATION": "2a6d05cf944b849b8a304abc7efd6f31b5066fc09be184c39a5bf4c0f836cbbb",
     "LANG.CLASS.FIELDS": "82570c0a67d4d6ac4e1273aa97f606e05c9211cca8066cbc3c7740bfb7209e7d",
-    "LANG.CLASS.INHERITANCE": "553cc19dfe7c66a5079574cddab768888bb4c9904a26e6c50c92daf482dcd1ed",
+    "LANG.CLASS.INHERITANCE": "a2d55d95927c754428e4861a96c4d926ef6a651e90c9590d224ba658421fe81e",
     "LANG.CLASS.INSTANTIATION": "8542f7a126413f18be49ae772c02b76b56ec6e217c142c2ac3e73207bf119011",
     "LANG.CLASS.MEMBER-ACCESS": "b6a4235919c00a3efae78f2d9f6b241cef88d856c8f3c54dcbb7efc43f79e4b3",
     "LANG.CLASS.METHODS": "b4e2f8d2f34c9c5034cd81c7081a56fdcb4b6d75b2f297d126a22802324b86fe",
-    "LANG.CLASS.OUT-OF-SCOPE": "b21fdcadfe7ee92ef29675fb7986c97ffecc7289e50a31ee11d559644ce2c5e6",
+    "LANG.CLASS.OUT-OF-SCOPE": "cbe19e483344c78b1be485c2502f7b68a70500742f3253b56619b8a1fb4faf33",
     "LANG.CLASS.OVERRIDE": "aca82cefa38780040ea37f0843b060655b8cc4a7e04568f4a57eec17b63b5173",
     "LANG.CLASS.SELF-AND-SUPER": "93ae4b2c91ce7cc9a44e2281b063327a13ebe60e0ae1c0521f9dea04673340dd",
     "LANG.CONTROL.FOR": "973fa3d92ae6fedbe12d65b121417a6572ee43733e0d4942e54692ad726dcb58",
@@ -7529,6 +7529,90 @@
       "verdict": "no aplicable"
     },
     {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "missingSuperConstructorCall",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "missingSuperConstructorCall",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "missingSuperConstructorCall",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "missingSuperConstructorCall",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.CONSTRUCTOR",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
       "actual": {
         "diagnostics": [],
         "events": [],
@@ -8485,6 +8569,90 @@
       "verdict": "no aplicable"
     },
     {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "multipleInheritanceNotSupported",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "multipleInheritanceNotSupported",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "multipleInheritanceNotSupported",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "multipleInheritanceNotSupported",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.INHERITANCE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
       "actual": {
         "diagnostics": [],
         "events": [],
@@ -9271,6 +9439,174 @@
       "specification": "LANG.CLASS.OUT-OF-SCOPE",
       "strictness": "flexible",
       "verdict": "cumple"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedInterfaceConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedInterfaceConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedInterfaceConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C3",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedInterfaceConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedStaticConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedStaticConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedStaticConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "estricto",
+      "verdict": "no aplicable"
+    },
+    {
+      "actual": null,
+      "case": "C4",
+      "differences": [
+        "Capability, profile or strictness unavailable"
+      ],
+      "expected": {
+        "arbol": "presente",
+        "diagnosticos": [
+          {
+            "codigo": "unsupportedStaticConstruct",
+            "severidad": "error"
+          }
+        ]
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "LANG.CLASS.OUT-OF-SCOPE",
+      "strictness": "flexible",
+      "verdict": "no aplicable"
     },
     {
       "actual": {

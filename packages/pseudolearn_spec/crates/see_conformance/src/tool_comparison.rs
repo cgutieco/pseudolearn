@@ -246,3 +246,12 @@ fn service(expected: &Value, actual: &Value) -> bool {
     };
     outcome == expected
 }
+
+pub fn state_at(expected: &Value, actual: &Value) -> bool {
+    let expected = expected.get("estado");
+    let actual = actual.get("state_at");
+    match expected {
+        Some(value) if value.get("next_cursor").is_some() => subset(value, actual),
+        _ => actual == expected,
+    }
+}

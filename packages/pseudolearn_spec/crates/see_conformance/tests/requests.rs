@@ -180,3 +180,27 @@ fn transmits_loop_poll_cancellation_independently_of_statement_cancellation() ->
     );
     Ok(())
 }
+
+#[test]
+fn subject_scope_is_optional_and_excludes_other_subjects() -> Result<(), String> {
+    assert!(see_conformance::requests::applies_to(
+        &case(json!({}))?,
+        "engine"
+    ));
+    let restricted = case(json!({"sujetos":["app"]}))?;
+    assert!(see_conformance::requests::applies_to(&restricted, "app"));
+    assert!(!see_conformance::requests::applies_to(
+        &restricted,
+        "engine"
+    ));
+    Ok(())
+}
+
+#[test]
+fn wasm_transport_cases_require_an_actual_wasm_capability() -> Result<(), String> {
+    let native = case(json!({"operacion":"app","aplicacion":{"input":{"transport":"native"}}}))?;
+    assert_eq!(required_capabilities(&native), vec!["app"]);
+    let wasm = case(json!({"operacion":"app","aplicacion":{"input":{"transport":"wasm"}}}))?;
+    assert_eq!(required_capabilities(&wasm), vec!["app", "wasm"]);
+    Ok(())
+}

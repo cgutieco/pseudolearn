@@ -1,9 +1,5 @@
 use crate::{expressions::ExpressionState, statement_context::StatementContext};
-use pseudolearn_semantic::{
-    expression_model::HirExpression,
-    hir::{FunctionKind, HirFunction, HirModule},
-    statement_model::HirStatement,
-};
+use pseudolearn_semantic::hir::{FunctionKind, HirFunction, HirModule};
 
 pub(crate) fn find(class: u32, module: &HirModule) -> Option<u32> {
     let mut current = usize::try_from(class).ok();
@@ -24,7 +20,8 @@ pub(crate) fn implicit_super(function: &HirFunction, context: &mut StatementCont
         return;
     }
     let module = context.expression_context.module;
-    if explicit_super(function, module) {
+    if pseudolearn_semantic::constructor_rules::first_parent_constructor(function, module).is_some()
+    {
         return;
     }
     let parent = function
@@ -46,29 +43,4 @@ pub(crate) fn implicit_super(function: &HirFunction, context: &mut StatementCont
         builder: context.builder,
     };
     crate::expressions_objects::emit_call(target, receiver, Vec::new(), (false, span, &mut state));
-}
-
-fn explicit_super(function: &HirFunction, module: &HirModule) -> bool {
-    let statement = function
-        .body
-        .first()
-        .and_then(|identity| usize::try_from(identity.0).ok())
-        .and_then(|index| module.statements.kinds.get(index));
-    let Some(HirStatement::Call(expression)) = statement else {
-        return false;
-    };
-    let expression = usize::try_from(expression.0)
-        .ok()
-        .and_then(|index| module.expressions.kinds.get(index));
-    let Some(HirExpression::SuperCall {
-        function: Some(target),
-        ..
-    }) = expression
-    else {
-        return false;
-    };
-    usize::try_from(target.0)
-        .ok()
-        .and_then(|index| module.functions.get(index))
-        .is_some_and(|target| target.kind == FunctionKind::Constructor)
 }

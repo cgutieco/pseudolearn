@@ -1,0 +1,103 @@
+{
+  "format": "r9-verification/1",
+  "phase_closed": false,
+  "branch": "feature/agregar-ruta-de-especificacion",
+  "platform_campaigns_executed": false,
+  "remote_workflows_executed": false,
+  "pending": [
+    "final app conformance after corpus correction",
+    "two shutdown tests and final Flutter suite",
+    "final app stability promotions",
+    "complete applicable SEE gate",
+    "commits and ordinary push with remote HEAD verification"
+  ],
+  "automatic_approval_failure": {
+    "action": "new app conformance",
+    "reason": "account usage limit prevented automatic approval review",
+    "unsafe_determination": false,
+    "executed": false
+  },
+  "audit": {
+    "mode": "offline",
+    "database_commit": "999ec89d5d3f10f20be14750ec8c2d8b44e0ac9b",
+    "unchanged_member_policies": true,
+    "writable_cache_copy": "/tmp/r9-cargo-audit-cache"
+  },
+  "properties": {
+    "engine": {
+      "passed": 30,
+      "pending": 0
+    },
+    "service": {
+      "passed": 7,
+      "pending": 0
+    },
+    "cli": {
+      "passed": 1,
+      "pending": 0
+    },
+    "aot": {
+      "passed": 13,
+      "pending": 3
+    }
+  },
+  "active_differential": {
+    "compared": 811,
+    "exempt": 0,
+    "unresolved": 0
+  },
+  "historical_blobs": {
+    "reference.json": "9d6c562ff1036564636f75e554b626e1f5e5f6de",
+    "r8-artifact-size.json": "706bdf064bc65a61e4bc6fed81bd06b9b80caadf",
+    "r7-service-e09.json": "d5add48de6ccc8761a2588269d7bae8741e10031"
+  },
+  "promoted_contracts": 68,
+  "observations": {
+    "engine": {
+      "total": 1551,
+      "verdicts": {
+        "cumple": 1550,
+        "no aplicable": 1
+      }
+    },
+    "aot": {
+      "total": 1224,
+      "verdicts": {
+        "cumple": 843,
+        "no aplicable": 373,
+        "pendiente": 8
+      }
+    },
+    "service": {
+      "total": 36,
+      "verdicts": {
+        "cumple": 36
+      }
+    },
+    "cli": {
+      "total": 64,
+      "verdicts": {
+        "cumple": 64
+      }
+    }
+  },
+  "matrix_rows": {
+    "engine": {
+      "cumple": 208,
+      "no aplicable": 8,
+      "sin evidencia": 3
+    },
+    "aot": {
+      "cumple": 58,
+      "pendiente": 5,
+      "sin evidencia": 1,
+      "no aplicable": 84
+    },
+    "service": {
+      "cumple": 31
+    },
+    "cli": {
+      "cumple": 26
+    }
+  }
+}

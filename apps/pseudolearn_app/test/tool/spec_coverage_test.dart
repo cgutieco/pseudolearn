@@ -27,15 +27,18 @@ final class _SpecRow {
 }
 
 List<_SpecRow> _readStateTable() {
-  final file = File(p.join(
-    Directory.current.path,
-    '..',
-    '..',
-    'packages',
-    'pseudolearn_core',
-    'docs',
-    'language-spec.md',
-  ));
+  final file = File(
+    p.join(
+      Directory.current.path,
+      '..',
+      '..',
+      'packages',
+      'pseudolearn_spec',
+      'subjects',
+      'reference',
+      'language-spec.md',
+    ),
+  );
   final lines = file.readAsLinesSync();
   final rows = <_SpecRow>[];
   var insideTable = false;
@@ -59,11 +62,14 @@ List<_SpecRow> _readStateTable() {
 
 Set<String> _publishedSectionIds() {
   final ids = <String>{};
-  final directory = Directory(p.join(Directory.current.path, 'assets', 'knowledge'));
+  final directory = Directory(
+    p.join(Directory.current.path, 'assets', 'knowledge'),
+  );
   for (final file in directory.listSync().whereType<File>()) {
     final name = p.basename(file.path);
     if (!name.startsWith('manifest_') || !name.endsWith('.json')) continue;
-    final manifest = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+    final manifest =
+        jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
     final sections = manifest['specification'];
     if (sections is! List) continue;
     for (final raw in sections) {
@@ -75,43 +81,54 @@ Set<String> _publishedSectionIds() {
 
 void main() {
   group('Specification coverage', () {
-    test('the state table declares a projection for every normative section', () {
-      final rows = _readStateTable();
+    test(
+      'the state table declares a projection for every normative section',
+      () {
+        final rows = _readStateTable();
 
-      expect(rows, isNotEmpty);
-      for (final row in rows) {
-        expect(
-          row.projection,
-          isNotEmpty,
-          reason: 'Section "${row.section}" declares no projection',
-        );
-      }
-    });
+        expect(rows, isNotEmpty);
+        for (final row in rows) {
+          expect(
+            row.projection,
+            isNotEmpty,
+            reason: 'Section "${row.section}" declares no projection',
+          );
+        }
+      },
+    );
 
-    test('a projected section names the published section it projects into', () {
-      for (final row in _readStateTable()) {
-        if (!row.isProjected) continue;
-        expect(
-          row.declaredId,
-          isNotNull,
-          reason: 'Section "${row.section}" does not name its published section',
-        );
-      }
-    });
+    test(
+      'a projected section names the published section it projects into',
+      () {
+        for (final row in _readStateTable()) {
+          if (!row.isProjected) continue;
+          expect(
+            row.declaredId,
+            isNotNull,
+            reason:
+                'Section "${row.section}" does not name its published section',
+          );
+        }
+      },
+    );
 
-    test('every section projected and not pending exists in the published content', () {
-      final published = _publishedSectionIds();
+    test(
+      'every section projected and not pending exists in the published content',
+      () {
+        final published = _publishedSectionIds();
 
-      for (final row in _readStateTable()) {
-        if (!row.isProjected || row.isPending) continue;
-        expect(
-          published,
-          contains(row.declaredId),
-          reason: 'Section "${row.section}" claims to be projected into '
-              '"${row.declaredId}", which no manifest declares',
-        );
-      }
-    });
+        for (final row in _readStateTable()) {
+          if (!row.isProjected || row.isPending) continue;
+          expect(
+            published,
+            contains(row.declaredId),
+            reason:
+                'Section "${row.section}" claims to be projected into '
+                '"${row.declaredId}", which no manifest declares',
+          );
+        }
+      },
+    );
 
     test('every published section is declared by the state table', () {
       final declared = <String>{};

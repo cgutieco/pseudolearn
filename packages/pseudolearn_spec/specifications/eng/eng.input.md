@@ -4,7 +4,7 @@
   "id": "ENG.INPUT",
   "titulo": "Entrada del programa",
   "dominio": "motor",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.1.0",
   "duenos": [
     "responsable-motor"
@@ -27,7 +27,17 @@
       "tipo": "refina"
     }
   ],
-  "titulo_en": "Program input"
+  "titulo_en": "Program input",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

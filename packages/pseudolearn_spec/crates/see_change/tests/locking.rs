@@ -54,3 +54,27 @@ fn removed_active_identity_requires_tombstone() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn refresh_requires_explicit_identity_and_rejects_terminal_contracts() -> Result<(), String> {
+    let original = support::specification()?;
+    let lock = see_change::locking::generate(&vec![original.clone()], &Lock::default())?;
+    let mut modified = original;
+    modified
+        .blocks
+        .first_mut()
+        .ok_or("Missing rule")?
+        .fields
+        .insert("texto".to_owned(), serde_json::json!("Contrato corregido"));
+    let authorized = vec![modified.metadata.id.clone()];
+    let corpus = vec![modified.clone()];
+    assert!(see_change::locking::refresh(&corpus, &lock, &[]).is_err());
+    assert!(
+        see_change::locking::refresh(&corpus, &lock, &["UNKNOWN.IDENTITY".to_owned()]).is_err()
+    );
+    let refreshed = see_change::locking::refresh(&corpus, &lock, &authorized)?;
+    assert!(see_change::locking::check(&corpus, &refreshed)?.is_empty());
+    modified.metadata.estado = "retirada".to_owned();
+    assert!(see_change::locking::refresh(&vec![modified], &lock, &authorized).is_err());
+    Ok(())
+}

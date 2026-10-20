@@ -6,7 +6,8 @@ final class RustDiagramUnitIdentifier {
   static String fromUnit(RustViewUnit unit) =>
       '${unit.kind == 'algorithm' ? 'alg' : 'sub'}_${unit.name}';
 
-  static String fromMember(RustViewMember member) =>
-      '${member.kind == 'constructor' ? 'ctor' : 'method'}'
-      '_${member.className}_${member.name}';
+  static String fromMember(RustViewMember member) => switch (member.kind) {
+    'constructor' => 'ctor_${member.className}',
+    _ => 'method_${member.className}_${member.name}',
+  };
 }

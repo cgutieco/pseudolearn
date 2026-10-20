@@ -1,6 +1,8 @@
 #![forbid(unsafe_code)]
 
 mod aot;
+mod bridge;
+mod bridge_script;
 mod corpus;
 mod e06;
 mod execution;
@@ -14,6 +16,7 @@ fn main() -> std::process::ExitCode {
     let operation = std::env::args().nth(1).unwrap_or_default();
     let result = match operation.as_str() {
         "execute" => execution::collect(),
+        "bridge" => bridge::collect(),
         "e06" => e06::collect(),
         "e06-rss" => e06::rss_child(&std::env::args().nth(2).unwrap_or_default()),
         "robust" => robustness::collect(),
@@ -48,3 +51,6 @@ fn main() -> std::process::ExitCode {
 mod frontend_tests;
 #[cfg(test)]
 mod workloads_tests;
+
+#[cfg(test)]
+mod bridge_script_tests;

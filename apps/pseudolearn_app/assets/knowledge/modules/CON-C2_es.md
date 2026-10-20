@@ -61,6 +61,9 @@ Clase Caja
         Este.contenido <- unContenido;
     FinMetodo
 FinClase
+
+Algoritmo Probar
+FinAlgoritmo
 ```
 
 {{diagnostico:constructorVisibilityNotAllowed}}
@@ -82,6 +85,9 @@ Clase Caja
         Este.contenido <- unContenido;
     FinMetodo
 FinClase
+
+Algoritmo Probar
+FinAlgoritmo
 ```
 
 {{diagnostico:duplicateConstructor}}

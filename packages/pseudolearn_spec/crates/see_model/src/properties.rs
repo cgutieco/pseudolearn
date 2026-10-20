@@ -79,6 +79,7 @@ pub enum PropertyExecutor {
     UsageErrors,
     InternalFaultContainment,
     ResourceLifecycle,
+    ProgramRevision,
     InterfaceLanguage,
     FusedFirstTrap,
     LosslessReprint,

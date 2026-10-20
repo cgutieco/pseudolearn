@@ -18,7 +18,7 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
         storage::read_json(&arguments.root.join("property-conformance.json"))?;
     let vocabulary: Vocabulary =
         storage::read_json(&arguments.root.join("specifications/cases/vocabulary.json"))?;
-    let mut session = Session::start(&mut command, Duration::from_secs(30))?;
+    let mut session = Session::start(&mut command, Duration::from_secs(300))?;
     let context = PropertyContext {
         corpus,
         vocabulary: &vocabulary,

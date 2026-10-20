@@ -65,6 +65,15 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
     if expects_program_view {
         capabilities.push("program_view");
     }
+    if case
+        .fields
+        .get("aplicacion")
+        .and_then(|application| application.pointer("/input/transport"))
+        .and_then(Value::as_str)
+        == Some("wasm")
+    {
+        capabilities.push("wasm");
+    }
     if case.fields.contains_key("paginacion") {
         capabilities.push("state_pages");
     }
@@ -205,4 +214,9 @@ fn service(case: &Block, fields: &mut Map<String, Value>) {
             fields.insert(key.clone(), value.clone());
         }
     }
+}
+
+pub fn applies_to(case: &Block, subject: &str) -> bool {
+    !case.fields.contains_key("sujetos")
+        || see_model::strings(case.fields.get("sujetos")).contains(&subject)
 }

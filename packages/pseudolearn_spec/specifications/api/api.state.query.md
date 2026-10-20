@@ -4,7 +4,7 @@
   "id": "API.STATE.QUERY",
   "titulo": "Consulta de estado",
   "dominio": "motor",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.1.0",
   "duenos": [
     "responsable-motor"
@@ -25,7 +25,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "State query"
+  "titulo_en": "State query",
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Consulta del arreglo real sin inicializar; cursor inválido aislado de errores de destino y evento, con negativos independientes.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  },
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ]
 }
 ---
 
@@ -180,7 +190,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "Un sujeto que anuncia state_pages acepta una consulta paginada con consulta, evento, tamaño de página y cursor opcional. Devuelve los elementos, un indicador de truncamiento y un cursor opaco cuando quedan elementos. El cursor queda ligado a la sesión, documento y revisión, ejecución, consulta, evento y tamaño de página que lo originaron. Usarlo con otra identidad, revisión, ejecución, consulta, evento o tamaño devuelve un error de uso y no cambia la ejecución.",
-  "verificacion": ["C4", "C5"]
+  "verificacion": ["C4", "C5", "C6", "C7"]
 }
 ```
 
@@ -192,8 +202,8 @@
   "rigor": ["estricto"],
   "origen": "derivado",
   "operacion": "trace",
-  "espera": {"estado_en": {"evento": 2, "estado": {"elements": [0, 1], "truncated": true, "next_cursor": "opaque"}}},
-  "paginacion": {"query": "array_cells", "event": 2, "page_size": 2, "cursor": null},
+  "espera": {"estado_en": {"evento": 1, "estado": {"elements": [{"sin_valor": true}, {"sin_valor": true}], "truncated": true, "next_cursor": "opaque"}}},
+  "paginacion": {"query": "array_cells", "target": 1, "event": 1, "page_size": 2, "cursor": null},
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
@@ -214,7 +224,37 @@
       {"clase": "statement_exited", "linea": 2}
     ]
   },
-  "paginacion": {"query": "array_cells", "event": 3, "page_size": 2, "cursor": "cursor_from_event_2"},
+  "paginacion": {"query": "array_cells", "target": 1, "event": 1, "page_size": 2, "cursor": "cursor_from_event_2"},
+  "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {"fallo": {"codigo": "usage"}, "eventos": [{"clase": "statement_entered", "linea": 2}, {"clase": "statement_exited", "linea": 2}]},
+  "paginacion": {"query": "array_cells", "target": 0, "event": 1, "page_size": 2, "cursor": null},
+  "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {"fallo": {"codigo": "usage"}, "eventos": [{"clase": "statement_entered", "linea": 2}, {"clase": "statement_exited", "linea": 2}]},
+  "paginacion": {"query": "array_cells", "target": 1, "event": 3, "page_size": 2, "cursor": null},
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }

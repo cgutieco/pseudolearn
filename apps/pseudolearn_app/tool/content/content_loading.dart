@@ -15,12 +15,12 @@ import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart
 import 'package:pseudolearn_app/domain/model/knowledge/learning_module.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/knowledge/syntax_reference_generator.dart';
+import 'content_engine.dart';
 import 'loaded_content.dart';
 import 'module_constructs.dart';
 
-const MarkerResolver contentMarkers =
-    MarkerResolver(reference: SyntaxReferenceGenerator());
+MarkerResolver get contentMarkers =>
+    MarkerResolver(reference: contentEngine.syntaxReferenceSource);
 
 BundledKnowledgeRepository repositoryOver(Directory knowledgeDir) {
   return BundledKnowledgeRepository(
@@ -39,8 +39,9 @@ Future<LoadedLanguage> loadLanguage({
 }) async {
   final repository = repositoryOver(knowledgeDir);
   final languageId = code == 'en' ? UiLanguageId.english : UiLanguageId.spanish;
-  final profileId =
-      code == 'en' ? SyntaxProfileId.english : SyntaxProfileId.classicSpanish;
+  final profileId = code == 'en'
+      ? SyntaxProfileId.english
+      : SyntaxProfileId.classicSpanish;
   final loaded = await repository.getEntries(languageId);
   if (loaded is! ContentLoaded<List<KnowledgeEntry>>) {
     errors.add('Manifest "$code" failed to load: ${_detailOf(loaded)}');
@@ -52,7 +53,13 @@ Future<LoadedLanguage> loadLanguage({
     languageId: languageId,
     profileId: profileId,
     entries: entries,
-    modules: await _modulesOf(repository, entries, languageId, profileId, errors),
+    modules: await _modulesOf(
+      repository,
+      entries,
+      languageId,
+      profileId,
+      errors,
+    ),
     exercises: _exercisesOf(knowledgeDir, entries, errors),
     exampleSources: _exampleSourcesOf(knowledgeDir, entries),
     specificationAnchors: _anchorsOf(entries),

@@ -6,6 +6,7 @@ mod builtin_checker;
 mod call_checker;
 mod checker;
 mod class_registry;
+pub mod constructor_rules;
 mod control_checker;
 mod diagnostic_arguments;
 mod dimension_checker;

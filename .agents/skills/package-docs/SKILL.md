@@ -35,7 +35,7 @@ decorativos ni prosa de marketing. Requiere documentación técnica operativa, e
    un tipo o un invariante. **La concisión se logra eliminando el ruido retórico y la narrativa, NUNCA omitiendo
    detalles técnicos, invariantes o casos límite.**
 6. **Un estándar para tres niveles:** La estructura de 8 secciones es idéntica para la raíz del monorepo (`/README.md`),
-   los paquetes de librería pura (`packages/pseudolearn_core/README.md`) y las aplicaciones clientes (
+   los paquetes de librería pura (`packages/pseudolearn_engine/README.md`) y las aplicaciones clientes (
    `apps/pseudolearn_app/README.md`).
 
 ---
@@ -65,7 +65,7 @@ Comandos directos y exactos, reproducibles sin dependencias ocultas:
 
 - **Requisitos previos y plataformas:** SDKs (versiones mínimas exactas), sistemas operativos soportados (macOS, iOS,
   Web/WASM) y variables/flags requeridos.
-- **Preparación e instalación:** Comandos exactos de dependencias (`pub get`) y generadores (`build_runner`).
+- **Preparación e instalación:** Comandos exactos de dependencias (`cargo fetch`, `flutter pub get` o la herramienta propia del miembro) y generadores oficiales.
 - **Ejecución en desarrollo:** Comandos exactos para levantar localmente (ej. `flutter run -d macos`).
 - **Compilación y build de producción:** Comandos exactos de release (ej. `flutter build macos --release`) y rutas de
   salida de artefactos.
@@ -152,13 +152,13 @@ Registro riguroso de fuentes externas analizadas (PSeInt, estándares Cambridge,
 
 ## Adaptación por Nivel en el Monorepo
 
-| Sección                       | Raíz del Monorepo (`/README.md`)                                                   | Paquete Motor (`pseudolearn_core`)                                                     | Aplicación Cliente (`pseudolearn_app`)                                                            |
+| Sección                       | Raíz del Monorepo (`/README.md`)                                                   | Paquete Motor (`pseudolearn_engine`)                                                     | Aplicación Cliente (`pseudolearn_app`)                                                            |
 |:------------------------------|:-----------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------|
 | **1. Qué es y qué no es**     | Ecosistema global de PseudoLearn, alcance del monorepo                             | Motor de lenguaje puro, agnóstico de UI/IO, compilable a nativo/JS/WASM                | Cliente interactivo Flutter (macOS, iOS), editor y visualizaciones                                |
 | **2. Guía operativa**         | Bootstrap del monorepo, tooling global, comandos transversales                     | `dart test`, `dart analyze`, `dart compile js/wasm`, scripts de tool/                  | `flutter run`, `flutter build macos/ipa`, empaquetado, perfiles                                   |
-| **3. Arquitectura**           | Mapa de paquetes (`packages/` vs `apps/`), dependencias inter-proyectos            | Pipeline concéntrico (`domain` → `syntax` → `semantic` → `evaluation` → `diagnostics`) | Arquitectura Hexagonal (`domain`, `engine`, `data`, `application`, `presentation`, `composition`) |
-| **4. Decisiones de diseño**   | Monorepo git puro, symlinks de tooling (`.agents/skills`), gestión de dependencias | AST sellado, gramática determinista, diagnósticos independientes de l10n               | BLoC/Cubit, lienzo fluido, tokens visuales, layout de diagramas (RFC 001-008 integrados)          |
-| **5. Reglas de código**       | Convenciones transversales, idioma (código EN, docs ES)                            | Límites de core (`file_lines: 300`, `params: 4`, imports relativos)                    | Límites de app (`file_lines: 250`, reglas de widgets, prohibición `await` en UI)                  |
+| **3. Arquitectura**           | Mapa de paquetes (`packages/` vs `apps/`), dependencias inter-proyectos            | Pipeline Rust de fuente, sintaxis, semántica, lowering, VM y API | Arquitectura Hexagonal (`domain`, `engine`, `data`, `application`, `presentation`, `composition`) |
+| **4. Decisiones de diseño**   | Monorepo git puro, symlinks de tooling (`.agents/skills`), gestión de dependencias | CST sin pérdidas, HIR, bytecode, VM y diagnósticos como datos               | BLoC/Cubit, lienzo fluido, tokens visuales, layout de diagramas (RFC 001-008 integrados)          |
+| **5. Reglas de código**       | Convenciones transversales, idioma (código EN, docs ES)                            | Límites Rust declarados por crate; Clippy estricto y verificadores del miembro                    | Límites de app (`file_lines: 250`, reglas de widgets, prohibición `await` en UI)                  |
 | **6. Decisiones de producto** | Filosofía educativa de PseudoLearn                                                 | Determinismo de ejecución, lenguaje estructurado sin saltos                            | Presentación no punitiva, sincronización de las 4 superficies por `NodeId`                        |
 | **7. Verificación**           | Pipeline de verificación completa de todos los paquetes                            | Matriz de verificadores de arquitectura de lenguaje y límites                          | Verificadores de arquitectura hexagonal, límites de widget, lints de strings                      |
 | **8. Fuentes consultadas**    | Herramientas de monorepos analizadas                                               | Gramáticas PSeInt, Cambridge, OCR, literatura de compiladores                          | HIG/Material adaptados a tokens propios, Sugiyama, Nassi-Shneiderman                              |

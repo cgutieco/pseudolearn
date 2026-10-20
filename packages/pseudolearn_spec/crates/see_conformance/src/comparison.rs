@@ -105,7 +105,7 @@ fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         "diagnosticos_ordenados" => ordered_diagnostics(value, actual.get("diagnostics")),
         "eventos" => events(value, actual.get("events")),
         "estado" => actual.get("states") == Some(value),
-        "estado_en" => actual.get("state_at") == value.get("estado"),
+        "estado_en" => crate::tool_comparison::state_at(value, actual),
         "limite" => termination_limit(value, actual),
         _ => crate::tool_comparison::matches(name, value, actual),
     }

@@ -119,3 +119,20 @@ pub(crate) fn generated_expectation(
         .ok_or("SEE-PROPERTY: oracle overflow")?;
     Ok(json!({"salida": format!("sample!:{total}:{}\n", program.input), "terminacion":"completed"}))
 }
+
+pub(crate) fn compilations(
+    corpus: &Corpus,
+    vocabulary: &Vocabulary,
+) -> Result<Vec<Scenario>, String> {
+    let mut scenarios = Vec::new();
+    for specification in corpus {
+        for case in &specification.blocks {
+            if case.kind == "caso"
+                && matches!(requests::operation(case), "analyze" | "execute" | "trace")
+            {
+                append_case(case, vocabulary, &mut scenarios)?;
+            }
+        }
+    }
+    Ok(scenarios)
+}

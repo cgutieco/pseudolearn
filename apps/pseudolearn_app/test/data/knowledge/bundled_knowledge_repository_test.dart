@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
 import 'package:pseudolearn_app/data/knowledge/marker_resolver.dart';
@@ -12,7 +13,6 @@ import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/knowledge/syntax_reference_generator.dart';
 
 const String _manifest = '''
 {
@@ -89,9 +89,11 @@ const KnowledgeEntry _moduleEntry = KnowledgeEntry(
   order: 1,
 );
 
-BundledKnowledgeRepository _repository({Map<String, String> assets = const {}}) {
+BundledKnowledgeRepository _repository({
+  Map<String, String> assets = const {},
+}) {
   return BundledKnowledgeRepository(
-    markers: const MarkerResolver(reference: SyntaxReferenceGenerator()),
+    markers: MarkerResolver(reference: nativeTestEngine.syntaxReferenceSource),
     assetLoader: (path) async {
       final source = assets[path];
       if (source == null) throw Exception('Asset not found: $path');
@@ -110,7 +112,9 @@ const Map<String, String> _assets = {
 void main() {
   group('BundledKnowledgeRepository entries', () {
     test('serves the manifest v2 entries', () async {
-      final result = await _repository(assets: _assets).getEntries(UiLanguageId.spanish);
+      final result = await _repository(
+        assets: _assets,
+      ).getEntries(UiLanguageId.spanish);
       final entries = (result as ContentLoaded<List<KnowledgeEntry>>).value;
 
       expect(entries.length, 2);
@@ -140,36 +144,43 @@ void main() {
   });
 
   group('BundledKnowledgeRepository modules', () {
-    test('reads a module with its seven parts and resolves its markers', () async {
-      final result = await _repository(assets: _assets).getModule(
-        entry: _moduleEntry,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
-      final module = (result as ContentLoaded<LearningModule>).value;
+    test(
+      'reads a module with its seven parts and resolves its markers',
+      () async {
+        final result = await _repository(assets: _assets).getModule(
+          entry: _moduleEntry,
+          profileId: SyntaxProfileId.classicSpanish,
+          languageId: UiLanguageId.spanish,
+        );
+        final module = (result as ContentLoaded<LearningModule>).value;
 
-      expect(module.id, 'CON-B1');
-      expect(module.track, LearningTrack.imperative);
-      expect(module.sections.length, 7);
+        expect(module.id, 'CON-B1');
+        expect(module.track, LearningTrack.imperative);
+        expect(module.sections.length, 7);
 
-      final development = module.sectionOf(ModulePart.development)!;
-      expect(
-        (development.blocks.first as ParagraphBlock).text,
-        contains('Mientras'),
-      );
-      expect(development.blocks.last, isA<CodeBlock>());
-      expect((development.blocks.last as CodeBlock).code, contains('Algoritmo Suma'));
-      expect((development.blocks.last as CodeBlock).title, 'Suma');
-    });
+        final development = module.sectionOf(ModulePart.development)!;
+        expect(
+          (development.blocks.first as ParagraphBlock).text,
+          contains('Mientras'),
+        );
+        expect(development.blocks.last, isA<CodeBlock>());
+        expect(
+          (development.blocks.last as CodeBlock).code,
+          contains('Algoritmo Suma'),
+        );
+        expect((development.blocks.last as CodeBlock).title, 'Suma');
+      },
+    );
 
     test('a module whose file is absent is a named failure', () async {
-      final result = await _repository(assets: {
-        'assets/knowledge/manifest_es.json': _manifest,
-      }).getModule(
-        entry: _moduleEntry,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+      final result =
+          await _repository(
+            assets: {'assets/knowledge/manifest_es.json': _manifest},
+          ).getModule(
+            entry: _moduleEntry,
+            profileId: SyntaxProfileId.classicSpanish,
+            languageId: UiLanguageId.spanish,
+          );
 
       expect(
         (result as ContentLoadFailed<LearningModule>).failure,
@@ -199,15 +210,21 @@ void main() {
     });
 
     test('a module with an unresolvable marker is a named failure', () async {
-      final broken = _module.replaceAll('{{lexema:whileKeyword}}', '{{lexema:goto}}');
-      final result = await _repository(assets: {
-        ..._assets,
-        'assets/knowledge/modules/CON-B1_es.md': broken,
-      }).getModule(
-        entry: _moduleEntry,
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
+      final broken = _module.replaceAll(
+        '{{lexema:whileKeyword}}',
+        '{{lexema:goto}}',
       );
+      final result =
+          await _repository(
+            assets: {
+              ..._assets,
+              'assets/knowledge/modules/CON-B1_es.md': broken,
+            },
+          ).getModule(
+            entry: _moduleEntry,
+            profileId: SyntaxProfileId.classicSpanish,
+            languageId: UiLanguageId.spanish,
+          );
 
       expect(
         (result as ContentLoadFailed<LearningModule>).failure,
@@ -218,8 +235,9 @@ void main() {
 
   group('BundledKnowledgeRepository exercises and raw content', () {
     test('reads an exercise document', () async {
-      final result = await _repository(assets: _assets)
-          .getExercise('exercises/CON-B1-E1_es.json');
+      final result = await _repository(
+        assets: _assets,
+      ).getExercise('exercises/CON-B1-E1_es.json');
 
       expect((result as ContentLoaded<Exercise>).value.id, 'CON-B1-E1');
     });
@@ -234,31 +252,42 @@ void main() {
     });
 
     test('raw content of a missing asset is empty, not an exception', () async {
-      expect(await _repository().getRawContent('examples/absent.pseudo'), isEmpty);
+      expect(
+        await _repository().getRawContent('examples/absent.pseudo'),
+        isEmpty,
+      );
       expect(await _repository().getRawContent(''), isEmpty);
     });
 
     test('serves the raw source of an example', () async {
-      final source = await _repository(assets: _assets)
-          .getRawContent('examples/sum_es.pseudo');
+      final source = await _repository(
+        assets: _assets,
+      ).getRawContent('examples/sum_es.pseudo');
 
       expect(source, contains('Algoritmo Suma'));
     });
   });
 
   group('BundledKnowledgeRepository documents', () {
-    test('serves a plain markdown document with its markers resolved', () async {
-      final result = await _repository(assets: {
-        'assets/knowledge/manifest_es.json': _manifest,
-        'assets/knowledge/support/contact_es.md': '# Contacto\n\nEscribe a soporte.',
-      }).getDocumentBlocks(
-        path: 'support/contact_es.md',
-        profileId: SyntaxProfileId.classicSpanish,
-        languageId: UiLanguageId.spanish,
-      );
+    test(
+      'serves a plain markdown document with its markers resolved',
+      () async {
+        final result =
+            await _repository(
+              assets: {
+                'assets/knowledge/manifest_es.json': _manifest,
+                'assets/knowledge/support/contact_es.md':
+                    '# Contacto\n\nEscribe a soporte.',
+              },
+            ).getDocumentBlocks(
+              path: 'support/contact_es.md',
+              profileId: SyntaxProfileId.classicSpanish,
+              languageId: UiLanguageId.spanish,
+            );
 
-      expect((result as ContentLoaded<List<ContentBlock>>).value.length, 2);
-    });
+        expect((result as ContentLoaded<List<ContentBlock>>).value.length, 2);
+      },
+    );
 
     test('a missing document is a named failure', () async {
       final result = await _repository().getDocumentBlocks(

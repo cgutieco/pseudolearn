@@ -1,3 +1,5 @@
+import 'package:pseudolearn_app/domain/ports/program_execution.dart';
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
@@ -5,7 +7,6 @@ import 'package:pseudolearn_app/application/execution/step_settlement.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
 
 const _counted = '''
 Algoritmo LoopTest
@@ -23,8 +24,8 @@ Algoritmo Interminable
 FinAlgoritmo
 ''';
 
-CoreProgramExecution _started(String source) {
-  final execution = CoreProgramExecution();
+ProgramExecution _started(String source) {
+  final execution = nativeTestEngine.createProgramExecution();
   execution.startExecution(
     sourceCode: source,
     profileId: SyntaxProfileId.classicSpanish,
@@ -101,7 +102,7 @@ void main() {
     test('an execution that never started settles at once', () async {
       final steps = <ExecutionStep>[];
       await const StepBatchRunner(batchSize: 5).runUntilSettled(
-        CoreProgramExecution(),
+        nativeTestEngine.createProgramExecution(),
         settlement: _toEnd,
         fromRevision: 0,
         shouldStop: () => false,

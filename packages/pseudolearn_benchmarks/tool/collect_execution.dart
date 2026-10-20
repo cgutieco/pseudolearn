@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'collect.dart';
+import 'measurement_environment.dart';
 import 'collect_frontend.dart' show frontendEnvironment, save;
 import 'statistics.dart';
 import 'execution_statistics.dart';

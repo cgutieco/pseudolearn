@@ -375,3 +375,50 @@ fn switch_and_class_children_expose_structural_roles() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn successor_invalidates_the_previous_revision_and_preserves_unrelated_documents()
+-> Result<(), String> {
+    let mut session = ApiSession::default();
+    let first = document(&mut session, INHERITANCE)?;
+    let unrelated = document(&mut session, INHERITANCE)?;
+    let original = view(&mut session, &first);
+    let unchanged = view(&mut session, &unrelated);
+    let node = original
+        .pointer("/value/nodes/0/node_id")
+        .ok_or("missing node")?;
+    let rejected = session.call(
+        "create_document",
+        &json!({"program":INHERITANCE,"previous_document":"invalid"}),
+    );
+    assert_eq!(rejected.pointer("/failure/family"), Some(&json!("usage")));
+    assert_eq!(view(&mut session, &first), original);
+    let successor = session.call(
+        "create_document",
+        &json!({"program":INHERITANCE,"previous_document":first}),
+    );
+    let successor = successor
+        .pointer("/value/resource")
+        .ok_or("missing successor")?;
+    assert_eq!(
+        view(&mut session, &first).pointer("/failure/family"),
+        Some(&json!("usage"))
+    );
+    let stale = session.call("query_node", &json!({"resource":successor,"node_id":node}));
+    assert_eq!(stale.pointer("/failure/family"), Some(&json!("usage")));
+    let current = view(&mut session, successor);
+    let current_node = current
+        .pointer("/value/nodes/0/node_id")
+        .ok_or("missing current node")?;
+    assert!(
+        session
+            .call(
+                "query_node",
+                &json!({"resource":successor,"node_id":current_node})
+            )
+            .pointer("/value/node")
+            .is_some()
+    );
+    assert_eq!(view(&mut session, &unrelated), unchanged);
+    Ok(())
+}

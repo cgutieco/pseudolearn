@@ -4,6 +4,8 @@ use serde_json::Value;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Conformance {
+    #[serde(default = "active_subject")]
+    pub estado: String,
     pub sujeto: String,
     pub paquete: String,
     pub activadas: Vec<String>,
@@ -46,4 +48,8 @@ pub struct Evidence {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub properties: Vec<crate::properties::PropertyRun>,
     pub stderr: String,
+}
+
+fn active_subject() -> String {
+    "activo".to_owned()
 }

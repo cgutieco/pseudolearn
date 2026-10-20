@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
-import 'package:pseudolearn_app/engine/mapping/profile_catalog.dart';
 import 'content_loading.dart';
 import 'example_checks.dart';
 import 'language_checks.dart';
@@ -54,7 +53,9 @@ List<String> _validateFileReferences(
       referenced.add(p.normalize(path).replaceAll(r'\', '/'));
       final file = File(p.join(knowledgeDir.path, path));
       if (!file.existsSync()) {
-        errors.add('Manifest "${language.code}" references missing file: $path');
+        errors.add(
+          'Manifest "${language.code}" references missing file: $path',
+        );
       }
     }
   }
@@ -68,9 +69,13 @@ List<String> _orphanFiles(Directory knowledgeDir, Set<String> referenced) {
     final name = p.basename(file.path);
     if (name.startsWith('manifest_') && name.endsWith('.json')) continue;
     if (name.startsWith('.')) continue;
-    final relative = p.normalize(p.relative(file.path, from: knowledgeDir.path)).replaceAll(r'\', '/');
+    final relative = p
+        .normalize(p.relative(file.path, from: knowledgeDir.path))
+        .replaceAll(r'\', '/');
     if (referenced.contains(relative)) continue;
-    errors.add('Orphan file in knowledge assets not referenced by any manifest: $relative');
+    errors.add(
+      'Orphan file in knowledge assets not referenced by any manifest: $relative',
+    );
   }
   return errors;
 }
@@ -88,12 +93,14 @@ List<String> _validateAcrossLanguages(List<LoadedLanguage> languages) {
       errors.addAll(checkSpecificationParity(b, a));
       errors.addAll(checkExerciseParity(a, b));
       errors.addAll(checkExerciseParity(b, a));
-      errors.addAll(checkExamplesShareShape(
-        a: a,
-        b: b,
-        profileA: ProfileCatalog.toLanguageProfile(a.profileId),
-        profileB: ProfileCatalog.toLanguageProfile(b.profileId),
-      ));
+      errors.addAll(
+        checkExamplesShareShape(
+          a: a,
+          b: b,
+          profileA: a.profileId,
+          profileB: b.profileId,
+        ),
+      );
     }
   }
   return errors;
@@ -104,10 +111,14 @@ List<String> _identifierSymmetry(LoadedLanguage a, LoadedLanguage b) {
   final idsA = _idsOf(a.entries);
   final idsB = _idsOf(b.entries);
   for (final id in idsA.difference(idsB)) {
-    errors.add('Entry id "$id" in "${a.code}" manifest is missing in "${b.code}" manifest');
+    errors.add(
+      'Entry id "$id" in "${a.code}" manifest is missing in "${b.code}" manifest',
+    );
   }
   for (final id in idsB.difference(idsA)) {
-    errors.add('Entry id "$id" in "${b.code}" manifest is missing in "${a.code}" manifest');
+    errors.add(
+      'Entry id "$id" in "${b.code}" manifest is missing in "${a.code}" manifest',
+    );
   }
   return errors;
 }

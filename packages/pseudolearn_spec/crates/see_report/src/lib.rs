@@ -33,6 +33,9 @@ fn row(
     conformance: &Conformance,
     evidence: &Evidence,
 ) -> Value {
+    if conformance.estado == "retirado" {
+        return retired_row(specification, rule, conformance);
+    }
     let reference = format!(
         "{}@{}#{}",
         specification.metadata.id,
@@ -62,11 +65,25 @@ fn row(
     } else {
         measurement(&verdicts)
     };
-    let cases = verdicts.len();
-    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": cases, "measurements": measurements, "state": specification.metadata.estado})
+    json!({"rule": reference, "subject": conformance.sujeto, "binding": binding.map_or("sin vinculo", |binding| binding.estado.as_str()), "measured": measured, "reason": binding.and_then(|binding| binding.justificacion.as_ref()), "cases": verdicts.len(), "measurements": measurements, "state": specification.metadata.estado})
+}
+
+fn retired_row(
+    specification: &see_model::Specification,
+    rule: &see_model::Block,
+    conformance: &Conformance,
+) -> Value {
+    json!({"rule": format!("{}@{}#{}", specification.metadata.id,
+            specification.metadata.version, field(rule, "id")),
+            "subject": conformance.sujeto, "binding": "no aplicable",
+            "measured": "no aplicable", "reason": "retired subject; historical evidence preserved",
+            "cases": 0, "measurements": [], "state": specification.metadata.estado})
 }
 
 pub fn regressions(rows: &[Value], conformance: &Conformance) -> Vec<String> {
+    if conformance.estado == "retirado" {
+        return Vec::new();
+    }
     rows.iter()
         .filter(|row| {
             let state = row.get("state").and_then(Value::as_str).unwrap_or("");

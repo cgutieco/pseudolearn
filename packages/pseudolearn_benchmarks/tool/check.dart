@@ -11,7 +11,7 @@ void main() {
     final rules =
         loadYaml(File('architecture.yaml').readAsStringSync()) as YamlMap;
     final findings = <String>[];
-    for (final root in ['lib', 'bin', 'tool', 'test']) {
+    for (final root in ['lib', 'tool', 'test']) {
       for (final entry in Directory(
         root,
       ).listSync(recursive: true).whereType<File>()) {
@@ -89,10 +89,6 @@ List<String> checkImports(CompilationUnit unit, String path, YamlMap rules) {
   if (sourceLayer != null && rule == null) findings.add('$path LAYER-DECLARED');
   for (final directive in unit.directives.whereType<UriBasedDirective>()) {
     final uri = directive.uri.stringValue ?? '';
-    if (uri.startsWith('package:pseudolearn_core/') &&
-        uri != 'package:pseudolearn_core/pseudolearn_core.dart') {
-      findings.add('$path LAYER-DIRECTION');
-    }
     if (sourceLayer == 'tooling') {
       if (!uri.startsWith('package:') && !uri.startsWith('dart:')) {
         final target = File(path).absolute.uri.resolve(uri).path;
@@ -119,10 +115,6 @@ List<String> checkImports(CompilationUnit unit, String path, YamlMap rules) {
     }
     if (rule == null || uri.startsWith('dart:')) continue;
     if (uri.startsWith('package:')) {
-      if (uri == 'package:pseudolearn_core/pseudolearn_core.dart' &&
-          sourceLayer == 'execution') {
-        continue;
-      }
       findings.add('$path LAYER-DIRECTION');
       continue;
     }

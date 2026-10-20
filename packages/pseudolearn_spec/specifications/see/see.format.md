@@ -8,6 +8,7 @@ version: 0.3.0
 duenos: [responsable-especificaciones]
 sujetos: [see]
 resumen: Formato de especificaciones.
+cambio: {"clase": "verificacion_anadida", "impacto_usuarios": "Se conserva la versión numérica por autorización.", "impacto_implementaciones": "Sujetos retirados y alcance de casos explícitos.", "justificacion": "Verificación de la migración autorizada.", "revisado_por": "revision-independiente-automatizada"}
 ---
 
 # Formato de especificaciones
@@ -26,7 +27,7 @@ justificacion: Revisión estructural manual de arranque contra el plan aprobado;
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "sistema",
-  "texto": "Las definiciones admiten valor como objeto normativo; los casos admiten semilla opcional de entero con signo de 64 bits, transmitida a seed sin alterar el valor; ausente usa 42. diagnosticos compara multiconjuntos y diagnosticos_ordenados exige el orden exacto sin ordenar ni deduplicar evidencia.",
+  "texto": "Los casos admiten sujetos opcional como subconjunto no vacío de los sujetos declarados: ausente aplica a todos; un sujeto excluido no ejecuta ni aporta evidencia para ese caso. Las definiciones admiten valor como objeto normativo; los casos admiten semilla opcional de entero con signo de 64 bits, transmitida a seed sin alterar el valor; ausente usa 42. diagnosticos compara multiconjuntos y diagnosticos_ordenados exige el orden exacto sin ordenar ni deduplicar evidencia.",
   "verificacion": [
     "estructural"
   ],

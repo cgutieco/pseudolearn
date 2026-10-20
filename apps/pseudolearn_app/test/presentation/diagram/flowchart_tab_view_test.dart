@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,8 +12,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_tab_view.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
@@ -52,13 +51,15 @@ Proceso Termostato
 FinProceso
 ''';
 
-DiagramProgram _programOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _programOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
-DiagramProgram _structogramOf(String source) => StructogramLayout().buildDiagram(
+DiagramProgram _structogramOf(String source) =>
+    nativeTestEngine.structogramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
@@ -67,27 +68,26 @@ DiagramProgram _structogramOf(String source) => StructogramLayout().buildDiagram
 DiagramState _stateOf(
   String source, {
   DiagramNotation notation = DiagramNotation.flowchart,
-}) =>
-    DiagramState(
-      flowchart: _programOf(source),
-      structogram: _structogramOf(source),
-      classDiagram: const DiagramScene.empty(),
-      notation: notation,
-      hasValidAst: true,
-    );
+}) => DiagramState(
+  flowchart: _programOf(source),
+  structogram: _structogramOf(source),
+  classDiagram: const DiagramScene.empty(),
+  notation: notation,
+  hasValidAst: true,
+);
 
 ExecutionFocus _focusOn(ProgramNodeId nodeId) => ExecutionFocus(
-      nodeId: nodeId,
-      range: const SourceRange(
-        startOffset: 0,
-        endOffset: 1,
-        startLine: 1,
-        startColumn: 1,
-        endLine: 1,
-        endColumn: 2,
-      ),
-      kind: ExecutionFocusKind.statement,
-    );
+  nodeId: nodeId,
+  range: const SourceRange(
+    startOffset: 0,
+    endOffset: 1,
+    startLine: 1,
+    startColumn: 1,
+    endLine: 1,
+    endColumn: 2,
+  ),
+  kind: ExecutionFocusKind.statement,
+);
 
 DiagramNode _nodeSaying(DiagramScene scene, String text) {
   for (final node in scene.nodes) {
@@ -199,8 +199,9 @@ void main() {
       expect(find.byType(InteractiveViewer), findsNothing);
     });
 
-    testWidgets('shows notation switch in empty state and triggers callback',
-        (tester) async {
+    testWidgets('shows notation switch in empty state and triggers callback', (
+      tester,
+    ) async {
       DiagramNotation? selected;
       await _pump(
         tester,
@@ -219,44 +220,46 @@ void main() {
     });
 
     testWidgets(
-        'shows class diagram empty message with notation switch when program has no classes',
-        (tester) async {
-      DiagramNotation? selected;
-      final state = DiagramState(
-        flowchart: _programOf(_wideProgram),
-        structogram: _structogramOf(_wideProgram),
-        classDiagram: const DiagramScene.empty(),
-        notation: DiagramNotation.classDiagram,
-        hasValidAst: true,
-      );
+      'shows class diagram empty message with notation switch when program has no classes',
+      (tester) async {
+        DiagramNotation? selected;
+        final state = DiagramState(
+          flowchart: _programOf(_wideProgram),
+          structogram: _structogramOf(_wideProgram),
+          classDiagram: const DiagramScene.empty(),
+          notation: DiagramNotation.classDiagram,
+          hasValidAst: true,
+        );
 
-      await _pump(
-        tester,
-        state,
-        onNotationSelected: (notation) => selected = notation,
-      );
+        await _pump(
+          tester,
+          state,
+          onNotationSelected: (notation) => selected = notation,
+        );
 
-      expect(
-        find.text('Este documento no declara ninguna clase.'),
-        findsOneWidget,
-      );
-      expect(find.text('Ordinograma'), findsOneWidget);
-      expect(find.text('Estructograma'), findsOneWidget);
-      expect(find.text('Diagrama de clases'), findsOneWidget);
+        expect(
+          find.text('Este documento no declara ninguna clase.'),
+          findsOneWidget,
+        );
+        expect(find.text('Ordinograma'), findsOneWidget);
+        expect(find.text('Estructograma'), findsOneWidget);
+        expect(find.text('Diagrama de clases'), findsOneWidget);
 
-      await tester.tap(find.text('Ordinograma'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Ordinograma'));
+        await tester.pumpAndSettle();
 
-      expect(selected, DiagramNotation.flowchart);
-    });
+        expect(selected, DiagramNotation.flowchart);
+      },
+    );
   });
 
   group('assisted camera', () {
     const viewport = Size(390, 700);
     const half = Duration(milliseconds: 120);
 
-    testWidgets('leaves the framing alone when the assistance is off',
-        (tester) async {
+    testWidgets('leaves the framing alone when the assistance is off', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final target = _nodeSaying(state.scene, 'Confort');
       await _pump(tester, state, size: viewport);
@@ -272,8 +275,9 @@ void main() {
       expect(_currentMatrix(tester), equals(before));
     });
 
-    testWidgets('brings the active block to the centre of the panel',
-        (tester) async {
+    testWidgets('brings the active block to the centre of the panel', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final target = _nodeSaying(state.scene, 'lecturas <- lecturas + 1');
       await _pump(tester, state, size: viewport);
@@ -293,46 +297,49 @@ void main() {
       expect(_currentScale(tester), greaterThan(restingScale));
     });
 
-    testWidgets('travels through the diagram instead of appearing on the step',
-        (tester) async {
-      final state = _stateOf(_tallProgram);
-      final first = _nodeSaying(state.scene, 'temperatura <- 30');
-      final last = _nodeSaying(state.scene, 'Confort');
-      await _pump(
-        tester,
-        state,
-        size: viewport,
-        followsExecutionFocus: true,
-        focus: _focusOn(first.nodeId!),
-      );
-      final departure = _currentMatrix(tester).clone();
+    testWidgets(
+      'travels through the diagram instead of appearing on the step',
+      (tester) async {
+        final state = _stateOf(_tallProgram);
+        final first = _nodeSaying(state.scene, 'temperatura <- 30');
+        final last = _nodeSaying(state.scene, 'Confort');
+        await _pump(
+          tester,
+          state,
+          size: viewport,
+          followsExecutionFocus: true,
+          focus: _focusOn(first.nodeId!),
+        );
+        final departure = _currentMatrix(tester).clone();
 
-      await _pump(
-        tester,
-        state,
-        size: viewport,
-        followsExecutionFocus: true,
-        focus: _focusOn(last.nodeId!),
-        settles: false,
-      );
-      await tester.pump(half);
-      final midway = _currentMatrix(tester).clone();
-      await tester.pumpAndSettle();
-      final arrival = _currentMatrix(tester).clone();
+        await _pump(
+          tester,
+          state,
+          size: viewport,
+          followsExecutionFocus: true,
+          focus: _focusOn(last.nodeId!),
+          settles: false,
+        );
+        await tester.pump(half);
+        final midway = _currentMatrix(tester).clone();
+        await tester.pumpAndSettle();
+        final arrival = _currentMatrix(tester).clone();
 
-      expect(midway, isNot(equals(departure)));
-      expect(midway, isNot(equals(arrival)));
-      expect(
-        midway.getTranslation().y,
-        inExclusiveRange(
-          arrival.getTranslation().y,
-          departure.getTranslation().y,
-        ),
-      );
-    });
+        expect(midway, isNot(equals(departure)));
+        expect(midway, isNot(equals(arrival)));
+        expect(
+          midway.getTranslation().y,
+          inExclusiveRange(
+            arrival.getTranslation().y,
+            departure.getTranslation().y,
+          ),
+        );
+      },
+    );
 
-    testWidgets('a step arriving mid-travel carries on from where it is',
-        (tester) async {
+    testWidgets('a step arriving mid-travel carries on from where it is', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final first = _nodeSaying(state.scene, 'temperatura <- 30');
       final middle = _nodeSaying(state.scene, 'lecturas <- lecturas + 1');
@@ -371,8 +378,9 @@ void main() {
       expect((resumed - departure).abs(), greaterThan(20.0));
     });
 
-    testWidgets('a hand on the canvas takes the camera off the rails',
-        (tester) async {
+    testWidgets('a hand on the canvas takes the camera off the rails', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final first = _nodeSaying(state.scene, 'temperatura <- 30');
       final last = _nodeSaying(state.scene, 'Confort');
@@ -400,8 +408,9 @@ void main() {
       expect((centre.dy - viewport.height / 2).abs(), greaterThan(10.0));
     });
 
-    testWidgets('pulls back to the whole diagram when the execution ends',
-        (tester) async {
+    testWidgets('pulls back to the whole diagram when the execution ends', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final target = _nodeSaying(state.scene, 'Confort');
       await _pump(
@@ -413,25 +422,24 @@ void main() {
       );
       final whileRunning = _currentScale(tester);
 
-      await _pump(
-        tester,
-        state,
-        size: viewport,
-        followsExecutionFocus: true,
-      );
+      await _pump(tester, state, size: viewport, followsExecutionFocus: true);
 
-      final fitted = FlowchartViewport(scene: state.scene, viewport: viewport)
-          .fitMatrix()
-          .getMaxScaleOnAxis();
+      final fitted = FlowchartViewport(
+        scene: state.scene,
+        viewport: viewport,
+      ).fitMatrix().getMaxScaleOnAxis();
       expect(_currentScale(tester), closeTo(fitted, 0.001));
       expect(_currentScale(tester), lessThan(whileRunning));
     });
 
-    testWidgets('arrives already framed when the notation changes',
-        (tester) async {
+    testWidgets('arrives already framed when the notation changes', (
+      tester,
+    ) async {
       final flowchartState = _stateOf(_tallProgram);
-      final structogramState =
-          _stateOf(_tallProgram, notation: DiagramNotation.structogram);
+      final structogramState = _stateOf(
+        _tallProgram,
+        notation: DiagramNotation.structogram,
+      );
       final symbol = _nodeSaying(flowchartState.scene, 'Confort');
       final cell = _nodeSaying(structogramState.scene, 'Confort');
       await _pump(
@@ -451,22 +459,24 @@ void main() {
         settles: false,
       );
 
-      final framed = FlowchartViewport(
-        scene: structogramState.scene,
-        viewport: viewport,
-      ).matrixForFrame(
-        DiagramFocusFrame(
-          x: cell.x,
-          y: cell.y,
-          width: cell.width,
-          height: cell.height,
-        ),
-      );
+      final framed =
+          FlowchartViewport(
+            scene: structogramState.scene,
+            viewport: viewport,
+          ).matrixForFrame(
+            DiagramFocusFrame(
+              x: cell.x,
+              y: cell.y,
+              width: cell.width,
+              height: cell.height,
+            ),
+          );
       expect(_currentMatrix(tester), equals(framed));
     });
 
-    testWidgets('does not move for a step that stays on the same block',
-        (tester) async {
+    testWidgets('does not move for a step that stays on the same block', (
+      tester,
+    ) async {
       final state = _stateOf(_tallProgram);
       final header = _nodeSaying(state.scene, 'temperatura > 24');
       await _pump(
@@ -524,48 +534,45 @@ void main() {
       );
     });
 
-    testWidgets('a diagram wider than the window fits entirely after reframing',
-        (tester) async {
-      final scene = _programOf(_wideProgram).sceneFor(null);
-      const viewport = Size(400, 700);
-      await _pump(
-        tester,
-        _stateOf(_wideProgram),
-        size: viewport,
-      );
-      expect(scene.width, greaterThan(viewport.width));
+    testWidgets(
+      'a diagram wider than the window fits entirely after reframing',
+      (tester) async {
+        final scene = _programOf(_wideProgram).sceneFor(null);
+        const viewport = Size(400, 700);
+        await _pump(tester, _stateOf(_wideProgram), size: viewport);
+        expect(scene.width, greaterThan(viewport.width));
 
-      await _tapControl(tester, Icons.center_focus_strong);
-      final scale = _currentScale(tester);
+        await _tapControl(tester, Icons.center_focus_strong);
+        final scale = _currentScale(tester);
 
-      expect(scale, lessThan(1.0));
-      expect(scene.width * scale, lessThanOrEqualTo(viewport.width + 0.001));
-      expect(scene.height * scale, lessThanOrEqualTo(viewport.height + 0.001));
-    });
+        expect(scale, lessThan(1.0));
+        expect(scene.width * scale, lessThanOrEqualTo(viewport.width + 0.001));
+        expect(
+          scene.height * scale,
+          lessThanOrEqualTo(viewport.height + 0.001),
+        );
+      },
+    );
 
     testWidgets(
-        'reframing a diagram smaller than the window does not shrink it', (
-      tester,
-    ) async {
-      await _pump(
-        tester,
-        _stateOf('Proceso P\nFinProceso\n'),
-        size: const Size(1200, 900),
-      );
-      await _tapControl(tester, Icons.center_focus_strong);
-      expect(_currentScale(tester), closeTo(1.0, 0.001));
-    });
+      'reframing a diagram smaller than the window does not shrink it',
+      (tester) async {
+        await _pump(
+          tester,
+          _stateOf('Proceso P\nFinProceso\n'),
+          size: const Size(1200, 900),
+        );
+        await _tapControl(tester, Icons.center_focus_strong);
+        expect(_currentScale(tester), closeTo(1.0, 0.001));
+      },
+    );
 
     testWidgets(
       'a diagram taller than twice the window fits entirely, below the static zoom floor',
       (tester) async {
         final scene = _programOf(_wideProgram).sceneFor(null);
         const tinyViewport = Size(400, 120);
-        await _pump(
-          tester,
-          _stateOf(_wideProgram),
-          size: tinyViewport,
-        );
+        await _pump(tester, _stateOf(_wideProgram), size: tinyViewport);
         expect(scene.height, greaterThan(tinyViewport.height * 2));
 
         await _tapControl(tester, Icons.center_focus_strong);
@@ -587,11 +594,7 @@ void main() {
       'zooming out on a diagram taller than the window goes past the static floor',
       (tester) async {
         const tinyViewport = Size(400, 120);
-        await _pump(
-          tester,
-          _stateOf(_wideProgram),
-          size: tinyViewport,
-        );
+        await _pump(tester, _stateOf(_wideProgram), size: tinyViewport);
 
         await _tapControl(tester, Icons.zoom_out, times: 12);
         final scale = _currentScale(tester);
@@ -605,55 +608,54 @@ void main() {
     );
 
     testWidgets(
-        'panning after fitting a tall diagram reaches its bottom-most node', (
+      'panning after fitting a tall diagram reaches its bottom-most node',
+      (tester) async {
+        final scene = _programOf(_wideProgram).sceneFor(null);
+        const tinyViewport = Size(400, 120);
+        await _pump(tester, _stateOf(_wideProgram), size: tinyViewport);
+        await _tapControl(tester, Icons.center_focus_strong);
+
+        await tester.drag(
+          find.byType(InteractiveViewer),
+          const Offset(0, -100000),
+        );
+        await tester.pumpAndSettle();
+
+        final viewer = tester.widget<InteractiveViewer>(
+          find.byType(InteractiveViewer),
+        );
+        final matrix = viewer.transformationController!.value;
+        final scale = matrix.getMaxScaleOnAxis();
+        final visibleBottom = -matrix.getTranslation().y + tinyViewport.height;
+
+        expect(visibleBottom, greaterThanOrEqualTo(scene.height * scale));
+        expect(
+          visibleBottom,
+          closeTo(
+            (scene.height + ComponentMetricsTokens.flowCanvasPanMargin) * scale,
+            1.0,
+          ),
+        );
+      },
+    );
+
+    testWidgets(
+      'a shared panel frames the whole scene as soon as it is laid out',
+      (tester) async {
+        await _pump(
+          tester,
+          _stateOf(_wideProgram),
+          size: const Size(360, 200),
+          framesSceneOnLayout: true,
+        );
+
+        expect(_currentScale(tester), lessThan(1.0));
+      },
+    );
+
+    testWidgets('shrinking the panel refits the scene into what is left', (
       tester,
     ) async {
-      final scene = _programOf(_wideProgram).sceneFor(null);
-      const tinyViewport = Size(400, 120);
-      await _pump(
-        tester,
-        _stateOf(_wideProgram),
-        size: tinyViewport,
-      );
-      await _tapControl(tester, Icons.center_focus_strong);
-
-      await tester.drag(
-        find.byType(InteractiveViewer),
-        const Offset(0, -100000),
-      );
-      await tester.pumpAndSettle();
-
-      final viewer = tester.widget<InteractiveViewer>(
-        find.byType(InteractiveViewer),
-      );
-      final matrix = viewer.transformationController!.value;
-      final scale = matrix.getMaxScaleOnAxis();
-      final visibleBottom = -matrix.getTranslation().y + tinyViewport.height;
-
-      expect(visibleBottom, greaterThanOrEqualTo(scene.height * scale));
-      expect(
-        visibleBottom,
-        closeTo(
-          (scene.height + ComponentMetricsTokens.flowCanvasPanMargin) * scale,
-          1.0,
-        ),
-      );
-    });
-
-    testWidgets('a shared panel frames the whole scene as soon as it is laid out',
-        (tester) async {
-      await _pump(
-        tester,
-        _stateOf(_wideProgram),
-        size: const Size(360, 200),
-        framesSceneOnLayout: true,
-      );
-
-      expect(_currentScale(tester), lessThan(1.0));
-    });
-
-    testWidgets('shrinking the panel refits the scene into what is left',
-        (tester) async {
       await _pump(tester, _stateOf(_wideProgram), size: const Size(900, 900));
       final beforeShrink = _currentScale(tester);
 
@@ -663,8 +665,9 @@ void main() {
       expect(_currentScale(tester), lessThan(beforeShrink));
     });
 
-    testWidgets('a panel that keeps its size keeps the reader zoom',
-        (tester) async {
+    testWidgets('a panel that keeps its size keeps the reader zoom', (
+      tester,
+    ) async {
       await _pump(tester, _stateOf(_wideProgram), size: const Size(900, 900));
 
       await tester.tap(find.byIcon(Icons.zoom_in));
@@ -677,69 +680,69 @@ void main() {
     });
 
     testWidgets(
-        'panning at normal scale on a tall diagram reaches its bottom-most node',
-        (tester) async {
-      final scene = _programOf(_wideProgram).sceneFor(null);
-      const tinyViewport = Size(400, 120);
-      await _pump(
-        tester,
-        _stateOf(_wideProgram),
-        size: tinyViewport,
-      );
+      'panning at normal scale on a tall diagram reaches its bottom-most node',
+      (tester) async {
+        final scene = _programOf(_wideProgram).sceneFor(null);
+        const tinyViewport = Size(400, 120);
+        await _pump(tester, _stateOf(_wideProgram), size: tinyViewport);
 
-      expect(_currentScale(tester), closeTo(1.0, 0.001));
-      expect(scene.height, greaterThan(tinyViewport.height * 2));
+        expect(_currentScale(tester), closeTo(1.0, 0.001));
+        expect(scene.height, greaterThan(tinyViewport.height * 2));
 
-      await tester.drag(
-        find.byType(InteractiveViewer),
-        const Offset(0, -100000),
-      );
-      await tester.pumpAndSettle();
+        await tester.drag(
+          find.byType(InteractiveViewer),
+          const Offset(0, -100000),
+        );
+        await tester.pumpAndSettle();
 
-      final viewer = tester.widget<InteractiveViewer>(
-        find.byType(InteractiveViewer),
-      );
-      final matrix = viewer.transformationController!.value;
-      final visibleBottom = -matrix.getTranslation().y + tinyViewport.height;
+        final viewer = tester.widget<InteractiveViewer>(
+          find.byType(InteractiveViewer),
+        );
+        final matrix = viewer.transformationController!.value;
+        final visibleBottom = -matrix.getTranslation().y + tinyViewport.height;
 
-      expect(visibleBottom, greaterThanOrEqualTo(scene.height));
-      expect(
-        visibleBottom,
-        closeTo(scene.height + ComponentMetricsTokens.flowCanvasPanMargin, 1.0),
-      );
-    });
+        expect(visibleBottom, greaterThanOrEqualTo(scene.height));
+        expect(
+          visibleBottom,
+          closeTo(
+            scene.height + ComponentMetricsTokens.flowCanvasPanMargin,
+            1.0,
+          ),
+        );
+      },
+    );
 
     testWidgets(
-        'panning at normal scale on a wide diagram reaches its right-most edge',
-        (tester) async {
-      final scene = _programOf(_wideProgram).sceneFor(null);
-      const narrowViewport = Size(100, 400);
-      await _pump(
-        tester,
-        _stateOf(_wideProgram),
-        size: narrowViewport,
-      );
+      'panning at normal scale on a wide diagram reaches its right-most edge',
+      (tester) async {
+        final scene = _programOf(_wideProgram).sceneFor(null);
+        const narrowViewport = Size(100, 400);
+        await _pump(tester, _stateOf(_wideProgram), size: narrowViewport);
 
-      expect(_currentScale(tester), closeTo(1.0, 0.001));
-      expect(scene.width, greaterThan(narrowViewport.width * 2));
+        expect(_currentScale(tester), closeTo(1.0, 0.001));
+        expect(scene.width, greaterThan(narrowViewport.width * 2));
 
-      await tester.drag(
-        find.byType(InteractiveViewer),
-        const Offset(-100000, 0),
-      );
-      await tester.pumpAndSettle();
+        await tester.drag(
+          find.byType(InteractiveViewer),
+          const Offset(-100000, 0),
+        );
+        await tester.pumpAndSettle();
 
-      final viewer = tester.widget<InteractiveViewer>(
-        find.byType(InteractiveViewer),
-      );
-      final matrix = viewer.transformationController!.value;
-      final visibleRight = -matrix.getTranslation().x + narrowViewport.width;
+        final viewer = tester.widget<InteractiveViewer>(
+          find.byType(InteractiveViewer),
+        );
+        final matrix = viewer.transformationController!.value;
+        final visibleRight = -matrix.getTranslation().x + narrowViewport.width;
 
-      expect(visibleRight, greaterThanOrEqualTo(scene.width));
-      expect(
-        visibleRight,
-        closeTo(scene.width + ComponentMetricsTokens.flowCanvasPanMargin, 1.0),
-      );
-    });
+        expect(visibleRight, greaterThanOrEqualTo(scene.width));
+        expect(
+          visibleRight,
+          closeTo(
+            scene.width + ComponentMetricsTokens.flowCanvasPanMargin,
+            1.0,
+          ),
+        );
+      },
+    );
   });
 }

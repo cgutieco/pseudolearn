@@ -26,6 +26,9 @@ pub fn execute(
             {
                 continue;
             }
+            if !requests::applies_to(case, &identity(session, "subject")?) {
+                continue;
+            }
             observations.extend(execute_case(specification, case, vocabulary, session)?);
         }
     }

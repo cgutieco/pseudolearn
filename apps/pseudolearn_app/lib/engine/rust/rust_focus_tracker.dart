@@ -1,3 +1,4 @@
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/execution/block_position.dart';
 import '../../domain/model/execution/execution_branch.dart';
@@ -10,12 +11,15 @@ import 'rust_wire_models.dart';
 final class RustFocusTracker {
   final RustProgramView _view;
   final RustViewUnitIndex _units;
+  final Map<int, RustViewNode> _focusNodes;
   final RustStatementStack _stack = RustStatementStack();
 
   ExecutionFocus? focus;
   int focusRevision = 0;
 
-  RustFocusTracker(this._view) : _units = RustViewUnitIndex.of(_view);
+  RustFocusTracker(this._view)
+    : _units = RustViewUnitIndex.of(_view),
+      _focusNodes = _indexFocusNodes(_view);
 
   BlockPosition get blockPosition => _stack.position;
 
@@ -36,7 +40,8 @@ final class RustFocusTracker {
   }
 
   void _enterStatement(RustEvent event) {
-    final node = _view.node(event.nodeId);
+    final source = _view.node(event.nodeId);
+    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
     if (node == null) return;
     _stack.enter(node.id);
     if (rustNodeIsContainer(_view, node)) return;
@@ -44,11 +49,12 @@ final class RustFocusTracker {
   }
 
   void _focusOnDecision(RustEvent event) {
-    final node = _view.node(event.nodeId);
+    final source = _view.node(event.nodeId);
+    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
     if (node == null) return;
     focus = ExecutionFocus(
       nodeId: node.id,
-      range: node.range,
+      range: _headerRange(node),
       kind: ExecutionFocusKind.decision,
       branch: _branchOf(event.data),
       unitId: _units.unitIdOf(node.id),
@@ -58,7 +64,8 @@ final class RustFocusTracker {
 
   void _enterSubroutine(RustEvent event) {
     _stack.enterFrame();
-    final node = _view.node(event.nodeId);
+    final source = _view.node(event.nodeId);
+    final node = source == null ? null : _focusNodes[source.id.value] ?? source;
     final previous = focus;
     focus = ExecutionFocus(
       nodeId: previous?.nodeId ?? const ProgramNodeId(0),
@@ -107,4 +114,24 @@ final class RustFocusTracker {
       _ => null,
     };
   }
+}
+
+Map<int, RustViewNode> _indexFocusNodes(RustProgramView view) => {
+  for (final node in view.nodes.where((node) => node.syntaxKind == 'statement'))
+    for (final child in node.children)
+      if (node.childRoles[child] == 'statement') child: node,
+};
+
+SourceRange _headerRange(RustViewNode node) {
+  final range = node.range;
+  final header = node.text.split('\n').first.split('\r').first;
+  final lineLength = header.length;
+  return SourceRange(
+    startOffset: range.startOffset,
+    endOffset: range.startOffset + lineLength,
+    startLine: range.startLine,
+    endLine: range.startLine,
+    startColumn: range.startColumn,
+    endColumn: range.startColumn + header.runes.length,
+  );
 }

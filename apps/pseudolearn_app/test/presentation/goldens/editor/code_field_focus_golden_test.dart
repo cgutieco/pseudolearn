@@ -1,3 +1,4 @@
+import '../../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +8,6 @@ import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
 import 'package:pseudolearn_app/presentation/editor/code_field.dart';
 import 'package:pseudolearn_app/presentation/editor/highlight_controller.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
@@ -24,11 +24,11 @@ Proceso Factorial
 FinProceso
 ''';
 
-AnalysisReport _report() => CoreProgramAnalyzer().analyze(
-      sourceCode: _factorial,
-      profileId: SyntaxProfileId.classicSpanish,
-      languageId: UiLanguageId.spanish,
-    );
+AnalysisReport _report() => nativeTestEngine.analyzer.analyze(
+  sourceCode: _factorial,
+  profileId: SyntaxProfileId.classicSpanish,
+  languageId: UiLanguageId.spanish,
+);
 
 ExecutionFocus _focusOnAssignment() {
   final start = _factorial.indexOf('n <- 5;');
@@ -58,28 +58,30 @@ Future<void> _pump(
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
 
-  await tester.pumpWidget(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: theme,
-    locale: const Locale('es'),
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: AppLocalizations.supportedLocales,
-    home: Scaffold(
-      body: DesignCanvas(
-        child: CodeField(
-          controller: HighlightController(text: _factorial),
-          highlightSpans: _report().highlightSpans,
-          focus: focus,
-          isReadOnly: true,
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme,
+      locale: const Locale('es'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(
+        body: DesignCanvas(
+          child: CodeField(
+            controller: HighlightController(text: _factorial),
+            highlightSpans: _report().highlightSpans,
+            focus: focus,
+            isReadOnly: true,
+          ),
         ),
       ),
     ),
-  ));
+  );
   await tester.pumpAndSettle();
 }
 
@@ -87,17 +89,36 @@ void main() {
   group('CodeField focus goldens', () {
     testWidgets('no execution · light', (tester) async {
       await _pump(tester, size: const Size(700, 320), theme: AppTheme.light());
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('code_field_idle_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('code_field_idle_light.png'),
+      );
     });
 
     testWidgets('focused statement · light', (tester) async {
-      await _pump(tester, size: const Size(700, 320), theme: AppTheme.light(), focus: _focusOnAssignment());
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('code_field_focused_light.png'));
+      await _pump(
+        tester,
+        size: const Size(700, 320),
+        theme: AppTheme.light(),
+        focus: _focusOnAssignment(),
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('code_field_focused_light.png'),
+      );
     });
 
     testWidgets('focused statement · dark', (tester) async {
-      await _pump(tester, size: const Size(700, 320), theme: AppTheme.dark(), focus: _focusOnAssignment());
-      await expectLater(find.byType(MaterialApp), matchesGoldenFile('code_field_focused_dark.png'));
+      await _pump(
+        tester,
+        size: const Size(700, 320),
+        theme: AppTheme.dark(),
+        focus: _focusOnAssignment(),
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('code_field_focused_dark.png'),
+      );
     });
   });
 }

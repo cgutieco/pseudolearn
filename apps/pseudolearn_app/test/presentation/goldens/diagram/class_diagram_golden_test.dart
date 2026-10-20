@@ -1,3 +1,4 @@
+import '../../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,9 +9,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_program.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_tab_view.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
@@ -96,32 +94,33 @@ FinProceso
 ''';
 
 DiagramScene _classSceneOf(String source) =>
-    CoreClassDiagramBuilder().buildDiagram(
+    nativeTestEngine.classDiagramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
     );
 
-DiagramProgram _flowchartOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _flowchartOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramProgram _structogramOf(String source) =>
-    StructogramLayout().buildDiagram(
+    nativeTestEngine.structogramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramState _stateOf(String source, {ProgramNodeId? member}) => DiagramState(
-      flowchart: _flowchartOf(source),
-      structogram: _structogramOf(source),
-      classDiagram: _classSceneOf(source),
-      notation: DiagramNotation.classDiagram,
-      focusedMemberNodeId: member,
-      hasValidAst: true,
-    );
+  flowchart: _flowchartOf(source),
+  structogram: _structogramOf(source),
+  classDiagram: _classSceneOf(source),
+  notation: DiagramNotation.classDiagram,
+  focusedMemberNodeId: member,
+  hasValidAst: true,
+);
 
 ProgramNodeId _rowIdSaying(String source, String text) {
   for (final node in _classSceneOf(source).nodes) {
@@ -155,7 +154,9 @@ Future<void> _pump(
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(body: DesignCanvas(child: FlowchartTabView(state: state))),
+      home: Scaffold(
+        body: DesignCanvas(child: FlowchartTabView(state: state)),
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -170,8 +171,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_hierarchy),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_hierarchy_compact_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_hierarchy_compact_light.png'),
+      );
     });
 
     testWidgets('hierarchy of three · medium · dark', (tester) async {
@@ -181,8 +184,10 @@ void main() {
         theme: AppTheme.dark(),
         state: _stateOf(_hierarchy),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_hierarchy_medium_dark.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_hierarchy_medium_dark.png'),
+      );
     });
 
     testWidgets('hierarchy of three · expanded · light', (tester) async {
@@ -192,8 +197,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_hierarchy),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_hierarchy_expanded_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_hierarchy_expanded_light.png'),
+      );
     });
 
     testWidgets('hierarchy of three · expanded · dark', (tester) async {
@@ -203,20 +210,25 @@ void main() {
         theme: AppTheme.dark(),
         state: _stateOf(_hierarchy),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_hierarchy_expanded_dark.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_hierarchy_expanded_dark.png'),
+      );
     });
 
-    testWidgets('a class with many members and an association · light',
-        (tester) async {
+    testWidgets('a class with many members and an association · light', (
+      tester,
+    ) async {
       await _pump(
         tester,
         size: const Size(1280, 900),
         theme: AppTheme.light(),
         state: _stateOf(_crowded),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_crowded_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_crowded_light.png'),
+      );
     });
 
     testWidgets('an empty class · light', (tester) async {
@@ -226,8 +238,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_empty),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_empty_class_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_empty_class_light.png'),
+      );
     });
 
     testWidgets('a method in execution · light', (tester) async {
@@ -240,8 +254,10 @@ void main() {
           member: _rowIdSaying(_hierarchy, 'Acelerar'),
         ),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_active_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_active_light.png'),
+      );
     });
 
     testWidgets('a document without classes · light', (tester) async {
@@ -251,8 +267,10 @@ void main() {
         theme: AppTheme.light(),
         state: _stateOf(_noClasses),
       );
-      await expectLater(find.byType(MaterialApp),
-          matchesGoldenFile('class_diagram_no_classes_light.png'));
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('class_diagram_no_classes_light.png'),
+      );
     });
   });
 }

@@ -22,7 +22,10 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
     required String sourceCode,
     required SyntaxProfileId profileId,
   }) {
-    final view = _views.load(sourceCode: sourceCode, profileId: profileId);
+    final view = _views.loadStructure(
+      sourceCode: sourceCode,
+      profileId: profileId,
+    );
     if (view == null) return const DiagramScene.empty();
     return _layout.of(_model(view));
   }

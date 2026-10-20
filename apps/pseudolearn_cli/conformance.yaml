@@ -7,7 +7,9 @@
     "TOOL.CLI.CONVENTIONS",
     "TOOL.CLI.FORMAT",
     "TOOL.CLI.MESSAGES",
-    "TOOL.CLI.TRANSLATE"
+    "TOOL.CLI.TRANSLATE",
+    "TOOL.CLI.IR",
+    "TOOL.CLI.RUN"
   ],
   "fases_cerradas": [],
   "vinculos": [

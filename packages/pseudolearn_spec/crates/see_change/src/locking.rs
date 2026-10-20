@@ -59,3 +59,31 @@ pub fn check(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
     }
     Ok(errors)
 }
+
+pub fn refresh(corpus: &Corpus, previous: &Lock, authorized: &[String]) -> Result<Lock, String> {
+    let mut refreshed = previous.clone();
+    for identifier in authorized {
+        let specification = corpus
+            .iter()
+            .find(|specification| &specification.metadata.id == identifier)
+            .ok_or("SEE-IDENTITY: unknown refresh identity")?;
+        let previous_state = previous
+            .specifications
+            .get(identifier)
+            .map(|anchor| anchor.state.as_str())
+            .unwrap_or("");
+        if ["retirada", "rechazada"].contains(&specification.metadata.estado.as_str())
+            || ["retirada", "rechazada"].contains(&previous_state)
+        {
+            return Err("SEE-IDENTITY: terminal identity cannot be refreshed".to_owned());
+        }
+        let key = format!(
+            "{}@{}",
+            specification.metadata.id, specification.metadata.version
+        );
+        if let Some(anchor) = refreshed.history.get_mut(&key) {
+            anchor.hash = crate::hash(specification)?;
+        }
+    }
+    generate(corpus, &refreshed)
+}

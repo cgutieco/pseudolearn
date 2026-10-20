@@ -5,6 +5,7 @@ import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 import 'see_app_protocol.dart';
+import 'see_app_execute.dart';
 import 'see_app_scenarios.dart';
 
 Future<void> main() async {
@@ -31,6 +32,7 @@ Future<Map<String, Object?>> _responseFor(
     return switch (kind) {
       'hello' => _hello(),
       'analyze' => _analyze(transport, request),
+      'execute' => executeThroughTransport(transport, request),
       'app' => await handleAppScenario(transport, request),
       'api' => _api(transport, request),
       'shutdown' => _shutdown(transport),
@@ -64,7 +66,14 @@ Map<String, Object?> _hello() => {
   'protocol': seeProtocolVersion,
   'subject': 'app',
   'subject_version': '0.1.0',
-  'capabilities': ['api', 'app', 'analyze', 'program_view'],
+  'capabilities': [
+    'api',
+    'app',
+    'analyze',
+    'execute',
+    'observe',
+    'program_view',
+  ],
   'profiles': ['es', 'en'],
   'strictness': ['strict', 'flexible'],
 };

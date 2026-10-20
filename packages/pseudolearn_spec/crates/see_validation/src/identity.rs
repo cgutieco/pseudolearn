@@ -26,6 +26,19 @@ pub fn check(corpus: &Corpus) -> Vec<String> {
         }
         let mut elements = BTreeSet::new();
         for block in &specification.blocks {
+            if block.kind == "caso"
+                && see_model::strings(block.fields.get("sujetos"))
+                    .iter()
+                    .any(|subject| {
+                        !specification
+                            .metadata
+                            .sujetos
+                            .iter()
+                            .any(|declared| declared == subject)
+                    })
+            {
+                errors.push(format!("SEE-IDENTITY: undeclared case subject in {id}"));
+            }
             let element = field(block, "id");
             if !valid_element(element) {
                 errors.push(format!("SEE-IDENTITY: invalid element {id}#{element}"));

@@ -16,13 +16,4 @@ void main() {
     expect(corpusWorkloads('{'), isNull);
     expect(corpusWorkloads('{"specifications":[]}'), isNull);
   });
-  test('supplied input completes in both modes and missing input fails', () {
-    final program = analyze(
-      'Proceso P\nDefinir n Como Entero\nLeer n\nEscribir n\nFinProceso',
-    );
-    expect(program, isNotNull);
-    expect(measureUnobserved(program!, '7', inputs: ['7']), isA<RunSample>());
-    expect(measureObserved(program, '7', inputs: ['7']), isA<RunSample>());
-    expect(measureUnobserved(program, '7'), isA<RunFailure>());
-  });
 }

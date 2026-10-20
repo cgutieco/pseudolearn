@@ -42,6 +42,7 @@
 | 18 | [Informe de implementación S1–S6 de R6](18-informe-implementacion-s1-s6-r6.md) | Evidencia final de S1–S6 y cierre de R6 bajo D-R6-03 |
 | 19 | [Plan de R7 · Servicio de lenguaje y herramientas](19-plan-r7-servicio-y-herramientas.md) | Análisis empírico (E-08), especificaciones `TOOL.*`, arquitectura de `pseudolearn_service`, formateo, traducción, LSP, E-09/E-20 y bloques B0–B8 de R7 |
 | 20 | [Plan de R8 · Puentes con la app y la web](20-plan-r8-puentes-app-y-web.md) | Contratos `APP.*`, integración Flutter y Wasm, decisiones pendientes, E-NR2, presupuestos y bloques B0–B9 |
+| 21 | [Informe de R9 · Paridad y retiro](21-informe-r9-paridad-y-retiro.md) | Implementación, evidencia local, revisión independiente automatizada y puertas pendientes de cierre |
 
 Orden de lectura recomendado: 00 → 02 → 03 → 04 → 07. Para ejecutar R7, seguir **19**; para R8, **20**.
 

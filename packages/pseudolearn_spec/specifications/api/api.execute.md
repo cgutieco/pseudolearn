@@ -4,7 +4,7 @@
   "id": "API.EXECUTE",
   "titulo": "Ejecución",
   "dominio": "motor",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.2.0",
   "duenos": [
     "responsable-motor"
@@ -35,7 +35,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Execution"
+  "titulo_en": "Execution",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

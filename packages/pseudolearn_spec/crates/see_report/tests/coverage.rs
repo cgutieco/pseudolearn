@@ -43,11 +43,10 @@ fn publishes_rule_to_instruction_rows_and_states_by_domain() -> Result<(), Strin
 }
 
 #[test]
-fn publishes_empty_tables_for_an_empty_corpus_and_reports_pending_rules() -> Result<(), String> {
-    assert!(see_report::coverage::table(&vec![]).is_empty());
-    assert!(see_report::coverage::states(&vec![]).is_empty());
+fn reports_pending_rules() -> Result<(), String> {
     let corpus = vec![support::specification()?];
     let conformance = Conformance {
+        estado: "activo".to_owned(),
         sujeto: "reference".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec![],
@@ -97,6 +96,7 @@ fn reports_rules_verified_only_by_measurements_as_not_applicable() -> Result<(),
             .map_err(|error| error.to_string())?,
     });
     let conformance = Conformance {
+        estado: "activo".to_owned(),
         sujeto: "reference".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec![],
@@ -125,4 +125,10 @@ fn reports_rules_verified_only_by_measurements_as_not_applicable() -> Result<(),
         Some(&json!("sin evidencia"))
     );
     Ok(())
+}
+
+#[test]
+fn empty_corpus_has_no_coverage() {
+    assert!(see_report::coverage::table(&vec![]).is_empty());
+    assert!(see_report::coverage::states(&vec![]).is_empty());
 }

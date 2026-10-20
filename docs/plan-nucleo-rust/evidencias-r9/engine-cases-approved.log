@@ -1,0 +1,3 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+     Running `packages/pseudolearn_spec/target/debug/see conform --root packages/pseudolearn_spec --subject engine`
+Executed 1551 observations; 0 divergences; matrix saved

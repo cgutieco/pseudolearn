@@ -1,0 +1,6 @@
+File modified during build. Build must be rerun.
+00:00 +0: loading /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_app/test/tool/bridge_benchmark_smoke_test.dart
+00:00 +0: /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_app/test/tool/bridge_benchmark_smoke_test.dart: generated API scenarios and a reduced recursive model satisfy expectations
+00:00 +1: /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_app/test/tool/bridge_benchmark_smoke_test.dart: generated API scenarios and a reduced recursive model satisfy expectations
+00:01 +2: /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_app/test/tool/bridge_benchmark_smoke_test.dart: (tearDownAll)
+00:01 +2: All tests passed!

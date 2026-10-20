@@ -6,17 +6,13 @@ lo introduce.
 
 Las reglas transversales del monorepo están en el `AGENTS.md` de la raíz. Las reglas que los verificadores ejecutan
 están en `architecture.yaml`, junto a este archivo. La arquitectura del motor del lenguaje está en
-`packages/pseudolearn_core/README.md` y no se repite aquí: este documento describe **dónde y cómo la app se acopla a ese
+`packages/pseudolearn_engine/README.md` y no se repite aquí: este documento describe **dónde y cómo la app se acopla a ese
 motor y cómo se construye su experiencia interactiva**.
 
-**Estado:** Arquitectura hexagonal implementada; superficies de biblioteca, documento (con cuatro pestañas sincronizadas
-por `NodeId`), introducción con laboratorio en vivo, base de conocimiento y ajustes operativas; tres notaciones de
-diagrama (ordinograma, estructograma y diagrama de clases) trazadas determinísticamente. La suite Flutter pasa y el
-análisis estático estricto no informa incidencias. El puente Rust–Dart compila y sus pruebas FFI, generación y límites
-pasan. `buildDartEngineServices` y `buildRustEngineServices` implementan la misma interfaz `EngineServices`; la
-composición Rust cubre análisis, ejecución, completado, vocabulario, referencia de sintaxis, exportación, estructura de
-ejercicios y diagramas sobre `API.PROGRAM.VIEW`, sin ningún archivo alcanzable que importe `pseudolearn_core`. La
-suite `test/equivalence/` contrasta ambas composiciones sobre 362 programas de la base de conocimiento.
+**Motor:** La composición normal inicializa el puente generado y ensambla `RustEngineServices`.
+Análisis, ejecución, editor, ejercicios, diagramas y exportadores consumen la API pública Rust.
+Dominio y aplicación conservan sus puertos sin importar el transporte. Las validaciones de
+plataforma y las mediciones físicas están pendientes; su alcance inicial es macOS e iOS.
 
 ---
 
@@ -31,7 +27,7 @@ de prueba de escritorio con inspección de aliasing de objetos, traducción de c
 Rust), base de conocimiento pedagógica versionada con comprobación observable de ejercicios y almacenamiento local
 estructurado.
 
-Consume `pseudolearn_core` como paquete de Dart puro por ruta relativa dentro del monorepo. **No aporta ninguna lógica
+Consume `pseudolearn_engine` mediante el puente generado de `native/`. **No aporta ninguna lógica
 de lenguaje.** En esta aplicación no reside ningún lexer, parser, chequeador de tipos, evaluador, tabla de precedencias,
 lista de palabras reservadas ni expresiones regulares que reconozcan sintaxis. Todo el análisis y la ejecución proceden
 del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
@@ -108,7 +104,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Tramos de comentario para el resaltado del editor              | La API Rust de análisis expone tokens léxicos con tramos y el adaptador los proyecta a categorías del editor                              | Resuelto                                                                                              |
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
-| Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
+| Selector del eje de rigor del perfil (estricto/flexible)       | `rustStrictness` fija el rigor flexible para los adaptadores de usuario; falta control de UI y persistencia por documento  | Abierto                                                                                                |
 | Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo» | `AccountCubit.signOut(deleteLocalData: true)` borra por `SyncingDocumentRepository`, que encola una lápida por documento; reutilizar `LocalAccountDataPurger` | Abierto |
 | Inicio de sesión en la nube desde el `.zip` portable de Windows | Registro de `pseudolearn://` en `HKCU` desde la propia app, o aviso en la página de descargas de que el portable solo sirve sin cuenta | Abierto |
 | Distribución en Microsoft Store y firma de binarios | Configuración de empaquetado MSIX (`CESARGUTIERREZ.PseudoLearn`, Store ID `9MXZB1XDWP9J`) y workflow `.github/workflows/push-production-windows-store.yml`; Microsoft Store firma el paquete oficial en certificación | Resuelto (pendiente revisión en Partner Center) |
@@ -170,7 +166,7 @@ flutter run -d macos --dart-define-from-file=dart_define.local.json
 # Ejecución en simulador iOS
 flutter run -d "iPhone 15" --dart-define-from-file=dart_define.local.json
 
-# Ejecución con inspección y observador de Dart
+# Ejecución con herramientas de depuración de Flutter
 flutter run -d macos --observe --dart-define-from-file=dart_define.local.json
 ```
 
@@ -555,7 +551,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 │ 3. application    Cubits de estado de vista y casos de uso (Dart puro)  │
 ├───────────────────────────┬────────────────────────────────────────────┤
 │ 2. engine                 │ 2. data                                    │
-│ Adaptador pseudolearn_core│ Archivos .pseudo, SQLite, activos bundled  │
+│ Adaptador API Rust│ Archivos .pseudo, SQLite, activos bundled  │
 ├───────────────────────────┴────────────────────────────────────────────┤
 │ 1. ports          Interfaces requeridas hacia el exterior              │
 ├────────────────────────────────────────────────────────────────────────┤
@@ -567,20 +563,20 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 
 | Capa / Directorio        | Responsabilidad única                                                                                                                                                                                                                                                                                              | Puede importar (`may_import`)                                             | Prohibido importar (`forbidden_imports`)                                                                                                       |
 |:-------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
-| `domain/model/`          | Entidades y valores de datos inmutables de la aplicación                                                                                                                                                                                                                                                           | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
-| `domain/model/account/`  | Entidades inmutables de cuenta, sesión, perfiles y resultados tipados de autenticación y de eliminación de cuenta (`AccountSession`, `AccountProfile`, `AuthMethod`, `AuthOutcome`, `AccountDeletionOutcome`)                                                                                                     | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
-| `domain/model/sync/`     | Modelos inmutables de reconciliación, instantáneas, resultados y función pura de resolución trilateral (`DocumentSnapshot`, `ReconciliationOutcome`, `reconcileDocument`, `SyncStatus`, `OutboxEntry`)                                                                                                             | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`, `sqflite`                                                 |
-| `domain/model/progress/` | Modelos inmutables de avance curricular y marcas temporales de primer logro (`ProgressEntry`)                                                                                                                                                                                                                      | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
-| `domain/model/editor/`   | Cursor propio (`CaretRange`), tecla del editor (`EditorKey`) y resultado de una edición (`SourceEdit`). No usa `TextSelection`: es de Flutter y el modelo no lo importa                                                                                                                                            | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                                            |
-| `domain/ports/`          | Contratos abstractos e interfaces requeridas                                                                                                                                                                                                                                                                       | `model`                                                                   | `engine`, `data`, `application`, `presentation`, `flutter/`, `pseudolearn_core`, `bloc`, `dart:io`, `dart:ui`                                  |
-| `engine/`                | Adaptación y traducción entre `pseudolearn_core` y `domain`                                                                                                                                                                                                                                                        | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
-| `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, `pseudolearn_core`                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
-| `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
-| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, `pseudolearn_core`, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
-| `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, `pseudolearn_core`, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
-| `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, `pseudolearn_core`, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
+| `domain/model/`          | Entidades y valores de datos inmutables de la aplicación                                                                                                                                                                                                                                                           | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                                            |
+| `domain/model/account/`  | Entidades inmutables de cuenta, sesión, perfiles y resultados tipados de autenticación y de eliminación de cuenta (`AccountSession`, `AccountProfile`, `AuthMethod`, `AuthOutcome`, `AccountDeletionOutcome`)                                                                                                     | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                                            |
+| `domain/model/sync/`     | Modelos inmutables de reconciliación, instantáneas, resultados y función pura de resolución trilateral (`DocumentSnapshot`, `ReconciliationOutcome`, `reconcileDocument`, `SyncStatus`, `OutboxEntry`)                                                                                                             | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`, `sqflite`                                                 |
+| `domain/model/progress/` | Modelos inmutables de avance curricular y marcas temporales de primer logro (`ProgressEntry`)                                                                                                                                                                                                                      | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                                            |
+| `domain/model/editor/`   | Cursor propio (`CaretRange`), tecla del editor (`EditorKey`) y resultado de una edición (`SourceEdit`). No usa `TextSelection`: es de Flutter y el modelo no lo importa                                                                                                                                            | *Ninguna* (datos puros)                                                   | Todas las demás capas, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                                            |
+| `domain/ports/`          | Contratos abstractos e interfaces requeridas                                                                                                                                                                                                                                                                       | `model`                                                                   | `engine`, `data`, `application`, `presentation`, `flutter/`, el transporte del motor, `bloc`, `dart:io`, `dart:ui`                                  |
+| `engine/`                | Adaptación y traducción entre el transporte del motor y `domain`                                                                                                                                                                                                                                                        | `model`, `ports`, el transporte del motor                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
+| `engine/editing/`        | Cálculo puro de la edición en el cursor (`LexiconSourceEditor`) y derivación de las teclas desde el léxico del perfil (`ProfileKeySource`)                                                                                                                                                                         | `model`, `ports`, el transporte del motor                                      | `data`, `application`, `presentation`, `flutter/`, `dart:io`, `dart:ui`, `RegExp`                                                              |
+| `data/`                  | Persistencia en disco, SQLite y lectura de activos                                                                                                                                                                                                                                                                 | `model`, `ports`, `dart:io`, `sqflite`, `package:markdown`                | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `bloc`                           |
+| `data/auth/`             | Adaptadores de autenticación nativa de plataforma, cliente Dart puro `supabase`, almacenamiento seguro de token y forma del enlace de retorno (`SupabaseAuthGateway`, `SupabaseAccountDeletionGateway`, `SupabaseSessionPersistence`, `NativeCredentialSource`, `SessionStorage`, `authCallbackUrl`)                                             | `domain/model`, `domain/ports`, `package:supabase`, almacenamiento seguro | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
+| `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, el transporte del motor, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
+| `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, el transporte del motor, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
 | `composition/`           | Ensamblado estático e inyección de dependencias en arranque                                                                                                                                                                                                                                                        | `model`, `ports`, `engine`, `data`, `application`, `presentation`         | Contener lógica o ramificaciones condicionales (`if`, `switch`, ternarios)                                                                     |
 
 ### 3.4 Flujo de datos y ciclo de vida
@@ -597,15 +593,15 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
                                                        │
                                              (Implementado en engine)
                                                        ▼
-                                            [Engine: CoreProgramAnalyzer]
+                                            [Engine: RustProgramAnalyzer]
                                                        │
                                       (Invoca Lexer/Parser/Resolver/Types)
                                                        ▼
-                                            [Package: pseudolearn_core]
+                                            [Package: pseudolearn_engine]
                                                        │
                                          (Retorna AST y Diagnósticos)
                                                        ▼
-                                            [Engine: CoreProgramAnalyzer]
+                                            [Engine: RustProgramAnalyzer]
                                                        │
                                      (Proyecta a tipos inmutables de app)
                                                        ▼
@@ -664,7 +660,7 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 
 - **Problema:** Permitir que los tipos del compilador (`Span`, `NodeId`, `Diagnostic`, `AstNode`) alcancen los widgets
   crea acoplamiento directo entre el pipeline del motor y la interfaz gráfica.
-- **Elección:** `presentation/` tiene vetado importar `pseudolearn_core` y `domain/ports/`. El modelo de la aplicación
+- **Elección:** `presentation/` tiene vetado importar el transporte del motor y `domain/ports/`. El modelo de la aplicación
   declara sus propios tipos de datos inmutables (`AppDiagnostic`, `SourceRange`, `ProgramNodeId`, `ExecutionStep`,
   `WatchRow`, `DiagramScene`). La capa `engine/` proyecta limpiamente los tipos del núcleo hacia estos modelos sin
   alterar severidades ni mensajes.
@@ -674,18 +670,14 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
     - *Paquete intermedio `pseudolearn_ui_model`:* Descartado por añadir sobrecarga de mantenimiento de paquetes en un
       monorepo donde la aplicación es el único consumidor de estos tipos.
 
-### 4.3 Acoplamiento al motor (`engine`): etapa única de traducción y orquestación
+### 4.3 Acoplamiento al motor: adaptación de una API pública
 
-- **Problema:** El núcleo expone etapas discretas (Lexer, Parser, NameResolver, TypeChecker, Interpreter). Si varias
-  pantallas orquestan el pipeline por su cuenta, surgen inconsistencias en el orden de análisis.
-- **Elección:** La carpeta `engine/` centraliza de forma exclusiva el acoplamiento a `pseudolearn_core`.
-  `CoreProgramAnalyzer` compone las etapas sintácticas y semánticas en orden riguroso. `AnalysisCache` garantiza que las
-  cuatro superficies consuman el resultado del mismo árbol AST.
-- **Alternativas descartadas y por qué:**
-    - *Orquestación distribuida en cubits:* Descartado porque violaría la regla de que `application/` no conoce
-      `pseudolearn_core`.
-    - *Adaptador de flujo asíncrono del núcleo:* Descartado para mantener síncrona y determinista la ejecución de pasos
-      simples.
+- **Problema:** Orquestar análisis y ejecución desde cada pantalla duplicaría reglas del lenguaje.
+- **Elección:** `engine/rust/` transforma respuestas de la API en los modelos de los puertos. El puente
+  generado es la única frontera nativa. Los validadores de contenido usan las mismas operaciones para
+  comprobar diagnósticos, formas bilingües, rigor estricto y soluciones de ejercicios.
+- **Alternativas descartadas:** Un parser local, vocabularios copiados o un intérprete alternativo
+  romperían la autoridad del corpus y permitirían comportamientos distintos entre consumidores.
 
 ### 4.4 Consistencia visual: clases de dispositivo y lienzo fluido con anchos máximos por contenido
 
@@ -739,9 +731,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
 - **Problema:** El uso de localizadores globales o contenedores dinámicos permite solicitar dependencias desde cualquier
   punto de la interfaz y oculta el acoplamiento.
 - **Elección:** `AppDependencies` declara todas las dependencias en campos `final`. En producción,
-  `buildLocalDependencies` usa el conjunto estático `DartEngineServices` y `buildRustLocalDependencies` el conjunto
-  `RustEngineServices`; ambos implementan `EngineServices` y comparten un único ensamblado privado, de modo que la
-  elección de composición ocurre en el punto de entrada y no dentro de ningún servicio. No se permite ningún condicional (`if`, `switch`, ternario) en `composition/`. Los tests
+  `buildLocalDependencies` recibe un `RustTransport` y ensambla `RustEngineServices`, que implementa
+  `EngineServices`. La inicialización nativa ocurre antes de abrir los servicios de la aplicación; los
+  fallos se reportan por la frontera de arranque y la sesión se cierra al separar la aplicación. Un fallo de liberación también se reporta y no impide comunicar el fallo original de arranque. No se permite ningún condicional (`if`, `switch`, ternario) en `composition/`. Los tests
   inyectan fakes directamente en el constructor de `AppDependencies`. Los ajustes dinámicos (perfil de sintaxis, idioma
   de interfaz) se pasan como parámetros en los métodos de los puertos.
 - **Alternativas descartadas y por qué:**
@@ -806,8 +798,9 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
       `Este`.
     - En **código equivalente**, resalta las líneas generadas asociadas al nodo de origen.
 
-  `AnalysisCache` almacena el último análisis en memoria para que todas las vistas compartan los mismos identificadores
-  de nodo durante la sesión.
+  `API.PROGRAM.VIEW` y los eventos comparten revisión e identidad estructural. El adaptador normaliza
+  nodos semánticos hacia su sentencia visible; las decisiones resaltan solo la cabecera y la entrada
+  de un contenedor no crea una parada adicional. Las páginas de estado consultan el evento consumido.
 - **Alternativas descartadas y por qué:**
     - *Sincronización mediante eventos en `presentation/` (BlocListener cruzados):* Descartado porque introduce
       orquestación en la interfaz y produce desincronizaciones de estado.
@@ -826,23 +819,14 @@ infraestructura y el motor; la lógica de aplicación desconoce los widgets y el
       con métodos `&mut self`, constructor estático `pub fn new() -> Self`, y tipado estricto con funciones
       idiomáticas (
       `parse::<i64>()`, `.sqrt()`, `format!`).
-- **Ruta Rust (`engine/rust/export/`):** `RustProgramExporter` lee `API.PROGRAM.VIEW` y no usa el AST Dart. Un lector
-  de formas (`StatementShapeReader`, `UnitShapeReader`) convierte la vista en registros tipados de sentencias y
-  unidades; `ViewExpressionWriter` recorre las expresiones con reglas de destino inyectadas como datos
-  (`PythonExpressionRules`, `RustExpressionRules`), y `PythonShapeEmitter` y `RustShapeEmitter` conservan la forma de
-  salida de los emisores Dart. Operadores, literales, funciones incorporadas resueltas, receptor de superclase,
-  salida sin salto y tipos primitivos llegan como atributos de la vista calculados por el motor; la app no interpreta
-  lexemas del perfil. Sobre 362 programas y dos destinos la salida es idéntica a la de los emisores Dart. Se
-  conservan sus particularidades heredadas (`.pow()` en Rust, `x as f64` sin paréntesis); corregirlas es una decisión
-  de producto aparte.
-- **La primera línea del código generado es la firma de la marca** (`targetCodeHeader`), en el comentario de línea que
-  cada destino usa. Es la única parte de la marca que sale de la aplicación: el código equivalente se pega en un
-  trabajo, en un chat o en un repositorio, y va firmado. La firma tiene un solo dueño y no una copia por emisor, porque
-  dos destinos que la escriben cada uno por su cuenta acaban firmando distinto.
-- **Alternativas descartadas y por qué:**
-    - *Emisión monolítica en un único archivo:* Descartada para cumplir el límite de 250 líneas por archivo enforceado
-      por
-      `architecture.yaml`.
+- **Exportación (`engine/rust/export/`):** `RustProgramExporter` consume `API.PROGRAM.VIEW` y rechaza
+  errores de análisis. Los emisores reciben formas con operadores, literales, incorporadas resueltas,
+  receptores, parámetros y tipos abstractos; no reinterpretan lexemas del perfil. La firma del código
+  equivalente tiene un dueño compartido. Se descartan emisores que dependan de un AST de otro lenguaje.
+- **Diagramas con errores semánticos:** La vista estructural permite representar clases o controles
+  cuando hay errores semánticos, incluidos ciclos de herencia, siempre que la sintaxis sea válida.
+  Los exportadores y la ejecución siguen exigiendo análisis válido. Se evita ocultar justamente la
+  estructura que la persona necesita inspeccionar para corregir el error.
 
 ### 4.12 Fundamentos visuales y sistema de diseño
 
@@ -1109,7 +1093,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 
 - **Problema:** Comprobar si un ejercicio es correcto no debe depender de una coincidencia textual del código fuente ni
   de comparaciones frágiles de cadenas.
-- **Elección:** El puerto `ExerciseChecker` y su implementación en `engine/exercise/` evalúan los programas en base a
+- **Elección:** El puerto `ExerciseChecker` y su implementación `RustExerciseChecker` evalúan los programas en base a
   conducta observable:
     - **Casos de prueba visibles y ocultos:** El programa se ejecuta con entradas simuladas capturando la salida
       emitida.
@@ -1117,7 +1101,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       de
       línea finales superfluos y comparación numérica con tolerancia de `1e-9` para valores de punto flotante.
     - **Aserciones estructurales del AST (Catálogo cerrado):** Cuando el enunciado exige restricciones de diseño, se
-      comprueban hasta cinco condiciones sobre el resumen `ProgramStructure`:
+      comprueban hasta cinco condiciones sobre la vista pública del programa:
         1. Contiene construcción sintáctica (`ContainsConstructAssertion`).
         2. No contiene construcción sintáctica (`NotContainsConstructAssertion`).
         3. Declara subprograma con nombre y aridad (`SubprogramSignatureAssertion`).
@@ -1414,8 +1398,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       `SpecificationCoverage` transportan valores agregados definitivos hacia los widgets, dando estricto cumplimiento a
       la
       prohibición de `where`, `fold` y `sort` en la capa de presentación.
-    - **Conceptos ejercitados derivados del AST:** El adaptador `CoreProgramConstructReader` analiza el código de los
-      documentos locales mediante `ProgramStructure` (el mismo analizador de aserciones de ejercicios), deduciendo qué
+    - **Conceptos ejercitados derivados del AST:** El adaptador `RustProgramConstructReader` analiza el código de los
+      documentos locales mediante `API.PROGRAM.VIEW` (la misma vista de las aserciones estructurales), deduciendo qué
       estructuras de control y programación orientada a objetos ha escrito realmente el estudiante sin almacenar
       telemetría
       adicional.
@@ -2142,7 +2126,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   enlaces generados. `RustProgramAnalyzer` implementa `ProgramAnalyzer` y `RustProgramExecution` implementa
   `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta foco, pila de bloques y filas de
   observación (texto y carácter se muestran entre comillas según la etiqueta de tipo que añade la API; los arreglos como `[2x3]` con sus dimensiones). `analyze` devuelve los tokens léxicos y sus tramos, y el adaptador proyecta categorías de resaltado desde ellos incluso cuando hay errores sintácticos. El idioma de los mensajes de diagnóstico se negocia con un `locale` independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
-  `blockPosition` y `nodeId`, que el adaptador reproduce con las mismas reglas que el observador del núcleo Dart
+  `blockPosition` y `nodeId`, que el adaptador reproduce según las reglas de foco de los puertos de la aplicación
   (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El foco resuelve `unitId`
   recorriendo el subárbol de la unidad ejecutable o del miembro de clase desde la misma vista pública, con los
   identificadores que usan los diagramas. El estado se consulta por
@@ -2153,14 +2137,13 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   dimensiones e identidades compatibles con los eventos. `RustProgramExporter` produce el código equivalente y
   `RustSyntaxReferenceSource` resuelve marcadores y tablas con `reference_vocabulary`, `editor_vocabulary` y
   `diagnostic_template`; la app solo conserva el orden de presentación. `buildRustEngineServices` ensambla todos los
-  puertos sin respaldo del núcleo Dart y `rust_composition_isolation_test.dart` recorre las importaciones alcanzables
+  puertos mediante la API pública y `rust_composition_isolation_test.dart` recorre las importaciones alcanzables
   desde él para comprobarlo.
-- **Rigor del análisis:** la composición Dart usa perfiles flexibles (terminador de sentencia opcional); los
-  adaptadores Rust piden el rigor `flexible` mediante `rustStrictness`, único valor compartido por análisis,
+- **Rigor del análisis:** los adaptadores de usuario piden el rigor `flexible` mediante `rustStrictness`, único valor compartido por análisis,
   completado y severidades de los marcadores de diagnóstico.
 - **Diferencias conocidas entre composiciones** (la suite de equivalencia exige que sean exactamente estas):
   Rust informa `unusedParameter` como advertencia (el corpus declara códigos propios para parámetros no usados) y no
-  duplica diagnósticos que el analizador Dart repite; los diagramas Rust rotulan con el texto fuente del usuario en
+  duplica diagnósticos que carecen de una causa independiente; los diagramas Rust rotulan con el texto fuente del usuario en
   lugar de un texto normalizado, por lo que la suite compara unidades y formas de nodo, no rótulos; las listas de
   funciones y palabras de la referencia salen en orden alfabético de identidad y los tipos con su ortografía de
   palabra clave (`Entero`); las plantillas del editor son las verificadas por el servicio de lenguaje.
@@ -2204,7 +2187,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Elección:** `tool/see_app_adapter.dart` negocia una sesión SEE por JSONL, inicializa FRB y abre
   `openNativeTransport()`. Sus escenarios llaman las API de análisis, ejecución, estado y completado usadas por los
   adaptadores de `lib/engine/rust/`; las respuestas se forman a partir de valores recibidos en esa sesión.
-  `conformance.yaml` mantiene los vínculos pendientes mientras cualquier regla tenga divergencias observadas.
+  `conformance.yaml` mantiene los vínculos pendientes hasta que una verificación ejecutada respalde cada vínculo.
 - **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
   `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el
   contrato no declara.
@@ -2248,6 +2231,18 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   binarias de una clave incompleta podría ocultar cambios de toolchain o transporte.
 
 ---
+
+El adaptador SEE de app ejecuta también el alfabeto completo de eventos mediante los recursos del transporte nativo. Reúne los lotes, obtiene la vista de la misma revisión y libera el documento y sus ejecuciones dependientes al finalizar; no mantiene otra implementación del lenguaje.
+
+La prueba de frescura de la biblioteca nativa recorre el cierre de dependencias de producción declarado por `cargo metadata --locked --offline`. Excluye herramientas no enlazadas y módulos de tests, y exige que las fuentes embebidas precedan a la biblioteca release. La generación de enlaces se verifica antes del build y de la suite, porque el generador escribe sus archivos. Un caso negativo detecta la inclusión incorrecta de dependencias de desarrollo o de herramientas.
+
+La proyección conserva las comillas del texto fuente en los diagramas y los lexemas canónicos del perfil en la referencia de tipos. Las expectativas de presentación comprueban estos datos Rust sin reconstruir tablas del motor retirado.
+
+El trabajador `dart run tool/bridge_benchmark_worker.dart` consume escenarios de medición por stdin,
+con preparación, solicitudes cronometradas, verificación posterior y expectativas independientes.
+Usa el transporte generado real y puede medir `ExecutionCubit` hasta preparar el modelo visible.
+Cada iteración cierra el cubit y la sesión. El renderizado requiere la captura de plataforma posterior;
+el trabajador no publica fotogramas inventados ni certifica dispositivos a partir de llamadas locales.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

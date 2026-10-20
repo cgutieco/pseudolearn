@@ -21,7 +21,7 @@ layers:
     may_import: [ ]
     forbidden_imports:
       - 'package:flutter/'
-      - 'package:pseudolearn_core/'
+      - 'package:pseudolearn_app/engine/'
       - 'package:bloc/'
       - 'dart:io'
       - 'dart:ui'
@@ -32,7 +32,7 @@ layers:
     may_import: [ model ]
     forbidden_imports:
       - 'package:flutter/'
-      - 'package:pseudolearn_core/'
+      - 'package:pseudolearn_app/engine/'
       - 'package:bloc/'
       - 'dart:io'
       - 'dart:ui'
@@ -51,7 +51,7 @@ layers:
     path: data
     may_import: [ model, ports ]
     forbidden_imports:
-      - 'package:pseudolearn_core/'
+      - 'package:pseudolearn_app/engine/'
       - 'package:flutter/material.dart'
       - 'package:flutter/widgets.dart'
       - 'package:flutter/cupertino.dart'
@@ -63,7 +63,7 @@ layers:
     may_import: [ model, ports ]
     forbidden_imports:
       - 'package:flutter/'
-      - 'package:pseudolearn_core/'
+      - 'package:pseudolearn_app/engine/'
       - 'package:go_router/'
       - 'package:sqflite/'
       - 'dart:io'
@@ -74,7 +74,7 @@ layers:
     path: presentation
     may_import: [ model, application ]
     forbidden_imports:
-      - 'package:pseudolearn_core/'
+      - 'package:pseudolearn_app/engine/'
       - 'package:flutter/cupertino.dart'
       - 'package:sqflite/'
       - 'dart:io'

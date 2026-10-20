@@ -28,10 +28,6 @@ jobs:
         with:
           targets: aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios aarch64-apple-darwin x86_64-apple-darwin
 
-      - name: Install core package dependencies
-        working-directory: packages/pseudolearn_core
-        run: dart pub get
-
       - name: Install app dependencies
         working-directory: apps/pseudolearn_app
         run: flutter pub get
@@ -98,10 +94,6 @@ jobs:
         uses: ./.github/actions/setup-rust-bridge
         with:
           targets: x86_64-pc-windows-msvc
-
-      - name: Install core package dependencies
-        working-directory: packages/pseudolearn_core
-        run: dart pub get
 
       - name: Install app dependencies
         run: flutter pub get

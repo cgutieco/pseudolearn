@@ -18,6 +18,12 @@ El comando `service` mide las herramientas de edición: `service e09 <salida> [m
 Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras
 por configuración como JSONL. `cargo run --release -p pseudolearn_bench_worker -- aot ../../../pseudolearn_benchmarks/results/r6-aot` recoge el experimento del código nativo; requiere `rustc` y un enlazador del sistema, y compila un lanzador por carga contra la biblioteca `pseudolearn_aot_rt` del mismo perfil. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
 
+La orden `bridge` lee por stdin una configuración de escenarios de API y treinta iteraciones. Cada
+iteración crea una sesión nueva; `setup` y `verify` quedan fuera del reloj y `timed` publica una latencia
+por llamada. Los vínculos `$nombre.campo` conservan identidades reales y las repeticiones tienen límite.
+Las expectativas son datos independientes y una discrepancia aborta el trabajador. No hay FFI en este
+trabajador: permite contrastarlo con el trabajador Dart que consume el transporte generado.
+
 ## 3. Arquitectura y modelo del sistema
 
 Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `pseudolearn_timeline`, serde_json y estándar: `e06` necesita crear máquinas y líneas temporales para medirlas, y el resto de órdenes solo usa la API. Prohibido importar otros internos del motor.

@@ -122,7 +122,7 @@
   {
     "binding": "pendiente",
     "cases": 1,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": "Su único caso pertenece al sujeto app; la API rechaza la revisión ajena en sus pruebas y la conformidad se activa con el adaptador app.",
     "rule": "API.PROGRAM.VIEW@0.1.0#R3",
@@ -161,8 +161,8 @@
   },
   {
     "binding": "pendiente",
-    "cases": 2,
-    "measured": "incumple",
+    "cases": 4,
+    "measured": "cumple",
     "measurements": [],
     "reason": "La API pagina con cursores ligados a su consulta; el caso C4 espera elements [0,1] y el literal opaque como cursor, que ninguna implementación con cursores ligados puede producir, y queda por resolver en el corpus.",
     "rule": "API.STATE.QUERY@0.1.0#R4",
@@ -191,7 +191,7 @@
   },
   {
     "binding": "exento",
-    "cases": 2,
+    "cases": 1,
     "measured": "no aplicable",
     "measurements": [],
     "reason": "El caso C1 es de operación cli y lo ejecuta el sujeto cli; el motor no recibe argumentos de línea de órdenes y su JSON canónico lo cubre la propiedad de ida y vuelta del formato de eventos.",
@@ -211,10 +211,10 @@
   },
   {
     "binding": "pendiente",
-    "cases": 1,
-    "measured": "no aplicable",
+    "cases": 0,
+    "measured": "sin evidencia",
     "measurements": [],
-    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "reason": "Requiere transporte Wasm real; las comprobaciones nativas no acreditan crecimiento de memoria Wasm. La validación posterior comienza solo en macOS e iOS y no certifica esa frontera.",
     "rule": "API.WIRE-FORMAT@0.1.0#R3",
     "state": "experimental",
     "subject": "engine"
@@ -450,11 +450,11 @@
     "subject": "engine"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": "Regla de verificación estructural: la API no expone guarda de tiempo y ninguna petición la configura; la revisión del contrato de límites confirma que la única terminación no determinista queda ausente.",
+    "reason": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus.",
     "rule": "ENG.LIMITS@0.2.0#R6",
     "state": "experimental",
     "subject": "engine"
@@ -710,11 +710,11 @@
     "subject": "engine"
   },
   {
-    "binding": "exento",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
-    "reason": "Regla estructural del corpus: la cobertura de instrucciones por regla de LANG y LIB la verifica `see validate` sobre los bloques cobertura, no el motor.",
+    "reason": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus.",
     "rule": "IR.INSTRUCTIONS@0.1.0#R4",
     "state": "experimental",
     "subject": "engine"
@@ -981,7 +981,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 12,
+    "cases": 16,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -1021,7 +1021,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 8,
+    "cases": 12,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -1061,7 +1061,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 8,
+    "cases": 16,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -1987,13 +1987,13 @@
         "suite": "artefactos de release"
       }
     ],
-    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.ARTIFACT.SIZE@0.1.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "pendiente",
     "cases": 0,
     "measured": "no aplicable",
     "measurements": [
@@ -2004,15 +2004,15 @@
         "suite": "corpus y archivos generados de 10 000 líneas"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.FRONTEND.THROUGHPUT@0.1.0#R1",
     "state": "experimental",
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.FRONTEND.THROUGHPUT@0.1.0#R2",
@@ -2020,9 +2020,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R1",
@@ -2030,9 +2030,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R2",
@@ -2040,9 +2040,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R3",
@@ -2050,9 +2050,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R4",
@@ -2060,9 +2060,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R5",
@@ -2070,9 +2070,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R6",
@@ -2084,13 +2084,13 @@
     "cases": 0,
     "measured": "sin evidencia",
     "measurements": [],
-    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.PROTOCOL@0.1.0#R7",
     "state": "experimental",
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 80,
     "measured": "cumple",
     "measurements": [],
@@ -2100,9 +2100,9 @@
     "subject": "engine"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.SUITE.AWFY-CORE@0.2.0#R2",
@@ -2127,7 +2127,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R1",
     "state": "experimental",
     "subject": "engine"
@@ -2144,7 +2144,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R2",
     "state": "experimental",
     "subject": "engine"
@@ -2161,7 +2161,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": "La superficie de R8 todavía no está implementada; el vínculo conserva el trabajo exigible sin declarar cumplimiento.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R3",
     "state": "experimental",
     "subject": "engine"
@@ -2190,7 +2190,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.THROUGHPUT@0.1.0#R1",
     "state": "experimental",
     "subject": "engine"
@@ -2207,7 +2207,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.THROUGHPUT@0.1.0#R2",
     "state": "experimental",
     "subject": "engine"

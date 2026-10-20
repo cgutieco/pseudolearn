@@ -27,10 +27,8 @@ import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
 import '../domain/ports/progress_history.dart';
 import '../domain/ports/syntax_reference_source.dart';
-import '../engine/analysis/analysis_cache.dart';
 import 'app_dependencies.dart';
 import '../engine/rust/rust_transport.dart';
-import 'dart_engine_services.dart';
 import 'engine_services.dart';
 import 'rust_engine_services.dart';
 import 'sync_composition.dart';
@@ -98,17 +96,6 @@ _AccountServices _buildAccountServices(SupabaseClient client) {
 }
 
 AppDependencies buildLocalDependencies({
-  required Directory documentsDirectory,
-  required MetadataIndex index,
-  required LocalProgressStore progressStore,
-}) => _buildLocalDependencies(
-  documentsDirectory: documentsDirectory,
-  index: index,
-  progressStore: progressStore,
-  engine: buildDartEngineServices(analysisCache: AnalysisCache()),
-);
-
-AppDependencies buildRustLocalDependencies({
   required Directory documentsDirectory,
   required MetadataIndex index,
   required LocalProgressStore progressStore,

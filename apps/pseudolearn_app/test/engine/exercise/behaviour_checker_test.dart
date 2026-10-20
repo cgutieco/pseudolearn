@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_outcome.dart';
@@ -5,8 +6,6 @@ import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_result.dar
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
 import 'package:pseudolearn_app/engine/exercise/behaviour_checker.dart';
 
 const String _square = '''
@@ -82,8 +81,8 @@ ExerciseCheckResult _check(
   int stepLimit = BehaviourChecker.defaultStepLimit,
 }) {
   final checker = BehaviourChecker(
-    execution: CoreProgramExecution(),
-    analyzer: CoreProgramAnalyzer(),
+    execution: nativeTestEngine.createProgramExecution(),
+    analyzer: nativeTestEngine.analyzer,
     stepLimit: stepLimit,
   );
   return checker.checkBehaviour(
@@ -100,8 +99,13 @@ void main() {
     test('a correct program passes every case', () {
       final result = _check(
         _square,
-        visible: [_numericCase(['4'], ['16'])],
-        hidden: [_numericCase(['7'], ['49']), _numericCase(['0'], ['0'])],
+        visible: [
+          _numericCase(['4'], ['16']),
+        ],
+        hidden: [
+          _numericCase(['7'], ['49']),
+          _numericCase(['0'], ['0']),
+        ],
       );
 
       expect(result.outcome, ExerciseCheckOutcome.allCasesPassed);
@@ -112,7 +116,9 @@ void main() {
     });
 
     test('two checks of the same program against the same cases agree', () {
-      final cases = [_numericCase(['4'], ['16'])];
+      final cases = [
+        _numericCase(['4'], ['16']),
+      ];
       final first = _check(_square, visible: cases);
       final second = _check(_square, visible: cases);
 
@@ -121,53 +127,86 @@ void main() {
   });
 
   group('BehaviourChecker hidden cases', () {
-    test('a program that writes the visible answer passes the visible and fails a hidden one', () {
-      final result = _check(
-        _impostor,
-        visible: [_numericCase(['4'], ['16'])],
-        hidden: [_numericCase(['7'], ['49'])],
-      );
+    test(
+      'a program that writes the visible answer passes the visible and fails a hidden one',
+      () {
+        final result = _check(
+          _impostor,
+          visible: [
+            _numericCase(['4'], ['16']),
+          ],
+          hidden: [
+            _numericCase(['7'], ['49']),
+          ],
+        );
 
-      expect(result.outcome, ExerciseCheckOutcome.caseFailed);
-      expect(result.passedCases, 1);
-      expect(result.totalCases, 2);
-      expect(result.firstFailure?.isHidden, isTrue);
-      expect(result.firstFailure?.inputs, ['7']);
-      expect(result.firstFailure?.expectedOutputs, ['49']);
-      expect(result.firstFailure?.actualOutputs, ['16']);
-    });
+        expect(result.outcome, ExerciseCheckOutcome.caseFailed);
+        expect(result.passedCases, 1);
+        expect(result.totalCases, 2);
+        expect(result.firstFailure?.isHidden, isTrue);
+        expect(result.firstFailure?.inputs, ['7']);
+        expect(result.firstFailure?.expectedOutputs, ['49']);
+        expect(result.firstFailure?.actualOutputs, ['16']);
+      },
+    );
   });
 
   group('BehaviourChecker anomalous endings', () {
-    test('a program that does not parse is a named result, not an exception', () {
-      final result = _check(_doesNotParse, visible: [_numericCase(['4'], ['16'])]);
+    test(
+      'a program that does not parse is a named result, not an exception',
+      () {
+        final result = _check(
+          _doesNotParse,
+          visible: [
+            _numericCase(['4'], ['16']),
+          ],
+        );
 
-      expect(result.outcome, ExerciseCheckOutcome.programDidNotParse);
-      expect(result.passedCases, 0);
-      expect(result.totalCases, 1);
-    });
+        expect(result.outcome, ExerciseCheckOutcome.programDidNotParse);
+        expect(result.passedCases, 0);
+        expect(result.totalCases, 1);
+      },
+    );
 
     test('a program halted at run time is a named result', () {
-      final result = _check(_dividesByZero, visible: [_numericCase(['4'], ['0'])]);
+      final result = _check(
+        _dividesByZero,
+        visible: [
+          _numericCase(['4'], ['0']),
+        ],
+      );
 
       expect(result.outcome, ExerciseCheckOutcome.programHalted);
     });
 
-    test('a program that never ends reaches the step limit instead of hanging', () {
-      final result = _check(
-        _neverEnds,
-        visible: [_numericCase(const [], ['0'])],
-        stepLimit: 200,
-      );
+    test(
+      'a program that never ends reaches the step limit instead of hanging',
+      () {
+        final result = _check(
+          _neverEnds,
+          visible: [
+            _numericCase(const [], ['0']),
+          ],
+          stepLimit: 200,
+        );
 
-      expect(result.outcome, ExerciseCheckOutcome.stepLimitReached);
-    });
+        expect(result.outcome, ExerciseCheckOutcome.stepLimitReached);
+      },
+    );
 
-    test('an input script shorter than the program asks for is a named result', () {
-      final result = _check(_readsTwice, visible: [_numericCase(['4'], ['10'])]);
+    test(
+      'an input script shorter than the program asks for is a named result',
+      () {
+        final result = _check(
+          _readsTwice,
+          visible: [
+            _numericCase(['4'], ['10']),
+          ],
+        );
 
-      expect(result.outcome, ExerciseCheckOutcome.inputScriptExhausted);
-    });
+        expect(result.outcome, ExerciseCheckOutcome.inputScriptExhausted);
+      },
+    );
   });
 
   group('BehaviourChecker edge cases', () {
@@ -183,7 +222,9 @@ void main() {
     test('a program that writes nothing fails a case that expects a line', () {
       final result = _check(
         _writesNothing,
-        visible: [_numericCase(const [], ['1'])],
+        visible: [
+          _numericCase(const [], ['1']),
+        ],
       );
 
       expect(result.outcome, ExerciseCheckOutcome.caseFailed);
@@ -193,7 +234,9 @@ void main() {
     test('a program that writes more lines than expected fails', () {
       final result = _check(
         _square,
-        visible: [_numericCase(['4'], const [])],
+        visible: [
+          _numericCase(['4'], const []),
+        ],
       );
 
       expect(result.outcome, ExerciseCheckOutcome.caseFailed);
@@ -209,7 +252,9 @@ void main() {
     test('the echo of the input is not compared: only program output is', () {
       final result = _check(
         _readsTwice,
-        visible: [_numericCase(['4', '6'], ['10'])],
+        visible: [
+          _numericCase(['4', '6'], ['10']),
+        ],
       );
 
       expect(result.outcome, ExerciseCheckOutcome.allCasesPassed);

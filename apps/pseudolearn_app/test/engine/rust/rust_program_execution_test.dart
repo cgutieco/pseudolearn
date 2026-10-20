@@ -283,9 +283,9 @@ void main() {
               2,
               children: ['n2'],
               parent: 'n0',
-              syntaxKind: 'statement',
+              syntaxKind: 'conditional',
             ),
-            node('n2', 'statement', 3, parent: 'n1', syntaxKind: 'conditional'),
+            node('n2', 'statement', 3, parent: 'n1', syntaxKind: 'output'),
           ],
           batches: [
             batch(

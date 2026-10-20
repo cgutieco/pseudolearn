@@ -4,7 +4,7 @@
   "id": "SEE.CONFORMANCE.MATRIX",
   "titulo": "Matriz de conformidad",
   "dominio": "proceso",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.2.0",
   "duenos": [
     "responsable-especificaciones"
@@ -13,7 +13,17 @@
     "see"
   ],
   "resumen": "Matriz de conformidad.",
-  "depende_de": []
+  "depende_de": [],
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  },
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ]
 }
 ---
 
@@ -24,7 +34,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La matriz presenta regla por sujeto, estado declarado y resultado medido, sin convertir exento en cumple.",
+  "texto": "La matriz presenta regla por sujeto, estado declarado y resultado medido, sin convertir exento en cumple. Los sujetos retirados aparecen como no aplicables, con motivo explícito y sin sustituir sus observaciones históricas. Sus hashes históricos no se exigen contra el corpus vigente y no certifican estabilidad.",
   "verificacion": [
     "estructural"
   ],

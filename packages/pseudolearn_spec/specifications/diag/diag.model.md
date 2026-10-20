@@ -4,7 +4,7 @@
   "id": "DIAG.MODEL",
   "titulo": "Modelo de diagnóstico",
   "dominio": "lenguaje",
-  "estado": "experimental",
+  "estado": "estable",
   "version": "0.2.0",
   "duenos": [
     "responsable-lenguaje"
@@ -17,7 +17,17 @@
   "edicion": {
     "introducida_en": "2026"
   },
-  "depende_de": []
+  "depende_de": [],
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
+    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
+    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 

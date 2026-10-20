@@ -1,7 +1,6 @@
+import 'package:pseudolearn_app/engine/rust/export/rust_program_exporter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/composition/rust_engine_services.dart';
-import 'package:pseudolearn_app/engine/export/core_program_exporter.dart';
-import 'package:pseudolearn_app/engine/rust/export/rust_program_exporter.dart';
 import 'package:pseudolearn_app/engine/rust/rust_class_diagram_builder.dart';
 import 'package:pseudolearn_app/engine/rust/rust_completion_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_flowchart_builder.dart';
@@ -28,19 +27,30 @@ void main() {
     expect(services.contextualCompletionSource, isA<RustCompletionSource>());
     expect(services.syntaxReferenceSource, isA<RustSyntaxReferenceSource>());
     expect(services.programExporter, isA<RustProgramExporter>());
-    expect(services.programExporter, isNot(isA<CoreProgramExporter>()));
   });
 
-  test('application dependencies accept the Rust set without Dart adapters', () {
-    final services = buildRustEngineServices(FakeRustTransport({}));
+  test(
+    'application dependencies accept the Rust set without Dart adapters',
+    () {
+      final services = buildRustEngineServices(FakeRustTransport({}));
 
-    final dependencies = buildTestDependencies(engine: services);
+      final dependencies = buildTestDependencies(engine: services);
 
-    expect(dependencies.programAnalyzer, same(services.analyzer));
-    expect(dependencies.programExporter, same(services.programExporter));
-    expect(dependencies.syntaxReferenceSource, same(services.syntaxReferenceSource));
-    expect(dependencies.exerciseChecker, same(services.exerciseChecker));
-    expect(dependencies.contextualCompletionSource, same(services.contextualCompletionSource));
-    expect(dependencies.createProgramExecution(), isA<RustProgramExecution>());
-  });
+      expect(dependencies.programAnalyzer, same(services.analyzer));
+      expect(dependencies.programExporter, same(services.programExporter));
+      expect(
+        dependencies.syntaxReferenceSource,
+        same(services.syntaxReferenceSource),
+      );
+      expect(dependencies.exerciseChecker, same(services.exerciseChecker));
+      expect(
+        dependencies.contextualCompletionSource,
+        same(services.contextualCompletionSource),
+      );
+      expect(
+        dependencies.createProgramExecution(),
+        isA<RustProgramExecution>(),
+      );
+    },
+  );
 }

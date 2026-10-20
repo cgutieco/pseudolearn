@@ -27,7 +27,14 @@
       "version": ">=0.1.0, <1.0.0",
       "tipo": "requiere"
     }
-  ]
+  ],
+  "cambio": {
+    "clase": "verificacion_anadida",
+    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
+    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
+    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
+    "revisado_por": "revision-independiente-automatizada"
+  }
 }
 ---
 
@@ -42,7 +49,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -124,5 +132,35 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase A\nMetodo Constructor(value Como Entero)\nFinMetodo\nFinClase\nClase B Hereda De A\nMetodo Constructor(value Como Entero)\nEscribir value;\nFinMetodo\nFinClase\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "class A\nmethod constructor(value as integer)\nendMethod\nendClass\nclass B inherits from A\nmethod constructor(value as integer)\nwrite value;\nendMethod\nendClass\nalgorithm P\nendAlgorithm\n"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "missingSuperConstructorCall",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

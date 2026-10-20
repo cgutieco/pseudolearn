@@ -1,3 +1,4 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +15,6 @@ import 'package:pseudolearn_app/domain/model/editor/source_edit.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
-import 'package:pseudolearn_app/engine/editing/profile_key_source.dart';
 import 'package:pseudolearn_app/presentation/editor/code_field.dart';
 import 'package:pseudolearn_app/presentation/editor/components/keyboard_exit_actions.dart';
 import 'package:pseudolearn_app/presentation/editor/editor_key_bar.dart';
@@ -26,7 +26,9 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 const _compact = Size(390, 844);
 const _wideTablet = Size(1024, 768);
 
-final _keys = const ProfileKeySource().keysFor(SyntaxProfileId.classicSpanish);
+final _keys = nativeTestEngine.editorKeySource.keysFor(
+  SyntaxProfileId.classicSpanish,
+);
 
 const _completions = [
   CompletionItem(

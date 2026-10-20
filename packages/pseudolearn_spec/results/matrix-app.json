@@ -1,6 +1,6 @@
 [
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -10,7 +10,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -20,8 +20,8 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
-    "cases": 1,
+    "binding": "cumple",
+    "cases": 2,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -30,9 +30,9 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
-    "cases": 2,
-    "measured": "no aplicable",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "API.WIRE-FORMAT@0.1.0#R1",
@@ -40,7 +40,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -52,15 +52,15 @@
   {
     "binding": "pendiente",
     "cases": 1,
-    "measured": "cumple",
+    "measured": "no aplicable",
     "measurements": [],
-    "reason": null,
+    "reason": "Requiere transporte Wasm real; la retención nativa no demuestra crecimiento de memoria Wasm. La validación posterior se limita inicialmente a macOS e iOS.",
     "rule": "API.WIRE-FORMAT@0.1.0#R3",
     "state": "experimental",
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -70,7 +70,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -80,7 +80,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -90,7 +90,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -100,7 +100,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -110,7 +110,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -120,7 +120,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 3,
     "measured": "cumple",
     "measurements": [],
@@ -130,7 +130,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -140,7 +140,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 4,
     "measured": "cumple",
     "measurements": [],
@@ -150,7 +150,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -160,9 +160,9 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "APP.EXEC.PACE@0.1.0#R4",
@@ -170,7 +170,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -180,7 +180,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -190,7 +190,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 1,
     "measured": "cumple",
     "measurements": [],
@@ -200,7 +200,7 @@
     "subject": "app"
   },
   {
-    "binding": "pendiente",
+    "binding": "cumple",
     "cases": 2,
     "measured": "cumple",
     "measurements": [],
@@ -210,9 +210,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R1",
@@ -220,9 +220,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 9,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R2",
@@ -230,9 +230,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R3",
@@ -240,9 +240,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 24,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R4",
@@ -250,9 +250,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 8,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R5",
@@ -260,12 +260,112 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
+    "binding": "cumple",
     "cases": 4,
-    "measured": "no aplicable",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.EVENTS@0.1.0#R6",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.DECL.UNUSED@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 12,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 16,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SOURCE.POSITION@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 32,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 6,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 10,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 8,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
     "state": "experimental",
     "subject": "app"
   },
@@ -287,7 +387,7 @@
         "suite": "artefactos de release"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
     "rule": "PERF.ARTIFACT.SIZE@0.1.0#R1",
     "state": "experimental",
     "subject": "app"
@@ -357,7 +457,7 @@
     "cases": 0,
     "measured": "sin evidencia",
     "measurements": [],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
     "rule": "PERF.PROTOCOL@0.1.0#R7",
     "state": "experimental",
     "subject": "app"
@@ -414,7 +514,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": null,
+    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R3",
     "state": "experimental",
     "subject": "app"

@@ -53,6 +53,8 @@ inválido como trivia de error y la semántica no corre cuando léxico o sintaxi
 Alternativas descartadas: enum manual, árboles enlazados, recorridos que reconstruyen hijos en cada visita
 y constantes de límites duplicadas.
 
+El reconocimiento estructural de construcciones excluidas se aplica también fuera de unidades y en miembros de clase. Una lista de superclases produce el diagnóstico específico en la coma, sin aceptar herencia múltiple ni reservar nombres nuevos.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

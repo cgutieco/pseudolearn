@@ -1535,6 +1535,10 @@
                   "type": "null"
                 }
               ]
+            },
+            "target": {
+              "type": "integer",
+              "minimum": 0
             }
           },
           "required": [
@@ -1544,6 +1548,15 @@
             "cursor"
           ],
           "additionalProperties": false
+        },
+        "sujetos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
         }
       },
       "required": [

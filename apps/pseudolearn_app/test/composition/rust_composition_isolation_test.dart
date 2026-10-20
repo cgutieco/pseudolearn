@@ -38,24 +38,19 @@ void main() {
     expect(offenders, isEmpty);
   });
 
-  test('the isolation walk sees the Dart engine set reach the Dart core', () {
-    final offenders = [
-      for (final path in _closure('lib/composition/dart_engine_services.dart'))
-        if (File(path).existsSync() &&
-            File(path).readAsStringSync().contains('package:pseudolearn_core'))
-          path,
-    ];
-
-    expect(offenders, isNotEmpty);
-  });
-
   test('domain and application files import neither transport', () {
     for (final directory in ['lib/domain', 'lib/application']) {
-      for (final file in Directory(directory).listSync(recursive: true).whereType<File>()) {
+      for (final file in Directory(
+        directory,
+      ).listSync(recursive: true).whereType<File>()) {
         final text = file.readAsStringSync();
         expect(text.contains('engine/rust/'), isFalse, reason: file.path);
         expect(text.contains('engine/bridge/'), isFalse, reason: file.path);
-        expect(text.contains('package:pseudolearn_core'), isFalse, reason: file.path);
+        expect(
+          text.contains('package:pseudolearn_core'),
+          isFalse,
+          reason: file.path,
+        );
       }
     }
   });

@@ -187,3 +187,22 @@ fn paginated_state_cases_reject_invalid_cursor_types_and_page_sizes() -> Result<
     }
     Ok(())
 }
+
+#[test]
+fn paginated_queries_accept_object_targets_and_reject_malformed_targets() -> Result<(), String> {
+    for (target, valid) in [
+        (serde_json::json!(0), true),
+        (serde_json::json!(1), true),
+        (serde_json::json!(-1), false),
+        (serde_json::json!("1"), false),
+    ] {
+        let mut specification = support::specification()?;
+        let case = specification.blocks.last_mut().ok_or("missing case")?;
+        case.fields.insert("paginacion".to_owned(), serde_json::json!({"query":"array_cells","target":target,"event":1,"page_size":2,"cursor":null}));
+        assert_eq!(
+            see_validation::schema::check(&specification).is_empty(),
+            valid
+        );
+    }
+    Ok(())
+}

@@ -850,3 +850,23 @@ El informe final distinguirá implementación, pruebas con cantidades y salidas 
 observaciones resueltas, decisiones y pendientes justificados, además de publicación y uso de CI.
 Aplicar la skill `phase-gate` antes de declarar el cierre. Un requisito obligatorio incumplido no puede
 aplazarse a R9 para marcar R8 como terminada. El retiro de Dart permanece pendiente hasta su fase.
+
+
+## 10. Actualización autorizada durante el retiro de Dart
+
+La autorización de R9 permite retirar la composición Dart y completar sus verificaciones locales sin
+exigir en esta iteración campañas físicas, distribución ni workflows remotos. Las pruebas de plataforma
+se realizarán después de R9 y, inicialmente, solo en macOS e iOS. Los criterios que requieren esos datos
+no se marcan satisfechos: E-NR2, presupuesto de latencia por puente y experiencia física conservan su
+pendiente. La deuda AOT aceptada permanece abierta y no permite estabilizar contratos incumplidos.
+
+El ejecutor de solicitudes de E-NR2 vive en `packages/pseudolearn_benchmarks/tool/`: genera escenarios
+con esperados independientes, ejecuta variantes directa, FFI y modelo de app, conserva crudos y verifica
+la totalidad de operaciones. Su smoke comprueba corrección; no constituye campaña ni certifica plataformas.
+Los fotogramas permanecen sin datos hasta la validación física. La captura de modelo Fib(20) configura
+un presupuesto explícito de un millón de pasos; el límite interactivo predeterminado sigue en diez mil.
+La prueba funcional rápida usa Fib(4), con resultado 3, sin sustituir la campaña pendiente.
+
+El caso C9 emplea operandos y destino reales; la conformidad app renueva la evidencia del fallo y compara
+estado conservado antes y después. Los datos anteriores de R8 permanecen como historia, con sus conflictos
+y pendientes originales. Este seguimiento no convierte esas capturas en evidencia de la revisión actual.

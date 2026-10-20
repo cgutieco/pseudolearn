@@ -34,7 +34,7 @@ final class RustFlowchartBuilder implements FlowchartBuilder {
     required UiLanguageId languageId,
   }) {
     final captions = RustDiagramCaptions.load(_words, profileId);
-    final view = _views.load(
+    final view = _views.loadStructure(
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,

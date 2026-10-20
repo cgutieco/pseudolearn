@@ -1,0 +1,4 @@
+    Blocking waiting for file lock on build directory
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running `target/debug/see conform --root . --subject engine --operation properties`
+Executed 30 properties; 0 pending for unavailable capabilities; evidence saved

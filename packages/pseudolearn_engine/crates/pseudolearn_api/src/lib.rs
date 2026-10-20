@@ -34,6 +34,7 @@ mod execution_state;
 mod execution_wire;
 mod fault_injection;
 mod probes;
+mod recording_digest;
 mod recording_options;
 mod reference_vocabulary;
 mod stepping;
@@ -85,3 +86,6 @@ pub use native_execution::{
 
 mod recording;
 mod state_changes;
+
+#[cfg(test)]
+mod recording_digest_tests;

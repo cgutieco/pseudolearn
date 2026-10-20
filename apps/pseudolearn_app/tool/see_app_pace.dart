@@ -1,3 +1,4 @@
+import 'see_app_direct_execution.dart';
 import 'dart:async';
 
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
@@ -5,11 +6,8 @@ import 'package:pseudolearn_app/application/execution/step_settlement.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
-import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
-import 'package:pseudolearn_app/engine/rust/rust_execution_api.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
-import 'package:pseudolearn_app/engine/rust/rust_wire_models.dart';
 
 Future<Map<String, Object?>> runPaceScenario(
   RustTransport transport,
@@ -23,11 +21,15 @@ Future<Map<String, Object?>> runPaceScenario(
   }
   if (input['statement_limit'] is int ||
       '${input['program']}'.contains('/ 0')) {
-    return _directExecution(transport, input);
+    return runDirectExecution(transport, input);
   }
   if (input['inputs'] is List<Object?>) {
-    final first = await _directExecution(transport, input, stopForInput: true);
-    final second = await _directExecution(
+    final first = await runDirectExecution(
+      transport,
+      input,
+      stopForInput: true,
+    );
+    final second = await runDirectExecution(
       transport,
       input,
       inputs: (input['inputs'] as List<Object?>).cast<String>(),
@@ -186,85 +188,6 @@ Map<String, Object?> _cancelAfterBatches(
   };
 }
 
-Future<Map<String, Object?>> _directExecution(
-  RustTransport transport,
-  Map<String, Object?> input, {
-  bool stopForInput = false,
-  List<String> inputs = const [],
-}) async {
-  final analysisApi = RustAnalysisApi(transport);
-  final executionApi = RustExecutionApi(transport);
-  final handle = analysisApi.open(
-    source: input['program'] as String,
-    profile: _profileName(input['profile']),
-    locale: 'es',
-  );
-  try {
-    final report = analysisApi.report(handle);
-    if (report['tree'] != true) {
-      return {'termination': 'failed', 'output': '', 'code': 'analysisFailed'};
-    }
-    final diagnostics = (report['diagnostics'] as List<Object?>)
-        .cast<Map<String, Object?>>();
-    final error = diagnostics.where((item) => item['severity'] == 'error');
-    if (error.isNotEmpty) {
-      return {
-        'termination': 'failed',
-        'output': '',
-        'code': error.first['code'],
-        'events_before_failure_preserved': true,
-        'later_events_absent': true,
-      };
-    }
-    final statementLimit = input['statement_limit'] as int? ?? 0;
-    final execution = executionApi.start(
-      handle,
-      statementLimit: statementLimit,
-    );
-    final events = <RustEvent>[];
-    final output = <String>[];
-    var termination = RustTerminationKind.running;
-    String? failureCode;
-    var inputIndex = 0;
-    var firstStop = 'unknown';
-    while (termination == RustTerminationKind.running ||
-        termination == RustTerminationKind.awaitingInput) {
-      if (termination == RustTerminationKind.awaitingInput) {
-        if (inputIndex >= inputs.length) {
-          firstStop = 'awaiting_input';
-          break;
-        }
-        executionApi.provideInput(execution, inputs[inputIndex]);
-        inputIndex++;
-        termination = RustTerminationKind.running;
-      }
-      final batch = executionApi.advance(execution, 25);
-      events.addAll(batch.events);
-      for (final event in batch.events) {
-        if (event.eventClass == 'output') output.add('${event.data['texto']}');
-      }
-      termination = batch.termination;
-      failureCode = batch.failureCode;
-      if (stopForInput && termination == RustTerminationKind.awaitingInput) {
-        firstStop = 'awaiting_input';
-        break;
-      }
-    }
-    return {
-      'termination': _terminationOfKind(termination),
-      'output': output.join(),
-      if (statementLimit > 0) 'statement_limit': statementLimit,
-      if (termination == RustTerminationKind.failed)
-        'code': failureCode ?? 'unknown',
-      if (stopForInput) 'first_stop': firstStop,
-    };
-  } finally {
-    analysisApi.release(handle);
-  }
-}
-
-String _profileName(Object? value) => value == 'en' ? 'en' : 'es';
-
 SyntaxProfileId _profileOf(Object? value) =>
     value == 'en' ? SyntaxProfileId.english : SyntaxProfileId.classicSpanish;
 
@@ -282,15 +205,6 @@ String _terminationOf(ExecutionStep step) {
   if (step.isHalted) return 'failed';
   return 'running';
 }
-
-String _terminationOfKind(RustTerminationKind kind) => switch (kind) {
-  RustTerminationKind.completed => 'completed',
-  RustTerminationKind.awaitingInput => 'awaiting_input',
-  RustTerminationKind.cancelled => 'cancelled',
-  RustTerminationKind.failed => 'failed',
-  RustTerminationKind.limitReached => 'limit_reached',
-  RustTerminationKind.running => 'running',
-};
 
 String _output(Iterable<String> lines) =>
     lines.isEmpty ? '' : '${lines.join('\n')}\n';

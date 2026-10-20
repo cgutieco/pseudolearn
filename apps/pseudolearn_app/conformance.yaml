@@ -10,101 +10,166 @@ activadas:
   - PERF.ARTIFACT.SIZE
   - PERF.VM.STEP-LATENCY
   - PERF.PROTOCOL
+  - LANG.SOURCE.POSITION
+  - LANG.LEXICAL.ERRORS
+  - LANG.SYNTAX.RECOVERY
+  - LANG.DECL.UNUSED
+  - LANG.PROGRAM.STRUCTURE
+  - LANG.SYNTAX.ANALYSIS-LIMITS
+  - ENG.TRACE.EVENTS
 fases_cerradas: []
 vinculos:
   - regla: APP.ENGINE.BOUNDARY@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.ENGINE.BOUNDARY@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.ENGINE.BOUNDARY@0.1.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.PACE@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.PACE@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.PACE@0.1.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.PACE@0.1.0#R4
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EXEC.SNAPSHOT-VIEW@0.1.0#R4
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EDITOR.COMPLETION@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EDITOR.COMPLETION@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EDITOR.COMPLETION@0.1.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: APP.EDITOR.COMPLETION@0.1.0#R4
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.PROGRAM.VIEW@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.PROGRAM.VIEW@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.PROGRAM.VIEW@0.1.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.WIRE-FORMAT@0.1.0#R1
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.WIRE-FORMAT@0.1.0#R2
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: R8
+    estado: cumple
   - regla: API.WIRE-FORMAT@0.1.0#R3
     verificacion: ejecutor
     estado: pendiente
-    resuelve_en: R8
+    resuelve_en: validacion-plataforma-posterior
+    justificacion: Requiere transporte Wasm real; las comprobaciones nativas no
+      acreditan crecimiento de memoria Wasm. La validación posterior comienza
+      solo en macOS e iOS y no certifica esa frontera.
   - regla: PERF.VM.STEP-LATENCY@0.2.0#R3
     verificacion: ejecutor
     estado: pendiente
-    resuelve_en: R8
+    resuelve_en: validacion-plataforma-posterior
+    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
+      pruebas funcionales locales y las capturas históricas no certifican este
+      contrato.
   - regla: PERF.PROTOCOL@0.1.0#R7
     verificacion: ejecutor
     estado: pendiente
-    resuelve_en: R8
+    resuelve_en: validacion-plataforma-posterior
+    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
+      pruebas funcionales locales y las capturas históricas no certifican este
+      contrato.
   - regla: PERF.ARTIFACT.SIZE@0.1.0#R1
     verificacion: ejecutor
     estado: pendiente
-    resuelve_en: R8
+    resuelve_en: validacion-plataforma-posterior
+    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
+      pruebas funcionales locales y las capturas históricas no certifican este
+      contrato.
+  - regla: LANG.SOURCE.POSITION@0.2.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.LEXICAL.ERRORS@0.2.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.RECOVERY@0.3.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.RECOVERY@0.3.0#R2
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.RECOVERY@0.3.0#R3
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.RECOVERY@0.3.0#R4
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.RECOVERY@0.3.0#R5
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.DECL.UNUSED@0.2.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: LANG.PROGRAM.STRUCTURE@0.2.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R2
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R3
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R4
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R5
+    verificacion: ejecutor
+    estado: cumple
+  - regla: ENG.TRACE.EVENTS@0.1.0#R6
+    verificacion: ejecutor
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R1
+    verificacion: estructural
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R2
+    verificacion: estructural
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R3
+    verificacion: estructural
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R4
+    verificacion: estructural
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R5
+    verificacion: estructural
+    estado: cumple
+  - regla: PERF.PROTOCOL@0.1.0#R6
+    verificacion: estructural
+    estado: cumple
