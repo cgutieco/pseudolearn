@@ -1,3 +1,0 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
-     Running `target/debug/see conform --root . --subject cli --operation properties`
-Executed 1 properties; 0 pending for unavailable capabilities; evidence saved

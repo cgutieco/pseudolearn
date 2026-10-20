@@ -1,4 +1,0 @@
-    Blocking waiting for file lock on build directory
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
-     Running `target/debug/see conform --root . --subject aot --operation properties`
-Executed 13 properties; 3 pending for unavailable capabilities; evidence saved

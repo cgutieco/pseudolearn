@@ -1,3 +1,0 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
-     Running `target/debug/see conform --root . --subject aot`
-Executed 1224 observations; 0 divergences; matrix saved

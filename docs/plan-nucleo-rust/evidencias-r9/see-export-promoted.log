@@ -1,3 +1,0 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-     Running `packages/pseudolearn_spec/target/debug/see export --root packages/pseudolearn_spec`
-Verified packages/pseudolearn_spec/specifications/export.json

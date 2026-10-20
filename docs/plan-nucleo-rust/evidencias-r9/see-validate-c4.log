@@ -1,3 +1,0 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-     Running `packages/pseudolearn_spec/target/debug/see validate --root packages/pseudolearn_spec`
-Validated 161 specifications

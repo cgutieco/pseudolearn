@@ -1,3 +1,0 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
-     Running `target/debug/see conform --root . --subject service`
-Executed 36 observations; 0 divergences; matrix saved
