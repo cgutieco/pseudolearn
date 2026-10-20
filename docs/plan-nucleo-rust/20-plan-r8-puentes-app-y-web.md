@@ -1,8 +1,8 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8 implementado parcialmente con la puerta abierta por una divergencia de contrato, una propiedad fallida y E-NR2 pendiente; B9 pendiente de autorización individual. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8 implementado parcialmente con la puerta abierta por un conflicto de contrato y E-NR2 pendiente; B9 implementado localmente, con la puerta abierta por publicación y validación remota de builds. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
-> Las autorizaciones cubrieron B3, B4, una iteración de B5, B6, una iteración de B7 y una iteración de B8; no autorizan B9 ni la publicación de aplicaciones.
+> Las autorizaciones cubrieron B3, B4, una iteración de B5, B6, una iteración de B7, una iteración de B8 y una iteración de B9. No se autorizó publicar aplicaciones.
 >
 > Detalla [R8 de 07-fases.md](07-fases.md#r8--puente-con-la-app-y-la-web). El corpus gobierna
 > los observables; los README de los miembros gobiernan su arquitectura y operación. Las decisiones
@@ -544,7 +544,8 @@ como productor de real (`LANG.OPS.DIVISION#R1`) y prohíbe la conversión implí
 entre el caso y las reglas del corpus; se conserva el resultado y se deja la clasificación pendiente.
 `see conform --subject app --operation properties` conectó las propiedades API al transporte, ejecutó 876
 de 976 muestras de `API.WIRE-FORMAT#P1` y halló que la proyección de eventos omite `source` y sus tramos.
-La evidencia conserva el contraejemplo en `results/properties-app.json`.
+La evidencia de esa primera ejecución quedó en la revisión de B8; la corrección y el resultado actualizado
+se registran en B9.
 
 **Resultado de artefactos y navegador.** El framework iOS arm64 Release sin firma mide 2,802,880 bytes
 (2.67 MiB) frente a 3 MiB y el Wasm Brotli Q11/lgwin22 mide 493,755 bytes (482.18 KiB) frente a 600 KiB.
@@ -561,23 +562,67 @@ medición E-NR2.
 
 **Puerta y pendientes.** E-NR2 aún no dispone de ejecutor con diez procesos y treinta iteraciones por
 variante; falta la campaña en hardware, escritorio y navegador con sus resúmenes estadísticos. La
-propiedad API y C9 fallan por las observaciones registradas. B8 permanece abierta; no se inicia B9.
+propiedad API se resolvió durante B9; C9 permanece pendiente por el conflicto registrado. B8 permanece
+abierta.
 
 ### B9 · Flujos de publicación, verificación final e informe
 
-- [ ] Adaptar los workflows nativos existentes para instalar Rust exacto, objetivos y generadores fijados,
+- [x] Adaptar los workflows nativos existentes para instalar Rust exacto, objetivos y generadores fijados,
       verificar generación y empaquetar bibliotecas. Invalidar cachés con toolchain, locks y configuración.
-- [ ] Mantener manuales las verificaciones remotas; no añadir ejecución automática por cada push/PR.
-- [ ] Separar validación de build y publicación productiva: no invocar App Store, Store, CDN o despliegue
+- [x] Mantener manuales las verificaciones remotas; no añadir ejecución automática por cada push/PR.
+- [x] Separar validación de build y publicación productiva: no invocar App Store, Store, CDN o despliegue
       web como efecto de una comprobación. Cualquier ejecución remota requerida necesita autorización.
-- [ ] Ejecutar §8 y actualizar README de todos los componentes modificados en el mismo cambio técnico.
-- [ ] Auditar toda la aceptación de §9 contra evidencias; resolver observaciones pertinentes dentro de R8.
+- [x] Ejecutar §8 localmente y actualizar README de todos los componentes modificados en el mismo cambio técnico.
+- [x] Auditar toda la aceptación de §9 contra evidencias; resolver las observaciones locales pertinentes.
 - [ ] Publicar commits coherentes y push ordinario en la rama única cuando corresponda a la ejecución autorizada;
       comprobar igualdad de HEAD local/remoto, sin force push ni coautoría de IA.
-- [ ] Publicar informe y casillas respaldadas por evidencia; detenerse antes de R9.
+- [ ] Ejecutar el workflow manual de validación en runners macOS y Windows después del push.
+- [x] Actualizar localmente el informe y las casillas respaldadas por evidencia; detenerse antes de R9.
+- [ ] Publicar el informe actualizado en la rama remota.
 
 **Puerta:** `PHASE-GREEN` y publicación del cambio confirmadas. Si falta una plataforma, medición o
-comprobación remota obligatoria, R8 permanece abierta. B0–B5 se registran según la evidencia de cada bloque; B6 mantiene pendientes de plataforma, B7 está implementado y verificado, B8 está parcialmente implementado con la puerta abierta y B9 no se ha iniciado.
+comprobación remota obligatoria, R8 permanece abierta. B0–B5 se registran según la evidencia de cada bloque; B6 mantiene pendientes de plataforma, B7 está implementado y verificado, B8 conserva el conflicto C9 y E-NR2 pendiente, y B9 mantiene pendiente la publicación y verificación remota.
+
+### Registro de una iteración de B9 · 2026-10-19
+
+**Qué se implementó.** El composite action `.github/actions/setup-rust-bridge/action.yml` instala la versión
+fijada de Rust, los targets requeridos y los generadores versionados; comprueba los bindings FRB. Su caché
+se limita a descargas de Cargo y se invalida con toolchain, targets, manifests, locks y configuración de
+generación. Los cuatro workflows productivos reutilizan esa preparación sin cambiar sus disparadores de
+publicación. `.github/workflows/verify-native-builds.yml` es manual y solo de lectura: construye y prueba
+los artefactos iOS, macOS y Windows, inspecciona las bibliotecas nativas y prueba sus paquetes; no publica.
+Los README de app, puente y motor registran operación y decisiones.
+
+La auditoría de `API.WIRE-FORMAT#P1` encontró que el codec de `pseudolearn_api` descartaba la fuente de
+eventos al normalizar JSON y PLEV. El codec del API ahora conserva `source` (incluidos tramos) en ambos
+formatos, valida su forma y cubre éxito, lote binario corrupto y Unicode/extremos numéricos. El cambio
+queda documentado en los README del API y motor; `results/properties-app.json` conserva el resultado
+reproducible de la propiedad.
+
+**Resultado de los tests y conformidad.** La suite completa del app pasó 2.228 tests; los 18 tests FFI y
+adaptadores pasaron después del cambio. `API.WIRE-FORMAT#P1` quedó en 1.852/1.852 muestras, `cumple`, semilla
+42. El corpus SEE validó 161 especificaciones. `engine` reportó 1.524 observaciones, con el conflicto
+`API.STATE.QUERY#R4/C4` descrito debajo; `service` 36/36 y `cli` 64/64. `aot` reportó 1.208 observaciones:
+843 `cumple`, 357 `no aplicable` y 8 `pendiente`. El sujeto congelado `reference` conserva 1.181
+observaciones y 134 divergencias. La app reportó 95 observaciones; permanece el conflicto
+`APP.EXEC.PACE#R4/C9`: espera `divisionByZero` después de asignar `/` real a un entero, aunque el corpus
+prohíbe esa conversión implícita.
+
+**Verificaciones.** Pasaron `cargo xtask verify` de `pseudolearn_spec`, `pseudolearn_engine`,
+`apps/pseudolearn_cli` y `packages/pseudolearn_rust_checks`; `dart test` (789 tests) y análisis/límites del núcleo;
+`flutter analyze --fatal-infos --fatal-warnings`, los tres scripts del app, `flutter test` y
+`bash tool/test_bridge.sh`; y `bash tool/wasm.sh test` (tres pruebas reales en Chrome). La propiedad se
+repitió tras reconstruir la biblioteca nativa Release. Se validó sintaxis YAML localmente; `actionlint` y
+PowerShell no están instalados en este host.
+
+**Decisiones y pendientes.** `API.STATE.QUERY#R4/C4` espera `event=2` en un trazo de dos eventos, mientras
+`C1` confirma índices desde cero al consultar `event=3` con cuatro eventos. Se reporta el conflicto y se
+mantiene abierta la clasificación, sin cambiar a escondidas el caso ni el motor. La verificación de
+workflows en runners Windows y macOS no se ha ejecutado. El push ordinario terminó con
+`Permission denied (publickey)`; `gh auth status` informa que el token activo es inválido. Por ello no se
+publicaron los commits, no se pudo despachar el workflow y no se compararon los HEAD remoto y local.
+E-NR2 continúa sin la campaña requerida, la medición física no quedó aprobada y B6 mantiene validaciones
+de plataforma pendientes. B9 no cierra R8 y no inicia R9.
 
 ### Registro de B0 · 2026-10-19
 
