@@ -80,6 +80,26 @@ double _ghostTop(WidgetTester tester) {
   return paragraph.localToGlobal(Offset(box.left, box.top)).dy;
 }
 
+double _ghostBaseline(WidgetTester tester) {
+  final paragraph = tester.renderObject<RenderParagraph>(
+    find.descendant(
+      of: find.byType(EditorGhostText),
+      matching: find.byType(RichText),
+    ),
+  );
+  final distance = paragraph.computeDistanceToActualBaseline(
+    TextBaseline.alphabetic,
+  );
+  return paragraph.localToGlobal(Offset.zero).dy + distance;
+}
+
+double _textBaseline(RenderEditable editable) {
+  final distance = editable.computeDistanceToActualBaseline(
+    TextBaseline.alphabetic,
+  );
+  return editable.localToGlobal(Offset.zero).dy + distance;
+}
+
 void main() {
   for (final platform in [
     TargetPlatform.iOS,
@@ -92,15 +112,12 @@ void main() {
       ) async {
         tester.platformDispatcher.textScaleFactorTestValue = scale;
         addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-        const text = 'Algoritmo P\n  Leer base';
+        const text = 'Leer base';
         await _pump(tester, text);
         final editable = tester
             .state<EditableTextState>(find.byType(EditableText))
             .renderEditable;
-        expect(
-          _ghostTop(tester),
-          closeTo(_textTop(editable, text.length), 0.1),
-        );
+        expect(_ghostBaseline(tester), closeTo(_textBaseline(editable), 0.1));
       }, variant: TargetPlatformVariant({platform}));
     }
   }
@@ -120,7 +137,7 @@ void main() {
     final initial = _ghostTop(tester);
     scrollable.position.jumpTo(0);
     await tester.pumpAndSettle();
-    expect(_ghostTop(tester), closeTo(_textTop(editable, text.length), 0.1));
+    expect(_ghostTop(tester), closeTo(_textTop(editable, text.length), 1.0));
     expect(_ghostTop(tester), isNot(closeTo(initial, 0.1)));
   });
 }

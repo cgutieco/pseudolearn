@@ -61,49 +61,80 @@ Offset? _ghostOrigin({
       position.offset > text.length) {
     return null;
   }
-  final range = CharacterRange.at(text, position.offset);
-  if (!range.moveBack()) return null;
-  final probe = range.current;
-  if (probe.contains('\n') || probe.contains('\r')) return null;
-  final selection = TextSelection(
-    baseOffset: position.offset - probe.length,
-    extentOffset: position.offset,
+  final selection = _lastCharacterSelection(text, position);
+  if (selection == null) return null;
+  final span = editable.text;
+  if (span == null) return null;
+  final baseline = _lineBaseline(
+    editable: editable,
+    span: span,
+    position: position,
+    selection: selection,
+    typography: typography,
   );
-  final boxes = editable.getBoxesForSelection(selection);
-  if (boxes.isEmpty) return null;
-  final baseline = _probeBaseline(probe, typography, editable);
   if (baseline == null) return null;
   final suggestion = _painter(ghost, typography);
   try {
     return Offset(
       editable.getLocalRectForCaret(position).left,
-      boxes.last.top +
-          baseline -
-          suggestion.computeLineMetrics().first.baseline,
+      baseline - suggestion.computeLineMetrics().first.baseline,
     );
   } finally {
     suggestion.dispose();
   }
 }
 
-double? _probeBaseline(
-  String probe,
-  EditorGhostTypography typography,
-  RenderEditable editable,
-) {
-  final sample = _painter(probe, typography);
+TextSelection? _lastCharacterSelection(String text, TextPosition position) {
+  final range = CharacterRange.at(text, position.offset);
+  if (!range.moveBack()) return null;
+  final probe = range.current;
+  if (probe.contains('\n') || probe.contains('\r')) return null;
+  return TextSelection(
+    baseOffset: position.offset - probe.length,
+    extentOffset: position.offset,
+  );
+}
+
+double? _lineBaseline({
+  required RenderEditable editable,
+  required InlineSpan span,
+  required TextPosition position,
+  required TextSelection selection,
+  required EditorGhostTypography typography,
+}) {
+  final text = span.toPlainText();
+  final lineIndex = '\n'.allMatches(text.substring(0, position.offset)).length;
+  final document = _painterFor(span, typography);
   try {
-    final boxes = sample.getBoxesForSelection(
-      TextSelection(baseOffset: 0, extentOffset: probe.length),
+    final lines = document.computeLineMetrics();
+    final documentBoxes = document.getBoxesForSelection(
+      selection,
       boxHeightStyle: editable.selectionHeightStyle,
       boxWidthStyle: editable.selectionWidthStyle,
     );
-    if (boxes.isEmpty) return null;
-    return sample.computeLineMetrics().first.baseline - boxes.last.top;
+    final editableBoxes = editable.getBoxesForSelection(selection);
+    if (lineIndex >= lines.length ||
+        documentBoxes.isEmpty ||
+        editableBoxes.isEmpty) {
+      return null;
+    }
+    return lines[lineIndex].baseline +
+        editableBoxes.last.top -
+        documentBoxes.last.top;
   } finally {
-    sample.dispose();
+    document.dispose();
   }
 }
+
+TextPainter _painterFor(InlineSpan span, EditorGhostTypography typography) =>
+    TextPainter(
+      text: span,
+      textDirection: typography.direction,
+      textScaler: typography.scaler,
+      strutStyle: typography.strut,
+      textHeightBehavior: typography.heightBehavior,
+      locale: typography.locale,
+    )..layout();
 
 TextPainter _painter(String text, EditorGhostTypography typography) =>
     TextPainter(

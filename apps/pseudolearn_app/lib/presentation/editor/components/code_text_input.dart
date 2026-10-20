@@ -20,6 +20,7 @@ final class CodeTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
+    final style = resolveAppTextStyle(context, AppTextVariant.codeEditor);
     return TextField(
       controller: controller,
       focusNode: focusNode,
@@ -31,9 +32,11 @@ final class CodeTextInput extends StatelessWidget {
       smartDashesType: SmartDashesType.disabled,
       smartQuotesType: SmartQuotesType.disabled,
       textCapitalization: TextCapitalization.none,
-      style: resolveAppTextStyle(context, AppTextVariant.codeEditor),
+      style: style,
       cursorColor: theme.editor.caret,
       cursorWidth: EditorMetricsTokens.editorCaretWidth,
+      cursorHeight:
+          style.fontSize! * EditorMetricsTokens.editorCaretHeightFactor,
       decoration: const InputDecoration(
         border: InputBorder.none,
         enabledBorder: InputBorder.none,

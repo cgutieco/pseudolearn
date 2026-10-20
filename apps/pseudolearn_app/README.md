@@ -2511,6 +2511,8 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
   `EditorCubit`; calcular la sangría en Dart con el vocabulario de aperturas, que es la duplicación que se elimina;
   una lista flotante en móvil, porque taparía el código y la barra sobre el teclado ya cumple ese papel; anclar la lista
   en un `Overlay` global, porque exigiría conservar coordenadas de desplazamiento ajenas al campo.
+- **Línea base del fantasma.** El origen vertical sale de la línea base de la línea del documento, medida con un `TextPainter` del mismo `TextSpan`, `StrutStyle` y escalado que el campo, menos la línea base del propio sufijo. No se parte de la caja de selección del campo porque esa caja viene redondeada a píxel y dejaba el fantasma hasta un píxel lógico por encima del texto escrito.
+- **Altura del cursor.** `CodeTextInput` fija `cursorHeight` en el tamaño de fuente por `editorCaretHeightFactor`; con la altura de línea completa la barra sobresalía bajo la línea base y se leía como un hueco entre la última letra escrita y el texto fantasma, que se ancla exactamente al borde del cursor.
 - **Intención y vigencia del texto fantasma.** El núcleo deja en silencio las líneas vacías y entrega la continuación
   de asignación solo para un destino simple confirmado. La app muestra únicamente el sufijo pendiente de la primera
   línea del texto insertable, normalizando para la vista los espacios ya escritos; no reconoce operadores ni variables.
