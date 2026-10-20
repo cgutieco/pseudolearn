@@ -372,11 +372,11 @@ sin segunda implementación es coste sin beneficio.
 
 ## 5. Reglas de código
 
-Están en [AGENTS.md](AGENTS.md) con identificador estable y verificador asociado. Las tres que más
+Están en el [`AGENTS.md`](../../AGENTS.md) de la raíz con identificador estable y verificador asociado. Las tres que más
 condicionan el día a día:
 
 - **Cero comentarios** en `src/`, `scripts/` y `tests/`. El _qué_ lo dicen los nombres; el _porqué_
-  vive en este README y en las skills. Quitar un comentario sin escribir el README es pérdida de
+  vive en este README. Quitar un comentario sin escribir el README es pérdida de
   información, no limpieza.
 - **BEM estricto** `block__element--modifier`, con `pl-` solo en el vocabulario público.
 - **Código en inglés**, textos de la interfaz en los diccionarios, documentación en español.

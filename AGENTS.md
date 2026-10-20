@@ -42,7 +42,7 @@ vez de parafrasear la regla.
 | `LANG-EN-CODE`              | Todo el código —identificadores, nombres de test, comentarios, mensajes de commit— en inglés                                                                                                                                                                                            | Revisión del cambio                                                                                                                  |
 | `LANG-ES-DOCS`              | `AGENTS.md`, los `README.md`, las skills, el corpus de especificaciones y los documentos de `docs/` en español                                                                                                                                                                                                         | Revisión del cambio                                                                                                                  |
 | `QUALITY-NO-COMMENTS`       | Prohibido cualquier tipo de comentario en archivos de código. El código se explica con nombres, tipos y funciones pequeñas; el por qué vive en el `README.md`. En Python se admite un *docstring* por módulo, clase y función, que declara la responsabilidad y nunca la implementación | Script de límites del paquete (`tool/check_limits.dart`, `tool/check_limits.py`, `scripts/check-no-comments.mjs`, `rust-checks comments`) y su caso negativo |
-| `QUALITY-NO-NOISE-COMMENTS` | Prohibido el comentario que repite lo que el código ya dice. El código se explica con nombres y funciones pequeñas                                                                                                                                                                      | Revisión del cambio · skill `code-quality`                                                                                           |
+| `QUALITY-NO-NOISE-COMMENTS` | Prohibido el comentario que repite lo que el código ya dice. El código se explica con nombres y funciones pequeñas                                                                                                                                                                      | Revisión del cambio                                                                                                                  |
 | `QUALITY-NO-DOC-REFS`       | Prohibido citar un documento o una sección desde el código (`// ver AGENTS.md §2`, `// según el README`). Se describe la restricción, nunca dónde está escrita                                                                                                                          | `grep` en revisión                                                                                                                   |
 | `QUALITY-WHY-ONLY`          | El por qué, incluso local, se documenta en el README; no habilita comentarios en código                                                                                                                                                                    | Revisión del cambio                                                                                                                  |
 | `LAYER-DIRECTION`           | Una capa solo importa de sí misma o de las capas que el archivo de reglas del paquete le permite. Cero excepciones                                                                                                                                                                      | Test de arquitectura del paquete                                                                                                     |
@@ -53,8 +53,8 @@ vez de parafrasear la regla.
 | `TEST-MIRROR`               | La carpeta de tests refleja la de código. Nada de un `all_tests.dart` común                                                                                                                                                                                                             | Revisión del cambio                                                                                                                  |
 | `SCOPE-YAGNI`               | No se implementa lo que ninguna fase aprobada pide. Si una abstracción solo tiene sentido para soportar algo fuera de alcance, no se escribe                                                                                                                                            | Revisión del cambio                                                                                                                  |
 | `GIT-SINGLE-BRANCH` | Todo cambio posterior se realiza en `feature/agregar-ruta-de-especificacion`; no se crean ramas de trabajo adicionales. La publicación usa push ordinario a esa misma rama | `git branch --show-current` y revisión del destino de push |
-| `PHASE-STOP`                | Al cerrar una fase se para y se espera confirmación explícita en un mensaje nuevo. Terminar de describir una fase no es luz verde para la siguiente                                                                                                                                     | Disciplina de trabajo · skill `phase-gate`                                                                                           |
-| `PHASE-GREEN`               | Ninguna fase se da por cerrada sin tests en verde y todos los verificadores del paquete en verde                                                                                                                                                                                        | skill `phase-gate`                                                                                                                   |
+| `PHASE-STOP`                | Al cerrar una fase se para y se espera confirmación explícita en un mensaje nuevo. Terminar de describir una fase no es luz verde para la siguiente                                                                                                                                     | Disciplina de trabajo                                                                                                                |
+| `PHASE-GREEN`               | Ninguna fase se da por cerrada sin tests en verde y todos los verificadores del paquete en verde                                                                                                                                                                                        | Verificación de fase                                                                                                                 |
 | `CONFLICT-REPORT`           | Ante un conflicto entre fuentes, se reporta a la persona en vez de resolverlo por cuenta propia                                                                                                                                                                                         | Disciplina de trabajo                                                                                                                |
 | `SPEC-BEHAVIOR-TRUTH` | El comportamiento observable del núcleo vive en el corpus de especificaciones | Conformidad desde R1 |
 | `SPEC-FIRST` | Especificación → casos → tests → código; sin motor Rust antes del hito de R3 | Revisión y conformidad |
@@ -103,8 +103,6 @@ paquete.** Quitar los comentarios sin escribir el README no es limpieza, es pér
   queda mintiendo.
 - Un `TODO` en el código está prohibido: los pendientes técnicos se registran en la sección de pendientes
   declarados del `README.md` del paquete.
-
-La skill `code-quality` tiene la lista concreta de lo que se rechaza en revisión.
 
 ---
 
@@ -176,19 +174,9 @@ No hace falta leer cada línea. Estas señales delatan casi siempre una capa mez
 
 En `.agents/skills/`:
 
-| Skill                     | Cuándo usarla                                                                  |
-|---------------------------|--------------------------------------------------------------------------------|
-| `code-quality`            | Antes de dar por terminado cualquier archivo de código                         |
-| `package-docs`            | Al crear o modificar el `README.md` de un paquete, o al registrar una decisión |
-| `layer-boundaries`        | Antes de crear un archivo nuevo, para decidir su capa y sus imports            |
-| `diagnostics-authoring`   | Al añadir o modificar un diagnóstico del núcleo                                |
-| `language-spec-authoring` | Al añadir construcciones al lenguaje, **antes** de escribir el parser          |
-| `ast-node-authoring`      | Al añadir o modificar un nodo del AST                                          |
-| `phase-gate`              | Al cerrar una fase, antes de informar                                          |
-| `fsd-architecture`        | Al crear un archivo nuevo o mover uno de capa en `apps/fe-pseudolearn`         |
-| `design-system`           | Tokens de diseño y convenciones de UI en `apps/fe-pseudolearn`                 |
-| `i18n-authoring`          | Al añadir, cambiar o borrar cadenas y textos en `apps/fe-pseudolearn`          |
-| `commit-message`          | Formato de los mensajes de commit del repositorio y sus paquetes               |
+| Skill            | Cuándo usarla                                                    |
+|------------------|------------------------------------------------------------------|
+| `commit-message` | Formato de los mensajes de commit del repositorio y sus paquetes |
 
 ---
 

@@ -39,9 +39,9 @@ pnpm test:e2e && pnpm test:a11y && pnpm test:visual
 4. **Las clases siguen BEM estricto**, y el prefijo `pl-` está reservado al vocabulario compartido.
 5. **Si cambias arquitectura, actualizas el `README.md` en el mismo commit.**
 
-El detalle completo está en [AGENTS.md](AGENTS.md) y en `.agents/skills/`.
+El detalle completo está en [`AGENTS.md`](../../AGENTS.md).
 
 ## Mensajes de commit
 
 Conventional Commits en inglés. El formato y los ejemplos están en
-[.agents/skills/commit-message/SKILL.md](.agents/skills/commit-message/SKILL.md).
+[`.agents/skills/commit-message/SKILL.md`](../../.agents/skills/commit-message/SKILL.md).

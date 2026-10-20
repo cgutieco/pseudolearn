@@ -60,7 +60,7 @@ el transporte. Las herramientas de marca producen artefactos para destinos decla
 código de sus consumidores.
 
 La raíz contiene configuración y documentación, no lógica de producto ni un gestor global de procesos.
-Las reglas y habilidades transversales viven en `AGENTS.md` y `.agents/skills` como autoridad única.
+Las reglas transversales viven en `AGENTS.md` y la skill de mensajes de commit en `.agents/skills/commit-message` como autoridad única.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
