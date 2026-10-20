@@ -1,0 +1,42 @@
+name: Set up Rust bridge
+description: Install the pinned Rust toolchain and verify generated Flutter Rust Bridge bindings
+inputs:
+  targets:
+    description: Rust compilation targets required by the workflow
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Cache Cargo downloads
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+        key: rust-bridge-${{ runner.os }}-${{ inputs.targets }}-${{ hashFiles('apps/pseudolearn_app/native/rust-toolchain.toml', 'apps/pseudolearn_app/native/Cargo.toml', 'apps/pseudolearn_app/native/Cargo.lock', 'apps/pseudolearn_app/.flutter_rust_bridge.yaml', 'apps/pseudolearn_app/pubspec.lock', 'apps/pseudolearn_app/hook/build.dart') }}
+    - name: Install pinned Rust toolchain
+      shell: bash
+      working-directory: apps/pseudolearn_app/native
+      env:
+        RUST_TARGETS: ${{ inputs.targets }}
+      run: |
+        toolchain=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' rust-toolchain.toml)
+        targets=${RUST_TARGETS// /,}
+        rustup toolchain install "$toolchain" --profile minimal \
+          --component rustfmt \
+          --component clippy \
+          --target "$targets"
+        echo "RUSTUP_TOOLCHAIN=$toolchain" >> "$GITHUB_ENV"
+        rustup show
+        rustc --version
+    - name: Install pinned bridge generators
+      shell: bash
+      working-directory: apps/pseudolearn_app
+      run: |
+        toolchain=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' native/rust-toolchain.toml)
+        cargo +"$toolchain" install cargo-expand --version 1.0.127 --locked
+        cargo +"$toolchain" install flutter_rust_bridge_codegen --version 2.13.0 --locked
+    - name: Verify generated bridge bindings
+      shell: bash
+      working-directory: apps/pseudolearn_app
+      run: bash tool/bridge.sh check

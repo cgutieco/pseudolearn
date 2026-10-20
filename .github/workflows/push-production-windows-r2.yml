@@ -31,14 +31,10 @@ jobs:
       - name: Install app dependencies
         run: flutter pub get
 
-      - name: Select pinned Rust toolchain
-        working-directory: apps/pseudolearn_app/native
-        run: |
-          $toolchain = (Select-String -Path rust-toolchain.toml -Pattern '^channel\s*=\s*"([^"]+)"').Matches[0].Groups[1].Value
-          rustup toolchain install $toolchain --profile minimal --component rustfmt --component clippy --target x86_64-pc-windows-msvc
-          "RUSTUP_TOOLCHAIN=$toolchain" >> $env:GITHUB_ENV
-          rustup show
-          rustc --version
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: x86_64-pc-windows-msvc
 
       - name: Resolve release version
         id: resolve-version

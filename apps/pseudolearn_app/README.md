@@ -248,6 +248,11 @@ Los builds de Windows ejecutan la integración en la app y las pruebas FFI contr
 `build/native_assets/windows`; también verifican que el DLL aparezca en el bundle, el MSIX, el instalador
 y el ZIP portable.
 
+La verificación remota de builds se inicia manualmente desde `.github/workflows/verify-native-builds.yml`.
+Construye el archive iOS sin firma, la app macOS universal y los paquetes Windows, ejecuta los humos nativos
+y no publica artefactos en tiendas, R2 ni CDN. Requiere acceso a GitHub Actions; el build local no requiere
+ese servicio.
+
 `tool/see_app_adapter.dart` implementa el proceso SEE y abre `openNativeTransport()`, por lo que los
 escenarios de app llaman el puente FRB generado para consultar el motor. `see conform --subject app`
 guarda las observaciones completas en `packages/pseudolearn_spec/results/app.json` y la matriz en
@@ -256,6 +261,17 @@ mismo transporte y guarda `properties-app.json`. El manifiesto conserva sus regl
 que todas las divergencias se resuelvan y la campaña de medición de B8 esté completa.
 
 ### 2.6 Despliegue y distribución
+
+La validación de build está separada de los flujos productivos. `.github/workflows/verify-native-builds.yml`
+solo admite `workflow_dispatch`, no usa secretos de publicación y no sube artefactos. Los workflows
+`push-production-*` también son manuales, pero sí contienen las acciones explícitas de firma, carga o
+distribución de su canal. Los workflows de iOS, macOS, Windows Store y Windows R2 usan
+`.github/actions/setup-rust-bridge/action.yml`, que instala el toolchain declarado por
+`native/rust-toolchain.toml`, los objetivos requeridos y las versiones fijadas de `cargo-expand` y
+`flutter_rust_bridge_codegen`, y comprueba que la generación no cambie los archivos versionados. Su caché
+solo conserva descargas de Cargo. La clave incluye sistema operativo, objetivos, toolchain, locks, archivo
+FRB y hook Native Assets; nunca se restauran dependencias de una clave anterior y no se reutilizan binarios
+compilados.
 
 - **Distribución en macOS:** Automatizada por `.github/workflows/push-production-macos.yml`, en la raíz del
   monorepo. Un disparo manual (`workflow_dispatch`) hace que un runner
@@ -2211,6 +2227,23 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
   quedó visible la pantalla inicial; no se atribuyen tiempos de ejecución a esa captura. `flutter drive --release`
   no admite esta integración nativa.
+
+### 4.53 Validación manual separada de la distribución
+
+- **Problema:** una comprobación multiplataforma debe poder compilar y ejercitar los puentes sin tener acceso a
+  credenciales ni producir una carga accidental a una tienda o un canal de distribución.
+- **Elección:** `.github/workflows/verify-native-builds.yml` solo inicia mediante `workflow_dispatch`, compila
+  paquetes sin firma para iOS, macOS y Windows, verifica enlaces y recursos Rust empaquetados, y ejecuta humos
+  en iOS Simulator, macOS y Windows. No requiere secretos ni publica artefactos. Los flujos productivos siguen
+  siendo manuales y se mantienen en workflows separados.
+- **Reproducibilidad:** `.github/actions/setup-rust-bridge/action.yml` lee la versión y los destinos de
+  `native/rust-toolchain.toml`, instala `cargo-expand` y `flutter_rust_bridge_codegen` en sus versiones
+  fijadas, y ejecuta `bash tool/bridge.sh check`. La caché solo contiene descargas de Cargo; su clave depende
+  del sistema operativo, objetivos, toolchain, `Cargo.toml`, `Cargo.lock`, `pubspec.lock`, configuración FRB
+  y hook Native Assets. No se restauran claves parciales ni se cachean bibliotecas compiladas.
+- **Alternativas descartadas:** reutilizar un workflow de publicación expondría la comprobación a sus secretos y
+  efectos externos; disparar builds en cada push o PR contradiría el ciclo manual de CI; reutilizar salidas
+  binarias de una clave incompleta podría ocultar cambios de toolchain o transporte.
 
 ---
 

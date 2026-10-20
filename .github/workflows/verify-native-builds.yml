@@ -1,0 +1,191 @@
+name: Verify Native Builds
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-native-builds-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apple:
+    runs-on: macos-15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Install core package dependencies
+        working-directory: packages/pseudolearn_core
+        run: dart pub get
+
+      - name: Install app dependencies
+        working-directory: apps/pseudolearn_app
+        run: flutter pub get
+
+      - name: Build unsigned iOS archive
+        working-directory: apps/pseudolearn_app
+        run: flutter build ipa --release --no-codesign --no-pub
+
+      - name: Verify iOS Rust asset
+        working-directory: apps/pseudolearn_app
+        run: |
+          app_path="build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app"
+          framework_path="$app_path/Frameworks/pseudolearn_bridge.framework/pseudolearn_bridge"
+          test -f "$app_path/Assets.car"
+          test -f "$framework_path"
+          lipo -verify_arch arm64 "$framework_path"
+
+      - name: Run native engine smoke test in iOS Simulator
+        working-directory: apps/pseudolearn_app
+        run: |
+          simulator_id=$(xcrun simctl list devices available --json | python3 -c 'import json, sys; devices = json.load(sys.stdin)["devices"].values(); print(next((device["udid"] for runtime in devices for device in runtime if device["name"].startswith("iPhone")), ""))')
+          if [ -z "$simulator_id" ]; then
+            echo "No available iPhone simulator is installed on this runner" >&2
+            exit 1
+          fi
+          xcrun simctl boot "$simulator_id" || true
+          xcrun simctl bootstatus "$simulator_id" -b
+          flutter test --no-pub --device-id "$simulator_id" integration_test/native_engine_smoke_test.dart
+          xcrun simctl shutdown "$simulator_id"
+
+      - name: Build unsigned universal macOS application
+        working-directory: apps/pseudolearn_app
+        run: flutter build macos --release --no-pub --no-version-check
+
+      - name: Verify macOS Rust asset and exercise native bridge
+        working-directory: apps/pseudolearn_app
+        run: |
+          app_path="build/macos/Build/Products/Release/PseudoLearn.app"
+          executable_name=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$app_path/Contents/Info.plist")
+          executable_path="$app_path/Contents/MacOS/$executable_name"
+          framework_path="$app_path/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
+          test -f "$app_path/Contents/Resources/Assets.car"
+          lipo -verify_arch arm64 x86_64 "$executable_path"
+          lipo -verify_arch arm64 x86_64 "$framework_path"
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
+            flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Install core package dependencies
+        working-directory: packages/pseudolearn_core
+        run: dart pub get
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Resolve release version
+        shell: pwsh
+        run: |
+          $line = Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)' | Select-Object -First 1
+          if ($null -eq $line) {
+            throw "pubspec.yaml has no version field"
+          }
+          $version = $line.Matches[0].Groups[1].Value.Split('+')[0]
+          "VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Build Windows release application
+        shell: pwsh
+        run: |
+          flutter build windows --release --no-pub --build-name=$env:VERSION --build-number=$env:GITHUB_RUN_NUMBER
+
+      - name: Verify and exercise bundled Rust asset
+        shell: pwsh
+        run: |
+          $nativeAsset = "build\native_assets\windows\pseudolearn_bridge.dll"
+          $bundle = "build\windows\x64\runner\Release"
+          $bundleAsset = Join-Path $bundle "pseudolearn_bridge.dll"
+          if (-not (Test-Path $nativeAsset) -or -not (Test-Path $bundleAsset)) {
+            throw "The Rust native asset is missing from the Windows build or application bundle."
+          }
+          $env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR = (Resolve-Path "build\native_assets\windows").Path
+          flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+          Remove-Item Env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR
+          flutter test --no-pub --device-id windows integration_test/native_engine_smoke_test.dart
+
+      - name: Verify bundled Visual C++ runtime
+        shell: pwsh
+        run: |
+          $bundle = "build\windows\x64\runner\Release"
+          $missing = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll") |
+            Where-Object { -not (Test-Path (Join-Path $bundle $_)) }
+          if ($missing.Count -gt 0) {
+            throw "Visual C++ runtime missing from the bundle: $($missing -join ', ')"
+          }
+
+      - name: Package Windows installer and portable archive
+        shell: pwsh
+        run: |
+          iscc "/DAppVersion=$env:VERSION" packaging/windows/inno_setup.iss
+          New-Item -ItemType Directory -Force -Path packaging/windows/Output
+          Compress-Archive `
+            -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "packaging\windows\Output\PseudoLearn-Windows-Portable.zip" `
+            -Force
+          $outputPath = (Resolve-Path packaging/windows/Output).Path
+          dart run msix:create `
+            --build-windows false `
+            --version "$($env:VERSION).0" `
+            --output-path $outputPath `
+            --output-name PseudoLearn-Store `
+            -v
+
+      - name: Verify Rust asset in Windows packages
+        shell: pwsh
+        run: |
+          $portablePath = Join-Path $env:RUNNER_TEMP "pseudolearn-portable-smoke"
+          Expand-Archive -Path "packaging\windows\Output\PseudoLearn-Windows-Portable.zip" -DestinationPath $portablePath -Force
+          if (-not (Test-Path (Join-Path $portablePath "pseudolearn_bridge.dll"))) {
+            throw "The portable ZIP does not contain pseudolearn_bridge.dll."
+          }
+          $installerPath = (Resolve-Path "packaging\windows\Output\PseudoLearn-Setup.exe").Path
+          $installPath = Join-Path $env:RUNNER_TEMP "pseudolearn-installer-smoke"
+          $installer = Start-Process -FilePath $installerPath `
+            -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=`"$installPath`"" `
+            -Wait -PassThru
+          if ($installer.ExitCode -ne 0 -or -not (Test-Path (Join-Path $installPath "pseudolearn_bridge.dll"))) {
+            throw "The Windows installer did not install pseudolearn_bridge.dll."
+          }
+          Start-Process -FilePath (Join-Path $installPath "unins000.exe") -ArgumentList "/VERYSILENT" -Wait
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path "packaging\windows\Output\PseudoLearn-Store.msix"))
+          try {
+            $library = $archive.Entries | Where-Object { $_.FullName -match '(^|/)pseudolearn_bridge\.dll$' }
+            if ($null -eq $library) {
+              throw "The MSIX package does not contain pseudolearn_bridge.dll."
+            }
+          } finally {
+            $archive.Dispose()
+          }

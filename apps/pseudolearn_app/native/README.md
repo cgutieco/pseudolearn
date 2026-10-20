@@ -43,6 +43,10 @@ cargo run --manifest-path ../../../packages/pseudolearn_rust_checks/Cargo.toml -
 `rust-toolchain.toml`; los comandos de generación y comprobación no necesitan un checkout previo del
 repositorio para hallar archivos auxiliares. El toolchain y Cargo se requieren al compilar; el framework
 macOS, el archive iOS y el bundle Windows contienen la biblioteca para su carga en tiempo de ejecución.
+Los workflows productivos y `verify-native-builds.yml` comparten `.github/actions/setup-rust-bridge`:
+instala el toolchain declarado, los destinos de cada runner y los generadores fijados, y comprueba que
+las salidas versionadas de FRB sigan vigentes. La caché conserva solo descargas Cargo y su clave incluye
+toolchain, locks, objetivos y configuración Native Assets; no reutiliza bibliotecas compiladas.
 
 ## 3. Arquitectura y modelo del sistema
 
