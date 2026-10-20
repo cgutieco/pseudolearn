@@ -72,28 +72,38 @@ final class EditorCubit extends Cubit<EditorState>
     String newCode, {
     int? cursorUtf16,
     UiLanguageId languageId = UiLanguageId.spanish,
+    bool assisted = false,
   }) {
     final profileId =
         state.document?.profileId ?? SyntaxProfileId.classicSpanish;
+    final cursor = cursorUtf16 ?? newCode.length;
+    final assist = _typingAssist(
+      newCode: newCode,
+      cursorUtf16: cursor,
+      profileId: profileId,
+      assisted: assisted,
+    );
+    final code = assist?.sourceCode ?? newCode;
+    final changed = assist != null && assist.sourceCode != newCode;
     final revision = _nextCompletionRevision();
-    final contextualCompletions = _queryCompletions(
-      sourceCode: newCode,
-      profileId: profileId,
-      cursorUtf16: cursorUtf16 ?? newCode.length,
-      revision: revision,
-    );
-    final report = _analyzer.analyze(
-      sourceCode: newCode,
-      profileId: profileId,
-      languageId: languageId,
-    );
     emit(
       state.copyWith(
-        sourceCode: newCode,
-        report: report,
-        contextualCompletions: contextualCompletions,
+        sourceCode: code,
+        report: _analyzer.analyze(
+          sourceCode: code,
+          profileId: profileId,
+          languageId: languageId,
+        ),
+        contextualCompletions: _queryCompletions(
+          sourceCode: code,
+          profileId: profileId,
+          cursorUtf16: changed ? assist.caret.start : cursor,
+          revision: revision,
+        ),
         completionRevision: revision,
         isDirty: true,
+        pendingEdit: changed ? assist : null,
+        templateActive: assist?.templateActive ?? false,
       ),
     );
     _scheduleAutosave();
@@ -174,6 +184,7 @@ final class EditorCubit extends Cubit<EditorState>
       completionRevision: revision,
       isDirty: true,
       pendingEdit: edit,
+      templateActive: edit.templateActive,
     );
   }
 

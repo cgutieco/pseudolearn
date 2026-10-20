@@ -1,8 +1,12 @@
+use crate::completion_expected::expected_type;
+use crate::completion_inline::mark_inline;
 use crate::completion_members::member_candidates;
 use crate::completion_pool::CandidatePool;
 use crate::completion_scope::SourceScope;
 use crate::completion_sources::{expression_candidates, statement_candidates, type_candidates};
-pub use crate::completion_types::{CompletionEntry, CompletionKind, CompletionQuery};
+pub use crate::completion_types::{
+    CompletionAction, CompletionEntry, CompletionKind, CompletionQuery,
+};
 use crate::cursor_context::{CursorKind, analyze_cursor};
 use crate::positions::offset_at;
 use crate::spelling::keyword_spelling;
@@ -40,18 +44,19 @@ pub fn complete_at_position_with_edit(query: &CompletionQuery) -> CompletionResu
         start_utf8: context.prefix_start,
         end_utf8: offset,
     };
-    let scope = SourceScope {
+    let mut scope = SourceScope {
         analysis: query.analysis,
         context: &context,
         profile: query.profile,
         offset,
+        expected: None,
     };
+    scope.expected = expected_type(&scope);
     let mut pool = CandidatePool::default();
     fill_pool(&scope, &mut pool);
-    CompletionResult {
-        entries: pool.finish(&context.prefix, query.profile),
-        text_edit,
-    }
+    let mut entries = pool.finish(&context.prefix, query.profile);
+    mark_inline(&mut entries, &context);
+    CompletionResult { entries, text_edit }
 }
 
 fn fill_pool(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
@@ -113,6 +118,10 @@ fn hint_entry(native: String, foreign: &str, profile: Profile) -> CompletionEntr
         detail: Some(hint_detail(profile, foreign)),
         insert_text: None,
         bilingual_origin: Some(foreign.to_owned()),
+        detail_key: Some("bilingual_equivalent".to_owned()),
+        detail_arguments: vec![foreign.to_owned()],
+        inline: false,
+        action: CompletionAction::Plain,
     }
 }
 

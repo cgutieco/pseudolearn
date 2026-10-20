@@ -5,6 +5,9 @@ final class ComponentMetricsTokens {
   static const double editorKeyCapHeight = 32.0;
   static const double editorTemplateRowHeight = SpacingTokens.targetTouchMin;
   static const double editorTemplateChipHeight = 32.0;
+  static const double editorCompletionPopupWidth = 320.0;
+  static const double editorCompletionRowHeight = 32.0;
+  static const double editorCompletionPopupGap = 4.0;
   static const double diagnosticsPanelRelatedConnector = 1.0;
   static const double severityChipHeight = 20.0;
   static const double chipFilterHeight = 32.0;

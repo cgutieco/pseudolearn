@@ -1,4 +1,5 @@
 use crate::block_layout::{is_closer, is_opener};
+use crate::expected_slot::{ExpectedSlot, expected_slot};
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{SyntaxTree, TokenKind};
@@ -27,6 +28,7 @@ pub struct CursorContext {
     pub open_blocks: Vec<KeywordKind>,
     pub line_tokens: Vec<TokenKind>,
     pub previous: Option<TokenKind>,
+    pub expected: ExpectedSlot,
 }
 
 pub fn analyze_cursor(tree: &SyntaxTree, source: &SourceText, offset: usize) -> CursorContext {
@@ -38,11 +40,11 @@ pub fn analyze_cursor(tree: &SyntaxTree, source: &SourceText, offset: usize) -> 
         .get(..prefix_start)
         .and_then(|head| head.rfind('\n'))
         .map_or(0, |index| index.saturating_add(1));
-    let line_tokens: Vec<TokenKind> = code
+    let line_code: Vec<&CodeToken> = code
         .iter()
         .filter(|entry| entry.start >= line_start)
-        .map(|entry| entry.kind)
         .collect();
+    let line_tokens: Vec<TokenKind> = line_code.iter().map(|entry| entry.kind).collect();
     let kind = if inert {
         CursorKind::Inert
     } else {
@@ -60,15 +62,16 @@ pub fn analyze_cursor(tree: &SyntaxTree, source: &SourceText, offset: usize) -> 
         prefix,
         prefix_start,
         open_blocks: open_blocks(&code),
+        expected: expected_slot(tree, text, &line_code),
         line_tokens,
         previous,
     }
 }
 
-struct CodeToken {
-    index: usize,
-    kind: TokenKind,
-    start: usize,
+pub struct CodeToken {
+    pub index: usize,
+    pub kind: TokenKind,
+    pub start: usize,
 }
 
 fn code_tokens_before(tree: &SyntaxTree, limit: usize) -> Vec<CodeToken> {

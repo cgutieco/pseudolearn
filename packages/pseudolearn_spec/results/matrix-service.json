@@ -6,7 +6,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.FORMAT.STYLE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -16,7 +16,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.FORMAT.STYLE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -26,7 +26,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.FORMAT.STYLE@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -36,7 +36,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.FORMAT.STYLE@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -46,7 +46,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -56,7 +56,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -66,7 +66,17 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.LSP.CAPABILITIES@0.1.0#R4",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -76,7 +86,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -86,7 +96,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -96,7 +106,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -106,7 +116,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -123,7 +133,7 @@
     ],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -152,7 +162,77 @@
     ],
     "reason": null,
     "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R6",
-    "state": "experimental",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R7",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R8",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R9",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R10",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R11",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R12",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.COMPLETION@0.1.0#R13",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -162,7 +242,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.HOVER@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -172,7 +252,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.HOVER@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -182,7 +262,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.HOVER@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -192,7 +272,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -209,7 +289,7 @@
     ],
     "reason": null,
     "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -219,7 +299,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.INCREMENTAL@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -229,7 +309,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -239,7 +319,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -249,7 +329,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -259,7 +339,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -269,7 +349,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NAVIGATION@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -279,7 +359,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -289,7 +369,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -299,6 +379,66 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R3",
+    "state": "estable",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R1",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R2",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R3",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R4",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 4,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R5",
+    "state": "experimental",
+    "subject": "service"
+  },
+  {
+    "binding": "cumple",
+    "cases": 2,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "TOOL.SERVICE.ON-TYPE@0.1.0#R6",
     "state": "experimental",
     "subject": "service"
   },
@@ -309,7 +449,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -319,7 +459,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -329,7 +469,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   },
   {
@@ -339,7 +479,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "service"
   }
 ]

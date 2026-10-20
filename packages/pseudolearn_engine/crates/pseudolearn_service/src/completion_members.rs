@@ -1,10 +1,10 @@
 use crate::completion_pool::{CandidatePool, plain_entry};
 use crate::completion_scope::SourceScope;
+use crate::completion_symbols::call_entry;
 use crate::completion_types::CompletionKind;
 use crate::cursor_context::Receiver;
 use crate::symbol_queries::{
-    callable_signature, class_chain, class_for_local, enclosing_function, owner_class_of,
-    visible_locals,
+    class_chain, class_for_local, enclosing_function, owner_class_of, visible_locals,
 };
 use crate::type_names::type_display;
 use pseudolearn_semantic::ServiceAnalysis;
@@ -54,16 +54,12 @@ pub fn member_candidates(scope: &SourceScope<'_>, receiver: &Receiver, pool: &mu
         }
         for method in &class.methods {
             let slot = usize::try_from(method.0).unwrap_or(usize::MAX);
-            let Some(function) = analysis.module.functions.get(slot) else {
+            if analysis.module.functions.get(slot).is_none() {
                 continue;
-            };
+            }
             pool.add(
                 1,
-                plain_entry(
-                    function.name.clone(),
-                    CompletionKind::Method,
-                    Some(callable_signature(analysis, slot, scope.profile)),
-                ),
+                call_entry(analysis, slot, CompletionKind::Method, scope.profile),
             );
         }
     }

@@ -21,9 +21,10 @@ const _quote = EditorKey(
 );
 
 const _conditional = EditorKey.template(
-  label: 'Si Entonces',
+  label: 'Si',
   insertion: 'Si condicion Entonces\n  \nFinSi',
   caretOffset: 3,
+  construction: 'if',
 );
 
 SourceEdit _apply({
@@ -107,64 +108,28 @@ void main() {
   });
 
   group('RustLexiconSourceEditor · templates', () {
-    test('opens a fresh line and inherits the indentation of the caret line', () {
-      const source = 'Proceso P\n\tEscribir "x"\nFinProceso';
+    String selected(SourceEdit edit) =>
+        edit.sourceCode.substring(edit.caret.start, edit.caret.end);
+
+    test('opens a fresh line, inherits the indentation and selects the stop', () {
+      const source = 'Algoritmo P\n\tEscribir "x"\nFinAlgoritmo';
 
       final edit = _apply(
         sourceCode: source,
-        caret: const CaretRange.collapsed(23),
+        caret: const CaretRange.collapsed(25),
         key: _conditional,
       );
 
       expect(
         edit.sourceCode,
-        'Proceso P\n\tEscribir "x"\n\tSi condicion Entonces\n\t  \n\tFinSi\nFinProceso',
+        'Algoritmo P\n\tEscribir "x"\n\tSi condicion Entonces\n\t  \n\tSino\n\t  \n\tFinSi\nFinAlgoritmo',
       );
-      expect(edit.caret, const CaretRange.collapsed(28));
+      expect(selected(edit), 'condicion');
+      expect(edit.templateActive, isTrue);
     });
 
     test('indents one more level under a line that opens a block', () {
-      const source = 'Proceso P';
-
-      final edit = _apply(
-        sourceCode: source,
-        caret: const CaretRange.collapsed(9),
-        key: _conditional,
-      );
-
-      expect(
-        edit.sourceCode,
-        'Proceso P\n  Si condicion Entonces\n    \n  FinSi',
-      );
-      expect(edit.caret, const CaretRange.collapsed(15));
-    });
-
-    test('the opening lexeme comes from the profile and is not embedded', () {
-      const source = 'Proceso P';
-
-      final edit = _apply(
-        sourceCode: source,
-        caret: const CaretRange.collapsed(9),
-        key: _conditional,
-        profileId: SyntaxProfileId.english,
-      );
-
-      expect(edit.sourceCode, 'Proceso P\nSi condicion Entonces\n  \nFinSi');
-    });
-
-    test('does not open a fresh line on an empty document', () {
-      final edit = _apply(
-        sourceCode: '',
-        caret: const CaretRange.collapsed(0),
-        key: _conditional,
-      );
-
-      expect(edit.sourceCode, 'Si condicion Entonces\n  \nFinSi');
-      expect(edit.caret, const CaretRange.collapsed(3));
-    });
-
-    test('reuses the indentation already typed on a blank line', () {
-      const source = 'Proceso P\n\t';
+      const source = 'Algoritmo P';
 
       final edit = _apply(
         sourceCode: source,
@@ -174,27 +139,230 @@ void main() {
 
       expect(
         edit.sourceCode,
-        'Proceso P\n\tSi condicion Entonces\n\t  \n\tFinSi',
+        'Algoritmo P\n  Si condicion Entonces\n    \n  Sino\n    \n  FinSi',
       );
+      expect(selected(edit), 'condicion');
+    });
+
+    test('the lexemes come from the profile of the document', () {
+      const source = 'Algorithm P';
+
+      final edit = _apply(
+        sourceCode: source,
+        caret: const CaretRange.collapsed(11),
+        key: _conditional,
+        profileId: SyntaxProfileId.english,
+      );
+
+      expect(edit.sourceCode, startsWith('Algorithm P\n  If condition Then'));
+      expect(selected(edit), 'condition');
+    });
+
+    test('does not open a fresh line on an empty document', () {
+      final edit = _apply(
+        sourceCode: '',
+        caret: const CaretRange.collapsed(0),
+        key: _conditional,
+      );
+
+      expect(edit.sourceCode, startsWith('Si condicion Entonces\n  \nSino'));
+      expect(selected(edit), 'condicion');
+    });
+
+    test('reuses the indentation already typed on a blank line', () {
+      const source = 'Algoritmo P\n\t';
+
+      final edit = _apply(
+        sourceCode: source,
+        caret: const CaretRange.collapsed(13),
+        key: _conditional,
+      );
+
+      expect(
+        edit.sourceCode,
+        startsWith('Algoritmo P\n\tSi condicion Entonces\n\t  \n\tSino'),
+      );
+    });
+
+    test('a template key without a construction is inserted as plain text', () {
+      final edit = _apply(
+        sourceCode: '',
+        caret: const CaretRange.collapsed(0),
+        key: const EditorKey.template(
+          label: 'x',
+          insertion: 'abc',
+          caretOffset: 1,
+        ),
+      );
+
+      expect(edit.sourceCode, 'abc');
+      expect(edit.caret, const CaretRange.collapsed(1));
+      expect(edit.templateActive, isFalse);
+    });
+
+    test('stop keys walk the template and leave it at the body', () {
+      const source = 'Algoritmo P\n  Par\nFinAlgoritmo';
+      final inserted = _apply(
+        sourceCode: source,
+        caret: const CaretRange(start: 14, end: 17),
+        key: const EditorKey.template(
+          label: 'Para',
+          insertion: '',
+          caretOffset: 0,
+          construction: 'for',
+        ),
+      );
+      expect(selected(inserted), 'indice');
+      final next = _apply(
+        sourceCode: inserted.sourceCode,
+        caret: inserted.caret,
+        key: const EditorKey.stop(EditorKeyKind.stopNext),
+      );
+      expect(selected(next), 'limite');
+      expect(next.templateActive, isTrue);
+      final done = _apply(
+        sourceCode: next.sourceCode,
+        caret: next.caret,
+        key: const EditorKey.stop(EditorKeyKind.stopExit),
+      );
+      expect(done.caret.isCollapsed, isTrue);
+      expect(done.templateActive, isFalse);
+    });
+
+    test('stop keys outside a template keep text and selection', () {
+      final edit = _apply(
+        sourceCode: 'abc',
+        caret: const CaretRange.collapsed(1),
+        key: const EditorKey.stop(EditorKeyKind.stopNext),
+      );
+
+      expect(edit.sourceCode, 'abc');
+      expect(edit.caret, const CaretRange.collapsed(1));
     });
   });
 
   group('RustLexiconSourceEditor · completions', () {
-    test('replaces the service range without adding template indentation', () {
+    test('accepting a structure re-indents it and selects its first stop', () {
+      const source = 'Algoritmo P\n  Mie\nFinAlgoritmo';
       final result = _editor.applyKey(
-        sourceCode: 'whi\n',
-        caret: const CaretRange.collapsed(3),
+        sourceCode: source,
+        caret: const CaretRange.collapsed(17),
         key: const EditorKey.completion(
           label: 'Mientras',
           insertion: 'Mientras',
-          replacementRange: CaretRange(start: 0, end: 3),
+          replacementRange: CaretRange(start: 14, end: 17),
           revision: 4,
         ),
         profileId: SyntaxProfileId.classicSpanish,
         revision: 1,
       );
-      expect(result.sourceCode, 'Mientras\n');
-      expect(result.caret, const CaretRange.collapsed(8));
+      expect(
+        result.sourceCode,
+        'Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo',
+      );
+      expect(
+        result.sourceCode.substring(result.caret.start, result.caret.end),
+        'condicion',
+      );
+      expect(result.templateActive, isTrue);
+    });
+
+    test('accepting a bilingual hint inserts only the native word', () {
+      const source = 'Algoritmo P\n  whi\nFinAlgoritmo';
+      final result = _editor.applyKey(
+        sourceCode: source,
+        caret: const CaretRange.collapsed(17),
+        key: const EditorKey.completion(
+          label: 'Mientras',
+          insertion: 'Mientras',
+          replacementRange: CaretRange(start: 14, end: 17),
+          revision: 4,
+        ),
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(result.sourceCode, 'Algoritmo P\n  Mientras\nFinAlgoritmo');
+      expect(result.templateActive, isFalse);
+    });
+
+    test('accepting a plain word leaves the caret after it', () {
+      const source = 'Algoritmo P\n  Esc\nFinAlgoritmo';
+      final result = _editor.applyKey(
+        sourceCode: source,
+        caret: const CaretRange.collapsed(17),
+        key: const EditorKey.completion(
+          label: 'Escribir',
+          insertion: 'Escribir',
+          replacementRange: CaretRange(start: 14, end: 17),
+          revision: 4,
+        ),
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(result.sourceCode, 'Algoritmo P\n  Escribir\nFinAlgoritmo');
+      expect(result.caret, const CaretRange.collapsed(22));
+      expect(result.templateActive, isFalse);
+    });
+
+    test(
+      'falls back to the plain replacement when the service does not offer it',
+      () {
+        final result = _editor.applyKey(
+          sourceCode: 'whi\n',
+          caret: const CaretRange.collapsed(3),
+          key: const EditorKey.completion(
+            label: 'Inexistente',
+            insertion: 'Inexistente',
+            replacementRange: CaretRange(start: 0, end: 3),
+            revision: 4,
+          ),
+          profileId: SyntaxProfileId.classicSpanish,
+          revision: 1,
+        );
+        expect(result.sourceCode, 'Inexistente\n');
+        expect(result.caret, const CaretRange.collapsed(11));
+      },
+    );
+  });
+
+  group('RustLexiconSourceEditor · typing assistance', () {
+    test('Enter after a block header closes it', () {
+      const source = 'Algoritmo P\n  Mientras 1 = 1 Hacer\n\nFinAlgoritmo\n';
+      final edit = _editor.afterTyping(
+        sourceCode: source,
+        cursorUtf16: 35,
+        character: '\n',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(
+        edit!.sourceCode,
+        'Algoritmo P\n  Mientras 1 = 1 Hacer\n    \n  FinMientras\nFinAlgoritmo\n',
+      );
+      expect(edit.caret, const CaretRange.collapsed(39));
+    });
+
+    test('an opening parenthesis is paired', () {
+      final edit = _editor.afterTyping(
+        sourceCode: 'Algoritmo P\n  Escribir (\nFinAlgoritmo\n',
+        cursorUtf16: 24,
+        character: '(',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(edit!.sourceCode, contains('Escribir ()'));
+      expect(edit.caret, const CaretRange.collapsed(24));
+    });
+
+    test('an ordinary character keeps the text', () {
+      final edit = _editor.afterTyping(
+        sourceCode: 'Algoritmo P\n  x\nFinAlgoritmo\n',
+        cursorUtf16: 15,
+        character: 'x',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+      );
+      expect(edit!.sourceCode, 'Algoritmo P\n  x\nFinAlgoritmo\n');
     });
   });
 

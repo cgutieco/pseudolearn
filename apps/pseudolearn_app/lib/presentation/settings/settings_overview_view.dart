@@ -13,11 +13,13 @@ final class SettingsOverviewView extends StatelessWidget {
   final UiLanguageId currentLanguage;
   final AppThemeMode currentThemeMode;
   final bool assistedDiagramZoom;
+  final bool editorAssistance;
   final String appVersion;
   final VoidCallback onNavigateAccount;
   final VoidCallback onNavigateLanguage;
   final VoidCallback onNavigateTheme;
   final VoidCallback onNavigateDiagram;
+  final VoidCallback onNavigateEditor;
   final VoidCallback onRestartOnboarding;
   final VoidCallback onNavigateContact;
 
@@ -26,11 +28,13 @@ final class SettingsOverviewView extends StatelessWidget {
     required this.currentLanguage,
     required this.currentThemeMode,
     required this.assistedDiagramZoom,
+    required this.editorAssistance,
     required this.appVersion,
     required this.onNavigateAccount,
     required this.onNavigateLanguage,
     required this.onNavigateTheme,
     required this.onNavigateDiagram,
+    required this.onNavigateEditor,
     required this.onRestartOnboarding,
     required this.onNavigateContact,
   });
@@ -68,10 +72,12 @@ final class _SettingsOverviewBody extends StatelessWidget {
               language: view.currentLanguage,
               themeMode: view.currentThemeMode,
               assistedDiagramZoom: view.assistedDiagramZoom,
+              editorAssistance: view.editorAssistance,
               onNavigateAccount: view.onNavigateAccount,
               onNavigateLanguage: view.onNavigateLanguage,
               onNavigateTheme: view.onNavigateTheme,
               onNavigateDiagram: view.onNavigateDiagram,
+              onNavigateEditor: view.onNavigateEditor,
               onRestartOnboarding: view.onRestartOnboarding,
             ),
             secondary: InformationSection(onNavigateContact: view.onNavigateContact),

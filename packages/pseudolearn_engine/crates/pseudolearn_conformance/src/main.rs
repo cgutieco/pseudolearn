@@ -8,6 +8,7 @@ use serde_json::{Value, json};
 use std::io::{BufRead, Write};
 
 mod lsp_handler;
+mod service_completion_edits;
 mod service_edit_request;
 mod service_edits;
 mod service_handler;

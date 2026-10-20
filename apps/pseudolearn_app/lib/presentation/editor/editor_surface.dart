@@ -23,6 +23,7 @@ final class EditorSurface extends StatefulWidget {
   final EditorKeyPressed onKeyPressed;
   final VoidCallback onRun;
   final bool keepsKeyBar;
+  final bool assistanceEnabled;
 
   const EditorSurface({
     super.key,
@@ -34,6 +35,7 @@ final class EditorSurface extends StatefulWidget {
     required this.onKeyPressed,
     required this.onRun,
     this.keepsKeyBar = true,
+    this.assistanceEnabled = false,
   });
 
   @override
@@ -95,7 +97,10 @@ final class _EditorSurfaceState extends State<EditorSurface> {
       _appliedRevision = edit.revision;
       _controller.value = TextEditingValue(
         text: edit.sourceCode,
-        selection: TextSelection.collapsed(offset: edit.caret.start),
+        selection: TextSelection(
+          baseOffset: edit.caret.start,
+          extentOffset: edit.caret.end,
+        ),
       );
       _focusNode.requestFocus();
       return;
@@ -137,7 +142,6 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
-
     return Column(
       children: [
         Expanded(
@@ -148,6 +152,7 @@ final class _EditorSurfaceState extends State<EditorSurface> {
             executionState: widget.executionState,
             onCodeChanged: _onCodeChanged,
             onKeyPressed: _press,
+            assistanceEnabled: widget.assistanceEnabled,
           ),
         ),
         _UnderFieldBars(
@@ -157,6 +162,7 @@ final class _EditorSurfaceState extends State<EditorSurface> {
           canRun: _canRun,
           onDiagnosticTap: widget.onDiagnosticSelected,
           onKeyPressed: _press,
+          assistanceEnabled: widget.assistanceEnabled,
           onRun: _run,
           onHideKeyboard: _focusNode.unfocus,
         ),
@@ -170,6 +176,7 @@ final class _UnderFieldBars extends StatelessWidget {
   final bool offersKeyBar;
   final bool offersExitActions;
   final bool canRun;
+  final bool assistanceEnabled;
   final ValueChanged<AppDiagnostic> onDiagnosticTap;
   final ValueChanged<EditorKey> onKeyPressed;
   final VoidCallback onRun;
@@ -180,6 +187,7 @@ final class _UnderFieldBars extends StatelessWidget {
     required this.offersKeyBar,
     required this.offersExitActions,
     required this.canRun,
+    required this.assistanceEnabled,
     required this.onDiagnosticTap,
     required this.onKeyPressed,
     required this.onRun,
@@ -206,6 +214,8 @@ final class _UnderFieldBars extends StatelessWidget {
                 ? editorState.contextualCompletions
                 : editorState.completions,
             onKeyPressed: onKeyPressed,
+            alwaysShowsCandidates: assistanceEnabled,
+            templateActive: editorState.templateActive,
           ),
       ],
     );

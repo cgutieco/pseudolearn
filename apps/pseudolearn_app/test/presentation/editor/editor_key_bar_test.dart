@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/completion/completion_item.dart';
+import 'package:pseudolearn_app/domain/model/editor/caret_range.dart';
 import 'package:pseudolearn_app/domain/model/editor/editor_key.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/presentation/editor/components/editor_key_cap.dart';
@@ -29,6 +30,8 @@ const _templates = [
 Widget _bar({
   required ValueChanged<EditorKey> onKeyPressed,
   List<CompletionItem> templates = _templates,
+  bool alwaysShowsCandidates = false,
+  bool templateActive = false,
 }) {
   return MaterialApp(
     theme: AppTheme.light(),
@@ -48,6 +51,8 @@ Widget _bar({
             keys: _keys,
             templates: templates,
             onKeyPressed: onKeyPressed,
+            alwaysShowsCandidates: alwaysShowsCandidates,
+            templateActive: templateActive,
           ),
         ),
       ),
@@ -57,6 +62,76 @@ Widget _bar({
 
 void main() {
   group('EditorKeyBar', () {
+    testWidgets(
+      'keeps the candidate row folded unless assistance asks for it',
+      (tester) async {
+        await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorTemplateRow), findsNothing);
+
+        await tester.pumpWidget(
+          _bar(onKeyPressed: (_) {}, alwaysShowsCandidates: true),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorTemplateRow), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'an active template replaces the candidates with stop controls',
+      (tester) async {
+        final pressed = <EditorKey>[];
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: pressed.add,
+            alwaysShowsCandidates: true,
+            templateActive: true,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(EditorTemplateRow), findsNothing);
+        await tester.tap(find.bySemanticsLabel('Siguiente parada'));
+        await tester.tap(find.bySemanticsLabel('Parada anterior'));
+        await tester.tap(find.bySemanticsLabel('Terminar plantilla'));
+
+        expect(pressed.map((key) => key.kind), [
+          EditorKeyKind.stopNext,
+          EditorKeyKind.stopPrevious,
+          EditorKeyKind.stopExit,
+        ]);
+      },
+    );
+
+    testWidgets(
+      'a candidate with a replacement range becomes a completion key',
+      (tester) async {
+        EditorKey? pressed;
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: (key) => pressed = key,
+            alwaysShowsCandidates: true,
+            templates: const [
+              CompletionItem(
+                label: 'Mientras',
+                template: 'Mientras',
+                caretOffset: 8,
+                family: CompletionFamily.structured,
+                replacementRange: CaretRange(start: 0, end: 3),
+                revision: 2,
+              ),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Mientras'));
+
+        expect(pressed?.kind, EditorKeyKind.completion);
+        expect(pressed?.revision, 2);
+      },
+    );
+
     testWidgets('shows every key of the profile in one fixed row', (
       tester,
     ) async {

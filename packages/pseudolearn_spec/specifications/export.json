@@ -318,7 +318,8 @@
       "TOOL.SERVICE.INCREMENTAL",
       "TOOL.SERVICE.LOSSLESS-TREE",
       "TOOL.SERVICE.NAVIGATION",
-      "TOOL.SERVICE.NODE-IDENTITY"
+      "TOOL.SERVICE.NODE-IDENTITY",
+      "TOOL.SERVICE.ON-TYPE"
     ],
     "TOOL.TRANSLATE": [
       "TOOL.TRANSLATE.ROUND-TRIP"
@@ -6953,9 +6954,203 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R5",
+            "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación.",
+            "verificacion": [
+              "C7",
+              "C8",
+              "C9"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "query": "default"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "assistance_enabled": false
+              }
+            },
+            "id": "C7",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "assistance_enabled": false,
+                "character": "\n",
+                "cursor_utf16": 35,
+                "document": "Algoritmo P\n  Mientras x < 1 Hacer\n\nFinAlgoritmo\n"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "document_changed": false,
+                "on_type_requested": false
+              }
+            },
+            "id": "C8",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "assistance_enabled": true,
+                "character": "\n",
+                "cursor_utf16": 35,
+                "document": "Algoritmo P\n  Mientras x < 1 Hacer\n\nFinAlgoritmo\n"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "document_changed": true,
+                "on_type_requested": true
+              }
+            },
+            "id": "C9",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R6",
+            "texto": "El editor aplica al búfer, sin interpretarlas, las ediciones que el servicio devuelve al aceptar un candidato y al teclear, y convierte sus posiciones entre UTF-8 y UTF-16. No contiene lógica de sangría, cierre de bloques, terminador ni pares.",
+            "verificacion": [
+              "C10"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "candidate": "Mientras",
+                "cursor_utf16": 17,
+                "document": "Algoritmo P\n  Mie\nFinAlgoritmo\n",
+                "profile": "es"
+              },
+              "scenario": "accept_candidate"
+            },
+            "espera": {
+              "aplicacion": {
+                "document_after": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n",
+                "selection_utf16": [
+                  23,
+                  32
+                ]
+              }
+            },
+            "id": "C10",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R6",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R7",
+            "texto": "El editor navega las paradas de una plantilla aceptada con las operaciones de navegación del servicio y no conserva rangos propios. Salir de la última parada termina la sesión de plantilla.",
+            "verificacion": [
+              "C11"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "candidate": "Para",
+                "cursor_utf16": 17,
+                "document": "Algoritmo P\n  Par\nFinAlgoritmo\n",
+                "profile": "es",
+                "steps": [
+                  "next",
+                  "next"
+                ]
+              },
+              "scenario": "template_navigation"
+            },
+            "espera": {
+              "aplicacion": {
+                "selected_texts": [
+                  "indice",
+                  "limite"
+                ],
+                "session_ended": true
+              }
+            },
+            "id": "C11",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R7",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "8c6588fb0931630d12c698d68e1da2cedd3e70dc8ee63ef9fe2a55d7fa524015",
+      "hash": "38c368d95f69f5c19e8823f56f7cd7176597f9fa09d47166d3a7cfecb4c23c5f",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -39290,6 +39485,129 @@
         },
         {
           "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "El servidor anuncia completionProvider con triggerCharacters [\".\"] y onTypeFormattingProvider con firstTriggerCharacter de salto de línea. Los candidatos que llevan paradas se entregan con insertTextFormat 2 y como texto el fragmento derivado de la misma estructura que el servicio; el resto con insertTextFormat 1. La petición textDocument/onTypeFormatting devuelve las ediciones de la asistencia al teclear.",
+            "verificacion": [
+              "C4",
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "disparador_escritura": "\n",
+                "disparadores_completado": [
+                  "."
+                ]
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "mensajes": [
+                {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "initialize",
+                  "params": {
+                    "capabilities": {},
+                    "locale": "es"
+                  }
+                },
+                {
+                  "id": 2,
+                  "jsonrpc": "2.0",
+                  "method": "shutdown"
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "exit"
+                }
+              ],
+              "proyeccion": "capacidades_edicion",
+              "suboperacion": "lsp"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "etiqueta": "Si",
+                "insertText": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+                "insertTextFormat": 2
+              }
+            },
+            "id": "C5",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "etiqueta": "Si",
+              "mensajes": [
+                {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "initialize",
+                  "params": {
+                    "locale": "es"
+                  }
+                },
+                {
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/didOpen",
+                  "params": {
+                    "textDocument": {
+                      "languageId": "pseudolearn",
+                      "text": "Algoritmo Principal\n  Si\nFinAlgoritmo\n",
+                      "uri": "file:///edicion.pseudo",
+                      "version": 1
+                    }
+                  }
+                },
+                {
+                  "id": 2,
+                  "jsonrpc": "2.0",
+                  "method": "textDocument/completion",
+                  "params": {
+                    "position": {
+                      "character": 4,
+                      "line": 1
+                    },
+                    "textDocument": {
+                      "uri": "file:///edicion.pseudo"
+                    }
+                  }
+                }
+              ],
+              "proyeccion": "fragmento",
+              "suboperacion": "lsp"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
             "espera": {
               "servicio": {
                 "capacidades_anunciadas": true,
@@ -39540,7 +39858,7 @@
           "kind": "caso"
         }
       ],
-      "hash": "a6f5f9e27ba6bc34bf8a6021c98b6cd3c92fac06108dd771c8ca535528513531",
+      "hash": "825dc897f9438390d10a5b1527bc6857985ba3e17ca94ebba810292e324da5a3",
       "metadata": {
         "cambio": {
           "clase": "editorial",
@@ -39586,7 +39904,7 @@
         "id": "TOOL.LSP.CAPABILITIES",
         "reemplaza": null,
         "reemplazada_por": null,
-        "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación y diagnósticos.",
+        "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación, diagnósticos, fragmentos y asistencia al teclear.",
         "revisado_por": [
           "revision-independiente-automatizada-r9"
         ],
@@ -39964,13 +40282,550 @@
         },
         {
           "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R7",
+            "texto": "Cada plantilla sintáctica se entrega como texto con paradas numeradas: índice, rol (expression o new_identifier) y tramo. Los marcadores son identificadores válidos del perfil y el tramo de cada parada cae sobre un token del rol declarado, de modo que el programa analiza sin errores sintácticos mientras se rellena. La plantilla declara además una parada final, siempre sobre la primera línea de cuerpo, y su equivalente en formato de fragmento LSP derivado de la misma estructura: la numeración del fragmento sigue a la de las paradas y la parada final es $0.",
+            "verificacion": [
+              "C9",
+              "C10",
+              "C11",
+              "P1"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R8",
+            "texto": "Aceptar un candidato inserta su texto sobre el tramo de reemplazo y re-sangra cada línea posterior de una plantilla multilínea con la sangría de la línea destino, usando la unidad de sangría del formateador. El resultado indica el tramo que debe quedar seleccionado: el de la primera parada o, sin paradas, el punto de inserción final.",
+            "verificacion": [
+              "C12",
+              "C13"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R9",
+            "texto": "Cuando el contexto fija un tipo esperado (condición tras Si, Mientras, Hasta Que, No, Y u O; lado derecho de una asignación a una variable de tipo conocido; argumento de una llamada a un subproceso de usuario), los candidatos de un mismo nivel se ordenan por compatibilidad: idéntico, ampliable (Entero a Real), sin dato e incompatible. Un candidato incompatible se conserva y nunca se oculta.",
+            "verificacion": [
+              "C14"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R10",
+            "texto": "Aceptar un subproceso, función o método de usuario con parámetros inserta la llamada con un marcador por parámetro, con el nombre del parámetro como marcador y una parada por cada uno, y deja la parada final tras el paréntesis de cierre. Sin parámetros inserta los paréntesis vacíos y la parada final tras ellos.",
+            "verificacion": [
+              "C15",
+              "C16"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R11",
+            "texto": "El detalle de un candidato se entrega como clave estable con argumentos, no como prosa: close_block, structure, bilingual_equivalent, primitive_type, class, standard_function, type_name y signature. La localización a un idioma de interfaz es responsabilidad del consumidor y no altera lexemas, firmas ni orden.",
+            "verificacion": [
+              "C17",
+              "C18"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R12",
+            "texto": "Además del prefijo directo, un prefijo coincide con las iniciales de los segmentos de una etiqueta compuesta (los separados por espacio o por cambio de minúscula a mayúscula). Un candidato que coincide solo por iniciales se ordena después de todo candidato del mismo nivel que coincide por prefijo directo.",
+            "verificacion": [
+              "C19"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R13",
+            "texto": "Un candidato se marca como sugerencia en línea únicamente cuando es inequívoco: el cierre del bloque más interno cuando no hay prefijo escrito, o el único candidato que coincide con un prefijo no vacío. Si ningún candidato cumple, la respuesta no marca ninguno.",
+            "verificacion": [
+              "C20",
+              "C21"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "fragmento": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+                "paradas": [
+                  {
+                    "indice": 1,
+                    "marcador": "condicion",
+                    "rol": "expression"
+                  }
+                ]
+              }
+            },
+            "id": "C9",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R7",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "construccion": "if",
+              "suboperacion": "completion_stops"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "fragmento": "For ${1:index} <- 1 To ${2:limit} Step 1 Do\n  $0\nEndFor",
+                "paradas": [
+                  {
+                    "indice": 1,
+                    "marcador": "index",
+                    "rol": "new_identifier"
+                  },
+                  {
+                    "indice": 2,
+                    "marcador": "limit",
+                    "rol": "expression"
+                  }
+                ]
+              }
+            },
+            "id": "C10",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R7",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "construccion": "for",
+              "suboperacion": "completion_stops"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "fragmento": "Repetir\n  $0\nHasta Que ${1:condicion}",
+                "paradas": [
+                  {
+                    "indice": 1,
+                    "marcador": "condicion",
+                    "rol": "expression"
+                  }
+                ]
+              }
+            },
+            "id": "C11",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R7",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "construccion": "repeat",
+              "suboperacion": "completion_stops"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 21,
+                    "line": 2
+                  },
+                  "inicio": {
+                    "column": 12,
+                    "line": 2
+                  }
+                },
+                "texto": "Algoritmo Principal\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C12",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R8",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "Mientras",
+              "documento": "Algoritmo Principal\n  Mie\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 2
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 18,
+                    "line": 2
+                  },
+                  "inicio": {
+                    "column": 9,
+                    "line": 2
+                  }
+                },
+                "texto": "Algorithm Main\n  While condition Do\n    \n  EndWhile\nEndAlgorithm\n"
+              }
+            },
+            "id": "C13",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R8",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "While",
+              "documento": "Algorithm Main\n  Whi\nEndAlgorithm\n",
+              "posicion": {
+                "column": 6,
+                "line": 2
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "primer_candidato": "valido"
+              }
+            },
+            "id": "C14",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R9",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Definir cantidad Como Entero;\n  Definir valido Como Logico;\n  Mientras \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 12,
+                "line": 4
+              },
+              "proyeccion": "primer_candidato",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 10,
+                    "line": 5
+                  },
+                  "inicio": {
+                    "column": 9,
+                    "line": 5
+                  }
+                },
+                "texto": "SubProceso Sumar(a Por Valor, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Sumar(a, b)\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C15",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R10",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "Sumar",
+              "documento": "SubProceso Sumar(a Por Valor, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Sum\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 5
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 11,
+                    "line": 5
+                  },
+                  "inicio": {
+                    "column": 11,
+                    "line": 5
+                  }
+                },
+                "texto": "SubProceso Avisar()\nFinSubProceso\n\nAlgoritmo Principal\n  Avisar()\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C16",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R10",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "Avisar",
+              "documento": "SubProceso Avisar()\nFinSubProceso\n\nAlgoritmo Principal\n  Avi\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 5
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "detalle": {
+                  "argumentos": [],
+                  "clave": "close_block",
+                  "etiqueta": "FinMientras"
+                }
+              }
+            },
+            "id": "C17",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R11",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "FinMientras",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 3
+              },
+              "proyeccion": "detalle",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "detalle": {
+                  "argumentos": [
+                    "Integer"
+                  ],
+                  "clave": "type_name",
+                  "etiqueta": "total"
+                }
+              }
+            },
+            "id": "C18",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R11",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "candidato": "total",
+              "documento": "Algorithm Main\n  Define total As Integer;\n  tot\nEndAlgorithm\n",
+              "posicion": {
+                "column": 6,
+                "line": 3
+              },
+              "proyeccion": "detalle",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "contiene": [
+                  "De Otro Modo"
+                ],
+                "excluye": []
+              }
+            },
+            "id": "C19",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R12",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "contiene": [
+                "De Otro Modo"
+              ],
+              "documento": "Algoritmo Principal\n  Segun 1 Hacer\n    dom\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 8,
+                "line": 3
+              },
+              "proyeccion": "contiene",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": "FinMientras"
+              }
+            },
+            "id": "C20",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": "FinAlgoritmo"
+              }
+            },
+            "id": "C21",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "documento": "Algoritmo Principal\n  \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 3,
+                "line": 2
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
             "generador": {
               "programas": "todas las plantillas sintácticas del servicio insertadas en su contexto válido"
             },
             "id": "P1",
             "justificacion": "La ejecuta el sujeto service verificando cada plantilla del catálogo.",
-            "oraculo": "Ausencia de diagnósticos de error sintáctico tras inserción de plantilla.",
-            "propiedad": "El 100 % de las plantillas insertadas en un programa base producen un árbol sin errores sintácticos nuevos.",
+            "oraculo": "Ausencia de diagnósticos de error sintáctico tras inserción de plantilla y clasificación léxica del token bajo cada parada.",
+            "propiedad": "El 100 % de las plantillas insertadas en un programa base producen un árbol sin errores sintácticos nuevos y cada parada declarada cae sobre un token de su rol.",
             "regla": "R1"
           },
           "kind": "propiedad"
@@ -40044,7 +40899,7 @@
           "kind": "medicion"
         }
       ],
-      "hash": "8e1082c98126b040612eff464d5457035691c39b75b1173636778ef0b9a5d675",
+      "hash": "4bd0e62ac12f5f602f1e6d363e7f6516715e1aa82983c0cd54109e3be781a00a",
       "metadata": {
         "cambio": {
           "clase": "editorial",
@@ -40095,7 +40950,7 @@
         "id": "TOOL.SERVICE.COMPLETION",
         "reemplaza": null,
         "reemplazada_por": null,
-        "resumen": "Autocompletado de código sensible al contexto, bilingüe, con plantillas sintácticas y cierre de bloques.",
+        "resumen": "Autocompletado de código sensible al contexto, bilingüe, con plantillas sintácticas navegables, tipo esperado y cierre de bloques.",
         "revisado_por": [
           "revision-independiente-automatizada-r9"
         ],
@@ -41221,6 +42076,533 @@
         ],
         "titulo": "Identidad estable de nodos sintácticos",
         "titulo_en": "Syntax node identity",
+        "version": "0.1.0"
+      }
+    },
+    {
+      "blocks": [
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R1",
+            "texto": "Tras insertar un salto de línea, si la línea anterior abre un bloque que el análisis informa sin cerrar, el servicio sangra la línea nueva una unidad respecto de la apertura e inserta en la línea siguiente el cierre canónico del perfil, alineado con la apertura. La repetición (Repetir) solo se sangra, porque su cierre exige una condición. Si el resto de la línea del cursor no está en blanco, solo se sangra.",
+            "verificacion": [
+              "C1",
+              "C2"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R2",
+            "texto": "Tras un salto de línea, si la línea anterior abre un bloque ya cerrado o es Sino, la línea nueva se sangra una unidad respecto de ella; en cualquier otro caso conserva la sangría de la línea anterior. No se insertan cierres.",
+            "verificacion": [
+              "C3"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R3",
+            "texto": "En rigor estricto, tras un salto de línea, si la línea anterior es una sentencia simple completa sin terminador, se inserta ; al final de esa línea. En rigor flexible no se inserta.",
+            "verificacion": [
+              "C4",
+              "C5"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R4",
+            "texto": "Al teclear un espacio, un salto de línea o ; tras una línea que comienza por un cierre, Sino o De Otro Modo (con los dos puntos opcionales), la línea se realinea con la sangría de la apertura que le corresponde; De Otro Modo queda una unidad más adentro que su Segun. Las etiquetas de caso con valor no se realinean.",
+            "verificacion": [
+              "C6"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R5",
+            "texto": "Al teclear ( \" ' o [ fuera de comentarios y literales, y con un carácter siguiente que no sea de identificador, se inserta el cierre del par tras el cursor. Teclear el carácter de cierre cuando el siguiente ya es ese carácter lo atraviesa sin duplicarlo.",
+            "verificacion": [
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "clase": "semantica",
+            "fuerza": "DEBE",
+            "id": "R6",
+            "texto": "Las ediciones devueltas nunca aumentan el número de diagnósticos sintácticos del documento respecto de su texto previo. Tras un salto de línea, aplicar de nuevo la asistencia sobre el resultado, con el cursor al inicio de la línea nueva, no produce ediciones; la repetición de un par equivale a otra pulsación y queda fuera de esa garantía. Si el terminador produciría un diagnóstico nuevo, se aplica el resto de la asistencia sin él.",
+            "verificacion": [
+              "C11",
+              "C12"
+            ]
+          },
+          "kind": "regla"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 5,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C1",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 5,
+                  "line": 3
+                },
+                "texto": "Algorithm Main\n  If x < 10 Then\n    \n  EndIf\nEndAlgorithm\n"
+              }
+            },
+            "id": "C2",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algorithm Main\n  If x < 10 Then\n\nEndAlgorithm\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 5,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C3",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R2",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n\n  FinMientras\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 3,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Escribir 1;\n  \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C4",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  Escribir 1\n\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 3,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Escribir 1\n  \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C5",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "flexible"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  Escribir 1\n\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 15,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n  FinMientras \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C6",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R4",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": " ",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    FinMientras \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 17,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 13,
+                  "line": 2
+                },
+                "texto": "Algoritmo Principal\n  Escribir ()\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C7",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "(",
+              "documento": "Algoritmo Principal\n  Escribir (\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 13,
+                "line": 2
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 15,
+                  "line": 2
+                },
+                "texto": "Algoritmo Principal\n  Escribir (1)\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C8",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": ")",
+              "documento": "Algoritmo Principal\n  Escribir (1))\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 15,
+                "line": 2
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 12,
+                  "line": 2
+                },
+                "texto": "Algoritmo Principal\n  // nota (\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C9",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "(",
+              "documento": "Algoritmo Principal\n  // nota (\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 12,
+                "line": 2
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 13,
+                  "line": 2
+                },
+                "texto": "Algoritmo Principal\n  Escribir \"\"\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C10",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\"",
+              "documento": "Algoritmo Principal\n  Escribir \"\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 13,
+                "line": 2
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 3,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  x <- 1 +\n  \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C11",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R6",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  x <- 1 +\n\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "cursor": {
+                  "column": 1,
+                  "line": 3
+                },
+                "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C12",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R6",
+            "rigor": [
+              "estricto"
+            ],
+            "servicio": {
+              "caracter": "\n",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 1,
+                "line": 3
+              },
+              "suboperacion": "on_type"
+            }
+          },
+          "kind": "caso"
+        }
+      ],
+      "hash": "686fd6e1ab99fafbfb7512360283f26ad1130d58c3ee8e9cd9ade4f7e6bc0ab4",
+      "metadata": {
+        "cambio": null,
+        "depende_de": [
+          {
+            "id": "LANG.SYNTAX.RECOVERY",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.STMT.TERMINATION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.SERVICE.COMPLETION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "TOOL.FORMAT.STYLE",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          },
+          {
+            "id": "LANG.SOURCE.POSITION",
+            "tipo": "usa",
+            "version": ">=0.1.0, <1.0.0"
+          }
+        ],
+        "dominio": "herramienta",
+        "duenos": [
+          "responsable-herramientas"
+        ],
+        "edicion": {},
+        "estado": "experimental",
+        "formato": "see/1",
+        "id": "TOOL.SERVICE.ON-TYPE",
+        "reemplaza": null,
+        "reemplazada_por": null,
+        "resumen": "Ediciones deterministas que acompañan una pulsación: sangría, cierre de bloques, terminador, realineado y pares.",
+        "revisado_por": [],
+        "sujetos": [
+          "service"
+        ],
+        "titulo": "Asistencia al teclear",
+        "titulo_en": "Typing assistance",
         "version": "0.1.0"
       }
     },

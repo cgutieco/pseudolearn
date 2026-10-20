@@ -1,15 +1,16 @@
 use crate::completion_pool::{CandidatePool, plain_entry};
 use crate::completion_scope::SourceScope;
 use crate::completion_templates::{construction_for, get_template};
-use crate::completion_types::{CompletionEntry, CompletionKind};
+use crate::completion_types::{CompletionAction, CompletionEntry, CompletionKind};
 use crate::spelling::keyword_spelling;
 use pseudolearn_lexicon::{KeywordKind, Profile};
 use pseudolearn_syntax::TokenKind;
 
 pub fn keyword_entry(kind: KeywordKind, profile: Profile) -> CompletionEntry {
     let label = keyword_spelling(kind, profile);
-    match construction_for(kind).and_then(|name| get_template(name, profile)) {
-        Some(template) => CompletionEntry {
+    let construction = construction_for(kind);
+    match construction.and_then(|name| get_template(name, profile).map(|text| (name, text))) {
+        Some((name, template)) => CompletionEntry {
             label,
             kind: CompletionKind::Snippet,
             detail: Some(match profile {
@@ -18,6 +19,12 @@ pub fn keyword_entry(kind: KeywordKind, profile: Profile) -> CompletionEntry {
             }),
             insert_text: Some(template),
             bilingual_origin: None,
+            detail_key: Some("structure".to_owned()),
+            detail_arguments: Vec::new(),
+            inline: false,
+            action: CompletionAction::Template {
+                construction: name.to_owned(),
+            },
         },
         None => plain_entry(label, CompletionKind::Keyword, None),
     }

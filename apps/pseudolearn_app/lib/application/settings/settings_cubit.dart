@@ -17,6 +17,7 @@ final class SettingsCubit extends Cubit<SettingsState> {
       language: prefs.language,
       themeMode: prefs.themeMode,
       assistedDiagramZoom: prefs.assistedDiagramZoom,
+      editorAssistance: prefs.editorAssistance,
     ));
   }
 
@@ -39,5 +40,12 @@ final class SettingsCubit extends Cubit<SettingsState> {
     final updated = prefs.copyWith(assistedDiagramZoom: isAssisted);
     await preferences.write(updated);
     emit(state.copyWith(assistedDiagramZoom: isAssisted));
+  }
+
+  Future<void> setEditorAssistance(bool isEnabled) async {
+    final prefs = await preferences.read();
+    final updated = prefs.copyWith(editorAssistance: isEnabled);
+    await preferences.write(updated);
+    emit(state.copyWith(editorAssistance: isEnabled));
   }
 }

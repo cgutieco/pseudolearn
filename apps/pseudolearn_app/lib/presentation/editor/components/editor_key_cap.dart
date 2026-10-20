@@ -20,6 +20,9 @@ String _semanticLabelOf(AppLocalizations l10n, EditorKey key) {
     EditorKeyKind.lessOrEqual => l10n.editorKeyLessOrEqual,
     EditorKeyKind.template => key.label,
     EditorKeyKind.completion => key.label,
+    EditorKeyKind.stopNext => l10n.editorStopNext,
+    EditorKeyKind.stopPrevious => l10n.editorStopPrevious,
+    EditorKeyKind.stopExit => l10n.editorStopExit,
   };
 }
 

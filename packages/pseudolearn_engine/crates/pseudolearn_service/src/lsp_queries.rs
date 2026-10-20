@@ -1,10 +1,15 @@
+use crate::completion::{CompletionAction, CompletionEntry, CompletionTextEdit};
+use crate::document_session::DocumentSession;
 use crate::formatter::{FormatOptions, format_checked};
+use crate::insertion::build_insertion;
 use crate::lsp_protocol::{
     completion_kind_code, lsp_range, lsp_range_from_offsets, position_from_request, success,
     text_document_uri,
 };
 use crate::lsp_session::LspServer;
 use crate::navigation::{HighlightKind, SymbolCategory};
+use crate::on_type::on_type;
+use crate::positions::offset_at;
 use serde_json::{Value, json};
 
 impl LspServer {
@@ -15,25 +20,46 @@ impl LspServer {
             .session(uri)
             .map(|session| {
                 let position = position_from_request(session.text(), message);
-                session
-                    .queries()
-                    .complete_with_edit(position)
+                let result = session.queries().complete_with_edit(position);
+                result
                     .entries
-                    .into_iter()
+                    .iter()
                     .enumerate()
-                    .map(|(rank, entry)| {
-                        json!({
-                            "label": entry.label,
-                            "kind": completion_kind_code(entry.kind),
-                            "detail": entry.detail,
-                            "insertText": entry.insert_text.clone().unwrap_or_else(|| entry.label.clone()),
-                            "sortText": format!("{rank:05}")
-                        })
-                    })
+                    .map(|(rank, entry)| completion_row(session, entry, &result.text_edit, rank))
                     .collect()
             })
             .unwrap_or_default();
         success(message, json!({ "isIncomplete": false, "items": items }))
+    }
+
+    pub(crate) fn handle_on_type_formatting(&self, message: &Value) -> Value {
+        let edits = self
+            .service
+            .session(text_document_uri(message))
+            .and_then(|session| {
+                let typed = message
+                    .pointer("/params/ch")
+                    .and_then(Value::as_str)
+                    .and_then(|value| value.chars().next())?;
+                let position = position_from_request(session.text(), message);
+                let cursor = offset_at(session.text(), position);
+                let outcome = on_type(session, cursor, typed);
+                let text = session.text();
+                Some(
+                    outcome
+                        .edits
+                        .iter()
+                        .map(|change| {
+                            json!({
+                                "range": lsp_range_from_offsets(text, change.start_utf8, change.end_utf8),
+                                "newText": change.text
+                            })
+                        })
+                        .collect::<Vec<Value>>(),
+                )
+            })
+            .unwrap_or_default();
+        success(message, json!(edits))
     }
 
     pub(crate) fn handle_hover(&self, message: &Value) -> Value {
@@ -190,4 +216,36 @@ impl LspServer {
             });
         success(message, edits.unwrap_or_else(|| json!([])))
     }
+}
+
+fn completion_row(
+    session: &DocumentSession,
+    entry: &CompletionEntry,
+    replace: &CompletionTextEdit,
+    rank: usize,
+) -> Value {
+    let structured = !matches!(entry.action, CompletionAction::Plain);
+    let (text, format) = if structured {
+        let insertion = build_insertion(entry, replace, session.text(), session.profile);
+        (
+            insertion.lsp_snippet.unwrap_or_else(|| entry.label.clone()),
+            2,
+        )
+    } else {
+        (
+            entry
+                .insert_text
+                .clone()
+                .unwrap_or_else(|| entry.label.clone()),
+            1,
+        )
+    };
+    json!({
+        "label": entry.label,
+        "kind": completion_kind_code(entry.kind),
+        "detail": entry.detail,
+        "insertText": text,
+        "insertTextFormat": format,
+        "sortText": format!("{rank:05}")
+    })
 }

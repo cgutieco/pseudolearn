@@ -1498,7 +1498,10 @@
                 "boundary",
                 "pace",
                 "snapshot",
-                "completion"
+                "completion",
+                "edit_assistance",
+                "accept_candidate",
+                "template_navigation"
               ]
             },
             "input": {

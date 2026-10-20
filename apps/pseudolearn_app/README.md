@@ -2483,6 +2483,41 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 
 ---
 
+### 4.50 Asistencia de edición: el núcleo decide el texto, la app solo lo aplica y lo dibuja
+
+- **Problema:** el completado existía pero no se veía: la única superficie era una segunda fila plegada de la barra de
+  teclas, que además exigía teclado en pantalla, de modo que en escritorio nunca aparecía. Y la lógica del lenguaje que
+  rodea al completado —sangría de una plantilla, apertura de línea, cierre de bloques— vivía duplicada en Dart.
+- **Elección:** la app mantiene tres responsabilidades y ninguna de lenguaje. (1) Capturar teclas y mapearlas a
+  peticiones: `Ctrl+Espacio` invoca la lista, las flechas la recorren, `Enter` o `Tab` aceptan, `Esc` la cierra, y
+  `Tab`, `Mayús+Tab` y `Esc` recorren y terminan las paradas de una plantilla. (2) Aplicar al búfer, sin interpretarla,
+  la edición que devuelve el puerto `EditAssistSource`, convirtiendo UTF-8 a UTF-16 en `RustEditAssistSource`, que
+  sincroniza la sesión del núcleo enviándole la diferencia mínima entre el texto anterior y el actual
+  (`SingleTextEdit`) sin partir pares sustitutos. (3) Dibujar: `EditorAssistLayer` mide el cursor sobre
+  `EditableTextState` para anclar la lista emergente y el texto fantasma, y la barra móvil muestra la fila de
+  candidatos mientras la asistencia está activa y los controles de paradas mientras hay una plantilla en curso.
+- **Ajuste desactivado por omisión.** `DevicePreferences.editorAssistance` apaga solo lo no solicitado: lista y texto
+  fantasma al escribir y la asistencia al teclear. La invocación explícita, la fila de plantillas y el recorrido de
+  paradas de una plantilla ya aceptada siguen disponibles. El ajuste viaja como parámetro de `updateSourceCode`
+  (`assisted`), no como estado del cubit, que ya está en su tope de métodos públicos.
+- **Una sola vía de edición.** Aceptar un candidato, insertar una plantilla y moverse entre paradas son claves del
+  editor (`EditorKey.completion`, `EditorKey.template` con su `construction`, `EditorKey.stop`) que `RustSourceEditor`
+  traduce a operaciones del núcleo; no hay un método nuevo en `EditorCubit`. Se elimina de Dart la re-sangría de
+  plantillas y el salto de línea previo, que ahora decide el núcleo con la sangría de la línea destino. La tecla de
+  sangría y la de des-sangría siguen en Dart: no dependen de la gramática.
+- **Detalle localizado.** El núcleo emite claves con argumentos (`close_block`, `structure`, …) y la app las localiza
+  al idioma de interfaz con `localizedCompletionDetail`; el idioma de interfaz no cambia los lexemas ni el orden.
+- **El texto de la lista sale del estado, no del árbol de widgets.** `EditorState` deriva `popupCandidates`,
+  `completionPrefixLength`, `inlineCandidate` y `ghostText`; la presentación solo los dibuja, como exige su regla de no
+  derivar datos.
+- **Alternativas descartadas:** un cubit nuevo para la asistencia, porque duplicaría el texto que ya posee
+  `EditorCubit`; calcular la sangría en Dart con el vocabulario de aperturas, que es la duplicación que se elimina;
+  una lista flotante en móvil, porque taparía el código y la barra sobre el teclado ya cumple ese papel; anclar la lista
+  en un `Overlay` global, porque exigiría conservar coordenadas de desplazamiento ajenas al campo.
+- **Pendientes declarados:** la lista no se reposiciona al desplazar el campo mientras está abierta; el texto fantasma
+  no se acepta con un toque en móvil (la fila de candidatos cumple esa función); los controles de paradas no tienen
+  atajo propio fuera de `Tab`.
+
 ## 8. Fuentes consultadas y genealogía conceptual
 
 | Fuente consultada                                                 | Qué se tomó                                                                                                                                                                   | Qué se rechazó deliberadamente y por qué                                                                                                      |

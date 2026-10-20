@@ -16,6 +16,7 @@ final class EditorTabView extends StatelessWidget {
   final VoidCallback onDismissStatusBanner;
   final VoidCallback onRun;
   final bool keepsKeyBar;
+  final bool assistanceEnabled;
 
   const EditorTabView({
     super.key,
@@ -28,6 +29,7 @@ final class EditorTabView extends StatelessWidget {
     required this.onDismissStatusBanner,
     required this.onRun,
     this.keepsKeyBar = true,
+    this.assistanceEnabled = false,
   });
 
   @override
@@ -50,6 +52,7 @@ final class EditorTabView extends StatelessWidget {
             onKeyPressed: onKeyPressed,
             onRun: onRun,
             keepsKeyBar: keepsKeyBar,
+            assistanceEnabled: assistanceEnabled,
           ),
         ),
       ],

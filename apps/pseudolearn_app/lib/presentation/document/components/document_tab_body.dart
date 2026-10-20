@@ -167,6 +167,9 @@ final class _EditorTabItem extends StatelessWidget {
       editorState: editorState,
       executionState: execState,
       keepsKeyBar: keepsKeys,
+      assistanceEnabled: context.select<SettingsCubit, bool>(
+        (cubit) => cubit.state.editorAssistance,
+      ),
       onCodeChanged: (code, cursor) => _propagate(context, code, cursor),
       onCursorMoved: (cursor) =>
           context.read<EditorCubit>().updateCompletionCursor(cursor),
@@ -186,8 +189,9 @@ final class _EditorTabItem extends StatelessWidget {
       code,
       cursorUtf16: cursorUtf16,
       languageId: languageId,
+      assisted: context.read<SettingsCubit>().state.editorAssistance,
     );
-    _refreshCompanions(context, code);
+    _refreshCompanions(context, context.read<EditorCubit>().state.sourceCode);
   }
 
   void _applyKey(BuildContext context, EditorKey key, CaretRange caret) {

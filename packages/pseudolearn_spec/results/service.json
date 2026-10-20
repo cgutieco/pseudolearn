@@ -1,13 +1,14 @@
 {
   "corpus_hashes": {
     "TOOL.FORMAT.STYLE": "9444225479dee96254650decc751c9fba2632cd2caec16fc1debdc908147659f",
-    "TOOL.LSP.CAPABILITIES": "a6f5f9e27ba6bc34bf8a6021c98b6cd3c92fac06108dd771c8ca535528513531",
-    "TOOL.SERVICE.COMPLETION": "8e1082c98126b040612eff464d5457035691c39b75b1173636778ef0b9a5d675",
+    "TOOL.LSP.CAPABILITIES": "825dc897f9438390d10a5b1527bc6857985ba3e17ca94ebba810292e324da5a3",
+    "TOOL.SERVICE.COMPLETION": "4bd0e62ac12f5f602f1e6d363e7f6516715e1aa82983c0cd54109e3be781a00a",
     "TOOL.SERVICE.HOVER": "88e6766588f4bc3c01455198c498d39b070abf4b94d15e888a1b619965fc2e7f",
     "TOOL.SERVICE.INCREMENTAL": "64b19607a55f35da335d9f00479c6380ae6c53221c359976ce427feb89eaa84e",
     "TOOL.SERVICE.LOSSLESS-TREE": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
     "TOOL.SERVICE.NAVIGATION": "810c825f2b9c32efc2e4aa54de52035be79be63ef847d65a66750cf6e529e93f",
     "TOOL.SERVICE.NODE-IDENTITY": "86283ab5d05f07e9dfcbf04562688ba4ba7dc757f2adff3c673cdd3f56610d79",
+    "TOOL.SERVICE.ON-TYPE": "686fd6e1ab99fafbfb7512360283f26ad1130d58c3ee8e9cd9ade4f7e6bc0ab4",
     "TOOL.TRANSLATE.ROUND-TRIP": "2dfda9b3a532b46cc71275f7d76685f4d54520b7995f5c38980269bc53cd9519"
   },
   "observations": [
@@ -88,6 +89,56 @@
       "profile": "en",
       "rule": "R2",
       "specification": "TOOL.FORMAT.STYLE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "disparador_escritura": "\n",
+          "disparadores_completado": [
+            "."
+          ]
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "disparador_escritura": "\n",
+          "disparadores_completado": [
+            "."
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.LSP.CAPABILITIES",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "etiqueta": "Si",
+          "insertText": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+          "insertTextFormat": 2
+        }
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "etiqueta": "Si",
+          "insertText": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+          "insertTextFormat": 2
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.LSP.CAPABILITIES",
       "strictness": "estricto",
       "verdict": "cumple"
     },
@@ -381,6 +432,424 @@
       "actual": {
         "kind": "service",
         "service": {
+          "fragmento": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "condicion",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "fragmento": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "condicion",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R7",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "fragmento": "For ${1:index} <- 1 To ${2:limit} Step 1 Do\n  $0\nEndFor",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "index",
+              "rol": "new_identifier"
+            },
+            {
+              "indice": 2,
+              "marcador": "limit",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "case": "C10",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "fragmento": "For ${1:index} <- 1 To ${2:limit} Step 1 Do\n  $0\nEndFor",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "index",
+              "rol": "new_identifier"
+            },
+            {
+              "indice": 2,
+              "marcador": "limit",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "profile": "en",
+      "rule": "R7",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "fragmento": "Repetir\n  $0\nHasta Que ${1:condicion}",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "condicion",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "case": "C11",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "fragmento": "Repetir\n  $0\nHasta Que ${1:condicion}",
+          "paradas": [
+            {
+              "indice": 1,
+              "marcador": "condicion",
+              "rol": "expression"
+            }
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R7",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo Principal\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C12",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo Principal\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 18,
+              "line": 2
+            },
+            "inicio": {
+              "column": 9,
+              "line": 2
+            }
+          },
+          "texto": "Algorithm Main\n  While condition Do\n    \n  EndWhile\nEndAlgorithm\n"
+        }
+      },
+      "case": "C13",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 18,
+              "line": 2
+            },
+            "inicio": {
+              "column": 9,
+              "line": 2
+            }
+          },
+          "texto": "Algorithm Main\n  While condition Do\n    \n  EndWhile\nEndAlgorithm\n"
+        }
+      },
+      "profile": "en",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "primer_candidato": "valido"
+        }
+      },
+      "case": "C14",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "primer_candidato": "valido"
+        }
+      },
+      "profile": "es",
+      "rule": "R9",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 10,
+              "line": 5
+            },
+            "inicio": {
+              "column": 9,
+              "line": 5
+            }
+          },
+          "texto": "SubProceso Sumar(a Por Valor, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Sumar(a, b)\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C15",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 10,
+              "line": 5
+            },
+            "inicio": {
+              "column": 9,
+              "line": 5
+            }
+          },
+          "texto": "SubProceso Sumar(a Por Valor, b Por Valor)\nFinSubProceso\n\nAlgoritmo Principal\n  Sumar(a, b)\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R10",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 11,
+              "line": 5
+            },
+            "inicio": {
+              "column": 11,
+              "line": 5
+            }
+          },
+          "texto": "SubProceso Avisar()\nFinSubProceso\n\nAlgoritmo Principal\n  Avisar()\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C16",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 11,
+              "line": 5
+            },
+            "inicio": {
+              "column": 11,
+              "line": 5
+            }
+          },
+          "texto": "SubProceso Avisar()\nFinSubProceso\n\nAlgoritmo Principal\n  Avisar()\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R10",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "detalle": {
+            "argumentos": [],
+            "clave": "close_block",
+            "etiqueta": "FinMientras"
+          }
+        }
+      },
+      "case": "C17",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "detalle": {
+            "argumentos": [],
+            "clave": "close_block",
+            "etiqueta": "FinMientras"
+          }
+        }
+      },
+      "profile": "es",
+      "rule": "R11",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "detalle": {
+            "argumentos": [
+              "Integer"
+            ],
+            "clave": "type_name",
+            "etiqueta": "total"
+          }
+        }
+      },
+      "case": "C18",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "detalle": {
+            "argumentos": [
+              "Integer"
+            ],
+            "clave": "type_name",
+            "etiqueta": "total"
+          }
+        }
+      },
+      "profile": "en",
+      "rule": "R11",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "contiene": [
+            "De Otro Modo"
+          ],
+          "excluye": []
+        }
+      },
+      "case": "C19",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "contiene": [
+            "De Otro Modo"
+          ],
+          "excluye": []
+        }
+      },
+      "profile": "es",
+      "rule": "R12",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "FinMientras"
+        }
+      },
+      "case": "C20",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "FinMientras"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "FinAlgoritmo"
+        }
+      },
+      "case": "C21",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "FinAlgoritmo"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
           "inferido": false,
           "tipo": "Entero"
         }
@@ -836,6 +1305,342 @@
       "profile": "es",
       "rule": "R1",
       "specification": "TOOL.SERVICE.NODE-IDENTITY",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C1",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algorithm Main\n  If x < 10 Then\n    \n  EndIf\nEndAlgorithm\n"
+        }
+      },
+      "case": "C2",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algorithm Main\n  If x < 10 Then\n    \n  EndIf\nEndAlgorithm\n"
+        }
+      },
+      "profile": "en",
+      "rule": "R1",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C3",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 5,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R2",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Escribir 1;\n  \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C4",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Escribir 1;\n  \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Escribir 1\n  \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C5",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Escribir 1\n  \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 15,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n  FinMientras \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C6",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 15,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n  FinMientras \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R4",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 13,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir ()\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C7",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 13,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir ()\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 15,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir (1)\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C8",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 15,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir (1)\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 12,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  // nota (\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C9",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 12,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  // nota (\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 13,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir \"\"\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C10",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 13,
+            "line": 2
+          },
+          "texto": "Algoritmo Principal\n  Escribir \"\"\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  x <- 1 +\n  \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C11",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 3,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  x <- 1 +\n  \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "TOOL.SERVICE.ON-TYPE",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "cursor": {
+            "column": 1,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C12",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "cursor": {
+            "column": 1,
+            "line": 3
+          },
+          "texto": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R6",
+      "specification": "TOOL.SERVICE.ON-TYPE",
       "strictness": "estricto",
       "verdict": "cumple"
     },

@@ -1,5 +1,6 @@
 mod completion_quality;
 mod corpus;
+mod edit_session_latency;
 mod incremental_latency;
 mod measurement_file;
 mod precision_tally;

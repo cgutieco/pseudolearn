@@ -1677,5 +1677,71 @@
   "actionCollapse": "Contraer",
   "@actionCollapse": {
     "description": "Etiqueta accesible de la acción que repliega un panel desplegado"
+  },
+  "editorStopNext": "Siguiente parada",
+  "@editorStopNext": {
+    "description": "Etiqueta accesible del botón que salta a la siguiente parada de una plantilla"
+  },
+  "editorStopPrevious": "Parada anterior",
+  "@editorStopPrevious": {
+    "description": "Etiqueta accesible del botón que vuelve a la parada anterior de una plantilla"
+  },
+  "editorStopExit": "Terminar plantilla",
+  "@editorStopExit": {
+    "description": "Etiqueta accesible del botón que sale de la plantilla y deja el cursor en el cuerpo"
+  },
+  "editorDetailCloseBlock": "Cerrar bloque",
+  "@editorDetailCloseBlock": {
+    "description": "Detalle de la sugerencia que cierra el bloque abierto más interno"
+  },
+  "editorDetailStructure": "Estructura",
+  "@editorDetailStructure": {
+    "description": "Detalle de la sugerencia que inserta una estructura completa"
+  },
+  "editorDetailBilingualEquivalent": "Equivalente de {term}",
+  "@editorDetailBilingualEquivalent": {
+    "description": "Detalle de la sugerencia que corresponde a un término del otro idioma",
+    "placeholders": {
+      "term": {
+        "type": "String",
+        "example": "while"
+      }
+    }
+  },
+  "editorDetailPrimitiveType": "Tipo primitivo",
+  "@editorDetailPrimitiveType": {
+    "description": "Detalle de la sugerencia de un tipo primitivo"
+  },
+  "editorDetailClass": "Clase",
+  "@editorDetailClass": {
+    "description": "Detalle de la sugerencia de una clase"
+  },
+  "editorDetailStandardFunction": "Función estándar",
+  "@editorDetailStandardFunction": {
+    "description": "Detalle de la sugerencia de una función estándar"
+  },
+  "editorCompletionListLabel": "Sugerencias de código",
+  "@editorCompletionListLabel": {
+    "description": "Etiqueta accesible de la lista emergente de sugerencias del editor"
+  },
+  "settingsEditorAssist": "Asistencia de edición",
+  "@settingsEditorAssist": {
+    "description": "Título del ajuste que activa las sugerencias y el cierre automático al escribir"
+  },
+  "settingsEditorAssistOptions": "Mientras escribes",
+  "@settingsEditorAssistOptions": {
+    "description": "Título del grupo de opciones de la asistencia de edición"
+  },
+  "settingsEditorAssistOn": "Sugerir y completar al escribir",
+  "@settingsEditorAssistOn": {
+    "description": "Opción que activa la asistencia de edición"
+  },
+  "settingsEditorAssistOff": "Solo cuando la pida",
+  "@settingsEditorAssistOff": {
+    "description": "Opción que desactiva la asistencia de edición"
+  },
+  "settingsEditorAssistNotice": "Con la asistencia activa, el editor muestra sugerencias mientras escribes, cierra los bloques y los paréntesis y salta entre los huecos de una plantilla. Puedes pedir sugerencias en cualquier momento con Ctrl+Espacio.",
+  "@settingsEditorAssistNotice": {
+    "description": "Aviso del ajuste de asistencia de edición"
   }
 }

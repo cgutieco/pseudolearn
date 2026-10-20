@@ -41,12 +41,46 @@ pub fn handle_lsp(request: &Value) -> Value {
             "diagnosticos_iniciales": transcript.diagnostic_counts().first().copied().unwrap_or(0),
             "diagnosticos_corregidos": transcript.diagnostic_counts().last().copied().unwrap_or(0),
         }),
+        "capacidades_edicion" => json!({
+            "disparadores_completado": transcript.capability("completionProvider/triggerCharacters"),
+            "disparador_escritura": transcript.capability("onTypeFormattingProvider/firstTriggerCharacter"),
+        }),
+        "fragmento" => transcript.snippet_projection(request),
         "consultas" => json!({ "consultas_respondidas": transcript.all_queries_answered() }),
         other => json!({ "error": format!("unsupported projection: {other}") }),
     }
 }
 
 impl Transcript {
+    fn capability(&self, pointer: &str) -> Value {
+        self.responses_to("initialize")
+            .iter()
+            .find_map(|reply| reply.pointer(&format!("/result/capabilities/{pointer}")))
+            .cloned()
+            .unwrap_or(Value::Null)
+    }
+
+    fn snippet_projection(&self, request: &Value) -> Value {
+        let wanted = request
+            .get("etiqueta")
+            .and_then(Value::as_str)
+            .unwrap_or("");
+        let found_row = self
+            .responses_to("textDocument/completion")
+            .into_iter()
+            .filter_map(|reply| reply.pointer("/result/items").and_then(Value::as_array))
+            .flatten()
+            .find(|row| row.get("label").and_then(Value::as_str) == Some(wanted));
+        match found_row {
+            Some(found) => json!({
+                "etiqueta": wanted,
+                "insertTextFormat": found.get("insertTextFormat"),
+                "insertText": found.get("insertText")
+            }),
+            None => json!({}),
+        }
+    }
+
     fn responses_to(&self, method: &str) -> Vec<&Value> {
         self.answers
             .iter()

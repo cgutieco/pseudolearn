@@ -35,6 +35,7 @@ final class RustTemplateSource implements CompletionSource {
       template: row['template'] as String,
       caretOffset: row['caret_offset'] as int,
       family: family,
+      construction: row['construction'] as String?,
     );
   }
 }

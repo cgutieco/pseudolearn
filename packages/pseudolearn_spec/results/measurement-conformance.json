@@ -3,7 +3,7 @@
   "measurements": [
     {
       "comparator": "<=",
-      "measured": 0.74,
+      "measured": 0.703,
       "metric": "latencia_p95",
       "reference": "TOOL.SERVICE.COMPLETION@0.1.0#M1",
       "status": "cumple",
@@ -23,7 +23,7 @@
     },
     {
       "comparator": ">=",
-      "measured": 87.436,
+      "measured": 87.582,
       "metric": "precision_en_1",
       "reference": "TOOL.SERVICE.COMPLETION@0.1.0#M3",
       "status": "cumple",

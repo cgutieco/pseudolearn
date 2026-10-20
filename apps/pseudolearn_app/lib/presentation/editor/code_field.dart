@@ -4,6 +4,7 @@ import '../../domain/model/execution/execution_focus.dart';
 import '../components/typography/app_text.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/editor_metrics.dart';
+import 'components/code_text_input.dart';
 import 'components/line_numbers_gutter.dart';
 import 'highlight_controller.dart';
 
@@ -202,7 +203,6 @@ final class _HorizontalCodeScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppThemeExtension.of(context);
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -211,16 +211,10 @@ final class _HorizontalCodeScroll extends StatelessWidget {
           child: IntrinsicWidth(
             child: Padding(
               padding: _editorContentPadding,
-              child: TextField(
+              child: CodeTextInput(
                 controller: controller,
                 focusNode: focusNode,
-                readOnly: isReadOnly,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                style: resolveAppTextStyle(context, AppTextVariant.codeEditor),
-                cursorColor: theme.editor.caret,
-                cursorWidth: EditorMetricsTokens.editorCaretWidth,
-                decoration: _editorInputDecoration,
+                isReadOnly: isReadOnly,
                 onChanged: onChanged,
               ),
             ),
@@ -236,10 +230,3 @@ const _editorContentPadding = EdgeInsets.symmetric(
   vertical: EditorMetricsTokens.editorContentPaddingTop,
 );
 
-const _editorInputDecoration = InputDecoration(
-  border: InputBorder.none,
-  enabledBorder: InputBorder.none,
-  focusedBorder: InputBorder.none,
-  isDense: true,
-  contentPadding: EdgeInsets.zero,
-);

@@ -104,6 +104,13 @@ final class RustCompletionSource implements ContextualCompletionSource {
       kind: kind,
       detail: row['detail'] as String?,
       bilingualOrigin: row['bilingual_origin'] as String?,
+      detailKey: row['detail_key'] as String?,
+      detailArguments: [
+        for (final argument
+            in row['detail_arguments'] as List<Object?>? ?? const [])
+          '$argument',
+      ],
+      isInline: row['inline'] == true,
       replacementRange: range,
       revision: revision,
     );

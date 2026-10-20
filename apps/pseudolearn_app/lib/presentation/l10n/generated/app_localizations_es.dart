@@ -1311,4 +1311,52 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get actionCollapse => 'Contraer';
+
+  @override
+  String get editorStopNext => 'Siguiente parada';
+
+  @override
+  String get editorStopPrevious => 'Parada anterior';
+
+  @override
+  String get editorStopExit => 'Terminar plantilla';
+
+  @override
+  String get editorDetailCloseBlock => 'Cerrar bloque';
+
+  @override
+  String get editorDetailStructure => 'Estructura';
+
+  @override
+  String editorDetailBilingualEquivalent(String term) {
+    return 'Equivalente de $term';
+  }
+
+  @override
+  String get editorDetailPrimitiveType => 'Tipo primitivo';
+
+  @override
+  String get editorDetailClass => 'Clase';
+
+  @override
+  String get editorDetailStandardFunction => 'Función estándar';
+
+  @override
+  String get editorCompletionListLabel => 'Sugerencias de código';
+
+  @override
+  String get settingsEditorAssist => 'Asistencia de edición';
+
+  @override
+  String get settingsEditorAssistOptions => 'Mientras escribes';
+
+  @override
+  String get settingsEditorAssistOn => 'Sugerir y completar al escribir';
+
+  @override
+  String get settingsEditorAssistOff => 'Solo cuando la pida';
+
+  @override
+  String get settingsEditorAssistNotice =>
+      'Con la asistencia activa, el editor muestra sugerencias mientras escribes, cierra los bloques y los paréntesis y salta entre los huecos de una plantilla. Puedes pedir sugerencias en cualquier momento con Ctrl+Espacio.';
 }

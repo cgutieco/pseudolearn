@@ -1,3 +1,4 @@
+use crate::service_completion_edits::{handle_accept, handle_on_type, handle_stops};
 use crate::service_edits::{handle_incremental, handle_node_identity, handle_random_probe};
 use crate::service_queries::{
     handle_completion, handle_definition, handle_highlight, handle_hover, handle_references,
@@ -19,6 +20,9 @@ pub fn handle_service_request(raw: &Value) -> Value {
         "completion_template" => handle_template(&request),
         "template_validity" => handle_template_validity(&request),
         "completion" => handle_completion(&request),
+        "completion_stops" => handle_stops(&request),
+        "completion_accept" => handle_accept(&request),
+        "on_type" => handle_on_type(&request),
         "hover" => handle_hover(&request),
         "signature_help" => handle_signature_help(&request),
         "definition" => handle_definition(&request),

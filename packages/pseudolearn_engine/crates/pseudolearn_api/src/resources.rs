@@ -21,6 +21,7 @@ pub(crate) enum Resource {
         analysis: u64,
         execution: Box<ExecutionResource>,
     },
+    Editing(Box<pseudolearn_service::EditSession>),
 }
 
 static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
@@ -52,7 +53,7 @@ impl ApiSession {
             "inject_fault" => crate::fault_injection::inject(arguments),
             "encode_events" => crate::event_codec::encode(arguments),
             "decode_events" => crate::event_codec::decode(arguments),
-            "negotiate" => negotiate(arguments),
+            "negotiate" => crate::negotiation::negotiate(arguments),
             "create_document" => self.create_document(arguments),
             "create_analysis" => self.create_analysis(arguments),
             "document" => self.document(arguments),
@@ -60,30 +61,15 @@ impl ApiSession {
             "start" | "start_execution" => self.start(arguments),
             "program_view" | "query_node" => self.program_view_operation(operation, arguments),
             "query_page" => self.query_page_operation(arguments),
-            "complete" => crate::service_completion::complete(arguments),
-            "completion_templates" => crate::service_completion::templates(arguments),
-            "editor_vocabulary" => crate::editor_vocabulary::query(arguments),
-            "reference_vocabulary" => crate::reference_vocabulary::query(arguments),
-            "diagnostic_template" => crate::diagnostic_template::query(arguments),
             "release" => self.release(identifier(arguments)?),
-            "version" => Ok(json!({"version":crate::ENGINE_VERSION,"editions":["2026"],
-                "capabilities":crate::supported_capabilities()})),
-            "operations" => Ok(json!([
-                "analysis",
-                "document",
-                "advance",
-                "input",
-                "cancel",
-                "complete",
-                "completion_templates",
-                "query_state",
-                "release"
-            ])),
-            _ => self.execution_operation(operation, arguments),
+            _ => match self.service_operation(operation, arguments) {
+                Some(outcome) => outcome,
+                None => self.execution_operation(operation, arguments),
+            },
         }
     }
 
-    fn insert(&mut self, resource: Resource) -> Result<u64, ApiError> {
+    pub(crate) fn insert(&mut self, resource: Resource) -> Result<u64, ApiError> {
         let identifier = self
             .next_identifier
             .checked_add(1)
@@ -239,7 +225,7 @@ impl ApiSession {
     }
 }
 
-fn parse_analysis(arguments: &Value) -> Result<AnalyzeRequest, ApiError> {
+pub(crate) fn parse_analysis(arguments: &Value) -> Result<AnalyzeRequest, ApiError> {
     let request: ExecuteRequest =
         serde_json::from_value(arguments.clone()).map_err(serialization)?;
     Ok(AnalyzeRequest {
@@ -249,7 +235,7 @@ fn parse_analysis(arguments: &Value) -> Result<AnalyzeRequest, ApiError> {
     })
 }
 
-fn identifier(arguments: &Value) -> Result<u64, ApiError> {
+pub(crate) fn identifier(arguments: &Value) -> Result<u64, ApiError> {
     arguments
         .get("resource")
         .and_then(Value::as_u64)
@@ -267,23 +253,6 @@ fn failure(error: &ApiError) -> Value {
         _ => "usage",
     };
     json!({"failure":{"family":family,"detail":error.to_string()}})
-}
-
-fn negotiate(arguments: &Value) -> Result<Value, ApiError> {
-    for (name, values) in [
-        ("editions", vec!["2026"]),
-        ("capabilities", crate::supported_capabilities()),
-    ] {
-        if let Some(requested) = arguments.get(name) {
-            let requested = requested
-                .as_str()
-                .ok_or_else(|| usage("invalid negotiation value"))?;
-            if !values.contains(&requested) {
-                return Err(ApiError::UnsupportedVersion(requested.to_owned()));
-            }
-        }
-    }
-    Ok(Value::Null)
 }
 
 fn count(arguments: &Value, name: &str, default: Option<usize>) -> Result<usize, ApiError> {

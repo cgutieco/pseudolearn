@@ -26,6 +26,8 @@ pub fn handle_completion(request: &ServiceRequest<'_>) -> Value {
             None => json!({}),
         },
         "sugerencia_bilingue" => project_bilingual_hint(&candidates),
+        "detalle" => project_detail(&candidates, request.text("candidato")),
+        "en_linea" => project_inline(&candidates),
         "vacio" => json!({ "vacio": candidates.is_empty() }),
         "rango" => {
             let wanted = request.text("esperado");
@@ -57,6 +59,27 @@ fn project_membership(request: &ServiceRequest<'_>, labels: &[&str]) -> Value {
         .filter(|name| !labels.contains(&name.as_str()))
         .collect();
     json!({ "contiene": present, "excluye": absent })
+}
+
+fn project_detail(candidates: &[CompletionEntry], wanted: &str) -> Value {
+    let found = candidates.iter().find(|entry| entry.label == wanted);
+    match found.and_then(|entry| entry.detail_key.as_ref().map(|key| (entry, key))) {
+        Some((entry, key)) => json!({
+            "detalle": {
+                "etiqueta": entry.label,
+                "clave": key,
+                "argumentos": entry.detail_arguments
+            }
+        }),
+        None => json!({}),
+    }
+}
+
+fn project_inline(candidates: &[CompletionEntry]) -> Value {
+    match candidates.iter().find(|entry| entry.inline) {
+        Some(entry) => json!({ "en_linea": entry.label }),
+        None => json!({}),
+    }
 }
 
 fn project_bilingual_hint(candidates: &[CompletionEntry]) -> Value {

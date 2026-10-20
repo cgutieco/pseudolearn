@@ -4,6 +4,7 @@ import '../../../application/execution/execution_state.dart';
 import '../../../domain/model/editor/editor_key.dart';
 import '../code_field.dart';
 import '../highlight_controller.dart';
+import 'editor_assist_layer.dart';
 import 'editor_key_shortcuts.dart';
 
 final class EditorField extends StatelessWidget {
@@ -13,6 +14,7 @@ final class EditorField extends StatelessWidget {
   final ExecutionState executionState;
   final ValueChanged<String> onCodeChanged;
   final ValueChanged<EditorKey> onKeyPressed;
+  final bool assistanceEnabled;
 
   const EditorField({
     super.key,
@@ -22,6 +24,7 @@ final class EditorField extends StatelessWidget {
     required this.executionState,
     required this.onCodeChanged,
     required this.onKeyPressed,
+    this.assistanceEnabled = false,
   });
 
   @override
@@ -30,15 +33,22 @@ final class EditorField extends StatelessWidget {
       onIndent: () => onKeyPressed(const EditorKey.indent()),
       onDedent: () => onKeyPressed(const EditorKey.dedent()),
       onReleaseFocus: focusNode.unfocus,
-      child: CodeField(
+      child: EditorAssistLayer(
         controller: controller,
         focusNode: focusNode,
-        highlightSpans: editorState.report.highlightSpans,
-        focus: executionState.isInFlight
-            ? executionState.currentStep.focus
-            : null,
-        isReadOnly: executionState.isInFlight,
-        onChanged: onCodeChanged,
+        editorState: editorState,
+        assistanceEnabled: assistanceEnabled,
+        onKeyPressed: onKeyPressed,
+        child: CodeField(
+          controller: controller,
+          focusNode: focusNode,
+          highlightSpans: editorState.report.highlightSpans,
+          focus: executionState.isInFlight
+              ? executionState.currentStep.focus
+              : null,
+          isReadOnly: executionState.isInFlight,
+          onChanged: onCodeChanged,
+        ),
       ),
     );
   }

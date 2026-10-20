@@ -10,6 +10,7 @@
     "TOOL.SERVICE.LOSSLESS-TREE",
     "TOOL.SERVICE.NAVIGATION",
     "TOOL.SERVICE.NODE-IDENTITY",
+    "TOOL.SERVICE.ON-TYPE",
     "TOOL.TRANSLATE.ROUND-TRIP"
   ],
   "fases_cerradas": [],
@@ -50,7 +51,32 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.LSP.CAPABILITIES@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R12",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R13",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -76,6 +102,21 @@
     },
     {
       "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@0.1.0#R9",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -146,6 +187,36 @@
     },
     {
       "regla": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

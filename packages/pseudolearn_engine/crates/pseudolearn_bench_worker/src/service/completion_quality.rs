@@ -1,4 +1,5 @@
 use crate::service::corpus::machine_description;
+use crate::service::edit_session_latency::edit_session_latency;
 use crate::service::measurement_file::{Measurement, entry, record};
 use crate::service::precision_tally::{Evaluation, Tally, evaluate};
 use crate::service::statistics::{percent, round, summarize};
@@ -26,7 +27,7 @@ fn template_report() -> Value {
     json!({ "checked": checked, "valid": valid, "valid_percent": percent(valid, checked) })
 }
 
-fn large_document_text() -> Result<(String, u32, u32), String> {
+pub(super) fn large_document_text() -> Result<(String, u32, u32), String> {
     let workload = crate::workloads::load()?
         .into_iter()
         .find(|entry| entry.name == "generated-es-strict-10000-false")
@@ -195,9 +196,16 @@ fn measurement_entries(observed: &Observed, limits: &Limits) -> Vec<Value> {
     ]
 }
 
+fn with_edit_session(mut large: Value) -> Result<Value, String> {
+    if let Some(map) = large.as_object_mut() {
+        map.insert("edit_session".to_owned(), edit_session_latency()?);
+    }
+    Ok(large)
+}
+
 pub fn run(output: &str, measurements_path: &str) -> Result<(), String> {
     let evaluation = evaluate()?;
-    let large = large_document_latency()?;
+    let large = with_edit_session(large_document_latency()?)?;
     let templates = template_report();
     let limits = limits()?;
     let observed = observe(&evaluation, &large, &templates)?;

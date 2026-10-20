@@ -1300,4 +1300,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionCollapse => 'Collapse';
+
+  @override
+  String get editorStopNext => 'Next stop';
+
+  @override
+  String get editorStopPrevious => 'Previous stop';
+
+  @override
+  String get editorStopExit => 'Finish template';
+
+  @override
+  String get editorDetailCloseBlock => 'Close block';
+
+  @override
+  String get editorDetailStructure => 'Structure';
+
+  @override
+  String editorDetailBilingualEquivalent(String term) {
+    return 'Equivalent of $term';
+  }
+
+  @override
+  String get editorDetailPrimitiveType => 'Primitive type';
+
+  @override
+  String get editorDetailClass => 'Class';
+
+  @override
+  String get editorDetailStandardFunction => 'Standard function';
+
+  @override
+  String get editorCompletionListLabel => 'Code suggestions';
+
+  @override
+  String get settingsEditorAssist => 'Editing assistance';
+
+  @override
+  String get settingsEditorAssistOptions => 'While typing';
+
+  @override
+  String get settingsEditorAssistOn => 'Suggest and complete while typing';
+
+  @override
+  String get settingsEditorAssistOff => 'Only when requested';
+
+  @override
+  String get settingsEditorAssistNotice =>
+      'With assistance on, the editor shows suggestions while you type, closes blocks and parentheses, and jumps between the blanks of a template. You can ask for suggestions at any time with Ctrl+Space.';
 }

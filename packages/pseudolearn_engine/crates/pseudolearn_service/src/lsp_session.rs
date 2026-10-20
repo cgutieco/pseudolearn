@@ -91,6 +91,7 @@ impl LspServer {
             "textDocument/documentHighlight" => self.handle_highlight(message),
             "textDocument/documentSymbol" => self.handle_document_symbols(message),
             "textDocument/formatting" => self.handle_formatting(message),
+            "textDocument/onTypeFormatting" => self.handle_on_type_formatting(message),
             _ => return refuse(message, is_request, METHOD_NOT_FOUND, "method not found"),
         };
         vec![answer]
@@ -119,7 +120,11 @@ impl LspServer {
                     "referencesProvider": true,
                     "documentHighlightProvider": true,
                     "documentSymbolProvider": true,
-                    "documentFormattingProvider": true
+                    "documentFormattingProvider": true,
+                    "onTypeFormattingProvider": {
+                        "firstTriggerCharacter": "\n",
+                        "moreTriggerCharacter": [" ", ";", "(", "[", ")", "]", "\"", "'"]
+                    }
                 },
                 "serverInfo": { "name": "pseudolearn" }
             }),

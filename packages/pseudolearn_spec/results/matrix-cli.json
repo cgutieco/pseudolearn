@@ -6,7 +6,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.BUILD@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -16,7 +16,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.BUILD@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -26,7 +26,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.BUILD@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -36,7 +36,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.BUILD@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -46,7 +46,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CHECK@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -56,7 +56,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CHECK@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -66,7 +66,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -76,7 +76,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -86,7 +86,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -96,7 +96,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -106,7 +106,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -116,7 +116,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R6",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -126,7 +126,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.CONVENTIONS@0.2.0#R7",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -136,7 +136,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.FORMAT@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -146,7 +146,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.FORMAT@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -156,7 +156,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.FORMAT@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -166,7 +166,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.IR@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -176,7 +176,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.MESSAGES@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -186,7 +186,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.MESSAGES@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -196,7 +196,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -206,7 +206,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -216,7 +216,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -226,7 +226,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.RUN@0.2.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -236,7 +236,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.TRANSLATE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -246,7 +246,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.TRANSLATE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   },
   {
@@ -256,7 +256,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.CLI.TRANSLATE@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "cli"
   }
 ]

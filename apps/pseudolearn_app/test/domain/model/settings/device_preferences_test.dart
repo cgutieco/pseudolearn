@@ -3,6 +3,28 @@ import 'package:pseudolearn_app/domain/model/settings/device_preferences.dart';
 
 void main() {
   group('DevicePreferences', () {
+    test(
+      'editor assistance is off by default, round-trips and tolerates old files',
+      () {
+        expect(const DevicePreferences.defaults().editorAssistance, isFalse);
+        final enabled = const DevicePreferences.defaults().copyWith(
+          editorAssistance: true,
+        );
+        expect(DevicePreferences.fromJson(enabled.toJson()), enabled);
+        expect(
+          DevicePreferences.fromJson(
+            const <String, dynamic>{},
+          ).editorAssistance,
+          isFalse,
+        );
+        expect(enabled == const DevicePreferences.defaults(), isFalse);
+        expect(
+          enabled.hashCode == const DevicePreferences.defaults().hashCode,
+          isFalse,
+        );
+      },
+    );
+
     test('defaults have expected initial values', () {
       const prefs = DevicePreferences.defaults();
       expect(prefs.editorFontSize, equals(14.0));

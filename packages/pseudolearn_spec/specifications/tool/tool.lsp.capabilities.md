@@ -12,7 +12,7 @@
   "sujetos": [
     "service"
   ],
-  "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación y diagnósticos.",
+  "resumen": "Servidor Language Server Protocol sobre JSON-RPC con capacidades de sincronización, navegación, diagnósticos, fragmentos y asistencia al teclear.",
   "depende_de": [
     {
       "id": "TOOL.SERVICE.INCREMENTAL",
@@ -89,6 +89,129 @@
   "verificacion": [
     "C3"
   ]
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El servidor anuncia completionProvider con triggerCharacters [\".\"] y onTypeFormattingProvider con firstTriggerCharacter de salto de línea. Los candidatos que llevan paradas se entregan con insertTextFormat 2 y como texto el fragmento derivado de la misma estructura que el servicio; el resto con insertTextFormat 1. La petición textDocument/onTypeFormatting devuelve las ediciones de la asistencia al teclear.",
+  "verificacion": [
+    "C4",
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "disparadores_completado": [
+        "."
+      ],
+      "disparador_escritura": "\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es",
+          "capabilities": {}
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "shutdown"
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "exit"
+      }
+    ],
+    "proyeccion": "capacidades_edicion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "etiqueta": "Si",
+      "insertTextFormat": 2,
+      "insertText": "Si ${1:condicion} Entonces\n  $0\nSino\n  \nFinSi"
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///edicion.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Si\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/completion",
+        "params": {
+          "textDocument": {
+            "uri": "file:///edicion.pseudo"
+          },
+          "position": {
+            "line": 1,
+            "character": 4
+          }
+        }
+      }
+    ],
+    "proyeccion": "fragmento",
+    "etiqueta": "Si"
+  }
 }
 ```
 

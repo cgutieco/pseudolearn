@@ -1,7 +1,7 @@
 use crate::service_request::ServiceRequest;
 use pseudolearn_api::service::{
     FormatOptions, Profile, TranslationError, format_source, get_template, template_parses_cleanly,
-    translate_source,
+    template_stops_valid, translate_source,
 };
 use serde_json::{Value, json};
 
@@ -62,5 +62,7 @@ pub fn handle_template(request: &ServiceRequest<'_>) -> Value {
 }
 
 pub fn handle_template_validity(request: &ServiceRequest<'_>) -> Value {
-    json!({ "valida": template_parses_cleanly(request.text("construccion"), request.profile()) })
+    let construction = request.text("construccion");
+    let profile = request.profile();
+    json!({ "valida": template_parses_cleanly(construction, profile) && template_stops_valid(construction, profile) })
 }

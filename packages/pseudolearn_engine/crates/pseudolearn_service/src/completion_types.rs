@@ -17,6 +17,18 @@ pub enum CompletionKind {
     Snippet,
 }
 
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CompletionAction {
+    #[default]
+    Plain,
+    Template {
+        construction: String,
+    },
+    Call {
+        parameters: Vec<String>,
+    },
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CompletionEntry {
     pub label: String,
@@ -24,6 +36,14 @@ pub struct CompletionEntry {
     pub detail: Option<String>,
     pub insert_text: Option<String>,
     pub bilingual_origin: Option<String>,
+    #[serde(default)]
+    pub detail_key: Option<String>,
+    #[serde(default)]
+    pub detail_arguments: Vec<String>,
+    #[serde(default)]
+    pub inline: bool,
+    #[serde(default)]
+    pub action: CompletionAction,
 }
 
 pub struct CompletionQuery<'query> {

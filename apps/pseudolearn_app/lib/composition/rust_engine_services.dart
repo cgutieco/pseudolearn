@@ -15,6 +15,7 @@ import '../engine/rust/rust_class_diagram_builder.dart';
 import '../engine/rust/rust_flowchart_builder.dart';
 import '../engine/rust/rust_analysis_api.dart';
 import '../engine/rust/rust_editor_key_source.dart';
+import '../engine/rust/rust_edit_assist_source.dart';
 import '../engine/rust/rust_editor_vocabulary.dart';
 import '../engine/rust/rust_source_editor.dart';
 import '../engine/rust/rust_exercise_checker.dart';
@@ -85,7 +86,7 @@ RustEngineServices buildRustEngineServices(RustTransport transport) {
     createProgramExecution: () => RustProgramExecution(transport),
     completionSource: RustTemplateSource(transport),
     contextualCompletionSource: RustCompletionSource(transport),
-    sourceEditor: RustSourceEditor(vocabulary),
+    sourceEditor: RustSourceEditor(RustEditAssistSource(transport)),
     editorKeySource: RustEditorKeySource(vocabulary),
     programConstructReader: RustProgramConstructReader(transport),
     flowchartBuilder: RustFlowchartBuilder(transport),

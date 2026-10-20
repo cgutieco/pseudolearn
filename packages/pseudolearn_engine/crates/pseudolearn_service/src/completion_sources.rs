@@ -1,7 +1,7 @@
 use crate::completion_keywords::{
     closing_keyword, follow_up_keywords, keyword_entry, structure_keywords,
 };
-use crate::completion_pool::{CandidatePool, plain_entry};
+use crate::completion_pool::{CandidatePool, Rank, keyed_entry, plain_entry};
 use crate::completion_scope::SourceScope;
 use crate::completion_symbols::{
     builtin_functions, class_names, enclosing_fields, local_variables, user_callables,
@@ -9,6 +9,7 @@ use crate::completion_symbols::{
 use crate::completion_types::CompletionKind;
 use crate::spelling::{boolean_spelling, keyword_spelling};
 use pseudolearn_lexicon::KeywordKind;
+use pseudolearn_semantic::types::Type;
 use pseudolearn_syntax::TokenKind;
 
 pub fn closing_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
@@ -17,9 +18,10 @@ pub fn closing_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     };
     pool.add(
         0,
-        plain_entry(
+        keyed_entry(
             keyword_spelling(closing_keyword(innermost), scope.profile),
             CompletionKind::Keyword,
+            ("close_block", Vec::new()),
             Some(scope.label("Cerrar bloque", "Close block")),
         ),
     );
@@ -60,13 +62,18 @@ pub fn expression_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) 
     user_callables(scope, pool, true);
     builtin_functions(scope, pool);
     for value in [true, false] {
-        pool.add(
+        let rank = Rank {
+            compat: scope.compatibility_of(Some(&Type::Boolean)),
+            distance: 0,
+        };
+        pool.add_ranked(
             3,
             plain_entry(
                 boolean_spelling(value, scope.profile),
                 CompletionKind::Keyword,
                 None,
             ),
+            rank,
         );
     }
     pool.add(3, keyword_entry(KeywordKind::NewInstance, scope.profile));
@@ -94,9 +101,10 @@ pub fn type_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     ] {
         pool.add(
             1,
-            plain_entry(
+            keyed_entry(
                 keyword_spelling(kind, scope.profile),
                 CompletionKind::Type,
+                ("primitive_type", Vec::new()),
                 Some(scope.label("Tipo primitivo", "Primitive type")),
             ),
         );

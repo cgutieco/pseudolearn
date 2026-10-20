@@ -6,7 +6,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -16,7 +16,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -26,7 +26,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -36,7 +36,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -46,7 +46,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -56,7 +56,7 @@
     "measurements": [],
     "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
     "rule": "ENG.INPUT@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -66,7 +66,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -156,7 +156,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.INSTRUCTIONS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -166,7 +166,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.INSTRUCTIONS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -176,7 +176,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.INSTRUCTIONS@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -186,7 +186,7 @@
     "measurements": [],
     "reason": "see validate verifica el esquema de límites y la cobertura de RI; la conformidad conserva el resultado estructural con hash del corpus.",
     "rule": "IR.INSTRUCTIONS@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -196,7 +196,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.MODEL@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -206,7 +206,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.MODEL@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -216,7 +216,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.MODEL@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -226,7 +226,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.MODEL@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -266,7 +266,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.SOURCE-MAP@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -276,7 +276,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.SOURCE-MAP@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -286,7 +286,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -296,7 +296,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -306,7 +306,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -316,7 +316,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -326,7 +326,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -336,7 +336,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R6",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -346,7 +346,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R7",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -356,7 +356,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R8",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -366,7 +366,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R9",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1116,7 +1116,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1126,7 +1126,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.CORE.COPY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1136,7 +1136,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.CORE.MATH@0.3.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1146,7 +1146,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.CORE.RANDOM@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1156,7 +1156,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1166,7 +1166,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.TEXT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1176,7 +1176,7 @@
     "measurements": [],
     "reason": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine.",
     "rule": "LIB.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1226,7 +1226,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1236,7 +1236,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1246,7 +1246,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1256,7 +1256,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1266,7 +1266,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1276,7 +1276,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1399,7 +1399,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.ABI@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1409,7 +1409,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.ABI@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1419,7 +1419,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.ABI@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1429,7 +1429,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.FAULT.REPORTING@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1439,7 +1439,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.FAULT.REPORTING@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1449,7 +1449,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.FAULT.REPORTING@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1459,7 +1459,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.HOST.INTERFACE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1469,7 +1469,7 @@
     "measurements": [],
     "reason": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine.",
     "rule": "RT.HOST.INTERFACE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1479,7 +1479,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.HOST.INTERFACE@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1489,7 +1489,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.LINKING@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1499,7 +1499,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.LINKING@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1509,7 +1509,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.LINKING@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1519,7 +1519,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.PROCESS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1529,7 +1529,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.PROCESS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   },
   {
@@ -1539,7 +1539,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.PROCESS@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "aot"
   }
 ]

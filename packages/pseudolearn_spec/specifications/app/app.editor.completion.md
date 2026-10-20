@@ -138,3 +138,197 @@
   "espera": {"aplicacion": {"candidate_lexemes_equal": true, "localized_labels_may_differ": true}}
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación.",
+  "verificacion": [
+    "C7",
+    "C8",
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "query": "default"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "assistance_enabled": false
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "assistance_enabled": false,
+      "document": "Algoritmo P\n  Mientras x < 1 Hacer\n\nFinAlgoritmo\n",
+      "cursor_utf16": 35,
+      "character": "\n"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "on_type_requested": false,
+      "document_changed": false
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "assistance_enabled": true,
+      "document": "Algoritmo P\n  Mientras x < 1 Hacer\n\nFinAlgoritmo\n",
+      "cursor_utf16": 35,
+      "character": "\n"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "on_type_requested": true,
+      "document_changed": true
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El editor aplica al búfer, sin interpretarlas, las ediciones que el servicio devuelve al aceptar un candidato y al teclear, y convierte sus posiciones entre UTF-8 y UTF-16. No contiene lógica de sangría, cierre de bloques, terminador ni pares.",
+  "verificacion": [
+    "C10"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "accept_candidate",
+    "input": {
+      "document": "Algoritmo P\n  Mie\nFinAlgoritmo\n",
+      "cursor_utf16": 17,
+      "profile": "es",
+      "candidate": "Mientras"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "document_after": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n",
+      "selection_utf16": [
+        23,
+        32
+      ]
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El editor navega las paradas de una plantilla aceptada con las operaciones de navegación del servicio y no conserva rangos propios. Salir de la última parada termina la sesión de plantilla.",
+  "verificacion": [
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "template_navigation",
+    "input": {
+      "document": "Algoritmo P\n  Par\nFinAlgoritmo\n",
+      "cursor_utf16": 17,
+      "profile": "es",
+      "candidate": "Para",
+      "steps": [
+        "next",
+        "next"
+      ]
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "selected_texts": [
+        "indice",
+        "limite"
+      ],
+      "session_ended": true
+    }
+  }
+}
+```

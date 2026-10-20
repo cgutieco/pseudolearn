@@ -18,11 +18,13 @@ final class SettingsOverviewPage extends StatelessWidget {
           currentLanguage: state.language,
           currentThemeMode: state.themeMode,
           assistedDiagramZoom: state.assistedDiagramZoom,
+          editorAssistance: state.editorAssistance,
           appVersion: context.watch<AppVersionCubit>().state,
           onNavigateAccount: () => context.push('/ajustes/cuenta'),
           onNavigateLanguage: () => context.push('/ajustes/idioma'),
           onNavigateTheme: () => context.push('/ajustes/tema'),
           onNavigateDiagram: () => context.push('/ajustes/diagramas'),
+          onNavigateEditor: () => context.push('/ajustes/editor'),
           onNavigateContact: () => context.push('/ajustes/contacto'),
           onRestartOnboarding: () {
             context.read<OnboardingCubit>().restart();

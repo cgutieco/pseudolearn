@@ -106,6 +106,12 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   contrato. Elección: `candidates_include` compara pertenencia sin imponer orden y `next_cursor: "opaque"`
   exige un valor no vacío sin fijar su representación. Se descarta comparar el marcador literalmente,
   porque exigiría que cada transporte compartiera la misma codificación interna.
+- Problema: el autocompletado agresivo (plantillas con paradas, asistencia al teclear, tipo esperado) necesita casos de
+  servicio y de app que `see/1` no nombraba. Elección: las suboperaciones de servicio `completion_stops`,
+  `completion_accept` y `on_type` y los escenarios de app `edit_assistance`, `accept_candidate` y `template_navigation`
+  se añaden de forma compatible, sin esquema nuevo. Los contratos `TOOL.SERVICE.COMPLETION`, `TOOL.LSP.CAPABILITIES` y
+  `APP.EDITOR.COMPLETION` crecen dentro de `0.1.0` con reanclaje autorizado de su hash; lo que no tenía dueño nace como
+  `TOOL.SERVICE.ON-TYPE@0.1.0`. Se descarta abrir `0.2.0`: las versiones están congeladas por decisión de la persona.
 - Problema: la cobertura de la RI debe comprobarse sin interpretar la prosa de las reglas. Elección:
   cuando el corpus contiene instrucciones, cada regla de `LANG` o `LIB` de clase `semantica`, `ejecucion` o
   `ampliacion` tiene exactamente una `cobertura` con instrucciones existentes o un motivo `sin_ri`; las

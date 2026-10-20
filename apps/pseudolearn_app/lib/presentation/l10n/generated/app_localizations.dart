@@ -2323,6 +2323,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Contraer'**
   String get actionCollapse;
+
+  /// Etiqueta accesible del botón que salta a la siguiente parada de una plantilla
+  ///
+  /// In es, this message translates to:
+  /// **'Siguiente parada'**
+  String get editorStopNext;
+
+  /// Etiqueta accesible del botón que vuelve a la parada anterior de una plantilla
+  ///
+  /// In es, this message translates to:
+  /// **'Parada anterior'**
+  String get editorStopPrevious;
+
+  /// Etiqueta accesible del botón que sale de la plantilla y deja el cursor en el cuerpo
+  ///
+  /// In es, this message translates to:
+  /// **'Terminar plantilla'**
+  String get editorStopExit;
+
+  /// Detalle de la sugerencia que cierra el bloque abierto más interno
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar bloque'**
+  String get editorDetailCloseBlock;
+
+  /// Detalle de la sugerencia que inserta una estructura completa
+  ///
+  /// In es, this message translates to:
+  /// **'Estructura'**
+  String get editorDetailStructure;
+
+  /// Detalle de la sugerencia que corresponde a un término del otro idioma
+  ///
+  /// In es, this message translates to:
+  /// **'Equivalente de {term}'**
+  String editorDetailBilingualEquivalent(String term);
+
+  /// Detalle de la sugerencia de un tipo primitivo
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo primitivo'**
+  String get editorDetailPrimitiveType;
+
+  /// Detalle de la sugerencia de una clase
+  ///
+  /// In es, this message translates to:
+  /// **'Clase'**
+  String get editorDetailClass;
+
+  /// Detalle de la sugerencia de una función estándar
+  ///
+  /// In es, this message translates to:
+  /// **'Función estándar'**
+  String get editorDetailStandardFunction;
+
+  /// Etiqueta accesible de la lista emergente de sugerencias del editor
+  ///
+  /// In es, this message translates to:
+  /// **'Sugerencias de código'**
+  String get editorCompletionListLabel;
+
+  /// Título del ajuste que activa las sugerencias y el cierre automático al escribir
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia de edición'**
+  String get settingsEditorAssist;
+
+  /// Título del grupo de opciones de la asistencia de edición
+  ///
+  /// In es, this message translates to:
+  /// **'Mientras escribes'**
+  String get settingsEditorAssistOptions;
+
+  /// Opción que activa la asistencia de edición
+  ///
+  /// In es, this message translates to:
+  /// **'Sugerir y completar al escribir'**
+  String get settingsEditorAssistOn;
+
+  /// Opción que desactiva la asistencia de edición
+  ///
+  /// In es, this message translates to:
+  /// **'Solo cuando la pida'**
+  String get settingsEditorAssistOff;
+
+  /// Aviso del ajuste de asistencia de edición
+  ///
+  /// In es, this message translates to:
+  /// **'Con la asistencia activa, el editor muestra sugerencias mientras escribes, cierra los bloques y los paréntesis y salta entre los huecos de una plantilla. Puedes pedir sugerencias en cualquier momento con Ctrl+Espacio.'**
+  String get settingsEditorAssistNotice;
 }
 
 class _AppLocalizationsDelegate

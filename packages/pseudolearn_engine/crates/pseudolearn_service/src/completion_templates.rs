@@ -1,41 +1,7 @@
-use crate::spelling::keyword_spelling;
+use crate::template_catalog::build_template;
+use crate::template_model::{Segment, StopRole};
+use crate::template_render::{DEFAULT_INDENT_UNIT, plain_layout, render, render_snippet};
 use pseudolearn_lexicon::{KeywordKind, Profile};
-
-struct Markers {
-    expression: &'static str,
-    value: &'static str,
-    condition: &'static str,
-    index: &'static str,
-    limit: &'static str,
-    name: &'static str,
-    parameter: &'static str,
-    class_name: &'static str,
-}
-
-fn markers(profile: Profile) -> Markers {
-    match profile {
-        Profile::Spanish => Markers {
-            expression: "expresion",
-            value: "valor",
-            condition: "condicion",
-            index: "indice",
-            limit: "limite",
-            name: "nombre",
-            parameter: "parametro",
-            class_name: "Nombre",
-        },
-        Profile::English => Markers {
-            expression: "expression",
-            value: "value",
-            condition: "condition",
-            index: "index",
-            limit: "limit",
-            name: "name",
-            parameter: "parameter",
-            class_name: "Name",
-        },
-    }
-}
 
 pub fn template_constructions() -> &'static [&'static str] {
     &[
@@ -52,117 +18,8 @@ pub fn template_constructions() -> &'static [&'static str] {
 }
 
 pub fn get_template(construction: &str, profile: Profile) -> Option<String> {
-    let word = |kind| keyword_spelling(kind, profile);
-    let marker = markers(profile);
-    match construction {
-        "switch" | "segun" => Some(switch_template(&word, &marker)),
-        "if" | "si" => Some(if_template(&word, &marker)),
-        "while" | "mientras" => Some(while_template(&word, &marker)),
-        "for" | "para" => Some(for_template(&word, &marker)),
-        "repeat" | "repetir" => Some(repeat_template(&word, &marker)),
-        "function" | "funcion" => Some(function_template(&word, &marker)),
-        "subroutine" | "subproceso" => Some(subroutine_template(&word, &marker)),
-        "class" | "clase" => Some(class_template(&word, &marker)),
-        "algorithm" | "algoritmo" => Some(algorithm_template(&word, &marker)),
-        _ => None,
-    }
-}
-
-type Word<'word> = &'word dyn Fn(KeywordKind) -> String;
-
-fn switch_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {} {}\n  {}:\n    \n  {}:\n    \n{}",
-        word(KeywordKind::SwitchKeyword),
-        marker.expression,
-        word(KeywordKind::DoKeyword),
-        marker.value,
-        word(KeywordKind::DefaultCase),
-        word(KeywordKind::EndSwitch)
-    )
-}
-
-fn if_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {} {}\n  \n{}\n  \n{}",
-        word(KeywordKind::IfKeyword),
-        marker.condition,
-        word(KeywordKind::Then),
-        word(KeywordKind::ElseKeyword),
-        word(KeywordKind::EndIf)
-    )
-}
-
-fn while_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {} {}\n  \n{}",
-        word(KeywordKind::WhileKeyword),
-        marker.condition,
-        word(KeywordKind::DoKeyword),
-        word(KeywordKind::EndWhile)
-    )
-}
-
-fn for_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {} <- 1 {} {} {} 1 {}\n  \n{}",
-        word(KeywordKind::ForKeyword),
-        marker.index,
-        word(KeywordKind::To),
-        marker.limit,
-        word(KeywordKind::Step),
-        word(KeywordKind::DoKeyword),
-        word(KeywordKind::EndFor)
-    )
-}
-
-fn repeat_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{}\n  \n{} {}",
-        word(KeywordKind::Repeat),
-        word(KeywordKind::Until),
-        marker.condition
-    )
-}
-
-fn function_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {}({}) {} {}\n  \n{}",
-        word(KeywordKind::Subroutine),
-        marker.name,
-        marker.parameter,
-        word(KeywordKind::TypeConnector),
-        word(KeywordKind::IntegerType),
-        word(KeywordKind::EndSubroutine)
-    )
-}
-
-fn subroutine_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {}({})\n  \n{}",
-        word(KeywordKind::Subroutine),
-        marker.name,
-        marker.parameter,
-        word(KeywordKind::EndSubroutine)
-    )
-}
-
-fn class_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {}\n  \n{}",
-        word(KeywordKind::ClassKeyword),
-        marker.class_name,
-        word(KeywordKind::EndClass)
-    )
-}
-
-fn algorithm_template(word: Word<'_>, marker: &Markers) -> String {
-    format!(
-        "{} {}\n  \n{}",
-        word(KeywordKind::Algorithm),
-        marker.name,
-        word(KeywordKind::EndAlgorithm)
-    )
+    let template = build_template(construction, profile)?;
+    Some(render(&template, plain_layout()).text)
 }
 
 pub fn is_unit_construction(construction: &str) -> bool {
@@ -184,4 +41,38 @@ pub fn construction_for(kind: KeywordKind) -> Option<&'static str> {
         KeywordKind::SwitchKeyword => Some("switch"),
         _ => None,
     }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct StopOutline {
+    pub index: u8,
+    pub role: StopRole,
+    pub marker: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct TemplateOutline {
+    pub stops: Vec<StopOutline>,
+    pub snippet: String,
+}
+
+pub fn template_outline(construction: &str, profile: Profile) -> Option<TemplateOutline> {
+    let template = build_template(construction, profile)?;
+    let mut stops: Vec<StopOutline> = template
+        .segments
+        .iter()
+        .filter_map(|segment| match segment {
+            Segment::Stop(spec) => Some(StopOutline {
+                index: spec.index,
+                role: spec.role,
+                marker: spec.marker.clone(),
+            }),
+            _ => None,
+        })
+        .collect();
+    stops.sort_by_key(|stop| stop.index);
+    Some(TemplateOutline {
+        stops,
+        snippet: render_snippet(&template, DEFAULT_INDENT_UNIT),
+    })
 }

@@ -8,6 +8,7 @@ import '../onboarding/onboarding_page.dart';
 import '../settings/account/account_page.dart';
 import '../settings/contact/contact_support_page.dart';
 import '../settings/diagram/diagram_settings_page.dart';
+import '../settings/editor/editor_settings_page.dart';
 import '../settings/language/language_settings_page.dart';
 import '../settings/settings_overview_page.dart';
 import '../settings/theme/theme_settings_page.dart';
@@ -107,6 +108,10 @@ StatefulShellBranch _settingsBranch() {
           GoRoute(
             path: 'diagramas',
             builder: (context, state) => const DiagramSettingsPage(),
+          ),
+          GoRoute(
+            path: 'editor',
+            builder: (context, state) => const EditorSettingsPage(),
           ),
           GoRoute(
             path: 'contacto',

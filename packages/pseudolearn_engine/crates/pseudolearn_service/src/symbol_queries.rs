@@ -122,3 +122,19 @@ pub fn callable_parts(
         result,
     })
 }
+
+pub fn parameter_names(analysis: &ServiceAnalysis, function_index: usize) -> Vec<String> {
+    let Some(function) = analysis.module.functions.get(function_index) else {
+        return Vec::new();
+    };
+    function
+        .parameters
+        .iter()
+        .filter_map(|parameter| {
+            usize::try_from(parameter.0)
+                .ok()
+                .and_then(|index| analysis.module.locals.get(index))
+                .map(|local| local.name.clone())
+        })
+        .collect()
+}

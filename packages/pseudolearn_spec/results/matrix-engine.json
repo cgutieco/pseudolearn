@@ -6,7 +6,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.ANALYZE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -16,7 +16,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.ANALYZE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -26,7 +26,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.ERRORS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -36,7 +36,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.ERRORS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -46,7 +46,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.EXECUTE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -56,7 +56,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.EXECUTE@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -66,7 +66,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.EXECUTE@0.2.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -76,7 +76,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.EXECUTE@0.2.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -86,7 +86,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.MODEL@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -96,7 +96,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.MODEL@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -136,7 +136,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.STATE.QUERY@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -146,7 +146,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.STATE.QUERY@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -156,7 +156,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.STATE.QUERY@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -166,7 +166,7 @@
     "measurements": [],
     "reason": "La API pagina con cursores ligados a su consulta; el caso C4 espera elements [0,1] y el literal opaque como cursor, que ninguna implementación con cursores ligados puede producir, y queda por resolver en el corpus.",
     "rule": "API.STATE.QUERY@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -176,7 +176,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.VERSIONING@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -186,7 +186,7 @@
     "measurements": [],
     "reason": null,
     "rule": "API.VERSIONING@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -226,7 +226,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.CATALOG@0.5.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -236,7 +236,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.CLASSES@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -246,7 +246,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.CLASSES@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -256,7 +256,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.ENGINE.INTERNAL-FAULT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -266,7 +266,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.MESSAGES@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -276,7 +276,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -286,7 +286,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.ORDERING@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -296,7 +296,7 @@
     "measurements": [],
     "reason": null,
     "rule": "DIAG.SEVERITY.POLICY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -306,7 +306,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -316,7 +316,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -326,7 +326,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.EFFECT-ORDER@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -336,7 +336,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -346,7 +346,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.MODEL@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -356,7 +356,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.EXEC.MODEL@0.2.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -366,7 +366,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -376,7 +376,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -386,7 +386,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -396,7 +396,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.INPUT@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -486,7 +486,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.INCREMENTAL@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -496,7 +496,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.INCREMENTAL@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -506,7 +506,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.INCREMENTAL@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -516,7 +516,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -526,7 +526,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -536,7 +536,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -546,7 +546,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -556,7 +556,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -566,7 +566,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R6",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -576,7 +576,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.STATE.SNAPSHOT@0.1.0#R7",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -646,7 +646,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.STEP@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -656,7 +656,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.STEP@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -666,7 +666,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.STEP@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -676,7 +676,7 @@
     "measurements": [],
     "reason": null,
     "rule": "ENG.TRACE.STEP@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -686,7 +686,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.INSTRUCTIONS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -696,7 +696,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.INSTRUCTIONS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -706,7 +706,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.INSTRUCTIONS@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -716,7 +716,7 @@
     "measurements": [],
     "reason": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus.",
     "rule": "IR.INSTRUCTIONS@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -726,7 +726,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.LOWERING@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -736,7 +736,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.LOWERING@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -746,7 +746,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.LOWERING@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -756,7 +756,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.MODEL@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -766,7 +766,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.MODEL@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -776,7 +776,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.MODEL@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -786,7 +786,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.MODEL@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -826,7 +826,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.SOURCE-MAP@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -836,7 +836,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.SOURCE-MAP@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -846,7 +846,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.TEXT-FORMAT@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -856,7 +856,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.TEXT-FORMAT@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -866,7 +866,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.TEXT-FORMAT@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -876,7 +876,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -886,7 +886,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -896,7 +896,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -906,7 +906,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -916,7 +916,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R5",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -926,7 +926,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R6",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -936,7 +936,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R7",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -946,7 +946,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R8",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -956,7 +956,7 @@
     "measurements": [],
     "reason": null,
     "rule": "IR.WELL-FORMEDNESS@0.1.0#R9",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1806,7 +1806,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.CONVERSION@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1816,7 +1816,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.COPY@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1826,7 +1826,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.MATH@0.3.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1836,7 +1836,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.RANDOM@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1846,7 +1846,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.ROUNDING@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1856,7 +1856,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.CORE.TEXT@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1866,7 +1866,7 @@
     "measurements": [],
     "reason": null,
     "rule": "LIB.MODEL@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1916,7 +1916,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1926,7 +1926,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.MANAGED.UNOBSERVABLE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1936,7 +1936,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1946,7 +1946,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1956,7 +1956,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -1966,7 +1966,7 @@
     "measurements": [],
     "reason": null,
     "rule": "MEM.VALUE.COPY@0.1.0#R4",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -2219,7 +2219,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.HOST.INTERFACE@0.1.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -2229,7 +2229,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.HOST.INTERFACE@0.1.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -2239,7 +2239,7 @@
     "measurements": [],
     "reason": null,
     "rule": "RT.HOST.INTERFACE@0.1.0#R3",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -2249,7 +2249,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R1",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   },
   {
@@ -2259,7 +2259,7 @@
     "measurements": [],
     "reason": null,
     "rule": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#R2",
-    "state": "experimental",
+    "state": "estable",
     "subject": "engine"
   }
 ]

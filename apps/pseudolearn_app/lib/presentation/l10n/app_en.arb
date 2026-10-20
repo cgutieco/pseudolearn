@@ -1638,5 +1638,20 @@
   "editorKeyTemplatesHide": "Hide structure templates",
   "editorActionHideKeyboard": "Hide keyboard",
   "actionExpand": "Expand",
-  "actionCollapse": "Collapse"
+  "actionCollapse": "Collapse",
+  "editorStopNext": "Next stop",
+  "editorStopPrevious": "Previous stop",
+  "editorStopExit": "Finish template",
+  "editorDetailCloseBlock": "Close block",
+  "editorDetailStructure": "Structure",
+  "editorDetailBilingualEquivalent": "Equivalent of {term}",
+  "editorDetailPrimitiveType": "Primitive type",
+  "editorDetailClass": "Class",
+  "editorDetailStandardFunction": "Standard function",
+  "editorCompletionListLabel": "Code suggestions",
+  "settingsEditorAssist": "Editing assistance",
+  "settingsEditorAssistOptions": "While typing",
+  "settingsEditorAssistOn": "Suggest and complete while typing",
+  "settingsEditorAssistOff": "Only when requested",
+  "settingsEditorAssistNotice": "With assistance on, the editor shows suggestions while you type, closes blocks and parentheses, and jumps between the blanks of a template. You can ask for suggestions at any time with Ctrl+Space."
 }

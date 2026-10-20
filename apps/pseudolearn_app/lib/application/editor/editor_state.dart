@@ -19,6 +19,7 @@ final class EditorState extends Equatable {
   final List<EditorKey> keys;
   final SourceEdit? pendingEdit;
   final bool showsKeyBar;
+  final bool templateActive;
   final String? errorMessage;
 
   const EditorState({
@@ -34,6 +35,7 @@ final class EditorState extends Equatable {
     this.keys = const [],
     this.pendingEdit,
     this.showsKeyBar = false,
+    this.templateActive = false,
     this.errorMessage,
   });
 
@@ -49,6 +51,7 @@ final class EditorState extends Equatable {
       completionRevision = 0,
       keys = const [],
       pendingEdit = null,
+      templateActive = false,
       errorMessage = null;
 
   EditorState copyWith({
@@ -63,6 +66,7 @@ final class EditorState extends Equatable {
     int? completionRevision,
     List<EditorKey>? keys,
     SourceEdit? pendingEdit,
+    bool? templateActive,
     String? errorMessage,
   }) {
     return EditorState(
@@ -79,8 +83,36 @@ final class EditorState extends Equatable {
       keys: keys ?? this.keys,
       pendingEdit: pendingEdit ?? this.pendingEdit,
       showsKeyBar: showsKeyBar,
+      templateActive: templateActive ?? this.templateActive,
       errorMessage: errorMessage,
     );
+  }
+
+  List<CompletionItem> get popupCandidates =>
+      contextualCompletions.take(8).toList();
+
+  int get completionPrefixLength {
+    final range = contextualCompletions.firstOrNull?.replacementRange;
+    return range == null ? 0 : range.upper - range.lower;
+  }
+
+  CompletionItem? get inlineCandidate {
+    for (final candidate in contextualCompletions) {
+      if (candidate.isInline) return candidate;
+    }
+    return null;
+  }
+
+  String? get ghostText {
+    final candidate = inlineCandidate;
+    final range = candidate?.replacementRange;
+    if (candidate == null || range == null) return null;
+    if (range.upper > sourceCode.length) return null;
+    final typed = sourceCode.substring(range.lower, range.upper);
+    final line = candidate.template.split('\n').first;
+    final matches = line.toLowerCase().startsWith(typed.toLowerCase());
+    if (!matches || line.length == typed.length) return null;
+    return line.substring(typed.length);
   }
 
   @override
@@ -97,6 +129,7 @@ final class EditorState extends Equatable {
     keys,
     pendingEdit,
     showsKeyBar,
+    templateActive,
     errorMessage,
   ];
 }

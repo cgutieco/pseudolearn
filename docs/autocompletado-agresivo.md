@@ -5,6 +5,29 @@ Cada fase requiere autorización explícita (`PHASE-STOP`).
 
 ---
 
+## 0. Estado de implementación
+
+F0 a F6 se implementaron en una sola iteración por instrucción directa de la persona, que prevalece sobre `PHASE-STOP`.
+El diseño se cumplió con las desviaciones siguientes, cada una justificada en el README del paquete que la aplica:
+
+| Diseño                                                              | Implementado                                                                                                                                  |
+|---------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| Roles de parada `expression`, `new_identifier`, `type`, `body`      | Solo `expression` y `new_identifier`: ninguna plantilla usa los otros; la parada final cae siempre sobre la primera línea de cuerpo          |
+| `additional_edits` en la aceptación                                 | Omitido: ninguna construcción lo exige (`SCOPE-YAGNI`)                                                                                         |
+| `trigger` (`invoked`, `typed`, `character`) en `complete`           | Omitido: el núcleo no distingue entre invocar y escribir; decide el cliente                                                                   |
+| `apply_edit` devuelve diagnósticos y sustituye a `analyze`          | Devuelve solo la revisión y `template_active`: el análisis de servicio y el completo producen conjuntos distintos. Pendiente unificarlos      |
+| Lista emergente anclada al cursor en un `Overlay`                   | Anclada al cursor dentro del propio editor con `EditableTextState`; no se reposiciona al desplazar el campo mientras está abierta           |
+| Propiedad ejecutable de no regresión sintáctica de `on_type` en SEE | Cubierta por casos del corpus y por pruebas del servicio sobre los programas de referencia; el ejecutor de propiedades de SEE no se amplió    |
+| Realineado de etiquetas de caso con valor                           | Solo cierres, `Sino` y `De Otro Modo`                                                                                                         |
+| Cierre automático de `Repetir`                                      | Solo sangría: su cierre exige una condición                                                                                                    |
+| Terminador `;` automático                                           | Solo en rigor estricto; la app trabaja en rigor flexible, de modo que allí no se inserta                                                      |
+
+Mediciones de cierre (E-09, `TOOL.SERVICE.COMPLETION` M1 a M4): precisión en 5 del 90,4 % global (es 87,3 %, en 94,2 %),
+en 1 del 87,6 %, ahorro de pulsaciones del 51,2 % y latencia p95 de completado inferior a 1 ms en diez mil líneas; una sesión
+de edición sobre ese documento aplica una edición en 7,7 ms, completa en 1,1 ms y asiste al teclear en 10,8 ms (p95).
+
+---
+
 ## 1. Informe de diagnóstico
 
 ### 1.1 Qué declaran las especificaciones

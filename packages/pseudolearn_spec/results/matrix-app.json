@@ -54,7 +54,7 @@
     "cases": 1,
     "measured": "no aplicable",
     "measurements": [],
-    "reason": "Requiere transporte Wasm real; la retención nativa no demuestra crecimiento de memoria Wasm. La validación posterior se limita inicialmente a macOS e iOS.",
+    "reason": "Requiere transporte Wasm real; las comprobaciones nativas no acreditan crecimiento de memoria Wasm. La validación posterior comienza solo en macOS e iOS y no certifica esa frontera.",
     "rule": "API.WIRE-FORMAT@0.1.0#R3",
     "state": "experimental",
     "subject": "app"
@@ -96,6 +96,36 @@
     "measurements": [],
     "reason": null,
     "rule": "APP.EDITOR.COMPLETION@0.1.0#R4",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 3,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R5",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R6",
+    "state": "experimental",
+    "subject": "app"
+  },
+  {
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
+    "measurements": [],
+    "reason": null,
+    "rule": "APP.EDITOR.COMPLETION@0.1.0#R7",
     "state": "experimental",
     "subject": "app"
   },
@@ -387,15 +417,15 @@
         "suite": "artefactos de release"
       }
     ],
-    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.ARTIFACT.SIZE@0.1.0#R1",
     "state": "experimental",
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R1",
@@ -403,9 +433,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R2",
@@ -413,9 +443,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R3",
@@ -423,9 +453,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R4",
@@ -433,9 +463,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R5",
@@ -443,9 +473,9 @@
     "subject": "app"
   },
   {
-    "binding": "sin vinculo",
-    "cases": 0,
-    "measured": "sin evidencia",
+    "binding": "cumple",
+    "cases": 1,
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "PERF.PROTOCOL@0.1.0#R6",
@@ -457,7 +487,7 @@
     "cases": 0,
     "measured": "sin evidencia",
     "measurements": [],
-    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.PROTOCOL@0.1.0#R7",
     "state": "experimental",
     "subject": "app"
@@ -514,7 +544,7 @@
         "suite": "PERF.SUITE.AWFY-CORE"
       }
     ],
-    "reason": "Requiere mediciones de plataforma diferidas por autorización; no se presenta evidencia histórica como certificación vigente.",
+    "reason": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato.",
     "rule": "PERF.VM.STEP-LATENCY@0.2.0#R3",
     "state": "experimental",
     "subject": "app"
