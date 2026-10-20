@@ -6,6 +6,7 @@ packages/*/pubspec.lock
 *.dill
 *.js_*
 doc/api/
+.pnpm-store
 
 # Coverage
 coverage/
