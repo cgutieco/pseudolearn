@@ -1,22 +1,20 @@
 use crate::ApiError;
 use crate::execution_resource::usage;
-use pseudolearn_vm::{EventPayload, TraceClass, TraceEvent, decode_plev, encode_plev};
+use pseudolearn_vm::{EventPayload, TraceClass, TraceEvent};
 use serde_json::{Value, json};
+use std::collections::BTreeMap;
 
 pub(crate) fn encode(arguments: &Value) -> Result<Value, ApiError> {
     let events = arguments
         .get("events")
         .and_then(Value::as_array)
         .ok_or_else(|| usage("missing events"))?;
-    let decoded = events
-        .iter()
-        .map(decode_event)
-        .collect::<Result<Vec<_>, _>>()?;
+    validate_events(events)?;
     match arguments.get("encoding").and_then(Value::as_str) {
-        Some("json") => serde_json::to_string(events)
+        Some("json") => serde_json::to_string(&canonical_events(events))
             .map(Value::String)
-            .map_err(|error| ApiError::SerializationFailure(error.to_string())),
-        Some("binary") => Ok(json!(encode_plev(&decoded))),
+            .map_err(serialization_failure),
+        Some("binary") => Ok(json!(crate::event_binary::encode_binary(events)?)),
         _ => Err(usage("unsupported encoding")),
     }
 }
@@ -25,35 +23,64 @@ pub(crate) fn decode(arguments: &Value) -> Result<Value, ApiError> {
     let encoded = arguments
         .get("encoded")
         .ok_or_else(|| usage("missing encoded events"))?;
-    let events = match arguments.get("encoding").and_then(Value::as_str) {
-        Some("json") => {
-            let events: Vec<Value> = serde_json::from_str(
-                encoded
-                    .as_str()
-                    .ok_or_else(|| usage("invalid JSON event batch"))?,
-            )
-            .map_err(|error| usage(&error.to_string()))?;
-            events
-                .iter()
-                .map(decode_event)
-                .collect::<Result<Vec<_>, _>>()?
-        }
+    match arguments.get("encoding").and_then(Value::as_str) {
+        Some("json") => decode_json(encoded),
         Some("binary") => {
             let bytes: Vec<u8> = serde_json::from_value(encoded.clone())
                 .map_err(|error| usage(&error.to_string()))?;
-            decode_plev(&bytes).map_err(|error| usage(&format!("{error:?}")))?
+            Ok(json!(crate::event_binary::decode_binary(&bytes)?))
         }
-        _ => return Err(usage("unsupported encoding")),
-    };
-    Ok(json!(
-        events
-            .iter()
-            .map(crate::execution_wire::event)
-            .collect::<Vec<_>>()
-    ))
+        _ => Err(usage("unsupported encoding")),
+    }
 }
 
-fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {
+fn decode_json(encoded: &Value) -> Result<Value, ApiError> {
+    let text = encoded
+        .as_str()
+        .ok_or_else(|| usage("invalid JSON event batch"))?;
+    let events: Vec<Value> =
+        serde_json::from_str(text).map_err(|error| usage(&error.to_string()))?;
+    validate_events(&events)?;
+    Ok(json!(events))
+}
+
+fn validate_events(events: &[Value]) -> Result<(), ApiError> {
+    for event in events {
+        decode_event(event)?;
+        validate_source(event)?;
+    }
+    Ok(())
+}
+
+fn canonical_events(events: &[Value]) -> Vec<Value> {
+    events.iter().cloned().map(canonical_value).collect()
+}
+
+pub(super) fn canonical_value(value: Value) -> Value {
+    match value {
+        Value::Array(values) => Value::Array(values.into_iter().map(canonical_value).collect()),
+        Value::Object(fields) => {
+            let ordered = fields
+                .into_iter()
+                .map(|(key, value)| (key, canonical_value(value)))
+                .collect::<BTreeMap<_, _>>();
+            Value::Object(ordered.into_iter().collect())
+        }
+        value => value,
+    }
+}
+
+pub(super) fn validate_source(event: &Value) -> Result<(), ApiError> {
+    if event
+        .get("source")
+        .is_some_and(|source| !source.is_null() && !source.is_object())
+    {
+        return Err(usage("invalid event source"));
+    }
+    Ok(())
+}
+
+pub(super) fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {
     let class = value
         .get("class")
         .and_then(Value::as_str)
@@ -112,4 +139,8 @@ fn payload(class: TraceClass, value: Option<&Value>) -> Result<Option<EventPaylo
             codigo: text("codigo")?,
         }),
     })
+}
+
+pub(super) fn serialization_failure(error: serde_json::Error) -> ApiError {
+    ApiError::SerializationFailure(error.to_string())
 }

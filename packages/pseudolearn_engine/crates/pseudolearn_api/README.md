@@ -10,7 +10,6 @@ Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construccio
 |---|---|---|
 | Conformidad integrada de `API.EXECUTE` | Recursos de ejecución, entrada y observación | B7.3 |
 | Reglas `API.PROGRAM.VIEW#R3` y `API.STATE.QUERY#R4` en conformidad | La primera depende del sujeto app; en la segunda el caso C4 espera un cursor literal que ningún cursor ligado a su consulta puede producir | pendiente |
-| Serialización de `source` en el formato binario de eventos | El formato columnar no transporta la referencia del evento; el JSON sí | pendiente |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -75,6 +74,13 @@ Problema: una ejecución por lotes no debe copiar ni suspender la máquina al fi
 Problema: ofrece operaciones públicas totales sobre recursos del núcleo respetando los observables del corpus.
 Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
 Alternativas descartadas y fundamento: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
+
+Problema: la codificación binaria debe conservar la misma referencia de fuente que la respuesta JSON sin
+añadir identidad de documento al modelo de eventos de la VM. Elección: el codec de la API pone `data` y
+`source` en el registro JSON canónico de cada evento PLEV; el decodificador valida ambos y reconstruye la
+respuesta completa. El codec JSON valida y conserva los objetos recibidos. Los eventos sintéticos llevan
+`source: null`. Se descarta resolver la fuente después de decodificar, porque la revisión y el nodo no se
+pueden recuperar solo desde el tramo.
 
 Problema: los emisores, diagramas y comprobaciones estructurales consumían árboles internos del núcleo Dart. Elección: la API publicará una vista inmutable por revisión con unidades, nodos, relaciones, tramos y eventos enlazados por identificador opaco. La vista no revela índices del CST, HIR ni bytecode y el consumidor no vuelve a analizar el texto.
 

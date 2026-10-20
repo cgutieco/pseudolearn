@@ -59,6 +59,7 @@ mod typed_values;
 pub use program_view_operations::analysis_program_view;
 pub use resources::ApiSession;
 
+mod event_binary;
 mod event_codec;
 
 #[cfg(feature = "native")]

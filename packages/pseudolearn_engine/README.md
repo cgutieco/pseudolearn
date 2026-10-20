@@ -268,8 +268,8 @@ tipos primitivos; cada array de una declaración de dimensiones es un nodo `dime
 los roles `signature` y `body`. Así los emisores y los diagramas no interpretan lexemas ni vuelven a resolver
 nombres. La API implementa
 `program_view` y `state_pages`; el adaptador de conformidad devuelve la vista cuando el análisis la solicita
-y resuelve la página de estado de una ejecución observada. La referencia `source` de los eventos viaja en JSON;
-el formato binario columnar aún no la transporta.
+y resuelve la página de estado de una ejecución observada. La referencia `source` viaja junto con `data` en
+el registro canónico de cada evento, tanto en JSON como en el formato binario columnar PLEV.
 Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
 ### service
