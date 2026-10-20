@@ -17,6 +17,7 @@ import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/presentation/editor/code_field.dart';
 import 'package:pseudolearn_app/presentation/editor/components/keyboard_exit_actions.dart';
+import 'package:pseudolearn_app/presentation/editor/components/editor_ghost_text.dart';
 import 'package:pseudolearn_app/presentation/editor/editor_key_bar.dart';
 import 'package:pseudolearn_app/presentation/editor/editor_surface.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
@@ -70,6 +71,7 @@ Widget _surface({
   double keyboardInset = 320,
   ExecutionState executionState = const ExecutionState.initial(),
   VoidCallback onRun = _ignoreRun,
+  bool assistanceEnabled = false,
 }) {
   return MaterialApp(
     theme: AppTheme.light(),
@@ -95,6 +97,7 @@ Widget _surface({
             onDiagnosticSelected: (_) {},
             onKeyPressed: onKeyPressed,
             onRun: onRun,
+            assistanceEnabled: assistanceEnabled,
           ),
         ),
       ),
@@ -111,6 +114,47 @@ Finder _barKey(String label) =>
     find.descendant(of: find.byType(EditorKeyBar), matching: find.text(label));
 
 void main() {
+  testWidgets('a keyboard transition selects a single assistance surface', (
+    tester,
+  ) async {
+    final state = _state(sourceCode: 'Mi').copyWith(
+      completionRevision: 3,
+      contextualCompletions: const [
+        CompletionItem(
+          label: 'Mientras',
+          template: 'Mientras condicion Hacer',
+          caretOffset: 0,
+          family: CompletionFamily.structured,
+          isInline: true,
+          revision: 3,
+          replacementRange: CaretRange(start: 0, end: 2),
+        ),
+      ],
+    );
+    await tester.pumpWidget(
+      _surface(
+        editorState: state,
+        onKeyPressed: (_, _) {},
+        assistanceEnabled: true,
+      ),
+    );
+    await tester.tap(find.byType(TextField));
+    await tester.pumpAndSettle();
+    expect(find.byType(EditorKeyBar), findsOneWidget);
+    expect(find.byType(EditorGhostText), findsNothing);
+    await tester.pumpWidget(
+      _surface(
+        editorState: state,
+        onKeyPressed: (_, _) {},
+        assistanceEnabled: true,
+        keyboardInset: 0,
+        size: _wideTablet,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(EditorKeyBar), findsNothing);
+    expect(find.byType(EditorGhostText), findsOneWidget);
+  });
   group('EditorSurface · caret', () {
     testWidgets(
       'reports the caret sitting in the field when a key is pressed',

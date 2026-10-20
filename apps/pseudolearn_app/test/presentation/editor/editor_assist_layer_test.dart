@@ -40,6 +40,7 @@ Future<List<EditorKey>> _pump(
   WidgetTester tester, {
   required EditorState state,
   required bool enabled,
+  bool usesSuggestionBar = false,
 }) async {
   final pressed = <EditorKey>[];
   final controller = TextEditingController(text: state.sourceCode)
@@ -65,6 +66,7 @@ Future<List<EditorKey>> _pump(
             focusNode: focusNode,
             editorState: state,
             assistanceEnabled: enabled,
+            usesSuggestionBar: usesSuggestionBar,
             onKeyPressed: pressed.add,
             child: TextField(
               controller: controller,
@@ -88,6 +90,26 @@ Future<void> _press(WidgetTester tester, LogicalKeyboardKey key) async {
 
 void main() {
   group('EditorAssistLayer', () {
+    testWidgets(
+      'the suggestion bar suppresses anchored assistance and Tab acceptance',
+      (tester) async {
+        final pressed = await _pump(
+          tester,
+          state: _state(items: [_item('Mientras', inline: true)]),
+          enabled: true,
+          usesSuggestionBar: true,
+        );
+        expect(find.byType(EditorGhostText), findsNothing);
+        expect(find.byType(EditorCompletionPopup), findsNothing);
+        await _press(tester, LogicalKeyboardKey.tab);
+        expect(pressed, isEmpty);
+        await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
+        await tester.sendKeyEvent(LogicalKeyboardKey.space);
+        await tester.sendKeyUpEvent(LogicalKeyboardKey.controlLeft);
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorCompletionPopup), findsNothing);
+      },
+    );
     testWidgets('shows the popup for two typed characters when enabled', (
       tester,
     ) async {

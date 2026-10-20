@@ -113,7 +113,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
 | Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medidos: 2.67 MiB y 482.18 KiB; ambos cumplen su presupuesto en `packages/pseudolearn_spec/results/r8-artifact-size.json` |
-| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 218 observaciones y dos propiedades API por el puente real pasan sin divergencias |
+| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 221 observaciones y dos propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
@@ -2191,7 +2191,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
   `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el
   contrato no declara.
-- **Verificación actual:** `see conform --subject app` ejecuta 218 observaciones sin divergencias, incluida la
+- **Verificación actual:** `see conform --subject app` ejecuta 221 observaciones sin divergencias, incluida la
   continuación de asignación del editor. `see conform --subject app --operation properties` comprueba dos propiedades
   API mediante el transporte real, con 1105 muestras por propiedad y semilla 42. Esa evidencia no sustituye las
   mediciones Release de E-NR2.
@@ -2491,7 +2491,7 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
   la edición que devuelve el puerto `EditAssistSource`, convirtiendo UTF-8 a UTF-16 en `RustEditAssistSource`, que
   sincroniza la sesión del núcleo enviándole la diferencia mínima entre el texto anterior y el actual
   (`SingleTextEdit`) sin partir pares sustitutos. (3) Dibujar: `EditorAssistLayer` mide el cursor sobre
-  `EditableTextState` para anclar la lista emergente y el texto fantasma, y la barra móvil muestra la fila de
+  `EditableTextState` para anclar la lista emergente y deriva la línea base del texto para el fantasma, y la barra móvil muestra la fila de
   candidatos mientras la asistencia está activa y los controles de paradas mientras hay una plantilla en curso.
 - **Ajuste desactivado por omisión.** `DevicePreferences.editorAssistance` apaga solo lo no solicitado: lista y texto
   fantasma al escribir y la asistencia al teclear. La invocación explícita, la fila de plantillas y el recorrido de
@@ -2518,9 +2518,23 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
   con revisión y extremo de reemplazo iguales a los del estado y cursor actuales. Los cambios de foco, selección y
   composición actualizan la visibilidad inmediatamente. `Tab` acepta el fantasma; `Enter` sigue siendo salto de línea y
   `Esc` lo descarta. Aceptar un nombre y aceptar después su continuación son acciones separadas.
-- **Pendientes declarados:** la lista no se reposiciona al desplazar el campo mientras está abierta; el texto fantasma
-  no se acepta con un toque en móvil (la fila de candidatos cumple esa función); los controles de paradas no tienen
-  atajo propio fuera de `Tab`.
+- **Una superficie disponible.** `EditorState.usesSuggestionBar` concentra la decisión a partir de la capacidad de
+  entrada, presencia de teclado, disponibilidad de teclas y estado de ejecución. `EditorSurface` proyecta ese mismo
+  resultado a la banda y a la capa anclada: mientras la banda está disponible no hay fantasma ni lista flotante; sin
+  ella se conservan las superficies ancladas y los atajos. No hay nuevas consultas de plataforma ni preferencias.
+  La presencia sigue siendo la señal del lienzo basada en `viewInsets`; no se afirma que detecte un teclado físico
+  conectado ni todos los teclados flotantes. Verificar esos modos en dispositivo sigue pendiente.
+- **Vista previa táctil.** `CompletionItem.insertionPreview` deriva la primera línea del texto insertable recibido,
+  sin espacios finales; la banda dibuja ese dato y conserva la etiqueta y edición originales al aceptar. Así `area`
+  puede mostrar `area <-` sin reconocer operadores en presentación. Las plantillas siguen insertándose completas.
+- **Geometría del fantasma.** `editor_assist_geometry` distingue el rectángulo del cursor de la línea base del texto.
+  Mide el grafema anterior al cursor con la fuente, escala, strut, dirección y comportamiento de altura del campo y
+  transforma su caja real en una línea base para el fantasma. Los pintores temporales se liberan tras medir; no se
+  alteran el búfer ni los índices, ni se usan compensaciones por plataforma. El cursor se conserva como ancla de la
+  lista. Las notificaciones de desplazamiento actualizan ambas posiciones. Las pruebas comparan cajas tipográficas
+  en iOS, macOS y Windows a escalas 1.0 y 1.6, además del desplazamiento y la transición entre superficies.
+- **Pendientes declarados:** los controles de paradas no tienen atajo propio fuera de `Tab`; la validación física de
+  teclados externos y flotantes sigue pendiente. La banda táctil es la vía de aceptación cuando está disponible.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

@@ -2,7 +2,7 @@
   "corpus_hashes": {
     "API.PROGRAM.VIEW": "0d3d38d12a48d923a2b982e303ea49ce859008823d48c4921fc512f6440c577d",
     "API.WIRE-FORMAT": "e6b4db0546e51f8ab587e0d2c1b228a6dd63328e1fb2d01466e13bfd65dd8cb8",
-    "APP.EDITOR.COMPLETION": "c05d3d79622590c954cfcdd1d6d3375481dfa3100cd58b1d45b09e692b0160ca",
+    "APP.EDITOR.COMPLETION": "c9f5752ff5480438b6eb44371108a3e37697625b49ccee6f2c3a47f4aa91cc20",
     "APP.ENGINE.BOUNDARY": "be46827b54b8770b0697d1c778ae469e32cdbadca2c5dc8885aa913c3fa46149",
     "APP.EXEC.PACE": "48fdd717e2b8a776ae4b64a055a7d8cbcfcfb0c35e6bc317b575a2b24415e909",
     "APP.EXEC.SNAPSHOT-VIEW": "befd0f3e1090f6f06d3c40bdce024e4c92caf4e9adcf3642d467cc13f936640a",
@@ -6771,6 +6771,78 @@
       },
       "profile": "es",
       "rule": "R6",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "allows_anchored_assistance": false,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": true
+        },
+        "kind": "app"
+      },
+      "case": "C13",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "allows_anchored_assistance": false,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": true
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "allows_anchored_assistance": true,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": false
+        },
+        "kind": "app"
+      },
+      "case": "C14",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "allows_anchored_assistance": true,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": false
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
+      "specification": "APP.EDITOR.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "app": {
+          "allows_anchored_assistance": true,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": false
+        },
+        "kind": "app"
+      },
+      "case": "C15",
+      "differences": [],
+      "expected": {
+        "aplicacion": {
+          "allows_anchored_assistance": true,
+          "insertion_preview": "area <-",
+          "uses_suggestion_bar": false
+        }
+      },
+      "profile": "es",
+      "rule": "R5",
       "specification": "APP.EDITOR.COMPLETION",
       "strictness": "estricto",
       "verdict": "cumple"

@@ -3,9 +3,10 @@ import '../../../domain/model/completion/completion_item.dart';
 import '../../theme/tokens/component_metrics.dart';
 import 'editor_completion_popup.dart';
 import 'editor_ghost_text.dart';
+import 'editor_assist_geometry.dart';
 
 final class EditorAssistOverlay extends StatelessWidget {
-  final Rect? anchor;
+  final EditorAssistAnchor? anchor;
   final String? ghostText;
   final List<CompletionItem> candidates;
   final int selectedIndex;
@@ -22,21 +23,24 @@ final class EditorAssistOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rect = anchor;
-    if (rect == null) return const SizedBox.shrink();
+    final geometry = anchor;
+    if (geometry == null) return const SizedBox.shrink();
     final ghost = ghostText;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        if (ghost != null)
+        if (ghost != null && geometry.ghostOrigin != null)
           Positioned(
-            left: rect.left,
-            top: rect.top,
-            child: EditorGhostText(text: ghost),
+            left: geometry.ghostOrigin!.dx,
+            top: geometry.ghostOrigin!.dy,
+            child: EditorGhostText(
+              text: ghost,
+              typography: geometry.typography,
+            ),
           ),
         if (candidates.isNotEmpty)
           _PopupPlacement(
-            anchor: rect,
+            anchor: geometry.caret,
             rowCount: candidates.length,
             child: EditorCompletionPopup(
               candidates: candidates,

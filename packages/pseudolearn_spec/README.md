@@ -121,6 +121,11 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   La evidencia `results/inline-completion-e09.json` registra el arnés general de completado: 172 programas,
   2730 consultas, 51.228 % de ahorro de pulsaciones y p95 de consulta de 1.997 ms en diez mil líneas; cumple los
   umbrales vigentes. No mide velocidad humana ni aísla el ahorro de la nueva continuación de asignación.
+- Problema: la asistencia anclada duplicaba la banda táctil y las etiquetas no mostraban continuaciones como `area <-`.
+  Elección: `APP.EDITOR.COMPLETION#R5` declara una sola superficie según disponibilidad, vista previa de la primera línea
+  insertable y alineación tipográfica del fantasma, conservando `0.1.0` sin campo `cambio`. Los casos de presentación usan
+  el escenario existente `edit_assistance` con `query: presentation`: consultan candidatos reales y la política pura del
+  estado. La geometría se verifica con widgets y cajas de texto reales; el adaptador sin interfaz no inventa medidas.
 - Problema: la cobertura de la RI debe comprobarse sin interpretar la prosa de las reglas. Elección:
   cuando el corpus contiene instrucciones, cada regla de `LANG` o `LIB` de clase `semantica`, `ejecucion` o
   `ampliacion` tiene exactamente una `cobertura` con instrucciones existentes o un motivo `sin_ri`; las

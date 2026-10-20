@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../components/typography/app_text.dart';
 import '../../theme/app_theme.dart';
+import 'editor_assist_geometry.dart';
 
 final class EditorGhostText extends StatelessWidget {
   final String text;
+  final EditorGhostTypography typography;
 
-  const EditorGhostText({super.key, required this.text});
+  const EditorGhostText({
+    super.key,
+    required this.text,
+    required this.typography,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +21,12 @@ final class EditorGhostText extends StatelessWidget {
           text,
           maxLines: 1,
           softWrap: false,
-          style: resolveAppTextStyle(
-            context,
-            AppTextVariant.codeEditor,
-            color: theme.colors.text.tertiary,
-          ),
+          style: typography.style.copyWith(color: theme.colors.text.tertiary),
+          textScaler: typography.scaler,
+          strutStyle: typography.strut,
+          textHeightBehavior: typography.heightBehavior,
+          textDirection: typography.direction,
+          locale: typography.locale,
         ),
       ),
     );

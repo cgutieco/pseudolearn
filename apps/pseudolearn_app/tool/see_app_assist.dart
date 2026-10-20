@@ -10,11 +10,15 @@ import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 import 'package:pseudolearn_app/domain/ports/clock.dart';
 import 'package:pseudolearn_app/domain/ports/document_repository.dart';
 import 'package:pseudolearn_app/domain/ports/text_entry_modality.dart';
+import 'see_app_assist_presentation.dart';
 
 Future<Map<String, Object?>> runEditAssistanceScenario(
   RustTransport transport,
   Map<String, Object?> input,
 ) async {
+  if (input['query'] == 'presentation') {
+    return runAssistancePresentation(transport, input);
+  }
   if (input['query'] == 'default') {
     return {
       'assistance_enabled': const DevicePreferences.defaults().editorAssistance,

@@ -5,12 +5,14 @@ import '../../../application/editor/editor_state.dart';
 import '../../../domain/model/completion/completion_item.dart';
 import '../../../domain/model/editor/editor_key.dart';
 import 'editor_assist_overlay.dart';
+import 'editor_assist_geometry.dart';
 
 final class EditorAssistLayer extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final EditorState editorState;
   final bool assistanceEnabled;
+  final bool usesSuggestionBar;
   final ValueChanged<EditorKey> onKeyPressed;
   final Widget child;
 
@@ -20,6 +22,7 @@ final class EditorAssistLayer extends StatefulWidget {
     required this.focusNode,
     required this.editorState,
     required this.assistanceEnabled,
+    this.usesSuggestionBar = false,
     required this.onKeyPressed,
     required this.child,
   });
@@ -32,7 +35,7 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
   int _selected = 0;
   bool _invoked = false;
   bool _dismissed = false;
-  Rect? _anchor;
+  EditorAssistAnchor? _anchor;
 
   @override
   void initState() {
@@ -80,12 +83,16 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
   }
 
   String? get _ghost =>
-      _currentOffer && widget.assistanceEnabled && !_dismissed && !_invoked
+      !widget.usesSuggestionBar &&
+          _currentOffer &&
+          widget.assistanceEnabled &&
+          !_dismissed &&
+          !_invoked
       ? widget.editorState.ghostText
       : null;
 
   List<CompletionItem> get _popup {
-    if (!_currentOffer) return const [];
+    if (widget.usesSuggestionBar || !_currentOffer) return const [];
     final state = widget.editorState;
     final automatic =
         widget.assistanceEnabled &&
@@ -123,13 +130,13 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
         !selection.isValid) {
       return;
     }
-    final render = editable.renderEditable;
-    final local = render.getLocalRectForCaret(
-      TextPosition(offset: selection.extentOffset),
+    final anchor = measureEditorAssist(
+      editable: editable.renderEditable,
+      overlay: box,
+      position: TextPosition(offset: selection.extentOffset),
+      ghost: _ghost,
     );
-    final origin = box.globalToLocal(render.localToGlobal(local.topLeft));
-    final rect = origin & local.size;
-    if (rect != _anchor) setState(() => _anchor = rect);
+    if (anchor != _anchor) setState(() => _anchor = anchor);
   }
 
   void _accept(CompletionItem item) {
@@ -140,6 +147,7 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
     if (event is KeyUpEvent) return KeyEventResult.ignored;
     final key = event.logicalKey;
+    if (widget.usesSuggestionBar) return _templateKey(key);
     if (key == LogicalKeyboardKey.space &&
         HardwareKeyboard.instance.isControlPressed) {
       setState(() {
@@ -202,25 +210,33 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Positioned.fill(
-          child: Focus(
-            canRequestFocus: false,
-            skipTraversal: true,
-            onKeyEvent: _onKey,
-            child: widget.child,
+    return NotificationListener<ScrollNotification>(
+      onNotification: _onScroll,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Focus(
+              canRequestFocus: false,
+              skipTraversal: true,
+              onKeyEvent: _onKey,
+              child: widget.child,
+            ),
           ),
-        ),
-        EditorAssistOverlay(
-          anchor: _anchor,
-          ghostText: _ghost,
-          candidates: _popup,
-          selectedIndex: _selected,
-          onSelected: _accept,
-        ),
-      ],
+          EditorAssistOverlay(
+            anchor: _anchor,
+            ghostText: _ghost,
+            candidates: _popup,
+            selectedIndex: _selected,
+            onSelected: _accept,
+          ),
+        ],
+      ),
     );
+  }
+
+  bool _onScroll(ScrollNotification notification) {
+    _scheduleMeasure();
+    return false;
   }
 }

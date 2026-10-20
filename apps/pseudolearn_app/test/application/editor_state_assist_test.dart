@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/editor/editor_state.dart';
 import 'package:pseudolearn_app/domain/model/completion/completion_item.dart';
 import 'package:pseudolearn_app/domain/model/editor/caret_range.dart';
+import 'package:pseudolearn_app/domain/model/editor/editor_key.dart';
 
 CompletionItem _item(
   String label, {
@@ -28,6 +29,65 @@ EditorState _state(String source, List<CompletionItem> items) =>
 
 void main() {
   group('EditorState · assistance getters', () {
+    test(
+      'suggestion surfaces follow availability rather than window width',
+      () {
+        final capable = const EditorState.initial(
+          showsKeyBar: true,
+        ).copyWith(keys: [const EditorKey.indent()]);
+        expect(
+          capable.usesSuggestionBar(
+            keyboardVisible: true,
+            keepsKeyBar: true,
+            isExecuting: false,
+          ),
+          isTrue,
+        );
+        expect(
+          capable.usesSuggestionBar(
+            keyboardVisible: false,
+            keepsKeyBar: true,
+            isExecuting: false,
+          ),
+          isFalse,
+        );
+        expect(
+          capable.usesSuggestionBar(
+            keyboardVisible: true,
+            keepsKeyBar: false,
+            isExecuting: false,
+          ),
+          isFalse,
+        );
+        expect(
+          capable.usesSuggestionBar(
+            keyboardVisible: true,
+            keepsKeyBar: true,
+            isExecuting: true,
+          ),
+          isFalse,
+        );
+        final physical = const EditorState.initial().copyWith(
+          keys: [const EditorKey.indent()],
+        );
+        expect(
+          physical.usesSuggestionBar(
+            keyboardVisible: true,
+            keepsKeyBar: true,
+            isExecuting: false,
+          ),
+          isFalse,
+        );
+        expect(
+          const EditorState.initial(showsKeyBar: true).usesSuggestionBar(
+            keyboardVisible: true,
+            keepsKeyBar: true,
+            isExecuting: false,
+          ),
+          isFalse,
+        );
+      },
+    );
     test('offers require the current revision and cursor', () {
       expect(
         _state('Mi', [_item('Mientras')]).hasCurrentCompletionsAt(2),

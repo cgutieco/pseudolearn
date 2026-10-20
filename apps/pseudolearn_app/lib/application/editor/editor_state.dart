@@ -91,6 +91,17 @@ final class EditorState extends Equatable {
   List<CompletionItem> get popupCandidates =>
       contextualCompletions.take(8).toList();
 
+  bool usesSuggestionBar({
+    required bool keyboardVisible,
+    required bool keepsKeyBar,
+    required bool isExecuting,
+  }) =>
+      keepsKeyBar &&
+      showsKeyBar &&
+      keyboardVisible &&
+      keys.isNotEmpty &&
+      !isExecuting;
+
   bool hasCurrentCompletionsAt(int cursorUtf16) =>
       contextualCompletions.isNotEmpty &&
       contextualCompletions.every(

@@ -43,4 +43,6 @@ final class CompletionItem {
     this.replacementRange,
     this.revision,
   });
+
+  String get insertionPreview => template.split('\n').first.trimRight();
 }

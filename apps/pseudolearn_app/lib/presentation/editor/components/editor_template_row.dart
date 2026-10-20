@@ -68,7 +68,7 @@ final class _TemplateChip extends StatelessWidget {
             ),
           ),
           child: AppText(
-            template.label,
+            template.insertionPreview,
             variant: AppTextVariant.codeInline,
             color: _chipColor(theme),
           ),

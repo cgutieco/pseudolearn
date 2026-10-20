@@ -192,6 +192,9 @@
         "C10": "caso",
         "C11": "caso",
         "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
         "C2": "caso",
         "C3": "caso",
         "C4": "caso",
@@ -208,7 +211,7 @@
         "R6": "regla",
         "R7": "regla"
       },
-      "hash": "c05d3d79622590c954cfcdd1d6d3375481dfa3100cd58b1d45b09e692b0160ca",
+      "hash": "c9f5752ff5480438b6eb44371108a3e37697625b49ccee6f2c3a47f4aa91cc20",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -4533,6 +4536,9 @@
         "C10": "caso",
         "C11": "caso",
         "C12": "caso",
+        "C13": "caso",
+        "C14": "caso",
+        "C15": "caso",
         "C2": "caso",
         "C3": "caso",
         "C4": "caso",
@@ -4549,7 +4555,7 @@
         "R6": "regla",
         "R7": "regla"
       },
-      "hash": "c05d3d79622590c954cfcdd1d6d3375481dfa3100cd58b1d45b09e692b0160ca",
+      "hash": "c9f5752ff5480438b6eb44371108a3e37697625b49ccee6f2c3a47f4aa91cc20",
       "state": "experimental",
       "version": "0.1.0"
     },

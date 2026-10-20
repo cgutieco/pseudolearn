@@ -6960,11 +6960,14 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R5",
-            "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación.",
+            "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación. La presentación elige una sola superficie con la capacidad de entrada, presencia de teclado y disponibilidad de la banda, sin condicionales de sistema operativo en los widgets: con banda disponible se muestran candidatos táctiles y se suprimen el fantasma y la lista flotante; sin banda se conserva la asistencia anclada y sus atajos. Cada candidato táctil muestra la primera línea del texto que insertará, sin espacios finales, y conserva su identidad al aceptarlo. El fantasma comparte las métricas tipográficas del campo y alinea su línea base con la del texto escrito; el anclaje se actualiza con el desplazamiento.",
             "verificacion": [
               "C7",
               "C8",
-              "C9"
+              "C9",
+              "C13",
+              "C14",
+              "C15"
             ]
           },
           "kind": "regla"
@@ -7182,9 +7185,105 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 44,
+                "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+                "keyboard_visible": true,
+                "onscreen_capable": true,
+                "query": "presentation"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "allows_anchored_assistance": false,
+                "insertion_preview": "area <-",
+                "uses_suggestion_bar": true
+              }
+            },
+            "id": "C13",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 44,
+                "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+                "keyboard_visible": false,
+                "onscreen_capable": true,
+                "query": "presentation"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "allows_anchored_assistance": true,
+                "insertion_preview": "area <-",
+                "uses_suggestion_bar": false
+              }
+            },
+            "id": "C14",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "cursor_utf16": 44,
+                "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+                "keyboard_visible": true,
+                "onscreen_capable": false,
+                "query": "presentation"
+              },
+              "scenario": "edit_assistance"
+            },
+            "espera": {
+              "aplicacion": {
+                "allows_anchored_assistance": true,
+                "insertion_preview": "area <-",
+                "uses_suggestion_bar": false
+              }
+            },
+            "id": "C15",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R5",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "c05d3d79622590c954cfcdd1d6d3375481dfa3100cd58b1d45b09e692b0160ca",
+      "hash": "c9f5752ff5480438b6eb44371108a3e37697625b49ccee6f2c3a47f4aa91cc20",
       "metadata": {
         "cambio": null,
         "depende_de": [

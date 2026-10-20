@@ -27,7 +27,10 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "El editor consulta TOOL.SERVICE.COMPLETION con el texto, revisión, perfil del pseudocódigo y posición del cursor actuales. No mantiene una tabla paralela de palabras, firmas, ámbitos ni candidatos.",
-  "verificacion": ["C1", "C2"]
+  "verificacion": [
+    "C1",
+    "C2"
+  ]
 }
 ```
 
@@ -63,7 +66,10 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "El cursor del editor se expresa en unidades de código UTF-16 desde cero. El adaptador convierte el límite seleccionado a desplazamiento UTF-8 para el servicio y convierte cada tramo de edición devuelto a UTF-16. Un cursor dentro de un par sustituto se rechaza sin solicitar candidatos ni modificar el documento.",
-  "verificacion": ["C3", "C4"]
+  "verificacion": [
+    "C3",
+    "C4"
+  ]
 }
 ```
 
@@ -99,7 +105,9 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "Cada solicitud de completado se asocia a una revisión monotónica del documento. Una respuesta de una revisión sustituida se descarta aunque llegue después y no puede alterar candidatos, selección ni texto de la revisión vigente.",
-  "verificacion": ["C5"]
+  "verificacion": [
+    "C5"
+  ]
 }
 ```
 
@@ -122,7 +130,9 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "El perfil del pseudocódigo y el idioma de interfaz son parámetros independientes. Cambiar el idioma de interfaz solo cambia la prosa y etiquetas localizadas; no cambia los lexemas, firmas, identidad ni orden normativo de candidatos del perfil activo.",
-  "verificacion": ["C6"]
+  "verificacion": [
+    "C6"
+  ]
 }
 ```
 
@@ -144,11 +154,14 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación.",
+  "texto": "El ajuste de asistencia de edición es una preferencia de dispositivo desactivada por omisión. Desactivado, el editor no solicita completado al teclear, no solicita asistencia al teclear y no muestra lista emergente ni sugerencia en línea; la invocación explícita y la fila de plantillas siguen disponibles. Activado, solicita ambas ante cada pulsación. La presentación elige una sola superficie con la capacidad de entrada, presencia de teclado y disponibilidad de la banda, sin condicionales de sistema operativo en los widgets: con banda disponible se muestran candidatos táctiles y se suprimen el fantasma y la lista flotante; sin banda se conserva la asistencia anclada y sus atajos. Cada candidato táctil muestra la primera línea del texto que insertará, sin espacios finales, y conserva su identidad al aceptarlo. El fantasma comparte las métricas tipográficas del campo y alinea su línea base con la del texto escrito; el anclaje se actualiza con el desplazamiento.",
   "verificacion": [
     "C7",
     "C8",
-    "C9"
+    "C9",
+    "C13",
+    "C14",
+    "C15"
   ]
 }
 ```
@@ -362,6 +375,102 @@
         58,
         58
       ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "query": "presentation",
+      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 44,
+      "onscreen_capable": true,
+      "keyboard_visible": true
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "uses_suggestion_bar": true,
+      "allows_anchored_assistance": false,
+      "insertion_preview": "area <-"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "query": "presentation",
+      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 44,
+      "onscreen_capable": true,
+      "keyboard_visible": false
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "uses_suggestion_bar": false,
+      "allows_anchored_assistance": true,
+      "insertion_preview": "area <-"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "edit_assistance",
+    "input": {
+      "query": "presentation",
+      "document": "Algoritmo P\n  Definir area Como Real;\n  area\nFinAlgoritmo\n",
+      "cursor_utf16": 44,
+      "onscreen_capable": false,
+      "keyboard_visible": true
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "uses_suggestion_bar": false,
+      "allows_anchored_assistance": true,
+      "insertion_preview": "area <-"
     }
   }
 }

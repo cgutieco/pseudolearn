@@ -63,6 +63,35 @@ Widget _bar({
 void main() {
   group('EditorKeyBar', () {
     testWidgets(
+      'a touch candidate previews its insertion and preserves its identity',
+      (tester) async {
+        EditorKey? pressed;
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: (key) => pressed = key,
+            alwaysShowsCandidates: true,
+            templates: const [
+              CompletionItem(
+                label: 'area',
+                template: 'area <- ',
+                caretOffset: 8,
+                family: CompletionFamily.structured,
+                replacementRange: CaretRange(start: 0, end: 4),
+                revision: 3,
+              ),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('area <-'), findsOneWidget);
+        expect(find.text('area'), findsNothing);
+        await tester.tap(find.text('area <-'));
+        expect(pressed?.label, 'area');
+        expect(pressed?.insertion, 'area <- ');
+        expect(pressed?.revision, 3);
+      },
+    );
+    testWidgets(
       'keeps the candidate row folded unless assistance asks for it',
       (tester) async {
         await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
@@ -240,7 +269,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final chip = find.ancestor(
-        of: find.text('Si Entonces'),
+        of: find.text('Si condicion Entonces'),
         matching: find.byType(InkWell),
       );
 
@@ -264,7 +293,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorTemplateRow), findsOneWidget);
-      expect(find.text('Si Entonces'), findsOneWidget);
+      expect(find.text('Si condicion Entonces'), findsOneWidget);
       expect(
         find.bySemanticsLabel('Ocultar plantillas de estructura'),
         findsOneWidget,
@@ -283,7 +312,7 @@ void main() {
         find.bySemanticsLabel('Mostrar plantillas de estructura'),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Si Entonces'));
+      await tester.tap(find.text('Si condicion Entonces'));
       await tester.pumpAndSettle();
 
       expect(pressed?.kind, EditorKeyKind.template);

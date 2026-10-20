@@ -15,6 +15,7 @@ final class EditorField extends StatelessWidget {
   final ValueChanged<String> onCodeChanged;
   final ValueChanged<EditorKey> onKeyPressed;
   final bool assistanceEnabled;
+  final bool usesSuggestionBar;
 
   const EditorField({
     super.key,
@@ -25,6 +26,7 @@ final class EditorField extends StatelessWidget {
     required this.onCodeChanged,
     required this.onKeyPressed,
     this.assistanceEnabled = false,
+    this.usesSuggestionBar = false,
   });
 
   @override
@@ -38,6 +40,7 @@ final class EditorField extends StatelessWidget {
         focusNode: focusNode,
         editorState: editorState,
         assistanceEnabled: assistanceEnabled,
+        usesSuggestionBar: usesSuggestionBar,
         onKeyPressed: onKeyPressed,
         child: CodeField(
           controller: controller,

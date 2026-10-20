@@ -132,16 +132,8 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   bool _hidesFooter(DesignCanvasData canvas) =>
       canvas.deviceClass == DeviceClass.compact && canvas.isKeyboardVisible;
 
-  bool _offersKeyBar(DesignCanvasData canvas) =>
-      widget.keepsKeyBar &&
-      widget.editorState.showsKeyBar &&
-      canvas.isKeyboardVisible &&
-      widget.editorState.keys.isNotEmpty &&
-      !widget.executionState.isInFlight;
-
   @override
   Widget build(BuildContext context) {
-    final canvas = DesignCanvasScope.of(context);
     return Column(
       children: [
         Expanded(
@@ -153,12 +145,13 @@ final class _EditorSurfaceState extends State<EditorSurface> {
             onCodeChanged: _onCodeChanged,
             onKeyPressed: _press,
             assistanceEnabled: widget.assistanceEnabled,
+            usesSuggestionBar: _usesSuggestionBar,
           ),
         ),
         _UnderFieldBars(
           editorState: widget.editorState,
-          offersKeyBar: _offersKeyBar(canvas),
-          offersExitActions: _hidesFooter(canvas),
+          offersKeyBar: _usesSuggestionBar,
+          offersExitActions: _hidesFooter(DesignCanvasScope.of(context)),
           canRun: _canRun,
           onDiagnosticTap: widget.onDiagnosticSelected,
           onKeyPressed: _press,
@@ -169,6 +162,12 @@ final class _EditorSurfaceState extends State<EditorSurface> {
       ],
     );
   }
+
+  bool get _usesSuggestionBar => widget.editorState.usesSuggestionBar(
+    keyboardVisible: DesignCanvasScope.of(context).isKeyboardVisible,
+    keepsKeyBar: widget.keepsKeyBar,
+    isExecuting: widget.executionState.isInFlight,
+  );
 }
 
 final class _UnderFieldBars extends StatelessWidget {
