@@ -101,7 +101,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 1,
+    "cases": 3,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -177,7 +177,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 2,
+    "cases": 6,
     "measured": "cumple",
     "measurements": [],
     "reason": null,
@@ -227,7 +227,7 @@
   },
   {
     "binding": "cumple",
-    "cases": 2,
+    "cases": 22,
     "measured": "cumple",
     "measurements": [],
     "reason": null,

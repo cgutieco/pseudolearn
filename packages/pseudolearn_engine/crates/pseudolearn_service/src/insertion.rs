@@ -3,6 +3,7 @@ use crate::completion_types::{CompletionAction, CompletionEntry};
 use crate::template_catalog::build_template;
 use crate::template_model::{Segment, StopRole, Template, stop, text};
 use crate::template_render::{DEFAULT_INDENT_UNIT, Layout, render, render_snippet};
+use crate::template_reuse::reuse_existing_closer;
 use pseudolearn_lexicon::Profile;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -37,7 +38,10 @@ pub fn build_insertion(
 ) -> Insertion {
     let start = replace.start_utf8;
     match template_for(entry, profile) {
-        Some(template) => templated(&template, replace, line_indent(source, start)),
+        Some(mut template) => {
+            reuse_existing_closer(&mut template, source, replace, profile);
+            templated(&template, replace, line_indent(source, start))
+        }
         None => plain(entry, replace),
     }
 }

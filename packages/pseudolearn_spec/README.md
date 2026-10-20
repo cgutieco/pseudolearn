@@ -112,6 +112,15 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   se añaden de forma compatible, sin esquema nuevo. Los contratos `TOOL.SERVICE.COMPLETION`, `TOOL.LSP.CAPABILITIES` y
   `APP.EDITOR.COMPLETION` crecen dentro de `0.1.0` con reanclaje autorizado de su hash; lo que no tenía dueño nace como
   `TOOL.SERVICE.ON-TYPE@0.1.0`. Se descarta abrir `0.2.0`: las versiones están congeladas por decisión de la persona.
+- Problema: la prioridad del cierre se confundía con intención inequívoca y no cubría la continuación de asignación.
+  Elección: `TOOL.SERVICE.COMPLETION#R13` exige intención escrita, elimina cierres inline en líneas vacías y contempla
+  `nombre <- ` únicamente para un destino simple declarado y asignable. `R8` reutiliza cierres existentes sin tomar los
+  de otros bloques; `APP.EDITOR.COMPLETION#R6` verifica la aceptación por el puente. Es una corrección observable de la
+  asistencia, sin modificación de la gramática ni de la asignación. Por instrucción de la persona se mantienen las
+  versiones oficiales `0.1.0`, sin campo `cambio`, y se reanclan solo ambos contratos mediante `lock --refresh`.
+  La evidencia `results/inline-completion-e09.json` registra el arnés general de completado: 172 programas,
+  2730 consultas, 51.228 % de ahorro de pulsaciones y p95 de consulta de 1.997 ms en diez mil líneas; cumple los
+  umbrales vigentes. No mide velocidad humana ni aísla el ahorro de la nueva continuación de asignación.
 - Problema: la cobertura de la RI debe comprobarse sin interpretar la prosa de las reglas. Elección:
   cuando el corpus contiene instrucciones, cada regla de `LANG` o `LIB` de clase `semantica`, `ejecucion` o
   `ampliacion` tiene exactamente una `cobertura` con instrucciones existentes o un motivo `sin_ri`; las

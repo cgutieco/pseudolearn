@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import '../../../application/editor/editor_state.dart';
 import '../../../domain/model/completion/completion_item.dart';
@@ -36,13 +37,22 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(_scheduleMeasure);
+    widget.controller.addListener(_refresh);
+    widget.focusNode.addListener(_refresh);
     _scheduleMeasure();
   }
 
   @override
   void didUpdateWidget(EditorAssistLayer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_refresh);
+      widget.controller.addListener(_refresh);
+    }
+    if (oldWidget.focusNode != widget.focusNode) {
+      oldWidget.focusNode.removeListener(_refresh);
+      widget.focusNode.addListener(_refresh);
+    }
     if (oldWidget.editorState.sourceCode != widget.editorState.sourceCode) {
       _selected = 0;
       _dismissed = false;
@@ -53,15 +63,29 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
 
   @override
   void dispose() {
-    widget.controller.removeListener(_scheduleMeasure);
+    widget.controller.removeListener(_refresh);
+    widget.focusNode.removeListener(_refresh);
     super.dispose();
   }
 
-  String? get _ghost => widget.assistanceEnabled && !_dismissed && !_invoked
+  bool get _currentOffer {
+    final value = widget.controller.value;
+    final state = widget.editorState;
+    return widget.focusNode.hasFocus &&
+        value.text == state.sourceCode &&
+        value.selection.isValid &&
+        value.selection.isCollapsed &&
+        (value.composing.isCollapsed || !value.composing.isValid) &&
+        state.hasCurrentCompletionsAt(value.selection.extentOffset);
+  }
+
+  String? get _ghost =>
+      _currentOffer && widget.assistanceEnabled && !_dismissed && !_invoked
       ? widget.editorState.ghostText
       : null;
 
   List<CompletionItem> get _popup {
+    if (!_currentOffer) return const [];
     final state = widget.editorState;
     final automatic =
         widget.assistanceEnabled &&
@@ -70,6 +94,17 @@ final class _EditorAssistLayerState extends State<EditorAssistLayer> {
     return !_dismissed && (automatic || _invoked)
         ? state.popupCandidates
         : const [];
+  }
+
+  void _refresh() {
+    if (!mounted) return;
+    if (WidgetsBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+      return;
+    }
+    setState(() {});
+    _scheduleMeasure();
   }
 
   void _scheduleMeasure() {

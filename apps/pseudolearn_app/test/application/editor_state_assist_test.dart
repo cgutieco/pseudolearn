@@ -7,6 +7,7 @@ CompletionItem _item(
   String label, {
   String? template,
   bool inline = false,
+  int revision = 3,
   CaretRange? range = const CaretRange(start: 0, end: 2),
 }) => CompletionItem(
   label: label,
@@ -14,6 +15,7 @@ CompletionItem _item(
   caretOffset: 0,
   family: CompletionFamily.structured,
   isInline: inline,
+  revision: revision,
   replacementRange: range,
 );
 
@@ -21,10 +23,28 @@ EditorState _state(String source, List<CompletionItem> items) =>
     EditorState.initial().copyWith(
       sourceCode: source,
       contextualCompletions: items,
+      completionRevision: 3,
     );
 
 void main() {
   group('EditorState · assistance getters', () {
+    test('offers require the current revision and cursor', () {
+      expect(
+        _state('Mi', [_item('Mientras')]).hasCurrentCompletionsAt(2),
+        isTrue,
+      );
+      expect(
+        _state('Mi', [_item('Mientras')]).hasCurrentCompletionsAt(1),
+        isFalse,
+      );
+      expect(
+        _state('Mi', [
+          _item('Mientras', revision: 2),
+        ]).hasCurrentCompletionsAt(2),
+        isFalse,
+      );
+      expect(_state('Mi', const []).hasCurrentCompletionsAt(2), isFalse);
+    });
     test('limits the popup to eight candidates', () {
       final items = [for (var index = 0; index < 12; index++) _item('c$index')];
       expect(_state('Mi', items).popupCandidates.length, 8);
@@ -48,6 +68,23 @@ void main() {
       expect(state.inlineCandidate?.label, 'Mientras');
       expect(state.ghostText, 'entras condicion Hacer');
     });
+
+    test(
+      'assignment ghost text contains only the untyped operator and spacing',
+      () {
+        for (final typed in ['total', 'total ', 'total   ']) {
+          final state = _state(typed, [
+            _item(
+              'total',
+              template: 'total <- ',
+              inline: true,
+              range: CaretRange(start: 0, end: typed.length),
+            ),
+          ]);
+          expect(state.ghostText, typed == 'total' ? ' <- ' : '<- ');
+        }
+      },
+    );
 
     test(
       'ghost text is absent without an inline candidate or a matching prefix',

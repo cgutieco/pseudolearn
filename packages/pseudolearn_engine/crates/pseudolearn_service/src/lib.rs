@@ -3,6 +3,7 @@
 pub mod block_layout;
 pub mod block_matching;
 pub mod completion;
+pub mod completion_assignment;
 pub mod completion_expected;
 pub mod completion_inline;
 pub mod completion_keywords;
@@ -48,6 +49,7 @@ pub mod template_insertion;
 pub mod template_markers;
 pub mod template_model;
 pub mod template_render;
+pub mod template_reuse;
 pub mod template_session;
 pub mod template_validity;
 pub mod translator;

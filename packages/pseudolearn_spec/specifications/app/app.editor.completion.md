@@ -246,7 +246,8 @@
   "clase": "semantica",
   "texto": "El editor aplica al búfer, sin interpretarlas, las ediciones que el servicio devuelve al aceptar un candidato y al teclear, y convierte sus posiciones entre UTF-8 y UTF-16. No contiene lógica de sangría, cierre de bloques, terminador ni pares.",
   "verificacion": [
-    "C10"
+    "C10",
+    "C12"
   ]
 }
 ```
@@ -328,6 +329,39 @@
         "limite"
       ],
       "session_ended": true
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "accept_candidate",
+    "input": {
+      "document": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+      "cursor_utf16": 54,
+      "profile": "es",
+      "candidate": "segundos"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "document_after": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n",
+      "selection_utf16": [
+        58,
+        58
+      ]
     }
   }
 }

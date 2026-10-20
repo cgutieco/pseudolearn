@@ -2,7 +2,7 @@
   "corpus_hashes": {
     "TOOL.FORMAT.STYLE": "9444225479dee96254650decc751c9fba2632cd2caec16fc1debdc908147659f",
     "TOOL.LSP.CAPABILITIES": "825dc897f9438390d10a5b1527bc6857985ba3e17ca94ebba810292e324da5a3",
-    "TOOL.SERVICE.COMPLETION": "4bd0e62ac12f5f602f1e6d363e7f6516715e1aa82983c0cd54109e3be781a00a",
+    "TOOL.SERVICE.COMPLETION": "127c30c322fc255d39681480ec8b7cb5c6c32f23a4646619d61539f380ddcf3b",
     "TOOL.SERVICE.HOVER": "88e6766588f4bc3c01455198c498d39b070abf4b94d15e888a1b619965fc2e7f",
     "TOOL.SERVICE.INCREMENTAL": "64b19607a55f35da335d9f00479c6380ae6c53221c359976ce427feb89eaa84e",
     "TOOL.SERVICE.LOSSLESS-TREE": "82ab1bd546694644595bf633a1d0f19b5afd8c604b59b3114856e383e0aedb7d",
@@ -830,20 +830,712 @@
       "actual": {
         "kind": "service",
         "service": {
-          "en_linea": "FinAlgoritmo"
+          "en_linea": null
         }
       },
       "case": "C21",
       "differences": [],
       "expected": {
         "servicio": {
-          "en_linea": "FinAlgoritmo"
+          "en_linea": null
         }
       },
       "profile": "es",
       "rule": "R13",
       "specification": "TOOL.SERVICE.COMPLETION",
       "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "segundos"
+        }
+      },
+      "case": "C22",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "segundos"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "segundos"
+        }
+      },
+      "case": "C22",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "segundos"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C23",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C23",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C24",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C24",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C25",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C25",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C26",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C26",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C27",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C27",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C28",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C28",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "x"
+        }
+      },
+      "case": "C29",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "x"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": "x"
+        }
+      },
+      "case": "C29",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": "x"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C30",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "case": "C30",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 15,
+              "line": 3
+            },
+            "inicio": {
+              "column": 15,
+              "line": 3
+            }
+          },
+          "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C31",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "en_linea": null
+        }
+      },
+      "case": "C31",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "en_linea": null
+        }
+      },
+      "profile": "es",
+      "rule": "R13",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C32",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "case": "C32",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 21,
+              "line": 2
+            },
+            "inicio": {
+              "column": 12,
+              "line": 2
+            }
+          },
+          "texto": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+        }
+      },
+      "profile": "es",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 12,
+              "line": 3
+            },
+            "inicio": {
+              "column": 12,
+              "line": 3
+            }
+          },
+          "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n"
+        }
+      },
+      "case": "C33",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 12,
+              "line": 3
+            },
+            "inicio": {
+              "column": 12,
+              "line": 3
+            }
+          },
+          "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n"
+        }
+      },
+      "profile": "en",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "seleccion": {
+            "fin": {
+              "column": 12,
+              "line": 3
+            },
+            "inicio": {
+              "column": 12,
+              "line": 3
+            }
+          },
+          "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n"
+        }
+      },
+      "case": "C33",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "seleccion": {
+            "fin": {
+              "column": 12,
+              "line": 3
+            },
+            "inicio": {
+              "column": 12,
+              "line": 3
+            }
+          },
+          "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n"
+        }
+      },
+      "profile": "en",
+      "rule": "R8",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "contiene": [],
+          "excluye": [
+            "FinAlgoritmo"
+          ]
+        }
+      },
+      "case": "C34",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "contiene": [],
+          "excluye": [
+            "FinAlgoritmo"
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "estricto",
+      "verdict": "cumple"
+    },
+    {
+      "actual": {
+        "kind": "service",
+        "service": {
+          "contiene": [],
+          "excluye": [
+            "FinAlgoritmo"
+          ]
+        }
+      },
+      "case": "C34",
+      "differences": [],
+      "expected": {
+        "servicio": {
+          "contiene": [],
+          "excluye": [
+            "FinAlgoritmo"
+          ]
+        }
+      },
+      "profile": "es",
+      "rule": "R3",
+      "specification": "TOOL.SERVICE.COMPLETION",
+      "strictness": "flexible",
       "verdict": "cumple"
     },
     {

@@ -78,7 +78,7 @@ fn project_detail(candidates: &[CompletionEntry], wanted: &str) -> Value {
 fn project_inline(candidates: &[CompletionEntry]) -> Value {
     match candidates.iter().find(|entry| entry.inline) {
         Some(entry) => json!({ "en_linea": entry.label }),
-        None => json!({}),
+        None => json!({ "en_linea": null }),
     }
 }
 

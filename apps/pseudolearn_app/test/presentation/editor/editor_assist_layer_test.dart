@@ -32,6 +32,7 @@ EditorState _state({
 }) => EditorState.initial().copyWith(
   sourceCode: source,
   contextualCompletions: items,
+  completionRevision: 3,
   templateActive: templateActive,
 );
 
@@ -174,6 +175,79 @@ void main() {
         expect(pressed.single.label, 'Mientras');
       },
     );
+
+    testWidgets('hides ghost text for stale revisions and a different caret', (
+      tester,
+    ) async {
+      await _pump(
+        tester,
+        state: _state(items: [_item('Mientras', inline: true, revision: 2)]),
+        enabled: true,
+      );
+      expect(find.byType(EditorGhostText), findsNothing);
+      await _pump(
+        tester,
+        state: _state(items: [_item('Mientras', inline: true)]),
+        enabled: true,
+      );
+      final field = tester.widget<TextField>(find.byType(TextField));
+      field.controller!.selection = const TextSelection.collapsed(offset: 1);
+      await tester.pumpAndSettle();
+      expect(find.byType(EditorGhostText), findsNothing);
+    });
+
+    testWidgets(
+      'hides ghost text during selection, composition and lost focus',
+      (tester) async {
+        await _pump(
+          tester,
+          state: _state(items: [_item('Mientras', inline: true)]),
+          enabled: true,
+        );
+        final field = tester.widget<TextField>(find.byType(TextField));
+        final controller = field.controller!;
+        controller.selection = const TextSelection(
+          baseOffset: 0,
+          extentOffset: 2,
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorGhostText), findsNothing);
+        controller.value = controller.value.copyWith(
+          selection: const TextSelection.collapsed(offset: 2),
+          composing: const TextRange(start: 0, end: 2),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorGhostText), findsNothing);
+        controller.clearComposing();
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorGhostText), findsOneWidget);
+        field.focusNode!.unfocus();
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorGhostText), findsNothing);
+      },
+    );
+
+    testWidgets('Enter preserves a newline and Escape rejects ghost text', (
+      tester,
+    ) async {
+      final pressed = await _pump(
+        tester,
+        state: _state(items: [_item('Mientras', inline: true)]),
+        enabled: true,
+      );
+      await _press(tester, LogicalKeyboardKey.enter);
+      expect(pressed, isEmpty);
+      await tester.enterText(find.byType(TextField), 'Mi\n');
+      final field = tester.widget<TextField>(find.byType(TextField));
+      expect(field.controller!.text, 'Mi\n');
+      await _pump(
+        tester,
+        state: _state(items: [_item('Mientras', inline: true)]),
+        enabled: true,
+      );
+      await _press(tester, LogicalKeyboardKey.escape);
+      expect(find.byType(EditorGhostText), findsNothing);
+    });
 
     testWidgets('Tab, Shift+Tab and Escape walk an active template', (
       tester,

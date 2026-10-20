@@ -1,4 +1,4 @@
-use crate::block_layout::{is_closer, is_opener};
+use crate::block_matching::openers_before;
 use crate::expected_slot::{ExpectedSlot, expected_slot};
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_source::SourceText;
@@ -61,11 +61,21 @@ pub fn analyze_cursor(tree: &SyntaxTree, source: &SourceText, offset: usize) -> 
         kind,
         prefix,
         prefix_start,
-        open_blocks: open_blocks(&code),
+        open_blocks: block_kinds_before(tree, prefix_start),
         expected: expected_slot(tree, text, &line_code),
         line_tokens,
         previous,
     }
+}
+
+fn block_kinds_before(tree: &SyntaxTree, limit: usize) -> Vec<KeywordKind> {
+    openers_before(tree, limit)
+        .into_iter()
+        .filter_map(|token| match tree.tokens.kind(token) {
+            Some(TokenKind::Keyword(kind)) => Some(kind),
+            _ => None,
+        })
+        .collect()
 }
 
 pub struct CodeToken {
@@ -166,19 +176,4 @@ fn receiver_before_dot(tree: &SyntaxTree, text: &str, code: &[CodeToken]) -> Rec
         TokenKind::Keyword(KeywordKind::ThisObject) => Receiver::CurrentObject,
         _ => Receiver::Unknown,
     }
-}
-
-fn open_blocks(code: &[CodeToken]) -> Vec<KeywordKind> {
-    let mut stack = Vec::new();
-    for entry in code {
-        let TokenKind::Keyword(kind) = entry.kind else {
-            continue;
-        };
-        if is_opener(kind) {
-            stack.push(kind);
-        } else if is_closer(kind) {
-            stack.pop();
-        }
-    }
-    stack
 }

@@ -7062,7 +7062,8 @@
             "id": "R6",
             "texto": "El editor aplica al búfer, sin interpretarlas, las ediciones que el servicio devuelve al aceptar un candidato y al teclear, y convierte sus posiciones entre UTF-8 y UTF-16. No contiene lógica de sangría, cierre de bloques, terminador ni pares.",
             "verificacion": [
-              "C10"
+              "C10",
+              "C12"
             ]
           },
           "kind": "regla"
@@ -7148,9 +7149,42 @@
             ]
           },
           "kind": "caso"
+        },
+        {
+          "fields": {
+            "aplicacion": {
+              "input": {
+                "candidate": "segundos",
+                "cursor_utf16": 54,
+                "document": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+                "profile": "es"
+              },
+              "scenario": "accept_candidate"
+            },
+            "espera": {
+              "aplicacion": {
+                "document_after": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n",
+                "selection_utf16": [
+                  58,
+                  58
+                ]
+              }
+            },
+            "id": "C12",
+            "operacion": "app",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R6",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "38c368d95f69f5c19e8823f56f7cd7176597f9fa09d47166d3a7cfecb4c23c5f",
+      "hash": "c05d3d79622590c954cfcdd1d6d3375481dfa3100cd58b1d45b09e692b0160ca",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -39949,9 +39983,10 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R3",
-            "texto": "Cuando existen bloques abiertos sin cerrar, el servicio propone como candidato prioritario el token de cierre correspondiente al bloque abierto más interno.",
+            "texto": "Cuando existen bloques abiertos sin cerrar, el servicio propone como candidato prioritario el token de cierre correspondiente al bloque abierto más interno. El emparejamiento considera el documento completo por tipo y anidamiento; un bloque ya cerrado no ofrece otro cierre para insertarlo antes del existente.",
             "verificacion": [
-              "C2"
+              "C2",
+              "C34"
             ]
           },
           "kind": "regla"
@@ -40300,10 +40335,12 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R8",
-            "texto": "Aceptar un candidato inserta su texto sobre el tramo de reemplazo y re-sangra cada línea posterior de una plantilla multilínea con la sangría de la línea destino, usando la unidad de sangría del formateador. El resultado indica el tramo que debe quedar seleccionado: el de la primera parada o, sin paradas, el punto de inserción final.",
+            "texto": "Aceptar un candidato inserta su texto sobre el tramo de reemplazo y re-sangra cada línea posterior de una plantilla multilínea con la sangría de la línea destino, usando la unidad de sangría del formateador. El resultado indica el tramo que debe quedar seleccionado: el de la primera parada o, sin paradas, el punto de inserción final. Si una plantilla tiene un cierre correspondiente ya presente a la derecha, reutiliza ese cierre sin insertarlo de nuevo, conservando las paradas de la cabecera y el cuerpo insertados; los cierres de otros bloques no se reutilizan.",
             "verificacion": [
               "C12",
-              "C13"
+              "C13",
+              "C32",
+              "C33"
             ]
           },
           "kind": "regla"
@@ -40363,10 +40400,20 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R13",
-            "texto": "Un candidato se marca como sugerencia en línea únicamente cuando es inequívoco: el cierre del bloque más interno cuando no hay prefijo escrito, o el único candidato que coincide con un prefijo no vacío. Si ningún candidato cumple, la respuesta no marca ninguno.",
+            "texto": "Un candidato se marca como sugerencia en línea solo con intención explícita: prefijo directo de al menos dos caracteres con un único candidato contextual no exacto, sin coincidencia exclusiva por iniciales ni equivalencia bilingüe, o continuación de asignación tras un identificador completo. Sin prefijo no se marcan cierres. La continuación de asignación ofrece el mismo identificador seguido de un espacio, <- y un espacio; exige una variable o parámetro declarado antes y visible, de tipo conocido asignable como unidad, como único token significativo de una línea de sentencia y sin código ni comentario a la derecha. Admite espacios posteriores al identificador, nombres de un carácter y referencias a objetos; excluye arreglos completos, destinos ambiguos o con errores locales, miembros e índices. No completa el valor derecho ni añade terminador. Un cierre solo se marca si falta realmente para su apertura, considerando tipos, anidamiento y texto posterior; ante incertidumbre no se marca. El cursor intermedio de un token no recibe sugerencias en línea.",
             "verificacion": [
               "C20",
-              "C21"
+              "C21",
+              "C22",
+              "C23",
+              "C24",
+              "C25",
+              "C26",
+              "C27",
+              "C28",
+              "C29",
+              "C30",
+              "C31"
             ]
           },
           "kind": "regla"
@@ -40777,9 +40824,9 @@
               "estricto"
             ],
             "servicio": {
-              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    \nFinAlgoritmo\n",
+              "documento": "Algoritmo Principal\n  Mientras x < 10 Hacer\n    FinM\nFinAlgoritmo\n",
               "posicion": {
-                "column": 5,
+                "column": 9,
                 "line": 3
               },
               "proyeccion": "en_linea",
@@ -40792,7 +40839,7 @@
           "fields": {
             "espera": {
               "servicio": {
-                "en_linea": "FinAlgoritmo"
+                "en_linea": null
               }
             },
             "id": "C21",
@@ -40897,17 +40944,448 @@
             "unidad": "porcentaje"
           },
           "kind": "medicion"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": "segundos"
+              }
+            },
+            "id": "C22",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 11,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 15,
+                    "line": 3
+                  },
+                  "inicio": {
+                    "column": 15,
+                    "line": 3
+                  }
+                },
+                "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C23",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "candidato": "segundos",
+              "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 11,
+                "line": 3
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C24",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  segundos\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 11,
+                "line": 2
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C25",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Definir segundos[3] Como Entero;\n  segundos\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 11,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C26",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Mientras Verdadero Hacer\n    \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 5,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C27",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Mientras Verdadero Hacer\n    fm\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 7,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C28",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  FinA\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 7,
+                "line": 2
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": "x"
+              }
+            },
+            "id": "C29",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Definir x Como Real;\n  x\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 4,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 15,
+                    "line": 3
+                  },
+                  "inicio": {
+                    "column": 15,
+                    "line": 3
+                  }
+                },
+                "texto": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos <- \nFinAlgoritmo\n"
+              }
+            },
+            "id": "C30",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "candidato": "segundos",
+              "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  segundos   \nFinAlgoritmo\n",
+              "posicion": {
+                "column": 14,
+                "line": 3
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "en_linea": null
+              }
+            },
+            "id": "C31",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R13",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "documento": "Algoritmo P\n  Definir segundos Como Entero;\n  Escribir segundos\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 20,
+                "line": 3
+              },
+              "proyeccion": "en_linea",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 21,
+                    "line": 2
+                  },
+                  "inicio": {
+                    "column": 12,
+                    "line": 2
+                  }
+                },
+                "texto": "Algoritmo P\n  Mientras condicion Hacer\n    \n  FinMientras\nFinAlgoritmo\n"
+              }
+            },
+            "id": "C32",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R8",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "candidato": "Mientras",
+              "documento": "Algoritmo P\n  Mie\n  FinMientras\nFinAlgoritmo\n",
+              "posicion": {
+                "column": 6,
+                "line": 2
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "seleccion": {
+                  "fin": {
+                    "column": 12,
+                    "line": 3
+                  },
+                  "inicio": {
+                    "column": 12,
+                    "line": 3
+                  }
+                },
+                "texto": "Algorithm Main\n  Define value As Integer;\n  value <- \nEndAlgorithm\n"
+              }
+            },
+            "id": "C33",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "en"
+            ],
+            "regla": "R8",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "candidato": "value",
+              "documento": "Algorithm Main\n  Define value As Integer;\n  value\nEndAlgorithm\n",
+              "posicion": {
+                "column": 8,
+                "line": 3
+              },
+              "suboperacion": "completion_accept"
+            }
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "servicio": {
+                "contiene": [],
+                "excluye": [
+                  "FinAlgoritmo"
+                ]
+              }
+            },
+            "id": "C34",
+            "operacion": "service",
+            "origen": "derivado",
+            "perfiles": [
+              "es"
+            ],
+            "regla": "R3",
+            "rigor": [
+              "estricto",
+              "flexible"
+            ],
+            "servicio": {
+              "contiene": [],
+              "documento": "Algoritmo P\n  FinA\nFinAlgoritmo\n",
+              "excluye": [
+                "FinAlgoritmo"
+              ],
+              "posicion": {
+                "column": 7,
+                "line": 2
+              },
+              "proyeccion": "contiene",
+              "suboperacion": "completion"
+            }
+          },
+          "kind": "caso"
         }
       ],
-      "hash": "4bd0e62ac12f5f602f1e6d363e7f6516715e1aa82983c0cd54109e3be781a00a",
+      "hash": "127c30c322fc255d39681480ec8b7cb5c6c32f23a4646619d61539f380ddcf3b",
       "metadata": {
-        "cambio": {
-          "clase": "editorial",
-          "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-          "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-          "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-          "revisado_por": "revision-independiente-automatizada-r9"
-        },
+        "cambio": null,
         "depende_de": [
           {
             "id": "LANG.SYNTAX.GRAMMAR",

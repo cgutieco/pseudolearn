@@ -22,6 +22,7 @@ pub struct Anchor {
 pub struct BlockMap {
     openers: BTreeMap<usize, OpenerFact>,
     anchors: BTreeMap<usize, Anchor>,
+    closers: BTreeMap<usize, usize>,
 }
 
 impl BlockMap {
@@ -34,6 +35,14 @@ impl BlockMap {
         self.openers
             .get(&anchor.opener_token)
             .map(|fact| (fact, anchor.extra_depth))
+    }
+
+    pub fn closing_token(&self, opener: usize) -> Option<usize> {
+        self.closers.get(&opener).copied()
+    }
+
+    pub fn opening_token(&self, closer: usize) -> Option<usize> {
+        self.anchors.get(&closer).map(|anchor| anchor.opener_token)
     }
 }
 
@@ -66,6 +75,36 @@ pub fn build_block_map(tree: &SyntaxTree, text: &str) -> BlockMap {
     map
 }
 
+pub fn openers_before(tree: &SyntaxTree, limit: usize) -> Vec<usize> {
+    let mut stack = Vec::new();
+    for index in 0..tree.tokens.token_count() {
+        let (Some(TokenKind::Keyword(kind)), Some(span)) =
+            (tree.tokens.kind(index), tree.tokens.span(index))
+        else {
+            continue;
+        };
+        if usize::try_from(span.ending).unwrap_or(usize::MAX) > limit {
+            break;
+        }
+        if is_opener(kind) {
+            stack.push(index);
+        } else if is_closer(kind) {
+            truncate_matching(&mut stack, tree, kind);
+        }
+    }
+    stack
+}
+
+fn truncate_matching(stack: &mut Vec<usize>, tree: &SyntaxTree, kind: KeywordKind) {
+    let matching = stack.iter().rposition(|opener| {
+        matches!(tree.tokens.kind(*opener), Some(TokenKind::Keyword(opening))
+            if closing_keyword(opening) == kind)
+    });
+    if let Some(depth) = matching {
+        stack.truncate(depth);
+    }
+}
+
 fn close_block(map: &mut BlockMap, stack: &mut Vec<usize>, token: usize, closer: KeywordKind) {
     let matching = stack.iter().rposition(|opener| {
         map.openers
@@ -82,6 +121,7 @@ fn close_block(map: &mut BlockMap, stack: &mut Vec<usize>, token: usize, closer:
     if let Some(fact) = map.openers.get_mut(&opener_token) {
         fact.closed = true;
     }
+    map.closers.insert(opener_token, token);
     map.anchors.insert(
         token,
         Anchor {

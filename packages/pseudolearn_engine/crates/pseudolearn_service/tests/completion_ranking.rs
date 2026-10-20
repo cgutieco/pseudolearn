@@ -121,14 +121,18 @@ fn inline_marks_only_unambiguous_candidates() -> Result<(), String> {
         "Algoritmo P\n  Mientras 1 = 1 Hacer\n    |\nFinAlgoritmo\n",
         Profile::Spanish,
     );
-    assert!(closer.first().ok_or("none")?.inline);
-    assert_eq!(closer.iter().filter(|entry| entry.inline).count(), 1);
+    assert!(closer.iter().all(|entry| !entry.inline));
     let ambiguous = complete_marked("Algoritmo P\n  A|\nFinAlgoritmo\n", Profile::Spanish);
     assert!(ambiguous.iter().all(|entry| !entry.inline));
     let sole = complete_marked("Algoritmo P\n  Esc|\nFinAlgoritmo\n", Profile::Spanish);
     assert_eq!(sole.iter().filter(|entry| entry.inline).count(), 1);
     let exact = complete_marked("Algoritmo P\n  Escribir|\nFinAlgoritmo\n", Profile::Spanish);
     assert!(exact.iter().all(|entry| !entry.inline));
+    let initials = complete_marked(
+        "Algoritmo P\n  Mientras Verdadero Hacer\n    fm|\nFinAlgoritmo\n",
+        Profile::Spanish,
+    );
+    assert!(initials.iter().all(|entry| !entry.inline));
     Ok(())
 }
 

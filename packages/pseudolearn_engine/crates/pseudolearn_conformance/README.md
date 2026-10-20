@@ -34,6 +34,8 @@ Problema: adapta la api al protocolo de conformidad por procesos respetando los 
 Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
 Alternativas descartadas y fundamento: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
 
+La proyección `en_linea` del completado devuelve explícitamente `null` cuando no hay sugerencia; así los casos negativos verifican ausencia real y no una expectativa vacía. La aceptación usa los mismos rangos y texto insertable de la API.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

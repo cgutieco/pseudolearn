@@ -1,3 +1,4 @@
+use crate::completion_assignment::{apply_assignment, assignment_offer};
 use crate::completion_expected::expected_type;
 use crate::completion_inline::mark_inline;
 use crate::completion_members::member_candidates;
@@ -54,9 +55,15 @@ pub fn complete_at_position_with_edit(query: &CompletionQuery) -> CompletionResu
     scope.expected = expected_type(&scope);
     let mut pool = CandidatePool::default();
     fill_pool(&scope, &mut pool);
-    let mut entries = pool.finish(&context.prefix, query.profile);
-    mark_inline(&mut entries, &context);
-    CompletionResult { entries, text_edit }
+    let assignment = assignment_offer(query, offset);
+    let prefix = assignment
+        .as_ref()
+        .map_or(context.prefix.as_str(), |(entry, _)| entry.label.as_str());
+    let mut entries = pool.finish(prefix, query.profile);
+    mark_inline(&mut entries, &context, query);
+    let mut result = CompletionResult { entries, text_edit };
+    apply_assignment(&mut result, assignment);
+    result
 }
 
 fn fill_pool(scope: &SourceScope<'_>, pool: &mut CandidatePool) {

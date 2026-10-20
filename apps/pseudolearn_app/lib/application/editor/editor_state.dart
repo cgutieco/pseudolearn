@@ -91,6 +91,14 @@ final class EditorState extends Equatable {
   List<CompletionItem> get popupCandidates =>
       contextualCompletions.take(8).toList();
 
+  bool hasCurrentCompletionsAt(int cursorUtf16) =>
+      contextualCompletions.isNotEmpty &&
+      contextualCompletions.every(
+        (candidate) =>
+            candidate.revision == completionRevision &&
+            candidate.replacementRange?.upper == cursorUtf16,
+      );
+
   int get completionPrefixLength {
     final range = contextualCompletions.firstOrNull?.replacementRange;
     return range == null ? 0 : range.upper - range.lower;
@@ -107,12 +115,15 @@ final class EditorState extends Equatable {
     final candidate = inlineCandidate;
     final range = candidate?.replacementRange;
     if (candidate == null || range == null) return null;
-    if (range.upper > sourceCode.length) return null;
+    if (range.lower < 0 || range.upper > sourceCode.length) return null;
     final typed = sourceCode.substring(range.lower, range.upper);
+    final prefix = typed.trimRight();
     final line = candidate.template.split('\n').first;
-    final matches = line.toLowerCase().startsWith(typed.toLowerCase());
-    if (!matches || line.length == typed.length) return null;
-    return line.substring(typed.length);
+    final matches = line.toLowerCase().startsWith(prefix.toLowerCase());
+    if (!matches || line.length == prefix.length) return null;
+    final suffix = line.substring(prefix.length);
+    final remaining = typed.length > prefix.length ? suffix.trimLeft() : suffix;
+    return remaining.isEmpty ? null : remaining;
   }
 
   @override

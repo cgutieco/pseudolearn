@@ -113,7 +113,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
 | Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medidos: 2.67 MiB y 482.18 KiB; ambos cumplen su presupuesto en `packages/pseudolearn_spec/results/r8-artifact-size.json` |
-| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 31 de 32 observaciones APP pasan y `API.WIRE-FORMAT#P1` detecta tramos de origen ausentes en eventos |
+| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 218 observaciones y dos propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
@@ -2191,13 +2191,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
   `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el
   contrato no declara.
-- **Verificación actual:** `see conform --subject app` ejecuta 95 observaciones; 31 de 32 observaciones APP
-  pasan. La divergencia restante es `APP.EXEC.PACE#C9`: su programa asigna `1 / 0` a un entero, pero la división
-  produce un real y la conversión a entero no está permitida por el corpus. El error observado es de tipos antes
-  de ejecutar, mientras el caso espera `divisionByZero`; el caso requiere clasificación antes de cerrar B8.
-  `see conform --subject app --operation properties` usa el transporte real y `API.WIRE-FORMAT#P1` pasó
-  1.852/1.852 muestras con semilla 42 después de conservar los tramos de origen en la proyección de eventos.
-  Esa propiedad no sustituye las mediciones Release de E-NR2.
+- **Verificación actual:** `see conform --subject app` ejecuta 218 observaciones sin divergencias, incluida la
+  continuación de asignación del editor. `see conform --subject app --operation properties` comprueba dos propiedades
+  API mediante el transporte real, con 1105 muestras por propiedad y semilla 42. Esa evidencia no sustituye las
+  mediciones Release de E-NR2.
 - **Alternativas descartadas:** duplicar el motor Rust dentro del ejecutor, responder con valores constantes o
   simular las llamadas de transporte ocultaría fallos de recursos, conversión de posiciones y proyección.
 
@@ -2514,6 +2511,13 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
   `EditorCubit`; calcular la sangría en Dart con el vocabulario de aperturas, que es la duplicación que se elimina;
   una lista flotante en móvil, porque taparía el código y la barra sobre el teclado ya cumple ese papel; anclar la lista
   en un `Overlay` global, porque exigiría conservar coordenadas de desplazamiento ajenas al campo.
+- **Intención y vigencia del texto fantasma.** El núcleo deja en silencio las líneas vacías y entrega la continuación
+  de asignación solo para un destino simple confirmado. La app muestra únicamente el sufijo pendiente de la primera
+  línea del texto insertable, normalizando para la vista los espacios ya escritos; no reconoce operadores ni variables.
+  Lista y fantasma requieren foco, selección colapsada, ausencia de composición activa, texto sincronizado y candidatos
+  con revisión y extremo de reemplazo iguales a los del estado y cursor actuales. Los cambios de foco, selección y
+  composición actualizan la visibilidad inmediatamente. `Tab` acepta el fantasma; `Enter` sigue siendo salto de línea y
+  `Esc` lo descarta. Aceptar un nombre y aceptar después su continuación son acciones separadas.
 - **Pendientes declarados:** la lista no se reposiciona al desplazar el campo mientras está abierta; el texto fantasma
   no se acepta con un toque en móvil (la fila de candidatos cumple esa función); los controles de paradas no tienen
   atajo propio fuera de `Tab`.
