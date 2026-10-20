@@ -2,9 +2,9 @@
 
 ## 1. Qué es y qué no es
 
-Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export, budget, math-arguments y math-check. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba artefactos generados. Los adaptadores ejecutables son reference, engine y cli.
+Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export, budget, math-arguments y math-check. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba recursos generados. Los adaptadores ejecutables son engine y cli; `reference` solo conserva su manifiesto retirado.
 
-`target-parity [--count N] [--seed S]` compara los adaptadores release nativo y wasm32-wasip1 del motor con Node WASI. Requiere compilar ambos previamente. Node usa `--no-incremental-marking`: en macOS arm64, la configuración local reproduce SIGSEGV al recolectar desde `uvwasi_fd_write` con memoria Wasm grande; desactivar el marcado incremental evita ese fallo del anfitrión sin cambiar el módulo. Conserva conteos, divergencias y tamaño Brotli en `results/r5-e17.json`; la matemática masiva se informa por separado y no se declara completa por este contraste.
+`target-parity [--count N] [--seed S]` compara los adaptadores release nativo y wasm32-wasip1 del motor con Node WASI. Requiere compilar ambos previamente. Node usa `--no-incremental-marking`: en macOS arm64, la configuración local reproduce SIGSEGV al recolectar desde `uvwasi_fd_write` con memoria Wasm grande; desactivar el marcado incremental evita ese fallo del anfitrión sin cambiar el módulo. Guarda conteos, divergencias y tamaño Brotli en el directorio local ignorado de resultados; la matemática masiva se informa por separado y no se declara completa por este contraste.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -39,15 +39,15 @@ esquema, el modelo tipado y sus referencias. Así retirar o desactualizar un ví
 `conform --subject engine --operation properties` ejecuta los vínculos de propiedades del sujeto.
 `--property <ID@versión#P>` selecciona uno; `--output <archivo>` conserva una ejecución dirigida sin sustituir la evidencia completa; `--seed`, `--samples` y `--sample` reproducen una muestra.
 La selección explícita de muestra omite el recorrido exhaustivo del corpus. El artefacto separado
-`results/properties-<sujeto>.json` conserva evidencia sin sustituir resultados de casos. Un vínculo
-pendiente o fallido devuelve código distinto de cero después de guardar su evidencia.
+se guarda como `properties-<sujeto>.json` en el directorio local ignorado, sin sustituir resultados de
+casos. Un vínculo pendiente o fallido devuelve código distinto de cero después de guardar su evidencia.
 
 `math-arguments --output <directorio> [--count N] [--seed S]` escribe un archivo de argumentos por
 función matemática (bits hexadecimales, uno o dos por línea) y un manifiesto con semilla y cantidad; por
 omisión, un millón de argumentos y la semilla 20261015. `math-check --input <directorio>` lee esos
 argumentos y los `.results` que escribe la herramienta del motor, calcula el esperado con el oráculo en
-tantos hilos como núcleos haya y guarda `results/r5-math-contrast.json` con la revisión, la semilla, los
-conteos y una muestra de discrepancias; devuelve error si alguna discrepa. Ninguna de las dos órdenes
+tantos hilos como núcleos haya y guarda el contraste con la revisión, la semilla, los conteos y una
+muestra de discrepancias en el directorio local ignorado; devuelve error si alguna discrepa. Ninguna de las dos órdenes
 lee el corpus. Los archivos crudos no se versionan porque se regeneran por semilla.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código

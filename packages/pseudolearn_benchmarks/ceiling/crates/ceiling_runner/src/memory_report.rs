@@ -20,11 +20,7 @@ pub fn write(output: &Path) -> Result<(), String> {
         "model":"Native checked algorithms with common frame roots, fixed allocation collection cadence and 4096-operation checkpoints",
         "limits":"Prototype measurements do not establish VM throughput or timeline replay performance"});
     crate::collection::save(output, "summary.json", &report)?;
-    crate::collection::save(
-        Path::new("../../pseudolearn_spec/results"),
-        "r5-e12.json",
-        &report,
-    )
+    Ok(())
 }
 
 fn group(rows: &[Value]) -> Result<Groups, String> {

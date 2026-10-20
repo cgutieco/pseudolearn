@@ -29,6 +29,23 @@ fn compares_git_revision_without_changing_checkout() -> Result<(), String> {
     Ok(())
 }
 
+#[test]
+fn validation_derives_contract_anchors_from_git_history() -> Result<(), String> {
+    let fixture = support::Fixture::create()?;
+    initialize(&fixture)?;
+    let path = fixture.root.join("specifications/lang/sample.md");
+    let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    std::fs::write(
+        path,
+        text.replace("El caso escribe uno.", "El caso escribe dos."),
+    )
+    .map_err(|error| error.to_string())?;
+    let output = fixture.execute(&["validate"])?;
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("SEE-HASH"));
+    Ok(())
+}
+
 fn initialize(fixture: &support::Fixture) -> Result<(), String> {
     for arguments in [
         vec!["init", "-q"],

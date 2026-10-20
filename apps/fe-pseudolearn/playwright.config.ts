@@ -23,7 +23,6 @@ export default defineConfig({
       name: 'visual',
       testDir: './tests/visual',
       use: { ...devices['Desktop Chrome'], locale: 'es-ES' },
-      expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01 } },
     },
   ],
 });

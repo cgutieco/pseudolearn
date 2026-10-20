@@ -11,7 +11,7 @@ mod toolchain;
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let argument = |slot: usize| arguments.get(slot).map(String::as_str).unwrap_or_default();
     let measurements = if argument(3).is_empty() {
-        "../pseudolearn_spec/results/measurement-conformance.json"
+        "results/measurement-conformance.json"
     } else {
         argument(3)
     };

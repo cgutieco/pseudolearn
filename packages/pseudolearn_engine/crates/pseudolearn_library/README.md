@@ -16,7 +16,7 @@ span de la instrucción. No añade construcciones del lenguaje, UI ni efectos li
 Usa la versión exacta de rust-toolchain.toml del miembro. El crate está activo en el workspace.
 Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. El contraste masivo contra el
 oráculo de SEE se ejecuta con el flujo documentado en `crates/pseudolearn_math_probe/README.md` y deja su
-resumen en `packages/pseudolearn_spec/results/r5-math-contrast.json`.
+resumen local ignorado bajo los resultados de SEE.
 
 ## 3. Arquitectura y modelo del sistema
 

@@ -32,5 +32,10 @@ pnpm-debug.log*
 /playwright/.cache/
 coverage/
 
+# Generated brand and product assets
+public/favicon.svg
+src/shared/ui/brand-mark/symbol-path.generated.ts
+src/assets/product/**/*.png
+
 # cloudflare
 .wrangler/

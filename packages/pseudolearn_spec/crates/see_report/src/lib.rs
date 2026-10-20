@@ -76,7 +76,7 @@ fn retired_row(
     json!({"rule": format!("{}@{}#{}", specification.metadata.id,
             specification.metadata.version, field(rule, "id")),
             "subject": conformance.sujeto, "binding": "no aplicable",
-            "measured": "no aplicable", "reason": "retired subject; historical evidence preserved",
+            "measured": "no aplicable", "reason": "retired subject",
             "cases": 0, "measurements": [], "state": specification.metadata.estado})
 }
 

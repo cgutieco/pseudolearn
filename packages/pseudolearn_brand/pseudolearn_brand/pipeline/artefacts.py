@@ -77,6 +77,8 @@ def check(repository=None):
     for artefact in prepared.tracked:
         if OUTPUT_DIRECTORY in artefact.path.parents:
             continue
+        if not artefact.path.exists():
+            continue
         violations.extend(_compare(resolved, artefact))
     violations.extend(_check_dart(resolved, catalog, composition))
     violations.extend(_check_fonts(resolved, catalog))

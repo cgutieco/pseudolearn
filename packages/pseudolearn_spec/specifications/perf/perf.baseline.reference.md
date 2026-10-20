@@ -5,7 +5,7 @@
   "titulo": "Línea base del núcleo de referencia",
   "dominio": "rendimiento",
   "estado": "experimental",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -25,7 +25,17 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Reference baseline"
+  "titulo_en": "Reference baseline",
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
+  ],
+  "cambio": {
+    "clase": "editorial",
+    "impacto_usuarios": "Sin cambio observable; permanecen los límites y los criterios de medición.",
+    "impacto_implementaciones": "Las capturas se guardan fuera del índice de Git; la metodología no cambia.",
+    "justificacion": "Se retiraron rutas a capturas locales que no forman parte del corpus ni del checkout limpio.",
+    "revisado_por": "revision-independiente-automatizada-r9"
+  }
 }
 ---
 
@@ -36,7 +46,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La línea base E-01 de reference es la medición local en Apple M2 con el ejecutable nativo de Dart, diez procesos por objetivo y treinta iteraciones por carga y modo, conservada en pseudolearn_benchmarks/results/macos-local con su procedencia. Las mediciones remotas de macOS, Linux y Windows de results/ci-r0-complete son complementarias y no se comparan con mediciones locales.",
+  "texto": "La línea base E-01 de reference es la medición local en Apple M2 con el ejecutable nativo de Dart, diez procesos por objetivo y treinta iteraciones por carga y modo. Las mediciones remotas de macOS, Linux y Windows son complementarias y no se comparan con mediciones locales.",
   "verificacion": [
     "M1",
     "M2",
@@ -173,7 +183,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "sistema",
-  "texto": "La línea base de la suite AWFY-core conserva diez procesos independientes y treinta iteraciones por programa y modo, con los tamaños de medición normativos y salida validada. Los tiempos se miden en el mismo Apple M2 local que E-02, con ejecutable nativo de Dart. El conjunto results/macos-r3-awfy de pseudolearn_benchmarks publica captura previa a compilación, hashes de fuentes, muestras crudas, métricas de proceso y resumen recalculable; no se mezcla con E-01 ni con otros equipos.",
+  "texto": "La línea base de la suite AWFY-core conserva diez procesos independientes y treinta iteraciones por programa y modo, con los tamaños de medición normativos y salida validada. Los tiempos se miden en el mismo Apple M2 local que E-02, con ejecutable nativo de Dart. La captura previa a compilación, los hashes de fuentes, las muestras crudas, las métricas de proceso y el resumen recalculable se guardan fuera del árbol versionado; no se mezclan con E-01 ni con otros equipos.",
   "verificacion": [
     "estructural"
   ],
@@ -201,5 +211,5 @@ muestreado del proceso y la CPU su última lectura acumulada, sin atribución po
 | nbody | 21293.7 [21060.7, 21568.3] | 30598.4 [30265.7, 31029.8] |
 | richards | 170130.0 [168102.9, 172965.9] | 346444.2 [343200.2, 350629.1] |
 
-La procedencia está en `pseudolearn_benchmarks/results/macos-r3-awfy/capture.json`; las muestras en
-`raw.json`, las métricas de proceso en `processes.json` y el resumen recalculable en `summary.json` de ese conjunto.
+La procedencia, las muestras crudas, las métricas de proceso y el resumen recalculable se conservan
+localmente fuera del árbol versionado. Los valores publicados aquí son el registro del contrato.

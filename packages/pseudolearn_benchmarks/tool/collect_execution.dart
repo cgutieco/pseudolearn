@@ -7,9 +7,17 @@ import 'collect_frontend.dart' show frontendEnvironment, save;
 import 'statistics.dart';
 import 'execution_statistics.dart';
 
-Future<void> main() async {
+Future<void> main(List<String> arguments) async {
   try {
-    const output = 'results/macos-r5-vm';
+    if (arguments.isEmpty || arguments.length > 2) {
+      throw const FormatException(
+        'Usage: collect_execution.dart <baseline-summary.json> [output-directory]',
+      );
+    }
+    final baselinePath = arguments.first;
+    final output = arguments.length == 2
+        ? arguments.last
+        : 'results/macos-r5-vm';
     final provenance = await frontendEnvironment();
     await Directory(output).create(recursive: true);
     await save(output, 'capture', provenance);
@@ -39,7 +47,7 @@ Future<void> main() async {
       await save(output, 'processes', processes);
     }
     final baseline = jsonDecode(
-      await File('results/macos-r3-awfy/summary.json').readAsString(),
+      await File(baselinePath).readAsString(),
     ) as Map<String, dynamic>;
     final measurements = summarizeExecution(records);
     final ratios = executionRatios(measurements, baseline);

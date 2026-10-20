@@ -19,8 +19,7 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
     let selected = select(arguments, corpus, subject)?;
     let vocabulary: Vocabulary =
         storage::read_json(&arguments.root.join("specifications/cases/vocabulary.json"))?;
-    let mut session =
-        see_conformance::protocol::Session::start(&mut command, Duration::from_secs(15))?;
+    let mut session = start_session(&mut command)?;
     if session
         .hello
         .get("subject")
@@ -46,24 +45,42 @@ pub fn execute(arguments: &Arguments, corpus: &Corpus) -> Result<String, String>
     save(arguments, &selected, &conformance, &evidence)
 }
 
+fn start_session(
+    command: &mut std::process::Command,
+) -> Result<see_conformance::protocol::Session, String> {
+    see_conformance::protocol::Session::start_with_timeouts(
+        command,
+        Duration::from_secs(60),
+        Duration::from_secs(15),
+    )
+}
+
 pub fn matrix(arguments: &Arguments, corpus: &Corpus) -> Result<String, String> {
     let subject = arguments
         .options
         .get("subject")
         .map_or("engine", String::as_str);
-    let result_path = if subject == "reference" {
-        "results/reference.json".to_owned()
-    } else {
-        format!("results/{subject}.json")
-    };
-    let evidence: Evidence = storage::read_json(&arguments.root.join(&result_path))?;
-    if evidence.subject != subject {
-        return Err("SEE-PROTOCOL: evidence subject mismatch".to_owned());
-    }
     let manifest = crate::bindings::manifest_path(&arguments.root, subject)
         .ok_or("SEE-BINDING: unknown subject")?;
     let conformance = crate::subject_adapters::load_bindings(&manifest)?;
-    let evidence = with_properties(arguments, &conformance, evidence)?;
+    let evidence = if conformance.estado == "retirado" {
+        Evidence {
+            protocol: "see-protocol/1".to_owned(),
+            subject: subject.to_owned(),
+            subject_version: String::new(),
+            corpus_hashes: Default::default(),
+            observations: Vec::new(),
+            properties: Vec::new(),
+            stderr: String::new(),
+        }
+    } else {
+        let evidence: Evidence =
+            storage::read_json(&arguments.root.join(format!("results/{subject}.json")))?;
+        if evidence.subject != subject {
+            return Err("SEE-PROTOCOL: evidence subject mismatch".to_owned());
+        }
+        with_properties(arguments, &conformance, evidence)?
+    };
     if conformance.estado != "retirado" {
         validate_hashes(corpus, &evidence)?;
     }
@@ -129,7 +146,7 @@ fn with_properties(
     let path = arguments
         .root
         .join(format!("results/properties-{subject}.json"));
-    if path.exists() {
+    if path.exists() && conformance.estado != "retirado" {
         let recorded: Evidence = storage::read_json(&path)?;
         if conformance.estado != "retirado" {
             validate_hashes(&storage::corpus(&arguments.root)?, &recorded)?;

@@ -32,8 +32,9 @@ por muestra observada. Reiniciar una repetición borra el estado lógico, no el 
 El asignador avanza sobre bloques de 4096 palabras inicializados de una vez, sin reservar por objeto.
 Alternativas descartadas: V1 sin marcos como denominador de llamadas, muestras sin puntos reales,
 reemplazar resultados antiguos o atribuir rendimiento de estos núcleos nativos a la VM.
-La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso`;
-los resultados se conservan en `../results/e02r/`, con diez procesos y treinta iteraciones.
+La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso <directorio-nuevo>`;
+los resultados locales incluyen diez procesos y treinta iteraciones. `summarize-remanso <directorio>`
+recalcula el resumen desde datos externos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

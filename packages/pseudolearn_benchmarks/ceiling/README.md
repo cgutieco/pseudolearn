@@ -2,15 +2,16 @@
 
 ## 1. Qué es y qué no es
 
-Arnés desechable E-02 del techo semántico de diez algoritmos AWFY-core. Compara Rust idiomático V0, semántica comprobada V1, representación paginada V2 y puntos de control activos V3. No implementa el motor ni ofrece una biblioteca para consumidores. Los diez núcleos, sus cuatro variantes, la recolección y sus tests están implementados; la evidencia se conserva junto al arnés Dart. No hay pendientes de implementación.
+Arnés desechable E-02 del techo semántico de diez algoritmos AWFY-core. Compara Rust idiomático V0, semántica comprobada V1, representación paginada V2 y puntos de control activos V3. No implementa el motor ni ofrece una biblioteca para consumidores. Los diez núcleos, sus cuatro variantes, la recolección y sus tests están implementados; las capturas se generan en directorios locales ignorados. No hay pendientes de implementación.
 
 ## 2. Guía operativa y ciclo de vida
 
-La comparación de recolectores se ejecuta con `cargo run --release -p ceiling_runner -- collect-memory`.
-Conserva captura previa al build, diez procesos de treinta iteraciones por carga y candidato, crudos en
-`../results/e12/` y resumen de selección junto a los resultados del sistema de especificaciones.
+Antes de compilar o recolectar, genera la exportación local: `(cd ../../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`.
+La comparación de recolectores se ejecuta con `cargo run --release -p ceiling_runner -- collect-memory
+<directorio-nuevo>`. Conserva captura previa al build, diez procesos de treinta iteraciones por carga y
+candidato, crudos y resumen en ese directorio local.
 
-Rust exacto de rust-toolchain.toml, rustfmt, Clippy y cargo-deny. Desde esta carpeta: `cargo xtask verify`; `cargo run --release -p ceiling_runner -- collect`. El recolector captura procedencia antes de compilar el trabajador release. Resultados en ../results/e02. Recolección local en macOS Apple M2; los núcleos y sus verificadores no dependen de ese hardware. Sin despliegue ni secretos.
+Rust exacto de rust-toolchain.toml, rustfmt, Clippy y cargo-deny. Desde esta carpeta: `cargo xtask verify`; `cargo run --release -p ceiling_runner -- collect <directorio-nuevo>`. El recolector captura procedencia antes de compilar el trabajador release. Para builds directos y recolección, prepara primero la exportación ignorada: `(cd ../../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. `cargo xtask verify` la genera por sí mismo. Para resumir una captura externa: `cargo run --release -p ceiling_runner -- summarize <directorio>`. Recolección local en macOS Apple M2; los núcleos y sus verificadores no dependen de ese hardware. Sin despliegue ni secretos.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -50,8 +51,8 @@ por muestra observada. Reiniciar una repetición borra el estado lógico, no el 
 El asignador avanza sobre bloques de 4096 palabras inicializados de una vez, sin reservar por objeto.
 Alternativas descartadas: V1 sin marcos como denominador de llamadas, muestras sin puntos reales,
 reemplazar resultados antiguos o atribuir rendimiento de estos núcleos nativos a la VM.
-La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso`;
-los resultados se conservan en `../results/e02r/`, con diez procesos y treinta iteraciones.
+La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso <directorio-nuevo>`;
+los resultados locales incluyen diez procesos y treinta iteraciones.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

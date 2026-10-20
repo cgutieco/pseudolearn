@@ -18,9 +18,9 @@ class PlanTest(unittest.TestCase):
             with self.subTest(path=artefact.path.name):
                 self.assertIn(artefacts.OUTPUT_DIRECTORY, artefact.path.parents)
 
-    def test_it_plans_the_artefacts_the_consumers_track(self):
-        tracked = {artefact.path.name for artefact in self.plan.tracked}
-        self.assertEqual(tracked, {"favicon.svg", "symbol-path.generated.ts", "guidelines.html"})
+    def test_it_plans_local_consumer_outputs_and_the_guidelines(self):
+        outputs = {artefact.path.name for artefact in self.plan.tracked}
+        self.assertEqual(outputs, {"favicon.svg", "symbol-path.generated.ts", "guidelines.html"})
 
 
 class CheckTest(unittest.TestCase):
@@ -30,19 +30,19 @@ class CheckTest(unittest.TestCase):
     def test_a_consumer_copy_that_drifted_is_reported(self):
         with self.repository_copy() as copy:
             favicon = copy / "apps/fe-pseudolearn/public/favicon.svg"
+            favicon.parent.mkdir(parents=True, exist_ok=True)
             favicon.write_text("<svg/>", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]
             self.assertIn("BRAND-COPY-STALE", rules)
 
-    def test_a_consumer_copy_that_disappeared_is_reported(self):
+    def test_missing_consumer_outputs_are_left_for_the_build_step(self):
         with self.repository_copy() as copy:
-            (copy / "apps/fe-pseudolearn/public/favicon.svg").unlink()
-            rules = [violation.rule for violation in artefacts.check(copy)]
-            self.assertIn("BRAND-COPY-STALE", rules)
+            self.assertEqual(artefacts.check(copy), [])
 
     def test_a_generated_module_that_drifted_is_reported(self):
         with self.repository_copy() as copy:
             module = copy / "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts"
+            module.parent.mkdir(parents=True, exist_ok=True)
             module.write_text("export const BRAND_SYMBOL_PATH = 'M0 0';\n", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]
             self.assertIn("BRAND-TS-STALE", rules)
@@ -67,9 +67,7 @@ class _RepositoryCopy:
     def __enter__(self):
         self.directory = Path(tempfile.mkdtemp())
         source = artefacts.root()
-        for relative in ("apps/fe-pseudolearn/public/favicon.svg",
-                         "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts",
-                         "apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart"):
+        for relative in ("apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart",):
             target = self.directory / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / relative, target)

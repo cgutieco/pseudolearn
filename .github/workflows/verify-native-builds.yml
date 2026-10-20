@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -23,14 +25,14 @@ jobs:
           channel: stable
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
 
+      - name: Install app dependencies
+        working-directory: apps/pseudolearn_app
+        run: flutter pub get
+
       - name: Set up Rust bridge
         uses: ./.github/actions/setup-rust-bridge
         with:
           targets: aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios aarch64-apple-darwin x86_64-apple-darwin
-
-      - name: Install app dependencies
-        working-directory: apps/pseudolearn_app
-        run: flutter pub get
 
       - name: Build unsigned iOS archive
         working-directory: apps/pseudolearn_app
@@ -83,6 +85,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -90,13 +94,13 @@ jobs:
           channel: stable
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
 
+      - name: Install app dependencies
+        run: flutter pub get
+
       - name: Set up Rust bridge
         uses: ./.github/actions/setup-rust-bridge
         with:
           targets: x86_64-pc-windows-msvc
-
-      - name: Install app dependencies
-        run: flutter pub get
 
       - name: Resolve release version
         shell: pwsh

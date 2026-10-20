@@ -1,16 +1,16 @@
 use serde_json::{Value, json};
 use std::path::Path;
 
-pub fn collect() -> Result<(), String> {
-    collect_experiment(Path::new("../results/e02"), "run", 1200)
+pub fn collect(output: &Path) -> Result<(), String> {
+    collect_experiment(output, "run", 1200)
 }
 
-pub fn collect_remanso() -> Result<(), String> {
-    collect_experiment(Path::new("../results/e02r"), "run-remanso", 2700)
+pub fn collect_remanso(output: &Path) -> Result<(), String> {
+    collect_experiment(output, "run-remanso", 2700)
 }
 
-pub fn collect_memory() -> Result<(), String> {
-    collect_experiment(Path::new("../results/e12"), "run-memory", 1080)
+pub fn collect_memory(output: &Path) -> Result<(), String> {
+    collect_experiment(output, "run-memory", 1080)
 }
 
 fn collect_experiment(output: &Path, operation: &str, expected: usize) -> Result<(), String> {

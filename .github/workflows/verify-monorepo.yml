@@ -20,6 +20,8 @@ jobs:
     runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
       - uses: subosito/flutter-action@v2
         with:
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
@@ -56,6 +58,29 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin
+      - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
+        working-directory: apps/pseudolearn_app
+      - run: flutter test tool/generate_product_shot.dart
+        env:
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR: ${{ github.workspace }}/apps/pseudolearn_app/native/target/release
+        working-directory: apps/pseudolearn_app
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install fonttools
+      - run: python3 -m pseudolearn_brand build
+        working-directory: packages/pseudolearn_brand
       - uses: pnpm/action-setup@v6
         with:
           version: '12.8.1'
@@ -81,6 +106,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
       - uses: subosito/flutter-action@v2
         with:
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
@@ -88,6 +115,8 @@ jobs:
       - run: rustup show
         working-directory: packages/pseudolearn_rust_checks
       - run: cargo install cargo-deny --version 0.20.2 --locked
+      - run: cargo run --locked -p see_cli --bin see -- export --root .
+        working-directory: packages/pseudolearn_spec
       - run: |
           (cd packages/pseudolearn_rust_checks && cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain ../..)
           while IFS= read -r toolchain; do
@@ -110,6 +139,8 @@ jobs:
         working-directory: packages/pseudolearn_benchmarks
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
       - uses: subosito/flutter-action@v2
         with:
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
@@ -117,6 +148,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version-file: packages/pseudolearn_benchmarks/node-version
+      - run: cargo run --locked -p see_cli --bin see -- export --root .
+        working-directory: packages/pseudolearn_spec
       - run: dart pub get
       - run: dart format --output=none --set-exit-if-changed lib tool test
       - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart

@@ -71,6 +71,16 @@ cp .env.example .env
 pnpm dev
 ```
 
+Antes de ejecutar `pnpm check:all` o compilar desde un checkout limpio, genera los assets ignorados que consumen los imports del sitio:
+
+```bash
+(cd ../../packages/pseudolearn_brand && python3 -m pip install fonttools && python3 -m pseudolearn_brand build)
+(cd ../pseudolearn_app && flutter pub get && flutter test tool/generate_product_shot.dart)
+```
+
+El build de CI ejecuta estos pasos antes de `pnpm build`. Las capturas y salidas de marca se regeneran bajo sus rutas
+de consumo y no forman parte del índice de Git.
+
 Coloca además las dos fuentes `woff2` en `public/fonts/` (ver [public/fonts/README.md](public/fonts/README.md)).
 Sin ellas el sitio funciona, pero cae a la familia de respaldo.
 
@@ -85,7 +95,7 @@ Sin ellas el sitio funciona, pero cae a la familia de respaldo.
 | `pnpm test`                               | Unidad y componentes (Vitest)                  |
 | `pnpm test:e2e`                           | Extremo a extremo (Playwright sobre el build)  |
 | `pnpm test:a11y`                          | Accesibilidad (axe-core)                       |
-| `pnpm test:visual`                        | Regresión visual                               |
+| `pnpm test:visual`                        | Renderizado en viewport móvil y escritorio     |
 | `pnpm lint` / `lint:css` / `format:check` | ESLint, Stylelint, Prettier                    |
 | `pnpm check:types`                        | `astro check`                                  |
 | `pnpm check:static`                       | Los siete verificadores propios                |
@@ -117,14 +127,9 @@ Publica en <https://pseudolearn.app>. Verifica ahí después de cada deploy, en 
 `/contact` (usa el SMTP de OCI Email Delivery y el widget de Turnstile — ambos atados a ese
 hostname, no funcionan desde `*.workers.dev`).
 
-### Líneas base visuales
-
-Las capturas de referencia dependen del sistema operativo. Las de `-darwin` sirven en local; para
-sembrar las de CI hay que generarlas una vez dentro del contenedor de Playwright:
-
-```bash
-docker run --rm -v "$PWD":/w -w /w mcr.microsoft.com/playwright:v1.64.0-noble pnpm test:visual --update-snapshots
-```
+Las pruebas de viewport comprueban que las páginas se rendericen y no desborden el ancho disponible.
+No usan capturas de referencia versionadas; las verificaciones de contenido, rutas y accesibilidad
+permanecen en sus suites dedicadas.
 
 ---
 
@@ -403,13 +408,13 @@ condicionan el día a día:
 
 Pirámide de cinco niveles, que se ejecuta en local y, cuando se autoriza una comprobación puntual, en GitHub Actions manualmente:
 
-| Nivel             | Herramienta               | Alcance                                                                      |
-| ----------------- | ------------------------- | ---------------------------------------------------------------------------- |
-| Unidad            | Vitest, co-localizado     | traductor, validación, protocolo SMTP, contraste de tokens, cada verificador |
-| Componente        | Astro Container API       | render de widgets y del formulario, en los dos idiomas                       |
-| Extremo a extremo | Playwright sobre el build | rutas, redirecciones, tema, idioma, formulario                               |
-| Accesibilidad     | `@axe-core/playwright`    | 10 rutas × 2 temas, cero violaciones _serious_ o _critical_                  |
-| Regresión visual  | Playwright screenshots    | 3 páginas × 2 anchos                                                         |
+| Nivel                 | Herramienta               | Alcance                                                                      |
+| --------------------- | ------------------------- | ---------------------------------------------------------------------------- |
+| Unidad                | Vitest, co-localizado     | traductor, validación, protocolo SMTP, contraste de tokens, cada verificador |
+| Componente            | Astro Container API       | render de widgets y del formulario, en los dos idiomas                       |
+| Extremo a extremo     | Playwright sobre el build | rutas, redirecciones, tema, idioma, formulario                               |
+| Accesibilidad         | `@axe-core/playwright`    | 10 rutas × 2 temas, cero violaciones _serious_ o _critical_                  |
+| Renderizado adaptable | Playwright                | 3 páginas × 2 anchos; contenido visible y sin desbordamiento horizontal      |
 
 Y siete verificadores propios: arquitectura, i18n, texto incrustado, paridad de rutas, comentarios,
 ámbito del CSS y tamaño. **Cada uno tiene un fixture con una violación deliberada** en
@@ -432,6 +437,5 @@ humana queda para lo que ninguna regla puede juzgar.
   proyecto hermano. Se **rechazó** su patrón de reglas incrustadas en el script de verificación, a
   favor de `architecture.yaml` como fuente única.
 
-La CI de verificación usa macOS y Chromium de la versión de Playwright del lockfile; compara las
-referencias Darwin versionadas. Las referencias se regeneran únicamente tras inspección del cambio
-y validación de e2e y accesibilidad, sin ampliar la tolerancia de comparación.
+La CI de verificación usa macOS y Chromium de la versión de Playwright del lockfile. La suite comprueba
+que el contenido principal se renderice y que el documento no exceda el ancho del viewport.

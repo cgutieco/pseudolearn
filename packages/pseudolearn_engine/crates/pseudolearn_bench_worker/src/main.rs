@@ -28,15 +28,11 @@ fn main() -> std::process::ExitCode {
             paired::summarize_existing(&std::env::args().nth(2).unwrap_or_default())
         }
         "paired" => paired::collect(&std::env::args().nth(2).unwrap_or_default()),
-        "aot" => aot::collect(
-            &std::env::args()
-                .nth(2)
-                .unwrap_or_else(|| "results/r6-aot".to_owned()),
-        ),
+        "aot" => collect_aot(&std::env::args().skip(2).collect::<Vec<_>>()),
         "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
-        _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile".to_owned()),
+        _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile|aot <output> <ceiling-raw.json> <vm-summary.json>".to_owned()),
     };
     match result {
         Ok(()) => std::process::ExitCode::SUCCESS,
@@ -45,6 +41,22 @@ fn main() -> std::process::ExitCode {
             std::process::ExitCode::FAILURE
         }
     }
+}
+
+fn collect_aot(arguments: &[String]) -> Result<(), String> {
+    let output = arguments
+        .first()
+        .cloned()
+        .unwrap_or_else(|| "results/r6-aot".to_owned());
+    let ceiling = arguments.get(1).cloned().unwrap_or_default();
+    let machine = arguments.get(2).cloned().unwrap_or_default();
+    if ceiling.is_empty() || machine.is_empty() {
+        return Err(
+            "Usage: pseudolearn_bench_worker aot <output> <ceiling-raw.json> <vm-summary.json>"
+                .to_owned(),
+        );
+    }
+    aot::collect(&output, &ceiling, &machine)
 }
 
 #[cfg(test)]

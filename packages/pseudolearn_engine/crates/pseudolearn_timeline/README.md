@@ -5,7 +5,7 @@
 Conserva una línea temporal consultable de la ejecución, con vistas inmutables de estado, deltas incrementales, puntos de control diferenciales (imagen de la punta y segmentos de deshacer por bloques de 64 ranuras), raleo exponencial con fusión de segmentos y retroceso determinista mediante máquina de reproducción.
 No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 
-Pendientes técnicos: ninguno propio de este crate; la evidencia de coste y memoria vive en `results/e06` y en el README del trabajador de medición.
+Pendientes técnicos: ninguno propio de este crate; los resultados de coste y memoria se generan localmente desde el trabajador de medición.
 
 ## 2. Guía operativa y ciclo de vida
 

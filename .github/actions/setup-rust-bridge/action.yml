@@ -1,5 +1,5 @@
 name: Set up Rust bridge
-description: Install the pinned Rust toolchain and verify generated Flutter Rust Bridge bindings
+description: Install the pinned Rust toolchain and prepare generated app and corpus inputs
 inputs:
   targets:
     description: Rust compilation targets required by the workflow
@@ -36,7 +36,7 @@ runs:
         toolchain=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' native/rust-toolchain.toml)
         cargo +"$toolchain" install cargo-expand --version 1.0.127 --locked
         cargo +"$toolchain" install flutter_rust_bridge_codegen --version 2.13.0 --locked
-    - name: Verify generated bridge bindings
+    - name: Prepare ignored generated inputs
       shell: bash
       working-directory: apps/pseudolearn_app
-      run: bash tool/bridge.sh check
+      run: bash tool/prepare_generated.sh

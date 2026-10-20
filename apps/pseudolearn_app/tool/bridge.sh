@@ -13,6 +13,8 @@ case "$mode" in
     snapshot="$(mktemp -d)"
     trap 'rm -rf "$snapshot"' EXIT
     mkdir -p "$snapshot/native/src" "$snapshot/lib/engine"
+    flutter_rust_bridge_codegen generate --config-file .flutter_rust_bridge.yaml
+    cargo fmt --manifest-path native/Cargo.toml
     cp native/src/frb_generated.rs "$snapshot/native/src/frb_generated.rs"
     cp -R lib/engine/bridge "$snapshot/lib/engine/bridge"
     flutter_rust_bridge_codegen generate --config-file .flutter_rust_bridge.yaml
@@ -22,20 +24,18 @@ case "$mode" in
     ;;
   clean-checkout)
     checkout="$(mktemp -d)"
-    trap 'git worktree remove --force "$checkout" >/dev/null 2>&1 || true; rm -rf "$checkout"' EXIT
+    trap 'rm -rf "$checkout"' EXIT
     app_path="$(git rev-parse --show-prefix)"
-    git worktree add --detach "$checkout" HEAD >/dev/null
+    git clone --shared --quiet . "$checkout"
     git diff --binary HEAD -- . | git -C "$checkout" apply --allow-empty
+    while IFS= read -r -d '' path; do
+      mkdir -p "$checkout/$(dirname "$path")"
+      cp "$path" "$checkout/$path"
+    done < <(git ls-files --others --exclude-standard -z)
     (
       cd "$checkout/$app_path"
       flutter pub get
-      before="$(mktemp -d)"
-      cp -R native/src/frb_generated.rs "$before/frb_generated.rs"
-      cp -R lib/engine/bridge "$before/bridge"
-      bash tool/bridge.sh generate
-      diff -u "$before/frb_generated.rs" native/src/frb_generated.rs
-      diff -ru "$before/bridge" lib/engine/bridge
-      rm -rf "$before"
+      bash tool/prepare_generated.sh
     )
     ;;
   *)

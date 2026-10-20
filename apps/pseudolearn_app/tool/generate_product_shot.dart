@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
+import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
@@ -137,6 +138,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
+    await initializeNativeBridge();
     await loadBundledFonts();
   });
 
@@ -152,28 +154,31 @@ void main() {
 
   for (final shot in _shots) {
     testWidgets(
-        '${shot.relativePath} is written from the running document screen',
-        (tester) async {
-      await _pumpExecutedDocument(tester, shot);
+      '${shot.relativePath} is written from the running document screen',
+      (tester) async {
+        await _pumpExecutedDocument(tester, shot);
 
-      final execution = BlocProvider.of<ExecutionCubit>(
-        tester.element(find.byType(TabSelector)),
-      );
-      expect(
-        execution.state.outputLines,
-        isNotEmpty,
-        reason:
-            'The program did not run, so the shot would show an idle editor',
-      );
+        final execution = BlocProvider.of<ExecutionCubit>(
+          tester.element(find.byType(TabSelector)),
+        );
+        expect(
+          execution.state.outputLines,
+          isNotEmpty,
+          reason:
+              'The program did not run, so the shot would show an idle editor',
+        );
 
-      final file = await _writeShot(tester, shot.relativePath);
-      expect(file.lengthSync(), greaterThan(0));
-    });
+        final file = await _writeShot(tester, shot.relativePath);
+        expect(file.lengthSync(), greaterThan(0));
+      },
+    );
   }
 }
 
 Future<void> _pumpExecutedDocument(
-    WidgetTester tester, _ProductShot shot) async {
+  WidgetTester tester,
+  _ProductShot shot,
+) async {
   tester.view.physicalSize = shot.canvasSize;
   tester.view.devicePixelRatio = 1.0;
   final localeString = shot.language == UiLanguageId.english ? 'en' : 'es';
@@ -189,8 +194,9 @@ Future<void> _pumpExecutedDocument(
   );
   await tester.pumpAndSettle();
 
-  GoRouter.of(tester.element(find.byType(Navigator).first))
-      .go('/biblioteca/documento/${shot.documentId}');
+  GoRouter.of(
+    tester.element(find.byType(Navigator).first),
+  ).go('/biblioteca/documento/${shot.documentId}');
   await tester.pumpAndSettle();
 
   await tester.tap(find.byIcon(Icons.play_arrow).first);
@@ -250,8 +256,9 @@ Future<File> _writeShot(WidgetTester tester, String relativePath) async {
 double _advanceWidthOf(String text) {
   final painter = TextPainter(
     text: TextSpan(
-        text: text,
-        style: const TextStyle(fontFamily: 'IBMPlexSans', fontSize: 32)),
+      text: text,
+      style: const TextStyle(fontFamily: 'IBMPlexSans', fontSize: 32),
+    ),
     textDirection: TextDirection.ltr,
   )..layout();
   return painter.width;

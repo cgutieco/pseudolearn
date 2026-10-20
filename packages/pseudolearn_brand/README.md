@@ -11,12 +11,13 @@ valores; lo que se documenta aquí es cómo se combinan para formar una marca, y
 marca que ninguna tabla de aquel documento cubre.
 
 **Estado:** Motor completo. Doce vectores maestros, un módulo de TypeScript y el documento de
-lineamientos salen de un único catálogo declarativo, y un verificador falla cuando un consumidor deja de
-seguirlos. Cableado completado para iOS y macOS: los conjuntos `AppIcon.appiconset` de ambas plataformas
-se generaron desde `app-icon.svg` con Xcode y se verificaron con su compilador nativo (`actool`). La
-aplicación de Flutter consume la marca por su tercera vía —geometría redibujada en Dart, §4.7—, con la
-que además se rasteriza la pantalla de lanzamiento de iOS. El sitio web consume el módulo de TypeScript
-que este paquete emite. Los `mipmap` de Android y el resto de `web/icons` siguen pendientes.
+lineamientos salen de un único catálogo declarativo. Los artefactos de consumidores se regeneran antes
+de sus builds y quedan fuera de Git. Cableado completado para iOS y macOS: los conjuntos
+`AppIcon.appiconset` se generan localmente desde la geometría Dart y se validan al compilar con Xcode.
+La aplicación de Flutter consume la marca por su tercera vía —geometría redibujada en Dart, §4.7—, con
+la que además se rasterizan los íconos y la pantalla de lanzamiento de iOS. El sitio web consume el módulo
+de TypeScript que este paquete emite.
+Los `mipmap` de Android y el resto de `web/icons` siguen pendientes.
 
 ---
 
@@ -84,8 +85,9 @@ coincidir con el resto de la familia.
 (cd packages/pseudolearn_brand && python3 -m pseudolearn_brand build)
 ```
 
-Escribe quince artefactos: los doce vectores maestros y el documento de lineamientos en `out/`, que no se
-versiona, y los dos artefactos que un consumidor necesita tener versionados (§4.5).
+Escribe quince artefactos: los doce vectores maestros y el documento de lineamientos en `out/`, además
+del favicon y el módulo TypeScript en las rutas de consumo. Todos son salidas ignoradas; los builds del
+sitio las generan antes de compilar.
 
 ### 2.3 Verificación
 
@@ -118,7 +120,8 @@ cada destino tiene un procedimiento distinto porque las herramientas que los ace
 
 | destino                                | procedimiento                                                                                                             |
 |----------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| Ícono de iOS y de macOS                | Xcode: se importa `out/app-icon.svg`, y él rellena y compila los tamaños de `AppIcon.appiconset`. Verificado con `actool` |
+| Ícono de iOS y de macOS                | `flutter test tool/generate_app_icons.dart` desde `apps/pseudolearn_app`; rasteriza la geometría Dart en los tamaños del catálogo |
+| Ícono de Windows                       | La misma herramienta escribe `app_icon.png` y un ICO con resoluciones PNG para el ejecutable y el empaquetado MSIX       |
 | Ícono por capas de iOS, iPadOS y macOS | Icon Composer, con las dos capas de `out/icon-composer/` y los fondos declarados en §4.6                                  |
 | Pantalla de lanzamiento de iOS         | `flutter test tool/generate_launch_images.dart` desde `apps/pseudolearn_app/`                                             |
 
@@ -140,8 +143,8 @@ mano.
 
 ### 2.5 Despliegue y distribución
 
-Este paquete no se publica ni se compila. Se ejecuta a mano cuando la marca cambia, y su salida versionada
-viaja dentro de los repositorios de sus consumidores.
+Este paquete no se publica ni se compila. El paso de preparación del sitio lo ejecuta antes del build;
+ningún consumidor mantiene copias generadas en Git.
 
 ---
 
@@ -354,22 +357,17 @@ verificada, no un comentario.
 - **Consecuencia:** el logotipo no es editable como texto ni buscable. Se acepta: es una marca, no un
   párrafo. `wordmark.svg` lleva un elemento `<title>` para la accesibilidad.
 
-### 4.5 La salida no se versiona; lo que un build necesita, sí
+### 4.5 La salida no se versiona; cada build la prepara
 
-- **Problema:** doce vectores versionados son doce archivos derivados que alguien puede editar a mano, y
-  que ensucian cada revisión con ruido generado. Pero no todo lo que este motor produce es material de
-  referencia: `apps/fe-pseudolearn/public/favicon.svg` entra en el paquete que se despliega a Cloudflare,
-  y su compilación no puede depender de que haya un Python con `fontTools` en el CI.
-- **Elección:** dos destinos con reglas distintas. Los **vectores maestros** y el documento de
-  lineamientos van a `out/`, ignorado por git, y son la referencia de diseño con la que se rasteriza cada
-  plataforma. Los **artefactos que un build consume** —hoy el favicon del sitio y el módulo de TypeScript
-  del símbolo— los escribe el motor directamente en su ubicación versionada, y `check` falla si alguno
-  deja de coincidir con lo que el motor produce hoy.
-- **Consecuencia:** la carpeta del paquete solo contiene el motor, y ningún consumidor necesita Python
-  para compilar. A cambio, dos artefactos generados sí aparecen en revisiones; se aceptan porque son la
-  frontera del motor con un build ajeno, y porque el verificador los cubre.
-- **Descartado:** ignorar también los artefactos de consumidor y regenerarlos en cada build, que mete
-  Python y `fontTools` en el CI de un sitio de Astro para producir dos archivos que casi nunca cambian.
+- **Problema:** los artefactos generados versionados ensucian revisiones y pueden divergir de su fuente.
+- **Elección:** tanto los vectores maestros como el favicon y el módulo TypeScript se generan en rutas
+  ignoradas. El build del sitio prepara esas salidas antes de compilar y `check` valida cualquier salida
+  local presente.
+- **Consecuencia:** el checkout limpio no contiene copias de la marca y los artefactos publicados siguen
+  saliendo del mismo catálogo declarativo. El entorno de build necesita Python y `fontTools` durante la
+  preparación.
+- **Descartado:** copiar las salidas generadas al repositorio de consumidores, porque reintroduce una
+  segunda fuente modificable.
 
 ### 4.6 Íconos por capas, y no una imagen aplanada
 

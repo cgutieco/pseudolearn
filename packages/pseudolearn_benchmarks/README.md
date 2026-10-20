@@ -5,19 +5,25 @@
 Recolectores de rendimiento del núcleo Rust, herramientas estadísticas y archivo de líneas base.
 El corpus define programas, resultados esperados y presupuestos. Los recolectores verifican resultados;
 no convierten salidas del motor en oráculos. Los ejecutores del sujeto histórico están retirados.
-Las capturas de `results/` conservan procedencia y crudos, incluidos resultados desfavorables.
+Las capturas y resúmenes se generan bajo `results/`, ignorado por Git. Las campañas y los resumidores
+aceptan directorios y archivos de entrada externos para conservar datos localmente sin añadirlos al
+monorepo.
 
 ## 2. Guía operativa y ciclo de vida
 
 Requisitos: Dart aportado por Flutter fijado en la app; Node fijado en `node-version`; Rust exacto de
-cada miembro. Desde este directorio: `dart pub get`, `dart test`,
+cada miembro. Genera primero la exportación consumida por los recolectores y el motor:
+`(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. Desde este directorio:
+`dart pub get`, `dart test`,
 `dart analyze --fatal-infos --fatal-warnings` y `dart run tool/check.dart`.
 Formato: `dart format --output=none --set-exit-if-changed lib tool test`.
 
 - `dart run tool/collect_frontend.dart <directorio>` mide análisis mediante el trabajador público Rust.
-- `dart run tool/collect_execution.dart <directorio>` mide ejecución preparada con la línea base archivada.
+- `dart run tool/collect_execution.dart <resumen-línea-base.json> [directorio]` mide ejecución preparada
+  y compara contra un resumen suministrado localmente.
 - `dart run tool/summarize.dart <directorio>` recalcula estadísticas históricas sin ejecutar sujetos retirados.
-- `dart run tool/capture_bridge_artifacts.dart` inspecciona artefactos previamente construidos; no los genera.
+- `dart run tool/capture_bridge_artifacts.dart [--output ruta]` inspecciona artefactos previamente construidos;
+  por defecto escribe en `results/`.
 - Desde `ceiling/`: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`.
 - Desde el motor: `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` compara
   AOT y el techo Rust; `paired-summary <directorio>` recalcula sus estadísticas.
@@ -60,9 +66,10 @@ motor. El trabajador prepara estado antes del reloj, mide operaciones declaradas
 El recolector captura procedencia antes del build y conserva muestras crudas. Se descarta cronometrar
 una CLI completa para atribuir su latencia al análisis o a la VM.
 
-**Conservar líneas base.** El retiro de un ejecutor no invalida sus observaciones históricas, pero estas
-no certifican fuentes nuevas. Los datos y resúmenes permanecen disponibles sin reconstruir el sujeto.
-Se descarta sobrescribir resultados desfavorables o presentar una comparación histórica como campaña actual.
+**Separar datos de herramientas.** Los resultados crudos y resúmenes viven fuera del árbol versionado y
+las herramientas reciben rutas de entrada o salida explícitas. Los contratos conservan los presupuestos
+vigentes; una captura local no se convierte en oráculo ni en una comparación actual por estar guardada.
+Se descarta sobrescribir resultados desfavorables o presentar una medición histórica como campaña actual.
 
 **Estadística explícita.** Los procesos son las unidades independientes. Se informa el estimador del
 intervalo, p95, resolución y candidatos de cambio; todas las muestras se conservan. Un intervalo de

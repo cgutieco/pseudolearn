@@ -36,5 +36,10 @@ __pycache__/
 target/
 packages/*/Cargo.lock
 
+# Local measurements and generated contract export
+**/results/
+packages/pseudolearn_spec/specifications/export.json
+packages/pseudolearn_spec/specifications/specifications.lock
+
 # Node.js
 node_modules/

@@ -114,7 +114,7 @@ primer registro modificado desde el punto anterior para que `MachineDelta` omita
   carga, fuera del intervalo medido, sobre la que sí rinden los peldaños de la escalera de rendimiento
   (manejadores pequeños con rutas frías, formas registro-inmediato, estado caliente y bancos por
   ventana). Con ella la trazadora supera el umbral de 30× sin PGO; la cifra y su procedencia están en
-  `packages/pseudolearn_spec/results/r5-vm-tracer.json`. **Descartado:** PGO, que añade `llvm-tools` a la
+  el informe local ignorado de esa campaña. **Descartado:** PGO, que añade `llvm-tools` a la
   cadena y hace al binario depender de un perfil, y seguir afinando la representación estructural.
 - **Problema:** las comprobaciones de definición de enteros costaban una escritura de bit en cada
   operación. **Elección:** análisis estático en carga; solo los parámetros dinámicos consultados pagan.

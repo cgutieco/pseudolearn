@@ -14,6 +14,7 @@ Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración e
 Binario de línea de comandos implementado en Rust.
 Comandos de compilación y verificación:
 - Verificación completa del miembro: `cargo xtask verify`.
+- Antes de una compilación directa, genera la exportación ignorada: `(cd ../../packages/pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`.
 - Compilación de producción: `cargo build --release` (salida en `target/release/pseudo`).
 - Pruebas unitarias y funcionales: `cargo test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.

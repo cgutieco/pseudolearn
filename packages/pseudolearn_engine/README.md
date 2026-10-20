@@ -39,7 +39,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 ## 2. Guía operativa y ciclo de vida
 
-El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Las capturas del antiguo sujeto reference y los experimentos E-06, E-12, E-16 y E-17 son evidencia histórica con su procedencia, no una certificación de la revisión actual ni de plataformas pendientes.
+El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Los registros de medición histórica no forman parte del checkout y no certifican la revisión actual ni plataformas pendientes.
 
 El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
 
@@ -48,9 +48,13 @@ copia superficial, recolección determinista y azar con semilla. La API conserva
 cambia entre los gemelos rápido y sondeado, y expone `execute` mediante `ExecutionResource` y
 `CheckpointStore`.
 
-La medición final de AWFY-core en macOS ARM64 obtuvo media geométrica de 30,026× y mínimo de 19,866×,
-con cero muestras descartadas. El resumen y los resultados por carga están en
-[`macos-r5-vm`](../pseudolearn_benchmarks/results/macos-r5-vm/summary.json).
+Los builds directos necesitan primero la exportación ignorada del corpus:
+`(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. `cargo xtask verify`
+la genera antes de compilar.
+
+La medición final histórica de AWFY-core en macOS ARM64 obtuvo media geométrica de 30,026× y mínimo de
+19,866×, con cero muestras descartadas. Las campañas nuevas escriben sus datos en directorios locales
+ignorados y aceptan archivos de referencia externos.
 Comandos de compilación y verificación:
 - Verificación completa del motor: `cargo xtask verify`.
 - Compilación optimizada: `cargo build --release`.
@@ -59,8 +63,7 @@ Comandos de compilación y verificación:
 - Generación reproducible del módulo y enlaces: `bash tool/wasm.sh build`.
 - Prueba del artefacto final en Chrome: `bash tool/wasm.sh test`.
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`.
-- Medición E-08 vigente en `packages/pseudolearn_benchmarks/results/e08r/` y su comprobación en
-  `packages/pseudolearn_spec/results/r5-frontend-e08.json`; la captura histórica anterior se conserva.
+- La campaña E-08 y sus datos de entrada son locales; no se incluyen capturas históricas en el checkout.
 Plataformas soportadas: macOS (arm64/x86_64), Linux y Windows. No hay secretos ni despliegue propio: los consumidores distribuyen sus artefactos.
 
 ## 3. Arquitectura y modelo del sistema
@@ -209,7 +212,7 @@ mantienen comprobaciones de límites y tipos sin reservas dinámicas
 por acceso normal. En la campaña `AWFY-core` de macOS ARM64, el motor obtuvo
 30,026× de media geométrica y 19,866× de mínimo frente a `macos-r3-awfy`, con cero muestras
 descartadas; los detalles por programa se guardan en
-`packages/pseudolearn_benchmarks/results/macos-r5-vm/`.
+directorios locales ignorados suministrados al trabajador de medición.
 
 ### timeline
 
@@ -341,7 +344,7 @@ excede el presupuesto:
 | E06-RETENTION | 72 577 ranuras, 64 puntos, horizonte 1 024 | ≤ 1 048 576 ranuras; 64 puntos | Pasa |
 | E06-RSS | 1,637× de huella viva; 173 817 856 bytes extra | ≤ 2,5× | Pasa |
 
-Evidencia: [`r5-e06.json`](../pseudolearn_spec/results/r5-e06.json).
+Los valores corresponden a una medición histórica local; las nuevas ejecuciones escriben resultados ignorados.
 
 E-16 sigue parcial; el puntaje mide mutantes viables cazados y no es un puntaje final de cada crate.
 
@@ -354,12 +357,12 @@ E-16 sigue parcial; el puntaje mide mutantes viables cazados y no es un puntaje 
 | `pseudolearn_vm` | 198 / 201 ejecutados viables; 820 sin probar; 3 expiraciones | Parcial |
 | `pseudolearn_library` | Sin campaña | No iniciada |
 
-Evidencia: [`r5-e16.json`](../pseudolearn_spec/results/r5-e16.json).
+El puntaje corresponde a una campaña histórica local; no certifica el estado del código actual.
 
 E-17 pasó sobre binarios nativos y Wasm finales: 968 peticiones del corpus, 10 000 programas generados,
 10 000 pares EMI, 48 casos de frontera de formato y cero diferencias en seis funciones matemáticas con
 un millón de argumentos cada una. El módulo Wasm mide 2 179 619 bytes y 480 752 bytes con Brotli.
-Evidencia: [`r5-e17.json`](../pseudolearn_spec/results/r5-e17.json).
+El contraste corresponde a una campaña histórica local; se puede volver a generar con los adaptadores actuales.
 
 | B7.4 diferencial | Resultado |
 |---|---:|
@@ -382,7 +385,7 @@ no error (presencia, código, severidad o span):
 En total, 174 observaciones tienen spans distintos y 44 cambian diagnósticos no error. Solo 12 difieren
 exclusivamente en `end_col`; las demás diferencias de span también alcanzan columnas de inicio o líneas.
 La clasificación descarta que las diferencias restantes sean únicamente precisión benigna de columna,
-por lo que B7.4 permanece abierto. Evidencia: [`r5-differential.json`](../pseudolearn_spec/results/r5-differential.json).
+por lo que B7.4 permanece abierto. Las ejecuciones diferenciales actuales guardan informes localmente.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

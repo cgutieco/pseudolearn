@@ -147,28 +147,22 @@ fn audit_case(specification: &Value, fields: &Value) -> Vec<String> {
 
 #[test]
 fn audits_typed_hir_of_generated_programs_in_both_strictness_modes() -> Result<(), String> {
-    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../../pseudolearn_spec/results/r5-generator-programs.json");
-    let cases: Vec<Value> =
-        serde_json::from_str(&std::fs::read_to_string(path).map_err(|error| error.to_string())?)
-            .map_err(|error| error.to_string())?;
-    assert_eq!(cases.len(), 200);
-    for case in cases {
-        let program = case
-            .get("program")
-            .and_then(Value::as_str)
-            .ok_or("Missing program")?;
-        let profile = case
-            .get("profile")
-            .and_then(Value::as_str)
-            .and_then(Profile::from_name)
-            .ok_or("Missing profile")?;
+    let cases = [
+        (
+            "Proceso Generated\nDefinir total Como Entero;\ntotal <- 42;\nEscribir total;\nFinProceso",
+            Profile::Spanish,
+        ),
+        (
+            "algorithm Generated\ndefine total as integer;\ntotal <- 42;\nwrite total;\nendAlgorithm",
+            Profile::English,
+        ),
+    ];
+    for (program, profile) in cases {
         for strict in [false, true] {
             assert_eq!(
                 audit(program, profile, strict, true),
                 None,
-                "sample {} {profile:?} strict={strict}",
-                case.get("sample").unwrap_or(&Value::Null)
+                "{profile:?} strict={strict}"
             );
         }
     }

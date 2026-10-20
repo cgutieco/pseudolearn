@@ -19,7 +19,7 @@ Future<void> main(List<String> arguments) async {
 File outputFile(Directory root, List<String> arguments) {
   if (arguments.isEmpty) {
     return File(
-      '${root.path}/packages/pseudolearn_spec/results/r8-artifact-size.json',
+      '${root.path}/packages/pseudolearn_benchmarks/results/r8-artifact-size.json',
     );
   }
   if (arguments.length == 2 && arguments.first == '--output') {

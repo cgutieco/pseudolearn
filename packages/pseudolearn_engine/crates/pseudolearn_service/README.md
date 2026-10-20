@@ -69,7 +69,7 @@ Contratos: `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP` y 
 
 Tests en `tests/` espejo de `src/`. Camino feliz e infeliz, entradas vacías, posiciones fuera de rango, Unicode (acentos, `ñ`, caracteres fuera del plano básico) y ambos idiomas. `tests/corpus.rs` ejecuta sobre los 172 programas de referencia: formateo idempotente que conserva estructura y comentarios, doble traducción idéntica en forma canónica, y estabilidad ante programas dañados con ediciones aleatorias. La conformidad ejecuta los casos y propiedades de los contratos contra el binario adaptador; los ejecutores de propiedades tienen casos negativos con sujetos simulados.
 
-Evidencia de calidad y latencia: `packages/pseudolearn_spec/results/r7-service-e09.json`, `r7-service-incremental.json` y `r7-toolchain-e20.json`, generados por el arnés de `pseudolearn_bench_worker`; los umbrales se leen de los contratos, no del arnés.
+Las mediciones locales de calidad y latencia las genera `pseudolearn_bench_worker`; los umbrales se leen de los contratos, no del arnés.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

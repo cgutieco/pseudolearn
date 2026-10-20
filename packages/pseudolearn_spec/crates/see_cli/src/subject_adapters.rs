@@ -12,6 +12,7 @@ struct AdapterLaunch {
 const CLI_DIRECTORY: &str = "../../apps/pseudolearn_cli";
 const ENGINE_ARGUMENTS: &[&str] = &[
     "run",
+    "--locked",
     "--release",
     "-p",
     "pseudolearn_conformance",
@@ -19,10 +20,19 @@ const ENGINE_ARGUMENTS: &[&str] = &[
     "conformance_adapter",
     "--quiet",
 ];
-const CLI_ARGUMENTS: &[&str] = &["run", "--bin", "pseudo", "--quiet", "--", "--see-adapter"];
+const CLI_ARGUMENTS: &[&str] = &[
+    "run",
+    "--locked",
+    "--bin",
+    "pseudo",
+    "--quiet",
+    "--",
+    "--see-adapter",
+];
 const APP_ARGUMENTS: &[&str] = &["run", "tool/see_app_adapter.dart"];
 const AOT_ARGUMENTS: &[&str] = &[
     "run",
+    "--locked",
     "--bin",
     "pseudo",
     "--quiet",
@@ -32,6 +42,7 @@ const AOT_ARGUMENTS: &[&str] = &[
 ];
 const SERVICE_ARGUMENTS: &[&str] = &[
     "run",
+    "--locked",
     "--release",
     "-p",
     "pseudolearn_conformance",

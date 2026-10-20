@@ -14,29 +14,31 @@ Casos de uso: crear un borrador, validar, bloquear versiones, comparar revisione
 
 Rust exacto según `rust-toolchain.toml`, rustfmt, Clippy y cargo-deny 0.20.2. macOS, Linux y Windows.
 Dart y la biblioteca nativa de la app se requieren únicamente para verificar el sujeto activo `app`.
-`reference` conserva un manifiesto retirado en `subjects/reference/` y resultados históricos; no tiene lanzador.
+`reference` conserva un manifiesto retirado en `subjects/reference/`; no tiene lanzador ni captura local de evidencia.
 Preparación: `cargo fetch`. Para el sujeto app, `flutter pub get` y el build de su biblioteca nativa desde `apps/pseudolearn_app`.
 Desarrollo: `cargo run -p see_cli --bin see -- validate`.
 Compilación: `cargo build --release`; binario `target/release/see`.
 Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro de corpus.
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
 `lock [--check | --refresh ID,ID]`, `diff <rev>`, `impact <ID>`, `conform --subject <engine|aot|service|cli|app> [--only ID]`,
-`matrix [--subject reference]`, `feature <nombre>`, `export [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz solo presenta evidencia histórica como no aplicable.
+`matrix [--subject reference]`, `feature <nombre>`, `export [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz lo presenta como no aplicable sin cargar resultados retirados.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
-`diff` lee la revisión con Git, sin cambiar el checkout. `lock` conserva versiones históricas y actualiza el estado de
-los anclajes activos. La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo;
-una modificación normativa con versión conservada solo se reancla cuando está autorizada: se retira la clave exacta
-`ID@versión` de `history` y `see lock` la regenera. Código 0: éxito; 1: error o regresión exigible.
+`diff` lee la revisión con Git, sin cambiar el checkout, y puede describir cambios aunque aún falte subir su versión;
+`validate` aplica la puerta de anclajes. `lock` genera una caché local ignorada. La validación deriva el estado anterior
+de la revisión Git base y exige subir la versión para cambios del contrato; Git conserva las versiones previas. La
+promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
+o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
 La comparación admite `tokens_include` para exigir identidades y tramos de tokens concretos sin fijar
 la secuencia completa ni excluir la trivia que la API devuelve. El esquema valida la forma de cada
 identidad y tramo antes de abrir un sujeto.
-E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; la evidencia está en results/e10.json. E-14 registra el estudio humano diferido en results/e14.json. La correspondencia completa usa specifications/cases/migration.json y el índice educativo archivado en `subjects/reference/language-spec.md`.
+E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; sus resultados se guardan localmente. E-14 registra el estudio humano diferido. La correspondencia completa usa specifications/cases/migration.json y el índice educativo archivado en `subjects/reference/language-spec.md`.
 Verificación: `cargo xtask verify`; incluye el corpus, anclaje y exportación actualizados.
-La evidencia de E-15 vive en `results/e15.json`: ventana bruta de autoría automatizada por regla,
-resultados y límites de interpretación. No mide autoría humana ni declara descubrimiento ciego.
-No se despliega ni publica a un registro. La rama del monorepo contiene corpus y artefactos revisables.
+La evidencia local de E-15 registra la ventana bruta de autoría automatizada por regla, sus resultados y
+límites de interpretación. No mide autoría humana ni declara descubrimiento ciego.
+No se despliega ni publica a un registro. La rama del monorepo contiene fuentes revisables; exportaciones y resultados
+se generan bajo rutas locales ignoradas.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -118,7 +120,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   de otros bloques; `APP.EDITOR.COMPLETION#R6` verifica la aceptación por el puente. Es una corrección observable de la
   asistencia, sin modificación de la gramática ni de la asignación. Por instrucción de la persona se mantienen las
   versiones oficiales `0.1.0`, sin campo `cambio`, y se reanclan solo ambos contratos mediante `lock --refresh`.
-  La evidencia `results/inline-completion-e09.json` registra el arnés general de completado: 172 programas,
+  La medición local del arnés general de completado registró 172 programas,
   2730 consultas, 51.228 % de ahorro de pulsaciones y p95 de consulta de 1.997 ms en diez mil líneas; cumple los
   umbrales vigentes. No mide velocidad humana ni aísla el ahorro de la nueva continuación de asignación.
 - Problema: la asistencia anclada duplicaba la banda táctil y las etiquetas no mostraban continuaciones como `area <-`.
@@ -161,7 +163,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
 
 ### Hallazgos del sujeto reference
 
-Identidades permanentes de evidencia, independientes de la investigación transitoria. Los esperados son normativos; las exenciones solo afectan al sujeto congelado y se resuelven en la fase indicada: R4 para el análisis y R5 para la observación de la ejecución. La evidencia del primer contraste de R3 está en results/r3-first-reference.json y su clasificación en results/r3-findings.json. La matriz mide los casos declarados, no una demostración universal del contrato.
+Identidades permanentes de evidencia, independientes de la investigación transitoria. Los esperados son normativos; las exenciones solo afectan al sujeto congelado y se resuelven en la fase indicada: R4 para el análisis y R5 para la observación de la ejecución. Los hallazgos del contraste inicial de R3 se resumen a continuación. La matriz mide los casos declarados, no una demostración universal del contrato.
 
 | Hallazgo | Diferencia observable | Resolución |
 |---|---|---|
@@ -200,7 +202,7 @@ representación intermedia y traza quedan `no aplicable` o `pendiente` por capac
 `conform --subject <sujeto> --operation properties`; una propiedad cuya capacidad el sujeto no anuncia queda `pendiente` y no
 cuenta como fallo, y un escenario que exige observación (cancelación, consulta de estado o eventos) no se envía a un
 sujeto sin `observe`. `differential` compara además `engine` con `aot` (salida, terminación, códigos, argumentos y tramos de errores, sin
-exenciones) cuando existe `results/aot.json` y guarda `results/differential-active.json`.
+exenciones) cuando existe evidencia local de ambos sujetos y guarda el informe en el directorio local ignorado.
 
 El hash normativo incluye identidad, edición, sujetos, dependencias, reemplazos y bloques de contrato; excluye estado,
 versión, revisor, títulos, resumen y prosa. Una edición normativa autorizada que conserva versión sustituye solo la clave
@@ -220,8 +222,8 @@ Las propiedades de reimpresión y recuperación sin pérdida también las ejecut
 
 
 El manifiesto admite `estado: activo` o `estado: retirado`; omitirlo mantiene compatibilidad con
-manifiestos activos. Un sujeto retirado conserva identidad, vínculos y resultados sin requerir rutas
-instaladas, aparece como no aplicable en la matriz y no cuenta para la estabilidad del lenguaje.
+manifiestos activos. Un sujeto retirado conserva identidad y vínculos sin requerir rutas instaladas,
+aparece como no aplicable en la matriz y no cuenta para la estabilidad del lenguaje.
 Solicitar su ejecución produce `SEE-SUBJECT-RETIRED`. La revisión independiente es un requisito adicional:
 la existencia de un vínculo no demuestra por sí sola conformidad ni estabilidad.
 
@@ -265,7 +267,10 @@ arquitectura y operación.
 ## 7. Verificación, testing y aseguramiento de calidad
 
 `cargo xtask verify`: formato, Clippy estricto, tests, seis verificadores Rust, versión de cadena,
-cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see lock --check`, `see export --check` y conformidad engine.
+cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see export --check`, la ejecución
+de propiedades y la conformidad engine. Genera exportación y evidencia bajo `results/`, rutas locales
+ignoradas. Antes de abrir la sesión de protocolo, construye el adaptador release para excluir el tiempo de
+compilación del límite de espera de inicio.
 Los casos negativos prueban duplicados, regla huérfana, captura sin revisor, hash/version,
 ciclos y perfil faltante; otros prueban esquema, referencias, rango, estados y clasificación.
 Cada rechazo del motor y sus fronteras tiene fixture propio comprobado por su identificador:
@@ -273,7 +278,8 @@ Cada rechazo del motor y sus fronteras tiene fixture propio comprobado por su id
 `limit-kind` → SEE-LIMIT-KIND, `measurement-protocol` → SEE-MEASUREMENT-PROTOCOL, `ir-coverage` →
 SEE-IR-COVERAGE, `ir-unknown` → SEE-IR-UNKNOWN, `profile-openers` → SEE-PROFILE-OPENERS,
 `message-parity` → SEE-MESSAGE-PARITY y `message-arguments` → SEE-MESSAGE-ARGUMENTS.
-Las pruebas de protocolo incluyen negociación inválida, JSON corrupto, EOF, timeout y capacidad ausente;
+La conformidad tolera hasta 60 segundos para iniciar un adaptador que compila al lanzarse y mantiene
+15 segundos por petición protocolaria. Las pruebas de protocolo incluyen negociación inválida, JSON corrupto, EOF, timeout y capacidad ausente;
 el adaptador de prueba cubre además observación anunciada, eventos no anunciados, RI y CLI.
 Las pruebas de traducción incluyen cadenas, comentarios, ida/vuelta y colisión.
 Las dependencias internas declaran versión y ruta; no hay excepciones de auditoría. Los fallos esperados del piloto se conservan como evidencia,
@@ -290,6 +296,6 @@ comportamiento del lenguaje.
 Las aclaraciones de ejecución fijan redondeo binario64 al más cercano con empates al par, formato mínimo
 de ida y vuelta, raíces nocionales que incluyen temporales vivos y sondeos de cancelación en condiciones.
 Los esperados matemáticos añadidos se justifican por intervalos racionales en
-`results/r5-rounding-case-oracle.json`; ninguna captura del sujeto define esos resultados.
+intervalos racionales; ninguna captura del sujeto define esos resultados.
 
 Los adaptadores engine y service se compilan en Release para ejecutar las propiedades completas sobre cargas grandes; el plazo máximo por solicitud de propiedades es de 300 segundos. Esto es una puerta funcional y no una medición de rendimiento. El corpus conserva los límites semánticos de cada solicitud.

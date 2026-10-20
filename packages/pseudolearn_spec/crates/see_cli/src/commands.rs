@@ -27,6 +27,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
         "export" => crate::resources::export(
             &arguments.root,
             &corpus,
+            arguments.options.get("output").map(String::as_str),
             arguments.options.contains_key("check"),
         ),
         "differential" => crate::differential::execute(&arguments, &corpus),
@@ -39,6 +40,9 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
 }
 
 fn command_corpus(arguments: &Arguments) -> Result<see_model::Corpus, String> {
+    if arguments.command == "diff" {
+        return storage::valid_for_diff(&arguments.root);
+    }
     let refreshing = arguments.command == "lock"
         && arguments.options.contains_key("refresh")
         && !arguments.options.contains_key("check");

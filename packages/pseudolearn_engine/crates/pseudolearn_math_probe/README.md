@@ -24,7 +24,7 @@ cargo run --release -p see_cli --bin see -- math-check --input <directorio>
 ```
 
 El primero corre en `packages/pseudolearn_spec`, el segundo en `packages/pseudolearn_engine` y el
-tercero de nuevo en `packages/pseudolearn_spec`, que escribe `results/r5-math-contrast.json`. Los archivos
+tercero de nuevo en `packages/pseudolearn_spec`, que escribe el informe en su directorio local ignorado. Los archivos
 de argumentos y resultados son datos crudos regenerables por semilla y no se versionan.
 
 ## 3. Arquitectura y modelo del sistema

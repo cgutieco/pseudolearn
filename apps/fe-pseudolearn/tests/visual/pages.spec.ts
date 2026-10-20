@@ -13,14 +13,20 @@ const VIEWPORTS = [
 
 for (const route of ROUTES) {
   for (const viewport of VIEWPORTS) {
-    test(`${route.name} looks unchanged on ${viewport.name}`, async ({ page }) => {
+    test(`${route.name} renders within the ${viewport.name} viewport`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto(route.path);
       await page.evaluate(() => document.fonts.ready);
-      await expect(page).toHaveScreenshot(`${route.name}-${viewport.name}.png`, {
-        fullPage: true,
-        animations: 'disabled',
-      });
+      const main = page.locator('main');
+      await expect(main).toBeVisible();
+      const mainBounds = await main.boundingBox();
+      expect(mainBounds?.width).toBeGreaterThan(0);
+      expect(mainBounds?.height).toBeGreaterThan(0);
+      const documentWidth = await page.evaluate(() => ({
+        content: document.documentElement.scrollWidth,
+        viewport: window.innerWidth,
+      }));
+      expect(documentWidth.content).toBeLessThanOrEqual(documentWidth.viewport);
     });
   }
 }

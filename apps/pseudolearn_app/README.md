@@ -112,7 +112,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
-| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medidos: 2.67 MiB y 482.18 KiB; ambos cumplen su presupuesto en `packages/pseudolearn_spec/results/r8-artifact-size.json` |
+| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.67 MiB y 482.18 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 221 observaciones y dos propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
@@ -148,9 +148,10 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 # Resolución de dependencias del monorepo
 flutter pub get
 
-# Regeneración y comprobación del puente Rust–Dart
-bash tool/bridge.sh generate
-bash tool/bridge.sh check
+# Preparación de exportación SEE, localizaciones, puente y activos de plataforma
+bash tool/prepare_generated.sh
+
+# Repetición aislada desde un checkout limpio
 bash tool/bridge.sh clean-checkout
 
 # Verificación de fuentes tipográficas empaquetadas
@@ -171,6 +172,10 @@ flutter run -d macos --observe --dart-define-from-file=dart_define.local.json
 ```
 
 ### 2.4 Compilación y build
+
+En un checkout limpio, instala las dependencias y genera las entradas ignoradas antes de ejecutar la app
+o compilarla: `flutter pub get` y `bash tool/prepare_generated.sh`. El script genera la exportación del
+corpus, las localizaciones, los enlaces FRB y los activos de plataforma.
 
 ```bash
 # Artefacto de producción para macOS (.app sin firmar, empaquetable en DMG)
@@ -251,10 +256,10 @@ ese servicio.
 
 `tool/see_app_adapter.dart` implementa el proceso SEE y abre `openNativeTransport()`, por lo que los
 escenarios de app llaman el puente FRB generado para consultar el motor. `see conform --subject app`
-guarda las observaciones completas en `packages/pseudolearn_spec/results/app.json` y la matriz en
-`matrix-app.json`; `see conform --subject app --operation properties` envía las propiedades API por el
-mismo transporte y guarda `properties-app.json`. El manifiesto conserva sus reglas como pendientes hasta
-que todas las divergencias se resuelvan y la campaña de medición de B8 esté completa.
+escribe observaciones y matriz bajo `packages/pseudolearn_spec/results/`, un directorio local ignorado.
+`see conform --subject app --operation properties` ejecuta las propiedades API por el mismo transporte
+y guarda su evidencia en ese directorio. El manifiesto conserva sus reglas como pendientes hasta que
+todas las divergencias se resuelvan y la campaña de medición de B8 esté completa.
 
 ### 2.6 Despliegue y distribución
 
@@ -264,10 +269,10 @@ solo admite `workflow_dispatch`, no usa secretos de publicación y no sube artef
 distribución de su canal. Los workflows de iOS, macOS, Windows Store y Windows R2 usan
 `.github/actions/setup-rust-bridge/action.yml`, que instala el toolchain declarado por
 `native/rust-toolchain.toml`, los objetivos requeridos y las versiones fijadas de `cargo-expand` y
-`flutter_rust_bridge_codegen`, y comprueba que la generación no cambie los archivos versionados. Su caché
-solo conserva descargas de Cargo. La clave incluye sistema operativo, objetivos, toolchain, locks, archivo
-FRB y hook Native Assets; nunca se restauran dependencias de una clave anterior y no se reutilizan binarios
-compilados.
+`flutter_rust_bridge_codegen`. Luego genera la exportación SEE, las localizaciones, los enlaces FRB y los
+activos Apple en rutas ignoradas. Su caché solo conserva descargas de Cargo. La clave incluye sistema
+operativo, objetivos, toolchain, locks, archivo FRB y hook Native Assets; nunca se restauran dependencias
+de una clave anterior ni se reutilizan binarios compilados.
 
 - **Distribución en macOS:** Automatizada por `.github/workflows/push-production-macos.yml`, en la raíz del
   monorepo. Un disparo manual (`workflow_dispatch`) hace que un runner
@@ -417,19 +422,16 @@ compilados.
 
 ### 2.7 Regeneración de los activos de marca
 
-La pantalla de lanzamiento de iOS no es un activo dibujado a mano: se rasteriza desde la misma geometría que la app
-pinta
-en su primer fotograma, y con ella se escriben los dos `Contents.json` del catálogo. Se ejecuta cuando cambia la marca,
-no
-en cada compilación:
+La pantalla de lanzamiento de iOS se rasteriza desde la geometría que la app pinta en su primer fotograma. Los íconos de
+iOS, macOS y Windows usan esa geometría sobre el fondo degradado del vector maestro. `tool/prepare_generated.sh` los
+regenera antes de compilar y escribe los `Contents.json` de los catálogos:
 
 ```bash
-# Escribe LaunchImage.imageset (claro y oscuro, 1x/2x/3x) y LaunchBackground.colorset
-flutter test tool/generate_launch_images.dart
+bash tool/prepare_generated.sh
 ```
 
-El ícono de aplicación **no** sale de aquí: lo genera Xcode desde `app-icon.svg`, que produce el motor de marca en
-`packages/pseudolearn_brand/out/`, y el procedimiento de cada plataforma está en el `README.md` de ese paquete.
+`flutter test tool/generate_app_icons.dart` genera los tamaños iOS y macOS, el PNG de empaquetado MSIX y el ICO de
+Windows. Xcode valida y compila los catálogos durante el build.
 
 ### 2.8 Regeneración de las capturas de producto de la web
 
@@ -442,8 +444,9 @@ para inglés), ejecutándolo hasta el final, abriendo el panel acompañante y en
 cambie algo que la imagen enseñe, no en cada compilación:
 
 ```bash
-# Escribe las ocho capturas en apps/fe-pseudolearn/src/assets/product/{es,en}/
-flutter test tool/generate_product_shot.dart
+bash tool/prepare_generated.sh
+cargo build --release --locked --lib --manifest-path native/Cargo.toml
+FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/native/target/release" flutter test tool/generate_product_shot.dart
 ```
 
 | Archivo                       | Lienzo    | Clase de dispositivo | Idioma  | Tema   |
@@ -1758,7 +1761,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   es
   que las medidas del símbolo existen en dos idiomas, Python y Dart. Se vigila con dos pruebas: la del lockup compara
   sus
-  medidas contra los `viewBox` que el generador escribe, y un golden reduce el símbolo a 16, 24, 32 y 48 px.
+  medidas contra los `viewBox` que el generador escribe, y una prueba de renderizado reduce el símbolo a 16, 24, 32 y 48 px.
 - **La costura del logotipo se aplica como avance negativo tras la última letra de la mitad monoespaciada**, que es
   donde
   el generador la aplica al unir las dos mitades. El tracking solo afecta a la mitad de prosa: cerrar la monoespaciada
@@ -1795,7 +1798,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   del papel —`ui` o `code`— sobre un `TextStyle` ya construido. Los dos consumidores que no heredan la piden
   explícitamente; el resto sigue heredándola y no cambia.
 - **Consecuencia:** el texto de los ordinogramas, los estructogramas y los diagramas de clases pasa a pintarse con la
-  familia empaquetada, igual que el resto de la interfaz, y los goldens que lo retrataban cambian. A cambio, un
+  familia empaquetada, igual que el resto de la interfaz; las pruebas de renderizado comprueban su composición. A cambio, un
   `TextStyle` suelto en un widget sigue siendo correcto sin ceremonia: la extensión solo aparece donde hace falta, que
   es
   justo donde el compilador nunca iba a avisar.
@@ -2062,37 +2065,19 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 
 ### 4.47 Versión exacta de Flutter fijada en `pubspec.yaml` y leída por los workflows
 
-- **Problema:** los *goldens* de `test/presentation/goldens/` se generaron el 6 de septiembre de 2026. Al actualizar
-  Flutter localmente a la 3.47.5 (motor del 16 de septiembre) fallaron 176 de ellos con diferencias de entre el 0,03 % y
-  el 1,7 % de píxeles, todas en el suavizado de bordes de texto, iconos y esquinas: ningún elemento se movió ni cambió de
-  color. La restricción `>=3.24.0` admitía cualquier versión, y los workflows instalaban la última de `stable` en cada
-  ejecución, así que el binario publicado y los *goldens* dependían de cuándo se compilara. El workflow manual de comprobaciones puntuales ejecuta `flutter test`.
-- **Elección:**
-    - `environment.flutter` en `pubspec.yaml` declara la versión exacta (`3.47.5`). Es la única fuente: `flutter pub get`
-      rechaza otra versión en local, y `push-production-macos.yml` y `push-production-windows-r2.yml` la leen con `flutter-version-file`
-      de `subosito/flutter-action`.
-    - Los *goldens* se regeneraron con esa versión tras revisar las imágenes de diferencias de mayor porcentaje.
-    - Actualizar Flutter es un cambio deliberado: subir la versión en `pubspec.yaml`, regenerar los *goldens*
-      revisando sus diferencias y verificar la suite completa, en el mismo cambio.
-- **Alternativas descartadas y por qué:**
-    - *Tolerancia de píxeles en el comparador de goldens:* ocultaría también regresiones visuales reales pequeñas, que
-      es justo lo que los goldens existen para detectar.
-    - *Repetir la versión en cada workflow con `flutter-version`:* tres copias del mismo número que divergen en la
-      primera actualización que olvide una.
-    - *FVM u otro gestor de versiones:* añade una herramienta al entorno (§9 de `AGENTS.md` fija las cadenas de
-      herramientas) para algo que `pubspec.yaml` y la acción de CI ya resuelven.
+- **Problema:** la generación de localizaciones, enlaces nativos y capturas depende del SDK y del motor de rasterización.
+- **Elección:** `environment.flutter` declara `3.47.5` como fuente única. `flutter pub get` rechaza otra versión y los
+  workflows la leen con `flutter-version-file` de `subosito/flutter-action`. Un cambio de SDK regenera los artefactos
+  locales y ejecuta las verificaciones de renderizado y layout.
+- **Alternativas descartadas:** repetir el número en cada workflow o añadir otro gestor de versiones, porque ambos
+  duplican la fuente declarada en `pubspec.yaml`.
 
+### 4.48 Verificación visual sin capturas de referencia
 
-### 4.48 Entorno de rasterización de goldens en CI
-
-- **Problema:** fijar Flutter no fija CoreText ni el suavizado del sistema operativo; una referencia
-  generada en macOS 27 difiere de macOS 26 aunque el layout y el SDK sean iguales.
-- **Elección:** los tests de la app usan Flutter exacto y el runner `xcode-27`, con macOS 27.0.1
-  arm64, que corresponde al entorno de las referencias versionadas. El comparador conserva igualdad
-  exacta de píxeles. Los verificadores y la suite completa corren en ese mismo job.
-- **Alternativas descartadas:** tolerancia de píxeles, omitir goldens o regenerarlos automáticamente
-  para cerrar CI, porque ocultan diferencias sin revisión. El runner está en vista previa: su
-  disponibilidad se comprueba por ejecución; cambiar de imagen requiere revisar los goldens.
+- **Problema:** los PNG versionados fijaban la salida de rasterización del sistema anfitrión y acumulaban 178 imágenes.
+- **Elección:** las pruebas de widgets verifican presencia, layout y ausencia de excepciones de renderizado. No guardan
+  comparaciones de píxeles; una regresión visual pequeña requiere revisar la pantalla renderizada.
+- **Límite:** este control detecta fallos de composición y desbordamientos, no diferencias sutiles de color o tipografía.
 
 ### 4.49 Frontera síncrona Rust–Dart con handles y Native Assets
 
@@ -2108,9 +2093,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   decoder y su bloque. No se retienen punteros ni vistas prestadas entre llamadas. Los consumidores intercambian
   parámetros y resultados por valor, no un estado de memoria compartido.
 - **Código generado:** Solo `native/src/frb_generated.rs` y el subárbol `lib/engine/bridge/` pueden contener los
-  comentarios, atributos, bloques `unsafe` y `unwrap` que FRB emite. Son salidas inmutables del generador y su
-  versión fijada; `bash tool/bridge.sh generate` regenera y formatea esas salidas; `bash tool/bridge.sh check`
-  compara una segunda generación contra el árbol versionado. `analysis_options.yaml` excluye el subárbol Dart generado
+  comentarios, atributos, bloques `unsafe` y `unwrap` que FRB emite. Son salidas ignoradas del generador y su
+  versión fijada; `bash tool/bridge.sh check` compara dos generaciones locales consecutivas. `analysis_options.yaml`
+  excluye el subárbol Dart generado
   del análisis estático. Todo wrapper escrito a mano permanece sujeto a los límites y verificadores ordinarios. Las
   exenciones se limitan a esas rutas exactas.
 - **Responsabilidad del crate:** `native/` es un miembro Cargo separado, con lock, auditoría de dependencias y
@@ -2202,9 +2187,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 
 - **Elección:** después de `flutter build ios --release --no-codesign` y `bash tool/wasm.sh build`,
   `dart run tool/capture_bridge_artifacts.dart` en `packages/pseudolearn_benchmarks` registra hashes,
-  arquitectura, símbolos dSYM separados, toolchain y bytes Brotli en `packages/pseudolearn_spec/results/`.
+  arquitectura, símbolos dSYM separados, toolchain y bytes Brotli en su directorio local `results/` o en la ruta
+  indicada con `--output`.
 - **Medición observada:** el framework ios-arm64 ocupa 2,802,880 bytes (2.67 MiB) y el Wasm comprimido
-  493,755 bytes (482.18 KiB). Ambos quedan dentro de 3 MiB y 600 KiB; el JSON conserva los hashes y comandos.
+  493,755 bytes (482.18 KiB). Ambos quedan dentro de 3 MiB y 600 KiB.
 - **Límite:** el build iOS Release se generó sin firma y se midió antes de empaquetar Flutter. El iPhone 17
   con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
   quedó visible la pantalla inicial; no se atribuyen tiempos de ejecución a esa captura. `flutter drive --release`
@@ -2220,7 +2206,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   siendo manuales y se mantienen en workflows separados.
 - **Reproducibilidad:** `.github/actions/setup-rust-bridge/action.yml` lee la versión y los destinos de
   `native/rust-toolchain.toml`, instala `cargo-expand` y `flutter_rust_bridge_codegen` en sus versiones
-  fijadas, y ejecuta `bash tool/bridge.sh check`. La caché solo contiene descargas de Cargo; su clave depende
+  fijadas, y ejecuta `bash tool/prepare_generated.sh`. La caché solo contiene descargas de Cargo; su clave depende
   del sistema operativo, objetivos, toolchain, `Cargo.toml`, `Cargo.lock`, `pubspec.lock`, configuración FRB
   y hook Native Assets. No se restauran claves parciales ni se cachean bibliotecas compiladas.
 - **Alternativas descartadas:** reutilizar un workflow de publicación expondría la comprobación a sus secretos y
@@ -2445,7 +2431,7 @@ Apple y no toca nada.
 | Cadenas visibles               | `flutter test test/architecture/no_user_facing_strings_test.dart`        | Ausencia de literales de texto en español fuera de capas de localización y vocabulario autorizado                                                | `architecture.yaml`             |
 | Consultas de plataforma        | `flutter test test/presentation/platform_target_verification_test.dart`  | Constructores adaptativos prohibidos en todo `lib/`, y `Platform.isX` / `defaultTargetPlatform` / `TargetPlatform.` solo en las rutas declaradas | `architecture.yaml`             |
 | Familias empaquetadas          | `flutter test test/presentation/theme/bundled_fonts_test.dart`           | Que la suite rasterice con IBM Plex y no con el tipo de relleno del motor, con un caso negativo sobre una familia inexistente                    | `test/flutter_test_config.dart` |
-| Fidelidad de la marca          | `flutter test test/presentation/brand/ test/presentation/goldens/brand/` | Que las medidas del lockup sigan coincidiendo con las del generador de vectores, y que el símbolo aguante la reducción a 16, 24, 32 y 48 px      | `brand/README.md`               |
+| Fidelidad de la marca          | `flutter test test/presentation/brand/ test/presentation/rendering/brand/` | Que las medidas del lockup sigan coincidiendo con el generador de vectores, y que el símbolo aguante la reducción a 16, 24, 32 y 48 px          | `brand/README.md`               |
 | Material para tiendas          | `flutter test tool/generate_store_material.dart`                         | Composición sobre app viva, ausencia de canal alfa (Truecolour tipo 2), auditoría de directrices de tienda y tipografía empaquetada              | `tool/product/`                 |
 
 ### 7.2 Estrategia y pirámide de pruebas
@@ -2455,13 +2441,8 @@ Apple y no toca nada.
   y ante casos límite (árboles vacíos, identificadores de un carácter, recursión profunda, programas sin salida).
 - **Pruebas de verificadores (Casos negativos):** En `test/architecture/fixtures/` se mantienen violaciones deliberadas
   para constatar que cada verificador falla efectivamente ante infracciones.
-- **Suite de pruebas de regresión visual (Goldens):** Renderizado a ocho anchos clave (360, 480, 600, 800, 960, 1280,
-  1920 y 2560 dp) en modos claro y oscuro para certificar la estabilidad del lienzo y componentes.
-- **Los goldens se rasterizan con las familias empaquetadas.** `test/flutter_test_config.dart` las registra antes del
-  primer test. No es un detalle de montaje: mientras no lo hacía, el motor rasterizaba con su tipo de relleno —cada
-  glifo
-  un bloque de avance constante— y ningún golden podía detectar un cambio tipográfico. Al cargarlas, 172 de los 178
-  goldens cambiaron; ese diff es exactamente la tipografía que no se estaba verificando.
+- **Renderizado de widgets:** las pruebas recorren tamaños representativos y comprueban composición, presencia de
+  elementos y ausencia de excepciones. No comparan capturas ni bloquean cambios de rasterización entre anfitriones.
 
 ### 7.3 Señales de alerta al revisar (Code Review Checklist)
 

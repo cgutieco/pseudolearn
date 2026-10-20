@@ -10,9 +10,12 @@ pub struct Reference {
     pub vm_microseconds: f64,
 }
 
-pub fn load(benchmarks: &Path) -> Result<BTreeMap<String, Reference>, String> {
-    let ceiling = read(&benchmarks.join("results/e02r/raw.json"))?;
-    let machine = read(&benchmarks.join("results/macos-r5-vm/summary.json"))?;
+pub fn load(
+    ceiling_path: &Path,
+    machine_path: &Path,
+) -> Result<BTreeMap<String, Reference>, String> {
+    let ceiling = read(ceiling_path)?;
+    let machine = read(machine_path)?;
     parse(&ceiling, &machine)
 }
 

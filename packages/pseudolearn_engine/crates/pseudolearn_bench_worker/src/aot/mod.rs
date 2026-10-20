@@ -33,12 +33,11 @@ impl Drop for Workspace {
     }
 }
 
-pub fn collect(output: &str) -> Result<(), String> {
+pub fn collect(output: &str, ceiling_path: &str, machine_path: &str) -> Result<(), String> {
     if Path::new(output).exists() {
         return Err("Refusing to overwrite existing evidence".to_owned());
     }
-    let benchmarks = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../pseudolearn_benchmarks");
-    let references = baseline::load(&benchmarks)?;
+    let references = baseline::load(Path::new(ceiling_path), Path::new(machine_path))?;
     let workspace = Workspace(
         std::env::temp_dir().join(format!("pseudolearn_aot_bench_{}", std::process::id())),
     );

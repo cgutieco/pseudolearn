@@ -1,7 +1,12 @@
 use see_model::{Block, Corpus, contract::Vocabulary, field, strings};
 use std::path::Path;
 
-pub fn export(root: &Path, corpus: &Corpus, check: bool) -> Result<String, String> {
+pub fn export(
+    root: &Path,
+    corpus: &Corpus,
+    output: Option<&str>,
+    check: bool,
+) -> Result<String, String> {
     let exported = see_export::generate(corpus)?;
     let resources = exported
         .get("resources")
@@ -18,7 +23,11 @@ pub fn export(root: &Path, corpus: &Corpus, check: bool) -> Result<String, Strin
             check,
         )?;
     }
-    crate::storage::artifact(&root.join("specifications/export.json"), &exported, check)
+    let path = output.map_or_else(
+        || root.join("specifications/export.json"),
+        |output| root.join(output),
+    );
+    crate::storage::artifact(&path, &exported, false)
 }
 
 pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {

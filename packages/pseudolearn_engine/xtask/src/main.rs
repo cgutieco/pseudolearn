@@ -14,6 +14,7 @@ fn verify() -> Result<(), String> {
     if std::env::args().nth(1).as_deref() != Some("verify") {
         return Err("Usage: cargo xtask verify".to_owned());
     }
+    export()?;
     for arguments in commands() {
         let status = std::process::Command::new("cargo")
             .args(&arguments)
@@ -25,6 +26,20 @@ fn verify() -> Result<(), String> {
                 arguments.join(" ")
             ));
         }
+    }
+    Ok(())
+}
+
+fn export() -> Result<(), String> {
+    let status = std::process::Command::new("cargo")
+        .current_dir("../pseudolearn_spec")
+        .args([
+            "run", "--locked", "-p", "see_cli", "--bin", "see", "--", "export", "--root", ".",
+        ])
+        .status()
+        .map_err(|error| error.to_string())?;
+    if !status.success() {
+        return Err("Failed to generate the local corpus export".to_owned());
     }
     Ok(())
 }

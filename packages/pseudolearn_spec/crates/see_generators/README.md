@@ -8,9 +8,9 @@ Construye programas bien tipados reproducibles para propiedades. No ejecuta suje
 
 `cargo test -p see_generators` y `cargo xtask verify` desde el miembro. Biblioteca sin despliegue. `cargo run -p see_generators --example program -- 42 0 es`
 reproduce una muestra; acepta semilla, índice y perfil. El ejemplo lee el vocabulario del corpus.
-`cargo run -p see_generators --example program -- suite 42 100 > results/r5-generator-programs.json`
-regenera las fuentes consumidas por la auditoría del HIR de Rust; se versionan porque otro miembro las consume.
-El test del generador rechaza fuentes desactualizadas. No contienen resultados capturados del sujeto.
+`cargo run -p see_generators --example program -- suite 42 100` emite una muestra reproducible por
+stdout para uso local. Las pruebas generan muestras en memoria y no leen capturas guardadas. No contienen
+resultados capturados del sujeto.
 
 ## 3. Arquitectura y modelo del sistema
 

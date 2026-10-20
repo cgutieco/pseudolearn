@@ -15,6 +15,14 @@ pub struct Session {
 
 impl Session {
     pub fn start(command: &mut Command, timeout: Duration) -> Result<Self, String> {
+        Self::start_with_timeouts(command, timeout, timeout)
+    }
+
+    pub fn start_with_timeouts(
+        command: &mut Command,
+        startup_timeout: Duration,
+        request_timeout: Duration,
+    ) -> Result<Self, String> {
         let mut child = command
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
@@ -32,15 +40,25 @@ impl Session {
             responses,
             errors,
             hello: Value::Null,
-            timeout,
+            timeout: request_timeout,
         };
-        session.hello =
-            session.request(&serde_json::json!({"kind":"hello","protocol":"see-protocol/1"}))?;
+        session.hello = session.request_with_timeout(
+            &serde_json::json!({"kind":"hello","protocol":"see-protocol/1"}),
+            startup_timeout,
+        )?;
         validate_hello(&session.hello)?;
         Ok(session)
     }
 
     pub fn request(&mut self, request: &Value) -> Result<Value, String> {
+        self.request_with_timeout(request, self.timeout)
+    }
+
+    fn request_with_timeout(
+        &mut self,
+        request: &Value,
+        timeout: Duration,
+    ) -> Result<Value, String> {
         let bytes = serde_json::to_vec(request).map_err(|error| error.to_string())?;
         if bytes.len() > 1_048_576 {
             return Err("SEE-PROTOCOL: oversized request".to_owned());
@@ -53,18 +71,15 @@ impl Session {
             })
             .map_err(|error| error.to_string())?;
         completion
-            .recv_timeout(self.timeout)
+            .recv_timeout(timeout)
             .map_err(|error| format!("SEE-PROTOCOL: write timeout: {error}"))??;
-        let line = self
-            .responses
-            .recv_timeout(self.timeout)
-            .map_err(|error| {
-                let stderr = self
-                    .errors
-                    .recv_timeout(Duration::from_millis(100))
-                    .unwrap_or_default();
-                format!("SEE-PROTOCOL: adapter timeout or EOF: {error}; stderr: {stderr}")
-            })??;
+        let line = self.responses.recv_timeout(timeout).map_err(|error| {
+            let stderr = self
+                .errors
+                .recv_timeout(Duration::from_millis(100))
+                .unwrap_or_default();
+            format!("SEE-PROTOCOL: adapter timeout or EOF: {error}; stderr: {stderr}")
+        })??;
         let response: Value = serde_json::from_str(&line)
             .map_err(|error| format!("SEE-PROTOCOL: malformed JSON: {error}"))?;
         if response.get("kind") != request.get("kind") {

@@ -68,7 +68,7 @@ fn creates_valid_domain_drafts_and_never_overwrites_identity() -> Result<(), Str
 }
 
 #[test]
-fn lock_and_export_checks_detect_stale_artifacts() -> Result<(), String> {
+fn lock_checks_anchors_and_export_checks_refresh_local_outputs() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     assert!(!fixture.execute(&["lock", "--check"])?.status.success());
     assert!(fixture.execute(&["lock"])?.status.success());
@@ -77,7 +77,12 @@ fn lock_and_export_checks_detect_stale_artifacts() -> Result<(), String> {
     assert!(fixture.execute(&["export", "--check"])?.status.success());
     std::fs::write(fixture.root.join("specifications/export.json"), "{}")
         .map_err(|error| error.to_string())?;
-    assert!(!fixture.execute(&["export", "--check"])?.status.success());
+    assert!(fixture.execute(&["export", "--check"])?.status.success());
+    assert_ne!(
+        std::fs::read_to_string(fixture.root.join("specifications/export.json"))
+            .map_err(|error| error.to_string())?,
+        "{}"
+    );
     let path = fixture.root.join("specifications/lang/sample.md");
     let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
     std::fs::write(
