@@ -9,8 +9,21 @@ pub fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         "servicio" => service(value, actual),
         "aplicacion" => subset(value, actual.get("app")),
         "vista_programa" => program_view(value, actual.get("program_view")),
+        "tokens_include" => includes_values(value, actual.get("tokens")),
         _ => false,
     }
+}
+
+fn includes_values(expected: &Value, actual: Option<&Value>) -> bool {
+    let (Some(expected), Some(actual)) = (expected.as_array(), actual.and_then(Value::as_array))
+    else {
+        return false;
+    };
+    expected.iter().all(|expected_value| {
+        actual
+            .iter()
+            .any(|actual_value| subset(expected_value, Some(actual_value)))
+    })
 }
 
 fn includes_candidates(expected: &Value, actual: Option<&Value>) -> bool {

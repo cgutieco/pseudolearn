@@ -85,6 +85,42 @@ fn validates_loop_poll_cancellation_ordinal() -> Result<(), String> {
 }
 
 #[test]
+fn validates_expected_token_identities_and_spans() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing case")?
+        .fields
+        .insert(
+            "espera".to_owned(),
+            serde_json::json!({"tokens_include": [{
+                "kind": "keyword",
+                "keyword": "algorithm",
+                "span": {
+                    "start": {"line": 1, "column": 1},
+                    "end": {"line": 1, "column": 10}
+                }
+            }]}),
+        );
+    assert!(see_validation::schema::check(&specification).is_empty());
+    specification
+        .blocks
+        .last_mut()
+        .ok_or("Missing case")?
+        .fields
+        .insert(
+            "espera".to_owned(),
+            serde_json::json!({"tokens_include": [{
+                "kind": "keyword",
+                "span": {"start": {"line": 0, "column": 1}, "end": {"line": 1, "column": 2}}
+            }]}),
+        );
+    assert!(!see_validation::schema::check(&specification).is_empty());
+    Ok(())
+}
+
+#[test]
 fn application_cases_require_a_known_scenario_and_input_object() -> Result<(), String> {
     let mut specification = support::specification()?;
     {

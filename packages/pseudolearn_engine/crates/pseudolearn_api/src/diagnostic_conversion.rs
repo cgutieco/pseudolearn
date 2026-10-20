@@ -80,5 +80,5 @@ pub(crate) fn schema(tree: &SyntaxTree, source: &SourceText) -> Vec<ApiUnit> {
 pub(crate) fn internal_fault() -> AnalyzeResponse {
     let source = SourceText::new(String::new());
     let diagnostic = Diagnostic::new(DiagnosticCode::InternalFault, Span::empty());
-    AnalyzeResponse::new(false, vec![convert(&diagnostic, &source, "es")])
+    AnalyzeResponse::new(false, vec![convert(&diagnostic, &source, "es")], Vec::new())
 }

@@ -1,6 +1,6 @@
 # Plan de ejecución de R8 · Puentes con la app y la web
 
-> **Estado:** B0–B3 ejecutados; B4 implementado con pendientes justificados (ver su registro); B5 implementado y verificado localmente (ver su registro); B6 implementado en una iteración con la puerta abierta por validaciones de plataforma pendientes; B7 implementado y verificado en una iteración; B8 implementado parcialmente con la puerta abierta por un conflicto de contrato y E-NR2 pendiente; B9 implementado localmente, con la puerta abierta por publicación y validación remota de builds. Fecha: 2026-10-19.
+> **Estado:** B0–B3 ejecutados; B4 y B5 implementados y verificados localmente, con seguimiento de resaltado y unidad de foco; B6 implementado con validaciones de plataforma pendientes; B7 implementado y verificado; B8 implementado parcialmente, con una divergencia de contrato y E-NR2 pendiente; B9 implementado localmente, con publicación y validación remota de builds pendientes. Fecha: 2026-10-19.
 > Rama única: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 > Las autorizaciones cubrieron B3, B4, una iteración de B5, B6, una iteración de B7, una iteración de B8 y una iteración de B9. No se autorizó publicar aplicaciones.
 >
@@ -623,6 +623,24 @@ workflows en runners Windows y macOS no se ha ejecutado. El push ordinario termi
 publicaron los commits, no se pudo despachar el workflow y no se compararon los HEAD remoto y local.
 E-NR2 continúa sin la campaña requerida, la medición física no quedó aprobada y B6 mantiene validaciones
 de plataforma pendientes. B9 no cierra R8 y no inicia R9.
+
+#### Seguimiento local de B4/B5 · 2026-10-19
+
+Se completaron dos pendientes de integración de la composición Rust. `API.ANALYZE` devuelve los tokens
+léxicos ordenados con identidad y tramos; `RustProgramAnalyzer` los convierte a categorías de resaltado,
+incluidos los tokens disponibles cuando el análisis recupera errores. `RustFocusTracker` deriva `unitId`
+desde `API.PROGRAM.VIEW` para unidades ejecutables y miembros de clase, y conserva la identidad al entrar
+en subprocesos. Se añadieron pruebas del analizador y de foco para ambos caminos.
+
+Las verificaciones locales de la app pasaron: `flutter test --no-pub` (2.574 pruebas),
+`flutter analyze --fatal-infos --fatal-warnings` y límites métricos. La biblioteca nativa Release se
+reconstruyó antes de la suite. `cargo check` y los tests dirigidos de API, esquema y comparación SEE
+pasaron; `API.ANALYZE` ejecutó diez observaciones sin divergencias. La conformidad de `app` ejecutó 95
+observaciones y conserva una divergencia conocida en `APP.EXEC.PACE#R4/C9`; la conformidad completa de
+`engine` ejecutó 1.526 observaciones y conserva una divergencia conocida en
+`API.STATE.QUERY#R4/C4`. No se ejecutaron pruebas de app en plataformas distribuidas. Este seguimiento no
+cierra B4, B5, B8 ni R8: E-NR2 continúa sin ejecutor, `APP.EXEC.PACE#C9` sigue en conflicto con las reglas
+del corpus, y las puertas de plataforma y publicación permanecen abiertas.
 
 ### Registro de B0 · 2026-10-19
 

@@ -11,6 +11,22 @@
   ],
   "changes": [
     {
+      "id": "API.ANALYZE",
+      "version": "0.1.0",
+      "classification": "ampliacion",
+      "see_classes": [
+        "requiere_revision",
+        "verificacion_anadida"
+      ],
+      "see_review_required": true,
+      "rationale": "El análisis expone todos los tokens léxicos con identidad y tramo, incluidos comentarios, caracteres inválidos y programas con errores recuperables, para que los consumidores proyecten resaltado sin repetir el análisis.",
+      "impact": [
+        "API.ANALYZE",
+        "APP.ENGINE.BOUNDARY"
+      ],
+      "status": "experimental"
+    },
+    {
       "id": "API.PROGRAM.VIEW",
       "version": "0.1.0",
       "classification": "ampliacion",

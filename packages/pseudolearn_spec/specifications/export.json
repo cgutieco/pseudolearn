@@ -4673,10 +4673,12 @@
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R1",
-            "texto": "Analizar recibe texto, vocabulario explícito y rigor, y devuelve los diagnósticos en el orden de DIAG.ORDERING junto con la presencia del árbol. El vocabulario no se deduce en la API.",
+            "texto": "Analizar recibe texto, vocabulario explícito y rigor, y devuelve los diagnósticos en el orden de DIAG.ORDERING, la presencia del árbol y todos los tokens léxicos en orden de fuente con su identidad y tramo. La respuesta conserva comentarios y caracteres Unicode sin normalizar, incluso si el análisis encuentra errores. El vocabulario no se deduce en la API.",
             "verificacion": [
               "C1",
-              "C2"
+              "C2",
+              "C3",
+              "C4"
             ]
           },
           "kind": "regla"
@@ -4746,6 +4748,134 @@
         },
         {
           "fields": {
+            "espera": {
+              "tokens_include": [
+                {
+                  "keyword": "algorithm",
+                  "kind": "keyword"
+                },
+                {
+                  "kind": "comment",
+                  "span": {
+                    "end": {
+                      "column": 5,
+                      "line": 2
+                    },
+                    "start": {
+                      "column": 1,
+                      "line": 2
+                    }
+                  }
+                },
+                {
+                  "keyword": "integerType",
+                  "kind": "keyword"
+                },
+                {
+                  "kind": "operator",
+                  "span": {
+                    "end": {
+                      "column": 5,
+                      "line": 4
+                    },
+                    "start": {
+                      "column": 3,
+                      "line": 4
+                    }
+                  }
+                },
+                {
+                  "kind": "integer_literal",
+                  "span": {
+                    "end": {
+                      "column": 7,
+                      "line": 4
+                    },
+                    "start": {
+                      "column": 6,
+                      "line": 4
+                    }
+                  }
+                },
+                {
+                  "kind": "punctuation",
+                  "span": {
+                    "end": {
+                      "column": 8,
+                      "line": 4
+                    },
+                    "start": {
+                      "column": 7,
+                      "line": 4
+                    }
+                  }
+                }
+              ]
+            },
+            "id": "C3",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\n// ñ\nDefinir n Como Entero;\nn <- 4;\nFinAlgoritmo\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
+            "espera": {
+              "tokens_include": [
+                {
+                  "kind": "comment",
+                  "span": {
+                    "end": {
+                      "column": 5,
+                      "line": 2
+                    },
+                    "start": {
+                      "column": 1,
+                      "line": 2
+                    }
+                  }
+                },
+                {
+                  "kind": "invalid_character",
+                  "span": {
+                    "end": {
+                      "column": 2,
+                      "line": 4
+                    },
+                    "start": {
+                      "column": 1,
+                      "line": 4
+                    }
+                  }
+                }
+              ]
+            },
+            "id": "C4",
+            "operacion": "analyze",
+            "origen": "derivado",
+            "perfil_base": "es",
+            "perfiles": [
+              "es"
+            ],
+            "programa": "Algoritmo P\n// ñ\nFinAlgoritmo\n@\n",
+            "regla": "R1",
+            "rigor": [
+              "estricto"
+            ]
+          },
+          "kind": "caso"
+        },
+        {
+          "fields": {
             "clase": "semantica",
             "fuerza": "DEBE",
             "id": "R2",
@@ -4770,7 +4900,7 @@
           "kind": "propiedad"
         }
       ],
-      "hash": "cfec2cb06859bc4758f349cb2ec3c074236be36762879200532d4038b2a0a4ba",
+      "hash": "5ba423dca80bfccce15b9c970e02516db868a2cc7e281594944a2254220104a4",
       "metadata": {
         "cambio": null,
         "depende_de": [
@@ -4800,7 +4930,7 @@
         "id": "API.ANALYZE",
         "reemplaza": null,
         "reemplazada_por": null,
-        "resumen": "Texto, vocabulario y rigor producen diagnósticos ordenados y un esquema.",
+        "resumen": "Texto, vocabulario y rigor producen tokens, diagnósticos ordenados y un esquema.",
         "revisado_por": [],
         "sujetos": [
           "engine"

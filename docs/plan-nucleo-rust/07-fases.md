@@ -327,11 +327,11 @@ líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el inform
 
 - **Depende de.** R7.
 - **Contenido.**
-  - [x] Especificaciones `APP.*` especificadas en B1; su implementación y conformidad siguen pendientes.
-  - [ ] Crate `pseudolearn_bridge` y código Dart generado.
-  - [ ] Adaptador `RustCoreEngine` en la capa `engine/` de la app.
-  - [ ] `pseudolearn_wasm`.
-  - [ ] Flujos de publicación con la cadena Rust.
+  - [x] Especificaciones `APP.*` especificadas en B1 y adaptador SEE real implementado en B8; la conformidad conserva una divergencia.
+  - [x] Crate `pseudolearn_bridge` y código Dart generado.
+  - [x] Adaptador `RustCoreEngine` en la capa `engine/` de la app.
+  - [x] `pseudolearn_wasm`.
+  - [x] Flujos de publicación con la cadena Rust.
   - [x] Decisión D-P07: conservar emisores y diagramas mediante la vista pública `API.PROGRAM.VIEW`.
 - **Criterios de aceptación.**
   - [ ] La app ejecuta con `RustCoreEngine` en todas las plataformas que distribuye.
@@ -339,7 +339,7 @@ líneas de texto y un autocompletado heurístico. Cerrada de nuevo con el inform
      H-11).
   - [ ] `Fib(20)` y los ejercicios de la base de conocimiento corren completos en la app (H-14).
   - [ ] `PERF.VM.STEP-LATENCY` cumplido a través del puente en el dispositivo más modesto.
-  - [ ] `PERF.ARTIFACT.SIZE` cumplido.
+  - [x] `PERF.ARTIFACT.SIZE` cumplido para los artefactos medidos: iOS arm64 Release y Wasm.
 
 ### R9 · Paridad y retiro del núcleo Dart
 

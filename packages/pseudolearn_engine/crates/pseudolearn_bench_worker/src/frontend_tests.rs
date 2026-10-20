@@ -12,7 +12,17 @@ fn rejects_missing_tree_and_false_success_for_incomplete_source() {
         corpus: false,
     };
     assert!(
-        crate::frontend::validate(&AnalyzeResponse::new(false, Vec::new()), &workload).is_err()
+        crate::frontend::validate(
+            &AnalyzeResponse::new(false, Vec::new(), Vec::new()),
+            &workload
+        )
+        .is_err()
     );
-    assert!(crate::frontend::validate(&AnalyzeResponse::new(true, Vec::new()), &workload).is_err());
+    assert!(
+        crate::frontend::validate(
+            &AnalyzeResponse::new(true, Vec::new(), Vec::new()),
+            &workload
+        )
+        .is_err()
+    );
 }

@@ -21,6 +21,14 @@ pub struct ApiSpan {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiToken {
+    pub kind: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub keyword: Option<String>,
+    pub span: ApiSpan,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ApiDiagnostic {
     pub code: String,
     pub class: String,
@@ -36,15 +44,17 @@ pub struct AnalyzeResponse {
     pub kind: String,
     pub tree: bool,
     pub diagnostics: Vec<ApiDiagnostic>,
+    pub tokens: Vec<ApiToken>,
     pub schema: Vec<ApiUnit>,
 }
 
 impl AnalyzeResponse {
-    pub fn new(tree: bool, diagnostics: Vec<ApiDiagnostic>) -> Self {
+    pub fn new(tree: bool, diagnostics: Vec<ApiDiagnostic>, tokens: Vec<ApiToken>) -> Self {
         Self {
             kind: "analyze".to_owned(),
             tree,
             diagnostics,
+            tokens,
             schema: Vec::new(),
         }
     }

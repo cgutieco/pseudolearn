@@ -30,7 +30,7 @@ El contraste entre objetivos materializa peticiones de ejecución y traza con el
 
 diagnosticos compara multiconjuntos; diagnosticos_ordenados compara en orden los mismos campos observables. Ninguna comparación ordena ni deduplica resultados del sujeto. La semilla del caso se transmite sin transformación a seed del protocolo; su ausencia usa 42. `cancelacion_prueba` se transmite como `cancel_at_poll`, independiente de la cancelación por sentencia. El contador incluye condiciones para cancelar también bucles vacíos. La fuente y sus tramos se transmiten originales, también en casos de normalización NFC.
 
-En proyecciones de páginas, `next_cursor: "opaque"` exige un cursor no vacío, sin fijar su codificación. `candidates_include` comprueba pertenencia y no orden. Se descartan comparar estos marcadores literalmente, porque fijarían detalles ajenos al contrato.
+En proyecciones de páginas, `next_cursor: "opaque"` exige un cursor no vacío, sin fijar su codificación. `candidates_include` comprueba pertenencia y no orden. `tokens_include` comprueba que cada token esperado aparece con la identidad y los campos declarados, sin exigir igualdad con toda la secuencia ni excluir la trivia. Se descartan comparar estos marcadores literalmente, porque fijarían detalles ajenos al contrato.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.

@@ -31,6 +31,9 @@ los anclajes activos. La promoción de estado, el revisor y los bloques de clasi
 una modificación normativa con versión conservada solo se reancla cuando está autorizada: se retira la clave exacta
 `ID@versión` de `history` y `see lock` la regenera. Código 0: éxito; 1: error o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
+La comparación admite `tokens_include` para exigir identidades y tramos de tokens concretos sin fijar
+la secuencia completa ni excluir la trivia que la API devuelve. El esquema valida la forma de cada
+identidad y tramo antes de abrir un sujeto.
 E-10 se reproduce con `cargo run -p see_cli --bin see -- budget`; la evidencia está en results/e10.json. E-14 registra el estudio humano diferido en results/e14.json. La correspondencia completa usa specifications/cases/migration.json y el índice educativo del núcleo.
 Verificación: `cargo xtask verify`; incluye el corpus, anclaje y exportación actualizados.
 La evidencia de E-15 vive en `results/e15.json`: ventana bruta de autoría automatizada por regla,

@@ -1,10 +1,11 @@
 [
   {
     "classes": [
-      "editorial"
+      "requiere_revision",
+      "verificacion_anadida"
     ],
     "id": "API.ANALYZE",
-    "review_required": false
+    "review_required": true
   },
   {
     "classes": [

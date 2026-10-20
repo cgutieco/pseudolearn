@@ -123,6 +123,26 @@ fn compares_public_syntax_kinds_without_requiring_private_node_details() {
 }
 
 #[test]
+fn compares_lexical_tokens_and_rejects_missing_or_misaligned_tokens() {
+    let expected = json!({"tokens_include": [
+        {"kind":"keyword","keyword":"algorithm"},
+        {"kind":"comment","span":{"start":{"line":2,"column":1},"end":{"line":2,"column":5}}}
+    ]});
+    let actual = json!({"tokens":[
+        {"kind":"keyword","keyword":"algorithm"},
+        {"kind":"comment","span":{"start":{"line":2,"column":1},"end":{"line":2,"column":5}}},
+        {"kind":"whitespace"}
+    ]});
+    assert!(see_conformance::comparison::compare(&expected, &actual).is_empty());
+
+    let wrong = json!({"tokens":[
+        {"kind":"keyword","keyword":"algorithm"},
+        {"kind":"comment","span":{"start":{"line":2,"column":2},"end":{"line":2,"column":5}}}
+    ]});
+    assert!(!see_conformance::comparison::compare(&expected, &wrong).is_empty());
+}
+
+#[test]
 fn source_event_expectations_reject_missing_or_mismatched_provenance() {
     let expected = json!({"eventos": [
         {"clase": "statement_entered", "linea": 2, "fuente": "nodo_programa"},

@@ -105,7 +105,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 
 | Pendiente                                                      | De quién depende                                                                                                                             | Estado actual                                                                                          |
 |:---------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------|
-| Tramos de comentario para el resaltado del editor              | Del núcleo `pseudolearn_core` (exposición de tokens de comentario en el lexer)                                                               | Abierto                                                                                                |
+| Tramos de comentario para el resaltado del editor              | La API Rust de análisis expone tokens léxicos con tramos y el adaptador los proyecta a categorías del editor                              | Resuelto                                                                                              |
 | Adaptador remoto de Supabase                                   | Definición de credenciales de red y esquema de sincronización remota                                                                         | Resuelto (sincronización bidireccional y outbox en SQLite, ver decisiones de diseño de sincronización) |
 | Vocabulario localizado de receptor de objeto en tabla de traza | Parametrización en `watch_row_projection.dart` para perfiles no hispanos                                                                     | Abierto                                                                                                |
 | Selector del eje de rigor del perfil (estricto/flexible)       | `ProfileCatalog.toLanguageProfile` instancia siempre la variante `.flexible()` del núcleo; falta control de UI y persistencia por documento  | Abierto                                                                                                |
@@ -118,7 +118,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
 | Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medidos: 2.67 MiB y 482.18 KiB; ambos cumplen su presupuesto en `packages/pseudolearn_spec/results/r8-artifact-size.json` |
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 31 de 32 observaciones APP pasan y `API.WIRE-FORMAT#P1` detecta tramos de origen ausentes en eventos |
-| Resaltado y unidades de foco en la ruta Rust                    | La API no expone tokens ni identificadores de unidad del diagrama; `RustProgramAnalyzer` devuelve resaltado vacío y `ExecutionFocus.unitId` queda sin valor | Abierto; lo resuelven el servicio de lenguaje y la vista pública del programa en el consumo de diagramas |
+| Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
 ---
@@ -2141,9 +2141,11 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   implementa sobre cualquier función de envío y `native_rust_transport.dart` es el único archivo que importa los
   enlaces generados. `RustProgramAnalyzer` implementa `ProgramAnalyzer` y `RustProgramExecution` implementa
   `ProgramExecution`: cada `step()` consume un evento de un lote de 25 y proyecta foco, pila de bloques y filas de
-  observación (texto y carácter se muestran entre comillas según la etiqueta de tipo que añade la API; los arreglos como `[2x3]` con sus dimensiones). El idioma de los mensajes de diagnóstico se negocia con un `locale` independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
+  observación (texto y carácter se muestran entre comillas según la etiqueta de tipo que añade la API; los arreglos como `[2x3]` con sus dimensiones). `analyze` devuelve los tokens léxicos y sus tramos, y el adaptador proyecta categorías de resaltado desde ellos incluso cuando hay errores sintácticos. El idioma de los mensajes de diagnóstico se negocia con un `locale` independiente del perfil, y `AppDiagnostic` conserva los argumentos del motor. Los cuatro ritmos no tienen código propio: `StepSettlement` decide solo con `focusRevision`,
   `blockPosition` y `nodeId`, que el adaptador reproduce con las mismas reglas que el observador del núcleo Dart
-  (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El estado se consulta por
+  (un contenedor no mueve el foco; una llamada o retorno conserva el nodo anterior). El foco resuelve `unitId`
+  recorriendo el subárbol de la unidad ejecutable o del miembro de clase desde la misma vista pública, con los
+  identificadores que usan los diagramas. El estado se consulta por
   evento y solo de los marcos activos; arreglos y objetos se describen por consulta paginada (`[n]`, `Clase#id`) sin
   materializar el montón. `RustCompletionSource`, las fuentes de plantillas y vocabulario y los lectores de
   construcciones y aserciones estructurales usan las operaciones públicas del servicio. Los tres adaptadores de
@@ -2210,9 +2212,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   pasan. La divergencia restante es `APP.EXEC.PACE#C9`: su programa asigna `1 / 0` a un entero, pero la división
   produce un real y la conversión a entero no está permitida por el corpus. El error observado es de tipos antes
   de ejecutar, mientras el caso espera `divisionByZero`; el caso requiere clasificación antes de cerrar B8.
-  `see conform --subject app --operation properties` también usa el transporte real y detecta en
-  `API.WIRE-FORMAT#P1` que la proyección de eventos pierde los tramos de origen exigidos por el contrato.
-  Ninguno de los resultados sustituye las mediciones Release de E-NR2.
+  `see conform --subject app --operation properties` usa el transporte real y `API.WIRE-FORMAT#P1` pasó
+  1.852/1.852 muestras con semilla 42 después de conservar los tramos de origen en la proyección de eventos.
+  Esa propiedad no sustituye las mediciones Release de E-NR2.
 - **Alternativas descartadas:** duplicar el motor Rust dentro del ejecutor, responder con valores constantes o
   simular las llamadas de transporte ocultaría fallos de recursos, conversión de posiciones y proyección.
 

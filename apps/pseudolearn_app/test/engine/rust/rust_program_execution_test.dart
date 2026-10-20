@@ -56,6 +56,8 @@ Map<String, Object?> batch(
 FakeRustTransport transportWith({
   required List<Map<String, Object?>> batches,
   List<Map<String, Object?>>? nodes,
+  List<Map<String, Object?>>? units,
+  List<Map<String, Object?>>? members,
   List<Map<String, Object?>> diagnostics = const [],
   Map<String, FakeRustHandler> extra = const {},
 }) {
@@ -65,25 +67,27 @@ FakeRustTransport transportWith({
     'analysis': (_) => {'tree': true, 'diagnostics': diagnostics},
     'program_view': (_) => {
       'revision_id': 'rev1',
-      'units': [
-        {
-          'kind': 'algorithm',
-          'name': 'P',
-          'order': 0,
-          'node_id': 'n0',
-          'span': {
-            'start': {'line': 1, 'column': 1},
-            'end': {'line': 3, 'column': 14},
-          },
-        },
-      ],
+      'units':
+          units ??
+          [
+            {
+              'kind': 'algorithm',
+              'name': 'P',
+              'order': 0,
+              'node_id': 'n0',
+              'span': {
+                'start': {'line': 1, 'column': 1},
+                'end': {'line': 3, 'column': 14},
+              },
+            },
+          ],
       'nodes':
           nodes ??
           [
             node('n0', 'declaration', 1, children: ['n1']),
             node('n1', 'statement', 2, parent: 'n0'),
           ],
-      'members': <Object?>[],
+      'members': members ?? <Object?>[],
       'inheritance': <Object?>[],
     },
     'start': (_) => {'resource': 3},
@@ -99,10 +103,13 @@ FakeRustTransport transportWith({
   });
 }
 
-RustProgramExecution start(FakeRustTransport transport) {
+RustProgramExecution start(
+  FakeRustTransport transport, {
+  String sourceCode = source,
+}) {
   final execution = RustProgramExecution(transport);
   execution.startExecution(
-    sourceCode: source,
+    sourceCode: sourceCode,
     profileId: SyntaxProfileId.classicSpanish,
     languageId: UiLanguageId.spanish,
   );
@@ -111,6 +118,132 @@ RustProgramExecution start(FakeRustTransport transport) {
 
 void main() {
   group('RustProgramExecution', () {
+    test('focus resolves top-level executable unit identifiers', () {
+      const sourceCode =
+          'Algoritmo P\nEscribir 1;\nFinAlgoritmo\n'
+          'SubProceso S\nEscribir 2;\nFinSubProceso\n';
+      final execution = start(
+        transportWith(
+          batches: [
+            batch(
+              [
+                event('statement_entered', node: 'n1'),
+                event('statement_entered', node: 'n3'),
+              ],
+              {'kind': 'completed'},
+            ),
+          ],
+          nodes: [
+            node('n0', 'declaration', 1, children: ['n1']),
+            node('n1', 'statement', 2, parent: 'n0'),
+            node(
+              'n2',
+              'declaration',
+              4,
+              children: ['n3'],
+              syntaxKind: 'subroutine',
+            ),
+            node('n3', 'statement', 5, parent: 'n2'),
+          ],
+          units: [
+            {
+              'kind': 'algorithm',
+              'name': 'P',
+              'order': 0,
+              'node_id': 'n0',
+              'span': {
+                'start': {'line': 1, 'column': 1},
+                'end': {'line': 3, 'column': 14},
+              },
+            },
+            {
+              'kind': 'subprogram',
+              'name': 'S',
+              'order': 1,
+              'node_id': 'n2',
+              'span': {
+                'start': {'line': 4, 'column': 1},
+                'end': {'line': 6, 'column': 16},
+              },
+            },
+          ],
+        ),
+        sourceCode: sourceCode,
+      );
+
+      expect(execution.step().focus?.unitId, 'alg_P');
+      expect(execution.step().focus?.unitId, 'sub_S');
+    });
+
+    test('focus resolves class member identifiers', () {
+      const sourceCode =
+          'Clase C\nMetodo M()\nEscribir 1;\nFinMetodo\nFinClase\n'
+          'Algoritmo P\nFinAlgoritmo\n';
+      final execution = start(
+        transportWith(
+          batches: [
+            batch(
+              [event('statement_entered', node: 'n2')],
+              {'kind': 'completed'},
+            ),
+          ],
+          nodes: [
+            node(
+              'n0',
+              'declaration',
+              1,
+              children: ['n1'],
+              syntaxKind: 'class_unit',
+            ),
+            node(
+              'n1',
+              'declaration',
+              2,
+              children: ['n2'],
+              syntaxKind: 'method',
+            ),
+            node('n2', 'statement', 3, parent: 'n1'),
+            node('n3', 'declaration', 6, syntaxKind: 'algorithm_unit'),
+          ],
+          units: [
+            {
+              'kind': 'class',
+              'name': 'C',
+              'order': 0,
+              'node_id': 'n0',
+              'span': {
+                'start': {'line': 1, 'column': 1},
+                'end': {'line': 5, 'column': 9},
+              },
+            },
+            {
+              'kind': 'algorithm',
+              'name': 'P',
+              'order': 1,
+              'node_id': 'n3',
+              'span': {
+                'start': {'line': 6, 'column': 1},
+                'end': {'line': 7, 'column': 14},
+              },
+            },
+          ],
+          members: [
+            {
+              'class': 'C',
+              'name': 'M',
+              'kind': 'method',
+              'visibility': 'public',
+              'arity': 0,
+              'node_id': 'n1',
+            },
+          ],
+        ),
+        sourceCode: sourceCode,
+      );
+
+      expect(execution.step().focus?.unitId, 'method_C_M');
+    });
+
     test('projects statement focus, output and completion', () {
       final execution = start(
         transportWith(

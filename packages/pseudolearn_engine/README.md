@@ -231,7 +231,7 @@ Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 
 ### api
 
-Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
+Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
 
 La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.

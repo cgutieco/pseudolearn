@@ -91,6 +91,11 @@ errores léxicos o sintácticos. El idioma de presentación se resuelve al rende
 mediante su código y argumentos, sin modificar códigos, tramos ni salida del programa.
 Se rechaza que la CLI tenga que reconstruir posiciones o traducir un mensaje ya presentado.
 
+La respuesta de análisis incluye todos los tokens léxicos en orden de fuente, incluso trivia,
+caracteres inválidos y fin de archivo. Cada token conserva su identidad pública y tramo en
+línea/columna; el consumidor obtiene resaltado sin volver a analizar el texto y puede mantenerlo
+cuando el árbol incluye errores recuperables.
+
 La vista pública del programa (`program_view`) se proyecta desde el árbol sintáctico del documento: unidades en
 orden, nodos de declaración, sentencia y expresión con identificadores opacos por revisión, tramos con
 desplazamientos UTF-8 como cadenas decimales, herencia y sobrescrituras. Cada evento de una ejecución con sesión

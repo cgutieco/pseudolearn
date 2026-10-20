@@ -1,5 +1,6 @@
 import '../../domain/model/diagram/diagram_unit.dart';
 import '../diagram/diagram_vocabulary.dart';
+import 'rust_diagram_unit_identifier.dart';
 import 'rust_program_view.dart';
 
 final class RustExecutableUnit {
@@ -69,7 +70,7 @@ final class RustExecutableUnitReader {
         : DiagramUnitKind.subroutine;
     return RustExecutableUnit(
       unit: DiagramUnit(
-        id: '${isAlgorithm ? 'alg' : 'sub'}_${sourceUnit.name}',
+        id: RustDiagramUnitIdentifier.fromUnit(sourceUnit),
         displayName: vocabulary.formatUnitTitle(
           kind: kind,
           name: sourceUnit.name,
@@ -105,7 +106,7 @@ final class RustExecutableUnitReader {
       entries.add(
         RustExecutableUnit(
           unit: DiagramUnit(
-            id: '${isConstructor ? 'ctor' : 'method'}_${className}_${member.name}',
+            id: RustDiagramUnitIdentifier.fromMember(member),
             displayName: vocabulary.formatUnitTitle(
               kind: kind,
               name: name,

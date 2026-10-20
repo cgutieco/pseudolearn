@@ -28,7 +28,8 @@ fn perform_analysis(request: &AnalyzeRequest) -> AnalyzeResponse {
             crate::diagnostic_conversion::convert(diagnostic, &source, profile.as_str())
         })
         .collect();
-    let mut response = AnalyzeResponse::new(true, converted);
+    let tokens = crate::token_conversion::convert(&tree, &source);
+    let mut response = AnalyzeResponse::new(true, converted, tokens);
     response.schema = crate::diagnostic_conversion::schema(&tree, &source);
     response
 }

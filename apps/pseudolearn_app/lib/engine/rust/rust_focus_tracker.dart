@@ -2,18 +2,20 @@ import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/execution/block_position.dart';
 import '../../domain/model/execution/execution_branch.dart';
 import '../../domain/model/execution/execution_focus.dart';
+import 'rust_view_unit_index.dart';
 import 'rust_program_view.dart';
 import 'rust_statement_stack.dart';
 import 'rust_wire_models.dart';
 
 final class RustFocusTracker {
   final RustProgramView _view;
+  final RustViewUnitIndex _units;
   final RustStatementStack _stack = RustStatementStack();
 
   ExecutionFocus? focus;
   int focusRevision = 0;
 
-  RustFocusTracker(this._view);
+  RustFocusTracker(this._view) : _units = RustViewUnitIndex.of(_view);
 
   BlockPosition get blockPosition => _stack.position;
 
@@ -49,6 +51,7 @@ final class RustFocusTracker {
       range: node.range,
       kind: ExecutionFocusKind.decision,
       branch: _branchOf(event.data),
+      unitId: _units.unitIdOf(node.id),
     );
     focusRevision++;
   }
@@ -61,6 +64,7 @@ final class RustFocusTracker {
       nodeId: previous?.nodeId ?? const ProgramNodeId(0),
       range: node?.range ?? previous!.range,
       kind: ExecutionFocusKind.subroutineEntered,
+      unitId: previous?.unitId,
     );
     focusRevision++;
   }
@@ -72,13 +76,19 @@ final class RustFocusTracker {
         nodeId: previous.nodeId,
         range: previous.range,
         kind: kind,
+        unitId: previous.unitId,
       );
     }
     focusRevision++;
   }
 
   void _focusOn(ProgramNodeId id, RustViewNode node, ExecutionFocusKind kind) {
-    focus = ExecutionFocus(nodeId: id, range: node.range, kind: kind);
+    focus = ExecutionFocus(
+      nodeId: id,
+      range: node.range,
+      kind: kind,
+      unitId: _units.unitIdOf(id),
+    );
     focusRevision++;
   }
 

@@ -5,6 +5,7 @@ import '../../domain/ports/program_analyzer.dart';
 import 'rust_analysis_api.dart';
 import 'rust_diagnostic_projection.dart';
 import 'rust_profile_name.dart';
+import 'rust_syntax_highlighter.dart';
 import 'source_offset_index.dart';
 
 final class RustProgramAnalyzer implements ProgramAnalyzer {
@@ -26,10 +27,8 @@ final class RustProgramAnalyzer implements ProgramAnalyzer {
     );
     try {
       final report = _api.report(handle);
-      final projection = RustDiagnosticProjection(
-        SourceOffsetIndex(sourceCode),
-        profile,
-      );
+      final offsets = SourceOffsetIndex(sourceCode);
+      final projection = RustDiagnosticProjection(offsets, profile);
       final diagnostics = [
         for (final diagnostic in report['diagnostics'] as List<Object?>)
           projection.project(diagnostic as Map<String, Object?>),
@@ -39,7 +38,9 @@ final class RustProgramAnalyzer implements ProgramAnalyzer {
             report['tree'] as bool &&
             !diagnostics.any((item) => item.severity.name == 'error'),
         diagnostics: diagnostics,
-        highlightSpans: const [],
+        highlightSpans: RustSyntaxHighlighter(
+          offsets,
+        ).project(report['tokens'] as List<Object?>? ?? const []),
       );
     } finally {
       _api.release(handle);

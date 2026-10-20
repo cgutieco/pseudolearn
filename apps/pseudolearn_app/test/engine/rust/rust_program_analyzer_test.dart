@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
+import 'package:pseudolearn_app/domain/model/analysis/highlight_span.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
@@ -39,6 +40,7 @@ void main() {
       final transport = transportWith({
         'tree': true,
         'diagnostics': <Object?>[],
+        'tokens': <Object?>[],
       });
       final report = analyzerFor(transport).analyze(
         sourceCode: 'x',
@@ -48,6 +50,90 @@ void main() {
       expect(report.isExecutable, isTrue);
       expect(report.diagnostics, isEmpty);
       expect(transport.calls.last, 'release');
+    });
+
+    test('Rust lexical tokens produce source highlights', () {
+      const sourceCode = 'Algoritmo P\n// ñ\nEscribir 1;\nFinAlgoritmo\n';
+      final report =
+          analyzerFor(
+            transportWith({
+              'tree': true,
+              'diagnostics': <Object?>[],
+              'tokens': [
+                {
+                  'kind': 'keyword',
+                  'keyword': 'algorithm',
+                  'span': {
+                    'start': {'line': 1, 'column': 1},
+                    'end': {'line': 1, 'column': 10},
+                  },
+                },
+                {
+                  'kind': 'identifier',
+                  'span': {
+                    'start': {'line': 1, 'column': 11},
+                    'end': {'line': 1, 'column': 12},
+                  },
+                },
+                {
+                  'kind': 'comment',
+                  'span': {
+                    'start': {'line': 2, 'column': 1},
+                    'end': {'line': 2, 'column': 5},
+                  },
+                },
+                {
+                  'kind': 'integer_literal',
+                  'span': {
+                    'start': {'line': 3, 'column': 10},
+                    'end': {'line': 3, 'column': 11},
+                  },
+                },
+              ],
+            }),
+          ).analyze(
+            sourceCode: sourceCode,
+            profileId: SyntaxProfileId.classicSpanish,
+            languageId: UiLanguageId.spanish,
+          );
+
+      expect(report.highlightSpans.map((span) => span.category), [
+        HighlightCategory.keywordStructured,
+        HighlightCategory.identifier,
+        HighlightCategory.comment,
+        HighlightCategory.literalNumber,
+      ]);
+      final comment = report.highlightSpans[2].range;
+      expect(
+        sourceCode.substring(comment.startOffset, comment.endOffset),
+        '// ñ',
+      );
+    });
+
+    test('Rust lexical tokens remain available when syntax has errors', () {
+      final report =
+          analyzerFor(
+            transportWith({
+              'tree': true,
+              'diagnostics': [diagnostic('error')],
+              'tokens': [
+                {
+                  'kind': 'comment',
+                  'span': {
+                    'start': {'line': 2, 'column': 1},
+                    'end': {'line': 2, 'column': 5},
+                  },
+                },
+              ],
+            }),
+          ).analyze(
+            sourceCode: 'Algoritmo P\n// ñ\n',
+            profileId: SyntaxProfileId.classicSpanish,
+            languageId: UiLanguageId.spanish,
+          );
+
+      expect(report.isExecutable, isFalse);
+      expect(report.highlightSpans.single.category, HighlightCategory.comment);
     });
 
     test('errors make the program not executable but warnings do not', () {

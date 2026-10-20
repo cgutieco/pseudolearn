@@ -42,7 +42,7 @@
   {
     "binding": "pendiente",
     "cases": 1,
-    "measured": "incumple",
+    "measured": "cumple",
     "measurements": [],
     "reason": null,
     "rule": "API.WIRE-FORMAT@0.1.0#R2",

@@ -41,3 +41,45 @@ fn exposes_positions_with_independent_presentation_language() -> Result<(), Stri
     );
     Ok(())
 }
+
+#[test]
+fn exposes_lexical_tokens_in_source_order_with_unicode_positions() -> Result<(), String> {
+    let response = execute_analyze(&AnalyzeRequest {
+        program: "Algoritmo P\n// ñ\nFinAlgoritmo\n".to_owned(),
+        profile: "es".to_owned(),
+        strictness: "strict".to_owned(),
+    });
+    let comment = response
+        .tokens
+        .iter()
+        .find(|token| token.kind == "comment")
+        .ok_or("Missing comment token")?;
+    assert_eq!(comment.span.start.line, 2);
+    assert_eq!(comment.span.start.column, 1);
+    assert_eq!(comment.span.end.line, 2);
+    assert_eq!(comment.span.end.column, 5);
+    assert_eq!(
+        response
+            .tokens
+            .first()
+            .map(|token| token.keyword.as_deref()),
+        Some(Some("algorithm"))
+    );
+    Ok(())
+}
+
+#[test]
+fn retains_lexical_tokens_after_syntax_errors() {
+    let response = execute_analyze(&AnalyzeRequest {
+        program: "Algoritmo P\n@\nFinAlgoritmo\n".to_owned(),
+        profile: "es".to_owned(),
+        strictness: "strict".to_owned(),
+    });
+    assert!(!response.diagnostics.is_empty());
+    assert!(
+        response
+            .tokens
+            .iter()
+            .any(|token| token.kind == "invalid_character")
+    );
+}

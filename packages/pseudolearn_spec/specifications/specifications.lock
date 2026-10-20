@@ -6,11 +6,13 @@
       "elements": {
         "C1": "caso",
         "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
         "P1": "propiedad",
         "R1": "regla",
         "R2": "regla"
       },
-      "hash": "cfec2cb06859bc4758f349cb2ec3c074236be36762879200532d4038b2a0a4ba",
+      "hash": "5ba423dca80bfccce15b9c970e02516db868a2cc7e281594944a2254220104a4",
       "state": "experimental",
       "version": "0.1.0"
     },
@@ -4327,11 +4329,13 @@
       "elements": {
         "C1": "caso",
         "C2": "caso",
+        "C3": "caso",
+        "C4": "caso",
         "P1": "propiedad",
         "R1": "regla",
         "R2": "regla"
       },
-      "hash": "cfec2cb06859bc4758f349cb2ec3c074236be36762879200532d4038b2a0a4ba",
+      "hash": "5ba423dca80bfccce15b9c970e02516db868a2cc7e281594944a2254220104a4",
       "state": "experimental",
       "version": "0.1.0"
     },
