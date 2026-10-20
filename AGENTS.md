@@ -5,9 +5,6 @@ paquete concreto: las capas, los límites numéricos y las decisiones de diseño
 el `README.md` de ese paquete, porque el núcleo del lenguaje y la app de Flutter no comparten
 arquitectura ni criterios.
 
-`CLAUDE.md` es un symlink a este archivo. `.claude/skills` es un symlink a `.agents/skills`. Una
-fuente de verdad, dos puntos de entrada.
-
 ---
 
 ## 1. Antes de tocar cualquier archivo
@@ -177,7 +174,7 @@ No hace falta leer cada línea. Estas señales delatan casi siempre una capa mez
 
 ## 8. Skills disponibles
 
-En `.agents/skills/`, accesibles también desde `.claude/skills`:
+En `.agents/skills/`:
 
 | Skill                     | Cuándo usarla                                                                  |
 |---------------------------|--------------------------------------------------------------------------------|

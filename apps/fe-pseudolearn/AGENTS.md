@@ -1,7 +1,6 @@
 # AGENTS.md — `fe-pseudolearn`
 
-Guía para agentes de código que trabajan en este repositorio. `CLAUDE.md` es un symlink a este
-archivo: una sola fuente, dos puntos de entrada.
+Guía para agentes de código que trabajan en este paquete.
 
 Este paquete **endurece** las reglas del monorepo. Donde ambas hablan, manda esta.
 
@@ -53,7 +52,7 @@ Para sesiones largas, el servidor de desarrollo en segundo plano: `astro dev --b
 
 ## Skills
 
-En `.agents/skills/`, accesibles también desde `.claude/skills`:
+En `.agents/skills/`:
 
 | Skill              | Cuándo                                            |
 | ------------------ | ------------------------------------------------- |

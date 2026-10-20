@@ -60,7 +60,7 @@ el transporte. Las herramientas de marca producen artefactos para destinos decla
 código de sus consumidores.
 
 La raíz contiene configuración y documentación, no lógica de producto ni un gestor global de procesos.
-Los symlinks `CLAUDE.md` → `AGENTS.md` y `.claude/skills` → `.agents/skills` conservan una sola autoridad.
+Las reglas y habilidades transversales viven en `AGENTS.md` y `.agents/skills` como autoridad única.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
