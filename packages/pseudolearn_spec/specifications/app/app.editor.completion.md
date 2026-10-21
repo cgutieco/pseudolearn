@@ -6,14 +6,34 @@
   "dominio": "app",
   "estado": "experimental",
   "version": "0.1.0",
-  "duenos": ["responsable-aplicacion"],
-  "sujetos": ["app"],
+  "duenos": [
+    "responsable-aplicacion"
+  ],
+  "sujetos": [
+    "app"
+  ],
   "resumen": "El editor consume el servicio Rust y mantiene posiciones, revisiones y perfiles coherentes.",
   "depende_de": [
-    {"id": "TOOL.SERVICE.COMPLETION", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.VERSIONING", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.WIRE-FORMAT", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "LANG.SOURCE.POSITION", "version": ">=0.1.0, <1.0.0", "tipo": "usa"}
+    {
+      "id": "TOOL.SERVICE.COMPLETION",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.VERSIONING",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.WIRE-FORMAT",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "LANG.SOURCE.POSITION",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    }
   ],
   "titulo_en": "Editor completion"
 }

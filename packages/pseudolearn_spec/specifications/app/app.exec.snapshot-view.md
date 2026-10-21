@@ -6,15 +6,39 @@
   "dominio": "app",
   "estado": "experimental",
   "version": "0.1.0",
-  "duenos": ["responsable-aplicacion"],
-  "sujetos": ["app"],
+  "duenos": [
+    "responsable-aplicacion"
+  ],
+  "sujetos": [
+    "app"
+  ],
   "resumen": "La vista preserva forma, identidad, relaciones y horizonte del estado consultado.",
   "depende_de": [
-    {"id": "API.STATE.QUERY", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "API.PROGRAM.VIEW", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "ENG.STATE.SNAPSHOT", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "MEM.IDENTITY", "version": ">=0.1.0, <1.0.0", "tipo": "usa"},
-    {"id": "LANG.ARRAY.DIMENSION", "version": ">=0.1.0, <1.0.0", "tipo": "usa"}
+    {
+      "id": "API.STATE.QUERY",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.PROGRAM.VIEW",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "ENG.STATE.SNAPSHOT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "MEM.IDENTITY",
+      "version": ">=0.1.0, <1.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "LANG.ARRAY.DIMENSION",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
   ],
   "titulo_en": "Execution state projection"
 }

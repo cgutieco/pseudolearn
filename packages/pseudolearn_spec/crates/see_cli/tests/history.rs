@@ -30,7 +30,7 @@ fn compares_git_revision_without_changing_checkout() -> Result<(), String> {
 }
 
 #[test]
-fn validation_derives_contract_anchors_from_git_history() -> Result<(), String> {
+fn validation_accepts_frozen_edits_and_lock_refresh_reanchors_them() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     initialize(&fixture)?;
     let path = fixture.root.join("specifications/lang/sample.md");
@@ -41,8 +41,18 @@ fn validation_derives_contract_anchors_from_git_history() -> Result<(), String> 
     )
     .map_err(|error| error.to_string())?;
     let output = fixture.execute(&["validate"])?;
-    assert!(!output.status.success());
-    assert!(String::from_utf8_lossy(&output.stderr).contains("SEE-HASH"));
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(!fixture.execute(&["lock"])?.status.success());
+    assert!(
+        fixture
+            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .status
+            .success()
+    );
     Ok(())
 }
 

@@ -17,22 +17,22 @@
   "depende_de": [
     {
       "id": "ENG.EXEC.MODEL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.SUBPROGRAM.RECURSION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "refina"
     },
     {
       "id": "LANG.ARRAY.DIMENSION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "refina"
     },
     {
       "id": "DIAG.CATALOG",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

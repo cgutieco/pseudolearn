@@ -26,6 +26,14 @@ pub fn lock(root: &Path) -> Result<Lock, String> {
     see_change::locking::generate(&previous, &Lock::default())
 }
 
+pub fn local_lock(root: &Path) -> Result<Lock, String> {
+    let path = root.join("specifications/specifications.lock");
+    if path.exists() {
+        return read_json(&path);
+    }
+    lock(root)
+}
+
 fn previous_corpus(root: &Path) -> Result<Option<Corpus>, String> {
     let Some(repository) = repository_root(root) else {
         return Ok(None);

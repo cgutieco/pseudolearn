@@ -17,17 +17,17 @@
   "depende_de": [
     {
       "id": "API.MODEL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "API.ANALYZE",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "refina"
     },
     {
       "id": "API.ERRORS",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
@@ -37,12 +37,12 @@
     },
     {
       "id": "LANG.SYNTAX.GRAMMAR",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.CLASS.INHERITANCE",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

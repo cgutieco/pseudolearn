@@ -5,7 +5,7 @@
   "titulo": "Navegación de código y referencias",
   "dominio": "herramienta",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-herramientas"
   ],
@@ -16,36 +16,29 @@
   "depende_de": [
     {
       "id": "LANG.DECL.VARIABLE",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.SUBPROGRAM.CALL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.CLASS.DECLARATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "TOOL.SERVICE.INCREMENTAL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],
   "titulo_en": "Code navigation service",
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 

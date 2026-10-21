@@ -36,7 +36,7 @@
   "id": "M1",
   "metrica": "throughput",
   "unidad": "operaciones/s",
-  "suite": "PERF.SUITE.AWFY-CORE",
+  "suite": "PERF.SUITE.CORE",
   "comparador": ">=",
   "umbral": 1,
   "provisional": true,

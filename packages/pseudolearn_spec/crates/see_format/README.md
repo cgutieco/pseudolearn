@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Convierte Markdown con encabezado YAML y cercados tipados en Specification; acepta secuencias YAML y CRLF. Escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
+Convierte Markdown con encabezado YAML y cercados tipados en Specification; acepta secuencias YAML y CRLF. Rechaza enlaces HTTP externos en cualquier parte del archivo, incluida la prosa, y escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -14,8 +14,8 @@ Imports internos permitidos: model. Prohibidas las capas superiores y los sujeto
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+Problema: el corpus debe ser autosuficiente y la prosa exterior a los bloques no forma parte del modelo. Elección: se inspecciona el texto fuente completo antes de analizarlo y se rechazan enlaces HTTP externos; las relaciones entre especificaciones se expresan por sus identidades internas.
+Se descarta limitar la inspección a los bloques tipados, porque dejaría pasar enlaces en títulos o prosa.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -27,7 +27,7 @@ R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive 
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
+`cargo xtask verify` desde el miembro; los tests espejo cubren enlaces internos, enlaces externos en bloques y enlaces externos en prosa.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

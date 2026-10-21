@@ -26,8 +26,10 @@ Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro d
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
 `diff` lee la revisión con Git, sin cambiar el checkout, y puede describir cambios aunque aún falte subir su versión;
 `validate` aplica la puerta de anclajes. `lock` genera una caché local ignorada. La validación deriva el estado anterior
-de la revisión Git base y exige subir la versión para cambios del contrato; Git conserva las versiones previas. La
-promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
+de la revisión Git base. Mientras el versionado está congelado, las ediciones oficiales conservan estado, identidad y
+versión, omiten `cambio` y requieren reanclar la misma versión; la publicación solo se inicia con autorización explícita.
+Al reabrir el versionado se aplican los incrementos y clasificaciones de SEE.VERSIONING y SEE.CHANGE.CLASSIFICATION.
+La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
 o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
 La comparación admite `tokens_include` para exigir identidades y tramos de tokens concretos sin fijar
@@ -228,8 +230,9 @@ Solicitar su ejecución produce `SEE-SUBJECT-RETIRED`. La revisión independient
 la existencia de un vínculo no demuestra por sí sola conformidad ni estabilidad.
 
 La actualización `see lock --refresh ID,ID` reancla exclusivamente los identificadores autorizados,
-sin cambiar versiones durante el desarrollo. Los demás cambios siguen rechazándose y las identidades
-terminales no admiten actualización. La comprobación ordinaria conserva la inmutabilidad del anclaje.
+sin cambiar sus versiones durante el congelamiento. Las ediciones oficiales de una versión congelada no llevan
+`cambio`; las identidades terminales no admiten actualización. La comprobación ordinaria conserva la inmutabilidad
+del anclaje histórico y rechaza cualquier edición que no se haya reanclado.
 El diferencial activo compara engine y aot; no lee ni exige hashes actuales del archivo histórico.
 La puerta local incluye rechazo de dependencias operativas retiradas y sus casos negativos.
 
@@ -271,13 +274,15 @@ cargo-deny (avisos, licencias, duplicados y fuentes), `see validate`, `see expor
 de propiedades y la conformidad engine. Genera exportación y evidencia bajo `results/`, rutas locales
 ignoradas. Antes de abrir la sesión de protocolo, construye el adaptador release para excluir el tiempo de
 compilación del límite de espera de inicio.
-Los casos negativos prueban duplicados, regla huérfana, captura sin revisor, hash/version,
+Los casos negativos prueban duplicados, regla huérfana, captura sin revisor, versión congelada,
 ciclos y perfil faltante; otros prueban esquema, referencias, rango, estados y clasificación.
 Cada rechazo del motor y sus fronteras tiene fixture propio comprobado por su identificador:
 `trace-class` → SEE-TRACE-CLASS, `ir-expectation` → SEE-IR-EXPECTATION, `cli-exit` → SEE-CLI-EXIT,
 `limit-kind` → SEE-LIMIT-KIND, `measurement-protocol` → SEE-MEASUREMENT-PROTOCOL, `ir-coverage` →
 SEE-IR-COVERAGE, `ir-unknown` → SEE-IR-UNKNOWN, `profile-openers` → SEE-PROFILE-OPENERS,
 `message-parity` → SEE-MESSAGE-PARITY y `message-arguments` → SEE-MESSAGE-ARGUMENTS.
+El corpus completo rechaza enlaces HTTP externos y conserva referencias entre sus propias identidades. La procedencia
+de programas adaptados a `PERF.SUITE.CORE` se registra en la sección de fuentes de este README, no en la especificación.
 La conformidad tolera hasta 60 segundos para iniciar un adaptador que compila al lanzarse y mantiene
 15 segundos por petición protocolaria. Las pruebas de protocolo incluyen negociación inválida, JSON corrupto, EOF, timeout y capacidad ausente;
 el adaptador de prueba cubre además observación anunciada, eventos no anunciados, RI y CLI.
@@ -292,6 +297,32 @@ metadatos y xtask; serde aporta contratos de datos; semver rangos; SHA-256 ancla
 Se toma el modelo de versión semántica para cambios declarados; se rechaza equiparar cambio
 textual con clasificación semántica definitiva. No se consultan fuentes externas para decidir
 comportamiento del lenguaje.
+
+`PERF.SUITE.CORE` adapta diez algoritmos y tamaños del conjunto Are We Fast Yet, de Stefan Marr,
+publicado entre 2015 y 2016 bajo licencia MIT. Se conservan los algoritmos y valores de control; se
+rechazan sus mediciones como oráculo de rendimiento de PseudoLearn. Las entradas, adaptaciones,
+oráculos y resultados que sí son normativos están completos en el corpus.
+
+Aviso de copyright y licencia de los programas adaptados:
+
+```text
+Copyright (c) 2015-2016 Stefan Marr
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
 Las aclaraciones de ejecución fijan redondeo binario64 al más cercano con empates al par, formato mínimo
 de ida y vuelta, raíces nocionales que incluyen temporales vivos y sondeos de cancelación en condiciones.

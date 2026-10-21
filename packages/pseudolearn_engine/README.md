@@ -403,7 +403,7 @@ El camino rápido no ejecuta instrucciones de observación. Ambos gemelos compar
 El montón usa palabras contiguas y asas u32 directas; la identidad es ordinal, nunca dirección.
 Texto UTF-8, indicador ASCII y migas cada 64 puntos de código. Recolector preciso sin movimiento, marcas laterales y disparo por celdas.
 Los bancos crecen por duplicación en llamadas; el límite de marcos es independiente del tamaño del banco.
-Los umbrales provisionales y la línea base viven en PERF; resultados desfavorables de E-02 se conservan y condicionan el motor de ejecución.
+Los umbrales provisionales y los controles de rendimiento viven en PERF; resultados desfavorables de E-02 se conservan y condicionan el motor de ejecución.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
@@ -418,12 +418,12 @@ La política de licencias admite las que usan las dependencias presentes; no con
 | see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles y rigores |
 | see conform aot | Casos de ejecución contra el binario real, ambos perfiles y rigores, y propiedades con recolección forzada |
 | Diferencial de gemelos | Igualdad de salida, fallos y estado observable |
-| PERF | Medición local contra referencia con todos los resultados |
+| PERF | Medición local contra los controles y protocolos declarados |
 
 Tests espejo de src/, internos en archivos hermanos, nunca casos del corpus duplicados.
 Camino válido e inválido: texto vacío, binario, Unicode descompuesto, profundidad extrema, colecciones vacías, bordes numéricos e identificadores de un carácter.
 Los verificadores tienen casos negativos. Ningún pánico con programas del corpus o generados.
-Se compara cada etapa con PERF.BASELINE.REFERENCE; toda degradación se informa en el mismo cambio.
+Las mediciones se registran con los protocolos activos y sus controles declarados.
 
 ## 8. Fuentes consultadas y genealogía conceptual
 

@@ -5,7 +5,7 @@
   "titulo": "Versionado de contratos",
   "dominio": "proceso",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -16,14 +16,7 @@
   "depende_de": [],
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 
@@ -34,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cada cambio de versión declara clase, impacto sobre usuarios, impacto sobre implementaciones, justificación y revisor; las versiones aumentan.",
+  "texto": "Hasta que la persona autorice explícitamente iniciar la publicación de una versión del lenguaje, las especificaciones conservan estado, identidad y versión. Las ediciones oficiales se escriben en la misma especificación sin campo cambio y actualizan el anclaje de esa versión. Al reabrirse el versionado, cada cambio de versión declara clase, impactos, justificación y revisor.",
   "verificacion": [
     "estructural"
   ],
@@ -47,7 +40,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Editorial y verificación añadida incrementan revisión; aclaración, ampliación y deprecación incrementan menor; restricción, significado y retirada incrementan mayor.",
+  "texto": "Con el versionado reabierto, los cambios editoriales y la verificación añadida incrementan revisión; aclaración, ampliación y deprecación incrementan menor; restricción, cambio de significado y retirada incrementan mayor. Durante el congelamiento no se cambia la versión.",
   "verificacion": [
     "estructural"
   ],

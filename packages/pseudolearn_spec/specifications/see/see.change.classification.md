@@ -5,7 +5,7 @@
   "titulo": "Clasificación preliminar",
   "dominio": "proceso",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -16,14 +16,7 @@
   "depende_de": [],
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 
@@ -34,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El hash SHA-256 del contenido normativo canónico excluye prosa y presentación; un cambio normativo sin cambiar versión se rechaza.",
+  "texto": "El hash SHA-256 del contenido normativo canónico excluye prosa y presentación. Durante el congelamiento de versiones, una edición oficial conserva la identidad y la versión, omite cambio y requiere reanclar su hash. Al reabrirse el versionado, un cambio normativo sin el incremento y la clasificación requeridos se rechaza.",
   "verificacion": [
     "estructural"
   ],
@@ -47,7 +40,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Diff propone editorial, ampliación, retirada, verificación añadida, restricción o significado; los cambios semánticos requieren confirmación declarada.",
+  "texto": "Diff propone clases editoriales, de ampliación, retirada, verificación añadida, restricción o significado para cuando se reabra el versionado. Durante el congelamiento no se registra campo cambio ni se interpreta una edición oficial como una nueva versión publicada.",
   "verificacion": [
     "estructural"
   ],

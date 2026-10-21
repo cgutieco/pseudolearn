@@ -12,6 +12,10 @@ Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conf
 escenarios de memoria derivados por el oráculo independiente. Usa semilla y muestras del vínculo de
 transparencia de recolección, conserva hashes del corpus y no ejecuta sujetos ni modifica conformidad.
 
+`lock` deriva el anclaje inicial de la revisión Git y luego usa el archivo local ignorado. `--refresh ID,ID`
+reancla solo las identidades autorizadas; después, `lock --check` verifica ese mismo anclaje local.
+`validate` sigue contrastando ciclo de vida con la revisión Git base.
+
 `cargo test -p see_cli`; `cargo check -p see_cli` desde el miembro. No se despliega.
 
 ## 3. Arquitectura y modelo del sistema

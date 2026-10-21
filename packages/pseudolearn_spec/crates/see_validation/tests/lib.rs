@@ -45,7 +45,7 @@ fn rejected_fixtures() -> Vec<(&'static str, &'static str)> {
         ("duplicate", "SEE-DUPLICATE"),
         ("orphan", "SEE-ORPHAN"),
         ("captured", "SEE-CAPTURE"),
-        ("hash", "SEE-HASH"),
+        ("version-freeze", "SEE-VERSION"),
         ("cycle", "SEE-CYCLE"),
         ("missing-profile", "SEE-PROFILE"),
         ("reference", "SEE-REFERENCE"),

@@ -5,7 +5,7 @@
   "titulo": "Servicio de autocompletado",
   "dominio": "herramienta",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-herramientas"
   ],
@@ -16,27 +16,27 @@
   "depende_de": [
     {
       "id": "LANG.SYNTAX.GRAMMAR",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.PROFILE.VOCABULARY",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.TYPES.INTEGER",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.CLASS.DECLARATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "TOOL.SERVICE.INCREMENTAL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {

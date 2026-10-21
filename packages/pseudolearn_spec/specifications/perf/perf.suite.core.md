@@ -1,8 +1,8 @@
 ---
 {
   "formato": "see/1",
-  "id": "PERF.SUITE.AWFY-CORE",
-  "titulo": "Suite AWFY-core",
+  "id": "PERF.SUITE.CORE",
+  "titulo": "Suite de programas de rendimiento",
   "dominio": "rendimiento",
   "estado": "experimental",
   "version": "0.2.0",
@@ -13,7 +13,7 @@
     "engine",
     "aot"
   ],
-  "resumen": "Diez programas comparables de Are We Fast Yet en PseudoLearn.",
+  "resumen": "Diez programas autocontenidos para medir rendimiento en PseudoLearn.",
   "depende_de": [
     {
       "id": "PERF.PROTOCOL",
@@ -21,7 +21,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "AWFY-core suite",
+  "titulo_en": "Core performance suite",
   "cambio": {
     "clase": "ampliacion",
     "impacto_usuarios": "Se distinguen V1F histórico y V1F-S experimental sin cambiar programas, tamaños ni resultados esperados.",
@@ -32,14 +32,14 @@
 }
 ---
 
-# Suite AWFY-core
+# Suite CORE
 
 ```regla
 {
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La suite AWFY-core son diez programas PseudoLearn que leen un tamaño y escriben un resultado de control: Sieve, Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards. Cada uno tiene un tamaño de verificación y un tamaño de medición; su salida esperada se deriva del algoritmo, no de un sujeto.",
+  "texto": "La suite CORE son diez programas PseudoLearn que leen un tamaño y escriben un resultado de control: Sieve, Permute, Queens, Towers, List, Storage, Bounce, Mandelbrot, NBody y Richards. Cada uno tiene un tamaño de verificación y un tamaño de medición; su salida esperada se deriva del algoritmo, no de un sujeto.",
   "verificacion": [
     "C1",
     "C2",
@@ -680,9 +680,7 @@
 | NBody | numérica | 1 | 100 |
 | Richards | objetos | 50 | 1000 |
 
-Las adaptaciones conservan el algoritmo de Are We Fast Yet en un lenguaje sin nulo, sin operadores de bits y sin arreglos como valores: las referencias ausentes son objetos centinela, la disyunción exclusiva se calcula con div y mod, Storage representa los arreglos de hijos con objetos de cuatro campos y las hojas guardan su tamaño, Queens cuenta todas las soluciones y NBody escribe trunc(energía × 10¹⁵). Las salidas esperadas proceden de oráculos independientes escritos desde la definición de cada algoritmo; los valores de control de Are We Fast Yet (669, 8660, 8191, 10, 5461, 1331, 191, 23246 y 9297) se reproducen con los tamaños originales.
-
-Aviso de licencia de los programas derivados de Are We Fast Yet: Copyright (c) 2015-2016 Stefan Marr, licencia MIT.
+Los programas especifican sus propios algoritmos, entradas, tamaños y salidas esperadas. Las referencias ausentes son objetos centinela, la disyunción exclusiva se calcula con div y mod, Storage representa los arreglos de hijos con objetos de cuatro campos y las hojas guardan su tamaño, Queens cuenta todas las soluciones y NBody escribe trunc(energía × 10¹⁵). Los oráculos independientes derivan de esas definiciones; los tamaños y controles de medición constan en esta misma especificación.
 
 ```regla
 {

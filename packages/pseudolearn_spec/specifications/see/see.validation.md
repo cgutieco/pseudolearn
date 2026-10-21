@@ -5,7 +5,7 @@
   "titulo": "Validación por capas",
   "dominio": "proceso",
   "estado": "estable",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -16,14 +16,7 @@
   "depende_de": [],
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, minItems, uniqueItems, items, $ref, anyOf y oneOf; el evaluador limita su profundidad. No anuncia soporte general de JSON Schema.
+Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. El ciclo de vida mantiene congelados estado y versión, salvo la promoción inicial de contratos estables a 1.0.0; las ediciones oficiales de igual versión se reanclan durante este régimen. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, minItems, uniqueItems, items, $ref, anyOf y oneOf; el evaluador limita su profundidad. No anuncia soporte general de JSON Schema.
 
 ## 2. Guía operativa y ciclo de vida
 

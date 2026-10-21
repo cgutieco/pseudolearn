@@ -27,7 +27,7 @@ pub fn parse(text: &str, purpose: &str) -> Result<Vec<Workload>, String> {
             specification
                 .pointer("/metadata/id")
                 .unwrap_or(&Value::Null)
-                == "PERF.SUITE.AWFY-CORE"
+                == "PERF.SUITE.CORE"
         })
         .ok_or("Missing AWFY suite")?;
     let blocks = suite

@@ -2,6 +2,16 @@ use see_model::{Specification, field, strings};
 
 pub fn check(specification: &Specification) -> Vec<String> {
     let mut errors = Vec::new();
+    if serde_json::to_value(&specification.metadata)
+        .is_ok_and(|metadata| contains_external_document_link(&metadata))
+        || specification
+            .blocks
+            .iter()
+            .flat_map(|block| block.fields.values())
+            .any(contains_external_document_link)
+    {
+        errors.push("SEE-REFERENCE: external documentation link forbidden".to_owned());
+    }
     for block in &specification.blocks {
         match block.kind.as_str() {
             "regla" | "invariante" | "precondicion" | "resultado" => {
@@ -13,6 +23,21 @@ pub fn check(specification: &Specification) -> Vec<String> {
         }
     }
     errors
+}
+
+fn contains_external_document_link(value: &serde_json::Value) -> bool {
+    match value {
+        serde_json::Value::String(text) => {
+            let normalized = text.to_ascii_lowercase();
+            normalized.contains("http://")
+                || normalized.contains("https://")
+                || normalized.contains("www.")
+                || normalized.contains("](//")
+        }
+        serde_json::Value::Array(values) => values.iter().any(contains_external_document_link),
+        serde_json::Value::Object(fields) => fields.values().any(contains_external_document_link),
+        _ => false,
+    }
 }
 
 fn check_rule(specification: &Specification, block: &see_model::Block, errors: &mut Vec<String>) {

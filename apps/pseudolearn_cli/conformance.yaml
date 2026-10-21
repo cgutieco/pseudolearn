@@ -14,132 +14,132 @@
   "fases_cerradas": [],
   "vinculos": [
     {
-      "regla": "TOOL.CLI.CHECK@0.1.0#R1",
+      "regla": "TOOL.CLI.CHECK@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CHECK@0.1.0#R2",
+      "regla": "TOOL.CLI.CHECK@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R1",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R2",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R3",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R4",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R5",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R6",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@0.2.0#R7",
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.IR@0.1.0#R1",
+      "regla": "TOOL.CLI.IR@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.MESSAGES@0.2.0#R1",
+      "regla": "TOOL.CLI.MESSAGES@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.MESSAGES@0.2.0#R2",
+      "regla": "TOOL.CLI.MESSAGES@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.RUN@0.2.0#R1",
+      "regla": "TOOL.CLI.RUN@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.RUN@0.2.0#R2",
+      "regla": "TOOL.CLI.RUN@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.RUN@0.2.0#R3",
+      "regla": "TOOL.CLI.RUN@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.RUN@0.2.0#R4",
+      "regla": "TOOL.CLI.RUN@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.BUILD@0.1.0#R1",
+      "regla": "TOOL.CLI.BUILD@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.BUILD@0.1.0#R2",
+      "regla": "TOOL.CLI.BUILD@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.BUILD@0.1.0#R3",
+      "regla": "TOOL.CLI.BUILD@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.BUILD@0.1.0#R4",
+      "regla": "TOOL.CLI.BUILD@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.FORMAT@0.1.0#R1",
+      "regla": "TOOL.CLI.FORMAT@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.FORMAT@0.1.0#R2",
+      "regla": "TOOL.CLI.FORMAT@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.FORMAT@0.1.0#R3",
+      "regla": "TOOL.CLI.FORMAT@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R1",
+      "regla": "TOOL.CLI.TRANSLATE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R2",
+      "regla": "TOOL.CLI.TRANSLATE@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.TRANSLATE@0.1.0#R3",
+      "regla": "TOOL.CLI.TRANSLATE@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

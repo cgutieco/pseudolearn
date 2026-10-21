@@ -18,7 +18,7 @@ fn stable_requires_independent_review_and_two_language_subjects() -> Result<(), 
 }
 
 #[test]
-fn enforces_transitions_classification_and_tombstones() -> Result<(), String> {
+fn lifecycle_transitions_are_ordered() {
     assert!(see_validation::lifecycle::transition(
         "borrador",
         "propuesta"
@@ -30,14 +30,57 @@ fn enforces_transitions_classification_and_tombstones() -> Result<(), String> {
         "retirada",
         "propuesta"
     ));
+}
+
+fn stable_specification() -> Result<see_model::Specification, String> {
     let mut specification = support::specification()?;
+    specification.metadata.estado = "estable".to_owned();
+    specification
+        .metadata
+        .revisado_por
+        .push("independent-reviewer".to_owned());
+    specification.metadata.sujetos.push("engine".to_owned());
+    Ok(specification)
+}
+
+#[test]
+fn permits_initial_baseline_and_freezes_later_version_changes() -> Result<(), String> {
+    let mut specification = stable_specification()?;
     let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
-    specification.metadata.version = "0.2.0".to_owned();
+    specification.metadata.version = "1.0.0".to_owned();
+    specification.metadata.cambio = None;
+    assert!(see_validation::lifecycle::check(&specification, &lock).is_empty());
+    let baseline_lock = see_change::locking::generate(&vec![specification.clone()], &lock)?;
+    specification.metadata.version = "1.0.1".to_owned();
     assert!(
-        see_validation::lifecycle::check(&specification, &lock)
+        see_validation::lifecycle::check(&specification, &baseline_lock)
             .iter()
-            .any(|error| error.starts_with("SEE-CLASSIFICATION"))
+            .any(|error| error == "SEE-VERSION: version is frozen")
     );
+    Ok(())
+}
+
+#[test]
+fn frozen_version_accepts_official_text_edits() -> Result<(), String> {
+    let mut specification = stable_specification()?;
+    let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
+    specification
+        .blocks
+        .first_mut()
+        .ok_or("Missing rule")?
+        .fields
+        .insert(
+            "texto".to_owned(),
+            serde_json::json!("Contrato oficial editado"),
+        );
+    assert!(see_validation::lifecycle::check(&specification, &lock).is_empty());
+    Ok(())
+}
+
+#[test]
+fn frozen_version_requires_tombstones_for_removed_elements() -> Result<(), String> {
+    let mut specification = stable_specification()?;
+    let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
     specification.blocks.pop();
     assert!(
         see_validation::lifecycle::check(&specification, &lock)

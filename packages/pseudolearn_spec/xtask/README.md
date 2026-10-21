@@ -14,7 +14,7 @@ Sin imports de crates del producto: ejecuta comandos por proceso y recorre archi
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-La puerta DOC-NO-TRANSIENT-REFS examina archivos versionados de texto fuera de la carpeta documental de la raíz. Resuelve rutas relativas y enlaces; una mención general a la carpeta no es una referencia a un documento. Las pruebas incluyen citas, rutas y enlaces válidos e inválidos.
+La puerta DOC-NO-TRANSIENT-REFS examina archivos versionados de texto fuera de la carpeta documental de la raíz. Resuelve rutas relativas y enlaces a documentos internos. La validación del corpus tiene otra puerta: rechaza cualquier enlace HTTP externo dentro de una especificación y permite referencias entre identidades del corpus. Las pruebas incluyen enlaces internos permitidos y enlaces externos rechazados en bloques y prosa.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.

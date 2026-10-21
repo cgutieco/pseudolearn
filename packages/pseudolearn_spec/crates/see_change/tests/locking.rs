@@ -2,7 +2,7 @@ mod support;
 use see_model::contract::Lock;
 
 #[test]
-fn anchor_preserves_history_and_detects_silent_mutations() -> Result<(), String> {
+fn anchor_preserves_history_and_reanchors_frozen_edits_explicitly() -> Result<(), String> {
     let original = support::specification()?;
     let lock = see_change::locking::generate(&vec![original.clone()], &Lock::default())?;
     assert!(see_change::locking::check(&vec![original.clone()], &lock)?.is_empty());
@@ -13,12 +13,14 @@ fn anchor_preserves_history_and_detects_silent_mutations() -> Result<(), String>
         .ok_or("Missing rule")?
         .fields
         .insert("texto".to_owned(), serde_json::json!("Otro contrato"));
-    assert!(
-        see_change::locking::check(&vec![modified.clone()], &lock)?
-            .iter()
-            .any(|error| error.starts_with("SEE-HASH"))
-    );
+    assert!(see_change::locking::check(&vec![modified.clone()], &lock)?.is_empty());
     assert!(see_change::locking::generate(&vec![modified.clone()], &lock).is_err());
+    let refreshed = see_change::locking::refresh(
+        &vec![modified.clone()],
+        &lock,
+        &[modified.metadata.id.clone()],
+    )?;
+    assert!(see_change::locking::check(&vec![modified.clone()], &refreshed)?.is_empty());
     modified.metadata.version = "0.2.0".to_owned();
     let next = see_change::locking::generate(&vec![modified], &lock)?;
     assert_eq!(next.history.len(), 2);
@@ -44,11 +46,16 @@ fn hashes_normative_content_and_ignores_editorial_fields() -> Result<(), String>
 }
 
 #[test]
-fn removed_active_identity_requires_tombstone() -> Result<(), String> {
-    let specification = support::specification()?;
-    let lock = see_change::locking::generate(&vec![specification], &Lock::default())?;
+fn removed_candidate_identity_is_allowed_but_stable_identity_requires_tombstone()
+-> Result<(), String> {
+    let candidate = support::specification()?;
+    let candidate_lock = see_change::locking::generate(&vec![candidate], &Lock::default())?;
+    assert!(see_change::locking::check(&vec![], &candidate_lock)?.is_empty());
+    let mut stable = support::specification()?;
+    stable.metadata.estado = "estable".to_owned();
+    let stable_lock = see_change::locking::generate(&vec![stable], &Lock::default())?;
     assert!(
-        see_change::locking::check(&vec![], &lock)?
+        see_change::locking::check(&vec![], &stable_lock)?
             .iter()
             .any(|error| error.starts_with("SEE-IDENTITY"))
     );

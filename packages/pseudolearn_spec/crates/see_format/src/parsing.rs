@@ -17,6 +17,9 @@ const KINDS: [&str; 13] = [
 ];
 
 pub fn parse(path: &str, text: &str) -> Result<Specification, String> {
+    if contains_external_document_link(text) {
+        return Err("SEE-REFERENCE: external documentation link forbidden".to_owned());
+    }
     let normalized = text.replace("\r\n", "\n");
     let body = normalized
         .strip_prefix("---\n")
@@ -32,6 +35,14 @@ pub fn parse(path: &str, text: &str) -> Result<Specification, String> {
         metadata,
         blocks,
     })
+}
+
+fn contains_external_document_link(text: &str) -> bool {
+    let normalized = text.to_ascii_lowercase();
+    normalized.contains("http://")
+        || normalized.contains("https://")
+        || normalized.contains("www.")
+        || normalized.contains("](//")
 }
 
 fn parse_blocks(body: &str) -> Result<Vec<Block>, String> {

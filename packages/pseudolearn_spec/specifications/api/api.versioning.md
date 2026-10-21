@@ -5,7 +5,7 @@
   "titulo": "Versión y capacidades de la API",
   "dominio": "motor",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -16,26 +16,19 @@
   "depende_de": [
     {
       "id": "API.MODEL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.EDITION.MODEL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],
   "titulo_en": "API versioning",
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 

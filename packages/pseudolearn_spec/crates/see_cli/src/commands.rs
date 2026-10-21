@@ -54,7 +54,7 @@ fn command_corpus(arguments: &Arguments) -> Result<see_model::Corpus, String> {
 }
 
 fn lock(arguments: &Arguments, corpus: &see_model::Corpus) -> Result<String, String> {
-    let previous = storage::lock(&arguments.root)?;
+    let previous = storage::local_lock(&arguments.root)?;
     let lock = if arguments.options.contains_key("refresh") {
         see_change::locking::refresh(corpus, &previous, &refresh_ids(arguments))?
     } else {

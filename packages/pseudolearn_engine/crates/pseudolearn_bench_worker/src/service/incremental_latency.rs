@@ -81,7 +81,7 @@ pub fn run(output: &str, measurements_path: &str) -> Result<(), String> {
         measurements_path,
         vec![entry(
             &Measurement {
-                reference: "TOOL.SERVICE.INCREMENTAL@0.1.0#M1",
+                reference: "TOOL.SERVICE.INCREMENTAL@1.0.0#M1",
                 metric: "latencia_p95",
                 unit: "milisegundos",
                 comparator: "<=",

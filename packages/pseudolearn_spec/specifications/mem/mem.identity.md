@@ -18,12 +18,12 @@
   "depende_de": [
     {
       "id": "LANG.TYPES.CLASS",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "LANG.CLASS.INSTANTIATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

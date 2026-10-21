@@ -1,4 +1,19 @@
 mod support;
+use std::path::Path;
+use std::process::Command;
+
+fn git(root: &Path, arguments: &[&str]) -> Result<(), String> {
+    let output = Command::new("git")
+        .current_dir(root)
+        .args(arguments)
+        .output()
+        .map_err(|error| error.to_string())?;
+    if output.status.success() {
+        Ok(())
+    } else {
+        Err(String::from_utf8_lossy(&output.stderr).into_owned())
+    }
+}
 
 #[test]
 fn validates_graphs_impacts_and_rejects_unknown_requests() -> Result<(), String> {
@@ -90,7 +105,51 @@ fn lock_checks_anchors_and_export_checks_refresh_local_outputs() -> Result<(), S
         text.replace("El caso escribe uno.", "El caso escribe dos."),
     )
     .map_err(|error| error.to_string())?;
-    assert!(!fixture.execute(&["validate"])?.status.success());
+    assert!(fixture.execute(&["validate"])?.status.success());
     assert!(!fixture.execute(&["lock"])?.status.success());
+    assert!(
+        fixture
+            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .status
+            .success()
+    );
+    assert!(fixture.execute(&["lock", "--check"])?.status.success());
+    Ok(())
+}
+
+#[test]
+fn refreshed_git_checkout_anchor_passes_lock_check() -> Result<(), String> {
+    let fixture = support::Fixture::create()?;
+    git(&fixture.root, &["init"])?;
+    git(&fixture.root, &["add", "."])?;
+    git(
+        &fixture.root,
+        &[
+            "-c",
+            "user.name=Test",
+            "-c",
+            "user.email=test@example.invalid",
+            "commit",
+            "-m",
+            "baseline",
+        ],
+    )?;
+    assert!(fixture.execute(&["lock"])?.status.success());
+    let path = fixture.root.join("specifications/lang/sample.md");
+    let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    std::fs::write(
+        path,
+        text.replace("El caso escribe uno.", "El caso escribe dos."),
+    )
+    .map_err(|error| error.to_string())?;
+    assert!(fixture.execute(&["validate"])?.status.success());
+    assert!(!fixture.execute(&["lock"])?.status.success());
+    assert!(
+        fixture
+            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .status
+            .success()
+    );
+    assert!(fixture.execute(&["lock", "--check"])?.status.success());
     Ok(())
 }

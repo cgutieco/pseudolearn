@@ -92,7 +92,7 @@ fn reports_rules_verified_only_by_measurements_as_not_applicable() -> Result<(),
     rule.fields.insert("verificacion".to_owned(), json!(["M1"]));
     specification.blocks.push(Block {
         kind: "medicion".to_owned(),
-        fields: serde_json::from_value(json!({"id":"M1","suite":"PERF.SUITE.AWFY-CORE","protocolo":"PERF.PROTOCOL#R1","provisional":true}))
+        fields: serde_json::from_value(json!({"id":"M1","suite":"PERF.SUITE.CORE","protocolo":"PERF.PROTOCOL#R1","provisional":true}))
             .map_err(|error| error.to_string())?,
     });
     let conformance = Conformance {

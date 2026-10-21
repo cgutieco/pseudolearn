@@ -87,7 +87,8 @@ vinculos:
     estado: cumple
   - regla: API.WIRE-FORMAT@0.1.0#R2
     verificacion: ejecutor
-    estado: cumple
+    estado: exento
+    justificacion: La propiedad de ida y vuelta del lote binario es interna al sujeto engine; la frontera app se contrasta en R3.
   - regla: API.WIRE-FORMAT@0.1.0#R3
     verificacion: ejecutor
     estado: pendiente

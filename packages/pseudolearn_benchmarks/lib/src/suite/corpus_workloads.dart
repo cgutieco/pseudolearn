@@ -15,7 +15,7 @@ List<(Workload, List<String>)> _parse(String exported) {
   final specifications = corpus['specifications'] as List<dynamic>;
   final suite = specifications.cast<Map<String, dynamic>>().singleWhere(
     (specification) =>
-        specification['metadata']['id'] == 'PERF.SUITE.AWFY-CORE',
+        specification['metadata']['id'] == 'PERF.SUITE.CORE',
   );
   final workloads = (suite['blocks'] as List<dynamic>)
       .cast<Map<String, dynamic>>()

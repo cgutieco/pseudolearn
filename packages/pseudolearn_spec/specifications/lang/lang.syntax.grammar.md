@@ -5,7 +5,7 @@
   "titulo": "Gramática abstracta formal",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -29,22 +29,22 @@
     },
     {
       "id": "LANG.STMT.TERMINATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     },
     {
       "id": "LANG.SUBPROGRAM.DECLARATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     },
     {
       "id": "LANG.CLASS.DECLARATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     },
     {
       "id": "LANG.OPS.PRECEDENCE",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     }
   ]

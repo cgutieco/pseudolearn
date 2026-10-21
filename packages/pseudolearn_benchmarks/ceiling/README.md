@@ -60,7 +60,7 @@ Código inglés sin comentarios, unsafe, índices que puedan entrar en pánico n
 
 ## 6. Decisiones de producto que condicionan el código
 
-La salida esperada procede de PERF.SUITE.AWFY-CORE exportado. No se captura desde una variante. V2/V1 superior a 1,30 en una familia impone revisión del diseño de memoria antes de R5; el resultado desfavorable se conserva.
+La salida esperada procede de PERF.SUITE.CORE exportado. No se captura desde una variante. V2/V1 superior a 1,30 en una familia impone revisión del diseño de memoria antes de R5; el resultado desfavorable se conserva.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
@@ -68,4 +68,4 @@ cargo xtask verify ejecuta formato, Clippy, tests, cargo-deny y los verificadore
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-PERF.PROTOCOL define la metodología; PERF.SUITE.AWFY-CORE define algoritmos y controles. AWFY aporta los algoritmos bajo MIT, con aviso en el README del paquete padre. Se descarta adoptar resultados de rendimiento de otras máquinas o lenguajes.
+PERF.PROTOCOL define la metodología; PERF.SUITE.CORE define algoritmos y controles. AWFY aporta los algoritmos bajo MIT, con aviso en el README del paquete padre. Se descarta adoptar resultados de rendimiento de otras máquinas o lenguajes.

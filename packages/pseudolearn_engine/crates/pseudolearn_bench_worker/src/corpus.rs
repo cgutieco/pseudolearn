@@ -21,7 +21,7 @@ pub fn awfy_cases() -> Result<Vec<CorpusCase>, String> {
                 specification
                     .pointer("/metadata/id")
                     .and_then(Value::as_str)
-                    == Some("PERF.SUITE.AWFY-CORE")
+                    == Some("PERF.SUITE.CORE")
             })
         })
         .ok_or("Missing AWFY suite")?;

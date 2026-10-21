@@ -5,7 +5,7 @@
   "titulo": "Presentación bilingüe de diagnósticos",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -20,20 +20,13 @@
   "depende_de": [
     {
       "id": "DIAG.CATALOG",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     }
   ],
   "revisado_por": [
     "revision-independiente-automatizada-r9"
-  ],
-  "cambio": {
-    "clase": "editorial",
-    "impacto_usuarios": "Contrato existente respaldado; no cambia su comportamiento observable.",
-    "impacto_implementaciones": "Se conserva la versión numérica y las exenciones explícitas de cada sujeto.",
-    "justificacion": "Promoción revisada con evidencias vigentes y verificadores locales ejecutados.",
-    "revisado_por": "revision-independiente-automatizada-r9"
-  }
+  ]
 }
 ---
 

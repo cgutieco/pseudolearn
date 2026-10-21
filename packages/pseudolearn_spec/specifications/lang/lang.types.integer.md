@@ -5,7 +5,7 @@
   "titulo": "Tipo entero",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],

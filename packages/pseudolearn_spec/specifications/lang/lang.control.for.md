@@ -5,7 +5,7 @@
   "titulo": "Bucle contado",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -21,7 +21,7 @@
   "depende_de": [
     {
       "id": "LANG.TYPES.INTEGER",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

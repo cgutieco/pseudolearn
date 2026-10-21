@@ -2,37 +2,37 @@
   "format": "see-properties/1",
   "entries": [
     {
-      "reference": "API.ANALYZE@0.1.0#P1",
+      "reference": "API.ANALYZE@1.0.0#P1",
       "executor": "analysis_schema",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.ERRORS@0.1.0#P1",
+      "reference": "API.ERRORS@1.0.0#P1",
       "executor": "usage_errors",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.ERRORS@0.1.0#P2",
+      "reference": "API.ERRORS@1.0.0#P2",
       "executor": "internal_fault_containment",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.EXECUTE@0.2.0#P1",
+      "reference": "API.EXECUTE@1.0.0#P1",
       "executor": "execution_controls",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.MODEL@0.1.0#P1",
+      "reference": "API.MODEL@1.0.0#P1",
       "executor": "resource_lifecycle",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.MODEL@0.1.0#P2",
+      "reference": "API.MODEL@1.0.0#P2",
       "executor": "interface_language",
       "seed": 42,
       "samples": 100
@@ -44,13 +44,13 @@
       "samples": 100
     },
     {
-      "reference": "API.VERSIONING@0.1.0#P1",
+      "reference": "API.VERSIONING@1.0.0#P1",
       "executor": "version_negotiation",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "API.VERSIONING@0.1.0#P2",
+      "reference": "API.VERSIONING@1.0.0#P2",
       "executor": "capability_negotiation",
       "seed": 42,
       "samples": 100
@@ -62,79 +62,79 @@
       "samples": 100
     },
     {
-      "reference": "ENG.EXEC.EFFECT-ORDER@0.1.0#P1",
+      "reference": "ENG.EXEC.EFFECT-ORDER@1.0.0#P1",
       "executor": "first_trap",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.EXEC.MODEL@0.2.0#P1",
+      "reference": "ENG.EXEC.MODEL@1.0.0#P1",
       "executor": "determinism",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.INPUT@0.1.0#P1",
+      "reference": "ENG.INPUT@1.0.0#P1",
       "executor": "input_batching",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P1",
+      "reference": "ENG.STATE.INCREMENTAL@1.0.0#P1",
       "executor": "delta_minimality",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P2",
+      "reference": "ENG.STATE.INCREMENTAL@1.0.0#P2",
       "executor": "delta_reconstruction",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.STATE.INCREMENTAL@0.1.0#P3",
+      "reference": "ENG.STATE.INCREMENTAL@1.0.0#P3",
       "executor": "past_state_isolation",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.STATE.SNAPSHOT@0.1.0#P1",
+      "reference": "ENG.STATE.SNAPSHOT@1.0.0#P1",
       "executor": "snapshot_isolation",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.TRACE.STEP@0.1.0#P1",
+      "reference": "ENG.TRACE.STEP@1.0.0#P1",
       "executor": "step_partition",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "ENG.TRACE.STEP@0.1.0#P2",
+      "reference": "ENG.TRACE.STEP@1.0.0#P2",
       "executor": "step_depth",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "IR.INSTRUCTIONS@0.1.0#P1",
+      "reference": "IR.INSTRUCTIONS@1.0.0#P1",
       "executor": "fused_first_trap",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "IR.LOWERING@0.1.0#P1",
+      "reference": "IR.LOWERING@1.0.0#P1",
       "executor": "lowering_validity",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "IR.LOWERING@0.1.0#P2",
+      "reference": "IR.LOWERING@1.0.0#P2",
       "executor": "lowering_execution",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "IR.LOWERING@0.1.0#P3",
+      "reference": "IR.LOWERING@1.0.0#P3",
       "executor": "statement_mass",
       "seed": 42,
       "samples": 100
@@ -152,115 +152,115 @@
       "samples": 100
     },
     {
-      "reference": "MEM.MANAGED.UNOBSERVABLE@0.1.0#P1",
+      "reference": "MEM.MANAGED.UNOBSERVABLE@1.0.0#P1",
       "executor": "gc_transparency",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.HOST.INTERFACE@0.1.0#P1",
+      "reference": "RT.HOST.INTERFACE@1.0.0#P1",
       "executor": "host_recording",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "TOOL.CLI.IR@0.1.0#P1",
+      "reference": "TOOL.CLI.IR@1.0.0#P1",
       "executor": "cli_ir_roundtrip",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#P1",
+      "reference": "TOOL.SERVICE.LOSSLESS-TREE@1.0.0#P1",
       "executor": "lossless_reprint",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "TOOL.SERVICE.LOSSLESS-TREE@0.2.0#P2",
+      "reference": "TOOL.SERVICE.LOSSLESS-TREE@1.0.0#P2",
       "executor": "lossless_recovery",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.ABI@0.1.0#P1",
+      "reference": "RT.ABI@1.0.0#P1",
       "executor": "native_equivalence",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.ABI@0.1.0#P2",
+      "reference": "RT.ABI@1.0.0#P2",
       "executor": "native_equivalence",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.ABI@0.1.0#P3",
+      "reference": "RT.ABI@1.0.0#P3",
       "executor": "native_roots",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.FAULT.REPORTING@0.1.0#P1",
+      "reference": "RT.FAULT.REPORTING@1.0.0#P1",
       "executor": "native_diagnostics",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "RT.LINKING@0.1.0#P1",
+      "reference": "RT.LINKING@1.0.0#P1",
       "executor": "native_linking",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "RT.LINKING@0.1.0#P2",
+      "reference": "RT.LINKING@1.0.0#P2",
       "executor": "native_cleanup",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "RT.LINKING@0.1.0#P3",
+      "reference": "RT.LINKING@1.0.0#P3",
       "executor": "native_permissions",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "RT.PROCESS@0.1.0#P1",
+      "reference": "RT.PROCESS@1.0.0#P1",
       "executor": "native_exit",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "RT.PROCESS@0.1.0#P2",
+      "reference": "RT.PROCESS@1.0.0#P2",
       "executor": "native_environment",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "TOOL.SERVICE.NODE-IDENTITY@0.1.0#P1",
+      "reference": "TOOL.SERVICE.NODE-IDENTITY@1.0.0#P1",
       "executor": "service_node_identity",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "TOOL.SERVICE.INCREMENTAL@0.1.0#P1",
+      "reference": "TOOL.SERVICE.INCREMENTAL@1.0.0#P1",
       "executor": "service_incremental",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "TOOL.SERVICE.COMPLETION@0.1.0#P1",
+      "reference": "TOOL.SERVICE.COMPLETION@1.0.0#P1",
       "executor": "service_completion_templates",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "TOOL.FORMAT.STYLE@0.1.0#P1",
+      "reference": "TOOL.FORMAT.STYLE@1.0.0#P1",
       "executor": "service_format",
       "seed": 42,
       "samples": 10
     },
     {
-      "reference": "TOOL.TRANSLATE.ROUND-TRIP@0.1.0#P1",
+      "reference": "TOOL.TRANSLATE.ROUND-TRIP@1.0.0#P1",
       "executor": "service_translate",
       "seed": 42,
       "samples": 10

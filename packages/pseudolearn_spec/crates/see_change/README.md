@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Calcula SHA-256 de contratos canónicos, conserva anclajes históricos y propone clases de cambio. No decide por una persona el significado de una diferencia. Lock rechaza mutaciones de una versión previamente anclada.
+Calcula SHA-256 de contratos canónicos, conserva anclajes históricos y propone clases de cambio. No decide por una persona el significado de una diferencia. Mientras el versionado esté congelado, los cambios oficiales de contenido conservan versión y requieren `lock --refresh` de sus identidades; al reabrirse el versionado, vuelve la inmutabilidad estricta por versión.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -14,8 +14,8 @@ Imports internos permitidos: model. Prohibidas las capas superiores y los sujeto
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+Problema: mantener el texto oficial sin publicar aún una versión del lenguaje. Elección: el modo congelado permite reanclar una edición explícita bajo la misma identidad y versión; conserva el historial de las demás versiones.
+Se descarta abrir versiones nuevas antes de la autorización de publicación.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

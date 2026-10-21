@@ -5,7 +5,7 @@
   "titulo": "Inferencia flexible",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -24,7 +24,7 @@
   "depende_de": [
     {
       "id": "LANG.TYPES.RELATIONS",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     }
   ]

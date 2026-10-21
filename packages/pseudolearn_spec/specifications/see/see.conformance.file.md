@@ -5,7 +5,7 @@
   "titulo": "Vínculos de conformidad",
   "dominio": "proceso",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-especificaciones"
   ],
@@ -14,13 +14,6 @@
   ],
   "resumen": "Vínculos de conformidad.",
   "depende_de": [],
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
-    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
-    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
-    "revisado_por": "revision-independiente-automatizada"
-  },
   "revisado_por": [
     "revision-independiente-automatizada-r9"
   ]

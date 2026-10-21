@@ -5,7 +5,7 @@
   "titulo": "Herencia simple",
   "dominio": "lenguaje",
   "estado": "estable",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
@@ -24,17 +24,10 @@
   "depende_de": [
     {
       "id": "LANG.CLASS.DECLARATION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
     }
-  ],
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
-    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
-    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
-    "revisado_por": "revision-independiente-automatizada"
-  }
+  ]
 }
 ---
 

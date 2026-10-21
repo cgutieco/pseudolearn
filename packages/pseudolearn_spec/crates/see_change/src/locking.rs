@@ -39,7 +39,8 @@ pub fn check(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
             "{}@{}",
             specification.metadata.id, specification.metadata.version
         );
-        if let Some(recorded) = lock.history.get(&key)
+        if !super::VERSIONING_FROZEN
+            && let Some(recorded) = lock.history.get(&key)
             && recorded.hash != crate::hash(specification)?
         {
             errors.push(format!("SEE-HASH: content changed without version: {key}"));
@@ -51,6 +52,7 @@ pub fn check(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
             .any(|specification| &specification.metadata.id == id)
             && previous.state != "retirada"
             && previous.state != "rechazada"
+            && !["borrador", "propuesta", "experimental"].contains(&previous.state.as_str())
         {
             errors.push(format!(
                 "SEE-IDENTITY: removed specification without tombstone {id}"

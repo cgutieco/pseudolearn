@@ -39,3 +39,18 @@ fn accepts_crlf_and_yaml_sequences() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn rejects_external_documentation_links_in_prose_and_contracts() -> Result<(), String> {
+    let specification = support::specification()?;
+    let text = see_format::write(&specification)?;
+    assert!(see_format::parsing::parse("internal", &text).is_ok());
+    assert_eq!(
+        see_format::parsing::parse(
+            "external",
+            &format!("{text}\nEnlace: www.example.com/spec\n")
+        ),
+        Err("SEE-REFERENCE: external documentation link forbidden".to_owned())
+    );
+    Ok(())
+}

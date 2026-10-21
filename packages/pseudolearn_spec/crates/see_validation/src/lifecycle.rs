@@ -35,6 +35,19 @@ fn check_previous(
     if !transition(&previous.state, &metadata.estado) {
         errors.push("SEE-STATE: invalid lifecycle transition".to_owned());
     }
+    check_elements(specification, previous, errors);
+    if see_change::VERSIONING_FROZEN {
+        check_frozen(specification, previous, errors);
+    } else {
+        check_versioned_change(specification, previous, errors);
+    }
+}
+
+fn check_elements(
+    specification: &Specification,
+    previous: &see_model::contract::Anchor,
+    errors: &mut Vec<String>,
+) {
     for (id, kind) in &previous.elements {
         let current = specification
             .blocks
@@ -46,17 +59,56 @@ fn check_previous(
             errors.push(format!("SEE-IDENTITY: missing or reused tombstone {id}"));
         }
     }
-    if previous.version != metadata.version {
-        let increased = semver::Version::parse(&metadata.version)
-            .ok()
-            .zip(semver::Version::parse(&previous.version).ok())
-            .is_some_and(|(current, previous)| current > previous);
-        if !increased {
-            errors.push("SEE-VERSION: version must increase".to_owned());
-        }
-        check_change(specification, errors);
-        version_step(specification, previous, errors);
+}
+
+fn check_frozen(
+    specification: &Specification,
+    previous: &see_model::contract::Anchor,
+    errors: &mut Vec<String>,
+) {
+    if previous.state != specification.metadata.estado {
+        errors.push("SEE-STATE: lifecycle state is frozen".to_owned());
     }
+    if previous.version != specification.metadata.version
+        && !baseline_promotion(specification, previous)
+    {
+        errors.push("SEE-VERSION: version is frozen".to_owned());
+    }
+}
+
+fn baseline_promotion(
+    specification: &Specification,
+    previous: &see_model::contract::Anchor,
+) -> bool {
+    let metadata = &specification.metadata;
+    previous.state == "estable"
+        && metadata.estado == "estable"
+        && metadata.version == "1.0.0"
+        && metadata.cambio.is_none()
+        && semver::Version::parse(&previous.version)
+            .ok()
+            .is_some_and(|version| version < semver::Version::new(1, 0, 0))
+}
+
+fn check_versioned_change(
+    specification: &Specification,
+    previous: &see_model::contract::Anchor,
+    errors: &mut Vec<String>,
+) {
+    if previous.version == specification.metadata.version {
+        return;
+    }
+    let increased = semver::Version::parse(&specification.metadata.version)
+        .ok()
+        .zip(semver::Version::parse(&previous.version).ok())
+        .is_some_and(|(current, previous)| current > previous);
+    if !increased {
+        errors.push("SEE-VERSION: version must increase".to_owned());
+    }
+    if specification.metadata.cambio.is_some() {
+        check_change(specification, errors);
+    }
+    version_step(specification, previous, errors);
 }
 
 fn check_change(specification: &Specification, errors: &mut Vec<String>) {

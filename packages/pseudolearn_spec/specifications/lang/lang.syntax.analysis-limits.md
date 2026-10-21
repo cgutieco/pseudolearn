@@ -20,12 +20,12 @@
   "depende_de": [
     {
       "id": "LANG.SYNTAX.GRAMMAR",
-      "version": ">=0.2.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "DIAG.CATALOG",
-      "version": ">=0.4.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],
