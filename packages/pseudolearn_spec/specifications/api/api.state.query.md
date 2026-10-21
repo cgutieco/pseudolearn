@@ -5,9 +5,12 @@
   "titulo": "Consulta de estado",
   "dominio": "motor",
   "estado": "estable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "duenos": [
     "responsable-motor"
+  ],
+  "revisado_por": [
+    "revision-independiente-automatizada-r9"
   ],
   "sujetos": [
     "engine"
@@ -25,17 +28,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "State query",
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
-    "impacto_implementaciones": "Consulta del arreglo real sin inicializar; cursor inválido aislado de errores de destino y evento, con negativos independientes.",
-    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
-    "revisado_por": "revision-independiente-automatizada"
-  },
-  "revisado_por": [
-    "revision-independiente-automatizada-r9"
-  ]
+  "titulo_en": "State query"
 }
 ---
 

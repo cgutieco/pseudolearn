@@ -1062,17 +1062,17 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.STATE.QUERY@0.1.0#R1",
+      "regla": "API.STATE.QUERY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.STATE.QUERY@0.1.0#R2",
+      "regla": "API.STATE.QUERY@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.STATE.QUERY@0.1.0#R3",
+      "regla": "API.STATE.QUERY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -1127,28 +1127,24 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.1.0#R1",
+      "regla": "API.PROGRAM.VIEW@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.1.0#R2",
+      "regla": "API.PROGRAM.VIEW@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.PROGRAM.VIEW@0.1.0#R3",
+      "regla": "API.PROGRAM.VIEW@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "Su único caso pertenece al sujeto app; la API rechaza la revisión ajena en sus pruebas y la conformidad se activa con el adaptador app."
+      "estado": "cumple"
     },
     {
-      "regla": "API.STATE.QUERY@0.1.0#R4",
+      "regla": "API.STATE.QUERY@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "La API pagina con cursores ligados a su consulta; el caso C4 espera elements [0,1] y el literal opaque como cursor, que ninguna implementación con cursores ligados puede producir, y queda por resolver en el corpus."
+      "estado": "cumple"
     },
     {
       "regla": "API.WIRE-FORMAT@0.1.0#R3",

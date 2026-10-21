@@ -73,13 +73,13 @@ vinculos:
   - regla: APP.EDITOR.COMPLETION@1.0.0#R7
     verificacion: ejecutor
     estado: cumple
-  - regla: API.PROGRAM.VIEW@0.1.0#R1
+  - regla: API.PROGRAM.VIEW@1.0.0#R1
     verificacion: ejecutor
     estado: cumple
-  - regla: API.PROGRAM.VIEW@0.1.0#R2
+  - regla: API.PROGRAM.VIEW@1.0.0#R2
     verificacion: ejecutor
     estado: cumple
-  - regla: API.PROGRAM.VIEW@0.1.0#R3
+  - regla: API.PROGRAM.VIEW@1.0.0#R3
     verificacion: ejecutor
     estado: cumple
   - regla: API.WIRE-FORMAT@0.1.0#R1

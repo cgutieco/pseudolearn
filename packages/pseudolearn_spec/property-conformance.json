@@ -38,7 +38,7 @@
       "samples": 100
     },
     {
-      "reference": "API.STATE.QUERY@0.1.0#P1",
+      "reference": "API.STATE.QUERY@1.0.0#P1",
       "executor": "state_query",
       "seed": 42,
       "samples": 100
@@ -266,7 +266,7 @@
       "samples": 10
     },
     {
-      "reference": "API.PROGRAM.VIEW@0.1.0#P1",
+      "reference": "API.PROGRAM.VIEW@1.0.0#P1",
       "executor": "program_revision",
       "seed": 42,
       "samples": 100
