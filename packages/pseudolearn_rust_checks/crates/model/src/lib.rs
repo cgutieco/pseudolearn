@@ -14,9 +14,19 @@ pub struct Architecture {
     pub generated_sources: Vec<String>,
     #[serde(default)]
     pub deterministic_output_crates: Vec<String>,
+    #[serde(default)]
+    pub isolation: Vec<Isolation>,
     pub layers: Vec<Layer>,
     pub limits: Limits,
     pub names: Names,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Isolation {
+    pub package: String,
+    pub targets: Vec<String>,
+    pub forbidden: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

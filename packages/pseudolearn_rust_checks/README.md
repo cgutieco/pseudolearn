@@ -14,7 +14,7 @@ Desarrollo: `cargo run -p pseudolearn_check_command --bin rust-checks -- comment
 Compilación: `cargo build --release`; salida en `target/release/rust-checks`.
 Verificación completa: `cargo xtask verify`. No se despliega ni publica a un registro.
 
-Cada comando `layers`, `comments`, `names`, `limits`, `unsafe` y `attributes` recibe una ruta de
+Cada comando `layers`, `isolation`, `comments`, `names`, `limits`, `unsafe` y `attributes` recibe una ruta de
 miembro. `all` ejecuta los seis. Salida 0: válido; 1: violaciones; 2: configuración o lectura inválida.
 La salida textual inglesa contiene ruta, línea, ID estable y descripción. La biblioteca retorna
 `Result<Vec<Violation>, String>`; el error es operativo, no una violación aceptable del producto.
@@ -50,6 +50,13 @@ Las capas con `pending: true` permiten fases intermedias: el verificador exige s
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
+- **Problema:** una feature apagada por omisión protege a los consumidores móviles y Wasm del backend
+  nativo solo mientras nadie la active, y nada lo comprobaba por destino. **Elección:** la clave
+  `isolation` de `architecture.yaml` declara, por paquete, los destinos y los paquetes prohibidos (un
+  sufijo `*` admite prefijo); `isolation` ejecuta `cargo tree --package --target --edges normal,build` y
+  rechaza con `LAYER-DIRECTION` cualquier paquete prohibido alcanzable, y falla si el paquete no existe.
+  **Descartado:** `cargo metadata --filter-platform`, porque exige reconstruir el cierre del grafo desde
+  `resolve`; y confiar en la eliminación de símbolos del enlazador, que no retira el grafo de compilación.
 - **Problema:** expresiones regulares confunden cadenas y comentarios. **Elección:** lexer Rust para
   comentarios y `syn` para sintaxis, visitas y métricas. **Descartado:** un parser Rust propio por coste.
 - **Problema:** no debe duplicarse el grafo de Cargo. **Elección:** metadatos Cargo, comparados contra
@@ -98,6 +105,7 @@ conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos ver
 | names | Binding corto, abreviatura, genérico/lifetime corto y archivo prohibido |
 | limits | Archivo, función, parámetros, anidación y métodos públicos excesivos |
 | layers | Dependencia no permitida, crate ausente o no declarado |
+| isolation | Paquete prohibido alcanzable desde un paquete en un destino declarado, o paquete de la regla inexistente |
 | unsafe | Crate prohibido, función larga, fila ausente o huérfana |
 | attributes | allow y expect, incluidas formas cfg_attr |
 | Clippy | unwrap, expect y pánicos explícitos |

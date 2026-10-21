@@ -3,6 +3,7 @@
 pub mod attributes;
 pub mod comments;
 pub mod declarative;
+pub mod isolation;
 pub mod layers;
 pub mod limits;
 pub mod names;
@@ -13,8 +14,9 @@ use pseudolearn_check_model::Violation;
 use pseudolearn_check_source::loading::{load_sources, read_architecture};
 use std::path::Path;
 
-pub const COMMANDS: [&str; 6] = [
+pub const COMMANDS: [&str; 7] = [
     "layers",
+    "isolation",
     "comments",
     "names",
     "limits",
@@ -31,6 +33,8 @@ pub fn verify(command: &str, root: &Path) -> Result<Vec<Violation>, String> {
         }
     } else if command == "layers" {
         violations.extend(layers::check(root, &rules)?);
+    } else if command == "isolation" {
+        violations.extend(isolation::check(root, &rules)?);
     } else {
         violations.extend(verify_sources(command, root, &rules)?);
     }

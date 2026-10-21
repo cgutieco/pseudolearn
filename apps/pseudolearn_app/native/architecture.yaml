@@ -4,6 +4,16 @@ unsafe_allowed:
   - pseudolearn_bridge
 generated_sources:
   - src/frb_generated.rs
+isolation:
+  - package: pseudolearn_bridge
+    targets:
+      - aarch64-apple-ios
+      - aarch64-apple-ios-sim
+      - x86_64-apple-ios
+      - aarch64-apple-darwin
+      - x86_64-apple-darwin
+      - x86_64-pc-windows-msvc
+    forbidden: [pseudolearn_codegen, pseudolearn_aot_rt, "cranelift-*"]
 layers:
   - name: pseudolearn_bridge
     path: .

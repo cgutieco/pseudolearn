@@ -14,7 +14,7 @@ fn main() -> std::process::ExitCode {
 
 fn run(arguments: &[String]) -> Result<bool, String> {
     if arguments.len() != 2 {
-        return Err("Usage: rust-checks <all|layers|comments|names|limits|unsafe|attributes|toolchain> <member>".to_owned());
+        return Err("Usage: rust-checks <all|layers|isolation|comments|names|limits|unsafe|attributes|toolchain> <member>".to_owned());
     }
     let command = arguments.first().ok_or("Missing verifier")?;
     let root = std::path::Path::new(arguments.get(1).ok_or("Missing member")?);
