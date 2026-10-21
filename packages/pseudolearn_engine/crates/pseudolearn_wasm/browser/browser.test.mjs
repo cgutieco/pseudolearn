@@ -149,6 +149,63 @@ describe('pseudolearn_wasm browser package', () => {
     }
   });
 
+  it('keeps an owned binary event batch intact across memory growth', async () => {
+    const page = await openBrowserPage();
+    try {
+      const report = await page.evaluate(() => {
+        const memory = window.wasmExports.memory;
+        const session = new window.WasmSession();
+        const events = [
+          {
+            class: 'output',
+            line: 4294967295,
+            depth: 2,
+            data: { texto: 'é🧩' },
+            source: {
+              revision_id: 'rev1',
+              node_id: 'rev1.n1',
+              span: {
+                start: { line: 1, column: 1 },
+                end: { line: 1, column: 2 },
+                start_byte: '0',
+                end_byte: '1',
+              },
+            },
+          },
+          { class: 'statement_entered', line: 2, depth: 1, source: null },
+        ];
+        const encoded = JSON.parse(session.call('encode_events', JSON.stringify({ events, encoding: 'binary' })));
+        const retained = Uint8Array.from(encoded.value);
+        const bufferBeforeGrowth = memory.buffer;
+        const comment = 'x'.repeat(8 * 1024 * 1024);
+        session.call('create_analysis', JSON.stringify({ program: `// ${comment}\nAlgoritmo Memory\nFinAlgoritmo\n` }));
+        const decoded = JSON.parse(session.call(
+          'decode_events',
+          JSON.stringify({ encoding: 'binary', encoded: Array.from(retained) }),
+        ));
+        return {
+          signature: new TextDecoder().decode(retained.subarray(0, 4)),
+          grew: memory.buffer.byteLength > bufferBeforeGrowth.byteLength,
+          retainedBuffer: retained.buffer === memory.buffer,
+          retainedLength: retained.byteLength,
+          expected: JSON.parse(JSON.stringify(events)),
+          decoded: decoded.value,
+        };
+      });
+
+      assert.equal(report.signature, 'PLEV');
+      assert.equal(report.grew, true);
+      assert.equal(report.retainedBuffer, false);
+      assert.ok(report.retainedLength > 16);
+      assert.equal(report.decoded.length, report.expected.length);
+      assert.deepEqual(report.decoded[0].source, report.expected[0].source);
+      assert.equal(report.decoded[1].source, null);
+      assert.deepEqual(report.decoded, report.expected);
+    } finally {
+      await page.close();
+    }
+  });
+
   it('rejects memory growth beyond the package limit and remains callable', async () => {
     const page = await openBrowserPage();
     try {

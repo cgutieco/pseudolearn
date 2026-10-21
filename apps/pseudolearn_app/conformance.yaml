@@ -82,20 +82,19 @@ vinculos:
   - regla: API.PROGRAM.VIEW@1.0.0#R3
     verificacion: ejecutor
     estado: cumple
-  - regla: API.WIRE-FORMAT@0.1.0#R1
+  - regla: API.WIRE-FORMAT@1.0.0#R1
     verificacion: ejecutor
     estado: cumple
-  - regla: API.WIRE-FORMAT@0.1.0#R2
+  - regla: API.WIRE-FORMAT@1.0.0#R2
     verificacion: ejecutor
     estado: exento
     justificacion: La propiedad de ida y vuelta del lote binario es interna al sujeto engine; la frontera app se contrasta en R3.
-  - regla: API.WIRE-FORMAT@0.1.0#R3
+  - regla: API.WIRE-FORMAT@1.0.0#R3
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: validacion-plataforma-posterior
-    justificacion: Requiere transporte Wasm real; las comprobaciones nativas no
-      acreditan crecimiento de memoria Wasm. La validación posterior comienza
-      solo en macOS e iOS y no certifica esa frontera.
+    estado: exento
+    justificacion: El adaptador nativo de app no anuncia la capacidad wasm; el
+      transporte Wasm real lo acredita la prueba de Chrome de pseudolearn_wasm
+      (tool/wasm.sh test) con un lote PLEV y crecimiento de memoria.
   - regla: PERF.VM.STEP-LATENCY@0.2.0#R3
     verificacion: ejecutor
     estado: pendiente

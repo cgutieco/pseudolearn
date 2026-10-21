@@ -1019,17 +1019,15 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.WIRE-FORMAT@0.1.0#R1",
+      "regla": "API.WIRE-FORMAT@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "El caso C1 es de operación cli y lo ejecuta el sujeto cli; el motor no recibe argumentos de línea de órdenes y su JSON canónico lo cubre la propiedad de ida y vuelta del formato de eventos."
     },
     {
-      "regla": "API.WIRE-FORMAT@0.1.0#R2",
+      "regla": "API.WIRE-FORMAT@1.0.0#R2",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R8",
-      "justificacion": "El codificador actual no transporta la referencia source; R8 añadirá y verificará su ida y vuelta."
+      "estado": "cumple"
     },
     {
       "regla": "API.ERRORS@1.0.0#R1",
@@ -1147,11 +1145,10 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.WIRE-FORMAT@0.1.0#R3",
+      "regla": "API.WIRE-FORMAT@1.0.0#R3",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere transporte Wasm real; las comprobaciones nativas no acreditan crecimiento de memoria Wasm. La validación posterior comienza solo en macOS e iOS y no certifica esa frontera."
+      "estado": "exento",
+      "justificacion": "El caso C3 pertenece al sujeto app; el transporte Wasm real se acredita con la prueba de Chrome de pseudolearn_wasm (tool/wasm.sh test), que conserva un lote PLEV con source, hace crecer la memoria lineal y lo decodifica sin vistas prestadas."
     },
     {
       "regla": "PERF.ARTIFACT.SIZE@0.1.0#R1",

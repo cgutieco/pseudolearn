@@ -163,6 +163,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   declarar cumplimiento por ausencia de casos. El arranque SEE recorrió borrador, propuesta y
   experimental tras revisión estructural manual y llegó a estable 1.0.0 con la revisión independiente de la persona
   registrada en `revisado_por`; los contratos restantes entran en experimental bajo la autorización de R1.
+  `API.WIRE-FORMAT` llegó a estable 1.0.0 tras cerrar R2 (el codificador ya transporta `source`) y R3 con la prueba de Chrome de `pseudolearn_wasm`; el vínculo app queda exento porque su adaptador nativo no anuncia `wasm`.
 - Problema: clasificar significado requiere juicio. Elección: diff propone clases y exige registro
   de clasificación e impacto; cambios de texto quedan para revisión. No infiere aprobación humana.
 
