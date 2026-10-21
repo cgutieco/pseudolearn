@@ -41,7 +41,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Los registros de medición histórica no forman parte del checkout y no certifican la revisión actual ni plataformas pendientes.
 
-El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
+El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. Deuda asumida del sujeto `aot`: no implementa traza, estado ni entrada incremental (`ENG.INPUT#R3`, `IR.OBSERVATION-POINTS#R1` y `#R3`, `RT.HOST.INTERFACE#R2`), que verifica el sujeto `engine`; `ENG.LIMITS#R8` es de revisión humana y también figura `exento`. La entrada de consola, la lectura de puntos de control en la RI y la interfaz de anfitrión que `aot` sí ofrece figuran `cumple`. El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
 
 El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
 copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,
@@ -109,7 +109,7 @@ Concurrencia: una ejecución y su línea temporal se procesan secuencialmente; e
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación.
+Problema: los consumidores móviles y Wasm no compilan programas nativos. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias nativas solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. Se descarta confiar en la eliminación de símbolos del enlazador, porque no elimina Cranelift del grafo de compilación. La exclusión se verifica con la clave `isolation` de `architecture.yaml` y `rust-checks isolation`: `pseudolearn_wasm` no alcanza `pseudolearn_codegen`, `pseudolearn_aot_rt` ni `cranelift-*` en `wasm32-unknown-unknown`, y el puente de la app lo comprueba en sus destinos iOS, macOS y Windows.
 
 
 La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
@@ -413,6 +413,7 @@ La política de licencias admite las que usan las dependencias presentes; no con
 |---|---|
 | layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |
 | cargo xtask verify al implementar | Formato, Clippy, tests, dependencias, cadena y seis verificadores |
+| isolation | Ningún paquete del backend nativo alcanzable desde Wasm ni desde el puente móvil y de escritorio | `rust-checks isolation` |
 | Wasm y navegador | Grafo sin AOT, generación reproducible, ciclo de vida, límites y memoria | `bash tool/wasm.sh test` |
 | see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles y rigores |
 | see conform aot | Casos de ejecución contra el binario real, ambos perfiles y rigores, y propiedades con recolección forzada |

@@ -5,7 +5,7 @@
   "titulo": "Nivel del código nativo",
   "dominio": "rendimiento",
   "estado": "experimental",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -28,9 +28,9 @@
   "titulo_en": "Native code level",
   "cambio": {
     "clase": "cambio_significado",
-    "impacto_usuarios": "El nivel Cranelift se evalúa frente a V1F con límite 1,70; el nivel optimizado futuro conserva 1,30 frente a V1F-S.",
-    "impacto_implementaciones": "Los arneses identifican nivel y denominador; el intervalo nativo incluye conciliación final. No se reinterpretan campañas históricas.",
-    "justificacion": "V1F omite definición de valores y recolección; separar niveles distingue calidad del backend y equivalencia semántica.",
+    "impacto_usuarios": "R1 exige solo el nivel Cranelift: razón por familia como máximo 1,70 frente a V1F. El nivel optimizado futuro, como máximo 1,30 frente a V1F-S, pasa a la regla R4.",
+    "impacto_implementaciones": "Un backend que cumple 1,70 frente a V1F cumple R1 sin depender del denominador V1F-S. Las mediciones M7 a M10 se verifican en R4. Los arneses identifican nivel y denominador; no se reinterpretan campañas históricas.",
+    "justificacion": "Una sola regla que mezclaba dos niveles impedía certificar el nivel Cranelift mientras el nivel optimizado no existe como backend; separarlas permite certificar cada nivel con su propia evidencia.",
     "revisado_por": "persona-responsable"
   }
 }
@@ -43,16 +43,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,70 frente a V1F para el nivel Cranelift, y como máximo 1,30 frente a V1F-S para el nivel optimizado futuro, en cada familia numérica, recursiva, de objetos y de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
+  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,70 frente a V1F para el nivel Cranelift, en cada familia numérica, recursiva, de objetos y de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
   "verificacion": [
     "M1",
     "M2",
     "M3",
-    "M4",
-    "M7",
-    "M8",
-    "M9",
-    "M10"
+    "M4"
   ]
 }
 ```
@@ -174,6 +170,22 @@
     "macos-arm64"
   ],
   "protocolo": "PERF.PROTOCOL#R1"
+}
+```
+
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,30 frente a V1F-S para el nivel optimizado futuro, en cada familia numérica, recursiva, de objetos y de arreglos. V1F-S incorpora definición de valores y recolección forzada con límite de celdas vivas; el intervalo nativo incluye ejecución y conciliación final.",
+  "verificacion": [
+    "M7",
+    "M8",
+    "M9",
+    "M10"
+  ]
 }
 ```
 

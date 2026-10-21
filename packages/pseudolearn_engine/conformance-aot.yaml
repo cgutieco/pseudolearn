@@ -104,8 +104,8 @@
     {
       "regla": "ENG.LIMITS@0.2.0#R8",
       "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "exento",
+      "justificacion": "Regla de revisión humana: los valores por omisión son informativos y cada cliente los fija en su propia configuración; no hay observación automática posible."
     },
     {
       "regla": "IR.INSTRUCTIONS@0.1.0#R1",
@@ -758,22 +758,28 @@
       "estado": "cumple"
     },
     {
-      "regla": "PERF.AOT.LEVEL@1.0.0#R1",
+      "regla": "PERF.AOT.LEVEL@2.0.0#R1",
       "verificacion": "medicion",
       "estado": "pendiente",
       "resuelve_en": "R6"
     },
     {
-      "regla": "PERF.AOT.LEVEL@1.0.0#R2",
+      "regla": "PERF.AOT.LEVEL@2.0.0#R2",
       "verificacion": "medicion",
       "estado": "pendiente",
       "resuelve_en": "R6"
     },
     {
-      "regla": "PERF.AOT.LEVEL@1.0.0#R3",
+      "regla": "PERF.AOT.LEVEL@2.0.0#R3",
       "verificacion": "medicion",
       "estado": "pendiente",
       "resuelve_en": "R6"
+    },
+    {
+      "regla": "PERF.AOT.LEVEL@2.0.0#R4",
+      "verificacion": "medicion",
+      "estado": "pendiente",
+      "resuelve_en": "nivel-optimizado-posterior"
     },
     {
       "regla": "PERF.SUITE.AWFY-CORE@0.2.0#R1",
