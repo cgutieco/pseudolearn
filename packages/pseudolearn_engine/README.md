@@ -35,7 +35,7 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| codegen: Cranelift permanece como backend release; trampas inmediatas con bloque frío compartido con identidad por sitio de fallo; sin transferencia AOT → VM porque `aot` está exento de observación; evaluar alternativas según costes residuales medidos | E-NR1, RT.ABI | R6 |
+| codegen: Cranelift permanece como backend release y cumple el nivel `PERF.AOT.LEVEL#R1` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. Pendiente el nivel optimizado `PERF.AOT.LEVEL#R4` (≤ 1,30 frente a V1F-S) | E-NR1, RT.ABI | `nivel-optimizado-posterior` |
 
 ## 2. Guía operativa y ciclo de vida
 

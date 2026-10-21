@@ -10,28 +10,18 @@ un documento transitorio y autosustentable; ninguna tarea ni archivo externo deb
 
 ### 1.1 Backend nativo Cranelift (fase R6)
 
-- **Optimización de rendimiento AOT (`PERF.AOT.LEVEL#R1`):**
-    - En la campaña formal `r6-paired-s1-s6` frente a la línea base V1F, las familias *numérica* (1,52×) y *objetos*
-      (1,45×) cumplieron el objetivo de Cranelift (≤ 1,70×), pero *arreglos* (1,72×) y *recursiva* (2,19×) lo
-      incumplieron.
-    - Se requieren optimizaciones arquitectónicas o de generación CLIF (o un pase intermedio de optimización) para
-      reducir los cocientes de medianas por debajo de 1,70× en esas dos familias.
-    - Objetivo de nivel optimizado futuro: alcanzar una razón geométrica por familia ≤ 1,30× frente a V1F-S (variante
-      que incorpora rastreo de indefinidos y recolección forzada con límite de celdas vivas).
-- **Anomalía de rendimiento en `Permute`:**
-    - El experimento de comparación aislada entre políticas de raíces (`AllLive`: 1,61× vs `Borrowed`: 2,18×) confirmó
-      que la degradación en recursiva radica en la interacción entre la política de raíces y el código generado.
-    - Permanece pendiente demostrar la causa microarquitectónica exacta (empleando contadores de hardware de fallos de
-      caché de instrucciones, ramas y alineación) antes de introducir cambios específicos de representación.
-- **Deuda técnica y capacidades exceptuadas del sujeto `aot`:**
-    - El backend nativo no implementa capacidades interactivas ni de inspección fina de la VM: `ENG.INPUT` (entrada
-      interactiva por consola/flujo), `IR.OBSERVATION-POINTS` (puntos de control finos) y `RT.HOST.INTERFACE`
-      (inspección de memoria de bajo nivel).
-    - En el manifiesto de conformidad (`matriz-aot.json`), estas reglas figuran como pendientes o no cubiertas; deben
-      vincularse formalmente o mantenerse declaradas como deuda técnica asumida en el README del motor.
-- **Aislamiento en empaquetado móvil y Wasm:**
-    - Garantizar mediante verificador mecánico en el empaquetado que las compilaciones para iOS, Android y WebAssembly
-      excluyan físicamente Cranelift (`pseudolearn_codegen`), activando únicamente la VM de bytecode.
+Fase R6 cerrada: el nivel Cranelift cumple `PERF.AOT.LEVEL#R1` a `#R3` en la campaña formal pareada (arreglos 1,639×,
+numérica 1,467×, objetos 1,488×, recursiva 1,316× frente a V1F; emisión máxima 9,749 ms), el aislamiento del backend nativo
+en iOS, macOS, Windows y Wasm se verifica con `rust-checks isolation`, y el manifiesto `aot` no deja reglas pendientes de R6.
+Lo que sigue abierto:
+
+- **Nivel optimizado (`PERF.AOT.LEVEL#R4`):** alcanzar una razón geométrica por familia ≤ 1,30× frente a V1F-S (variante
+  que incorpora rastreo de indefinidos y recolección forzada con límite de celdas vivas). Cranelift no se compromete a
+  alcanzarlo; requiere evaluar alternativas según costes residuales medidos. Vínculo `pendiente` en `conformance-aot.yaml`
+  con `resuelve_en: nivel-optimizado-posterior`.
+- **Causa de la anomalía histórica de `Permute`:** la diferencia entre políticas de raíces (`AllLive` 1,61× frente a `Borrowed`
+  2,18×) dejó de observarse tras eliminar comprobaciones dominadas (1,302× y 1,314×), pero la causa microarquitectónica
+  nunca se demostró con contadores de hardware de fallos de caché de instrucciones, ramas y alineación.
 
 ### 1.2 Servicio de lenguaje y herramientas (fase R7)
 

@@ -27,7 +27,9 @@
     "RT.HOST.INTERFACE",
     "RT.PROCESS"
   ],
-  "fases_cerradas": [],
+  "fases_cerradas": [
+    "R6"
+  ],
   "vinculos": [
     {
       "regla": "ENG.EXEC.EFFECT-ORDER@0.1.0#R1",
@@ -760,20 +762,17 @@
     {
       "regla": "PERF.AOT.LEVEL@2.0.0#R1",
       "verificacion": "medicion",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "PERF.AOT.LEVEL@2.0.0#R2",
       "verificacion": "medicion",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "PERF.AOT.LEVEL@2.0.0#R3",
       "verificacion": "medicion",
-      "estado": "pendiente",
-      "resuelve_en": "R6"
+      "estado": "cumple"
     },
     {
       "regla": "PERF.AOT.LEVEL@2.0.0#R4",
