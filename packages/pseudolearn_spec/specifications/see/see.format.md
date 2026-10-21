@@ -3,12 +3,12 @@ formato: see/1
 id: SEE.FORMAT
 titulo: Formato de especificaciones
 dominio: proceso
-estado: experimental
-version: 0.3.0
+estado: estable
+version: 1.0.0
 duenos: [responsable-especificaciones]
+revisado_por: [Cesar Antonio Gutierrez Contreras]
 sujetos: [see]
 resumen: Formato de especificaciones.
-cambio: {"clase": "verificacion_anadida", "impacto_usuarios": "Se conserva la versión numérica por autorización.", "impacto_implementaciones": "Sujetos retirados y alcance de casos explícitos.", "justificacion": "Verificación de la migración autorizada.", "revisado_por": "revision-independiente-automatizada"}
 ---
 
 # Formato de especificaciones
@@ -19,7 +19,7 @@ fuerza: DEBE
 clase: sistema
 texto: El formato see/1 contiene metadatos YAML completos y bloques tipados regla, caso, definicion, error, propiedad, invariante, precondicion y resultado; rechaza campos desconocidos.
 verificacion: [revision_humana]
-justificacion: Revisión estructural manual de arranque contra el plan aprobado; no constituye aprobación independiente para estabilidad.
+justificacion: Revisión estructural manual contra el plan aprobado; la revisión independiente de la persona registrada en revisado_por aprueba su estabilidad.
 ```
 
 ```regla

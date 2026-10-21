@@ -160,8 +160,9 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   resultados conservan `incumple` y la matriz muestra ambas cosas. Se descarta corregir Dart.
 - Problema: verificación humana y N3 no se pueden fingir como ejecución. Elección: justificación
   obligatoria para revisión humana, propiedades sin ejecutor marcadas no aplicables. Se descarta
-  declarar cumplimiento por ausencia de casos. El arranque SEE queda en borrador tras revisión
-  estructural manual; los contratos restantes entran en experimental bajo la autorización de R1.
+  declarar cumplimiento por ausencia de casos. El arranque SEE recorrió borrador, propuesta y
+  experimental tras revisión estructural manual y llegó a estable 1.0.0 con la revisión independiente de la persona
+  registrada en `revisado_por`; los contratos restantes entran en experimental bajo la autorización de R1.
 - Problema: clasificar significado requiere juicio. Elección: diff propone clases y exige registro
   de clasificación e impacto; cambios de texto quedan para revisión. No infiere aprobación humana.
 

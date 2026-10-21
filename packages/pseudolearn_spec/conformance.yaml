@@ -67,7 +67,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.3.0#R1",
+      "regla": "SEE.FORMAT@1.0.0#R1",
       "verificacion": "crates/see_format/tests/parsing.rs",
       "estado": "cumple"
     },
@@ -87,7 +87,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.IDENTITY@0.2.0#R1",
+      "regla": "SEE.IDENTITY@1.0.0#R1",
       "verificacion": "crates/see_validation/tests/identity.rs",
       "estado": "cumple"
     },
@@ -97,7 +97,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.LIFECYCLE@0.1.0#R1",
+      "regla": "SEE.LIFECYCLE@1.0.0#R1",
       "verificacion": "crates/see_validation/tests/lifecycle.rs",
       "estado": "cumple"
     },
@@ -137,7 +137,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.3.0#R2",
+      "regla": "SEE.FORMAT@1.0.0#R2",
       "verificacion": "crates/see_validation/tests/schema.rs",
       "estado": "cumple"
     },
@@ -162,7 +162,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "SEE.FORMAT@0.3.0#R3",
+      "regla": "SEE.FORMAT@1.0.0#R3",
       "verificacion": "crates/see_validation/tests/schema.rs",
       "estado": "cumple"
     },
