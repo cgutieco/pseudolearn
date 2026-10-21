@@ -67,7 +67,8 @@ fn check_frozen(
     errors: &mut Vec<String>,
 ) {
     let promotion = baseline_promotion(specification, previous);
-    if previous.state != specification.metadata.estado && !promotion {
+    let advancing = ["propuesta", "experimental"].contains(&specification.metadata.estado.as_str());
+    if previous.state != specification.metadata.estado && !promotion && !advancing {
         errors.push("SEE-STATE: lifecycle state is frozen".to_owned());
     }
     if previous.version != specification.metadata.version && !promotion {

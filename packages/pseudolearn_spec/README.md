@@ -30,6 +30,7 @@ de la revisión Git base. Mientras el versionado está congelado, las ediciones 
 versión, omiten `cambio` y requieren reanclar la misma versión; la publicación solo se inicia con autorización explícita.
 Al reabrir el versionado se aplican los incrementos y clasificaciones de SEE.VERSIONING y SEE.CHANGE.CLASSIFICATION.
 La única excepción al congelamiento de estado y versión es la promoción de línea base: un contrato experimental o estable previo a 1.0.0 pasa a `estable` `1.0.0` sin `cambio`, con revisor independiente. Problema: promover contratos con evidencia completa sin reabrir el versionado completo. Elección: ampliar la excepción existente, que ya cubría estables previos a 1.0.0. Se descarta un indicador de configuración: la autorización de la persona queda registrada en el cambio que promueve.
+También se admiten durante el congelamiento los avances de ciclo de vida hacia propuesta y experimental, siempre por una transición válida y sin cambiar la versión; así un borrador recorre el ciclo completo antes de su promoción, un paso por cambio.
 La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
 o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. El ciclo de vida mantiene congelados estado y versión, salvo la promoción de línea base a estable 1.0.0, que admite contratos experimentales o estables previos a 1.0.0 siempre que no lleven `cambio` y cumplan los requisitos de estabilidad (revisor independiente y sujetos activos); las ediciones oficiales de igual versión se reanclan durante este régimen. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, minItems, uniqueItems, items, $ref, anyOf y oneOf; el evaluador limita su profundidad. No anuncia soporte general de JSON Schema.
+Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. El ciclo de vida mantiene congelados estado y versión, salvo la promoción de línea base a estable 1.0.0, que admite contratos experimentales o estables previos a 1.0.0 siempre que no lleven `cambio` y cumplan los requisitos de estabilidad (revisor independiente y sujetos activos); los avances de borrador a propuesta y de propuesta a experimental sin cambio de versión; las ediciones oficiales de igual versión se reanclan durante este régimen. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, minItems, uniqueItems, items, $ref, anyOf y oneOf; el evaluador limita su profundidad. No anuncia soporte general de JSON Schema.
 
 ## 2. Guía operativa y ciclo de vida
 

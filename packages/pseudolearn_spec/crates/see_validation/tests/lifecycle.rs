@@ -144,3 +144,35 @@ fn rejects_experimental_state_change_other_than_stable_baseline() -> Result<(), 
     );
     Ok(())
 }
+
+#[test]
+fn permits_advancing_draft_toward_experimental_without_version_change() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    specification.metadata.estado = "borrador".to_owned();
+    let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
+    specification.metadata.estado = "propuesta".to_owned();
+    assert!(see_validation::lifecycle::check(&specification, &lock).is_empty());
+    Ok(())
+}
+
+#[test]
+fn rejects_advancing_draft_straight_to_experimental_or_changing_its_version() -> Result<(), String>
+{
+    let mut specification = support::specification()?;
+    specification.metadata.estado = "borrador".to_owned();
+    let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
+    specification.metadata.estado = "experimental".to_owned();
+    assert!(
+        see_validation::lifecycle::check(&specification, &lock)
+            .iter()
+            .any(|error| error == "SEE-STATE: invalid lifecycle transition")
+    );
+    specification.metadata.estado = "propuesta".to_owned();
+    specification.metadata.version = "0.9.0".to_owned();
+    assert!(
+        see_validation::lifecycle::check(&specification, &lock)
+            .iter()
+            .any(|error| error == "SEE-VERSION: version is frozen")
+    );
+    Ok(())
+}
