@@ -2,6 +2,7 @@
 
 use crate::abi_signatures::Entry;
 use crate::constant_folding::{Folded, fold_checked};
+use crate::dominated_facts::{arithmetic_key, recall_arithmetic, remember_arithmetic};
 use crate::error::CodegenError;
 use crate::lower_scalars::{predicate_of, signed_condition};
 use crate::lowering::{Instruction, Lowering, bind_result, guard_trap, operand_value};
@@ -51,27 +52,39 @@ fn lower_checked(
         bind_result(lowering, instruction, value);
         return Ok(());
     }
-    if let Some((result, overflow)) =
-        crate::constant_overflow::specialize(lowering, instruction.operation, left, right)
-    {
-        guard_trap(lowering, overflow, "integerOverflow", instruction.span)?;
-        bind_result(lowering, instruction, result);
+    let key = arithmetic_key(lowering, instruction.operation, (left, right));
+    if let Some(previous) = recall_arithmetic(lowering, &key) {
+        bind_result(lowering, instruction, previous);
         return Ok(());
     }
-    let (result, overflow) = if instruction.operation == Operation::IntNeg {
-        let zero = lowering.builder.ins().iconst(types::I64, 0);
-        lowering.builder.ins().ssub_overflow(zero, left)
-    } else {
-        let right = right.ok_or(CodegenError::InvalidModule("operand is not a value"))?;
-        match instruction.operation {
-            Operation::IntAdd => lowering.builder.ins().sadd_overflow(left, right),
-            Operation::IntSub => lowering.builder.ins().ssub_overflow(left, right),
-            _ => lowering.builder.ins().smul_overflow(left, right),
-        }
-    };
+    let (result, overflow) = checked_operation(lowering, instruction.operation, left, right)?;
     guard_trap(lowering, overflow, "integerOverflow", instruction.span)?;
+    remember_arithmetic(lowering, key, result);
     bind_result(lowering, instruction, result);
     Ok(())
+}
+
+fn checked_operation(
+    lowering: &mut Lowering<'_, '_>,
+    operation: Operation,
+    left: Value,
+    right: Option<Value>,
+) -> Result<(Value, Value), CodegenError> {
+    if let Some(specialized) =
+        crate::constant_overflow::specialize(lowering, operation, left, right)
+    {
+        return Ok(specialized);
+    }
+    if operation == Operation::IntNeg {
+        let zero = lowering.builder.ins().iconst(types::I64, 0);
+        return Ok(lowering.builder.ins().ssub_overflow(zero, left));
+    }
+    let right = right.ok_or(CodegenError::InvalidModule("operand is not a value"))?;
+    Ok(match operation {
+        Operation::IntAdd => lowering.builder.ins().sadd_overflow(left, right),
+        Operation::IntSub => lowering.builder.ins().ssub_overflow(left, right),
+        _ => lowering.builder.ins().smul_overflow(left, right),
+    })
 }
 
 fn lower_division(

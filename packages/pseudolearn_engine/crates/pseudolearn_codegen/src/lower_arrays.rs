@@ -2,8 +2,10 @@
 
 use crate::abi_signatures::Entry;
 use crate::array_fast_path::{
-    define_integer, element_address, locate, require_dense, require_present,
+    Located, define_integer, element_address, locate, locate_verified, require_dense,
+    require_present,
 };
+use crate::dominated_facts::{SlotKey, remember_slot, slot_key, slot_verified};
 use crate::error::CodegenError;
 use crate::inline_memory::{
     begin_fast_path, branch_unless, clif_load, defined_word, finish_fast_path, heap_base,
@@ -140,10 +142,7 @@ fn fast_load(
     read: &ArrayRead<'_>,
     slow: Block,
 ) -> Result<Value, CodegenError> {
-    require_present(lowering, read.array, slow);
-    let heap = heap_base(lowering, read.array);
-    let located = locate(lowering, heap, read.indices, slow)
-        .ok_or(CodegenError::InvalidModule("array rank out of range"))?;
+    let located = locate_access(lowering, (read.array, read.indices), slow)?;
     let address = element_address(lowering, &located);
     let value = lowering.builder.ins().load(
         clif_load(read.element),
@@ -156,6 +155,35 @@ fn fast_load(
         None => require_dense(lowering, &located, slow),
     }
     Ok(value)
+}
+
+fn slot_of(lowering: &Lowering<'_, '_>, array: Value, indices: &[Value]) -> Option<SlotKey> {
+    match indices {
+        [index] => Some(slot_key(lowering, array, *index)),
+        _ => None,
+    }
+}
+
+fn locate_access(
+    lowering: &mut Lowering<'_, '_>,
+    (array, indices): (Value, &[Value]),
+    slow: Block,
+) -> Result<Located, CodegenError> {
+    let key = slot_of(lowering, array, indices);
+    let verified = key.is_some_and(|key| slot_verified(lowering, &key));
+    if !verified {
+        require_present(lowering, array, slow);
+    }
+    let heap = heap_base(lowering, array);
+    let located = match indices {
+        [index] if verified => locate_verified(heap, *index),
+        _ => locate(lowering, heap, indices, slow),
+    }
+    .ok_or(CodegenError::InvalidModule("array rank out of range"))?;
+    if let Some(key) = key {
+        remember_slot(lowering, key);
+    }
+    Ok(located)
 }
 
 fn slow_load(
@@ -186,10 +214,7 @@ fn lower_store(
     let value = operand_value(lowering, instruction, last)?;
     let word = to_word(lowering, value, &element)?;
     let joined = begin_fast_path(lowering, None);
-    require_present(lowering, array, joined.slow);
-    let heap = heap_base(lowering, array);
-    let located = locate(lowering, heap, &indices, joined.slow)
-        .ok_or(CodegenError::InvalidModule("array rank out of range"))?;
+    let located = locate_access(lowering, (array, &indices), joined.slow)?;
     if element == IrType::I64 {
         define_integer(lowering, &located);
     }

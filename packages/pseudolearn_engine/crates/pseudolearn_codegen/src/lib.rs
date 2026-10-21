@@ -13,6 +13,8 @@ mod constant_overflow;
 mod context_layout;
 mod defined_producers;
 mod definition;
+mod dominated_facts;
+mod dominators;
 mod entry_point;
 mod error;
 mod fault_lexeme;

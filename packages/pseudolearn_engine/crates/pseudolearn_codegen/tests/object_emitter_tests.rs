@@ -213,3 +213,53 @@ fn ill_formed_modules_are_rejected_before_any_code_is_emitted() -> Result<(), St
     assert!(matches!(error, Err(CodegenError::InvalidModule(_))));
     Ok(())
 }
+
+fn module_with_second_operands(second_left: &str, second_right: &str) -> String {
+    format!(
+        "module P es
+func @sums(%0: i64, %1: i64, %2: i64) -> i64 {{
+b0() mass 0:
+  %3 = int.add %0, %1 @1:1-1:5
+  %4 = int.add {second_left}, {second_right} @2:1-2:5
+  %5 = int.add %3, %4 @3:1-3:5
+  return %5
+}}
+"
+    )
+}
+
+#[test]
+fn a_repeated_checked_operation_is_emitted_once() -> Result<(), String> {
+    let repeated = compile(&module_with_second_operands("%0", "%1"))?;
+    let distinct = compile(&module_with_second_operands("%0", "%2"))?;
+    assert!(repeated.bytes.len() < distinct.bytes.len());
+    assert_eq!(repeated.fault_sites.len() + 1, distinct.fault_sites.len());
+    Ok(())
+}
+
+fn module_with_array_accesses(second_array: &str, second_index: &str) -> String {
+    format!(
+        "module P es
+func @touch(%0: i64, %1: i64) -> i64 {{
+b0() mass 0:
+  %2 = const.i64 4
+  %3 = array.new array<i64, 1>, %2 @1:1-1:5
+  %4 = array.new array<i64, 1>, %2 @1:6-1:10
+  %5 = const.i64 7
+  array.store %3, %0, %5 @2:1-2:5
+  array.store {second_array}, {second_index}, %5 @3:1-3:5
+  return %5
+}}
+"
+    )
+}
+
+#[test]
+fn a_verified_array_slot_is_not_checked_twice() -> Result<(), String> {
+    let repeated = compile(&module_with_array_accesses("%3", "%0"))?;
+    let other_index = compile(&module_with_array_accesses("%3", "%1"))?;
+    let other_array = compile(&module_with_array_accesses("%4", "%0"))?;
+    assert!(repeated.bytes.len() < other_index.bytes.len());
+    assert!(repeated.bytes.len() < other_array.bytes.len());
+    Ok(())
+}

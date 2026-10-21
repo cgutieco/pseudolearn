@@ -25,7 +25,7 @@ pub(crate) fn reverse_postorder(function: &Function) -> Vec<BlockId> {
     order
 }
 
-fn successors(function: &Function, identifier: BlockId) -> Vec<BlockId> {
+pub(crate) fn successors(function: &Function, identifier: BlockId) -> Vec<BlockId> {
     let Some(last) = function
         .block(identifier)
         .and_then(|block| block.instructions.last())

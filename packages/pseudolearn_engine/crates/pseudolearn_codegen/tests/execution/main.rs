@@ -7,6 +7,7 @@ mod constant_folding_tests;
 mod constant_overflow_tests;
 mod control_tests;
 mod definition_tests;
+mod dominated_facts_tests;
 mod executable_tests;
 mod integer_tests;
 mod io_tests;

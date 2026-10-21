@@ -52,6 +52,15 @@ pub(crate) fn locate(
     })
 }
 
+pub(crate) fn locate_verified((words, base): (Value, Value), index: Value) -> Option<Located> {
+    Some(Located {
+        words,
+        base,
+        linear: index,
+        offset: elements_offset(1)?,
+    })
+}
+
 fn extent_offset(rank: usize, position: usize) -> Option<i32> {
     if rank <= 1 {
         return Some(TOTAL_WORD);

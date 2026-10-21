@@ -52,6 +52,7 @@ pub(crate) struct Lowering<'func, 'program> {
     pub(crate) defined_values: std::collections::HashSet<ValueId>,
     pub(crate) definitions: HashMap<ValueId, Definition>,
     pub(crate) live_roots: HashMap<InstructionId, Vec<ValueId>>,
+    pub(crate) scope: crate::dominated_facts::Scope,
 }
 
 pub(crate) fn operand_value(

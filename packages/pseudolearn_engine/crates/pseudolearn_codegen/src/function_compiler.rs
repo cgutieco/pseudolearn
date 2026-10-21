@@ -62,6 +62,7 @@ fn start_function<'func, 'program>(
         defined_values: crate::defined_producers::collect(function),
         definitions: HashMap::new(),
         live_roots: live_roots(function, &types, environment.parameter_roots),
+        scope: crate::dominated_facts::Scope::for_function(function),
     };
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);
@@ -128,6 +129,7 @@ fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(
         .get(&identifier)
         .ok_or(CodegenError::InvalidModule("undeclared block"))?;
     lowering.builder.switch_to_block(created);
+    crate::dominated_facts::enter_block(lowering, identifier);
     charge_block_mass(lowering, block)?;
     for instruction_id in &block.instructions {
         let columns = &function.columns;
@@ -143,6 +145,7 @@ fn lower_block(lowering: &mut Lowering<'_, '_>, identifier: BlockId) -> Result<(
         };
         lower_instruction(lowering, &instruction)?;
     }
+    crate::dominated_facts::leave_block(lowering, identifier);
     Ok(())
 }
 
