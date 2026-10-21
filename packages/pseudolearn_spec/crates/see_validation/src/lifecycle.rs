@@ -66,12 +66,11 @@ fn check_frozen(
     previous: &see_model::contract::Anchor,
     errors: &mut Vec<String>,
 ) {
-    if previous.state != specification.metadata.estado {
+    let promotion = baseline_promotion(specification, previous);
+    if previous.state != specification.metadata.estado && !promotion {
         errors.push("SEE-STATE: lifecycle state is frozen".to_owned());
     }
-    if previous.version != specification.metadata.version
-        && !baseline_promotion(specification, previous)
-    {
+    if previous.version != specification.metadata.version && !promotion {
         errors.push("SEE-VERSION: version is frozen".to_owned());
     }
 }
@@ -81,7 +80,7 @@ fn baseline_promotion(
     previous: &see_model::contract::Anchor,
 ) -> bool {
     let metadata = &specification.metadata;
-    previous.state == "estable"
+    ["experimental", "estable"].contains(&previous.state.as_str())
         && metadata.estado == "estable"
         && metadata.version == "1.0.0"
         && metadata.cambio.is_none()

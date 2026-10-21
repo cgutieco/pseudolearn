@@ -4,10 +4,13 @@
   "id": "IR.OBSERVATION-POINTS",
   "titulo": "Puntos de observación de la RI",
   "dominio": "ri",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-motor"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "engine",
@@ -22,12 +25,12 @@
     },
     {
       "id": "ENG.TRACE.EVENTS",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
       "id": "ENG.LIMITS",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

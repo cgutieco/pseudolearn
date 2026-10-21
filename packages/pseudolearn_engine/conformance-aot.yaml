@@ -68,43 +68,43 @@
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R1",
+      "regla": "ENG.LIMITS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R2",
+      "regla": "ENG.LIMITS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R3",
+      "regla": "ENG.LIMITS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R4",
+      "regla": "ENG.LIMITS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R5",
+      "regla": "ENG.LIMITS@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R6",
+      "regla": "ENG.LIMITS@1.0.0#R6",
       "verificacion": "estructural",
       "estado": "cumple",
       "justificacion": "see validate verifica que el esquema de casos solo admite límites de profundidad, sentencias y celdas; la conformidad conserva el resultado estructural con hash del corpus."
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R7",
+      "regla": "ENG.LIMITS@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R8",
+      "regla": "ENG.LIMITS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "Regla de revisión humana: los valores por omisión son informativos y cada cliente los fija en su propia configuración; no hay observación automática posible."
@@ -156,18 +156,18 @@
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R1",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R2",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R3",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
@@ -709,23 +709,23 @@
       "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "regla": "MEM.IDENTITY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "El sujeto aot está exento de observación e inspección paso a paso; la regla exige traza, estado o entrada incremental, que verifica el sujeto engine."
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R2",
+      "regla": "MEM.IDENTITY@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "regla": "MEM.IDENTITY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "regla": "MEM.IDENTITY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -781,7 +781,7 @@
       "resuelve_en": "nivel-optimizado-posterior"
     },
     {
-      "regla": "PERF.SUITE.CORE@0.2.0#R1",
+      "regla": "PERF.SUITE.CORE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -862,7 +862,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "PERF.SUITE.CORE@0.2.0#R2",
+      "regla": "PERF.SUITE.CORE@1.0.0#R2",
       "verificacion": "estructural",
       "estado": "cumple",
       "justificacion": "La identidad adicional de V1F-S preserva V1F y sus números; ceiling contrasta controles del corpus y recolección forzada, definición, ciclos, raíces y límite vivo."

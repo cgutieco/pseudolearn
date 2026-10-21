@@ -4,10 +4,13 @@
   "id": "APP.ENGINE.BOUNDARY",
   "titulo": "Frontera del motor de la app",
   "dominio": "app",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-aplicacion"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "app"
@@ -40,14 +43,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Application engine boundary",
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Se conserva la versión numérica autorizada.",
-    "impacto_implementaciones": "Los casos de dirección de dependencias apuntan a archivos conservados y reales.",
-    "justificacion": "El retiro elimina las rutas antiguas sin alterar el contrato de capas.",
-    "revisado_por": "revision-independiente-automatizada"
-  }
+  "titulo_en": "Application engine boundary"
 }
 ---
 

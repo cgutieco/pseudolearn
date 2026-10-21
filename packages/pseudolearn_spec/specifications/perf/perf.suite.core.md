@@ -4,10 +4,13 @@
   "id": "PERF.SUITE.CORE",
   "titulo": "Suite de programas de rendimiento",
   "dominio": "rendimiento",
-  "estado": "experimental",
-  "version": "0.2.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-rendimiento"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "engine",
@@ -21,14 +24,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Core performance suite",
-  "cambio": {
-    "clase": "ampliacion",
-    "impacto_usuarios": "Se distinguen V1F histórico y V1F-S experimental sin cambiar programas, tamaños ni resultados esperados.",
-    "impacto_implementaciones": "Ceiling incorpora una variante adicional con definición y recolección desde raíces de marcos, sin importar el motor.",
-    "justificacion": "El nivel optimizado requiere un denominador que pague definición y límite de celdas vivas; V1F se conserva intacto.",
-    "revisado_por": "persona-responsable"
-  }
+  "titulo_en": "Core performance suite"
 }
 ---
 

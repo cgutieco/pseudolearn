@@ -4,10 +4,13 @@
   "id": "TOOL.SERVICE.ON-TYPE",
   "titulo": "Asistencia al teclear",
   "dominio": "herramienta",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-herramientas"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "service"
@@ -16,7 +19,7 @@
   "depende_de": [
     {
       "id": "LANG.SYNTAX.RECOVERY",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
@@ -36,7 +39,7 @@
     },
     {
       "id": "LANG.SOURCE.POSITION",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     }
   ],

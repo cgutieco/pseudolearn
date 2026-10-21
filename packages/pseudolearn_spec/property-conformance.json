@@ -140,13 +140,13 @@
       "samples": 100
     },
     {
-      "reference": "IR.OBSERVATION-POINTS@0.1.0#P1",
+      "reference": "IR.OBSERVATION-POINTS@1.0.0#P1",
       "executor": "observation_correspondence",
       "seed": 42,
       "samples": 100
     },
     {
-      "reference": "MEM.IDENTITY@0.1.0#P1",
+      "reference": "MEM.IDENTITY@1.0.0#P1",
       "executor": "identity_stability",
       "seed": 42,
       "samples": 100

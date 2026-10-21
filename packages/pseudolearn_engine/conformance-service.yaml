@@ -191,32 +191,32 @@
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R1",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R2",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R3",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R4",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R5",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.SERVICE.ON-TYPE@0.1.0#R6",
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

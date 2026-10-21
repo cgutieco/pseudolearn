@@ -4,10 +4,13 @@
   "id": "ENG.LIMITS",
   "titulo": "Límites de recursos del motor",
   "dominio": "motor",
-  "estado": "experimental",
-  "version": "0.2.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-motor"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "engine",

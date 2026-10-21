@@ -4,10 +4,13 @@
   "id": "APP.EXEC.SNAPSHOT-VIEW",
   "titulo": "Proyección del estado de ejecución",
   "dominio": "app",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-aplicacion"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "app"
@@ -31,7 +34,7 @@
     },
     {
       "id": "MEM.IDENTITY",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {

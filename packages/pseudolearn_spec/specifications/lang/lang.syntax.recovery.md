@@ -4,10 +4,13 @@
   "id": "LANG.SYNTAX.RECOVERY",
   "titulo": "Recuperación sintáctica",
   "dominio": "lenguaje",
-  "estado": "experimental",
-  "version": "0.3.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "reference",
@@ -18,13 +21,6 @@
   "depende_de": [],
   "edicion": {
     "introducida_en": "2026"
-  },
-  "cambio": {
-    "clase": "verificacion_anadida",
-    "impacto_usuarios": "Se conserva la versión numérica por autorización y no se añaden construcciones.",
-    "impacto_implementaciones": "Sujetos retirados, alcance de casos y verificaciones de contratos existentes explícitos.",
-    "justificacion": "Migración autorizada; la evidencia histórica, AOT y de plataforma conserva sus límites.",
-    "revisado_por": "revision-independiente-automatizada"
   }
 }
 ---

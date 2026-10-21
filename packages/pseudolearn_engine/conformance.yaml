@@ -297,7 +297,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.DECL.UNUSED@0.2.0#R1",
+      "regla": "LANG.DECL.UNUSED@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -337,7 +337,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+      "regla": "LANG.LEXICAL.ERRORS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -417,7 +417,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+      "regla": "LANG.PROGRAM.STRUCTURE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -432,7 +432,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SOURCE.POSITION@0.2.0#R1",
+      "regla": "LANG.SOURCE.POSITION@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -487,27 +487,27 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -582,43 +582,43 @@
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R1",
+      "regla": "ENG.LIMITS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R2",
+      "regla": "ENG.LIMITS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R3",
+      "regla": "ENG.LIMITS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R4",
+      "regla": "ENG.LIMITS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R5",
+      "regla": "ENG.LIMITS@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R6",
+      "regla": "ENG.LIMITS@1.0.0#R6",
       "verificacion": "estructural",
       "estado": "cumple",
       "justificacion": "see validate verifica el esquema de límites y la cobertura completa de instrucciones; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R7",
+      "regla": "ENG.LIMITS@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.LIMITS@0.2.0#R8",
+      "regla": "ENG.LIMITS@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "Regla de revisión humana: los valores por omisión son informativos y cada cliente los fija en su propia configuración; no hay observación automática posible."
@@ -703,32 +703,32 @@
       "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -868,17 +868,17 @@
       "estado": "cumple"
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R1",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R2",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "IR.OBSERVATION-POINTS@0.1.0#R3",
+      "regla": "IR.OBSERVATION-POINTS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -994,7 +994,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.ANALYSIS-LIMITS@0.2.0#R1",
+      "regla": "LANG.SYNTAX.ANALYSIS-LIMITS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -1107,22 +1107,22 @@
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "regla": "MEM.IDENTITY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R2",
+      "regla": "MEM.IDENTITY@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "regla": "MEM.IDENTITY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "regla": "MEM.IDENTITY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -1221,12 +1221,12 @@
       "estado": "cumple"
     },
     {
-      "regla": "PERF.SUITE.CORE@0.2.0#R1",
+      "regla": "PERF.SUITE.CORE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.SUITE.CORE@0.2.0#R2",
+      "regla": "PERF.SUITE.CORE@1.0.0#R2",
       "verificacion": "estructural",
       "estado": "cumple"
     }

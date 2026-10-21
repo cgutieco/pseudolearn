@@ -178,37 +178,37 @@
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R1",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R2",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. Resolución en R5; reference permanece congelado. El sujeto congelado tampoco expone identidad de nodo y tramo de fuente; el requisito corresponde a la API Rust de R8."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R3",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-INPUT-REQUEST-EVENT: No emite la petición de entrada como evento: solo suspende y luego informa el valor aceptado. Resolución en R5; reference permanece congelado."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R4",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-SWITCH-NO-BRANCH: Informa rama negativa cuando Segun no ejecuta ninguna rama, en vez de ninguna. Resolución en R5; reference permanece congelado."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R5",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-OUTPUT-FRAGMENTS: Emite un evento de salida por fragmento, uno por valor y otro por el salto de línea, en vez de uno por sentencia Escribir con el texto completo. REF-RETURN-EXIT: La sentencia Retornar no produce statement_exited antes del evento return de su llamada. Resolución en R5; reference permanece congelado."
     },
     {
-      "regla": "ENG.TRACE.EVENTS@0.1.0#R6",
+      "regla": "ENG.TRACE.EVENTS@1.0.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -345,7 +345,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.DECL.UNUSED@0.2.0#R1",
+      "regla": "LANG.DECL.UNUSED@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -389,7 +389,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.LEXICAL.ERRORS@0.2.0#R1",
+      "regla": "LANG.LEXICAL.ERRORS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -480,7 +480,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.PROGRAM.STRUCTURE@0.2.0#R1",
+      "regla": "LANG.PROGRAM.STRUCTURE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -497,7 +497,7 @@
       "justificacion": "REF-SOURCE-NFC: No reconoce como el mismo nombre la grafía compuesta y la descompuesta por ausencia de NFC. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.SOURCE.POSITION@0.2.0#R1",
+      "regla": "LANG.SOURCE.POSITION@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -559,30 +559,30 @@
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R1",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "H-06: La recuperación emite expectedExpression duplicado para una sentencia malformada. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R2",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "H-05: Devuelve árbol nulo ante texto vacío aunque debe conservar estructura recuperable. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R3",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R4",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "REF-UNCLOSED-BLOCK-CASCADE: Al llegar a EOF informa cada bloque exterior sin cerrar además del bloque más interno. Resolución en R4; reference permanece congelado."
     },
     {
-      "regla": "LANG.SYNTAX.RECOVERY@0.3.0#R5",
+      "regla": "LANG.SYNTAX.RECOVERY@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -686,17 +686,17 @@
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R1",
+      "regla": "MEM.IDENTITY@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R3",
+      "regla": "MEM.IDENTITY@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "MEM.IDENTITY@0.1.0#R4",
+      "regla": "MEM.IDENTITY@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
