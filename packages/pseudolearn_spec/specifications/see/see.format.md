@@ -3,7 +3,7 @@ formato: see/1
 id: SEE.FORMAT
 titulo: Formato de especificaciones
 dominio: proceso
-estado: borrador
+estado: propuesta
 version: 0.3.0
 duenos: [responsable-especificaciones]
 sujetos: [see]

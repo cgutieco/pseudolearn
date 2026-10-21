@@ -3,7 +3,7 @@ formato: see/1
 id: SEE.IDENTITY
 titulo: Identidad persistente
 dominio: proceso
-estado: borrador
+estado: propuesta
 version: 0.2.0
 duenos: [responsable-especificaciones]
 sujetos: [see]

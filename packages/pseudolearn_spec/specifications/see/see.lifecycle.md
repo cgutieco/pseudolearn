@@ -3,7 +3,7 @@ formato: see/1
 id: SEE.LIFECYCLE
 titulo: Ciclo de vida
 dominio: proceso
-estado: borrador
+estado: propuesta
 version: 0.1.0
 duenos: [responsable-especificaciones]
 sujetos: [see]
