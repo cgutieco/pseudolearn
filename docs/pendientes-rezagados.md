@@ -22,6 +22,18 @@ Lo que sigue abierto:
 - **Causa de la anomalía histórica de `Permute`:** la diferencia entre políticas de raíces (`AllLive` 1,61× frente a `Borrowed`
   2,18×) dejó de observarse tras eliminar comprobaciones dominadas (1,302× y 1,314×), pero la causa microarquitectónica
   nunca se demostró con contadores de hardware de fallos de caché de instrucciones, ramas y alineación.
+- **Reserva sobre el margen certificado:** la familia de arreglos cumple con 1,639× frente a un límite de 1,70×; el margen
+  (0,061) es del orden del ruido entre campañas (la misma configuración midió 1,681× y 1,722× antes del cambio), de modo
+  que una repetición podría quedar cerca del límite. Por carga, Queens (1,784×), NBody (1,846×), Richards (1,854×) y Storage
+  (3,097×) superan 1,70×; el contrato mide la media geométrica por familia y no cada carga.
+- **Evidencia no conservada:** los datos crudos de la campaña formal viven en un directorio temporal local y no están en el
+  repositorio. Las cifras quedan transcritas en el README de `pseudolearn_codegen` y la campaña se reproduce con
+  `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>`.
+
+Correcciones a este punto respecto de su redacción anterior: el manifiesto `aot` es `conformance-aot.yaml` (no existe
+`matriz-aot.json`); `ENG.INPUT`, `IR.OBSERVATION-POINTS` y `RT.HOST.INTERFACE` ya figuraban como `cumple` o `exento` con
+justificación y solo `ENG.LIMITS#R8` estaba pendiente (ahora `exento`, por ser de revisión humana); y el aislamiento móvil
+cubre los destinos reales de la app (iOS, macOS y Windows) más Wasm, porque la app no tiene destino Android.
 
 ### 1.2 Servicio de lenguaje y herramientas (fase R7)
 
