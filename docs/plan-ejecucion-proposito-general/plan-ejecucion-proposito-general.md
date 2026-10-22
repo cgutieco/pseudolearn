@@ -228,7 +228,8 @@ Puntos a cumplir:
 
 Fuera de alcance: fichas de sintaxis que aún no existe.
 
-Plan detallado: `fase-pg-h-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-h-plan-ejecucion.md](fase-pg-h-plan-ejecucion.md), preparado por solicitud
+de la persona el 2026-10-22; pendiente de revisión y autorización de implementación, tras el cierre de PG-0.
 
 Cierre común (definiciones en §4.0):
 
