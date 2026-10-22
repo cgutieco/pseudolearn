@@ -21,8 +21,9 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
 - Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
 
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
-La petición directa de implementar PG-0 revisó y autorizó el plan; la ejecución sigue abierta hasta
-que las verificaciones y el resumen cumplan sus puertas de cierre.
+La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
+verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
+sandbox de las campañas de app y rendimiento. PG-H y PG-1 requieren una autorización nueva.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -34,7 +35,7 @@ creen a su lado (`DOC-NO-TRANSIENT-REFS`).
 
 - **Contiene**, por fase, los puntos generales que deben cumplirse para darla por completada: el *qué*.
 - **No contiene** la forma de implementarlos: el *cómo*. Cada fase tendrá su propio plan detallado,
-  `fase-<id>-plan-ejecucion.md`, en esta misma carpeta. El plan de PG-0 ya existe y se está ejecutando.
+  `fase-<id>-plan-ejecucion.md`, en esta misma carpeta. El plan de PG-0 existe y su fase está cerrada.
 - **No autoriza** ninguna fase. Cada una empieza solo con una autorización explícita de la persona en un mensaje nuevo
   (`PHASE-STOP`), y su cierre exige `PHASE-GREEN`.
 - **No sustituye** al corpus (comportamiento observable) ni a los README de paquete (arquitectura y por qué). Lo que una
@@ -146,9 +147,9 @@ Puntos a cumplir:
 - [x] `PG-0.05` Diferimiento autorizado a PG-7.07; se conservan derechos reservados hasta elegir y auditar una licencia.
 - [x] `PG-0.06` Se conserva como única edición la de 2026 antes de la primera publicación; no se crea una edición GP.
   Se admiten cambios necesarios, incluso incompatibles, documentando su impacto y preservando su esencia.
-- [ ] `PG-0.07` Línea base de conformidad actual de los sujetos engine, aot, service, cli y app, con procedencia completa
+- [x] `PG-0.07` Línea base de conformidad actual de los sujetos engine, aot, service, cli y app, con procedencia completa
   (fuentes, binario, configuración, plataforma).
-- [ ] `PG-0.08` Línea base de rendimiento de `PERF.AOT.LEVEL` y `PERF.ARTIFACT.SIZE` según `PERF.PROTOCOL` en una
+- [x] `PG-0.08` Línea base de rendimiento de `PERF.AOT.LEVEL` y `PERF.ARTIFACT.SIZE` según `PERF.PROTOCOL` en una
   plataforma identificada, resolviendo CF-06.
 - [x] `PG-0.09` Discrepancias actuales clasificadas como incumplimiento aplicable, deuda, retirado o exento, sin alterar
   esperados para obtener verde (CF-05).
@@ -156,12 +157,12 @@ Puntos a cumplir:
   insumo de PG-3.
 - [x] `PG-0.11` Controles, máquinas, dispositivos físicos y necesidad de participantes de E-PG-01–E-PG-12 fijados, y
   marcados los que dependen de la persona.
-- [ ] `PG-0.12` Matriz de trazabilidad punto base → R-xx → C-xx → fase → paquete sin huecos, y camino crítico
+- [x] `PG-0.12` Matriz de trazabilidad punto base → R-xx → C-xx → fase → paquete sin huecos, y camino crítico
   recalculado.
 
 Fuera de alcance: cualquier cambio de sintaxis, semántica o implementación.
 
-Plan detallado: `fase-pg-0-plan-ejecucion.md`, revisado y en ejecución por autorización del 2026-10-22.
+Plan detallado: `fase-pg-0-plan-ejecucion.md`, revisado, ejecutado y cerrado el 2026-10-22.
 
 Cierre común (definiciones en §4.0):
 
@@ -175,8 +176,8 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-0.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
 - [x] `PG-0.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [x] `PG-0.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-0.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-0.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-0.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-0.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [x] `PG-0.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-0
@@ -189,14 +190,14 @@ Cierre común (definiciones en §4.0):
 | PG-0.04 Procedencia | Cumplido | D-xx/TS-3 en el plan detallado | NV conservado; propuestas no atribuidas al pasado |
 | PG-0.05 Licencia | Diferido | Mensaje del 2026-10-22; PG-7.07 | Derechos reservados hasta elección y auditoría antes de cierre final/publicación |
 | PG-0.06 Edición | Cumplido | ADR-05, CF-03, C-03 y README SEE | 2026 es edición única; se permiten incompatibilidades prepublicación documentadas |
-| PG-0.07 Conformidad | Parcial | Campañas y matrices de engine/aot/service/cli; intento de app archivados | Binding sin casos y bloqueo Flutter impiden cerrar una línea base de cinco sujetos |
-| PG-0.08 Rendimiento | Parcial | Wasm 530 080 B Brotli; paired bloqueado por permisos de `sysctl`; iOS no construido | AOT e iOS sin medición actual; CF-06 queda pendiente |
-| PG-0.09 Discrepancias | Cumplido | Registro de CF-12 y ancla PERF en el plan detallado | CF-05/06 siguen pendientes de las campañas |
+| PG-0.07 Conformidad | Cumplido | Campaña de cierre de los cinco sujetos con procedencia, propiedades antes que casos | Cero regresiones exigibles; las «reglas sin casos» de la primera campaña eran evidencia de propiedades no combinada |
+| PG-0.08 Rendimiento | Cumplido | Paired 10×30 en Apple M2; ios-arm64 2 985 792 B; Wasm Brotli 530 599 B | PERF.AOT.LEVEL y PERF.ARTIFACT.SIZE cumplen en esta plataforma; CF-06 resuelto por medición |
+| PG-0.09 Discrepancias | Cumplido | Registro de CF-12, ancla local y campaña de cierre en el plan detallado | CF-05/06 resueltos con evidencia; CF-12 sigue solo clasificado |
 | PG-0.10 Capacidades/oráculos | Cumplido | Catálogo del plan detallado | Propuesta sin código; oráculos separados de VM/AOT |
 | PG-0.11 Experimentos | Cumplido | Matriz E-PG-01–12 del plan detallado | Recursos y ausencia de hardware/personas registrados |
-| PG-0.12 Trazabilidad | No cumplido | Cruce base/R/C/fase/paquete y camino estructural | El DAG está trazado, pero faltan estimaciones temporales cuantitativas |
+| PG-0.12 Trazabilidad | Cumplido | Cruce base/R/C/fase/paquete y camino crítico ponderado | Pesos ordinales S/M/L/XL en dos escalas; empates PG-2/PG-3 y PG-6B/PG-B; no es calendario |
 
-Revisión Git de cierre: abierta. Verificadores: SEE tests, Clippy, formato, `rust-checks all .`, validate/export pasaron; `cargo xtask verify` del motor pasó con advisory offline; `lock --check` falla por el ancla local PERF. El xtask integral SEE no se lanzó para preservar sus rutas `results/` ya ocupadas por evidencia ignorada previa. Pendientes: completar cinco sujetos, rendimiento iOS/AOT, ancla y estimaciones temporales. Licencia diferida a PG-7.07; físicos/humanos complementarios; CF-12 sigue sin corrección automática.
+Revisión Git de cierre: commit de cierre con push ordinario comprobado a la rama única. Verificadores: `cargo xtask verify` integral de SEE en verde (formato, Clippy, tests de todo el workspace, cargo-deny, rust-checks, validate, export, propiedades y conformidad engine), `see lock --check` en verde tras el reanclaje autorizado y `cargo xtask verify` del motor en verde en esta misma fase, sin cambios posteriores del motor. Licencia diferida a PG-7.07; físicos/humanos complementarios; CF-12 sigue sin corrección automática.
 
 ### 4.2 PG-H · Catálogo y ayuda temprana
 
