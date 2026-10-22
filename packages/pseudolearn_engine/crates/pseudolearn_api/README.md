@@ -42,7 +42,7 @@ bajo las tres políticas de recolección. Esta vía de pruebas no implementa otr
 Nivel 8. Dependencias internas permitidas: pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_codegen, pseudolearn_aot_rt. Externas: serde, serde_json.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
-Estructuras y algoritmos: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido.
+Estructuras y algoritmos: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `help_query` consulta una sesión de edición viva mediante su revisión y una posición de línea/columna en unidades `unicode_scalar` o `utf16`. La revisión viaja como cadena decimal; la posición se valida en un límite exacto y se convierte a la coordenada interna del servicio. La respuesta conserva idioma de interfaz y detalle solicitados, y no expone índices del árbol.
 
 Invariantes: Ningún pánico cruza la frontera.
 
@@ -116,6 +116,13 @@ Los argumentos conservan su clase: lexema, token, tipo, término o número. El c
 de argumentos requeridos; el borde valida que no falten claves ni se sustituyan números por cadenas.
 Los tokens y tipos primitivos se resuelven con el vocabulario del programa antes de presentar prosa.
 La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentro de un lexema del usuario.
+
+`help_query` consulta el hover estructurado de la sesión de edición y no modifica el recurso. `summary`
+devuelve categoría e identificador; `full` añade tipo, inferencia, carácter intrínseco y firma cuando
+están disponibles. `language` queda separado del perfil de sintaxis y se conserva en la respuesta para
+seleccionar las fichas editoriales. Los lexemas, tipos y firmas describen el perfil de la sesión; el
+resultado actual no incluye prosa editorial. Un recurso liberado, de otra clase o una revisión obsoleta
+no produce contenido de ayuda.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

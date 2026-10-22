@@ -1035,6 +1035,16 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.MODEL@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.MODEL@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.VERSIONING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

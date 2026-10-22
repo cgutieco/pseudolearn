@@ -23,6 +23,7 @@ pub fn supported_capabilities() -> Vec<&'static str> {
         "program_view",
         "state_pages",
         "service_completion",
+        "service_help",
         "generated_vocabulary",
     ]
 }

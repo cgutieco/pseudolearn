@@ -14,8 +14,9 @@ pub use analyze::{detect_vocabulary_profile, execute_analyze, line_and_column};
 pub use errors::ApiError;
 pub use ir_execution::{compile_source_to_ir, compile_source_to_module, execute_ir};
 pub use model::{
-    AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiPosition, ApiSpan, ApiToken, ApiUnit,
-    IrOutcome, IrRequest, IrResponse,
+    AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiHelpCoordinateUnit, ApiHelpDetail,
+    ApiHelpEntry, ApiHelpQueryPosition, ApiHelpQueryRequest, ApiHelpQueryResponse, ApiPosition,
+    ApiSpan, ApiToken, ApiUnit, IrOutcome, IrRequest, IrResponse,
 };
 pub use probes::probe;
 pub use versioning::{
@@ -58,6 +59,7 @@ mod program_view_tokens;
 mod program_view_tree;
 mod resources;
 mod service_completion;
+mod service_help;
 mod service_operations;
 mod state_pages;
 mod token_conversion;

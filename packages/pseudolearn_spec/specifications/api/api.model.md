@@ -12,7 +12,7 @@
   "sujetos": [
     "engine"
   ],
-  "resumen": "Documentos, análisis y ejecuciones como recursos con identificador.",
+  "resumen": "Documentos, sesiones de edición, análisis y ejecuciones como recursos con identificador.",
   "depende_de": [
     {
       "id": "ENG.EXEC.MODEL",
@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API expone tres recursos con identificador opaco, estable durante la sesión: documento (texto, vocabulario, rigor y versión), análisis (de una versión de un documento) y ejecución (de un análisis sin errores). Cada recurso se crea, se consulta y se libera; liberar un documento libera sus análisis y ejecuciones.",
+  "texto": "La API expone recursos con identificador opaco, estable durante la sesión: documento (texto, vocabulario, rigor y versión), análisis (de una versión de un documento), ejecución (de un análisis sin errores) y sesión de edición (texto, perfil, rigor y revisión). Cada recurso se crea, se consulta y se libera; liberar un documento libera sus análisis y ejecuciones.",
   "verificacion": [
     "P1"
   ]
@@ -86,5 +86,238 @@
   "propiedad": "Las respuestas en distintos idiomas de interfaz solo difieren en los campos de prosa.",
   "oraculo": "Respuesta sin idioma de interfaz.",
   "justificacion": "La ejecuta el sujeto engine en R4."
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Una sesión de edición es un recurso identificado con texto, perfil, rigor y revisión u64. help_query consulta una posición de una sesión viva en su revisión vigente; la consulta no cambia texto, revisión ni estado de otras sesiones. Una revisión distinta de la vigente devuelve stale_revision con la revisión actual codificada como cadena decimal. Una sesión liberada, desconocida o de otra clase devuelve un error de uso.",
+  "verificacion": [
+    "C3",
+    "C4",
+    "C5",
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 1, "unit": "unicode_scalar"}, "language": "en", "detail": "full"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "full"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"revision": "1", "language": "en", "detail": "full", "help": {"category": "keyword"}}},
+        {"value": {"revision": "1", "language": "es", "detail": "full", "help": {"category": "keyword"}}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "apply_edit", "resource_from": 0, "arguments": {"revision": "1", "edits": [{"start_utf8": "0", "end_utf8": "0", "text": " "}]}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"revision": "2"}},
+        {"value": {"stale_revision": "2"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "release", "resource_from": 0, "arguments": {}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": null},
+        {"failure": {"family": "usage"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "help_query recibe resource, revision como cadena decimal u64, position con line y column desde uno y unit unicode_scalar o utf16, language es o en independiente del perfil de sintaxis, y detail summary o full. Devuelve revision, language, detail, position y help estructurada o null. summary incluye category e identifier; full puede añadir type_name, is_inferred, is_intrinsic y signature. La respuesta no contiene índices del CST. Las columnas UTF-16 entre los sustitutos de un punto fuera del plano básico y las posiciones fuera de los límites de la línea son errores de uso.",
+  "verificacion": [
+    "C6",
+    "C7",
+    "C8"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir \"🧩\"; Escribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 15, "unit": "unicode_scalar"}, "language": "en", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 16, "unit": "utf16"}, "language": "en", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 12, "unit": "utf16"}, "language": "en", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 99, "unit": "unicode_scalar"}, "language": "en", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"revision": "1", "language": "en", "detail": "summary", "help": {"category": "keyword"}}},
+        {"value": {"revision": "1", "language": "en", "detail": "summary", "help": {"category": "keyword"}}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "18446744073709551615", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"stale_revision": "1"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unknown"}, "language": "es", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 0, "column": 1, "unit": "utf16"}, "language": "es", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "xx", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "brief"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "18446744073709551616", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "01", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}},
+        {"failure": {"family": "usage"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R3",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "create_document", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {}},
+        {"failure": {"family": "usage"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
 }
 ```

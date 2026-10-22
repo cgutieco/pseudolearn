@@ -230,7 +230,7 @@ Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
 
 ### api
 
-Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
+Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `help_query` consulta una sesión de edición con revisión exacta y posiciones explícitas en escalares Unicode o unidades UTF-16; rechaza coordenadas que no coinciden con un límite de fuente y solo anuncia `service_help` cuando la operación está disponible. La consulta es de solo lectura y no expone índices del árbol. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano.
 
 La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
 la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
@@ -253,7 +253,7 @@ Fuentes: [versiones de wasm-bindgen](https://github.com/wasm-bindgen/wasm-bindge
 
 ### conformance
 
-Problema: adapta la api al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir`, `service` y `cli` (esta última a través del binario `pseudo`).
+Problema: adapta la API al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir`, `api`, `service_help`, `service` y `cli` (esta última a través del binario `pseudo`). Los casos API pueden ejecutar una secuencia de operaciones en una misma sesión y pasar el recurso devuelto por una llamada anterior sin fijar su identificador.
 
 La vista pública del programa es una proyección inmutable asociada a una revisión del documento. Los
 consumidores de diagramas, emisores y comprobaciones estructurales usan esa misma proyección; sus

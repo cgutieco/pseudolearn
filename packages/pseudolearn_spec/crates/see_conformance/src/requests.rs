@@ -23,6 +23,7 @@ pub fn build(
         "ir" => ir(case, fields),
         "cli" => cli(case, fields),
         "service" => service(case, fields),
+        "api" => api_request(case, fields)?,
         "app" => app(case, fields)?,
         "analyze" => {
             fields.insert("kind".to_owned(), json!("analyze"));
@@ -53,9 +54,13 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
         "ir" => vec!["ir"],
         "cli" => vec!["cli"],
         "service" => vec!["service"],
+        "api" => vec!["api"],
         "app" => vec!["app"],
         _ => vec!["execute"],
     };
+    if requires_service_help(case) {
+        capabilities.push("service_help");
+    }
     let expects_program_view = case.fields.get("espera").is_some_and(expects_program_view)
         || case
             .fields
@@ -78,6 +83,20 @@ pub fn required_capabilities(case: &Block) -> Vec<&'static str> {
         capabilities.push("state_pages");
     }
     capabilities
+}
+
+fn requires_service_help(case: &Block) -> bool {
+    operation(case) == "api"
+        && case
+            .fields
+            .get("api")
+            .and_then(|value| value.get("calls"))
+            .and_then(Value::as_array)
+            .is_some_and(|calls| calls.iter().any(is_help_query))
+}
+
+fn is_help_query(call: &Value) -> bool {
+    call.get("operation").and_then(Value::as_str) == Some("help_query")
 }
 
 fn expects_program_view(expected: &Value) -> bool {
@@ -214,6 +233,22 @@ fn service(case: &Block, fields: &mut Map<String, Value>) {
             fields.insert(key.clone(), value.clone());
         }
     }
+}
+
+fn api_request(case: &Block, fields: &mut Map<String, Value>) -> Result<(), String> {
+    let invocation = case
+        .fields
+        .get("api")
+        .and_then(Value::as_object)
+        .ok_or("Missing API case input")?;
+    let calls = invocation
+        .get("calls")
+        .and_then(Value::as_array)
+        .filter(|calls| !calls.is_empty())
+        .ok_or("Missing API calls")?;
+    fields.insert("kind".to_owned(), json!("api"));
+    fields.insert("calls".to_owned(), json!(calls));
+    Ok(())
 }
 
 pub fn applies_to(case: &Block, subject: &str) -> bool {

@@ -7,11 +7,19 @@ pub fn matches(name: &str, value: &Value, actual: &Value) -> bool {
         "salida_error" => actual.get("error_output") == Some(value),
         "json" => actual.get("json") == Some(value),
         "servicio" => service(value, actual),
+        "api" => api(value, actual),
         "aplicacion" => subset(value, actual.get("app")),
         "vista_programa" => program_view(value, actual.get("program_view")),
         "tokens_include" => includes_values(value, actual.get("tokens")),
         _ => false,
     }
+}
+
+fn api(expected: &Value, actual: &Value) -> bool {
+    if let Some(results) = expected.get("results") {
+        return subset(results, actual.get("results"));
+    }
+    subset(expected, actual.get("result"))
 }
 
 fn includes_values(expected: &Value, actual: Option<&Value>) -> bool {

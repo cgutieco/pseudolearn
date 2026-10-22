@@ -18,6 +18,7 @@ impl ApiSession {
             | "edit_navigate_stop" => self.edit_operation(operation, arguments),
             "complete" => crate::service_completion::complete(arguments),
             "completion_templates" => crate::service_completion::templates(arguments),
+            "help_query" => crate::service_help::query(self, arguments),
             "editor_vocabulary" => crate::editor_vocabulary::query(arguments),
             "reference_vocabulary" => crate::reference_vocabulary::query(arguments),
             "diagnostic_template" => crate::diagnostic_template::query(arguments),
@@ -48,6 +49,7 @@ fn operation_names() -> Value {
         "edit_insert_template",
         "edit_on_type",
         "edit_navigate_stop",
+        "help_query",
         "query_state",
         "release"
     ])

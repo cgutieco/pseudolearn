@@ -102,10 +102,10 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
 
 - Problema: el corpus del motor necesita observar trazas, RI, CLI, casos de app y mediciones sin crear otro formato.
   Elección: `see/1` crece de forma compatible con los bloques `medicion` (prefijo M), `instruccion` (O) y
-  `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli`, `service` y `app`. Los casos `app`
+  `cobertura` (V), y con las operaciones de caso `trace`, `ir`, `cli`, `service`, `api` y `app`. Los casos `app`
   conservan `scenario` e `input`, se comparan bajo `espera.aplicacion` y no se ejecutan con el sujeto
   `engine`. Los casos que consultan la vista pública piden `program_view`; las consultas paginadas llevan
-  `paginacion` y requieren `state_pages`; `target` opcional identifica el objeto consultado, con entero no negativo. La validación rechaza escenarios, entradas, cursores y operaciones
+  `paginacion` y requieren `state_pages`; `target` opcional identifica el objeto consultado, con entero no negativo. Los casos `api` conservan llamadas secuenciales sobre una sesión y `resource_from` enlaza el identificador opaco devuelto por una llamada anterior; sus argumentos contienen el programa y el perfil explícitos y no pasan por reimpresión automática. La validación rechaza escenarios, entradas, cursores y operaciones
   mal formados. Las tablas que deciden la validez
   (alfabeto `traceEvents`, `cliConventions` con códigos de salida y aperturas, catálogo `cliMessages`,
   `diagnostics`, `vocabulary`) se leen de bloques `definicion`; ningún alfabeto vive en el código.
@@ -113,7 +113,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   estable y no por elemento. Se descarta un esquema `see/2`: ningún corpus anterior cambia de significado.
 - Problema: un sujeto sin observación no debe aparentar cumplir ni ocultar casos. Elección: cada
   operación declara sus capacidades (`trace` exige `execute` y `observe`, `ir` exige `ir`, `cli` exige
-  `cli`). Sin `observe` un caso `trace` es `pendiente`; sin otra capacidad es `no aplicable`; un sujeto que
+  `cli`, `api` exige `api` y las llamadas `help_query` también exigen `service_help`). Sin `observe` un caso `trace` es `pendiente`; sin otra capacidad es `no aplicable`; un sujeto que
   emite eventos sin haberlos pedido es error operativo. La matriz antepone incumple, pendiente y no
   aplicable a cumple. Las reglas verificadas solo por mediciones se informan no aplicables con la
   procedencia de cada medición: `see conform` no mide rendimiento. Se descarta tratar `pendiente` como

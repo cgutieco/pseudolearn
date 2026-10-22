@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-    "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion y generated_vocabulary. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
+  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion, service_help y generated_vocabulary. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
   "verificacion": [
     "P1"
   ]
@@ -64,10 +64,62 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY. generated_vocabulary se anuncia solo cuando el borde ofrece los lexemas, las funciones incorporadas con su firma, la tabla de precedencia y las plantillas de mensaje de diagnóstico del perfil activo, todos derivados de los datos del lenguaje y no de tablas del consumidor.",
+  "texto": "Un consumidor negocia las capacidades que usará; pedir una capacidad o una edición no declarada devuelve un error de versión y no cambia el estado de la sesión. seek permite consultar el estado en un evento pasado. program_view se anuncia solo cuando está disponible la proyección definida por API.PROGRAM.VIEW; state_pages se anuncia solo cuando se admite la consulta paginada de API.STATE.QUERY; service_help se anuncia solo cuando help_query opera sobre una sesión de edición vigente y devuelve el resultado estructurado definido por API.MODEL. generated_vocabulary se anuncia solo cuando el borde ofrece los lexemas, las funciones incorporadas con su firma, la tabla de precedencia y las plantillas de mensaje de diagnóstico del perfil activo, todos derivados de los datos del lenguaje y no de tablas del consumidor.",
   "verificacion": [
     "P2"
   ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "version", "arguments": {}},
+      {"operation": "operations", "arguments": {}},
+      {"operation": "negotiate", "arguments": {"capabilities": "service_help"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"capabilities": ["analyze", "interface_language", "ir", "execute", "observe", "seek", "gc_stress", "api", "program_view", "state_pages", "service_completion", "service_help", "generated_vocabulary"]}},
+        {"value": ["analysis", "document", "advance", "input", "cancel", "complete", "completion_templates", "open_edit_session", "apply_edit", "edit_complete", "edit_accept", "edit_insert_template", "edit_on_type", "edit_navigate_stop", "help_query", "query_state", "release"]},
+        {"value": null}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R2",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "negotiate", "arguments": {"capabilities": "unknown_help"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"failure": {"family": "version"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
 }
 ```
 

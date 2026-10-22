@@ -14,6 +14,59 @@ pub struct ApiPosition {
     pub column: u32,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ApiHelpCoordinateUnit {
+    UnicodeScalar,
+    Utf16,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ApiHelpDetail {
+    Summary,
+    Full,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpQueryPosition {
+    pub line: u32,
+    pub column: u32,
+    pub unit: ApiHelpCoordinateUnit,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpQueryRequest {
+    pub resource: u64,
+    pub revision: String,
+    pub position: ApiHelpQueryPosition,
+    pub language: String,
+    pub detail: ApiHelpDetail,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpQueryResponse {
+    pub revision: String,
+    pub language: String,
+    pub detail: ApiHelpDetail,
+    pub position: ApiHelpQueryPosition,
+    pub help: Option<ApiHelpEntry>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpEntry {
+    pub category: String,
+    pub identifier: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub type_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_inferred: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_intrinsic: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub signature: Option<String>,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ApiSpan {
     pub start: ApiPosition,

@@ -4,7 +4,7 @@ use pseudolearn_api::{
     AnalyzeRequest, ENGINE_VERSION, IrRequest, PROTOCOL_VERSION, SUBJECT_NAME, execute_analyze,
     execute_ir, supported_capabilities, supported_profiles, supported_strictness,
 };
-use serde_json::{Value, json};
+use serde_json::{Map, Value, json};
 use std::io::{BufRead, Write};
 
 mod lsp_handler;
@@ -215,6 +215,11 @@ fn respond_execute(request_value: &Value) {
 }
 
 fn respond_api(session: &mut pseudolearn_api::ApiSession, request: &Value) {
+    if let Some(calls) = request.get("calls").and_then(Value::as_array) {
+        let results = respond_api_calls(session, calls);
+        send_response(&json!({"kind":"api","results":results}));
+        return;
+    }
     let result = session.call(
         request
             .get("operation")
@@ -223,4 +228,27 @@ fn respond_api(session: &mut pseudolearn_api::ApiSession, request: &Value) {
         request.get("arguments").unwrap_or(&Value::Null),
     );
     send_response(&json!({"kind":"api","result":result}));
+}
+
+fn respond_api_calls(session: &mut pseudolearn_api::ApiSession, calls: &[Value]) -> Vec<Value> {
+    let mut results = Vec::with_capacity(calls.len());
+    for call in calls {
+        let operation = call.get("operation").and_then(Value::as_str).unwrap_or("");
+        let mut arguments = call
+            .get("arguments")
+            .and_then(Value::as_object)
+            .cloned()
+            .unwrap_or_else(Map::new);
+        if let Some(index) = call.get("resource_from").and_then(Value::as_u64) {
+            let resource = usize::try_from(index)
+                .ok()
+                .and_then(|index| results.get(index))
+                .and_then(|result: &Value| result.pointer("/value/resource"))
+                .cloned()
+                .unwrap_or(Value::Null);
+            arguments.insert("resource".to_owned(), resource);
+        }
+        results.push(session.call(operation, &Value::Object(arguments)));
+    }
+    results
 }
