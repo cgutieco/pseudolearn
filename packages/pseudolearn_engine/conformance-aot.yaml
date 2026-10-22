@@ -762,17 +762,20 @@
     {
       "regla": "PERF.AOT.LEVEL@1.0.0#R1",
       "verificacion": "medicion",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "La razón por familia frente a V1F la mide la campaña pareada de pseudolearn_bench_worker (arreglos 1,639×, numérica 1,467×, objetos 1,488×, recursiva 1,316×); ningún caso del corpus la mide."
     },
     {
       "regla": "PERF.AOT.LEVEL@1.0.0#R2",
       "verificacion": "medicion",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "El tiempo de emisión lo mide la campaña pareada de pseudolearn_bench_worker (máximo 9,749 ms); ningún caso del corpus lo mide."
     },
     {
       "regla": "PERF.AOT.LEVEL@1.0.0#R3",
       "verificacion": "medicion",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "La medición la ejecuta la campaña pareada de pseudolearn_bench_worker; ningún caso del corpus la mide."
     },
     {
       "regla": "PERF.SUITE.CORE@1.0.0#R1",

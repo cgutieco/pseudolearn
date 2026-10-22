@@ -53,7 +53,7 @@ Código inglés sin comentarios, unsafe ni pánicos explícitos. Límites del wo
 
 ## 6. Decisiones de producto que condicionan el código
 
-PERF.PROTOCOL y PERF.FRONTEND.THROUGHPUT definen muestras y criterios. Las mediciones no relajan umbrales.
+PERF.PROTOCOL define muestras y criterios. Las mediciones no relajan umbrales.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

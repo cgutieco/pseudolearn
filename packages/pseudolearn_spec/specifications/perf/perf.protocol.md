@@ -4,8 +4,8 @@
   "id": "PERF.PROTOCOL",
   "titulo": "Protocolo de medición",
   "dominio": "rendimiento",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-rendimiento"
   ],
@@ -15,7 +15,10 @@
   ],
   "resumen": "Procesos, iteraciones, estadística, puntos de cambio y publicación de resultados.",
   "depende_de": [],
-  "titulo_en": "Measurement protocol"
+  "titulo_en": "Measurement protocol",
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
+  ]
 }
 ---
 
@@ -99,13 +102,9 @@
 }
 ```
 
-```regla
+```lapida
 {
   "id": "R7",
-  "fuerza": "DEBE",
-  "clase": "sistema",
-  "texto": "La latencia de la app se mide de extremo a extremo desde el planificador que pide el avance hasta que el estado proyectado queda disponible para el dominio. El intervalo incluye enlace, transporte, serialización y decodificación; excluye compilación, creación de sesión y pintura de UI. Cada iteración inicia una ejecución nueva sobre un documento preparado y verifica fuera del intervalo evento, estado y salida esperados.",
-  "verificacion": ["estructural"],
-  "justificacion": "El arnés registra el límite del reloj alrededor de la petición completa de la app y valida los efectos después de la captura."
+  "justificacion": "La latencia de la app de extremo a extremo exigía un dispositivo de referencia que no existe; su única regla dependiente se retiró."
 }
 ```

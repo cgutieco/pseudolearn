@@ -19,7 +19,7 @@
   "depende_de": [
     {
       "id": "PERF.PROTOCOL",
-      "version": ">=0.1.0, <1.0.0",
+      "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
     },
     {
@@ -133,7 +133,7 @@
   "suite": "PERF.SUITE.CORE",
   "comparador": ">=",
   "umbral": 1,
-  "provisional": true,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],
@@ -161,7 +161,7 @@
   "suite": "PERF.SUITE.CORE",
   "comparador": "<=",
   "umbral": 15,
-  "provisional": true,
+  "provisional": false,
   "plataformas": [
     "macos-arm64"
   ],

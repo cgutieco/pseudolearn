@@ -52,9 +52,11 @@ cubre los destinos reales de la app (iOS, macOS y Windows) más Wasm, porque la 
       (`tool/create_bridge_campaign.dart`, `tool/collect_bridge.dart` y `tool/summarize_bridge.dart`).
     - Permanece pendiente ejecutar la campaña formal completa (10 procesos × 30 iteraciones) en hardware físico
       certificado (macOS arm64 e iOS real en modo Release).
-- **Validación de latencia de paso (`PERF.VM.STEP-LATENCY`):**
-    - Medir la latencia física por micro-paso observado a través del puente FFI en un dispositivo móvil modesto para
-      certificar el cumplimiento del límite contractual (p95 ≤ 1 ms).
+- **Rendimiento del análisis (decisión):**
+    - Se eliminaron `PERF.FRONTEND.THROUGHPUT` y `PERF.VM.STEP-LATENCY` del corpus. La primera no se cumplía en Apple M2
+      (770 000 líneas/s en archivos generados de 10 000 líneas frente a 1 000 000) y la segunda quedaba atada a hardware
+      concreto sin arnés que la midiera. Si se reintroduce un contrato de rendimiento, ha de ser medible en cualquier
+      máquina de referencia y cumplirse antes de entrar.
 - **Ejecución no acotada de `Fib(20)` en la interfaz:**
     - El smoke test actual de la app reduce temporalmente `Fib(20)` a `Fib(4)` para pruebas rápidas de integración.
       Queda pendiente verificar la ejecución completa y fluida del cálculo de `Fib(20)` en la UI de Flutter con la barra

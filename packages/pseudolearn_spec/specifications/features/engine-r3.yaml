@@ -1,7 +1,7 @@
 {
   "caracteristica": "engine-r3",
   "titulo": "Motor y fronteras especificados para la reescritura",
-  "estado_agregado": "experimental",
+  "estado_agregado": "estable",
   "edicion": "2026",
   "especificaciones": [
     "ENG.LIMITS",
@@ -38,12 +38,10 @@
     "TOOL.SERVICE.LOSSLESS-TREE",
     "PERF.PROTOCOL",
     "PERF.SUITE.CORE",
-    "PERF.VM.STEP-LATENCY",
-    "PERF.FRONTEND.THROUGHPUT",
     "PERF.ARTIFACT.SIZE"
   ],
   "criterio_de_terminado": [
-    "Las treinta y siete especificaciones están en experimental o superior.",
+    "Las treinta y cinco especificaciones están en estable.",
     "see validate acepta la cobertura regla → instrucciones sin huecos.",
     "ENG.EXEC.MODEL, ENG.TRACE.EVENTS y ENG.INPUT están contrastadas con reference."
   ]

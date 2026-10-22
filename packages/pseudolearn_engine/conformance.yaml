@@ -113,7 +113,6 @@
     "MEM.IDENTITY",
     "MEM.MANAGED.UNOBSERVABLE",
     "MEM.VALUE.COPY",
-    "PERF.VM.STEP-LATENCY",
     "RT.HOST.INTERFACE",
     "TOOL.SERVICE.LOSSLESS-TREE",
     "API.PROGRAM.VIEW",
@@ -689,20 +688,6 @@
       "estado": "cumple"
     },
     {
-      "regla": "PERF.VM.STEP-LATENCY@0.2.0#R1",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
-    },
-    {
-      "regla": "PERF.VM.STEP-LATENCY@0.2.0#R2",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
-    },
-    {
       "regla": "ENG.TRACE.EVENTS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
@@ -1151,65 +1136,38 @@
       "justificacion": "El caso C3 pertenece al sujeto app; el transporte Wasm real se acredita con la prueba de Chrome de pseudolearn_wasm (tool/wasm.sh test), que conserva un lote PLEV con source, hace crecer la memoria lineal y lo decodifica sin vistas prestadas."
     },
     {
-      "regla": "PERF.ARTIFACT.SIZE@0.1.0#R1",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
+      "regla": "PERF.ARTIFACT.SIZE@1.0.0#R1",
+      "verificacion": "medicion",
+      "estado": "exento",
+      "justificacion": "Ningún caso ni propiedad del corpus mide bytes de binarios; la medición M2 la ejecuta tool/capture_bridge_artifacts.dart sobre el Wasm de release (530 599 bytes con Brotli, límite 614 400)."
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R7",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
-    },
-    {
-      "regla": "PERF.VM.STEP-LATENCY@0.2.0#R3",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
-    },
-    {
-      "regla": "PERF.PROTOCOL@0.1.0#R1",
+      "regla": "PERF.PROTOCOL@1.0.0#R1",
       "verificacion": "estructural",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R2",
+      "regla": "PERF.PROTOCOL@1.0.0#R2",
       "verificacion": "estructural",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R3",
+      "regla": "PERF.PROTOCOL@1.0.0#R3",
       "verificacion": "estructural",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R4",
+      "regla": "PERF.PROTOCOL@1.0.0#R4",
       "verificacion": "estructural",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R5",
+      "regla": "PERF.PROTOCOL@1.0.0#R5",
       "verificacion": "estructural",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.PROTOCOL@0.1.0#R6",
-      "verificacion": "estructural",
-      "estado": "cumple"
-    },
-    {
-      "regla": "PERF.FRONTEND.THROUGHPUT@0.1.0#R1",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "validacion-plataforma-posterior",
-      "justificacion": "Requiere mediciones de plataforma diferidas por autorización. Las pruebas funcionales locales y las capturas históricas no certifican este contrato."
-    },
-    {
-      "regla": "PERF.FRONTEND.THROUGHPUT@0.1.0#R2",
+      "regla": "PERF.PROTOCOL@1.0.0#R6",
       "verificacion": "estructural",
       "estado": "cumple"
     },

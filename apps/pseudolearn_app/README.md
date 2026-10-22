@@ -112,7 +112,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Petición de reseña en Microsoft Store                           | Publicación de Windows como MSIX en Microsoft Store y un adaptador de `StoreReviewPrompt` que abra la reseña de la Store; `in_app_review` solo ofrece el diálogo nativo en iOS y macOS (ver §4.46) | Abierto |
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
-| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.67 MiB y 482.18 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
+| Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.85 MiB y 518.16 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
 | Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 221 observaciones y dos propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
@@ -2158,8 +2158,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   ejecución de la app usa el cargador de FRB, no `native/target`.
 - **Firma de macOS:** Release desactiva la firma de Xcode. El workflow agrega el perfil restringido de Mac App Store y
   firma el framework Rust y el bundle después del build. La compilación local entrega un `.app` sin firma.
-- **Android:** la biblioteca Android sigue en la hoja de ruta. Los builds de R8 no compilan ni distribuyen la app
-  Flutter para Android.
+- **Android:** queda fuera del alcance de la app; ningún contrato de rendimiento ni de tamaño lo mide ni lo
+  menciona. Los builds de R8 no compilan ni distribuyen la app Flutter para Android.
 - **Alternativas descartadas:** cargar binarios desde el checkout o compilar Rust en el dispositivo exigiría
   herramientas de desarrollo al usuario; incorporar Android en estos builds ampliaría el alcance de distribución.
 - **Fuentes:** [Native Assets de flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/manual/integrate/native-assets),
@@ -2189,8 +2189,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `dart run tool/capture_bridge_artifacts.dart` en `packages/pseudolearn_benchmarks` registra hashes,
   arquitectura, símbolos dSYM separados, toolchain y bytes Brotli en su directorio local `results/` o en la ruta
   indicada con `--output`.
-- **Medición observada:** el framework ios-arm64 ocupa 2,802,880 bytes (2.67 MiB) y el Wasm comprimido
-  493,755 bytes (482.18 KiB). Ambos quedan dentro de 3 MiB y 600 KiB.
+- **Medición observada:** el framework ios-arm64 ocupa 2,985,792 bytes (2.85 MiB) y el Wasm comprimido
+  530,599 bytes (518.16 KiB). Ambos quedan dentro de 3 MiB y 600 KiB; el margen de iOS es del 5 %, de modo que
+  una dependencia nueva puede agotarlo y la captura debe repetirse al añadirla. Esta medición certifica
+  `PERF.ARTIFACT.SIZE`, que no exige dispositivo físico: mide bytes del binario de release.
 - **Límite:** el build iOS Release se generó sin firma y se midió antes de empaquetar Flutter. El iPhone 17
   con iOS 27.0.1 ejecutó la prueba en Profile, donde el runner no encontró el Dart VM Service por Wi-Fi y
   quedó visible la pantalla inicial; no se atribuyen tiempos de ejecución a esa captura. `flutter drive --release`

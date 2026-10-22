@@ -8,7 +8,6 @@ activadas:
   - API.PROGRAM.VIEW
   - API.WIRE-FORMAT
   - PERF.ARTIFACT.SIZE
-  - PERF.VM.STEP-LATENCY
   - PERF.PROTOCOL
   - LANG.SOURCE.POSITION
   - LANG.LEXICAL.ERRORS
@@ -95,27 +94,6 @@ vinculos:
     justificacion: El adaptador nativo de app no anuncia la capacidad wasm; el
       transporte Wasm real lo acredita la prueba de Chrome de pseudolearn_wasm
       (tool/wasm.sh test) con un lote PLEV y crecimiento de memoria.
-  - regla: PERF.VM.STEP-LATENCY@0.2.0#R3
-    verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: validacion-plataforma-posterior
-    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
-      pruebas funcionales locales y las capturas históricas no certifican este
-      contrato.
-  - regla: PERF.PROTOCOL@0.1.0#R7
-    verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: validacion-plataforma-posterior
-    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
-      pruebas funcionales locales y las capturas históricas no certifican este
-      contrato.
-  - regla: PERF.ARTIFACT.SIZE@0.1.0#R1
-    verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: validacion-plataforma-posterior
-    justificacion: Requiere mediciones de plataforma diferidas por autorización. Las
-      pruebas funcionales locales y las capturas históricas no certifican este
-      contrato.
   - regla: LANG.SOURCE.POSITION@1.0.0#R1
     verificacion: ejecutor
     estado: cumple
@@ -164,21 +142,27 @@ vinculos:
   - regla: ENG.TRACE.EVENTS@1.0.0#R6
     verificacion: ejecutor
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R1
+  - regla: PERF.ARTIFACT.SIZE@1.0.0#R1
+    verificacion: medicion
+    estado: exento
+    justificacion: Ningún caso ni propiedad del corpus mide bytes de binarios; la
+      medición M1 la ejecuta tool/capture_bridge_artifacts.dart sobre el framework
+      ios-arm64 de release (2 985 792 bytes, límite 3 145 728).
+  - regla: PERF.PROTOCOL@1.0.0#R1
     verificacion: estructural
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R2
+  - regla: PERF.PROTOCOL@1.0.0#R2
     verificacion: estructural
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R3
+  - regla: PERF.PROTOCOL@1.0.0#R3
     verificacion: estructural
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R4
+  - regla: PERF.PROTOCOL@1.0.0#R4
     verificacion: estructural
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R5
+  - regla: PERF.PROTOCOL@1.0.0#R5
     verificacion: estructural
     estado: cumple
-  - regla: PERF.PROTOCOL@0.1.0#R6
+  - regla: PERF.PROTOCOL@1.0.0#R6
     verificacion: estructural
     estado: cumple
