@@ -1,5 +1,29 @@
 # Hoja de ruta de PseudoLearn hacia un lenguaje de propósito general
 
+## Decisiones posteriores de la persona · 2026-10-22
+
+Este registro actualiza las recomendaciones y puertas previas que lo contradigan; las opciones anteriores
+se conservan como rastro de análisis, no como instrucciones vigentes.
+
+- ADR-05, CF-03 y PG-0.06: se mantiene exclusivamente la edición 2026 antes de la primera publicación.
+  Se permiten cambios necesarios documentados, incluso incompatibles; no se crea una edición GP.
+- CF-02 y CF-19: contratos nuevos en estable 1.0.0, sin campo `cambio`; correcciones oficiales sobre
+  la misma identidad y versión. Congelamiento hasta reapertura explícita. Los contratos existentes
+  se auditan antes de cambiar estados; CF-12 no se corrige automáticamente.
+- PG-0 admite una excepción acotada de implementación para SEE, contratos de proceso, tests y README
+  necesarios para aplicar esta política; no autoriza cambios de semántica ni del motor.
+- PG-0.05 queda diferido por autorización expresa a PG-7.07. Se mantienen derechos reservados;
+  elegir y verificar licencia abierta es obligatorio antes del cierre final o publicación.
+- Las pruebas con dispositivos físicos y los estudios con participantes de E-PG-08/10/12 son
+  complementarios y no bloquean cierres. Se registrará su ausencia sin afirmar cobertura física
+  ni eficacia pedagógica. Las comprobaciones automatizables de calidad y rendimiento siguen obligatorias.
+- D-xx y TS-3 sin origen verificable se reconstruyen como propuestas nuevas; no se presume aprobación histórica.
+- Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
+
+El detalle operativo está en [el plan de PG-0](plan-ejecucion-proposito-general/fase-pg-0-plan-ejecucion.md).
+La preparación del plan no cierra PG-0.C02: requiere revisión antes de implementar.
+
+
 Documento transitorio de análisis y propuesta. Su única base de planificación es `docs/pendientes-rezagados.md`, repriorizada por el encargo de la persona. Es autosustentable: ninguna implementación, corpus, README ni archivo fuera de `docs/` debe depender de este documento (`DOC-NO-TRANSIENT-REFS`). Las recomendaciones originales quedan aprobadas conceptualmente por la persona en su mensaje de seguimiento, con la ampliación didáctica descrita aquí. Esta revisión corrige incoherencias internas de este documento (§2.6) y acompaña al plan de ejecución de la carpeta transitoria [`plan-ejecucion-proposito-general/`](plan-ejecucion-proposito-general/plan-ejecucion-proposito-general.md); no inicia fases de implementación, publica ediciones ni modifica código, corpus, README o reglas. La aprobación no sustituye resultados experimentales ni el cierre PHASE-GREEN.
 
 ## 1. Resumen ejecutivo
