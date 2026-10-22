@@ -21,7 +21,8 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
 - Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
 
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
-La preparación del plan no cierra PG-0.C02: requiere revisión antes de implementar.
+La petición directa de implementar PG-0 revisó y autorizó el plan; la ejecución sigue abierta hasta
+que las verificaciones y el resumen cumplan sus puertas de cierre.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -33,8 +34,7 @@ creen a su lado (`DOC-NO-TRANSIENT-REFS`).
 
 - **Contiene**, por fase, los puntos generales que deben cumplirse para darla por completada: el *qué*.
 - **No contiene** la forma de implementarlos: el *cómo*. Cada fase tendrá su propio plan detallado,
-  `fase-<id>-plan-ejecucion.md`, en esta misma carpeta. Ese archivo **no existe todavía**: lo crea la persona, o la IA a
-  su pedido, al iniciar la fase, siguiendo las reglas de §5.
+  `fase-<id>-plan-ejecucion.md`, en esta misma carpeta. El plan de PG-0 ya existe y se está ejecutando.
 - **No autoriza** ninguna fase. Cada una empieza solo con una autorización explícita de la persona en un mensaje nuevo
   (`PHASE-STOP`), y su cierre exige `PHASE-GREEN`.
 - **No sustituye** al corpus (comportamiento observable) ni a los README de paquete (arquitectura y por qué). Lo que una
@@ -135,56 +135,68 @@ R-18; riesgos K-01, K-02, K-12; conflictos CF-01–CF-20.
 
 Puntos a cumplir:
 
-- [ ] `PG-0.01` La persona decide CF-19: estado y versión iniciales de las identidades nuevas del corpus durante el
-  congelamiento. Sin esta decisión no se inicia ninguna fase posterior.
-- [ ] `PG-0.02` Cada conflicto CF-01–CF-18 tiene registrado su tratamiento concreto y si queda resuelto, pendiente o
+- [x] `PG-0.01` CF-19 decidido: contratos nuevos estables 1.0.0, sin campo `cambio` ni revisión atribuida;
+  la revisión independiente es requisito de validación. Congelamiento de los existentes intacto.
+- [x] `PG-0.02` Cada conflicto CF-01–CF-18 tiene registrado su tratamiento concreto y si queda resuelto, pendiente o
   diferido a una fase nombrada.
-- [ ] `PG-0.03` CF-12 (`estado_agregado` del manifiesto de características) clasificado, sin cambiar estados sin
+- [x] `PG-0.03` CF-12 (`estado_agregado` del manifiesto de características) clasificado, sin cambiar estados sin
   autorización.
-- [ ] `PG-0.04` Procedencia de las decisiones D-xx resuelta: la persona aporta el origen, o quedan registradas como
+- [x] `PG-0.04` Procedencia de las decisiones D-xx resuelta: la persona aporta el origen, o quedan registradas como
   propuestas nuevas (CF-04).
-- [ ] `PG-0.05` La persona elige la licencia del proyecto y de los artefactos distribuibles.
-- [ ] `PG-0.06` La persona fija el nombre técnico provisional de la edición nueva, sin publicarla.
+- [x] `PG-0.05` Diferimiento autorizado a PG-7.07; se conservan derechos reservados hasta elegir y auditar una licencia.
+- [x] `PG-0.06` Se conserva como única edición la de 2026 antes de la primera publicación; no se crea una edición GP.
+  Se admiten cambios necesarios, incluso incompatibles, documentando su impacto y preservando su esencia.
 - [ ] `PG-0.07` Línea base de conformidad actual de los sujetos engine, aot, service, cli y app, con procedencia completa
   (fuentes, binario, configuración, plataforma).
 - [ ] `PG-0.08` Línea base de rendimiento de `PERF.AOT.LEVEL` y `PERF.ARTIFACT.SIZE` según `PERF.PROTOCOL` en una
   plataforma identificada, resolviendo CF-06.
-- [ ] `PG-0.09` Discrepancias actuales clasificadas como incumplimiento aplicable, deuda, retirado o exento, sin alterar
+- [x] `PG-0.09` Discrepancias actuales clasificadas como incumplimiento aplicable, deuda, retirado o exento, sin alterar
   esperados para obtener verde (CF-05).
-- [ ] `PG-0.10` Catálogo candidato de clases de capacidad del host y política de oráculos independientes, definidos como
+- [x] `PG-0.10` Catálogo candidato de clases de capacidad del host y política de oráculos independientes, definidos como
   insumo de PG-3.
-- [ ] `PG-0.11` Controles, máquinas, dispositivos físicos y necesidad de participantes de E-PG-01–E-PG-12 fijados, y
+- [x] `PG-0.11` Controles, máquinas, dispositivos físicos y necesidad de participantes de E-PG-01–E-PG-12 fijados, y
   marcados los que dependen de la persona.
 - [ ] `PG-0.12` Matriz de trazabilidad punto base → R-xx → C-xx → fase → paquete sin huecos, y camino crítico
   recalculado.
 
 Fuera de alcance: cualquier cambio de sintaxis, semántica o implementación.
 
-Plan detallado: `fase-pg-0-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: `fase-pg-0-plan-ejecucion.md`, revisado y en ejecución por autorización del 2026-10-22.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-0.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-0.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-0.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-0.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-0.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-0.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-0.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-0.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-0.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-0.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-0.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-0.C02` Plan detallado creado según §5 y revisado por la petición directa de implementación.
+- [x] `PG-0.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-0.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-0.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-0.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-0.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-0.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-0.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-0.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [ ] `PG-0.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-0.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-0.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-0.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-0
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-0.01 CF-19 | Cumplido | SEE.LIFECYCLE/GENERATION/VERSIONING y tests | Identidades nuevas estables 1.0.0 sin cambio; validación exige revisión independiente |
+| PG-0.02 Conflictos | Cumplido | Matriz CF-01–20 en el plan detallado | Todos tienen tratamiento, estado y dueño; CF-20 queda reservado a PG-6A |
+| PG-0.03 CF-12 | Cumplido | `see feature language-2026` frente al manifiesto | Discrepancia reportada; estados no modificados |
+| PG-0.04 Procedencia | Cumplido | D-xx/TS-3 en el plan detallado | NV conservado; propuestas no atribuidas al pasado |
+| PG-0.05 Licencia | Diferido | Mensaje del 2026-10-22; PG-7.07 | Derechos reservados hasta elección y auditoría antes de cierre final/publicación |
+| PG-0.06 Edición | Cumplido | ADR-05, CF-03, C-03 y README SEE | 2026 es edición única; se permiten incompatibilidades prepublicación documentadas |
+| PG-0.07 Conformidad | Parcial | Campañas y matrices de engine/aot/service/cli; intento de app archivados | Binding sin casos y bloqueo Flutter impiden cerrar una línea base de cinco sujetos |
+| PG-0.08 Rendimiento | Parcial | Wasm 530 080 B Brotli; paired bloqueado por permisos de `sysctl`; iOS no construido | AOT e iOS sin medición actual; CF-06 queda pendiente |
+| PG-0.09 Discrepancias | Cumplido | Registro de CF-12 y ancla PERF en el plan detallado | CF-05/06 siguen pendientes de las campañas |
+| PG-0.10 Capacidades/oráculos | Cumplido | Catálogo del plan detallado | Propuesta sin código; oráculos separados de VM/AOT |
+| PG-0.11 Experimentos | Cumplido | Matriz E-PG-01–12 del plan detallado | Recursos y ausencia de hardware/personas registrados |
+| PG-0.12 Trazabilidad | No cumplido | Cruce base/R/C/fase/paquete y camino estructural | El DAG está trazado, pero faltan estimaciones temporales cuantitativas |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: abierta. Verificadores: SEE tests, Clippy, formato, `rust-checks all .`, validate/export pasaron; `cargo xtask verify` del motor pasó con advisory offline; `lock --check` falla por el ancla local PERF. El xtask integral SEE no se lanzó para preservar sus rutas `results/` ya ocupadas por evidencia ignorada previa. Pendientes: completar cinco sujetos, rendimiento iOS/AOT, ancla y estimaciones temporales. Licencia diferida a PG-7.07; físicos/humanos complementarios; CF-12 sigue sin corrección automática.
 
 ### 4.2 PG-H · Catálogo y ayuda temprana
 
@@ -254,18 +266,18 @@ Puntos a cumplir:
   públicas, RI, trampas AOT, eventos y formatos de intercambio con protocolo versionado.
 - [ ] `PG-1.02` Módulo = archivo; paquete por manifiesto; workspace local; una entrada por aplicación; bibliotecas sin
   algoritmo obligatorio.
-- [ ] `PG-1.03` Import nominal, alias, público/privado (privado por defecto en la edición nueva), export y reexport
+- [ ] `PG-1.03` Import nominal, alias, público/privado (privado por defecto en la edición 2026), export y reexport
   explícitos; sin comodines; sin efectos al importar.
 - [ ] `PG-1.04` Ciclos entre módulos y paquetes rechazados con la cadena completa en el diagnóstico.
 - [ ] `PG-1.05` Manifiesto declarativo, no ejecutable y con esquema versionado; permisos efectivos = intersección de lo
   solicitado y lo concedido externamente.
 - [ ] `PG-1.06` Lock reproducible: orden canónico, identidad de origen y contenido, hash verificado antes de compilar,
   funcionamiento sin red con lock y caché completos, sin scripts de terceros.
-- [ ] `PG-1.07` Perfil por archivo, edición por paquete, imports cruzados es↔en, alias obligatorio ante nombre reservado
+- [ ] `PG-1.07` Perfil por archivo bajo la única edición 2026, imports cruzados es↔en, alias obligatorio ante nombre reservado
   en destino y discrepancia de perfil diagnosticada con ambas procedencias.
 - [ ] `PG-1.08` Orden de diagnósticos de proyecto especificado, independiente del sistema de archivos y del cliente.
 - [ ] `PG-1.09` Rutas portables: colisiones por caja/NFC rechazadas y sin escape de la raíz mediante enlaces simbólicos.
-- [ ] `PG-1.10` Alfabeto español en identificadores del perfil estricto bajo la edición nueva, conservando NFC.
+- [ ] `PG-1.10` Alfabeto español en identificadores del perfil estricto de 2026, conservando NFC.
 - [ ] `PG-1.11` Programas sueltos 2026 intactos: corpus 2026 sin cambios de esperados.
 - [ ] `PG-1.12` CLI comprueba, ejecuta y compila un proyecto de tres módulos, dos perfiles y una biblioteca local desde
   otro directorio, con el mismo resultado observable en VM y AOT.
@@ -302,7 +314,7 @@ Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados
 
 ### 4.4 PG-2 · Tipos y abstracción
 
-Objetivo: el sistema de tipos y de abstracción de la edición nueva, con la misma representación en VM y AOT. Requisitos
+Objetivo: el sistema de tipos y de abstracción incorporado a la edición 2026, con la misma representación en VM y AOT. Requisitos
 R-05–R-08, R-17; capacidades C-04, C-05, C-06; riesgos K-04, K-05; experimentos E-PG-03, E-PG-04, E-PG-10; ADR-06,
 ADR-07.
 
@@ -313,7 +325,7 @@ Puntos a cumplir:
 - [ ] `PG-2.03` `Opcional<T>` y `Resultado<T,E>`, con descarte de Resultado rechazado y propagación visible.
 - [ ] `PG-2.04` `Segun` exhaustivo con patrones básicos sobre literales, enumerados y variantes.
 - [ ] `PG-2.05` Vínculos inmutables por defecto, mutación explícita e inicialización en la declaración.
-- [ ] `PG-2.06` Ámbitos léxicos de bloque en la edición nueva.
+- [ ] `PG-2.06` Ámbitos léxicos de bloque en la edición 2026.
 - [ ] `PG-2.07` Funciones como valores y clausuras con captura verificada y entornos en el mapa de raíces.
 - [ ] `PG-2.08` Genéricos de primer orden con límite tipado de instanciación.
 - [ ] `PG-2.09` Interfaces nominales mínimas como restricciones, sin herencia múltiple de implementación.
@@ -322,7 +334,7 @@ Puntos a cumplir:
 - [ ] `PG-2.12` El verificador de RI rechaza disposiciones inválidas, con casos negativos.
 - [ ] `PG-2.13` VM y AOT coinciden con los oráculos en todas las construcciones nuevas.
 - [ ] `PG-2.14` Diagnósticos pedagógicos de ADR-07 con código y argumentos iguales en es/en.
-- [ ] `PG-2.15` Migrador de 2026 a la edición nueva: diff revisable, nunca sobrescritura silenciosa, e intervención
+- [ ] `PG-2.15` Migración asistida para cambios incompatibles de 2026 cuando corresponda: diff revisable, nunca sobrescritura silenciosa, e intervención
   manual diagnosticada cuando no se preserva la semántica.
 - [ ] `PG-2.16` Vista pública del programa con identidades de interfaz, realización, restricción, captura, variante e
   iteración.
@@ -904,7 +916,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 
 | Fase | Estado | Plan detallado creado | Revisión Git de cierre | Puntos pendientes o diferidos |
 |---|---|---|---|---|
-| PG-0 | Plan preparado; revisión C02 pendiente | Sí | | Ejecución pendiente; licencia diferida a PG-7.07 |
+| PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
 | PG-H | Sin iniciar | No | | |
 | PG-1 | Sin iniciar | No | | |
 | PG-2 | Sin iniciar | No | | |

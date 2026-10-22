@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Hasta que la persona autorice explícitamente iniciar la publicación de una versión del lenguaje, las especificaciones conservan estado, identidad y versión. Las ediciones oficiales se escriben en la misma especificación sin campo cambio y actualizan el anclaje de esa versión. Al reabrirse el versionado, cada cambio de versión declara clase, impactos, justificación y revisor.",
+  "texto": "Hasta que la persona autorice explícitamente iniciar la publicación de una versión del lenguaje, las especificaciones existentes conservan estado, identidad y versión. Una identidad nueva se crea directamente estable en 1.0.0, sin campo cambio y sin completar revisado_por automáticamente. Las ediciones oficiales se escriben en la misma especificación, conservan estado e identidad, omiten cambio y actualizan el anclaje de esa versión. Al reabrirse el versionado, cada cambio de versión declara clase, impactos, justificación y revisor.",
   "verificacion": [
     "estructural"
   ],

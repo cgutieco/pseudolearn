@@ -30,7 +30,7 @@ pub struct Metadata {
     pub reemplaza: Option<String>,
     #[serde(default)]
     pub reemplazada_por: Option<String>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cambio: Option<Change>,
     #[serde(default)]
     pub revisado_por: Vec<String>,

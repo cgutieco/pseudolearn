@@ -6,9 +6,9 @@ fn fixture() -> Result<(see_model::Corpus, PropertyRegistry), String> {
     specification.blocks.push(see_model::Block {kind: "propiedad".to_owned(), fields: serde_json::from_value(serde_json::json!({"id": "P1", "regla": "R1", "generador": {}, "propiedad": "same", "oraculo": "independent"})).map_err(|error| error.to_string())?});
     let registry = PropertyRegistry {
         format: "see-properties/1".to_owned(),
-        subjects: vec!["reference".to_owned()],
+        subjects: vec!["engine".to_owned()],
         entries: vec![PropertyBinding {
-            reference: "LANG.TEST.SAMPLE@0.1.0#P1".to_owned(),
+            reference: "LANG.TEST.SAMPLE@1.0.0#P1".to_owned(),
             executor: PropertyExecutor::Determinism,
             seed: 42,
             samples: 100,
@@ -30,7 +30,7 @@ fn validates_property_identity_version_and_nonzero_samples() -> Result<(), Strin
                     .entries
                     .first_mut()
                     .ok_or("Missing entry")?
-                    .reference = "LANG.TEST.SAMPLE@0.2.0#P1".to_owned()
+                    .reference = "LANG.TEST.SAMPLE@1.1.0#P1".to_owned()
             }
             "zero" => invalid.entries.first_mut().ok_or("Missing entry")?.samples = 0,
             "missing" => invalid.entries.clear(),

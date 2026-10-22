@@ -22,8 +22,8 @@ fn validates_graphs_impacts_and_rejects_unknown_requests() -> Result<(), String>
         vec!["validate"],
         vec!["graph"],
         vec!["graph", "--dot"],
-        vec!["graph", "--focus", "LANG.TEST.SAMPLE"],
-        vec!["impact", "LANG.TEST.SAMPLE"],
+        vec!["graph", "--focus", "SEE.TEST.SAMPLE"],
+        vec!["impact", "SEE.TEST.SAMPLE"],
     ] {
         let output = fixture.execute(&arguments)?;
         assert!(
@@ -46,7 +46,7 @@ fn validates_graphs_impacts_and_rejects_unknown_requests() -> Result<(), String>
 }
 
 #[test]
-fn creates_valid_domain_drafts_and_never_overwrites_identity() -> Result<(), String> {
+fn creates_stable_baseline_templates_without_fabricating_review() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     assert!(
         fixture
@@ -54,31 +54,31 @@ fn creates_valid_domain_drafts_and_never_overwrites_identity() -> Result<(), Str
             .status
             .success()
     );
-    assert!(fixture.execute(&["validate"])?.status.success());
-    assert!(
-        !fixture
-            .execute(&["new", "LANG.TEST.NEW", "--domain", "lang"])?
-            .status
-            .success()
-    );
-    assert!(
-        !fixture
-            .execute(&["new", "LANG.TEST.WRONG", "--domain", "see"])?
-            .status
-            .success()
-    );
-    assert!(
-        !fixture
-            .execute(&["new", "invalid", "--domain", "lang"])?
-            .status
-            .success()
-    );
-    assert!(
-        !fixture
-            .execute(&["new", "LANG.TEST.UNKNOWN", "--domain", "unknown"])?
-            .status
-            .success()
-    );
+    let template =
+        std::fs::read_to_string(fixture.root.join("specifications/lang/lang.test.new.md"))
+            .map_err(|error| error.to_string())?;
+    let specification = see_format::parsing::parse("template", &template)?;
+    assert_eq!(specification.metadata.estado, "estable");
+    assert_eq!(specification.metadata.version, "1.0.0");
+    assert_eq!(specification.metadata.sujetos, vec!["engine", "aot"]);
+    assert!(specification.metadata.revisado_por.is_empty());
+    assert!(!template.contains("cambio"));
+    let validation = fixture.execute(&["validate"])?;
+    assert!(!validation.status.success());
+    assert!(String::from_utf8_lossy(&validation.stderr).contains("independent review required"));
+    rejects_invalid_template_requests(&fixture)?;
+    Ok(())
+}
+
+fn rejects_invalid_template_requests(fixture: &support::Fixture) -> Result<(), String> {
+    for arguments in [
+        vec!["new", "LANG.TEST.NEW", "--domain", "lang"],
+        vec!["new", "LANG.TEST.WRONG", "--domain", "see"],
+        vec!["new", "invalid", "--domain", "lang"],
+        vec!["new", "LANG.TEST.UNKNOWN", "--domain", "unknown"],
+    ] {
+        assert!(!fixture.execute(&arguments)?.status.success());
+    }
     Ok(())
 }
 
@@ -98,7 +98,7 @@ fn lock_checks_anchors_and_export_checks_refresh_local_outputs() -> Result<(), S
             .map_err(|error| error.to_string())?,
         "{}"
     );
-    let path = fixture.root.join("specifications/lang/sample.md");
+    let path = fixture.root.join("specifications/see/sample.md");
     let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
     std::fs::write(
         path,
@@ -109,7 +109,7 @@ fn lock_checks_anchors_and_export_checks_refresh_local_outputs() -> Result<(), S
     assert!(!fixture.execute(&["lock"])?.status.success());
     assert!(
         fixture
-            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .execute(&["lock", "--refresh", "SEE.TEST.SAMPLE"])?
             .status
             .success()
     );
@@ -135,7 +135,7 @@ fn refreshed_git_checkout_anchor_passes_lock_check() -> Result<(), String> {
         ],
     )?;
     assert!(fixture.execute(&["lock"])?.status.success());
-    let path = fixture.root.join("specifications/lang/sample.md");
+    let path = fixture.root.join("specifications/see/sample.md");
     let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
     std::fs::write(
         path,
@@ -146,7 +146,7 @@ fn refreshed_git_checkout_anchor_passes_lock_check() -> Result<(), String> {
     assert!(!fixture.execute(&["lock"])?.status.success());
     assert!(
         fixture
-            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .execute(&["lock", "--refresh", "SEE.TEST.SAMPLE"])?
             .status
             .success()
     );

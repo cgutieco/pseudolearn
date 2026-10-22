@@ -10,6 +10,7 @@
     "SEE.GENERATION",
     "SEE.GRAPH",
     "SEE.IMPACT",
+    "SEE.LIFECYCLE",
     "SEE.LOCK",
     "SEE.ORACLE.POLICY",
     "SEE.VALIDATION",
@@ -102,6 +103,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "SEE.LIFECYCLE@1.0.0#R2",
+      "verificacion": "crates/see_validation/tests/lifecycle.rs",
+      "estado": "cumple"
+    },
+    {
       "regla": "SEE.LOCK@1.0.0#R1",
       "verificacion": "crates/see_change/tests/locking.rs",
       "estado": "cumple"
@@ -144,6 +150,11 @@
     {
       "regla": "SEE.GENERATION@1.0.0#R2",
       "verificacion": "crates/see_export/tests/resources.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "SEE.GENERATION@1.0.0#R3",
+      "verificacion": "crates/see_cli/tests/commands.rs",
       "estado": "cumple"
     },
     {

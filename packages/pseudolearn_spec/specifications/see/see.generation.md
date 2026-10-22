@@ -47,3 +47,16 @@
   "justificacion": "Pruebas felices e infelices en las capas responsables y verificación local completa."
 }
 ```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "new crea identidades estables en 1.0.0 sin campo cambio. Para el dominio de lenguaje declara engine y aot como sujetos candidatos. La plantilla deja revisado_por vacío y no se considera válida hasta que incluya contenido y revisión independiente.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La prueba de integración de see_cli inspecciona la plantilla, verifica los metadatos iniciales y rechaza la validación mientras falte revisión."
+}
+```

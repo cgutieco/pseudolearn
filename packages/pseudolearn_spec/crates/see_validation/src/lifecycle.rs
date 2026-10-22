@@ -22,8 +22,25 @@ pub fn check(specification: &Specification, lock: &Lock) -> Vec<String> {
     }
     if let Some(previous) = lock.specifications.get(&metadata.id) {
         check_previous(specification, previous, &mut errors);
+    } else if see_change::VERSIONING_FROZEN {
+        check_initial(specification, &mut errors);
     }
     errors
+}
+
+fn check_initial(specification: &Specification, errors: &mut Vec<String>) {
+    let metadata = &specification.metadata;
+    if metadata.estado != "estable" {
+        errors.push("SEE-STATE: new specification must start stable".to_owned());
+    }
+    if metadata.version != "1.0.0" {
+        errors.push("SEE-VERSION: new specification must start at 1.0.0".to_owned());
+    }
+    if metadata.cambio.is_some() {
+        errors.push(
+            "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen".to_owned(),
+        );
+    }
 }
 
 fn check_previous(
@@ -66,28 +83,17 @@ fn check_frozen(
     previous: &see_model::contract::Anchor,
     errors: &mut Vec<String>,
 ) {
-    let promotion = baseline_promotion(specification, previous);
-    let advancing = ["propuesta", "experimental"].contains(&specification.metadata.estado.as_str());
-    if previous.state != specification.metadata.estado && !promotion && !advancing {
+    if previous.state != specification.metadata.estado {
         errors.push("SEE-STATE: lifecycle state is frozen".to_owned());
     }
-    if previous.version != specification.metadata.version && !promotion {
+    if previous.version != specification.metadata.version {
         errors.push("SEE-VERSION: version is frozen".to_owned());
     }
-}
-
-fn baseline_promotion(
-    specification: &Specification,
-    previous: &see_model::contract::Anchor,
-) -> bool {
-    let metadata = &specification.metadata;
-    let reaches_baseline =
-        metadata.estado == "estable" && metadata.version == "1.0.0" && metadata.cambio.is_none();
-    let below_baseline = semver::Version::parse(&previous.version)
-        .ok()
-        .is_some_and(|version| version < semver::Version::new(1, 0, 0));
-    reaches_baseline
-        && (previous.state == "experimental" || (previous.state == "estable" && below_baseline))
+    if specification.metadata.cambio.is_some() {
+        errors.push(
+            "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen".to_owned(),
+        );
+    }
 }
 
 fn check_versioned_change(

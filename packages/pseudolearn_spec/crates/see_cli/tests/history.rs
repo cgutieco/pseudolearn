@@ -5,7 +5,7 @@ use std::process::Command;
 fn compares_git_revision_without_changing_checkout() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     initialize(&fixture)?;
-    let path = fixture.root.join("specifications/lang/sample.md");
+    let path = fixture.root.join("specifications/see/sample.md");
     let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
     std::fs::write(
         path,
@@ -33,7 +33,7 @@ fn compares_git_revision_without_changing_checkout() -> Result<(), String> {
 fn validation_accepts_frozen_edits_and_lock_refresh_reanchors_them() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     initialize(&fixture)?;
-    let path = fixture.root.join("specifications/lang/sample.md");
+    let path = fixture.root.join("specifications/see/sample.md");
     let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
     std::fs::write(
         path,
@@ -49,7 +49,7 @@ fn validation_accepts_frozen_edits_and_lock_refresh_reanchors_them() -> Result<(
     assert!(!fixture.execute(&["lock"])?.status.success());
     assert!(
         fixture
-            .execute(&["lock", "--refresh", "LANG.TEST.SAMPLE"])?
+            .execute(&["lock", "--refresh", "SEE.TEST.SAMPLE"])?
             .status
             .success()
     );
@@ -90,12 +90,22 @@ fn initialize(fixture: &support::Fixture) -> Result<(), String> {
 fn reads_member_corpus_from_repository_root_paths() -> Result<(), String> {
     let fixture = support::Fixture::create()?;
     let member = fixture.root.join("packages/spec");
-    std::fs::create_dir_all(member.join("specifications/lang"))
+    std::fs::create_dir_all(member.join("specifications/see"))
         .map_err(|error| error.to_string())?;
-    let path = member.join("specifications/lang/sample.md");
-    let text = std::fs::read_to_string(fixture.root.join("specifications/lang/sample.md"))
+    std::fs::create_dir_all(member.join("subjects/reference"))
+        .map_err(|error| error.to_string())?;
+    let path = member.join("specifications/see/sample.md");
+    let text = std::fs::read_to_string(fixture.root.join("specifications/see/sample.md"))
         .map_err(|error| error.to_string())?;
     std::fs::write(&path, &text).map_err(|error| error.to_string())?;
+    let subject_manifest =
+        std::fs::read_to_string(fixture.root.join("subjects/reference/conformance.yaml"))
+            .map_err(|error| error.to_string())?;
+    std::fs::write(
+        member.join("subjects/reference/conformance.yaml"),
+        subject_manifest,
+    )
+    .map_err(|error| error.to_string())?;
     initialize(&fixture)?;
     std::fs::write(
         path,

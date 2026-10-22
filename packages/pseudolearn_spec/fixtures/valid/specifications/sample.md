@@ -4,19 +4,23 @@
   "id": "LANG.TEST.SAMPLE",
   "titulo": "Corpus de prueba",
   "dominio": "lenguaje",
-  "estado": "experimental",
-  "version": "0.1.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference"
+    "engine",
+    "aot"
   ],
   "resumen": "Tipo entero.",
   "depende_de": [],
   "edicion": {
     "introducida_en": "2026"
-  }
+  },
+  "revisado_por": [
+    "independent-reviewer"
+  ]
 }
 ---
 

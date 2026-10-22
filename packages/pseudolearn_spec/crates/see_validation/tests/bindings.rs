@@ -3,7 +3,9 @@ use see_model::evidence::{Binding, Conformance};
 
 #[test]
 fn exemptions_need_reason_and_pending_needs_open_phase() -> Result<(), String> {
-    let corpus = vec![support::specification()?];
+    let mut specification = support::specification()?;
+    specification.metadata.estado = "experimental".to_owned();
+    let corpus = vec![specification];
     let mut conformance = Conformance {
         estado: "activo".to_owned(),
         sujeto: "reference".to_owned(),
@@ -11,7 +13,7 @@ fn exemptions_need_reason_and_pending_needs_open_phase() -> Result<(), String> {
         activadas: vec![],
         fases_cerradas: vec!["R1".to_owned()],
         vinculos: vec![Binding {
-            regla: "LANG.TEST.SAMPLE@0.1.0#R1".to_owned(),
+            regla: "LANG.TEST.SAMPLE@1.0.0#R1".to_owned(),
             verificacion: "ejecutor".to_owned(),
             estado: "exento".to_owned(),
             resuelve_en: None,

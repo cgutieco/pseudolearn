@@ -24,14 +24,18 @@ Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro d
 `matrix [--subject reference]`, `feature <nombre>`, `export [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz lo presenta como no aplicable sin cargar resultados retirados.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
+`new` crea una plantilla estable `1.0.0` sin `cambio`; deja `revisado_por` vacío para que no se atribuya una
+revisión inexistente. La plantilla de lenguaje declara engine y aot como sujetos candidatos. El contrato queda
+incompleto hasta que tenga reglas, casos, evidencia y una revisión independiente, por lo que `validate` puede
+rechazarlo inmediatamente después de crearlo.
+
 `diff` lee la revisión con Git, sin cambiar el checkout, y puede describir cambios aunque aún falte subir su versión;
 `validate` aplica la puerta de anclajes. `lock` genera una caché local ignorada. La validación deriva el estado anterior
-de la revisión Git base. Mientras el versionado está congelado, las ediciones oficiales conservan estado, identidad y
-versión, omiten `cambio` y requieren reanclar la misma versión; la publicación solo se inicia con autorización explícita.
-Al reabrir el versionado se aplican los incrementos y clasificaciones de SEE.VERSIONING y SEE.CHANGE.CLASSIFICATION.
-La única excepción al congelamiento de estado y versión es la promoción de línea base: un contrato experimental de cualquier versión, o estable previo a 1.0.0, pasa a `estable` `1.0.0` sin `cambio`, con revisor independiente; un experimental con versión superior se reancla en 1.0.0 porque la primera versión del lenguaje publica todas sus especificaciones en 1.0.0. Problema: promover contratos con evidencia completa sin reabrir el versionado completo. Elección: ampliar la excepción existente, que ya cubría estables previos a 1.0.0. Se descarta un indicador de configuración: la autorización de la persona queda registrada en el cambio que promueve.
-También se admiten durante el congelamiento los avances de ciclo de vida hacia propuesta y experimental, siempre por una transición válida y sin cambiar la versión; así un borrador recorre el ciclo completo antes de su promoción, un paso por cambio.
-La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
+de la revisión Git base. Mientras el versionado está congelado, las identidades existentes conservan estado, identidad
+y versión; ninguna transición de estado está permitida. Las ediciones oficiales conservan esa misma identidad, omiten
+`cambio` y requieren reanclar la misma versión. Las identidades nuevas empiezan en estable `1.0.0` y sin `cambio`.
+La publicación de una versión solo se inicia con autorización explícita. Al reabrir el versionado se aplican los
+incrementos y clasificaciones de SEE.VERSIONING y SEE.CHANGE.CLASSIFICATION. Código 0: éxito; 1: error
 o regresión exigible.
 Conformidad conserva divergencias de reglas exentas sin ocultar los resultados crudos.
 La comparación admite `tokens_include` para exigir identidades y tramos de tokens concretos sin fijar

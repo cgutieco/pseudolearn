@@ -28,6 +28,10 @@ al leer evidencia histórica y se omite al escribir una lista vacía para conser
 con semilla y cantidad. El vínculo vive en `property-conformance.json`, nunca en el código de un ejecutor.
 Los algoritmos se identifican por responsabilidad; una entrada no declara que la propiedad se haya ejecutado.
 
+`Metadata.cambio` se omite al serializar cuando no hay clasificación. Una edición oficial bajo
+congelamiento no debe emitir un campo `cambio` con valor nulo, porque su presencia representa una
+declaración de cambio.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.

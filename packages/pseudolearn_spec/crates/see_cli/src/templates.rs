@@ -1,15 +1,19 @@
 use see_model::Metadata;
 
 pub fn metadata(id: &str, domain: &str) -> Metadata {
+    let (domain_name, subjects) = domain_contract(domain);
     Metadata {
         formato: "see/1".to_owned(),
         id: id.to_owned(),
         titulo: "Contrato por redactar".to_owned(),
-        dominio: domain_contract(domain).0.to_owned(),
-        estado: "borrador".to_owned(),
-        version: "0.1.0".to_owned(),
+        dominio: domain_name.to_owned(),
+        estado: "estable".to_owned(),
+        version: "1.0.0".to_owned(),
         duenos: vec!["responsable-especificaciones".to_owned()],
-        sujetos: vec![domain_contract(domain).1.to_owned()],
+        sujetos: subjects
+            .iter()
+            .map(|subject| (*subject).to_owned())
+            .collect(),
         resumen: "Contrato por redactar".to_owned(),
         titulo_en: None,
         edicion: if domain == "lang" {
@@ -25,25 +29,20 @@ pub fn metadata(id: &str, domain: &str) -> Metadata {
     }
 }
 
-fn domain_contract(domain: &str) -> (&'static str, &'static str) {
-    let domains = [
-        ("lang", "lenguaje", "reference"),
-        ("diag", "lenguaje", "reference"),
-        ("see", "proceso", "see"),
-        ("lib", "biblioteca", "reference"),
-        ("ir", "ri", "engine"),
-        ("eng", "motor", "engine"),
-        ("mem", "memoria", "engine"),
-        ("rt", "motor", "aot"),
-        ("api", "motor", "engine"),
-        ("tool", "herramienta", "cli"),
-        ("app", "app", "app"),
-        ("perf", "rendimiento", "engine"),
-    ];
-    domains
-        .iter()
-        .find(|(prefix, _, _)| *prefix == domain)
-        .map_or(("proceso", "see"), |(_, contract, subject)| {
-            (*contract, *subject)
-        })
+fn domain_contract(domain: &str) -> (&'static str, &'static [&'static str]) {
+    match domain {
+        "lang" => ("lenguaje", &["engine", "aot"]),
+        "diag" => ("lenguaje", &["engine"]),
+        "see" => ("proceso", &["see"]),
+        "lib" => ("biblioteca", &["engine"]),
+        "ir" => ("ri", &["engine"]),
+        "eng" => ("motor", &["engine"]),
+        "mem" => ("memoria", &["engine"]),
+        "rt" => ("motor", &["aot"]),
+        "api" => ("motor", &["engine"]),
+        "tool" => ("herramienta", &["cli"]),
+        "app" => ("app", &["app"]),
+        "perf" => ("rendimiento", &["engine"]),
+        _ => ("proceso", &["see"]),
+    }
 }
