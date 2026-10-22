@@ -5,13 +5,14 @@
 - Fase: PG-H; requisitos R-17, R-18 y R-20; capacidad C-16; ADR-13; riesgos K-16 y K-17;
   experimento E-PG-11; tratamiento de CF-17.
 - Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: pendiente.
-- Revisión inicial: `d42a9e3047ebe664b74a709336934bc20ab8a916`; árbol limpio al comenzar la lectura.
+- Revisión de esta preparación: `2f5fccb6d046edfbaa054a2160b116259a1cd61b`; árbol limpio al comenzar la lectura.
+  El borrador anterior se preparó sobre `d42a9e3047ebe664b74a709336934bc20ab8a916`, antes del cierre de PG-0.
 - Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 - Encargo textual: «Crea el plan de ejecución para `PG-H · Catálogo y ayuda temprana`».
-  Autoriza esta preparación documental anticipada, conforme a la precedencia de la instrucción directa;
+  Autoriza esta preparación documental, conforme a la precedencia de la instrucción directa;
   no acredita autorización de implementación ni revisión del documento terminado.
-- Dependencia: PG-0 completada. El resumen vigente mantiene PG-0 abierta por `PHASE-GREEN`,
-  campañas incompletas y cierre Git pendiente. Preparar este documento no elimina esa dependencia.
+- Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
+  con campañas y verificadores en verde según su resumen de cierre. Falta la autorización nueva de PG-H.
 - Estado: plan preparado para revisión; `PG-H.C01` y `PG-H.C02` continúan pendientes.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -38,6 +39,19 @@ Las rutas Rust abreviadas de servicio y API corresponden a
 `packages/pseudolearn_engine/crates/<crate>/`; las de Flutter a `apps/pseudolearn_app/lib/`.
 No se midió latencia ni se ejecutaron campañas funcionales durante la redacción.
 
+### Línea base heredada de PG-0
+
+Estas evidencias pertenecen al cierre anterior; sirven de control y no certifican una implementación
+de PG-H. La procedencia y los resultados completos están en [el resumen de PG-0](fase-pg-0-plan-ejecucion.md).
+
+| Evidencia registrada | Uso durante PG-H |
+|---|---|
+| SEE: 158 especificaciones; 30 propiedades y 1550 observaciones del motor, sin divergencias; verificación integral SEE y motor en verde | Comparar el corpus y ejecutar de nuevo las puertas de los miembros afectados |
+| Service: 7/7 propiedades y 45/45 vínculos cumplen; app: 2/2 propiedades, 45 cumplen y 2 no aplicables | Control de regresiones previo a añadir casos de ayuda; no sustituye E-PG-11 |
+| `PERF.ARTIFACT.SIZE`: iOS 2 985 792 B; Wasm Brotli 530 599 B, Apple M2 Mac14,3 | Repetir captura con catálogo incluido y mismo objetivo; iOS conserva solo un 5 % de margen |
+| Edición única 2026; contratos nuevos estables 1.0.0, sin `cambio`; contratos existentes congelados | Editar texto oficial y reanclar identidades afectadas, sin reabrir estados/versiones |
+| CF-12 sigue declarado: el agregado consultado y el manifiesto no coinciden | No corregir estados automáticamente ni usar el agregado como prueba de estabilidad de 2026 |
+
 Alcance: edición 2026 vigente; catálogo, validación/exportación, consulta común, hover/comando LSP y
 consulta por teclado/tacto de la app. Sin sintaxis nueva, extensión distribuible de VS Code,
 proyectos multiarchivo, IDE nuevo, cambios a ejecución VM/AOT ni fichas de construcciones futuras.
@@ -46,7 +60,7 @@ esas fases el hover ni la consulta de la app que PG-H ya exige.
 
 ## 2. Lectura realizada
 
-Lectura sobre la revisión inicial, enfocada en las responsabilidades afectadas:
+Lectura del borrador contrastada con la revisión de esta preparación, enfocada en las responsabilidades afectadas:
 
 - [x] `AGENTS.md`, README raíz, plan general §4.2 y §5, hoja de ruta R-17/18/20,
   C-16, PG-H, ADR-13, CF-17, K-16/17 y E-PG-11; estado de PG-0 y decisiones del 2026-10-22.
@@ -100,6 +114,26 @@ Los símbolos de usuario conservarán su firma/tipo sin atribuirles intención p
 
 El orden de cada lista es especificación → casos → tests → código/datos → documentación →
 verificación. Las dependencias entre puntos se concretan en §10. Todas las tareas están sin ejecutar.
+
+### Trazabilidad de entregables y aceptación
+
+Cada fila corresponde al punto del plan general con el mismo ID. Sus seis subtareas detallan cómo
+producir y verificar la evidencia; completar este documento no satisface ninguna de ellas.
+
+| Punto | Entregable revisable | Condición para marcarlo cumplido |
+|---|---|---|
+| PG-H.01 | Contrato de catálogo, esquema y recurso exportado | Validación, anclaje y exportación deterministas; la prosa queda cubierta por el hash |
+| PG-H.02 | Contrato y operación pública de consulta | Negociación y ciclo de recursos probados, incluida revisión obsoleta |
+| PG-H.03 | Contrato y resolutor por posición | Matriz de fronteras, compuestos, roles y sombreado sin asignaciones erróneas |
+| PG-H.04 | Inventario y fichas editoriales es/en de 2026 | 100 % de identidades/roles activos con ficha o exclusión tipada válida |
+| PG-H.05 | Correspondencia de ayuda anterior y datos nuevos | Las 29 entradas tienen destino revisado; ningún contenido útil queda perdido |
+| PG-H.06 | Índice ficha → regla/caso → ejemplo/esperado | Todos los ejemplos se verifican en su perfil/rigor con esperado independiente |
+| PG-H.07 | Verificador y fixtures negativos | Cada violación se rechaza por su diagnóstico y la puerta integral los ejecuta |
+| PG-H.08 | Hover y comando LSP sobre la consulta común | Paridad de identidad/rol/rangos/ejemplos con API; navegación conservada |
+| PG-H.09 | Acción y panel de app con puerto propio | Acceso por teclado/tacto, selección y foco conservados, puente real en verde |
+| PG-H.10 | Auditoría de consumidores y prueba de generación | Sin prosa normativa duplicada ni reconocimiento del lenguaje en clientes |
+| PG-H.11 | Política de render y proyecciones seguras | Casos hostiles inertes o rechazados en LSP y app, sin efectos externos |
+| PG-H.12 | Campaña E-PG-11 y resumen recalculable | Cobertura y paridad completas; latencia, coste frío, memoria y bytes informados |
 
 ### PG-H.01 · Catálogo normativo
 
@@ -369,7 +403,7 @@ No se despachan GitHub Actions ni despliegues como parte automática de esta fas
 |---|---|---|
 | K-16 Deriva editorial | Ficha contradice regla, alias duplicado o falta idioma | Fuente única, anclajes, revisión independiente y negativos; no publicar cobertura incompleta |
 | K-17 Rol equivocado | Hacer genérico, Hasta mal asignado, builtin sombreado | CST/símbolo, casos de frontera y revisión; certeza parcial explícita sin inferencia textual |
-| Dependencia PG-0 abierta | Se empieza a editar corpus/motor antes del cierre | Puerta previa de §10; conservar estado sin iniciar |
+| Inicio sin autorización | Se interpreta el cierre de PG-0 o la preparación del plan como permiso | PG-0 ya cerrada; registrar autorización nueva antes de editar corpus/motor |
 | Prosa fuera del hash | Cambiar resumen no altera exportación/ancla | Texto editorial dentro del recurso contractual; test de cambio de hash |
 | Inyección de marcado | Identificador o ficha activa enlace/HTML | Subconjunto cerrado y negativos por renderizador |
 | Tamaño/latencia | Catálogo duplica firmas o encarece arranque | Generación compartida, bytes y frío/caliente separados; sin crear caché de fases futuras |
@@ -378,7 +412,7 @@ No se despachan GitHub Actions ni despliegues como parte automática de esta fas
 
 ## 9. Dependencias de la persona
 
-Para implementar: PG-0 cerrada, revisión de este plan y autorización explícita en mensaje nuevo
+Para implementar: dependencia PG-0 ya satisfecha, revisión de este plan y autorización explícita en mensaje nuevo
 (`PG-H.C01/C02`, `PHASE-STOP`). Este documento no vuelve a pedir aprobación conceptual de ADR-13.
 La revisión independiente requerida por los contratos debe existir y registrarse de verdad, sin
 rellenar revisores automáticamente. Si la revisión la realiza la persona, requiere su intervención.
@@ -392,7 +426,7 @@ E-PG-11 automatizable, puente real y verificadores siguen siendo obligatorios.
 ## 10. Orden de ejecución y puntos de control
 
 1. Puerta previa: comprobar cierre efectivo de PG-0 y registrar revisión/autorización nueva.
-   Preparar este plan no inicia PG-H ni cierra PG-0.
+   El cierre de PG-0 consta en la revisión de preparación; preparar este plan no inicia PG-H.
 2. Contratos primero: especificar catálogo/consulta/resolución/render, escenarios APP/LSP e invariantes
    de cobertura/ejemplos. Derivar casos y revisión independiente; conservar 2026, estados y versiones.
    Nuevas identidades estables 1.0.0 sin `cambio`; no cambiar CF-12 ni reabrir versionado.
@@ -409,6 +443,22 @@ E-PG-11 automatizable, puente real y verificadores siguen siendo obligatorios.
    sin atribución de IA. No crear rama ni worktree con rama adicional.
 8. Informar implementación, pruebas, verificadores y pendientes; detenerse (`PHASE-STOP`).
    El cierre de PG-H no autoriza PG-1, PG-6A ni PG-A.
+
+### Dependencias y evidencia entre bloques
+
+| Bloque | Depende de | Evidencia antes de continuar |
+|---|---|---|
+| Contratos de los doce puntos | Autorización y revisión del plan | Reglas, casos derivados y revisión independiente real; parámetros de render y protocolo concretados |
+| Datos y validación: .01/.04/.05/.06/.07 | Contratos y tests propios | Catálogo íntegro, migración trazada, ejemplos correctos, negativos y exportación en verde |
+| Servicio y API: .02/.03/.08/.11 | Exportación verificada y contratos de consulta/render | Resolución, revisión, coordenadas, proyecciones LSP y regresiones en verde |
+| App y consumidores: .09/.10/.11 | Consulta pública operativa y catálogo verificado | Widgets, arquitectura, accesibilidad y transporte real en verde |
+| Experimento: .12 | Integración completa y dataset congelado | Manifiesto, crudos, resumen reproducible, tamaños y puertas integrales |
+| Cierre común | Doce puntos con evidencia exigida | Resúmenes sincronizados, commit/push comprobados e informe de cierre |
+
+Las referencias abreviadas `.nn` son puntos `PG-H.nn`. Los contratos se preparan primero para todos
+los bloques; la secuencia no autoriza programar un bloque antes de sus casos y tests. No se requiere
+un mensaje de aprobación entre estos bloques internos: la parada de fase se produce al cerrar PG-H,
+salvo un conflicto de fuentes o cambio de alcance que active `CONFLICT-REPORT`.
 
 ### Cierre común
 
@@ -522,5 +572,11 @@ Las filas aún sin estado representan tareas pendientes, como sus casillas; no s
 | PG-H.C13 | | | Pendiente de ejecución |
 
 Revisión Git de cierre: pendiente. Verificadores de implementación: no ejecutados.
-Pendientes justificados: dependencia PG-0, revisión del plan y autorización de inicio.
+Pendientes justificados: revisión del plan y autorización de inicio. La dependencia PG-0 está satisfecha.
 Puntos de §4 cumplidos: ninguno. Decisiones nuevas de la persona: ninguna durante esta preparación.
+
+Comprobaciones de preparación documental del 2026-10-22: `git diff --check` en verde;
+72 subtareas únicas, 13 puntos de cierre y sus 85 filas de resumen comprobados; enlaces locales
+resueltos. La puerta existente `xtask/src/documentation.rs::check` de spec se ejecutó desde un
+lanzador temporal sobre el repositorio y pasó `DOC-NO-TRANSIENT-REFS`. Estas comprobaciones
+validan el documento; no son evidencia de implementación ni cierran `PG-H.C11`.
