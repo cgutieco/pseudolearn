@@ -3,6 +3,7 @@ use serde_json::Value;
 
 pub mod analysis_limits;
 pub mod grammar;
+pub mod help_catalog;
 pub mod lexicon;
 pub mod structural;
 
@@ -20,6 +21,7 @@ pub fn check(specification: &Specification) -> Vec<String> {
             "vocabulary" | "functions" => lexicon::check(value),
             "diagnostics" => diagnostics(value),
             "grammar" => grammar::check(value),
+            "helpCatalog" => help_catalog::check(value),
             "analysisLimits" => analysis_limits::check(value),
             "unsupportedConstructs" => structural::check(value),
             crate::trace::ALPHABET_TERM => crate::trace::catalog(value),
@@ -31,6 +33,28 @@ pub fn check(specification: &Specification) -> Vec<String> {
                 "SEE-RESOURCE: {}: {error}",
                 specification.metadata.id
             ));
+        }
+    }
+    errors
+}
+
+pub fn check_references(corpus: &see_model::Corpus) -> Vec<String> {
+    let mut errors = Vec::new();
+    for specification in corpus {
+        for definition in specification
+            .blocks
+            .iter()
+            .filter(|block| block.kind == "definicion")
+        {
+            if field(definition, "termino") != "helpCatalog" {
+                continue;
+            }
+            let Some(value) = definition.fields.get("valor") else {
+                continue;
+            };
+            if help_catalog::check(value).is_ok() {
+                errors.extend(help_catalog::references(value, corpus));
+            }
         }
     }
     errors

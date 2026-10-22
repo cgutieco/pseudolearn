@@ -4,6 +4,7 @@
   "activadas": [
     "TOOL.FORMAT.STYLE",
     "TOOL.LSP.CAPABILITIES",
+    "TOOL.SERVICE.CATALOG",
     "TOOL.SERVICE.COMPLETION",
     "TOOL.SERVICE.HOVER",
     "TOOL.SERVICE.INCREMENTAL",
@@ -15,6 +16,24 @@
   ],
   "fases_cerradas": [],
   "vinculos": [
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R1",
+      "verificacion": "consulta de catálogo aún no implementada",
+      "estado": "pendiente",
+      "resuelve_en": "catalogo-ayuda-operativo"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R2",
+      "verificacion": "consulta de catálogo aún no implementada",
+      "estado": "pendiente",
+      "resuelve_en": "catalogo-ayuda-operativo"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R3",
+      "verificacion": "consulta de catálogo aún no implementada",
+      "estado": "pendiente",
+      "resuelve_en": "catalogo-ayuda-operativo"
+    },
     {
       "regla": "TOOL.FORMAT.STYLE@1.0.0#R1",
       "verificacion": "ejecutor",

@@ -4,12 +4,30 @@ use serde_json::json;
 #[test]
 fn extracts_normative_resources_and_rejects_duplicate_names() -> Result<(), String> {
     let mut specification = support::specification()?;
+    let catalog = json!({
+        "format": "help-catalog/1",
+        "cards": [{"id": "construct.sample", "content": {"es": {"purpose": "Propósito"}, "en": {"purpose": "Purpose"}}}],
+        "exclusions": []
+    });
     specification.blocks.push(see_model::Block {
         kind: "definicion".to_owned(),
         fields: serde_json::from_value(json!({"id":"D1", "termino":"vocabulary", "texto":"Lexemas", "valor":{"write":{"lexemas":{"es":"Escribir","en":"write"}}}}))
             .map_err(|error| error.to_string())?,
     });
+    specification.blocks.push(see_model::Block {
+        kind: "definicion".to_owned(),
+        fields: serde_json::from_value(
+            json!({"id":"D2", "termino":"helpCatalog", "texto":"Ayuda", "valor":catalog}),
+        )
+        .map_err(|error| error.to_string())?,
+    });
     let resources = see_export::resources::generate(&vec![specification.clone()])?;
+    let repeated = see_export::resources::generate(&vec![specification.clone()])?;
+    assert_eq!(resources, repeated);
+    assert_eq!(
+        resources.pointer("/helpCatalog/format"),
+        Some(&serde_json::json!("help-catalog/1"))
+    );
     assert_eq!(
         see_export::resources::vocabulary(&resources)?,
         json!({"write":{"es":"Escribir","en":"write"}})

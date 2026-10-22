@@ -8,6 +8,7 @@ Fuera de alcance: ejecución del motor, máquinas virtuales, interfaz de línea 
 
 | Pendiente | Motivo | Condición de resolución |
 |---|---|---|
+| Consulta contextual de `helpCatalog` por identidad y papel | El servicio aún no carga las fichas editoriales ni resuelve el rol del cursor desde la sesión analizada | Añadir consulta común sobre la revisión vigente y los datos exportados, sin reconocer lexemas en el cliente |
 | Reutilizar resultados semánticos entre ediciones | Cada edición reconstruye árbol, análisis e índice del documento completo; las huellas por unidad solo informan qué unidades cambiaron. El costo medido cumple el presupuesto de latencia hasta diez mil líneas | Un presupuesto de latencia que el reanálisis completo deje de cumplir, o documentos de decenas de miles de líneas |
 | Extensión mínima para VS Code | Opcional; el servidor LSP ya sirve a cualquier editor compatible | Decisión de producto sobre distribución de extensiones |
 

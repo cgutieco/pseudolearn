@@ -4,7 +4,9 @@
 
 - Fase: PG-H; requisitos R-17, R-18 y R-20; capacidad C-16; ADR-13; riesgos K-16 y K-17;
   experimento E-PG-11; tratamiento de CF-17.
-- Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: pendiente.
+- Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: 2026-10-22.
+- Alcance autorizado en mensaje nuevo: ejecución de `PG-H.01` únicamente; no autoriza los puntos
+  siguientes ni cierra PG-H.
 - Revisión de esta preparación: `2f5fccb6d046edfbaa054a2160b116259a1cd61b`; árbol limpio al comenzar la lectura.
   El borrador anterior se preparó sobre `d42a9e3047ebe664b74a709336934bc20ab8a916`, antes del cierre de PG-0.
 - Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
@@ -12,8 +14,10 @@
   Autoriza esta preparación documental, conforme a la precedencia de la instrucción directa;
   no acredita autorización de implementación ni revisión del documento terminado.
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
-  con campañas y verificadores en verde según su resumen de cierre. Falta la autorización nueva de PG-H.
-- Estado: plan preparado para revisión; `PG-H.C01` y `PG-H.C02` continúan pendientes.
+  con campañas y verificadores en verde según su resumen de cierre. Hay autorización nueva limitada
+  a `PG-H.01`; los demás puntos requieren autorización propia.
+- Estado: `PG-H.01` completo. `PG-H.C01` queda satisfecho para `.01`; la revisión integral del plan
+  (`PG-H.C02`) sigue pendiente.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
 y de la [hoja de ruta](../hoja-de-ruta-proposito-general.md). Ningún archivo fuera de `docs/`
@@ -85,8 +89,10 @@ sin capa de producto ni responsabilidad normativa. Su dueño es este archivo nue
 
 ## 3. Decisiones de diseño
 
-Son elecciones propuestas para implementar ADR-13; nombres de recursos, operaciones e identidades
-nuevas se confirmarán en el corpus antes del código. No se presentan como capacidades existentes.
+Son elecciones propuestas para implementar ADR-13. Las decisiones e identidades del catálogo de
+`PG-H.01` quedaron fijadas en `TOOL.SERVICE.CATALOG`; las decisiones de consulta, resolución, render
+y app siguen propuestas y se confirmarán en el corpus antes del código. No se presentan como
+capacidades existentes.
 
 | Decisión | Opciones y criterio | Elección propuesta | Reversión y dueño documental |
 |---|---|---|---|
@@ -113,7 +119,8 @@ Los símbolos de usuario conservarán su firma/tipo sin atribuirles intención p
 ## 4. Desglose por punto
 
 El orden de cada lista es especificación → casos → tests → código/datos → documentación →
-verificación. Las dependencias entre puntos se concretan en §10. Todas las tareas están sin ejecutar.
+verificación. Las dependencias entre puntos se concretan en §10. `PG-H.01` se completó;
+los puntos `PG-H.02`–`.12` siguen pendientes.
 
 ### Trazabilidad de entregables y aceptación
 
@@ -137,14 +144,14 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.01 · Catálogo normativo
 
-- [ ] `PG-H.01.01` Especificar identidad de ficha/rol, esquema, disponibilidad, anclajes, idiomas,
+- [x] `PG-H.01.01` Especificar identidad de ficha/rol, esquema, disponibilidad, anclajes, idiomas,
   ejemplos y exclusiones; proponer contrato propio sin convertir docs/ en dependencia.
-- [ ] `PG-H.01.02` Derivar casos de ficha completa, mínima, duplicada, vacía e incompatible con edición/rigor.
-- [ ] `PG-H.01.03` Preparar tests espejo de modelo, carga, exportación y preservación del contenido editorial.
-- [ ] `PG-H.01.04` Añadir datos y soporte mínimo de recurso/esquema/exportación; comprobar que su hash cubre
+- [x] `PG-H.01.02` Derivar casos de ficha completa, mínima, duplicada, vacía e incompatible con edición/rigor.
+- [x] `PG-H.01.03` Preparar tests espejo de modelo, carga, exportación y preservación del contenido editorial.
+- [x] `PG-H.01.04` Añadir datos y soporte mínimo de recurso/esquema/exportación; comprobar que su hash cubre
   también la prosa editorial normativa, sin depender de párrafos Markdown excluidos del anclaje.
-- [ ] `PG-H.01.05` Documentar formato, dueño y generación en los README spec y crates afectados.
-- [ ] `PG-H.01.06` Validar, reanclar solo contratos afectados conservando versiones/estados y verificar exportación reproducible.
+- [x] `PG-H.01.05` Documentar formato, dueño y generación en los README spec y crates afectados.
+- [x] `PG-H.01.06` Validar, reanclar solo contratos afectados conservando versiones/estados y verificar exportación reproducible.
 
 ### PG-H.02 · Consulta pública
 
@@ -478,19 +485,21 @@ salvo un conflicto de fuentes o cambio de alcance que active `CONFLICT-REPORT`.
 
 ## 11. Resumen de ejecución
 
-La preparación documental no satisface ninguno de los doce puntos de implementación. No se han
-ejecutado tareas ni campañas de PG-H. La tabla se completará por tarea con los estados del plan
-general: Cumplido, No cumplido, Diferido, No aplica o Retirado, y su evidencia/decisión correspondiente.
-Las filas aún sin estado representan tareas pendientes, como sus casillas; no son resultados fallidos.
+`PG-H.01` quedó completo: el contrato estable `1.0.0` tiene revisión humana registrada, el anclaje se
+refrescó y `see export --check` confirmó la exportación determinista. No se ejecutaron campañas de PG-H
+ni puntos `.02`–`.12`. `cargo xtask verify` completó exportación, Clippy y pruebas del workspace, pero
+se detuvo en `cargo deny` porque no pudo actualizar la base remota de avisos sin DNS; `cargo deny
+--offline check` pasó con la base local disponible. La tabla registra estados y evidencia; las filas
+sin estado siguen pendientes.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| PG-H.01.01 | | | Pendiente de ejecución |
-| PG-H.01.02 | | | Pendiente de ejecución |
-| PG-H.01.03 | | | Pendiente de ejecución |
-| PG-H.01.04 | | | Pendiente de ejecución |
-| PG-H.01.05 | | | Pendiente de ejecución |
-| PG-H.01.06 | | | Pendiente de ejecución |
+| PG-H.01.01 | Cumplido | `TOOL.SERVICE.CATALOG` R1–R3 y `schemas/help-catalog-1.schema.json` | Identidad/papel, disponibilidad, anclajes, idiomas, ejemplos y exclusiones; sin dependencia de `docs/`. |
+| PG-H.01.02 | Cumplido | `crates/see_validation/tests/resources/help_catalog.rs` | Casos completos, mínimos, vacíos, duplicados, traducciones y disponibilidad inválidas. |
+| PG-H.01.03 | Cumplido | Tests `see_model`, `see_format`, `see_validation`, `see_export` | Preservación, carga, validación de referencias, exportación determinista y contenido editorial. |
+| PG-H.01.04 | Cumplido | `crates/see_validation/src/resources/help_catalog/`; `crates/see_change/tests/locking.rs`; `crates/see_export/tests/resources.rs`; `specifications/cases/catalogs.json` | Esquema, validador, exportación del recurso y hash sensible a la prosa de `valor`. |
+| PG-H.01.05 | Cumplido | README de `pseudolearn_spec`, `see_model`, `see_format`, `see_validation`, `see_export`, `see_change` y `pseudolearn_service` | Dueño, formato, referencias, hash y pendiente del consumidor documentados. |
+| PG-H.01.06 | Cumplido | `see validate` (159 especificaciones), `see lock --refresh TOOL.SERVICE.CATALOG`, `see export --check` | Revisión humana registrada; anclaje refrescado y exportación reproducible. `cargo xtask verify` alcanzó `cargo deny`, que requiere una actualización remota no disponible en este entorno; la comprobación con base local y `--offline` pasó. |
 | PG-H.02.01 | | | Pendiente de ejecución |
 | PG-H.02.02 | | | Pendiente de ejecución |
 | PG-H.02.03 | | | Pendiente de ejecución |
@@ -557,7 +566,7 @@ Las filas aún sin estado representan tareas pendientes, como sus casillas; no s
 | PG-H.12.04 | | | Pendiente de ejecución |
 | PG-H.12.05 | | | Pendiente de ejecución |
 | PG-H.12.06 | | | Pendiente de ejecución |
-| PG-H.C01 | | | Pendiente de ejecución |
+| PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autorización limitada a `PG-H.01`; no autoriza otros puntos ni el cierre de PG-H. |
 | PG-H.C02 | | | Pendiente de ejecución |
 | PG-H.C03 | | | Pendiente de ejecución |
 | PG-H.C04 | | | Pendiente de ejecución |
@@ -571,9 +580,11 @@ Las filas aún sin estado representan tareas pendientes, como sus casillas; no s
 | PG-H.C12 | | | Pendiente de ejecución |
 | PG-H.C13 | | | Pendiente de ejecución |
 
-Revisión Git de cierre: pendiente. Verificadores de implementación: no ejecutados.
-Pendientes justificados: revisión del plan y autorización de inicio. La dependencia PG-0 está satisfecha.
-Puntos de §4 cumplidos: ninguno. Decisiones nuevas de la persona: ninguna durante esta preparación.
+PG-H no se cierra ni publica con este punto. Para `PG-H.01`, las pruebas dirigidas, Clippy, formato,
+`rust-checks all .`, validación, refresco del anclaje y comprobación de exportación están en verde.
+`cargo xtask verify` queda parcialmente limitado por la actualización remota de `cargo deny`; su modo
+`--offline` pasó. `PG-H.C02` conserva pendiente la revisión integral del plan. Las seis subtareas de
+`PG-H.01` están cumplidas; los puntos posteriores siguen pendientes.
 
 Comprobaciones de preparación documental del 2026-10-22: `git diff --check` en verde;
 72 subtareas únicas, 13 puntos de cierre y sus 85 filas de resumen comprobados; enlaces locales

@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Define Metadata, Block, Specification, Anchor, Manifest, Conformance, PropertyRun y Evidence como datos serializables. La frontera pública no ejecuta sujetos ni interpreta programas.
+Define Metadata, Block, Specification, Anchor, Manifest, Conformance, PropertyRun y Evidence como datos serializables. Los valores de recursos en `Block.fields` permanecen como JSON tipado por su validador dueño, incluida la prosa editorial normativa. La frontera pública no ejecuta sujetos ni interpreta programas.
 
 ## 2. Guía operativa y ciclo de vida
 

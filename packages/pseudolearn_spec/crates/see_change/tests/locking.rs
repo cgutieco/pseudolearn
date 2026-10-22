@@ -46,6 +46,31 @@ fn hashes_normative_content_and_ignores_editorial_fields() -> Result<(), String>
 }
 
 #[test]
+fn hashes_editorial_catalog_content_stored_in_the_normative_resource() -> Result<(), String> {
+    let mut specification = support::specification()?;
+    specification.blocks.push(see_model::Block {
+        kind: "definicion".to_owned(),
+        fields: serde_json::from_value(serde_json::json!({
+            "id":"D2",
+            "termino":"helpCatalog",
+            "texto":"Catálogo",
+            "valor":{"cards":[{"content":{"es":{"purpose":"Explica el algoritmo"},"en":{"purpose":"Explains the algorithm"}}}]}
+        }))
+        .map_err(|error| error.to_string())?,
+    });
+    let original = see_change::hash(&specification)?;
+    let content = specification
+        .blocks
+        .last_mut()
+        .and_then(|block| block.fields.get_mut("valor"))
+        .and_then(|value| value.pointer_mut("/cards/0/content/es/purpose"))
+        .ok_or("Missing editorial content")?;
+    *content = serde_json::json!("Delimita el punto de entrada");
+    assert_ne!(original, see_change::hash(&specification)?);
+    Ok(())
+}
+
+#[test]
 fn removed_candidate_identity_is_allowed_but_stable_identity_requires_tombstone()
 -> Result<(), String> {
     let mut candidate = support::specification()?;

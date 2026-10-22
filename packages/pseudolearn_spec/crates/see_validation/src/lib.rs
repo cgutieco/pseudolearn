@@ -31,6 +31,7 @@ pub fn validate(corpus: &Corpus, lock: &Lock) -> Result<Vec<String>, String> {
     errors.extend(cli::check(corpus));
     errors.extend(coverage::check(corpus));
     errors.extend(measurement::check(corpus));
+    errors.extend(resources::check_references(corpus));
     for specification in corpus {
         errors.extend(schema::check(specification));
         errors.extend(references::check(specification));

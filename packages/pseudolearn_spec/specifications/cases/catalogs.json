@@ -3371,6 +3371,118 @@
       "write"
     ]
   },
+  "helpCatalog": {
+    "cards": [
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.PROGRAM.STRUCTURE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [
+              "The text contains exactly one named algorithm with a closing form."
+            ],
+            "examples": [
+              {
+                "case": "C1",
+                "label": "Empty algorithm",
+                "profile": "en",
+                "specification": "LANG.PROGRAM.STRUCTURE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "opening",
+                "text": "Declares the algorithm name."
+              },
+              {
+                "identity": "closing",
+                "text": "Closes the unit that contains the algorithm."
+              }
+            ],
+            "purpose": "Delimits the unit that starts execution of the program text.",
+            "summary": "Program entry point.",
+            "title": "Algorithm structure"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [
+              "El texto contiene exactamente un algoritmo con nombre y cierre."
+            ],
+            "examples": [
+              {
+                "case": "C1",
+                "label": "Algoritmo vacío",
+                "profile": "es",
+                "specification": "LANG.PROGRAM.STRUCTURE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "opening",
+                "text": "Declara el nombre del algoritmo."
+              },
+              {
+                "identity": "closing",
+                "text": "Cierra la unidad que contiene el algoritmo."
+              }
+            ],
+            "purpose": "Delimita la unidad que inicia la ejecución del texto de programa.",
+            "summary": "Punto de entrada de un programa.",
+            "title": "Estructura del algoritmo"
+          }
+        },
+        "id": "construction.algorithm.entry",
+        "identity": {
+          "id": "algorithm",
+          "kind": "construction",
+          "role": "program_entry"
+        },
+        "tokens": [
+          {
+            "identity": "algorithm",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endAlgorithm",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      }
+    ],
+    "exclusions": [],
+    "format": "help-catalog/1"
+  },
   "traceEvents": {
     "call": {
       "datos": [

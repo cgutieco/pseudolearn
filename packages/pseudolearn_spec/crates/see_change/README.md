@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Calcula SHA-256 de contratos canónicos, conserva anclajes históricos y propone clases de cambio. No decide por una persona el significado de una diferencia. Mientras el versionado esté congelado, los cambios oficiales de contenido conservan versión y requieren `lock --refresh` de sus identidades; al reabrirse el versionado, vuelve la inmutabilidad estricta por versión.
+Calcula SHA-256 de contratos canónicos, conserva anclajes históricos y propone clases de cambio. Todo bloque contractual participa en el hash salvo `pregunta`; por eso la prosa editorial del catálogo vive dentro de `definicion.valor`, mientras que los párrafos Markdown fuera de bloques no llegan al modelo. No decide por una persona el significado de una diferencia. Mientras el versionado esté congelado, los cambios oficiales de contenido conservan versión y requieren `lock --refresh` de sus identidades; al reabrirse el versionado, vuelve la inmutabilidad estricta por versión.
 
 ## 2. Guía operativa y ciclo de vida
 

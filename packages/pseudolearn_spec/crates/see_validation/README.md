@@ -14,7 +14,7 @@ Imports internos permitidos: model, graph, change. Prohibidas las capas superior
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Las definiciones admiten valor como objeto normativo. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
+Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2026 por perfil/rigor, contenido es/en, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen resultados duplicados; su referencia debe quedar dentro de la disponibilidad de la ficha. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.

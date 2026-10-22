@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Convierte Markdown con encabezado YAML y cercados tipados en Specification; acepta secuencias YAML y CRLF. Rechaza enlaces HTTP externos en cualquier parte del archivo, incluida la prosa, y escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
+Convierte el encabezado YAML y los bloques cercados tipados de Markdown en Specification; acepta secuencias YAML y CRLF. La prosa fuera de bloques no ingresa al modelo. Rechaza enlaces HTTP externos en cualquier parte del archivo, incluida la prosa, y escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
 
 ## 2. Guía operativa y ciclo de vida
 

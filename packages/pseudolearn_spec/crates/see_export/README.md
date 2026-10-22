@@ -14,7 +14,7 @@ Imports internos permitidos: model, change. Prohibidas las capas superiores y lo
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Extrae recursos normativos del campo valor de definiciones: vocabulario, firmas, fichas de diagnósticos y gramática. Los incorpora a see-export/1; la CLI materializa el vocabulario consumidor y los catálogos derivados. Rechaza recursos duplicados. El vocabulario consumidor incluye alias por idioma; function: distingue nombres de funciones de tokens reservados, para preservar variables homónimas.
+Extrae recursos normativos del campo valor de definiciones: vocabulario, firmas, fichas de diagnósticos, gramática y `helpCatalog`. Los incorpora a see-export/1; la CLI materializa el vocabulario consumidor y los catálogos derivados. Rechaza recursos duplicados. El vocabulario consumidor incluye alias por idioma; function: distingue nombres de funciones de tokens reservados, para preservar variables homónimas. El catálogo mantiene sus identidades, anclajes y contenido bilingüe en un único recurso; sus referencias a formas y esperados no copian el vocabulario ni los casos.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
