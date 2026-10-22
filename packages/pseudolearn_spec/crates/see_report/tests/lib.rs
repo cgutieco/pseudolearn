@@ -8,12 +8,12 @@ use serde_json::json;
 fn conformance() -> Conformance {
     Conformance {
         estado: "activo".to_owned(),
-        sujeto: "reference".to_owned(),
+        sujeto: "engine".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec!["LANG.TEST.SAMPLE".to_owned()],
         fases_cerradas: vec![],
         vinculos: vec![Binding {
-            regla: "LANG.TEST.SAMPLE@0.1.0#R1".to_owned(),
+            regla: "LANG.TEST.SAMPLE@1.0.0#R1".to_owned(),
             verificacion: "ejecutor".to_owned(),
             estado: "cumple".to_owned(),
             resuelve_en: None,
@@ -73,7 +73,7 @@ fn feature_aggregates_states_and_rejects_missing_contracts() -> Result<(), Strin
         see_report::feature(&corpus, &manifest)?
             .get("state")
             .and_then(|value| value.as_str()),
-        Some("experimental")
+        Some("estable")
     );
     manifest
         .especificaciones
@@ -87,7 +87,7 @@ fn feature_aggregates_states_and_rejects_missing_contracts() -> Result<(), Strin
 fn evidence() -> Evidence {
     Evidence {
         protocol: "see-protocol/1".to_owned(),
-        subject: "reference".to_owned(),
+        subject: "engine".to_owned(),
         subject_version: "0.1.0".to_owned(),
         properties: Vec::new(),
         corpus_hashes: Default::default(),

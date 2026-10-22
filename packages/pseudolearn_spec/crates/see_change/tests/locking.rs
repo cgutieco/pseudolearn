@@ -48,7 +48,8 @@ fn hashes_normative_content_and_ignores_editorial_fields() -> Result<(), String>
 #[test]
 fn removed_candidate_identity_is_allowed_but_stable_identity_requires_tombstone()
 -> Result<(), String> {
-    let candidate = support::specification()?;
+    let mut candidate = support::specification()?;
+    candidate.metadata.estado = "experimental".to_owned();
     let candidate_lock = see_change::locking::generate(&vec![candidate], &Lock::default())?;
     assert!(see_change::locking::check(&vec![], &candidate_lock)?.is_empty());
     let mut stable = support::specification()?;

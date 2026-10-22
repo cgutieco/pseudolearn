@@ -34,9 +34,7 @@ fn publishes_rule_to_instruction_rows_and_states_by_domain() -> Result<(), Strin
     );
     let states = see_report::coverage::states(&corpus);
     assert_eq!(
-        states
-            .get("LANG")
-            .and_then(|states| states.get("experimental")),
+        states.get("LANG").and_then(|states| states.get("estable")),
         Some(&1)
     );
     Ok(())
@@ -47,7 +45,7 @@ fn reports_pending_rules() -> Result<(), String> {
     let corpus = vec![support::specification()?];
     let conformance = Conformance {
         estado: "activo".to_owned(),
-        sujeto: "reference".to_owned(),
+        sujeto: "engine".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec![],
         fases_cerradas: vec![],
@@ -66,7 +64,7 @@ fn reports_pending_rules() -> Result<(), String> {
     };
     let mut evidence = Evidence {
         protocol: "see-protocol/1".to_owned(),
-        subject: "reference".to_owned(),
+        subject: "engine".to_owned(),
         subject_version: "0.1.0".to_owned(),
         properties: Vec::new(),
         corpus_hashes: Default::default(),
@@ -97,7 +95,7 @@ fn reports_rules_verified_only_by_measurements_as_not_applicable() -> Result<(),
     });
     let conformance = Conformance {
         estado: "activo".to_owned(),
-        sujeto: "reference".to_owned(),
+        sujeto: "engine".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec![],
         fases_cerradas: vec![],
@@ -105,7 +103,7 @@ fn reports_rules_verified_only_by_measurements_as_not_applicable() -> Result<(),
     };
     let evidence = Evidence {
         protocol: "see-protocol/1".to_owned(),
-        subject: "reference".to_owned(),
+        subject: "engine".to_owned(),
         subject_version: "0.1.0".to_owned(),
         properties: Vec::new(),
         corpus_hashes: Default::default(),

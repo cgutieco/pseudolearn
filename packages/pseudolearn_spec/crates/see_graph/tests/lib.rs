@@ -9,7 +9,7 @@ fn propagates_transitive_impact_and_reports_unknown_identity() -> Result<(), Str
     second.metadata.id = "LANG.TEST.SECOND".to_owned();
     second.metadata.depende_de.push(Dependency {
         id: first.metadata.id.clone(),
-        version: "^0.1".to_owned(),
+        version: "^1.0".to_owned(),
         tipo: "usa".to_owned(),
     });
     let corpus = vec![first, second];
@@ -26,7 +26,7 @@ fn detects_self_cycles_missing_dependencies_and_bad_ranges() -> Result<(), Strin
     let mut specification = support::specification()?;
     specification.metadata.depende_de.push(Dependency {
         id: specification.metadata.id.clone(),
-        version: "^0.1".to_owned(),
+        version: "^1.0".to_owned(),
         tipo: "usa".to_owned(),
     });
     assert!(
@@ -60,7 +60,7 @@ fn handles_deep_acyclic_graph_without_recursion() -> Result<(), String> {
         if let Some(id) = previous {
             specification.metadata.depende_de.push(Dependency {
                 id,
-                version: "^0.1".to_owned(),
+                version: "^1.0".to_owned(),
                 tipo: "usa".to_owned(),
             });
         }
