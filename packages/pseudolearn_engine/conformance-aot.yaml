@@ -760,25 +760,19 @@
       "estado": "cumple"
     },
     {
-      "regla": "PERF.AOT.LEVEL@2.0.0#R1",
+      "regla": "PERF.AOT.LEVEL@1.0.0#R1",
       "verificacion": "medicion",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.AOT.LEVEL@2.0.0#R2",
+      "regla": "PERF.AOT.LEVEL@1.0.0#R2",
       "verificacion": "medicion",
       "estado": "cumple"
     },
     {
-      "regla": "PERF.AOT.LEVEL@2.0.0#R3",
+      "regla": "PERF.AOT.LEVEL@1.0.0#R3",
       "verificacion": "medicion",
       "estado": "cumple"
-    },
-    {
-      "regla": "PERF.AOT.LEVEL@2.0.0#R4",
-      "verificacion": "medicion",
-      "estado": "pendiente",
-      "resuelve_en": "nivel-optimizado-posterior"
     },
     {
       "regla": "PERF.SUITE.CORE@1.0.0#R1",

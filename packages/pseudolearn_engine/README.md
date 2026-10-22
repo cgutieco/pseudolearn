@@ -33,9 +33,7 @@ Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve
 Fuera de alcance de producto: construcciones nuevas, concurrencia, reloj libre, efectos no grabables y JIT.
 Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| codegen: Cranelift permanece como backend release y cumple el nivel `PERF.AOT.LEVEL#R1` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. Pendiente el nivel optimizado `PERF.AOT.LEVEL#R4` (≤ 1,30 frente a V1F-S) | E-NR1, RT.ABI | `nivel-optimizado-posterior` |
+Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
 
 ## 2. Guía operativa y ciclo de vida
 

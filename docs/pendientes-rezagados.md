@@ -15,10 +15,6 @@ numérica 1,467×, objetos 1,488×, recursiva 1,316× frente a V1F; emisión má
 en iOS, macOS, Windows y Wasm se verifica con `rust-checks isolation`, y el manifiesto `aot` no deja reglas pendientes de R6.
 Lo que sigue abierto:
 
-- **Nivel optimizado (`PERF.AOT.LEVEL#R4`):** alcanzar una razón geométrica por familia ≤ 1,30× frente a V1F-S (variante
-  que incorpora rastreo de indefinidos y recolección forzada con límite de celdas vivas). Cranelift no se compromete a
-  alcanzarlo; requiere evaluar alternativas según costes residuales medidos. Vínculo `pendiente` en `conformance-aot.yaml`
-  con `resuelve_en: nivel-optimizado-posterior`.
 - **Causa de la anomalía histórica de `Permute`:** la diferencia entre políticas de raíces (`AllLive` 1,61× frente a `Borrowed`
   2,18×) dejó de observarse tras eliminar comprobaciones dominadas (1,302× y 1,314×), pero la causa microarquitectónica
   nunca se demostró con contadores de hardware de fallos de caché de instrucciones, ramas y alineación.

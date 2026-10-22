@@ -21,7 +21,6 @@ Fuera de alcance técnico: enlace y empaquetado del ejecutable; la biblioteca es
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Nivel optimizado: razón por familia ≤ 1,30 frente a V1F-S (`PERF.AOT.LEVEL#R4`). Ningún backend lo implementa; Cranelift no se compromete a alcanzarlo | Evaluar alternativas según costes residuales medidos | `nivel-optimizado-posterior` |
 | Causa microarquitectónica de la anomalía histórica de Permute, no determinada con contadores de hardware; hoy no se observa | Contadores de caché de instrucciones, ramas y alineación en el hardware de referencia | Sin fase asignada |
 
 ## 2. Guía operativa y ciclo de vida
@@ -224,6 +223,8 @@ Problema: la misma comprobación se repetía en cada sentencia que la necesitaba
 Problema: la anomalía de Permute (`Borrowed` 2,18× frente a `AllLive` 1,61×) no tenía causa demostrada. Con las comprobaciones dominadas eliminadas, la comparación en campañas pareadas completas da `Borrowed` 1,314× y `AllLive` 1,302×: la diferencia deja de observarse. La causa microarquitectónica no se demostró con contadores de hardware y no se afirma una; queda declarada como no determinada. No se añadió alineación ni ajuste específico de carga. `Borrowed` sigue siendo el valor predeterminado. Se descarta atribuir la mejora a la política de raíces: solo cambió el código generado.
 
 Resultado de cierre del nivel Cranelift (`PERF.AOT.LEVEL#R1`, `#R2` y `#R3`): campaña formal pareada de 10 procesos × 30 iteraciones por carga frente a V1F, intervalo versión 2 con conciliación final, en macOS ARM64. Razón de medianas por familia: arreglos 1,639, numérica 1,467, objetos 1,488 y recursiva 1,316, todas ≤ 1,70. Emisión mediana máxima del objeto: 9,749 ms (Richards) frente a 15 ms. Aceleración mínima sobre la VM: 12,0× (Storage). Razón por carga: Sieve 1,507, Queens 1,784, Mandelbrot 1,166, NBody 1,846, Permute 1,316, Bounce 1,385, List 1,081, Richards 1,854, Storage 3,097, Towers 0,850. Los intervalos de bootstrap sobre medias por proceso son un estimador distinto de la puerta, que usa cocientes de medianas, y no se usan para decidirla. La campaña previa con el mismo diseño daba arreglos 1,681 y 1,722 en dos corridas, de modo que el margen de arreglos (0,061) es del orden del ruido entre campañas. Las razones por carga de Storage, NBody, Richards y Queens superan 1,70 individualmente; el contrato mide la media geométrica por familia y no cada carga. Los datos crudos quedan en un directorio local ignorado; la reproducción es `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>`.
+
+Problema: `PERF.AOT.LEVEL#R4` pedía un nivel optimizado (≤ 1,30 frente a V1F-S) que ningún backend implementa y que ninguna fase pide. Elección: retirar la regla y sus mediciones del contrato, que queda estable 1.0.0 con el nivel Cranelift (`#R1` a `#R3`); las identidades retiradas permanecen como lápidas. Se descarta mantenerla `pendiente` indefinidamente: un contrato estable no puede declarar un requisito sin dueño ni camino de cumplimiento.
 
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.

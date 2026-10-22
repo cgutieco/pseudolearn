@@ -4,10 +4,13 @@
   "id": "PERF.AOT.LEVEL",
   "titulo": "Nivel del código nativo",
   "dominio": "rendimiento",
-  "estado": "experimental",
-  "version": "2.0.0",
+  "estado": "estable",
+  "version": "1.0.0",
   "duenos": [
     "responsable-rendimiento"
+  ],
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
   ],
   "sujetos": [
     "aot"
@@ -25,14 +28,7 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Native code level",
-  "cambio": {
-    "clase": "cambio_significado",
-    "impacto_usuarios": "R1 exige solo el nivel Cranelift: razón por familia como máximo 1,70 frente a V1F. El nivel optimizado futuro, como máximo 1,30 frente a V1F-S, pasa a la regla R4.",
-    "impacto_implementaciones": "Un backend que cumple 1,70 frente a V1F cumple R1 sin depender del denominador V1F-S. Las mediciones M7 a M10 se verifican en R4. Los arneses identifican nivel y denominador; no se reinterpretan campañas históricas.",
-    "justificacion": "Una sola regla que mezclaba dos niveles impedía certificar el nivel Cranelift mientras el nivel optimizado no existe como backend; separarlas permite certificar cada nivel con su propia evidencia.",
-    "revisado_por": "persona-responsable"
-  }
+  "titulo_en": "Native code level"
 }
 ---
 
@@ -173,82 +169,37 @@
 }
 ```
 
-
-```regla
+```lapida
 {
   "id": "R4",
-  "fuerza": "DEBE",
-  "clase": "semantica",
-  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,30 frente a V1F-S para el nivel optimizado futuro, en cada familia numérica, recursiva, de objetos y de arreglos. V1F-S incorpora definición de valores y recolección forzada con límite de celdas vivas; el intervalo nativo incluye ejecución y conciliación final.",
-  "verificacion": [
-    "M7",
-    "M8",
-    "M9",
-    "M10"
-  ]
+  "justificacion": "El nivel optimizado futuro no tiene backend ni plan vigente; Cranelift cumple R1 a R3."
 }
 ```
 
-```medicion
+```lapida
 {
   "id": "M7",
-  "metrica": "razon_aot_optimizado_v1fs_numeric",
-  "unidad": "razon",
-  "suite": "PERF.SUITE.CORE",
-  "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
-  "plataformas": [
-    "macos-arm64"
-  ],
-  "protocolo": "PERF.PROTOCOL#R1"
+  "justificacion": "Medición de R4 retirada con ella."
 }
 ```
 
-```medicion
+```lapida
 {
   "id": "M8",
-  "metrica": "razon_aot_optimizado_v1fs_recursive",
-  "unidad": "razon",
-  "suite": "PERF.SUITE.CORE",
-  "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
-  "plataformas": [
-    "macos-arm64"
-  ],
-  "protocolo": "PERF.PROTOCOL#R1"
+  "justificacion": "Medición de R4 retirada con ella."
 }
 ```
 
-```medicion
+```lapida
 {
   "id": "M9",
-  "metrica": "razon_aot_optimizado_v1fs_objects",
-  "unidad": "razon",
-  "suite": "PERF.SUITE.CORE",
-  "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
-  "plataformas": [
-    "macos-arm64"
-  ],
-  "protocolo": "PERF.PROTOCOL#R1"
+  "justificacion": "Medición de R4 retirada con ella."
 }
 ```
 
-```medicion
+```lapida
 {
   "id": "M10",
-  "metrica": "razon_aot_optimizado_v1fs_arrays",
-  "unidad": "razon",
-  "suite": "PERF.SUITE.CORE",
-  "comparador": "<=",
-  "umbral": 1.3,
-  "provisional": true,
-  "plataformas": [
-    "macos-arm64"
-  ],
-  "protocolo": "PERF.PROTOCOL#R1"
+  "justificacion": "Medición de R4 retirada con ella."
 }
 ```

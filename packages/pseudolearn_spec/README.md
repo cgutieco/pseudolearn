@@ -29,7 +29,7 @@ de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
 de la revisión Git base. Mientras el versionado está congelado, las ediciones oficiales conservan estado, identidad y
 versión, omiten `cambio` y requieren reanclar la misma versión; la publicación solo se inicia con autorización explícita.
 Al reabrir el versionado se aplican los incrementos y clasificaciones de SEE.VERSIONING y SEE.CHANGE.CLASSIFICATION.
-La única excepción al congelamiento de estado y versión es la promoción de línea base: un contrato experimental o estable previo a 1.0.0 pasa a `estable` `1.0.0` sin `cambio`, con revisor independiente. Problema: promover contratos con evidencia completa sin reabrir el versionado completo. Elección: ampliar la excepción existente, que ya cubría estables previos a 1.0.0. Se descarta un indicador de configuración: la autorización de la persona queda registrada en el cambio que promueve.
+La única excepción al congelamiento de estado y versión es la promoción de línea base: un contrato experimental de cualquier versión, o estable previo a 1.0.0, pasa a `estable` `1.0.0` sin `cambio`, con revisor independiente; un experimental con versión superior se reancla en 1.0.0 porque la primera versión del lenguaje publica todas sus especificaciones en 1.0.0. Problema: promover contratos con evidencia completa sin reabrir el versionado completo. Elección: ampliar la excepción existente, que ya cubría estables previos a 1.0.0. Se descarta un indicador de configuración: la autorización de la persona queda registrada en el cambio que promueve.
 También se admiten durante el congelamiento los avances de ciclo de vida hacia propuesta y experimental, siempre por una transición válida y sin cambiar la versión; así un borrador recorre el ciclo completo antes de su promoción, un paso por cambio.
 La promoción de estado, el revisor y los bloques de clasificación no alteran el hash normativo. Código 0: éxito; 1: error
 o regresión exigible.
@@ -163,6 +163,7 @@ Problema: las propiedades nativas necesitan un oráculo independiente y artefact
   declarar cumplimiento por ausencia de casos. El arranque SEE recorrió borrador, propuesta y
   experimental tras revisión estructural manual y llegó a estable 1.0.0 con la revisión independiente de la persona
   registrada en `revisado_por`; los contratos restantes entran en experimental bajo la autorización de R1.
+  `PERF.AOT.LEVEL` llegó a estable 1.0.0 desde experimental 2.0.0 tras retirar R4 (el nivel optimizado no tiene backend ni plan vigente; sus identidades quedan como lápidas) y conservar R1 a R3, que Cranelift cumple.
   `API.WIRE-FORMAT` llegó a estable 1.0.0 tras cerrar R2 (el codificador ya transporta `source`) y R3 con la prueba de Chrome de `pseudolearn_wasm`; el vínculo app queda exento porque su adaptador nativo no anuncia `wasm`.
 - Problema: clasificar significado requiere juicio. Elección: diff propone clases y exige registro
   de clasificación e impacto; cambios de texto quedan para revisión. No infiere aprobación humana.

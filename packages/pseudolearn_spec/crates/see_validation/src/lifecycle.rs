@@ -81,13 +81,13 @@ fn baseline_promotion(
     previous: &see_model::contract::Anchor,
 ) -> bool {
     let metadata = &specification.metadata;
-    ["experimental", "estable"].contains(&previous.state.as_str())
-        && metadata.estado == "estable"
-        && metadata.version == "1.0.0"
-        && metadata.cambio.is_none()
-        && semver::Version::parse(&previous.version)
-            .ok()
-            .is_some_and(|version| version < semver::Version::new(1, 0, 0))
+    let reaches_baseline =
+        metadata.estado == "estable" && metadata.version == "1.0.0" && metadata.cambio.is_none();
+    let below_baseline = semver::Version::parse(&previous.version)
+        .ok()
+        .is_some_and(|version| version < semver::Version::new(1, 0, 0));
+    reaches_baseline
+        && (previous.state == "experimental" || (previous.state == "estable" && below_baseline))
 }
 
 fn check_versioned_change(

@@ -176,3 +176,36 @@ fn rejects_advancing_draft_straight_to_experimental_or_changing_its_version() ->
     );
     Ok(())
 }
+
+#[test]
+fn permits_experimental_contract_above_baseline_to_reach_stable_baseline() -> Result<(), String> {
+    let mut specification = stable_specification()?;
+    let lock = experimental_lock_for(&mut specification)?;
+    let mut anchored = lock.clone();
+    anchored
+        .specifications
+        .values_mut()
+        .for_each(|anchor| anchor.version = "2.0.0".to_owned());
+    specification.metadata.estado = "estable".to_owned();
+    specification.metadata.version = "1.0.0".to_owned();
+    specification.metadata.cambio = None;
+    assert!(see_validation::lifecycle::check(&specification, &anchored).is_empty());
+    Ok(())
+}
+
+#[test]
+fn rejects_lowering_the_version_of_an_already_stable_contract() -> Result<(), String> {
+    let mut specification = stable_specification()?;
+    let mut lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
+    lock.specifications
+        .values_mut()
+        .for_each(|anchor| anchor.version = "2.0.0".to_owned());
+    specification.metadata.version = "1.0.0".to_owned();
+    specification.metadata.cambio = None;
+    assert!(
+        see_validation::lifecycle::check(&specification, &lock)
+            .iter()
+            .any(|error| error == "SEE-VERSION: version is frozen")
+    );
+    Ok(())
+}
