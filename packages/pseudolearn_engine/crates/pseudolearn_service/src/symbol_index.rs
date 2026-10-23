@@ -47,6 +47,10 @@ impl SymbolIndex {
             .find(|entry| entry.span.start <= position && position <= entry.span.ending)
     }
 
+    pub fn at_token_span(&self, span: Span) -> Option<&NamedOccurrence> {
+        self.entries.iter().find(|entry| entry.span == span)
+    }
+
     pub fn occurrences_of(&self, target: ServiceSymbolTarget) -> Vec<&NamedOccurrence> {
         self.entries
             .iter()

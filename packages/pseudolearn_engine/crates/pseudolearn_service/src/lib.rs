@@ -21,6 +21,7 @@ pub mod edit_probe;
 pub mod edit_session;
 pub mod expected_slot;
 pub mod formatter;
+mod help_resolution;
 pub mod hover;
 pub mod identifier_roles;
 pub mod insertion;
@@ -69,6 +70,10 @@ pub use document_session::{DocumentOptions, DocumentSession, LanguageService, Te
 pub use edit_probe::{IdentityCheck, IncrementalProbe};
 pub use edit_session::{Acceptance, Accepted, EditError, EditSession};
 pub use formatter::{FormatOptions, format_checked, format_source};
+pub use help_resolution::{
+    HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome, HelpResolution, HelpSymbol,
+    resolve_help_at_position,
+};
 pub use hover::{HoverCategory, HoverOutcome, SignatureHelp};
 pub use insertion::{Insertion, StopRange, TextChange, apply_change, build_insertion};
 pub use lsp_session::LspServer;

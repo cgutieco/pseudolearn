@@ -1,6 +1,9 @@
 use crate::service_request::{ServiceRequest, position_of, strings_of};
-use pseudolearn_api::service::{CompletionEntry, HighlightKind, Range};
-use serde_json::{Value, json};
+use pseudolearn_api::service::{
+    CompletionEntry, HelpCertainty, HelpIdentityKind, HighlightKind, Range,
+    resolve_help_at_position,
+};
+use serde_json::{Map, Value, json};
 
 fn range_json(range: Range) -> Value {
     json!({
@@ -98,6 +101,9 @@ fn project_bilingual_hint(candidates: &[CompletionEntry]) -> Value {
 }
 
 pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
+    if request.text("proyeccion") == "resolucion" {
+        return project_resolution(request);
+    }
     let Some(outcome) = request.session().queries().hover(position_of(request)) else {
         return json!({});
     };
@@ -107,6 +113,53 @@ pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
             json!({ "es_intrinseca": outcome.is_intrinsic, "identificador": outcome.identifier })
         }
         other => json!({ "error": format!("unsupported projection: {other}") }),
+    }
+}
+
+fn project_resolution(request: &ServiceRequest<'_>) -> Value {
+    let document = request.session();
+    let Some(outcome) = resolve_help_at_position(&document, position_of(request)) else {
+        return json!({ "resolucion": null });
+    };
+    let resolution = outcome.resolution;
+    let mut value = Map::new();
+    value.insert(
+        "certainty".to_owned(),
+        json!(match resolution.certainty {
+            HelpCertainty::Certain => "certain",
+            HelpCertainty::Partial => "partial",
+        }),
+    );
+    if let Some(identity) = resolution.identity {
+        value.insert(
+            "identity".to_owned(),
+            json!({
+                "kind": identity_kind_name(identity.kind),
+                "id": identity.id,
+                "role": identity.role
+            }),
+        );
+    }
+    if let Some(symbol) = resolution.symbol {
+        value.insert(
+            "symbol".to_owned(),
+            json!({
+                "category": symbol.category,
+                "identifier": symbol.identifier
+            }),
+        );
+    }
+    json!({ "resolucion": value })
+}
+
+fn identity_kind_name(kind: HelpIdentityKind) -> &'static str {
+    match kind {
+        HelpIdentityKind::Keyword => "keyword",
+        HelpIdentityKind::Operator => "operator",
+        HelpIdentityKind::Builtin => "builtin",
+        HelpIdentityKind::Construction => "construction",
+        HelpIdentityKind::Role => "role",
+        HelpIdentityKind::Type => "type",
     }
 }
 

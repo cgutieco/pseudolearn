@@ -36,6 +36,8 @@ Alternativas descartadas y fundamento: SEE.ADAPTER.PROTOCOL define JSONL y negoc
 
 La proyección `en_linea` del completado devuelve explícitamente `null` cuando no hay sugerencia; así los casos negativos verifican ausencia real y no una expectativa vacía. La aceptación usa los mismos rangos y texto insertable de la API.
 
+La proyección `resolucion` de las consultas de servicio expone identidad o símbolo y certeza para comprobar la resolución por posición; los casos de API verifican además rangos léxicos y contextuales.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

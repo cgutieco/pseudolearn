@@ -1,11 +1,15 @@
 use crate::errors::ApiError;
 use crate::execution_resource::usage;
 use crate::model::{
-    ApiHelpCoordinateUnit, ApiHelpDetail, ApiHelpEntry, ApiHelpQueryPosition, ApiHelpQueryRequest,
-    ApiHelpQueryResponse,
+    ApiHelpCoordinateUnit, ApiHelpDetail, ApiHelpEntry, ApiHelpIdentity, ApiHelpQueryPosition,
+    ApiHelpQueryRequest, ApiHelpQueryResponse, ApiHelpResolution, ApiHelpSymbol, ApiPosition,
+    ApiSpan,
 };
 use crate::resources::{ApiSession, Resource};
-use pseudolearn_service::{HoverCategory, HoverOutcome, Position};
+use pseudolearn_service::{
+    HelpCertainty, HelpIdentityKind, HelpResolution, HoverCategory, HoverOutcome, Position, Range,
+    resolve_help_at_position,
+};
 use serde_json::{Value, json};
 
 pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, ApiError> {
@@ -18,16 +22,20 @@ pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, Ap
         return Ok(json!({"stale_revision": editing.revision.to_string()}));
     }
     let position = resolve_position(editing.document.text(), &request.position)?;
-    let help = editing
-        .document
-        .queries()
-        .hover(position)
+    let query = resolve_help_at_position(&editing.document, position);
+    let resolution = query
+        .as_ref()
+        .map(|outcome| api_resolution(&outcome.resolution));
+    let help = query
+        .as_ref()
+        .and_then(|outcome| outcome.hover.clone())
         .map(|outcome| entry(outcome, request.detail));
     let response = ApiHelpQueryResponse {
         revision: editing.revision.to_string(),
         language: request.language,
         detail: request.detail,
         position: request.position,
+        resolution,
         help,
     };
     serde_json::to_value(response).map_err(serialization)
@@ -93,6 +101,51 @@ fn entry(outcome: HoverOutcome, detail: ApiHelpDetail) -> ApiHelpEntry {
         is_inferred: complete.then_some(outcome.is_inferred),
         is_intrinsic: complete.then_some(outcome.is_intrinsic),
         signature: if complete { outcome.signature } else { None },
+    }
+}
+
+fn api_resolution(outcome: &HelpResolution) -> ApiHelpResolution {
+    ApiHelpResolution {
+        identity: outcome.identity.as_ref().map(|identity| ApiHelpIdentity {
+            kind: identity_kind_name(identity.kind).to_owned(),
+            id: identity.id.clone(),
+            role: identity.role.clone(),
+        }),
+        symbol: outcome.symbol.as_ref().map(|symbol| ApiHelpSymbol {
+            category: symbol.category.clone(),
+            identifier: symbol.identifier.clone(),
+        }),
+        certainty: match outcome.certainty {
+            HelpCertainty::Certain => "certain",
+            HelpCertainty::Partial => "partial",
+        }
+        .to_owned(),
+        lexical_range: api_span(outcome.lexical_range),
+        enclosing_range: outcome.enclosing_range.map(api_span),
+    }
+}
+
+fn identity_kind_name(kind: HelpIdentityKind) -> &'static str {
+    match kind {
+        HelpIdentityKind::Keyword => "keyword",
+        HelpIdentityKind::Operator => "operator",
+        HelpIdentityKind::Builtin => "builtin",
+        HelpIdentityKind::Construction => "construction",
+        HelpIdentityKind::Role => "role",
+        HelpIdentityKind::Type => "type",
+    }
+}
+
+fn api_span(range: Range) -> ApiSpan {
+    ApiSpan {
+        start: ApiPosition {
+            line: range.start.line,
+            column: range.start.column,
+        },
+        end: ApiPosition {
+            line: range.end.line,
+            column: range.end.column,
+        },
     }
 }
 

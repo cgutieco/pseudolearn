@@ -15,8 +15,9 @@ pub use errors::ApiError;
 pub use ir_execution::{compile_source_to_ir, compile_source_to_module, execute_ir};
 pub use model::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiHelpCoordinateUnit, ApiHelpDetail,
-    ApiHelpEntry, ApiHelpQueryPosition, ApiHelpQueryRequest, ApiHelpQueryResponse, ApiPosition,
-    ApiSpan, ApiToken, ApiUnit, IrOutcome, IrRequest, IrResponse,
+    ApiHelpEntry, ApiHelpIdentity, ApiHelpQueryPosition, ApiHelpQueryRequest, ApiHelpQueryResponse,
+    ApiHelpResolution, ApiHelpSymbol, ApiPosition, ApiSpan, ApiToken, ApiUnit, IrOutcome,
+    IrRequest, IrResponse,
 };
 pub use probes::probe;
 pub use versioning::{

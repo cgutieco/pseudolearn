@@ -86,6 +86,27 @@
 }
 ```
 
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La resolución por posición selecciona el token no trivia cuyo tramo original contiene la posición; una posición al inicio de un token selecciona ese token y gana sobre el final del token anterior. El final exacto de un token puede seleccionarlo, pero una posición posterior dentro de trivia, comentarios, saltos de línea, literales, EOF o fuera del documento no hereda ayuda. Los tokens compuestos conservan el lexema y el tramo completos, incluidos espacios o tabuladores horizontales internos; cada posición dentro del compuesto resuelve la misma identidad. Una referencia semántica de usuario tiene prioridad sobre una función incorporada homónima. La construcción y el papel contextual se asignan desde CST y análisis semántico; si la recuperación no demuestra el papel, solo se devuelve la identidad léxica con certeza parcial. Nunca se infiere una identidad desde palabras cercanas sin token. Los alias de un mismo lexema lógico comparten identidad, conservando el tramo original.",
+  "verificacion": [
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -201,6 +222,249 @@
       "column": 10
     },
     "proyeccion": "intrinseca"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "for", "role": "step_clause"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nPara i <- 1 Hasta 2 Con\tPaso 1 Hacer\nFinPara\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 27},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "repeat", "role": "condition_start"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nRepetir\nHasta Que Verdadero\nFinAlgoritmo\n",
+    "posicion": {"line": 3, "column": 7},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "role", "id": "parameter", "role": "pass_by_reference"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "SubProceso cambiar(valor Como Entero Por\tReferencia)\nFinSubProceso\nAlgoritmo P\nFinAlgoritmo\n",
+    "posicion": {"line": 1, "column": 47},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "keyword", "id": "elseKeyword", "role": "keyword"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nSi Verdadero Entonces\nEscribir 1;\nSiNo\nEscribir 2;\nFinSi\nFinAlgoritmo\n",
+    "posicion": {"line": 4, "column": 2},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "for", "role": "body_start"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nPara i <- 1 Hasta 2 Hacer\nFinPara\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 22},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "while", "role": "body_start"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 22},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "switch", "role": "body_start"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nSegun 1 Hacer\n1: Escribir 1;\nFinSegun\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 10},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "construction", "id": "for", "role": "range_limit"},
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nPara i <- 1 Hasta 2 Hacer\nFinPara\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 14},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {"servicio": {"resolucion": null}},
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nEscribir 42; // nota\nFinAlgoritmo\n",
+    "posicion": {"line": 2, "column": 12},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {"kind": "keyword", "id": "whileKeyword", "role": "keyword"},
+        "certainty": "partial"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nMientras",
+    "posicion": {"line": 2, "column": 5},
+    "proyeccion": "resolucion"
   }
 }
 ```

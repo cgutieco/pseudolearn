@@ -8,7 +8,7 @@ Fuera de alcance: ejecución del motor, máquinas virtuales, interfaz de línea 
 
 | Pendiente | Motivo | Condición de resolución |
 |---|---|---|
-| Consulta contextual de `helpCatalog` por identidad y papel | El servicio aún no carga las fichas editoriales ni resuelve el rol del cursor desde la sesión analizada | Añadir consulta común sobre la revisión vigente y los datos exportados, sin reconocer lexemas en el cliente |
+| Consulta contextual de `helpCatalog` por identidad y papel | El servicio aún no carga las fichas editoriales; la resolución de identidad y papel por posición ya está disponible | Cargar fichas exportadas y consultarlas por identidad y papel sobre la revisión vigente, sin reconocer lexemas en el cliente |
 | Reutilizar resultados semánticos entre ediciones | Cada edición reconstruye árbol, análisis e índice del documento completo; las huellas por unidad solo informan qué unidades cambiaron. El costo medido cumple el presupuesto de latencia hasta diez mil líneas | Un presupuesto de latencia que el reanálisis completo deje de cumplir, o documentos de decenas de miles de líneas |
 | Extensión mínima para VS Code | Opcional; el servidor LSP ya sirve a cualquier editor compatible | Decisión de producto sobre distribución de extensiones |
 
@@ -29,6 +29,7 @@ Nivel 6. Importa `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_l
 | `unit_partition` | Huellas de firma y de cuerpo por unidad de nivel superior; informe de unidades sin cambios o afectadas |
 | `node_identity` | Identidad estable de nodos anclada a la unidad (nombre, tipo y ordinal entre homónimas) |
 | `symbol_index` | Nombres de símbolos ubicados por token: declaraciones, usos y escrituras |
+| `help_resolution` | Identidad, papel, certeza y rangos de la entidad resuelta en una posición; contexto de construcción desde CST y símbolos desde semántica |
 | `cursor_context` | Contexto léxico del cursor: prefijo, comentario o literal, bloques abiertos, miembro, posición de tipo |
 | `completion*` | Fuentes de candidatos (palabras clave, símbolos, miembros, tipos, funciones estándar), pistas bilingües, plantillas y ordenación |
 | `hover`, `keyword_help`, `type_names` | Información emergente y ayuda de firma en el idioma del perfil |
@@ -39,6 +40,8 @@ Nivel 6. Importa `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_l
 | `edit_probe`, `completion_probes`, `marked_text`, `template_validity` | Sondas deterministas para conformidad, mediciones y pruebas |
 
 Invariantes: el formateador es idempotente y devuelve el texto original ante errores sintácticos; la doble traducción de un programa canónico es la identidad; ninguna consulta entra en pánico con posiciones fuera de rango; los resultados no dependen del orden de inserción ni del reloj.
+
+La resolución por posición selecciona solo tokens reales: el comienzo pertenece al token que inicia allí y un final exacto pertenece al token anterior cuando no comienza otro token. Los espacios, comentarios, saltos de línea, literales y EOF no heredan una entidad cercana. Una palabra compuesta conserva un único rango léxico completo, incluidos sus espacios o tabuladores; el símbolo semántico prevalece sobre una función estándar con el mismo nombre. Construcciones y papeles provienen del CST, operadores de su token y contexto sintáctico, y nombres de símbolos del análisis semántico. Si el árbol tiene errores, una identidad resoluble se marca con certeza parcial; no se infiere el papel a partir de texto vecino. Los rangos se calculan sobre la fuente original.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 

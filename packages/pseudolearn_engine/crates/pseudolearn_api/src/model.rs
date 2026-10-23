@@ -50,7 +50,30 @@ pub struct ApiHelpQueryResponse {
     pub language: String,
     pub detail: ApiHelpDetail,
     pub position: ApiHelpQueryPosition,
+    pub resolution: Option<ApiHelpResolution>,
     pub help: Option<ApiHelpEntry>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpIdentity {
+    pub kind: String,
+    pub id: String,
+    pub role: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpSymbol {
+    pub category: String,
+    pub identifier: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpResolution {
+    pub identity: Option<ApiHelpIdentity>,
+    pub symbol: Option<ApiHelpSymbol>,
+    pub certainty: String,
+    pub lexical_range: ApiSpan,
+    pub enclosing_range: Option<ApiSpan>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

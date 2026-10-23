@@ -5,19 +5,20 @@
 - Fase: PG-H; requisitos R-17, R-18 y R-20; capacidad C-16; ADR-13; riesgos K-16 y K-17;
   experimento E-PG-11; tratamiento de CF-17.
 - Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: 2026-10-22.
-- Alcance autorizado en mensaje nuevo del 2026-10-22: implementación de `PG-H.02` en una iteración;
-  no autoriza `PG-H.03` ni cierra PG-H.
+- Alcance autorizado en mensaje nuevo del 2026-10-22: implementación de `PG-H.03` en una iteración;
+  no autoriza `PG-H.04` ni cierra PG-H.
 - Revisión de esta preparación: `2f5fccb6d046edfbaa054a2160b116259a1cd61b`; árbol limpio al comenzar la lectura.
   El borrador anterior se preparó sobre `d42a9e3047ebe664b74a709336934bc20ab8a916`, antes del cierre de PG-0.
 - Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 - Encargo de preparación: «Crea el plan de ejecución para `PG-H · Catálogo y ayuda temprana`»;
-  autorizó solo esta preparación documental. Encargo de implementación del 2026-10-22:
-  «implementa `PG-H.02` de `fase-pg-h-plan-ejecucion.md` en una sola iteración»; autoriza `.02`,
-  no puntos posteriores ni el cierre de PG-H.
+  autorizó solo esta preparación documental. Encargos de implementación del 2026-10-22:
+  «implementa `PG-H.02` de `fase-pg-h-plan-ejecucion.md` en una sola iteración» y
+  «implementa `PG-H.03 · Resolución por posición` en una sola iteración»; el mensaje nuevo autoriza
+  `.03`, no puntos posteriores ni el cierre de PG-H.
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
-  con campañas y verificadores en verde según su resumen de cierre. La nueva autorización se limita
-  a `PG-H.02`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` y `PG-H.02` completos. `PG-H.C01` queda satisfecho para `.02`; la revisión
+  con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
+  cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
+- Estado: `PG-H.01`, `PG-H.02` y `PG-H.03` completos. `PG-H.C01` queda satisfecho para `.03`; la revisión
   integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -168,16 +169,16 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.03 · Resolución por posición
 
-- [ ] `PG-H.03.01` Especificar prioridad token/símbolo/construcción, fronteras, final del token,
+- [x] `PG-H.03.01` Especificar prioridad token/símbolo/construcción, fronteras, final del token,
   compuestos, trivia, recuperación y ausencia de ayuda; mantener texto original.
-- [ ] `PG-H.03.02` Derivar casos en cada componente y espacio/tab de Con Paso y Por Referencia;
+- [x] `PG-H.03.02` Derivar casos en cada componente y espacio/tab de Con Paso y Por Referencia;
   Hacer en Para/Mientras/Segun, Hasta y Hasta Que, aliases, operadores, literales, comentarios,
   salto de línea, EOF, truncamiento y builtin sombreado.
-- [ ] `PG-H.03.03` Preparar tests espejo del resolutor y conversiones Unicode/CRLF en ambas direcciones.
-- [ ] `PG-H.03.04` Implementar resolutor CST/semántico, certeza parcial y rangos completos sin cambiar el lexer
+- [x] `PG-H.03.03` Preparar tests espejo del resolutor y conversiones Unicode/CRLF en ambas direcciones.
+- [x] `PG-H.03.04` Implementar resolutor CST/semántico, certeza parcial y rangos completos sin cambiar el lexer
   para extender alcance ni reconocer palabras cercanas a una posición sin token.
-- [ ] `PG-H.03.05` Documentar prioridades, fronteras y recuperación en README service/source si corresponde.
-- [ ] `PG-H.03.06` Ejecutar matriz es/en × estricto/flexible y regresiones de hover, navegación y completado.
+- [x] `PG-H.03.05` Documentar prioridades, fronteras y recuperación en README service/source si corresponde.
+- [x] `PG-H.03.06` Ejecutar matriz es/en × estricto/flexible y regresiones de hover, navegación y completado.
 
 ### PG-H.04 · Cobertura editorial 2026
 
@@ -488,15 +489,14 @@ salvo un conflicto de fuentes o cambio de alcance que active `CONFLICT-REPORT`.
 
 `PG-H.01` quedó completo: el contrato estable `1.0.0` tiene revisión humana registrada, el anclaje se
 refrescó y `see export --check` confirmó la exportación determinista. `PG-H.02` quedó completo tras
-ejecutar sus casos: `API.MODEL` produjo 7 observaciones y `API.VERSIONING` 2, sin divergencias. Las
-pruebas de ambos workspaces, Clippy, formato y verificadores Rust pasaron; también SEE validación,
-anclaje/exportación y `cargo deny --offline check`. Los `cargo xtask verify` de ambos miembros alcanzaron
-`cargo deny`; el intento inicial no pudo adquirir el lock global de solo lectura y el chequeo offline
-ejecutado con ese lock autorizado pasó. `.03`–`.12` no se ejecutaron y PG-H permanece abierta. `cargo xtask verify` en `.01`
-completó exportación, Clippy y pruebas del workspace, pero
-se detuvo en `cargo deny` porque no pudo actualizar la base remota de avisos sin DNS; `cargo deny
---offline check` pasó con la base local disponible. La tabla registra estados y evidencia; las filas
-sin estado siguen pendientes.
+ejecutar sus casos: `API.MODEL` produjo 7 observaciones y `API.VERSIONING` 2, sin divergencias.
+`PG-H.03` quedó completo con las reglas `TOOL.SERVICE.HOVER` R4 y `API.MODEL` R5, 24 y 11
+observaciones SEE sin divergencias, matriz bilingüe de servicio y regresiones. `see validate` pasó
+(159 especificaciones); `cargo xtask verify` completó exportación, formato, Clippy, tests del workspace
+y verificadores Rust. La última puerta, `cargo deny`, no pudo adquirir el lock global en modo normal;
+`cargo deny --offline check` pasó con el lock local autorizado. Se ejecutaron las 7 propiedades del
+sujeto service y las 2 de `API.MODEL`; el barrido exhaustivo de propiedades del sujeto engine se
+interrumpió por su duración. PG-H permanece abierta; `.04`–`.12` siguen pendientes.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -512,12 +512,12 @@ sin estado siguen pendientes.
 | PG-H.02.04 | Cumplido | `pseudolearn_api::{service_help, service_operations, versioning}`; `pseudolearn_conformance`; `see_conformance` | DTO y operación sobre hover del servicio, capacidad `service_help`, secuencias API y referencias a recursos; sin índices CST. |
 | PG-H.02.05 | Cumplido | README de `pseudolearn_api`, `pseudolearn_engine`, `pseudolearn_spec` y `see_conformance` | Contrato público, vigencia, errores, formato de casos y límites documentados. |
 | PG-H.02.06 | Cumplido | `see conform --subject engine --only API.MODEL` (7 observaciones); `see conform --subject engine --only API.VERSIONING` (2); tests y verificadores de ambos workspaces | Cierre/liberación, revisión obsoleta, límites de posición y enteros, listado de operaciones y negociación pasaron sin divergencias. `cargo deny --offline check` pasó en ambos miembros. |
-| PG-H.03.01 | | | Pendiente de ejecución |
-| PG-H.03.02 | | | Pendiente de ejecución |
-| PG-H.03.03 | | | Pendiente de ejecución |
-| PG-H.03.04 | | | Pendiente de ejecución |
-| PG-H.03.05 | | | Pendiente de ejecución |
-| PG-H.03.06 | | | Pendiente de ejecución |
+| PG-H.03.01 | Cumplido | `TOOL.SERVICE.HOVER` R4; `API.MODEL` R5 | Selección, límites, compuestos, prioridad semántica, recuperación parcial y rangos originales. |
+| PG-H.03.02 | Cumplido | `TOOL.SERVICE.HOVER` C5–C14; `API.MODEL` C10–C13 | Componentes compuestos, espacios/tabuladores, roles, alias, operadores, literales, trivia, EOF, truncamiento y sombreado. |
+| PG-H.03.03 | Cumplido | `pseudolearn_service/tests/help_resolution.rs`, `positions.rs`; `pseudolearn_api/tests/service_help.rs` | Resolución y conversiones de ida y vuelta con Unicode, UTF-16 y CRLF; negativos y límites. |
+| PG-H.03.04 | Cumplido | `pseudolearn_service/src/help_resolution.rs` y submódulos | Resolver desde CST y semántica, certeza parcial y rangos completos; sin cambios al lexer ni inferencia por texto vecino. |
+| PG-H.03.05 | Cumplido | README de `pseudolearn_service`, `pseudolearn_api` y `pseudolearn_conformance` | Prioridades, rangos, respuesta pública y proyección documentados; `pseudolearn_source` no requirió cambios. |
+| PG-H.03.06 | Cumplido | `see conform --subject service --only TOOL.SERVICE.HOVER` (24); `see conform --subject engine --only API.MODEL` (11); `cargo xtask verify` hasta cargo-deny; `cargo deny --offline check` | Sin divergencias; español/inglés × estricto/flexible y regresiones de hover, navegación y completado en verde. El chequeo normal no adquirió el lock global de la base de avisos. |
 | PG-H.04.01 | | | Pendiente de ejecución |
 | PG-H.04.02 | | | Pendiente de ejecución |
 | PG-H.04.03 | | | Pendiente de ejecución |
@@ -572,7 +572,7 @@ sin estado siguen pendientes.
 | PG-H.12.04 | | | Pendiente de ejecución |
 | PG-H.12.05 | | | Pendiente de ejecución |
 | PG-H.12.06 | | | Pendiente de ejecución |
-| PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autorización limitada a `PG-H.02`; no autoriza `.03` ni el cierre de PG-H. |
+| PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autorización limitada a `PG-H.03`; no autoriza `.04` ni el cierre de PG-H. |
 | PG-H.C02 | | | Pendiente de ejecución |
 | PG-H.C03 | | | Pendiente de ejecución |
 | PG-H.C04 | | | Pendiente de ejecución |
@@ -590,9 +590,11 @@ PG-H no se cierra ni publica con este punto. Para `PG-H.01`, las pruebas dirigid
 `rust-checks all .`, validación, refresco del anclaje y comprobación de exportación están en verde.
 `cargo xtask verify` de `.01` queda parcialmente limitado por la actualización remota de `cargo deny`; su
 modo `--offline` pasó. Para `.02`, los casos API, las pruebas y las verificaciones de ambos miembros
-están en verde; el chequeo offline de `cargo deny` pasó con su lock temporal disponible. `PG-H.C02`
-conserva pendiente la revisión integral del plan. Las seis subtareas de `.01` y las seis de `.02` están
-cumplidas; `.03`–`.12` siguen pendientes y PG-H permanece abierta.
+están en verde; el chequeo offline de `cargo deny` pasó con su lock temporal disponible. Para `.03`,
+`rust-checks all .`, `see validate`, conformidad dirigida, las pruebas del workspace, Clippy, formato y
+`cargo deny --offline check` están en verde. `PG-H.C02` conserva pendiente la revisión integral del plan.
+Las seis subtareas de `.01`, `.02` y `.03` están cumplidas; `.04`–`.12` siguen pendientes y PG-H
+permanece abierta.
 
 Comprobaciones de preparación documental del 2026-10-22: `git diff --check` en verde;
 72 subtareas únicas, 13 puntos de cierre y sus 85 filas de resumen comprobados; enlaces locales

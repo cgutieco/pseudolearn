@@ -1,7 +1,8 @@
 pub use pseudolearn_service::{
     Acceptance, CompletionAction, CompletionEntry, CompletionKind, CompletionQuery,
     CompletionTextEdit, DocumentHighlight, DocumentOptions, DocumentSession, DocumentSymbolEntry,
-    EditSession, FormatOptions, HighlightKind, HoverCategory, HoverOutcome, IdentityCheck,
+    EditSession, FormatOptions, HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome,
+    HelpResolution, HelpSymbol, HighlightKind, HoverCategory, HoverOutcome, IdentityCheck,
     IncrementalProbe, Insertion, LanguageService, LspServer, OnTypeOutcome, PartitionReport,
     Position, Profile, Range, SignatureHelp, StopDirection, StopOutline, SymbolCategory,
     SyntaxNodeId, TemplateOutline, TextChange, TextEdit, TranslationError, UnitFingerprint,
@@ -10,6 +11,6 @@ pub use pseudolearn_service::{
     compute_node_identities, compute_unit_name, edit_probe, format_checked, format_source,
     get_template, on_type, partition_units,
     positions::{offset_at, position_at},
-    template_constructions, template_outline, template_parses_cleanly, template_stops_valid,
-    translate_source,
+    resolve_help_at_position, template_constructions, template_outline, template_parses_cleanly,
+    template_stops_valid, translate_source,
 };

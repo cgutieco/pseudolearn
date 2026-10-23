@@ -155,6 +155,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.SERVICE.HOVER@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

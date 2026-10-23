@@ -321,3 +321,126 @@
   "sujetos": ["engine"]
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "help_query devuelve resolution cuando la posición selecciona un token con identidad léxica o semántica, aunque todavía no exista una ficha editorial. resolution contiene identity (kind, id y role) para vocabulario, operador o construcción, o symbol (category e identifier) para una referencia de usuario; certainty es certain o partial; lexical_range cubre el token original completo y enclosing_range cubre la construcción CST resuelta o es null. Ambos tramos usan líneas y columnas Unicode desde uno, extremos semiabiertos, y el texto original incluso con alias, compuestos, Unicode y CRLF. No se exponen índices internos. Sin token resoluble, resolution y help son null; con identidad pero sin ficha, resolution existe y help es null.",
+  "verificacion": [
+    "C10",
+    "C11",
+    "C12",
+    "C13"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nPara i <- 1 Hasta 2 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 27, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"resolution": {"identity": {"kind": "construction", "id": "for", "role": "step_clause"}, "certainty": "certain", "lexical_range": {"start": {"line": 2, "column": 21}, "end": {"line": 2, "column": 29}}, "enclosing_range": {"start": {"line": 2, "column": 1}, "end": {"line": 3, "column": 8}}}, "help": {"category": "keyword"}}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1 + 2;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 12, "unit": "unicode_scalar"}, "language": "es", "detail": "full"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"resolution": {"identity": {"kind": "operator", "id": "plus", "role": "binary"}, "certainty": "certain", "lexical_range": {"start": {"line": 2, "column": 12}, "end": {"line": 2, "column": 13}}, "enclosing_range": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 15}}}, "help": null}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nDefinir Longitud Como Entero;\nLongitud <- 2;\nEscribir Longitud;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 4, "column": 10, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"resolution": {"symbol": {"category": "variable", "identifier": "Longitud"}, "certainty": "certain", "lexical_range": {"start": {"line": 4, "column": 10}, "end": {"line": 4, "column": 18}}, "enclosing_range": null}, "help": {"category": "variable", "identifier": "Longitud"}}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\r\nEscribir \"😀\"; // nota\r\nFinAlgoritmo\r\n", "profile": "es", "strictness": "strict"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 11, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 15, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
+      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 4, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"revision": "1"}},
+        {"value": {"resolution": null, "help": null}},
+        {"value": {"resolution": null, "help": null}},
+        {"value": {"resolution": null, "help": null}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```

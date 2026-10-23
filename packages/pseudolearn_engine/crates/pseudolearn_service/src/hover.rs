@@ -2,7 +2,7 @@ use crate::keyword_help::keyword_description;
 use crate::navigation::Position;
 use crate::positions::offset_at;
 use crate::query_context::QueryContext;
-use crate::spelling::{boolean_spelling, builtin_spelling, keyword_spelling};
+use crate::spelling::{builtin_spelling, keyword_spelling};
 use crate::symbol_queries::{callable_parts, callable_signature};
 use crate::type_names::{builtin_type_display, type_display};
 use pseudolearn_lexicon::{KeywordKind, find_builtin, signature_for_builtin};
@@ -43,22 +43,13 @@ pub struct SignatureHelp {
 }
 
 pub fn hover_at_position(context: &QueryContext<'_>, position: Position) -> Option<HoverOutcome> {
-    let offset = offset_at(context.source.as_str(), position);
-    let slot = context.token_at(offset)?;
+    super::help_resolution::resolve_help_in_context(context, position)?.hover
+}
+
+pub(crate) fn hover_for_token(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
     match context.tree.tokens.kind(slot)? {
-        TokenKind::Identifier => identifier_hover(context, offset, slot),
+        TokenKind::Identifier => identifier_hover(context, slot),
         TokenKind::Keyword(kind) => Some(keyword_hover(context, kind)),
-        TokenKind::BooleanLiteral(value) => {
-            let kind = if value {
-                KeywordKind::BooleanTrue
-            } else {
-                KeywordKind::BooleanFalse
-            };
-            Some(HoverOutcome {
-                identifier: boolean_spelling(value, context.profile),
-                ..keyword_hover(context, kind)
-            })
-        }
         _ => None,
     }
 }
@@ -75,12 +66,9 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
     }
 }
 
-fn identifier_hover(
-    context: &QueryContext<'_>,
-    offset: usize,
-    slot: usize,
-) -> Option<HoverOutcome> {
-    if let Some(found) = context.index.at_offset(offset) {
+fn identifier_hover(context: &QueryContext<'_>, slot: usize) -> Option<HoverOutcome> {
+    let span = context.tree.tokens.span(slot)?;
+    if let Some(found) = context.index.at_token_span(span) {
         return symbol_hover(context, found.target);
     }
     let builtin = find_builtin(context.token_text(slot), context.profile)?;
