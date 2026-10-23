@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.05` completos. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.06` completos. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -204,15 +204,15 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.06 · Ejemplos derivados
 
-- [ ] `PG-H.06.01` Especificar referencias versionadas a reglas/casos, perfil/rigor y resultado esperado;
+- [x] `PG-H.06.01` Especificar referencias versionadas a reglas/casos, perfil/rigor y resultado esperado;
   distinguir ejemplo ejecutable, diagnóstico deliberado y plantilla incompleta rotulada.
-- [ ] `PG-H.06.02` Derivar ejemplos mínimos desde reglas, incluyendo paso cero/dirección y modos de paso;
+- [x] `PG-H.06.02` Derivar ejemplos mínimos desde reglas, incluyendo paso cero/dirección y modos de paso;
   registrar cálculo independiente de esperados y traducciones con colisión rechazada.
-- [ ] `PG-H.06.03` Preparar tests de vínculo, perfil, rigor y rechazo de esperado/formato incorrectos.
-- [ ] `PG-H.06.04` Añadir casos que falten y enlazar fichas a sus fuentes; extender comparación de conformidad
+- [x] `PG-H.06.03` Preparar tests de vínculo, perfil, rigor y rechazo de esperado/formato incorrectos.
+- [x] `PG-H.06.04` Añadir casos que falten y enlazar fichas a sus fuentes; extender comparación de conformidad
   solo lo necesario. La ejecución verifica, nunca produce el esperado.
-- [ ] `PG-H.06.05` Documentar procedencia y validación en README spec/conformance.
-- [ ] `PG-H.06.06` Validar todos los ejemplos aplicables y sus negativos; preservar fallos reales y evidencia por sujeto.
+- [x] `PG-H.06.05` Documentar procedencia y validación en README spec/conformance.
+- [x] `PG-H.06.06` Validar todos los ejemplos aplicables y sus negativos; preservar fallos reales y evidencia por sujeto.
 
 ### PG-H.07 · Verificador del catálogo
 
@@ -539,12 +539,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.05.04 | Cumplido | `build.rs`, `codegen/help_cards.rs`, `src/help_catalog.rs`; `keyword_help.rs` retirado | Datos estáticos generados desde la exportación; `HelpLocale` separado del perfil; las firmas de usuario no cambian. |
 | PG-H.05.05 | Cumplido | README de `pseudolearn_service` | Generación, elección de fuente y motivo de las correcciones documentados sin referencias transitorias. |
 | PG-H.05.06 | Cumplido | `see conform --subject service` (115 observaciones, 0 divergencias); `cargo xtask verify` en verde | `TOOL.SERVICE.CATALOG` R5 con 5 casos propios; regresiones de hover/navegación/completado en verde. |
-| PG-H.06.01 | | | Pendiente de ejecución |
-| PG-H.06.02 | | | Pendiente de ejecución |
-| PG-H.06.03 | | | Pendiente de ejecución |
-| PG-H.06.04 | | | Pendiente de ejecución |
-| PG-H.06.05 | | | Pendiente de ejecución |
-| PG-H.06.06 | | | Pendiente de ejecución |
+| PG-H.06.01 | Cumplido | `TOOL.SERVICE.CATALOG` R6; `help-catalog-1.schema.json` | Referencia versionada a caso, perfil y rigor; clases `executable`, `accepted` y `diagnostic`. La plantilla incompleta rotulada se expresa como diagnóstico deliberado; no hay clase propia (SCOPE-YAGNI). |
+| PG-H.06.02 | Cumplido | Fichas de `TOOL.SERVICE.CATALOG` D1 | Ejemplos mínimos enlazados a casos existentes con esperado derivado a mano de su regla; la ficha de contador cubre paso por omisión, paso negativo y paso cero. La colisión de referencias en un idioma se rechaza. |
+| PG-H.06.03 | Cumplido | `see_validation/tests/resources/help_catalog.rs` | Pruebas de perfil/idioma, referencia repetida, clase discrepante, clase desconocida y ficha sin ejemplo, más cobertura de las 38 fichas. |
+| PG-H.06.04 | Cumplido | `see_validation/src/resources/help_catalog/examples.rs`, `references.rs`, `shape.rs` | No hizo falta añadir casos: cada especificación anclada ya tenía casos aplicables. La comparación de conformidad no se modificó; la ejecución verifica el caso y nunca produce el esperado. |
+| PG-H.06.05 | Cumplido | README de `pseudolearn_spec` y `see_validation` | Procedencia, clases y validación documentadas. |
+| PG-H.06.06 | Cumplido | `see conform --subject engine` (1 563 observaciones, 0 divergencias); `--subject service` (116, 0); `cargo xtask verify` de spec en verde | Los casos enlazados se ejecutan en sus sujetos; los negativos del validador pasan. Sin fallos reales que preservar. |
 | PG-H.07.01 | | | Pendiente de ejecución |
 | PG-H.07.02 | | | Pendiente de ejecución |
 | PG-H.07.03 | | | Pendiente de ejecución |

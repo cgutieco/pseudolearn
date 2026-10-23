@@ -200,6 +200,10 @@
           "type": "string",
           "enum": ["estricto", "flexible"]
         },
+        "kind": {
+          "type": "string",
+          "enum": ["executable", "accepted", "diagnostic"]
+        },
         "label": {
           "type": "string",
           "minLength": 1
@@ -211,6 +215,7 @@
         "case",
         "profile",
         "strictness",
+        "kind",
         "label"
       ],
       "additionalProperties": false

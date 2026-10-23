@@ -23,8 +23,12 @@ fn card_references(card: &Value, corpus: &Corpus) -> Vec<String> {
     if let Some(content) = card.get("content").and_then(Value::as_object) {
         for localized in content.values() {
             errors.extend(example_references(identifier, localized, corpus));
+            errors.extend(super::catalog_examples::kind_errors(
+                identifier, localized, corpus,
+            ));
         }
     }
+    errors.extend(super::catalog_examples::missing_example_errors(card));
     errors
 }
 
@@ -93,23 +97,25 @@ fn token_source_exists(token: &Value, corpus: &Corpus) -> bool {
 }
 
 fn example_is_available(corpus: &Corpus, example: &Value) -> bool {
-    let Some(target) = target_specification(corpus, example) else {
-        return false;
-    };
-    let Some(case_identifier) = example.get("case").and_then(Value::as_str) else {
-        return false;
-    };
-    let Some(case) = target
-        .blocks
-        .iter()
-        .find(|block| block.kind == "caso" && field(block, "id") == case_identifier)
-    else {
+    let Some(case) = example_case(corpus, example) else {
         return false;
     };
     let profile = example.get("profile").and_then(Value::as_str);
     let strictness = example.get("strictness").and_then(Value::as_str);
     profile.is_some_and(|value| strings(case.fields.get("perfiles")).contains(&value))
         && strictness.is_some_and(|value| strings(case.fields.get("rigor")).contains(&value))
+}
+
+pub(crate) fn example_case<'corpus>(
+    corpus: &'corpus Corpus,
+    example: &Value,
+) -> Option<&'corpus see_model::Block> {
+    let target = target_specification(corpus, example)?;
+    let case_identifier = example.get("case").and_then(Value::as_str)?;
+    target
+        .blocks
+        .iter()
+        .find(|block| block.kind == "caso" && field(block, "id") == case_identifier)
 }
 
 fn exclusion_reference(exclusion: &Value, corpus: &Corpus) -> Vec<String> {

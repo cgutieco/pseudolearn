@@ -1,5 +1,7 @@
 #[path = "help_catalog/coverage.rs"]
 mod catalog_coverage;
+#[path = "help_catalog/examples.rs"]
+mod catalog_examples;
 #[path = "help_catalog/references.rs"]
 mod catalog_references;
 #[path = "help_catalog/shape.rs"]

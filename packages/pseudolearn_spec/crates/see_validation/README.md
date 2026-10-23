@@ -24,6 +24,12 @@ cada token cubierto debe tener una parte editorial es/en propia. La función `co
 las filas ordenadas que justifican el 100 % y los negativos ejercitan identidad duplicada, rol sin
 ficha, alias, exclusión incompatible y traducción ausente.
 
+Los ejemplos se validan en dos niveles. La forma exige perfil igual al idioma, rigor y perfil dentro de la
+disponibilidad de la ficha, clase de un conjunto cerrado y ninguna referencia repetida por idioma. Las
+referencias resuelven el caso exacto y derivan su clase (`executable`, `accepted` o `diagnostic`) de su
+operación y esperado; una clase distinta, un caso retirado o una ficha sin ejemplo en algún idioma son
+errores. El validador no ejecuta programas: la ejecución del caso pertenece a los sujetos de conformidad.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 

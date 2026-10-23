@@ -3403,7 +3403,17 @@
             "examples": [
               {
                 "case": "C1",
-                "label": "Empty algorithm",
+                "kind": "accepted",
+                "label": "Valid program: Algorithm structure",
+                "profile": "en",
+                "specification": "LANG.PROGRAM.STRUCTURE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Algorithm structure",
                 "profile": "en",
                 "specification": "LANG.PROGRAM.STRUCTURE",
                 "strictness": "estricto",
@@ -3432,7 +3442,17 @@
             "examples": [
               {
                 "case": "C1",
-                "label": "Algoritmo vacío",
+                "kind": "accepted",
+                "label": "Programa válido: Estructura del algoritmo",
+                "profile": "es",
+                "specification": "LANG.PROGRAM.STRUCTURE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Estructura del algoritmo",
                 "profile": "es",
                 "specification": "LANG.PROGRAM.STRUCTURE",
                 "strictness": "estricto",
@@ -3504,7 +3524,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Variable declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.VARIABLE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Variable declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.VARIABLE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "declare",
@@ -3542,7 +3581,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declarar variables",
+                "profile": "es",
+                "specification": "LANG.DECL.VARIABLE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declarar variables",
+                "profile": "es",
+                "specification": "LANG.DECL.VARIABLE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "declare",
@@ -3668,7 +3726,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Declaring dimensions",
+                "profile": "en",
+                "specification": "LANG.ARRAY.DIMENSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Declaring dimensions",
+                "profile": "en",
+                "specification": "LANG.ARRAY.DIMENSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "dimension",
@@ -3686,7 +3763,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declarar dimensiones",
+                "profile": "es",
+                "specification": "LANG.ARRAY.DIMENSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declarar dimensiones",
+                "profile": "es",
+                "specification": "LANG.ARRAY.DIMENSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "dimension",
@@ -3768,7 +3864,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Assignment",
+                "profile": "en",
+                "specification": "LANG.STMT.ASSIGNMENT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Assignment",
+                "profile": "en",
+                "specification": "LANG.STMT.ASSIGNMENT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "assignment",
@@ -3782,7 +3897,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Asignación",
+                "profile": "es",
+                "specification": "LANG.STMT.ASSIGNMENT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Asignación",
+                "profile": "es",
+                "specification": "LANG.STMT.ASSIGNMENT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "assignment",
@@ -3836,7 +3970,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Input reading",
+                "profile": "en",
+                "specification": "LANG.IO.INPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Input reading",
+                "profile": "en",
+                "specification": "LANG.IO.INPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "read",
@@ -3850,7 +4003,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Lectura de entrada",
+                "profile": "es",
+                "specification": "LANG.IO.INPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Lectura de entrada",
+                "profile": "es",
+                "specification": "LANG.IO.INPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "read",
@@ -3904,7 +4076,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Expression output",
+                "profile": "en",
+                "specification": "LANG.IO.OUTPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Expression output",
+                "profile": "en",
+                "specification": "LANG.IO.OUTPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "write",
@@ -3922,7 +4113,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Salida de expresiones",
+                "profile": "es",
+                "specification": "LANG.IO.OUTPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Salida de expresiones",
+                "profile": "es",
+                "specification": "LANG.IO.OUTPUT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "write",
@@ -3988,7 +4198,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Conditional selection",
+                "profile": "en",
+                "specification": "LANG.CONTROL.IF",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Conditional selection",
+                "profile": "en",
+                "specification": "LANG.CONTROL.IF",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "ifKeyword",
@@ -4014,7 +4243,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Selección condicional",
+                "profile": "es",
+                "specification": "LANG.CONTROL.IF",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Selección condicional",
+                "profile": "es",
+                "specification": "LANG.CONTROL.IF",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "ifKeyword",
@@ -4104,7 +4352,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Case selection",
+                "profile": "en",
+                "specification": "LANG.CONTROL.SWITCH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Case selection",
+                "profile": "en",
+                "specification": "LANG.CONTROL.SWITCH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "switchKeyword",
@@ -4126,7 +4393,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Selección por casos",
+                "profile": "es",
+                "specification": "LANG.CONTROL.SWITCH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Selección por casos",
+                "profile": "es",
+                "specification": "LANG.CONTROL.SWITCH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "switchKeyword",
@@ -4212,7 +4498,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: While loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.WHILE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: While loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.WHILE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "whileKeyword",
@@ -4234,7 +4539,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bucle Mientras",
+                "profile": "es",
+                "specification": "LANG.CONTROL.WHILE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Bucle Mientras",
+                "profile": "es",
+                "specification": "LANG.CONTROL.WHILE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "whileKeyword",
@@ -4312,7 +4636,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Repeat loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.REPEAT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Repeat loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.REPEAT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "repeat",
@@ -4330,7 +4673,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bucle Repetir",
+                "profile": "es",
+                "specification": "LANG.CONTROL.REPEAT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Bucle Repetir",
+                "profile": "es",
+                "specification": "LANG.CONTROL.REPEAT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "repeat",
@@ -4396,7 +4758,35 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: For loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Program that runs: For loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: For loop",
+                "profile": "en",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "forKeyword",
@@ -4430,7 +4820,35 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bucle Para",
+                "profile": "es",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C6",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Bucle Para",
+                "profile": "es",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Bucle Para",
+                "profile": "es",
+                "specification": "LANG.CONTROL.FOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "forKeyword",
@@ -4544,7 +4962,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Subprogram declaration",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Subprogram declaration",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "subroutine",
@@ -4566,7 +5003,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de subprograma",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de subprograma",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "subroutine",
@@ -4644,7 +5100,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Parameter mode",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.PARAMETERS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Parameter mode",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.PARAMETERS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "byReference",
@@ -4662,7 +5137,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Modo del parámetro",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.PARAMETERS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Modo del parámetro",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.PARAMETERS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "byReference",
@@ -4728,7 +5222,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Return",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.RETURN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Return",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.RETURN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "returnKeyword",
@@ -4742,7 +5255,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Retorno",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.RETURN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Retorno",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.RETURN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "returnKeyword",
@@ -4796,7 +5328,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Class declaration",
+                "profile": "en",
+                "specification": "LANG.CLASS.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Class declaration",
+                "profile": "en",
+                "specification": "LANG.CLASS.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "classKeyword",
@@ -4814,7 +5365,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de clase",
+                "profile": "es",
+                "specification": "LANG.CLASS.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de clase",
+                "profile": "es",
+                "specification": "LANG.CLASS.DECLARATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "classKeyword",
@@ -4880,7 +5450,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Member visibility",
+                "profile": "en",
+                "specification": "LANG.CLASS.FIELDS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Member visibility",
+                "profile": "en",
+                "specification": "LANG.CLASS.FIELDS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "publicVisibility",
@@ -4898,7 +5487,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Visibilidad del miembro",
+                "profile": "es",
+                "specification": "LANG.CLASS.FIELDS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Visibilidad del miembro",
+                "profile": "es",
+                "specification": "LANG.CLASS.FIELDS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "publicVisibility",
@@ -4964,7 +5572,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Class method",
+                "profile": "en",
+                "specification": "LANG.CLASS.METHODS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Class method",
+                "profile": "en",
+                "specification": "LANG.CLASS.METHODS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "method",
@@ -4982,7 +5609,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Método de clase",
+                "profile": "es",
+                "specification": "LANG.CLASS.METHODS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Método de clase",
+                "profile": "es",
+                "specification": "LANG.CLASS.METHODS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "method",
@@ -5048,7 +5694,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Constructor",
+                "profile": "en",
+                "specification": "LANG.CLASS.CONSTRUCTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Constructor",
+                "profile": "en",
+                "specification": "LANG.CLASS.CONSTRUCTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "constructor",
@@ -5070,7 +5735,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Constructor",
+                "profile": "es",
+                "specification": "LANG.CLASS.CONSTRUCTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Constructor",
+                "profile": "es",
+                "specification": "LANG.CLASS.CONSTRUCTOR",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "constructor",
@@ -5148,7 +5832,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Inheritance",
+                "profile": "en",
+                "specification": "LANG.CLASS.INHERITANCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Inheritance",
+                "profile": "en",
+                "specification": "LANG.CLASS.INHERITANCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "inheritsFrom",
@@ -5162,7 +5865,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Herencia",
+                "profile": "es",
+                "specification": "LANG.CLASS.INHERITANCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Herencia",
+                "profile": "es",
+                "specification": "LANG.CLASS.INHERITANCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "inheritsFrom",
@@ -5216,7 +5938,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Creating an instance",
+                "profile": "en",
+                "specification": "LANG.CLASS.INSTANTIATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Creating an instance",
+                "profile": "en",
+                "specification": "LANG.CLASS.INSTANTIATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "newInstance",
@@ -5230,7 +5971,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Crear una instancia",
+                "profile": "es",
+                "specification": "LANG.CLASS.INSTANTIATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Crear una instancia",
+                "profile": "es",
+                "specification": "LANG.CLASS.INSTANTIATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "newInstance",
@@ -5284,7 +6044,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Instance or base receiver",
+                "profile": "en",
+                "specification": "LANG.CLASS.SELF-AND-SUPER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Instance or base receiver",
+                "profile": "en",
+                "specification": "LANG.CLASS.SELF-AND-SUPER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "thisObject",
@@ -5302,7 +6081,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Receptor de instancia o base",
+                "profile": "es",
+                "specification": "LANG.CLASS.SELF-AND-SUPER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Receptor de instancia o base",
+                "profile": "es",
+                "specification": "LANG.CLASS.SELF-AND-SUPER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "thisObject",
@@ -5376,7 +6174,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Member access",
+                "profile": "en",
+                "specification": "LANG.CLASS.MEMBER-ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Member access",
+                "profile": "en",
+                "specification": "LANG.CLASS.MEMBER-ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "The receiver and member name are separated by a dot.",
             "summary": "Selects an object member by name.",
@@ -5385,7 +6202,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Acceso a miembro",
+                "profile": "es",
+                "specification": "LANG.CLASS.MEMBER-ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Acceso a miembro",
+                "profile": "es",
+                "specification": "LANG.CLASS.MEMBER-ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "El receptor y el nombre del miembro se separan con el punto.",
             "summary": "Selecciona un miembro de un objeto mediante su nombre.",
@@ -5434,7 +6270,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Indexed access",
+                "profile": "en",
+                "specification": "LANG.ARRAY.ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Indexed access",
+                "profile": "en",
+                "specification": "LANG.ARRAY.ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "Indices appear inside one pair of brackets.",
             "summary": "Selects an element using one or more index expressions.",
@@ -5443,7 +6298,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Acceso indexado",
+                "profile": "es",
+                "specification": "LANG.ARRAY.ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Acceso indexado",
+                "profile": "es",
+                "specification": "LANG.ARRAY.ACCESS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "Los índices se escriben en un único par de corchetes.",
             "summary": "Selecciona un elemento usando una o más expresiones índice.",
@@ -5500,7 +6374,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Literal values",
+                "profile": "en",
+                "specification": "LANG.TYPES.BOOLEAN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Literal values",
+                "profile": "en",
+                "specification": "LANG.TYPES.BOOLEAN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "booleanTrue",
@@ -5518,7 +6411,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Valores literales",
+                "profile": "es",
+                "specification": "LANG.TYPES.BOOLEAN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Valores literales",
+                "profile": "es",
+                "specification": "LANG.TYPES.BOOLEAN",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "booleanTrue",
@@ -5592,7 +6504,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Call arguments",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Call arguments",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "Arguments are comma-separated, and the list may be empty.",
             "summary": "Groups the expressions received by an invocation.",
@@ -5601,7 +6532,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Argumentos de llamada",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Argumentos de llamada",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "Los argumentos se separan con coma y la lista puede estar vacía.",
             "summary": "Agrupa las expresiones que recibe una invocación.",
@@ -5666,7 +6616,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Subprogram call",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Subprogram call",
+                "profile": "en",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "A call used as a statement may discard a return value.",
             "summary": "Invokes a named operation with arguments.",
@@ -5675,7 +6644,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Llamada a subprograma",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Llamada a subprograma",
+                "profile": "es",
+                "specification": "LANG.SUBPROGRAM.CALL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "Una llamada como sentencia puede descartar un valor de retorno.",
             "summary": "Invoca una operación nombrada con argumentos.",
@@ -5740,7 +6728,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Simple statement ending",
+                "profile": "en",
+                "specification": "LANG.STMT.TERMINATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Simple statement ending",
+                "profile": "en",
+                "specification": "LANG.STMT.TERMINATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "A line ending may also terminate a statement under the active strictness.",
             "summary": "Delimits the end of a simple statement in strict mode.",
@@ -5749,7 +6756,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Fin de sentencia simple",
+                "profile": "es",
+                "specification": "LANG.STMT.TERMINATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Fin de sentencia simple",
+                "profile": "es",
+                "specification": "LANG.STMT.TERMINATION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [],
             "purpose": "El salto de línea también puede terminar una sentencia según el rigor activo.",
             "summary": "Delimita el final de una sentencia simple en rigor estricto.",
@@ -5798,7 +6824,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Arithmetic operations",
+                "profile": "en",
+                "specification": "LANG.OPS.ARITHMETIC",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Arithmetic operations",
+                "profile": "en",
+                "specification": "LANG.OPS.ARITHMETIC",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "plus",
@@ -5832,7 +6877,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Operaciones aritméticas",
+                "profile": "es",
+                "specification": "LANG.OPS.ARITHMETIC",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Operaciones aritméticas",
+                "profile": "es",
+                "specification": "LANG.OPS.ARITHMETIC",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "plus",
@@ -5946,7 +7010,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Power",
+                "profile": "en",
+                "specification": "LANG.OPS.POWER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Power",
+                "profile": "en",
+                "specification": "LANG.OPS.POWER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "power",
@@ -5960,7 +7043,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Potencia",
+                "profile": "es",
+                "specification": "LANG.OPS.POWER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Potencia",
+                "profile": "es",
+                "specification": "LANG.OPS.POWER",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "power",
@@ -6014,7 +7116,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Comparisons",
+                "profile": "en",
+                "specification": "LANG.OPS.COMPARISON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Comparisons",
+                "profile": "en",
+                "specification": "LANG.OPS.COMPARISON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "lessThan",
@@ -6048,7 +7169,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Comparaciones",
+                "profile": "es",
+                "specification": "LANG.OPS.COMPARISON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Comparaciones",
+                "profile": "es",
+                "specification": "LANG.OPS.COMPARISON",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "lessThan",
@@ -6162,7 +7302,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Logical combination",
+                "profile": "en",
+                "specification": "LANG.OPS.LOGICAL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Logical combination",
+                "profile": "en",
+                "specification": "LANG.OPS.LOGICAL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "and",
@@ -6180,7 +7339,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Combinación lógica",
+                "profile": "es",
+                "specification": "LANG.OPS.LOGICAL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Combinación lógica",
+                "profile": "es",
+                "specification": "LANG.OPS.LOGICAL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "and",
@@ -6246,7 +7424,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Unary operators",
+                "profile": "en",
+                "specification": "LANG.OPS.PRECEDENCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Unary operators",
+                "profile": "en",
+                "specification": "LANG.OPS.PRECEDENCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "plus",
@@ -6268,7 +7465,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Operadores unarios",
+                "profile": "es",
+                "specification": "LANG.OPS.PRECEDENCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Operadores unarios",
+                "profile": "es",
+                "specification": "LANG.OPS.PRECEDENCE",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "plus",
@@ -6346,7 +7562,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Mathematical functions",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Mathematical functions",
+                "profile": "en",
+                "specification": "LIB.CORE.MATH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "squareRoot",
@@ -6384,7 +7619,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Funciones matemáticas",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Funciones matemáticas",
+                "profile": "es",
+                "specification": "LIB.CORE.MATH",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "squareRoot",
@@ -6510,7 +7764,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Integer rounding",
+                "profile": "en",
+                "specification": "LIB.CORE.ROUNDING",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Integer rounding",
+                "profile": "en",
+                "specification": "LIB.CORE.ROUNDING",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "truncate",
@@ -6528,7 +7801,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Redondeo a entero",
+                "profile": "es",
+                "specification": "LIB.CORE.ROUNDING",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Redondeo a entero",
+                "profile": "es",
+                "specification": "LIB.CORE.ROUNDING",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "truncate",
@@ -6594,7 +7886,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Pseudorandom value",
+                "profile": "en",
+                "specification": "LIB.CORE.RANDOM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Pseudorandom value",
+                "profile": "en",
+                "specification": "LIB.CORE.RANDOM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "random",
@@ -6608,7 +7919,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Valor seudoaleatorio",
+                "profile": "es",
+                "specification": "LIB.CORE.RANDOM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Valor seudoaleatorio",
+                "profile": "es",
+                "specification": "LIB.CORE.RANDOM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "random",
@@ -6662,7 +7992,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Text conversions",
+                "profile": "en",
+                "specification": "LIB.CORE.CONVERSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Text conversions",
+                "profile": "en",
+                "specification": "LIB.CORE.CONVERSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "toText",
@@ -6684,7 +8033,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Conversiones de texto",
+                "profile": "es",
+                "specification": "LIB.CORE.CONVERSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Conversiones de texto",
+                "profile": "es",
+                "specification": "LIB.CORE.CONVERSION",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "toText",
@@ -6762,7 +8130,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Text inspection",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Text inspection",
+                "profile": "en",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "length",
@@ -6788,7 +8175,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Consulta de texto",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Consulta de texto",
+                "profile": "es",
+                "specification": "LIB.CORE.TEXT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "length",
@@ -6878,7 +8284,26 @@
           "en": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Shallow copy",
+                "profile": "en",
+                "specification": "LIB.CORE.COPY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Shallow copy",
+                "profile": "en",
+                "specification": "LIB.CORE.COPY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "shallowCopy",
@@ -6892,7 +8317,26 @@
           "es": {
             "common_errors": [],
             "constraints": [],
-            "examples": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Copia superficial",
+                "profile": "es",
+                "specification": "LIB.CORE.COPY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C2",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Copia superficial",
+                "profile": "es",
+                "specification": "LIB.CORE.COPY",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
             "parts": [
               {
                 "identity": "shallowCopy",

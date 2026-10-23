@@ -98,6 +98,18 @@ redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el invent
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
 a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
 
+Los ejemplos de una ficha no contienen programas ni resultados: referencian casos vigentes del corpus por
+especificación, versión, identidad, perfil y rigor. Cada ficha lleva al menos uno por idioma, con el perfil
+de su idioma, y declara su clase: `executable` (el caso ejecuta el programa y termina sin fallo ni
+diagnósticos), `accepted` (se analiza sin diagnósticos) o `diagnostic` (diagnóstico o fallo deliberado). El
+validador deriva la clase de la operación y del esperado del caso y rechaza la discrepancia, así que una
+ficha no puede presentar como correcto lo que el caso declara fallido. Los esperados siguen siendo los del
+caso, calculados a mano desde su regla; la ficha de contador, por ejemplo, enlaza el valor por omisión del
+paso, el paso negativo y el paso cero. Un programa que se ejecuta lo verifican los sujetos de conformidad
+sobre ese caso; la ayuda nunca lo ejecuta. Una referencia repetida en un idioma se rechaza y las
+traducciones no pueden apuntar a casos distintos por colisión de etiqueta: la etiqueta es prosa y no
+identifica el ejemplo.
+
 Las peticiones de ejecución del corpus fijan explícitamente 1 000 marcos cuando el caso no declara profundidad, para comparar los sujetos bajo el mismo límite. Un límite declarado prevalece. Los valores por omisión de cada producto se verifican en sus pruebas de anfitrión; no se infieren de esta configuración experimental.
 
 Problema: una regla estructural no produce un caso de ejecución. Elección: los vínculos con verificación `estructural` registran una observación del validador con hash del contrato, después de ejecutar `see validate`; se rechaza aplicarla a una regla que no declara verificación estructural. El esquema de límites y la cobertura de RI usan esta evidencia. Una revisión humana no se convierte en evidencia estructural automática.

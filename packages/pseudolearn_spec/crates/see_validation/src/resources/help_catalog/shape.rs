@@ -82,11 +82,24 @@ fn check_locale_examples(card: &Value, locale: &str) -> Result<(), String> {
     let content = card
         .pointer(&format!("/content/{locale}"))
         .ok_or("SEE-HELP-CATALOG: missing localized content")?;
+    let mut references = BTreeSet::new();
     for example in array(content, "examples")? {
-        if !available(card, "profiles", required_text(example, "profile")?)
-            || !available(card, "strictness", required_text(example, "strictness")?)
-        {
+        let profile = required_text(example, "profile")?;
+        let strictness = required_text(example, "strictness")?;
+        if !available(card, "profiles", profile) || !available(card, "strictness", strictness) {
             return Err("SEE-HELP-CATALOG: example exceeds card availability".to_owned());
+        }
+        if profile != locale {
+            return Err("SEE-HELP-CATALOG: example profile differs from its locale".to_owned());
+        }
+        let key = (
+            required_text(example, "specification")?,
+            required_text(example, "version")?,
+            required_text(example, "case")?,
+            strictness,
+        );
+        if !references.insert(key) {
+            return Err("SEE-HELP-CATALOG: duplicate example reference".to_owned());
         }
     }
     Ok(())

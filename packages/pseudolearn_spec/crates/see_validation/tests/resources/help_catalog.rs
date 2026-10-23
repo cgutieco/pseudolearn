@@ -124,11 +124,13 @@ fn rejects_examples_outside_the_referenced_case_rigor() -> Result<(), String> {
             .iter()
             .any(|error| error.contains("stale example"))
     );
-    set(
-        &mut catalog,
-        "/cards/0/content/es/examples/0/strictness",
-        json!("flexible"),
-    )?;
+    for locale in ["es", "en"] {
+        set(
+            &mut catalog,
+            &format!("/cards/0/content/{locale}/examples/0/strictness"),
+            json!("flexible"),
+        )?;
+    }
     assert!(
         references(&catalog, &corpus)
             .iter()
@@ -284,10 +286,88 @@ fn sample_catalog() -> Value {
             "availability":{"editions":["2026"],"profiles":["es","en"],"strictness":["estricto","flexible"]},
             "anchors":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","element":"R1"}],
             "content":{
-                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","strictness":"estricto","label":"Ejemplo"}]},
-                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","strictness":"flexible","label":"Example"}]}
+                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","strictness":"estricto","kind":"executable","label":"Ejemplo"}]},
+                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","strictness":"estricto","kind":"executable","label":"Example"}]}
             }
         }],
         "exclusions":[]
     })
+}
+
+#[test]
+fn rejects_example_with_profile_different_from_its_locale() -> Result<(), String> {
+    let mut catalog = sample_catalog();
+    set(
+        &mut catalog,
+        "/cards/0/content/es/examples/0/profile",
+        json!("en"),
+    )?;
+    assert!(check(&catalog).is_err_and(|error| error.contains("differs from its locale")));
+    Ok(())
+}
+
+#[test]
+fn rejects_repeated_example_reference_within_one_locale() -> Result<(), String> {
+    let mut catalog = sample_catalog();
+    let copy = catalog
+        .pointer("/cards/0/content/en/examples/0")
+        .cloned()
+        .ok_or_else(|| "Missing example".to_owned())?;
+    catalog
+        .pointer_mut("/cards/0/content/en/examples")
+        .and_then(Value::as_array_mut)
+        .ok_or_else(|| "Missing examples".to_owned())?
+        .push(copy);
+    assert!(check(&catalog).is_err_and(|error| error.contains("duplicate example")));
+    Ok(())
+}
+
+#[test]
+fn rejects_example_kind_that_the_case_does_not_have() -> Result<(), String> {
+    let mut corpus = reference_corpus()?;
+    assert!(check_references(&corpus).is_empty());
+    let resource = catalog_resource_mut(&mut corpus)?;
+    set(
+        resource,
+        "/cards/0/content/es/examples/0/kind",
+        json!("diagnostic"),
+    )?;
+    assert!(
+        check_references(&corpus)
+            .iter()
+            .any(|error| error.contains("mismatched kind"))
+    );
+    Ok(())
+}
+
+#[test]
+fn rejects_unknown_example_kind_and_cards_without_examples() -> Result<(), String> {
+    let mut unknown = sample_catalog();
+    set(
+        &mut unknown,
+        "/cards/0/content/es/examples/0/kind",
+        json!("illustrative"),
+    )?;
+    assert!(check(&unknown).is_err());
+
+    let mut corpus = reference_corpus()?;
+    let resource = catalog_resource_mut(&mut corpus)?;
+    set(resource, "/cards/0/content/en/examples", json!([]))?;
+    assert!(
+        check_references(&corpus)
+            .iter()
+            .any(|error| error.contains("has no en example"))
+    );
+    Ok(())
+}
+
+#[test]
+fn every_2026_card_has_an_example_in_both_locales() -> Result<(), String> {
+    let corpus = reference_corpus()?;
+    assert!(
+        check_references(&corpus)
+            .iter()
+            .all(|error| !error.contains("example"))
+    );
+    Ok(())
 }
