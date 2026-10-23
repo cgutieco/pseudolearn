@@ -6,9 +6,10 @@ use crate::model::{
     ApiSpan,
 };
 use crate::resources::{ApiSession, Resource};
+use crate::service_help_card;
 use pseudolearn_service::{
-    HelpCertainty, HelpIdentityKind, HelpResolution, HoverCategory, HoverOutcome, Position, Range,
-    resolve_help_at_position,
+    HelpCertainty, HelpIdentityKind, HelpLocale, HelpResolution, HoverCategory, HoverOutcome,
+    Position, Range, help_content, resolve_help_with_locale,
 };
 use serde_json::{Value, json};
 
@@ -22,7 +23,9 @@ pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, Ap
         return Ok(json!({"stale_revision": editing.revision.to_string()}));
     }
     let position = resolve_position(editing.document.text(), &request.position)?;
-    let query = resolve_help_at_position(&editing.document, position);
+    let locale =
+        HelpLocale::from_code(&request.language).ok_or_else(|| usage("invalid help language"))?;
+    let query = resolve_help_with_locale(&editing.document, position, locale);
     let resolution = query
         .as_ref()
         .map(|outcome| api_resolution(&outcome.resolution));
@@ -30,6 +33,10 @@ pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, Ap
         .as_ref()
         .and_then(|outcome| outcome.hover.clone())
         .map(|outcome| entry(outcome, request.detail));
+    let card = query
+        .as_ref()
+        .and_then(|outcome| help_content(outcome, locale))
+        .map(|content| service_help_card::card(&content, request.detail));
     let response = ApiHelpQueryResponse {
         revision: editing.revision.to_string(),
         language: request.language,
@@ -37,6 +44,7 @@ pub(crate) fn query(session: &ApiSession, arguments: &Value) -> Result<Value, Ap
         position: request.position,
         resolution,
         help,
+        card,
     };
     serde_json::to_value(response).map_err(serialization)
 }
@@ -101,6 +109,7 @@ fn entry(outcome: HoverOutcome, detail: ApiHelpDetail) -> ApiHelpEntry {
         is_inferred: complete.then_some(outcome.is_inferred),
         is_intrinsic: complete.then_some(outcome.is_intrinsic),
         signature: if complete { outcome.signature } else { None },
+        description: if complete { outcome.description } else { None },
     }
 }
 

@@ -30,7 +30,9 @@ fn exceeds_nesting(value: &Value, depth: usize) -> bool {
     let next = depth.saturating_add(1);
     match value {
         Value::Object(entries) => entries.values().any(|entry| exceeds_nesting(entry, next)),
-        Value::Array(items) => items.iter().any(|item| exceeds_nesting(item, next)),
+        Value::Array(elements) => elements
+            .iter()
+            .any(|element| exceeds_nesting(element, next)),
         _ => false,
     }
 }

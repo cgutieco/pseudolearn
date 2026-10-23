@@ -118,11 +118,15 @@ Los tokens y tipos primitivos se resuelven con el vocabulario del programa antes
 La sustitución recorre la plantilla una sola vez y no reinterpreta llaves dentro de un lexema del usuario.
 
 `help_query` consulta el hover estructurado de la sesión de edición y no modifica el recurso. `summary`
-devuelve categoría e identificador; `full` añade tipo, inferencia, carácter intrínseco y firma cuando
-están disponibles. `language` queda separado del perfil de sintaxis y se conserva en la respuesta para
-seleccionar las fichas editoriales. Los lexemas, tipos y firmas describen el perfil de la sesión; el
-resultado actual no incluye prosa editorial. Un recurso liberado, de otra clase o una revisión obsoleta
-no produce contenido de ayuda.
+devuelve categoría e identificador y, cuando existe ficha, `card` con identidad, título y resumen; `full`
+añade tipo, inferencia, carácter intrínseco, firma, la descripción del token y el resto de la ficha
+(propósito, partes, restricciones, errores comunes y referencias a ejemplos). `language` queda separado del
+perfil de sintaxis: selecciona la ficha editorial en `es` o `en`, mientras que lexemas, tipos y firmas
+describen el perfil de la sesión. La ficha se elige por la identidad léxica del token y, si varias la
+comparten, por el contexto resuelto (operador unario o binario, construcción que lo contiene); la respuesta
+no incluye programas ni esperados, solo la referencia a los casos, y la consulta nunca los ejecuta. Un
+símbolo del usuario, una posición sin token o una identidad sin ficha devuelven `card: null`. Un recurso
+liberado, de otra clase o una revisión obsoleta no produce contenido de ayuda.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

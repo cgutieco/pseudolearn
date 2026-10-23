@@ -36,6 +36,11 @@ Alternativas descartadas y fundamento: SEE.ADAPTER.PROTOCOL define JSONL y negoc
 
 La proyección `en_linea` del completado devuelve explícitamente `null` cuando no hay sugerencia; así los casos negativos verifican ausencia real y no una expectativa vacía. La aceptación usa los mismos rangos y texto insertable de la API.
 
+Las proyecciones `descripcion`, `ayuda` y `capacidades_ayuda` del servicio comprueban la descripción de una
+palabra reservada por idioma, el contenido y el rango del hover o del comando `pseudolearn.explain` (con
+fragmentos esperados tomados del catálogo, no del adaptador) y el anuncio del comando. Los errores LSP se
+proyectan por su código.
+
 La proyección `resolucion` de las consultas de servicio expone identidad o símbolo y certeza para comprobar la resolución por posición; los casos de API verifican además rangos léxicos y contextuales.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código

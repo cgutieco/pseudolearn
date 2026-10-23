@@ -77,12 +77,13 @@ fn example_literals(content: &Value) -> Result<String, Failure> {
     let mut literals = Vec::new();
     for example in array(content, "examples")? {
         literals.push(format!(
-            "HelpExample {{ specification: {:?}, version: {:?}, case: {:?}, profile: {:?}, strictness: {:?}, label: {:?} }}",
+            "HelpExample {{ specification: {:?}, version: {:?}, case: {:?}, profile: {:?}, strictness: {:?}, kind: {:?}, label: {:?} }}",
             text(example, "specification")?,
             text(example, "version")?,
             text(example, "case")?,
             text(example, "profile")?,
             text(example, "strictness")?,
+            text(example, "kind")?,
             text(example, "label")?,
         ));
     }

@@ -15,6 +15,7 @@ impl LspServer {
         else {
             return Vec::new();
         };
+        self.record_version(&uri, message);
         let profile = detect_document_profile(text, self.locale_profile());
         self.service.open_document(
             uri.clone(),
@@ -42,6 +43,7 @@ impl LspServer {
         else {
             return Vec::new();
         };
+        self.record_version(&uri, message);
         let updated = apply_content_changes(&current, changes);
         self.service.edit_document(&uri, updated);
         self.diagnostics_notification(&uri).into_iter().collect()
@@ -49,6 +51,7 @@ impl LspServer {
 
     pub(crate) fn handle_did_close(&mut self, message: &Value) -> Vec<Value> {
         let uri = text_document_uri(message).to_owned();
+        self.versions.remove(&uri);
         if !self.service.close_document(&uri) {
             return Vec::new();
         }
@@ -75,6 +78,15 @@ impl LspServer {
             })
             .collect();
         Some(publish(uri, items))
+    }
+
+    fn record_version(&mut self, uri: &str, message: &Value) {
+        if let Some(version) = message
+            .pointer("/params/textDocument/version")
+            .and_then(Value::as_i64)
+        {
+            self.versions.insert(uri.to_owned(), version);
+        }
     }
 
     pub(crate) fn locale_profile(&self) -> Profile {

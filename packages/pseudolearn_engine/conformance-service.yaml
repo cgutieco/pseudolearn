@@ -95,6 +95,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

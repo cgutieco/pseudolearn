@@ -52,6 +52,41 @@ pub struct ApiHelpQueryResponse {
     pub position: ApiHelpQueryPosition,
     pub resolution: Option<ApiHelpResolution>,
     pub help: Option<ApiHelpEntry>,
+    pub card: Option<ApiHelpCard>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpPart {
+    pub identity: String,
+    pub text: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpExample {
+    pub specification: String,
+    pub version: String,
+    pub case: String,
+    pub profile: String,
+    pub strictness: String,
+    pub kind: String,
+    pub label: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiHelpCard {
+    pub id: String,
+    pub title: String,
+    pub summary: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub purpose: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parts: Option<Vec<ApiHelpPart>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub constraints: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub common_errors: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub examples: Option<Vec<ApiHelpExample>>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -88,6 +123,8 @@ pub struct ApiHelpEntry {
     pub is_intrinsic: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub signature: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

@@ -56,6 +56,7 @@ pub struct HelpResolution {
 pub struct HelpQueryOutcome {
     pub resolution: HelpResolution,
     pub hover: Option<HoverOutcome>,
+    pub token_identity: Option<String>,
 }
 
 struct ResolutionTarget {
@@ -112,7 +113,28 @@ pub(crate) fn resolve_help_in_context(
                 .map(|value| span_to_range(context.source, value)),
         },
         hover: hover_for_token(context, slot),
+        token_identity: token_identity(context, slot, kind),
     })
+}
+
+fn token_identity(context: &QueryContext<'_>, slot: usize, kind: TokenKind) -> Option<String> {
+    match kind {
+        TokenKind::Identifier
+            if context
+                .index
+                .at_token_span(context.tree.tokens.span(slot)?)
+                .is_none() =>
+        {
+            pseudolearn_lexicon::find_builtin(context.token_text(slot), context.profile)
+                .map(|builtin| builtin.as_str().to_owned())
+        }
+        TokenKind::Keyword(keyword) => Some(
+            operator::keyword_operator_identity(keyword)
+                .map_or_else(|| keyword.as_str(), |id| id)
+                .to_owned(),
+        ),
+        other => operator::operator_identity(other).map(str::to_owned),
+    }
 }
 
 fn selected_token(context: &QueryContext<'_>, offset: usize) -> Option<usize> {

@@ -444,3 +444,254 @@
   "sujetos": ["engine"]
 }
 ```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cuando la identidad resuelta tiene ficha en el catálogo, help_query devuelve card en el idioma solicitado, independiente del perfil de sintaxis: con detalle summary, id, title y summary; con detalle full, además purpose, parts, constraints, common_errors y examples, y help añade description. Cada ejemplo conserva su referencia a especificación, versión, caso, perfil, rigor y clase; la respuesta no contiene programas ni resultados esperados y la consulta no los ejecuta. Sin ficha o sin identidad card es null.",
+  "justificacion": "La ficha es la fuente editorial única; entregarla por la API evita que cada cliente reconozca el lenguaje o conserve su propia descripción.",
+  "verificacion": [
+    "C14",
+    "C15",
+    "C16"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 3,
+            "unit": "unicode_scalar"
+          },
+          "language": "en",
+          "detail": "full"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 3,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "language": "en",
+            "help": {
+              "category": "keyword",
+              "description": "Starts a loop that checks its condition before each iteration."
+            },
+            "card": {
+              "id": "help.while",
+              "title": "While loop",
+              "summary": "Repeats the body while the condition is true.",
+              "purpose": "The condition is checked before entering each iteration."
+            }
+          }
+        },
+        {
+          "value": {
+            "language": "es",
+            "card": {
+              "id": "help.while",
+              "title": "Bucle Mientras",
+              "summary": "Repite el cuerpo mientras la condición sea verdadera."
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 3,
+            "unit": "unicode_scalar"
+          },
+          "language": "en",
+          "detail": "full"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "card": {
+              "examples": [
+                {
+                  "specification": "LANG.CONTROL.WHILE",
+                  "version": "1.0.0",
+                  "case": "C1",
+                  "profile": "en",
+                  "strictness": "estricto",
+                  "kind": "executable"
+                },
+                {
+                  "specification": "LANG.CONTROL.WHILE",
+                  "version": "1.0.0",
+                  "case": "C3",
+                  "profile": "en",
+                  "strictness": "estricto",
+                  "kind": "diagnostic"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 3,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "full"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "help": {
+              "category": "variable"
+            },
+            "card": null
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

@@ -458,3 +458,406 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "textDocument/hover responde con el contenido de la consulta común de ayuda en el idioma de locale negociado, independiente del perfil del documento: la cabecera del símbolo o firma, el título y el resumen de la ficha que corresponde a la identidad y el papel resueltos, y su propósito, partes, restricciones, errores comunes y ejemplos cuando existen. Incluye el rango del token completo. El servidor anuncia executeCommandProvider con el comando pseudolearn.explain, que recibe uri, version del documento, posición LSP y formato markdown o plaintext, y devuelve el mismo contenido y rango que el hover. Una versión distinta de la última recibida responde con el error ContentModified (-32801), un comando desconocido con InvalidParams (-32602) y una posición sin ayuda con resultado nulo. El texto de la ficha y los nombres del programa se escapan como texto y nunca se interpretan como marcado.",
+  "justificacion": "Hover y comando son dos adaptadores del mismo resultado; separar el idioma del perfil permite explicar un programa en un idioma distinto del que se escribió, y la versión impide mostrar una explicación de un texto que ya cambió.",
+  "verificacion": [
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formato": "markdown",
+      "contenido_completo": true,
+      "rango": {
+        "start": {
+          "line": 1,
+          "character": 2
+        },
+        "end": {
+          "line": 1,
+          "character": 10
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "textDocument/hover",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo"
+          },
+          "position": {
+            "line": 1,
+            "character": 4
+          }
+        }
+      }
+    ],
+    "proyeccion": "ayuda",
+    "contiene": [
+      "Bucle Mientras",
+      "Repite el cuerpo mientras la condición sea verdadera\\.",
+      "La condición se comprueba antes de entrar en cada iteración\\."
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "formato": "plaintext",
+      "contenido_completo": true,
+      "rango": {
+        "start": {
+          "line": 1,
+          "character": 2
+        },
+        "end": {
+          "line": 1,
+          "character": 10
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "en"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "workspace/executeCommand",
+        "params": {
+          "command": "pseudolearn.explain",
+          "arguments": [
+            {
+              "uri": "file:///ayuda.pseudo",
+              "version": 1,
+              "position": {
+                "line": 1,
+                "character": 4
+              },
+              "format": "plaintext"
+            }
+          ]
+        }
+      }
+    ],
+    "proyeccion": "ayuda",
+    "contiene": [
+      "While loop",
+      "Repeats the body while the condition is true.",
+      "The condition is checked before entering each iteration."
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "codigo_error": -32801
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "workspace/executeCommand",
+        "params": {
+          "command": "pseudolearn.explain",
+          "arguments": [
+            {
+              "uri": "file:///ayuda.pseudo",
+              "version": 7,
+              "position": {
+                "line": 1,
+                "character": 4
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "proyeccion": "ayuda"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "codigo_error": -32602
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "workspace/executeCommand",
+        "params": {
+          "command": "pseudolearn.unknown",
+          "arguments": [
+            {
+              "uri": "file:///ayuda.pseudo",
+              "version": 1,
+              "position": {
+                "line": 1,
+                "character": 4
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "proyeccion": "ayuda"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "comandos": [
+        "pseudolearn.explain"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      }
+    ],
+    "proyeccion": "capacidades_ayuda"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resultado": null
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///ayuda.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "workspace/executeCommand",
+        "params": {
+          "command": "pseudolearn.explain",
+          "arguments": [
+            {
+              "uri": "file:///ayuda.pseudo",
+              "version": 1,
+              "position": {
+                "line": 1,
+                "character": 1
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "proyeccion": "ayuda"
+  }
+}
+```

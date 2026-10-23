@@ -23,17 +23,20 @@ impl HelpLocale {
     }
 }
 
+#[derive(Debug)]
 pub struct HelpPart {
     pub identity: &'static str,
     pub text: &'static str,
 }
 
+#[derive(Debug)]
 pub struct HelpExample {
     pub specification: &'static str,
     pub version: &'static str,
     pub case: &'static str,
     pub profile: &'static str,
     pub strictness: &'static str,
+    pub kind: &'static str,
     pub label: &'static str,
 }
 

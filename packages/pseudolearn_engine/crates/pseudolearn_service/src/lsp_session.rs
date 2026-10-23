@@ -1,8 +1,10 @@
 use crate::document_session::LanguageService;
+use crate::lsp_help::EXPLAIN_COMMAND;
 use crate::lsp_protocol::{
     INVALID_REQUEST, METHOD_NOT_FOUND, SERVER_NOT_INITIALIZED, failure, success,
 };
 use serde_json::{Value, json};
+use std::collections::BTreeMap;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Lifecycle {
@@ -16,6 +18,7 @@ pub struct LspServer {
     pub service: LanguageService,
     pub lifecycle: Lifecycle,
     pub locale: String,
+    pub versions: BTreeMap<String, i64>,
     pub strict: bool,
     pub exit_code: Option<i32>,
 }
@@ -32,6 +35,7 @@ impl LspServer {
             service: LanguageService::new(),
             lifecycle: Lifecycle::Uninitialized,
             locale: String::from("es"),
+            versions: BTreeMap::new(),
             strict: true,
             exit_code: None,
         }
@@ -92,6 +96,7 @@ impl LspServer {
             "textDocument/documentSymbol" => self.handle_document_symbols(message),
             "textDocument/formatting" => self.handle_formatting(message),
             "textDocument/onTypeFormatting" => self.handle_on_type_formatting(message),
+            "workspace/executeCommand" => self.handle_execute_command(message),
             _ => return refuse(message, is_request, METHOD_NOT_FOUND, "method not found"),
         };
         vec![answer]
@@ -121,6 +126,7 @@ impl LspServer {
                     "documentHighlightProvider": true,
                     "documentSymbolProvider": true,
                     "documentFormattingProvider": true,
+                    "executeCommandProvider": { "commands": [EXPLAIN_COMMAND] },
                     "onTypeFormattingProvider": {
                         "firstTriggerCharacter": "\n",
                         "moreTriggerCharacter": [" ", ";", "(", "[", ")", "]", "\"", "'"]

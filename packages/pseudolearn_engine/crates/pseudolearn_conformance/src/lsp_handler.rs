@@ -46,6 +46,10 @@ pub fn handle_lsp(request: &Value) -> Value {
             "disparador_escritura": transcript.capability("onTypeFormattingProvider/firstTriggerCharacter"),
         }),
         "fragmento" => transcript.snippet_projection(request),
+        "ayuda" => transcript.help_projection(request),
+        "capacidades_ayuda" => json!({
+            "comandos": transcript.capability("executeCommandProvider/commands"),
+        }),
         "consultas" => json!({ "consultas_respondidas": transcript.all_queries_answered() }),
         other => json!({ "error": format!("unsupported projection: {other}") }),
     }
@@ -79,6 +83,37 @@ impl Transcript {
             }),
             None => json!({}),
         }
+    }
+
+    fn help_projection(&self, request: &Value) -> Value {
+        let Some(reply) = self
+            .answers
+            .iter()
+            .rev()
+            .find(|(message, _)| message.get("id").is_some())
+            .and_then(|(_, replies)| replies.first())
+        else {
+            return json!({ "error": "missing reply" });
+        };
+        if let Some(code) = reply.pointer("/error/code") {
+            return json!({ "codigo_error": code });
+        }
+        let Some(contents) = reply.pointer("/result/contents") else {
+            return json!({ "resultado": null });
+        };
+        let text = contents.get("value").and_then(Value::as_str).unwrap_or("");
+        let fragments = request
+            .get("contiene")
+            .and_then(Value::as_array)
+            .map_or(&[][..], Vec::as_slice);
+        json!({
+            "formato": contents.get("kind"),
+            "contenido_completo": fragments
+                .iter()
+                .filter_map(Value::as_str)
+                .all(|fragment| text.contains(fragment)),
+            "rango": reply.pointer("/result/range"),
+        })
     }
 
     fn responses_to(&self, method: &str) -> Vec<&Value> {

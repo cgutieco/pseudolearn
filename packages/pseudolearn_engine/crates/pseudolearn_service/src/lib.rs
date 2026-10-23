@@ -22,6 +22,8 @@ pub mod edit_session;
 pub mod expected_slot;
 pub mod formatter;
 pub mod help_catalog;
+pub mod help_content;
+pub mod help_rendering;
 mod help_resolution;
 pub mod hover;
 pub mod identifier_roles;
@@ -29,6 +31,7 @@ pub mod insertion;
 pub mod line_renderer;
 pub mod lsp_changes;
 pub mod lsp_documents;
+pub mod lsp_help;
 pub mod lsp_protocol;
 pub mod lsp_queries;
 pub mod lsp_session;
@@ -71,6 +74,7 @@ pub use edit_probe::{IdentityCheck, IncrementalProbe};
 pub use edit_session::{Acceptance, Accepted, EditError, EditSession};
 pub use formatter::{FormatOptions, format_checked, format_source};
 pub use help_catalog::HelpLocale;
+pub use help_content::{HelpContent, help_content};
 pub use help_resolution::{
     HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome, HelpResolution, HelpSymbol,
     resolve_help_at_position, resolve_help_with_locale,

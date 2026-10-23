@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.07` completos. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.08` completos. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -228,15 +228,15 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.08 · Servicio, API y LSP comunes
 
-- [ ] `PG-H.08.01` Ampliar TOOL.SERVICE.HOVER y TOOL.LSP.CAPABILITIES: contenido/rango,
+- [x] `PG-H.08.01` Ampliar TOOL.SERVICE.HOVER y TOOL.LSP.CAPABILITIES: contenido/rango,
   idioma y comando de explicar con argumentos/revisión; no sobrecargar signatureHelp.
-- [ ] `PG-H.08.02` Derivar conversaciones initialize/open/hover/explicar/change/close, texto o Markdown,
+- [x] `PG-H.08.02` Derivar conversaciones initialize/open/hover/explicar/change/close, texto o Markdown,
   comando desconocido, revisión vieja y preservación de navegación a definición.
-- [ ] `PG-H.08.03` Preparar tests de adaptadores que contrasten la misma identidad, rol, rangos y ejemplo con API.
-- [ ] `PG-H.08.04` Conectar hover y comando al resolutor común; anunciar solo comandos implementados,
+- [x] `PG-H.08.03` Preparar tests de adaptadores que contrasten la misma identidad, rol, rangos y ejemplo con API.
+- [x] `PG-H.08.04` Conectar hover y comando al resolutor común; anunciar solo comandos implementados,
   usando conversión de coordenadas compartida y locale de sesión.
-- [ ] `PG-H.08.05` Documentar capacidades y formato seguro en README service/API.
-- [ ] `PG-H.08.06` Ejecutar conformidad service y API más regresiones de LSP; comprobar que no hay una tabla paralela.
+- [x] `PG-H.08.05` Documentar capacidades y formato seguro en README service/API.
+- [x] `PG-H.08.06` Ejecutar conformidad service y API más regresiones de LSP; comprobar que no hay una tabla paralela.
 
 ### PG-H.09 · Consulta de la app por puente
 
@@ -550,13 +550,13 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.07.03 | Cumplido | `see_validation/tests/resources/help_catalog/fixtures.rs` | Exige el diagnóstico correcto por fixture, catálogo vigente sin diagnósticos y un mínimo de fixtures. |
 | PG-H.07.04 | Cumplido | `see_validation/src/resources/help_catalog/shape.rs` | Se añadió el límite de anidamiento; el validador sigue sin importar ni ejecutar el motor. La ejecución de ejemplos permanece en los sujetos de conformidad. |
 | PG-H.07.05 | Cumplido | README de `see_validation` | Reglas, diagnósticos y límites documentados. |
-| PG-H.07.06 | Cumplido | `cargo xtask verify` de spec y de engine en verde; `see export --check` falla con `SEE-STALE` tras alterar `catalogs.json` | Las pruebas con fixtures corren dentro de `cargo test` de la puerta integral; la alteración manual se restauró. |
-| PG-H.08.01 | | | Pendiente de ejecución |
-| PG-H.08.02 | | | Pendiente de ejecución |
-| PG-H.08.03 | | | Pendiente de ejecución |
-| PG-H.08.04 | | | Pendiente de ejecución |
-| PG-H.08.05 | | | Pendiente de ejecución |
-| PG-H.08.06 | | | Pendiente de ejecución |
+| PG-H.07.06 | Cumplido | `cargo xtask verify` de spec en verde tras corregir un nombre marcado por `rust-checks` (1 566 observaciones de motor, 0 divergencias); `see export --check` falla con `SEE-STALE` tras alterar `catalogs.json` | La primera ejecución de la puerta de spec falló en `rust-checks` y no se detectó al encadenarla con `tail`; se corrigió y se repitió sin canalizar. Las pruebas con fixtures corren dentro de `cargo test`; la alteración manual se restauró. |
+| PG-H.08.01 | Cumplido | `TOOL.LSP.CAPABILITIES` R5; `API.MODEL` R6 | Contenido y rango de hover, locale independiente, comando `pseudolearn.explain` con versión y formato; `signatureHelp` no se sobrecarga. |
+| PG-H.08.02 | Cumplido | `TOOL.LSP.CAPABILITIES` C6–C11; `API.MODEL` C14–C16 | Hover, comando, texto plano/Markdown, comando desconocido, versión obsoleta, posición sin ayuda, ficha por idioma y ejemplos. Las conversaciones initialize/open/hover/explain/change/close se cubren en `tests/lsp_help.rs`; la navegación a definición conserva sus casos previos. |
+| PG-H.08.03 | Cumplido | `pseudolearn_service/tests/lsp_help.rs`; `pseudolearn_api/tests/service_help.rs` | Pruebas de paridad hover/comando, versiones, escape, selección unario/binario y detalle por API. |
+| PG-H.08.04 | Cumplido | `help_content.rs`, `help_rendering.rs`, `lsp_help.rs`, `service_help.rs`, `service_help_card.rs` | Hover y comando sobre el resolutor común, con la ficha elegida por identidad léxica y contexto; comando anunciado solo al estar implementado; locale de sesión. |
+| PG-H.08.05 | Cumplido | README de `pseudolearn_service`, `pseudolearn_api`, `pseudolearn_conformance` | Capacidades, elección de ficha y formato seguro documentados. |
+| PG-H.08.06 | Cumplido | `see conform --subject service` (123 observaciones) y `--subject engine` (1 566), 0 divergencias; `cargo xtask verify` de engine y de spec en verde | No hay tabla paralela: la prueba de fuentes del servicio lo exige. Un intento previo de la puerta de engine falló en `rust-checks` por un nombre (`params`) y se repitió tras corregirlo. |
 | PG-H.09.01 | | | Pendiente de ejecución |
 | PG-H.09.02 | | | Pendiente de ejecución |
 | PG-H.09.03 | | | Pendiente de ejecución |

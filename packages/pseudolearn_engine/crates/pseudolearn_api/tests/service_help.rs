@@ -138,3 +138,64 @@ fn utf16_surrogate_interiors_are_rejected() -> Result<(), String> {
     assert_eq!(invalid.pointer("/failure/family"), Some(&json!("usage")));
     Ok(())
 }
+
+#[test]
+fn card_follows_the_requested_language_and_detail() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = open(
+        &mut session,
+        "Algoritmo P\nMientras 1 = 1 Hacer\nFinMientras\nFinAlgoritmo\n",
+    )?;
+    let full = query(&mut session, resource, 2, 3, "unicode_scalar");
+    assert_eq!(
+        full.pointer("/value/card/title"),
+        Some(&json!("While loop"))
+    );
+    assert!(full.pointer("/value/card/examples/0/case").is_some());
+    let summary = session.call(
+        "help_query",
+        &json!({
+            "resource": resource, "revision": "1",
+            "position": {"line": 2, "column": 3, "unit": "unicode_scalar"},
+            "language": "es", "detail": "summary"
+        }),
+    );
+    assert_eq!(
+        summary.pointer("/value/card/title"),
+        Some(&json!("Bucle Mientras"))
+    );
+    assert!(summary.pointer("/value/card/purpose").is_none());
+    assert!(summary.pointer("/value/card/examples").is_none());
+    Ok(())
+}
+
+#[test]
+fn symbols_and_blank_positions_have_no_card() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = open(
+        &mut session,
+        "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nFinAlgoritmo\n",
+    )?;
+    let symbol = query(&mut session, resource, 3, 1, "unicode_scalar");
+    assert_eq!(symbol.pointer("/value/card"), Some(&Value::Null));
+    let blank = query(&mut session, resource, 3, 2, "unicode_scalar");
+    assert_eq!(blank.pointer("/value/card"), Some(&Value::Null));
+    Ok(())
+}
+
+#[test]
+fn unary_and_binary_minus_select_different_cards() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = open(
+        &mut session,
+        "Algoritmo P\nEscribir 3 - 1;\nEscribir -1;\nFinAlgoritmo\n",
+    )?;
+    let binary = query(&mut session, resource, 2, 12, "unicode_scalar");
+    let unary = query(&mut session, resource, 3, 10, "unicode_scalar");
+    assert_ne!(
+        binary.pointer("/value/card/id"),
+        unary.pointer("/value/card/id")
+    );
+    assert_eq!(unary.pointer("/value/card/id"), Some(&json!("help.unary")));
+    Ok(())
+}

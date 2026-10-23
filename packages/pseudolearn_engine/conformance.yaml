@@ -1050,6 +1050,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.MODEL@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.VERSIONING@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

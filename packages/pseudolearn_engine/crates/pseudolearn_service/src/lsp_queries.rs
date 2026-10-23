@@ -62,27 +62,6 @@ impl LspServer {
         success(message, json!(edits))
     }
 
-    pub(crate) fn handle_hover(&self, message: &Value) -> Value {
-        let result = self
-            .service
-            .session(text_document_uri(message))
-            .and_then(|session| {
-                let position = position_from_request(session.text(), message);
-                let outcome = session.queries().hover(position)?;
-                let mut lines = Vec::new();
-                match &outcome.signature {
-                    Some(signature) => lines.push(format!("```\n{signature}\n```")),
-                    None if outcome.type_name.is_empty() => lines.push(outcome.identifier.clone()),
-                    None => lines.push(format!("{}: {}", outcome.identifier, outcome.type_name)),
-                }
-                if let Some(description) = &outcome.description {
-                    lines.push(description.clone());
-                }
-                Some(json!({ "contents": { "kind": "markdown", "value": lines.join("\n\n") } }))
-            });
-        success(message, result.unwrap_or(Value::Null))
-    }
-
     pub(crate) fn handle_signature_help(&self, message: &Value) -> Value {
         let result = self
             .service

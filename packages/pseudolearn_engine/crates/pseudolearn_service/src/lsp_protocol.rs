@@ -6,6 +6,8 @@ use serde_json::{Value, json};
 pub const SERVER_NOT_INITIALIZED: i64 = -32002;
 pub const INVALID_REQUEST: i64 = -32600;
 pub const METHOD_NOT_FOUND: i64 = -32601;
+pub const INVALID_PARAMS: i64 = -32602;
+pub const CONTENT_MODIFIED: i64 = -32801;
 
 pub fn request_id(message: &Value) -> Value {
     message.get("id").cloned().unwrap_or(Value::Null)
