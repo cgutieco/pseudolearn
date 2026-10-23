@@ -55,6 +55,15 @@ y constantes de límites duplicadas.
 
 El reconocimiento estructural de construcciones excluidas se aplica también fuera de unidades y en miembros de clase. Una lista de superclases produce el diagnóstico específico en la coma, sin aceptar herencia múltiple ni reservar nombres nuevos.
 
+Problema: un archivo de proyecto es un módulo y no exige un algoritmo, mientras que el texto suelto conserva
+su contrato. Elección: el analizador tiene un modo de proyecto (`parse_module_source`) que acepta cero
+algoritmos, `Importar` y `Exportar` antes de las unidades y los prefijos `Publico`/`Privado` en subprogramas
+y clases; en el modo suelto esas formas se analizan igual pero producen `moduleSyntaxOutsideProject`, de modo
+que ningún programa válido existente cambia de resultado. El nodo de una unidad con prefijo empieza en el
+prefijo, de forma que semantic lee la visibilidad del primer token sin recorrer los miembros de la clase.
+Se rechaza un segundo analizador de módulos, porque duplicaría la recuperación de errores, y los comodines:
+tras un punto de la ruta se exige un nombre (`expectedModuleName`).
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

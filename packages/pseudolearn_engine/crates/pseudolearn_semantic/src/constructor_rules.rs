@@ -33,6 +33,7 @@ pub fn first_parent_constructor(function: &HirFunction, module: &HirModule) -> O
 
 pub(crate) fn check(session: &mut AnalysisSession<'_>) {
     for index in 0..session.module.classes.len() {
+        session.enter_class(index);
         let Some(class) = session.module.classes.get(index) else {
             continue;
         };

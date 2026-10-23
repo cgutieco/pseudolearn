@@ -21,6 +21,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
             current = class_model(session, class).and_then(|class| class.superclass);
         }
         for class in path.into_iter().rev() {
+            session.enter_class_id(class);
             check_members(session, class);
             finished.insert(class);
         }
@@ -28,6 +29,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>) {
 }
 
 fn break_cycle(session: &mut AnalysisSession<'_>, class: ClassId) {
+    session.enter_class_id(class);
     let syntax = class_model(session, class).map(|class| class.syntax);
     if let Some(syntax) = syntax {
         session.report(DiagnosticCode::CircularInheritance, syntax);

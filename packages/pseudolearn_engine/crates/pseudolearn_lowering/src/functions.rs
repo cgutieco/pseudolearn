@@ -60,12 +60,35 @@ pub(crate) fn function_name(function: &HirFunction, module: &HirModule) -> Strin
         return format!("@{}.{}", class.name, function.name);
     }
     if function.kind == FunctionKind::Main {
-        "@main".to_owned()
+        main_name(function, module)
     } else if function.name.starts_with('@') {
         function.name.clone()
     } else {
         format!("@{}", function.name)
     }
+}
+
+fn main_name(function: &HirFunction, module: &HirModule) -> String {
+    let position = module
+        .functions
+        .iter()
+        .position(|candidate| std::ptr::eq(candidate, function));
+    let selected = match module.units.entry {
+        None => true,
+        Some(entry) => position.and_then(|index| u32::try_from(index).ok()) == Some(entry.0),
+    };
+    if selected {
+        return "@main".to_owned();
+    }
+    let unit = position
+        .and_then(|index| u32::try_from(index).ok())
+        .map_or(0, |index| {
+            module
+                .units
+                .function_unit(pseudolearn_semantic::identities::FunctionId(index))
+        });
+    let qualifier = module.units.qualifiers.get(unit).map_or("", String::as_str);
+    format!("@{qualifier}.main")
 }
 
 fn initialize_receiver(function: &HirFunction, module: &HirModule, builder: &mut FunctionBuilder) {

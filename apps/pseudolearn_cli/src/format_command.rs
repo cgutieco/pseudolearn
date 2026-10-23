@@ -69,6 +69,7 @@ fn check_syntax(options: &CliOptions, target_path: &str, source_content: &str) -
         .unwrap_or_else(|| determine_vocabulary(source_content));
     let strictness_mode = options.strictness.as_deref().unwrap_or("flexible");
     let analysis_request = AnalyzeRequest {
+        source: None,
         program: source_content.to_owned(),
         profile: vocabulary_name,
         strictness: strictness_mode.to_owned(),

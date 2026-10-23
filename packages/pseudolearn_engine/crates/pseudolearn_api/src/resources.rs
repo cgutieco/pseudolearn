@@ -56,6 +56,8 @@ impl ApiSession {
             "negotiate" => crate::negotiation::negotiate(arguments),
             "create_document" => self.create_document(arguments),
             "create_analysis" => self.create_analysis(arguments),
+            "analyze_project" => crate::project_operations::analyze(arguments),
+            "execute_project" => crate::project_operations::execute(arguments),
             "document" => self.document(arguments),
             "analysis" => self.analysis(arguments),
             "start" | "start_execution" => self.start(arguments),

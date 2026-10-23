@@ -49,11 +49,36 @@ pub fn lower_module(
     semantic_module: &HirModule,
     source_text: &SourceText,
 ) -> Result<Module, LoweringError> {
+    lower_with(semantic_module, |_| Some(source_text))
+}
+
+pub fn lower_project(
+    semantic_module: &HirModule,
+    sources: &[&SourceText],
+) -> Result<Module, LoweringError> {
+    lower_with(semantic_module, |index| {
+        let unit =
+            semantic_module
+                .units
+                .function_unit(pseudolearn_semantic::identities::FunctionId(
+                    u32::try_from(index).unwrap_or(u32::MAX),
+                ));
+        sources.get(unit).copied()
+    })
+}
+
+fn lower_with<'sources>(
+    semantic_module: &HirModule,
+    source_for: impl Fn(usize) -> Option<&'sources SourceText>,
+) -> Result<Module, LoweringError> {
     let classes = lower_classes(semantic_module);
     let mut origins = Vec::new();
     let mut functions = Vec::new();
 
-    for function in &semantic_module.functions {
+    for (index, function) in semantic_module.functions.iter().enumerate() {
+        let source_text = source_for(index).ok_or_else(|| LoweringError {
+            description: "function has no source".to_owned(),
+        })?;
         functions.push(lower_function(
             function,
             semantic_module,

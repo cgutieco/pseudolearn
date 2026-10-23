@@ -1567,6 +1567,170 @@
         "lexeme": "lexema"
       }
     },
+    "moduleSyntaxOutsideProject": {
+      "mensajes": {
+        "es": "Importar, Exportar y la visibilidad de unidades solo se admiten dentro de un proyecto",
+        "en": "Import, export and unit visibility are only allowed inside a project"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "expectedModuleName": {
+      "mensajes": {
+        "es": "Se esperaba un nombre de módulo",
+        "en": "Expected a module name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unresolvedModule": {
+      "mensajes": {
+        "es": "No se encontró el módulo {lexeme}",
+        "en": "Module {lexeme} was not found"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unresolvedImport": {
+      "mensajes": {
+        "es": "El módulo no exporta {lexeme}",
+        "en": "The module does not export {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "privateImport": {
+      "mensajes": {
+        "es": "{lexeme} es privado en su módulo",
+        "en": "{lexeme} is private in its module"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "privateReexport": {
+      "mensajes": {
+        "es": "No se puede reexportar {lexeme}: es privado",
+        "en": "Cannot re-export {lexeme}: it is private"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "ambiguousReexport": {
+      "mensajes": {
+        "es": "El nombre exportado {lexeme} es ambiguo",
+        "en": "The exported name {lexeme} is ambiguous"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "importNameCollision": {
+      "mensajes": {
+        "es": "El nombre {lexeme} ya está en uso en este módulo",
+        "en": "The name {lexeme} is already in use in this module"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "entryMissingAlgorithm": {
+      "mensajes": {
+        "es": "El módulo de entrada no contiene un algoritmo",
+        "en": "The entry module does not contain an algorithm"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "algorithmOutsideEntry": {
+      "mensajes": {
+        "es": "Solo el módulo de entrada puede contener un algoritmo",
+        "en": "Only the entry module can contain an algorithm"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
     "duplicateClass": {
       "mensajes": {
         "es": "Declaración duplicada de la clase {lexeme}",

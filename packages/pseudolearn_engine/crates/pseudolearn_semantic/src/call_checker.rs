@@ -49,7 +49,7 @@ pub(crate) fn arguments_for(
         .collect()
 }
 
-fn emit_call(
+pub(crate) fn emit_call(
     session: &mut AnalysisSession<'_>,
     function: FunctionId,
     arguments: Vec<ExpressionId>,

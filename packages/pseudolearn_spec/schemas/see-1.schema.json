@@ -1492,6 +1492,8 @@
                       "help_query",
                       "create_document",
                       "create_analysis",
+                      "analyze_project",
+                      "execute_project",
                       "analysis",
                       "encode_events",
                       "decode_events",

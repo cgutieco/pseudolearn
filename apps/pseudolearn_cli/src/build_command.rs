@@ -70,6 +70,7 @@ fn build_request(options: &CliOptions, path: &str, source: String) -> NativeBuil
             .to_owned()
     });
     NativeBuildRequest {
+        source: None,
         program: source,
         profile,
         strictness: options.strictness.clone().unwrap_or("strict".to_owned()),

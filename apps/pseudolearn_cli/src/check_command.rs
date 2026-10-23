@@ -48,6 +48,7 @@ fn check_target_file(
     let vocabulary = determine_vocabulary(options, &content);
     let strictness = options.strictness.as_deref().unwrap_or("strict");
     let request = AnalyzeRequest {
+        source: None,
         program: content.clone(),
         profile: vocabulary,
         strictness: strictness.to_owned(),

@@ -22,7 +22,8 @@ pub(crate) fn check(
     match operator {
         Some(TokenKind::LeftParenthesis) => crate::call_checker::call(session, node, purpose),
         Some(TokenKind::LeftBracket) => element(session, node),
-        Some(TokenKind::Dot) => member(session, node, purpose),
+        Some(TokenKind::Dot) => crate::module_calls::call(session, node, purpose)
+            .unwrap_or_else(|| member(session, node, purpose)),
         _ => crate::expression_checker::invalid(session, node),
     }
 }

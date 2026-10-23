@@ -43,6 +43,12 @@ selecciones y bucles internos; así cada iteración recibe el valor SSA que dej�
 
 La detección de llamada inicial al constructor padre se consulta a semantic. La traducción no redefine esa decisión ni acepta una llamada ordinaria a método como inicialización de superclase.
 
+Problema: las funciones de un proyecto proceden de varias fuentes. Elección: `lower_project` recibe una fuente por
+unidad y cada función se baja con la de su unidad, sin tocar el resto del bajado; las funciones llevan el
+calificador de módulo en su nombre de RI y solo la entrada seleccionada se llama `@main`. Las demás
+unidades con algoritmo se nombran `@calificador.main`. Se rechaza una tabla global de fuentes dentro de cada
+expresión, porque ninguna instrucción cruza unidades.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

@@ -410,6 +410,38 @@
     }
   },
   "diagnostics": {
+    "algorithmOutsideEntry": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Only the entry module can contain an algorithm",
+        "es": "Solo el módulo de entrada puede contener un algoritmo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "ambiguousReexport": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The exported name {lexeme} is ambiguous",
+        "es": "El nombre exportado {lexeme} es ambiguo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "analysisNestingLimitExceeded": {
       "argumentos": [
         "limit"
@@ -1000,6 +1032,20 @@
       },
       "tipos_argumentos": {}
     },
+    "entryMissingAlgorithm": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The entry module does not contain an algorithm",
+        "es": "El módulo de entrada no contiene un algoritmo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "expectedAlgorithmName": {
       "argumentos": [],
       "clase": "syntax",
@@ -1182,6 +1228,20 @@
       },
       "tipos_argumentos": {}
     },
+    "expectedModuleName": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected a module name",
+        "es": "Se esperaba un nombre de módulo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "expectedParameterName": {
       "argumentos": [],
       "clase": "syntax",
@@ -1302,6 +1362,24 @@
       "mensajes": {
         "en": "Unqualified field access; use this.{lexeme}",
         "es": "Acceso a atributo no calificado; use Este.{lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "importNameCollision": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The name {lexeme} is already in use in this module",
+        "es": "El nombre {lexeme} ya está en uso en este módulo"
       },
       "politica": "A",
       "severidad": {
@@ -1748,6 +1826,20 @@
       },
       "tipos_argumentos": {}
     },
+    "moduleSyntaxOutsideProject": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Import, export and unit visibility are only allowed inside a project",
+        "es": "Importar, Exportar y la visibilidad de unidades solo se admiten dentro de un proyecto"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "multipleAlgorithms": {
       "argumentos": [],
       "clase": "syntax",
@@ -1938,6 +2030,24 @@
       },
       "tipos_argumentos": {}
     },
+    "privateImport": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "{lexeme} is private in its module",
+        "es": "{lexeme} es privado en su módulo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "privateMemberAccess": {
       "argumentos": [
         "className",
@@ -1955,6 +2065,24 @@
       },
       "tipos_argumentos": {
         "className": "lexema",
+        "lexeme": "lexema"
+      }
+    },
+    "privateReexport": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Cannot re-export {lexeme}: it is private",
+        "es": "No se puede reexportar {lexeme}: es privado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
         "lexeme": "lexema"
       }
     },
@@ -2710,6 +2838,42 @@
         "lexeme": "lexema"
       }
     },
+    "unresolvedImport": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The module does not export {lexeme}",
+        "es": "El módulo no exporta {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unresolvedModule": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Module {lexeme} was not found",
+        "es": "No se encontró el módulo {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "unsupportedAbstractConstruct": {
       "argumentos": [],
       "clase": "syntax",
@@ -3253,16 +3417,21 @@
       "dimensioned": "identifier, @leftBracket, expressions, @rightBracket",
       "disjunction": "conjunction, { @or, conjunction }",
       "equality": "ordering, { ( @equal | @notEqual ), ordering }",
+      "exportDeclaration": "@exportKeyword, modulePath, terminator",
       "expression": "disjunction",
       "expressions": "expression, { @comma, expression }",
       "fieldDeclaration": "[ visibility ], ( declaration | dimensionDeclaration ), terminator",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
+      "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
       "input": "@read, designator, { @comma, designator }",
       "instantiation": "@newInstance, identifier, arguments",
       "labels": "literal, { @comma, literal }",
       "line": "endOfLine | endOfFile",
       "literal": "signedInteger | realLiteral | characterLiteral | stringLiteral | @booleanTrue | @booleanFalse",
       "methodMember": "[ visibility ], @method, identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
+      "moduleDirective": "importDeclaration | exportDeclaration",
+      "modulePath": "identifier, { @dot, identifier }",
+      "moduleUnit": "[ visibility ], ( subprogram | classUnit )",
       "multiplication": "powerExpression, { ( @multiply | @divide | @integerDivide | @modulo ), powerExpression }",
       "names": "identifier, { @comma, identifier }",
       "ordering": "addition, { ( @lessThan | @lessThanOrEqual | @greaterThan | @greaterThanOrEqual ), addition }",
@@ -3272,7 +3441,7 @@
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "powerExpression": "unary, [ @power, powerExpression ]",
       "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments",
-      "program": "trivia, { subprogram | classUnit }, algorithmUnit, { subprogram | classUnit }, trivia, endOfFile",
+      "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
@@ -3320,11 +3489,13 @@
       "endSwitch",
       "endWhile",
       "equal",
+      "exportKeyword",
       "forKeyword",
       "greaterThan",
       "greaterThanOrEqual",
       "identifier",
       "ifKeyword",
+      "importKeyword",
       "inheritsFrom",
       "integerDivide",
       "integerLiteral",
@@ -5417,6 +5588,302 @@
           },
           {
             "identity": "endClass",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Module or symbol import",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Starts the import declaration."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduces the optional local alias."
+              }
+            ],
+            "purpose": "Names what is used by a qualified path and, with as, gives it another local name without changing its identity.",
+            "summary": "Brings in a module or a public symbol from another module of the project.",
+            "title": "Module or symbol import"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Importación de módulo o símbolo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Inicia la declaración de importación."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduce el alias local opcional."
+              }
+            ],
+            "purpose": "Nombra por ruta calificada lo que se usa y, con Como, le da otro nombre local sin cambiar su identidad.",
+            "summary": "Trae un módulo o un símbolo público de otro módulo del proyecto.",
+            "title": "Importación de módulo o símbolo"
+          }
+        },
+        "id": "help.module-import",
+        "identity": {
+          "id": "importDeclaration",
+          "kind": "construction",
+          "role": "module_import"
+        },
+        "tokens": [
+          {
+            "identity": "importKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R4",
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Symbol re-export",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "exportKeyword",
+                "text": "Starts the re-export declaration."
+              }
+            ],
+            "purpose": "The symbol keeps its original identity and does not become a local name.",
+            "summary": "Publishes from this module a public symbol of another module.",
+            "title": "Symbol re-export"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Reexportación de símbolo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "exportKeyword",
+                "text": "Inicia la declaración de reexportación."
+              }
+            ],
+            "purpose": "El símbolo conserva su identidad original y no se vuelve un nombre local.",
+            "summary": "Publica desde este módulo un símbolo público de otro módulo.",
+            "title": "Reexportación de símbolo"
+          }
+        },
+        "id": "help.module-export",
+        "identity": {
+          "id": "exportDeclaration",
+          "kind": "construction",
+          "role": "module_export"
+        },
+        "tokens": [
+          {
+            "identity": "exportKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Module unit visibility",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Allows the unit to be imported from other modules."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Keeps the unit inside its module."
+              }
+            ],
+            "purpose": "Without a prefix the unit is private; public exports it.",
+            "summary": "Controls whether another module can import a subroutine or a class.",
+            "title": "Module unit visibility"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Visibilidad de la unidad de módulo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Permite importar la unidad desde otros módulos."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Mantiene la unidad dentro de su módulo."
+              }
+            ],
+            "purpose": "Sin prefijo la unidad es privada; Publico la exporta.",
+            "summary": "Controla si otro módulo puede importar un subprograma o una clase.",
+            "title": "Visibilidad de la unidad de módulo"
+          }
+        },
+        "id": "help.module-unit",
+        "identity": {
+          "id": "moduleUnit",
+          "kind": "construction",
+          "role": "module_unit_visibility"
+        },
+        "tokens": [
+          {
+            "identity": "publicVisibility",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "privateVisibility",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -8616,6 +9083,49 @@
         },
         {
           "identity": {
+            "id": "importDeclaration",
+            "kind": "construction",
+            "role": "module_import"
+          },
+          "productions": [
+            "importDeclaration",
+            "modulePath"
+          ],
+          "tokens": [
+            "importKeyword",
+            "typeConnector"
+          ]
+        },
+        {
+          "identity": {
+            "id": "exportDeclaration",
+            "kind": "construction",
+            "role": "module_export"
+          },
+          "productions": [
+            "exportDeclaration"
+          ],
+          "tokens": [
+            "exportKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "id": "moduleUnit",
+            "kind": "construction",
+            "role": "module_unit_visibility"
+          },
+          "productions": [
+            "moduleUnit",
+            "moduleDirective"
+          ],
+          "tokens": [
+            "publicVisibility",
+            "privateVisibility"
+          ]
+        },
+        {
+          "identity": {
             "id": "visibility",
             "kind": "construction",
             "role": "member_visibility"
@@ -9433,6 +9943,16 @@
         "es": "="
       }
     },
+    "exportKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "export",
+        "es": "Exportar"
+      }
+    },
     "forKeyword": {
       "alias": {
         "en": [],
@@ -9471,6 +9991,16 @@
       "lexemas": {
         "en": "if",
         "es": "Si"
+      }
+    },
+    "importKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "import",
+        "es": "Importar"
       }
     },
     "inheritsFrom": {

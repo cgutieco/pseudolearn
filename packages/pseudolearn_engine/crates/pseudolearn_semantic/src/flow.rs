@@ -26,6 +26,7 @@ pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
 }
 
 fn function(session: &mut AnalysisSession<'_>, index: usize) {
+    session.enter_function(index);
     let Some(function) = session.module.functions.get(index).cloned() else {
         return;
     };

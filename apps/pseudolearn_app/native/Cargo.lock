@@ -540,6 +540,7 @@ dependencies = [
  "pseudolearn_ir",
  "pseudolearn_lexicon",
  "pseudolearn_lowering",
+ "pseudolearn_project",
  "pseudolearn_runtime",
  "pseudolearn_semantic",
  "pseudolearn_service",
@@ -614,6 +615,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "pseudolearn_project"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_source",
+]
+
+[[package]]
 name = "pseudolearn_runtime"
 version = "0.1.0"
 dependencies = [
@@ -627,6 +635,7 @@ version = "0.1.0"
 dependencies = [
  "pseudolearn_diagnostics",
  "pseudolearn_lexicon",
+ "pseudolearn_project",
  "pseudolearn_source",
  "pseudolearn_syntax",
 ]

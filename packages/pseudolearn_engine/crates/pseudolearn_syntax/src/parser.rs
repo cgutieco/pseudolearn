@@ -20,8 +20,14 @@ impl<'tokens> Parser<'tokens> {
         self
     }
 
+    pub fn with_project_mode(mut self, enabled: bool) -> Self {
+        self.state.project_mode = enabled;
+        self
+    }
+
     pub fn parse(mut self) -> (SyntaxTree, Vec<Diagnostic>) {
         let mut algorithms = 0_u32;
+        let mut units = 0_u32;
         loop {
             self.state.separators();
             if self.state.kind() == TokenKind::EndOfFile {
@@ -29,7 +35,8 @@ impl<'tokens> Parser<'tokens> {
             }
             let before = self.state.cursor;
             let opening = self.state.kind();
-            let result = self.parse_unit(&mut algorithms);
+            let result = self.parse_unit(&mut algorithms, units);
+            units = units.saturating_add(u32::from(!crate::module_parser::is_directive(opening)));
             if result.is_err() {
                 recover_unit(&mut self.state, opening);
                 crate::statement_parser::recover(&mut self.state);
@@ -38,7 +45,7 @@ impl<'tokens> Parser<'tokens> {
                 self.state.advance();
             }
         }
-        if algorithms == 0 && !self.state.halted {
+        if algorithms == 0 && !self.state.halted && !self.state.project_mode {
             let span = self.state.span();
             self.state
                 .report(DiagnosticCode::ExpectedAlgorithmStart, span);
@@ -46,11 +53,18 @@ impl<'tokens> Parser<'tokens> {
         self.state.finish(NodeKind::Program, 0, 0);
         self.state.into_tree()
     }
-    fn parse_unit(&mut self, algorithms: &mut u32) -> Result<usize, ()> {
+    fn parse_unit(&mut self, algorithms: &mut u32, units: u32) -> Result<usize, ()> {
         if crate::unsupported::reject(&mut self.state) {
             return Err(());
         }
-        match self.state.kind() {
+        let kind = self.state.kind();
+        if crate::module_parser::is_directive(kind) && units == 0 {
+            return crate::module_parser::directive(&mut self.state);
+        }
+        if crate::module_parser::is_visibility(kind) {
+            return self.parse_visible_unit();
+        }
+        match kind {
             TokenKind::Keyword(KeywordKind::Algorithm) => {
                 *algorithms = algorithms.saturating_add(1);
                 if *algorithms > 1 {
@@ -72,6 +86,20 @@ impl<'tokens> Parser<'tokens> {
                 Err(())
             }
         }
+    }
+
+    fn parse_visible_unit(&mut self) -> Result<usize, ()> {
+        let prefix = crate::module_parser::visibility_prefix(&mut self.state)?;
+        let opening = self.state.kind();
+        let unit = if opening == TokenKind::Keyword(KeywordKind::ClassKeyword) {
+            crate::unit_parser::class(&mut self.state)
+        } else {
+            crate::unit_parser::subprogram(&mut self.state)
+        }?;
+        if let (Some(token), Some(node)) = (prefix, self.state.nodes.get_mut(unit)) {
+            node.first_token = token;
+        }
+        Ok(unit)
     }
 }
 

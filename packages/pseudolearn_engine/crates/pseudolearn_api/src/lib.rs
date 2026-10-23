@@ -37,6 +37,8 @@ mod execution_state;
 mod execution_wire;
 mod fault_injection;
 mod probes;
+mod project_operations;
+mod project_resource;
 mod recording_digest;
 mod recording_options;
 mod reference_vocabulary;

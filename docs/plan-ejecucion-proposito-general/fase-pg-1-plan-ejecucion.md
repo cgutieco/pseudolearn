@@ -12,9 +12,12 @@
   considera que se deben seguir las mejores practicas de programación y microarquitectonicas para
   obtener le mejor rendimiento, pero sin poner limites absurdos o imposibles de cumplir como test.»
 - Estado: el mensaje de la persona «Implementa en una iteración `PG-1.01 · Identidad de fuente de
-  extremo a extremo`» del 2026-10-23 autoriza únicamente PG-1.01. La respuesta «Sí, sincroniza y
-  continúa» autoriza alinear el estado global de PG-0 con su registro de cierre. PG-1.02 en adelante,
-  `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes permanecen sin autorizar.
+  extremo a extremo`» del 2026-10-23 autorizó PG-1.01. La respuesta «Sí, sincroniza y continúa»
+  autorizó alinear el estado global de PG-0 con su registro de cierre. El mensaje «implementa
+  `PG-1.02 · Modelo de módulo, paquete, workspace y entrada` y `PG-1.03 · Imports, aliases,
+  visibilidad y reexportación` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
+  puntos. PG-1.04 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes
+  permanecen sin autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
@@ -140,21 +143,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.02 · Modelo de módulo, paquete, workspace y entrada
 
-- [ ] `PG-1.02.01` Especificar archivo=módulo, raíz y pertenencia de paquete, workspace local, biblioteca sin algoritmo y selección de una sola entrada por aplicación. Mantener el contrato del programa suelto.
-- [ ] `PG-1.02.02` Derivar casos de tres módulos y biblioteca local, workspace vacío, paquete biblioteca, entrada ausente/duplicada/inexistente y módulo perteneciente ambiguamente a raíces.
-- [ ] `PG-1.02.03` Probar construcción de snapshot y catálogo de módulos con fuentes en memoria; rechazo sin infraestructura real de disco.
-- [ ] `PG-1.02.04` Declarar y crear crate project, modelos y catálogo; exponer operación pública de proyecto y enlace a una entrada, sin concatenar textos.
-- [ ] `PG-1.02.05` Escribir primero README del crate nuevo y matriz engine; actualizar README API/semantic y registro de dependencias Cargo.
-- [ ] `PG-1.02.06` Verificar proyecto mínimo, biblioteca sin entrada y errores de aplicación; ejecutar arquitectura antes de integrar CLI.
+- [x] `PG-1.02.01` Especificar archivo=módulo, raíz y pertenencia de paquete, workspace local, biblioteca sin algoritmo y selección de una sola entrada por aplicación. Mantener el contrato del programa suelto.
+- [x] `PG-1.02.02` Derivar casos de tres módulos y biblioteca local, workspace vacío, paquete biblioteca, entrada ausente/duplicada/inexistente y módulo perteneciente ambiguamente a raíces.
+- [x] `PG-1.02.03` Probar construcción de snapshot y catálogo de módulos con fuentes en memoria; rechazo sin infraestructura real de disco.
+- [x] `PG-1.02.04` Declarar y crear crate project, modelos y catálogo; exponer operación pública de proyecto y enlace a una entrada, sin concatenar textos.
+- [x] `PG-1.02.05` Escribir primero README del crate nuevo y matriz engine; actualizar README API/semantic y registro de dependencias Cargo.
+- [x] `PG-1.02.06` Verificar proyecto mínimo, biblioteca sin entrada y errores de aplicación; ejecutar arquitectura antes de integrar CLI.
 
 ### PG-1.03 · Imports, aliases, visibilidad y reexportación
 
-- [ ] `PG-1.03.01` Especificar import nominal y alias, privado por defecto para módulos nuevos, público explícito, export/reexport solo de símbolos públicos y sin comodines ni inicialización con efectos; delimitar visibilidad heredada de archivo único.
-- [ ] `PG-1.03.02` Derivar casos de nombre ausente/privado, alias de dependencia y símbolo, colisión local, reexport encadenado/ambiguo, público homónimo en paquetes distintos e import sin efecto observable.
-- [ ] `PG-1.03.03` Probar tablas de símbolos y firmas importadas, unicidad de identidad tras alias y rechazo de RI/enlace con referencia no resuelta; negativos de cobertura de ayuda.
-- [ ] `PG-1.03.04` Ampliar gramática/vocabulario mediante generadores, resolver nombres/visibilidad en semantic y vincular HIR/RI cerrado; añadir roles, fichas es/en y datos públicos de dependencias.
-- [ ] `PG-1.03.05` Documentar dueño de símbolos, orden de registro y preservación de desvirtualización; actualizar catálogo y matriz de proyección sin implementar vistas de PG-A.
-- [ ] `PG-1.03.06` Verificar corpus positivo/negativo, identidad de alias, cero ejecución al importar y generación vigente; no introducir constantes o mecanismos de PG-2 para resolver inicialización.
+- [x] `PG-1.03.01` Especificar import nominal y alias, privado por defecto para módulos nuevos, público explícito, export/reexport solo de símbolos públicos y sin comodines ni inicialización con efectos; delimitar visibilidad heredada de archivo único.
+- [x] `PG-1.03.02` Derivar casos de nombre ausente/privado, alias de dependencia y símbolo, colisión local, reexport encadenado/ambiguo, público homónimo en paquetes distintos e import sin efecto observable.
+- [x] `PG-1.03.03` Probar tablas de símbolos y firmas importadas, unicidad de identidad tras alias y rechazo de RI/enlace con referencia no resuelta; negativos de cobertura de ayuda.
+- [x] `PG-1.03.04` Ampliar gramática/vocabulario mediante generadores, resolver nombres/visibilidad en semantic y vincular HIR/RI cerrado; añadir roles, fichas es/en y datos públicos de dependencias.
+- [x] `PG-1.03.05` Documentar dueño de símbolos, orden de registro y preservación de desvirtualización; actualizar catálogo y matriz de proyección sin implementar vistas de PG-A.
+- [x] `PG-1.03.06` Verificar corpus positivo/negativo, identidad de alias, cero ejecución al importar y generación vigente; no introducir constantes o mecanismos de PG-2 para resolver inicialización.
 
 ### PG-1.04 · Rechazo determinista de ciclos
 
@@ -429,7 +432,7 @@ instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia
 | Momento | Dependencia | Efecto |
 |---|---|---|
 | PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
-| Antes de PG-1.02 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
+| Antes de PG-1.04 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
 | Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
@@ -445,7 +448,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | El mensaje del 2026-10-23 cubre PG-1.01 y PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`; revisar el plan y recibir nueva autorización antes de `.02` |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01, PG-1.02 y PG-1.03; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.03`; revisar el plan y recibir nueva autorización antes de `.04` |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -501,8 +504,9 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 
 ### 11.1 Registro por tarea
 
-Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. Esta iteración completa las seis
-tareas de PG-1.01; las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
+Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
+anterior; la iteración del 2026-10-23 posterior completa las seis tareas de PG-1.02 y las seis de PG-1.03;
+las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
 plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
@@ -513,6 +517,18 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.01.04 | Cumplido | Identidad propagada por source, sintaxis, lowering, RI, bytecode, diagnósticos, AOT, API, vistas, eventos y puente nativo | Formato standalone preservado; eventos con identidad usan PLEV2 |
 | PG-1.01.05 | Cumplido | README de source, IR, bytecode, diagnostics, VM, AOT runtime, codegen, API, service y puente nativo actualizados | Incluye compatibilidad, límites y decisiones de representación |
 | PG-1.01.06 | Cumplido | Roundtrip JSON/binario/RI, procedencia de fallos y eventos, tests Wasm y nativos; `IrSpan` medido en 20 bytes frente a 16 | Wasm: cuatro pruebas Chrome; app nativa y verificadores de paquetes en verde |
+| PG-1.02.01 | Cumplido | `LANG.MODULE.MODEL` R1–R3 | Identidad nueva en estable 1.0.0 con `revisado_por` vacío: pendiente de revisión independiente |
+| PG-1.02.02 | Cumplido | 14 casos del contrato: tres módulos y biblioteca, workspace vacío, biblioteca sola, entrada ausente/duplicada/inexistente, raíces ambiguas y fuera de raíz, dependencia inexistente, archivo suelto | Esperados derivados de las reglas |
+| PG-1.02.03 | Cumplido | 16 tests de `pseudolearn_project` con fuentes en memoria, incluidos rechazos sin disco | Entradas mal formadas son fallo de uso, no error de proyecto |
+| PG-1.02.04 | Cumplido | Crate `pseudolearn_project` y operaciones `analyze_project`/`execute_project` | Sin concatenar textos; HIR y RI únicos |
+| PG-1.02.05 | Cumplido | README del crate escrito antes del código; matriz y README de engine, syntax, semantic, lowering y API; dependencias Cargo | Sin dependencias externas nuevas |
+| PG-1.02.06 | Cumplido | Casos del contrato con proyecto mínimo, biblioteca sin entrada y errores de aplicación; `rust-checks all` y Clippy del workspace | CLI no integrada (`.12`) |
+| PG-1.03.01 | Cumplido | `LANG.MODULE.IMPORT` R1–R5 | Alias de módulo solo para subprogramas; clases por símbolo |
+| PG-1.03.02 | Cumplido | 19 casos del contrato (ausente, privado, alias, colisión, reexport encadenado, ambiguo y repetido, homónimos, sin efectos, sin comodines) | Esperados derivados de las reglas |
+| PG-1.03.03 | Cumplido | 11 tests semánticos de identidad tras alias, tablas y diagnósticos; 7 tests de API | Rechazo de RI con referencia no resuelta cubierto por el verificador de RI existente |
+| PG-1.03.04 | Cumplido | Vocabulario, gramática y diagnósticos generados; resolución en semantic; fichas de ayuda es/en | Sin vistas de PG-A |
+| PG-1.03.05 | Cumplido | README de semantic y lowering: dueño de símbolos, orden de registro, identidad compartida de clases importadas | Ciclos entre módulos terminan sin colgarse; su rechazo es `PG-1.04` |
+| PG-1.03.06 | Cumplido con salvedad | Conformidad del motor: todos los casos nuevos cumplen; sin ejecución al importar | Conformidad `app` y pruebas Wasm no ejecutadas; el sujeto `aot` figura pendiente hasta `PG-1.12` |
 
 ### 11.2 Cierre común de PG-1
 
@@ -537,6 +553,21 @@ con acceso a su caché de avisos), `rust-checks toolchain`, tests del puente nat
 `export --check`, propiedades del motor y conformidad estructural de los tres contratos. `git diff
 --check` sin errores. Pendientes justificados: PG-1.02–.13, revisión integral del plan y cierre común
 C01–C13; requieren autorización nueva. PG-1.01.01–.06 cumplidos; no se cierra PG-1.
+
+Revisión Git de la iteración PG-1.02/PG-1.03: sin cierre de fase, commit ni push. Verificadores
+ejecutados: Clippy estricto y `cargo test` del workspace del motor, `cargo fmt --check`, `rust-checks all`
+y `toolchain`, `cargo deny check`; en `apps/pseudolearn_cli`, Clippy, tests y `rust-checks all`;
+`cargo check` del puente nativo; `see lock --check`, `export --check` y `validate` (solo
+`SEE-STATE`: las tres identidades nuevas necesitan revisión independiente); conformidad `engine`
+(1618 observaciones, todos los casos nuevos cumplen), `service`, `cli` y `aot` (1233 observaciones) sin divergencias. Hallazgos ajenos a esta iteración, corregidos por instrucción de la persona: `API.VERSIONING` C3 omitía
+las capacidades `source_identity` y `event_binary` (texto de R2 y esperado actualizados) y `API.WIRE-FORMAT`
+C4 suponía identificadores de recurso de una sesión nueva (esperado independiente de la numeración);
+`engine` queda en 1618 observaciones sin divergencias. `pseudolearn_cli` no compilaba desde PG-1.01 por
+el campo `source`, corregido aquí. No ejecutados:
+conformidad `app`, pruebas Wasm en Chrome y medición de tamaños. Para obtener evidencia se usó un
+marcador transitorio de revisor, revertido tras cada ejecución; ninguna revisión fue atribuida.
+Pendientes justificados: PG-1.04–.13, revisión integral del plan, cierre común C01–C13 y la revisión
+independiente de `LANG.MODULE.MODEL`, `LANG.MODULE.IMPORT` y `API.PROJECT`.
 
 Al cerrar se consignarán comandos/resultados, hashes de campañas y artefactos, pendientes aprobados,
 decisiones de la persona y revisión remota de la rama. La fase siguiente requiere autorización nueva.

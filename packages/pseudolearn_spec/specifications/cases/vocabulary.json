@@ -279,6 +279,10 @@
     "en": "=",
     "es": "="
   },
+  "exportKeyword": {
+    "en": "export",
+    "es": "Exportar"
+  },
   "forKeyword": {
     "en": "for",
     "es": "Para"
@@ -394,6 +398,10 @@
   "ifKeyword": {
     "en": "if",
     "es": "Si"
+  },
+  "importKeyword": {
+    "en": "import",
+    "es": "Importar"
   },
   "inheritsFrom": {
     "en": "inherits from",

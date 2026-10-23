@@ -6,6 +6,12 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
+    register_classes(session);
+    register_functions(session);
+    register_members(session);
+}
+
+pub(crate) fn register_classes(session: &mut AnalysisSession<'_>) {
     let classes: Vec<_> = session
         .tree
         .nodes
@@ -17,6 +23,9 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     for node in classes {
         register_class(session, node);
     }
+}
+
+pub(crate) fn register_functions(session: &mut AnalysisSession<'_>) {
     let nodes: Vec<_> = session
         .tree
         .nodes
@@ -28,7 +37,11 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     for node in nodes {
         register_function(session, node, None);
     }
+}
+
+pub(crate) fn register_members(session: &mut AnalysisSession<'_>) {
     for class in 0..session.module.classes.len() {
+        session.enter_class(class);
         crate::class_registry::members(session, ClassId(u32::try_from(class).unwrap_or(u32::MAX)));
     }
 }
@@ -44,8 +57,10 @@ fn register_class(session: &mut AnalysisSession<'_>, node: usize) {
         return;
     }
     session.classes.insert(name.clone(), identifier);
+    let link_name = session.link_name(&name);
+    session.tag_class();
     session.module.classes.push(HirClass {
-        name,
+        name: link_name,
         superclass: None,
         fields: Vec::new(),
         methods: Vec::new(),
@@ -69,13 +84,16 @@ pub(crate) fn register_function(
         .unwrap_or_else(|| session.module.types.intern(Type::Unit));
     let kind = function_kind(session, node, result);
     let identifier = FunctionId(u32::try_from(session.module.functions.len()).unwrap_or(u32::MAX));
-    if owner.is_none() && kind != FunctionKind::Main {
+    let top_level = owner.is_none() && kind != FunctionKind::Main;
+    let link_name = session.link_name_if(top_level, &name);
+    session.tag_function();
+    if top_level {
         register_name(session, &name, name_node, identifier);
     }
     let closing = session.closing_span(node);
     session.module.functions.push(HirFunction {
         kind,
-        name,
+        name: link_name,
         owner,
         parameters: Vec::new(),
         result,

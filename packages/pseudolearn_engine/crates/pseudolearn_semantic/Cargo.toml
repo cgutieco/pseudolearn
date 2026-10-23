@@ -6,6 +6,7 @@ publish = false
 
 [dependencies]
 pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+pseudolearn_project = { path = "../pseudolearn_project", version = "=0.1.0" }
 pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
 pseudolearn_lexicon = { path = "../pseudolearn_lexicon", version = "=0.1.0" }
 pseudolearn_syntax = { path = "../pseudolearn_syntax", version = "=0.1.0" }

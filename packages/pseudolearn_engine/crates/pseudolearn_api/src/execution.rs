@@ -26,6 +26,15 @@ pub struct PreparedProgram {
     warnings: Vec<ApiDiagnostic>,
 }
 
+impl PreparedProgram {
+    pub(crate) fn new(
+        program: pseudolearn_vm::LoadedProgram,
+        warnings: Vec<ApiDiagnostic>,
+    ) -> Self {
+        Self { program, warnings }
+    }
+}
+
 pub fn prepare_program(
     request: &ExecuteRequest,
 ) -> Result<PreparedProgram, Vec<crate::ApiDiagnostic>> {

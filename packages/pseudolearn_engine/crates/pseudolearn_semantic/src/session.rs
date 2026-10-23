@@ -15,6 +15,19 @@ pub struct SemanticOptions {
     pub strict: bool,
 }
 
+#[derive(Clone, Copy)]
+pub(crate) struct UnitView<'syntax> {
+    pub tree: &'syntax SyntaxTree,
+    pub source: &'syntax SourceText,
+}
+
+#[derive(Clone, Default)]
+pub(crate) struct UnitScope {
+    pub functions: BTreeMap<String, FunctionId>,
+    pub classes: BTreeMap<String, ClassId>,
+    pub modules: BTreeMap<String, BTreeMap<String, FunctionId>>,
+}
+
 pub(crate) struct AnalysisSession<'syntax> {
     pub tree: &'syntax SyntaxTree,
     pub source: &'syntax SourceText,
@@ -35,6 +48,10 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub controls: Vec<LocalId>,
     pub returned: bool,
     pub signature_changed: bool,
+    pub units: Vec<UnitView<'syntax>>,
+    pub unit: usize,
+    pub scopes: Vec<UnitScope>,
+    pub modules: BTreeMap<String, BTreeMap<String, FunctionId>>,
 }
 
 impl<'syntax> AnalysisSession<'syntax> {
@@ -63,6 +80,10 @@ impl<'syntax> AnalysisSession<'syntax> {
             controls: Vec::new(),
             returned: false,
             signature_changed: false,
+            units: vec![UnitView { tree, source }],
+            unit: 0,
+            scopes: vec![UnitScope::default()],
+            modules: BTreeMap::new(),
         }
     }
 

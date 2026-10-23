@@ -2587,6 +2587,302 @@
         }
       },
       {
+        "id": "help.module-import",
+        "identity": {
+          "kind": "construction",
+          "id": "importDeclaration",
+          "role": "module_import"
+        },
+        "tokens": [
+          {
+            "identity": "importKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Importación de módulo o símbolo",
+            "summary": "Trae un módulo o un símbolo público de otro módulo del proyecto.",
+            "purpose": "Nombra por ruta calificada lo que se usa y, con Como, le da otro nombre local sin cambiar su identidad.",
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Inicia la declaración de importación."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduce el alias local opcional."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Importación de módulo o símbolo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Module or symbol import",
+            "summary": "Brings in a module or a public symbol from another module of the project.",
+            "purpose": "Names what is used by a qualified path and, with as, gives it another local name without changing its identity.",
+            "parts": [
+              {
+                "identity": "importKeyword",
+                "text": "Starts the import declaration."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Introduces the optional local alias."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Module or symbol import",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.module-export",
+        "identity": {
+          "kind": "construction",
+          "id": "exportDeclaration",
+          "role": "module_export"
+        },
+        "tokens": [
+          {
+            "identity": "exportKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R4"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Reexportación de símbolo",
+            "summary": "Publica desde este módulo un símbolo público de otro módulo.",
+            "purpose": "El símbolo conserva su identidad original y no se vuelve un nombre local.",
+            "parts": [
+              {
+                "identity": "exportKeyword",
+                "text": "Inicia la declaración de reexportación."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Reexportación de símbolo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Symbol re-export",
+            "summary": "Publishes from this module a public symbol of another module.",
+            "purpose": "The symbol keeps its original identity and does not become a local name.",
+            "parts": [
+              {
+                "identity": "exportKeyword",
+                "text": "Starts the re-export declaration."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Symbol re-export",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.module-unit",
+        "identity": {
+          "kind": "construction",
+          "id": "moduleUnit",
+          "role": "module_unit_visibility"
+        },
+        "tokens": [
+          {
+            "identity": "publicVisibility",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "privateVisibility",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.MODULE.IMPORT",
+            "version": "1.0.0",
+            "element": "R2"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Visibilidad de la unidad de módulo",
+            "summary": "Controla si otro módulo puede importar un subprograma o una clase.",
+            "purpose": "Sin prefijo la unidad es privada; Publico la exporta.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Permite importar la unidad desde otros módulos."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Mantiene la unidad dentro de su módulo."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Visibilidad de la unidad de módulo",
+                "profile": "es",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Module unit visibility",
+            "summary": "Controls whether another module can import a subroutine or a class.",
+            "purpose": "Without a prefix the unit is private; public exports it.",
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Allows the unit to be imported from other modules."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Keeps the unit inside its module."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C13",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Module unit visibility",
+                "profile": "en",
+                "specification": "LANG.MODULE.MODEL",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
         "id": "help.visibility",
         "identity": {
           "kind": "construction",
@@ -5772,6 +6068,49 @@
           "tokens": [
             "classKeyword",
             "endClass"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "importDeclaration",
+            "role": "module_import"
+          },
+          "productions": [
+            "importDeclaration",
+            "modulePath"
+          ],
+          "tokens": [
+            "importKeyword",
+            "typeConnector"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "exportDeclaration",
+            "role": "module_export"
+          },
+          "productions": [
+            "exportDeclaration"
+          ],
+          "tokens": [
+            "exportKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "moduleUnit",
+            "role": "module_unit_visibility"
+          },
+          "productions": [
+            "moduleUnit",
+            "moduleDirective"
+          ],
+          "tokens": [
+            "publicVisibility",
+            "privateVisibility"
           ]
         },
         {

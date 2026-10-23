@@ -132,6 +132,15 @@ no incluye programas ni esperados, solo la referencia a los casos, y la consulta
 símbolo del usuario, una posición sin token o una identidad sin ficha devuelven `card: null`. Un recurso
 liberado, de otra clase o una revisión obsoleta no produce contenido de ayuda.
 
+Problema: el análisis y la ejecución de un proyecto necesitan operaciones públicas totales. Elección:
+`analyze_project` y `execute_project` son operaciones de la sesión (sin recurso) que reciben el proyecto como
+datos (`project_resource` los valida y convierte), construyen el catálogo, analizan cada módulo con el modo de
+proyecto, enlazan un único HIR y, al ejecutar, un único RI que va a la VM por el mismo camino que un programa
+suelto. Una petición mal formada es un fallo de uso; un proyecto bien formado pero inconsistente devuelve
+`project_errors` y ninguna ejecución. Cada diagnóstico se convierte con la fuente que su tramo identifica, de
+modo que lleva la identidad de su propio archivo. No se añaden recursos de proyecto a la sesión ni se concatenan
+textos. La ejecución nativa y la CLI de proyectos quedan fuera.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

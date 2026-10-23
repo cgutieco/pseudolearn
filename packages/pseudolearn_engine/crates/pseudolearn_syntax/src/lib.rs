@@ -6,6 +6,7 @@ pub(crate) mod declaration_parser;
 pub(crate) mod expression_parser;
 pub mod lexer;
 pub(crate) mod literal_scanner;
+mod module_parser;
 pub(crate) mod operator_scanner;
 pub(crate) mod parameter_parser;
 pub mod parser;
@@ -44,6 +45,22 @@ pub fn parse_source_with_terminator(
     let lexer = Lexer::new(source, profile);
     let (tokens, mut diagnostics) = lexer.scan();
     let parser = Parser::new(&tokens, source.as_str()).with_terminator(terminator);
+    let (mut tree, mut parser_diagnostics) = parser.parse();
+    diagnostics.append(&mut parser_diagnostics);
+    tree.has_errors = !diagnostics.is_empty();
+    (tree, diagnostics)
+}
+
+pub fn parse_module_source(
+    source: &SourceText,
+    profile: Profile,
+    terminator: Option<pseudolearn_diagnostics::DiagnosticCode>,
+) -> (SyntaxTree, Vec<Diagnostic>) {
+    let lexer = Lexer::new(source, profile);
+    let (tokens, mut diagnostics) = lexer.scan();
+    let parser = Parser::new(&tokens, source.as_str())
+        .with_terminator(terminator)
+        .with_project_mode(true);
     let (mut tree, mut parser_diagnostics) = parser.parse();
     diagnostics.append(&mut parser_diagnostics);
     tree.has_errors = !diagnostics.is_empty();

@@ -50,6 +50,7 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
 fn unused_functions(session: &mut AnalysisSession<'_>) {
     for index in 0..session.module.functions.len() {
         let identifier = FunctionId(u32::try_from(index).unwrap_or(u32::MAX));
+        session.enter_function(index);
         let Some(function) = session.module.functions.get(index).cloned() else {
             continue;
         };
@@ -57,6 +58,7 @@ fn unused_functions(session: &mut AnalysisSession<'_>) {
             function.kind,
             FunctionKind::Procedure | FunctionKind::Function
         ) || session.called.contains(&identifier)
+            || session.module.units.exported.contains(&identifier)
         {
             continue;
         }

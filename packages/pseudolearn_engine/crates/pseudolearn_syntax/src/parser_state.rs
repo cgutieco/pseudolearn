@@ -23,6 +23,7 @@ pub(crate) struct ParserState<'tokens> {
     pub has_superclass: bool,
     pub inside_method: bool,
     pub terminator_diagnostic: Option<DiagnosticCode>,
+    pub project_mode: bool,
 }
 
 impl<'tokens> ParserState<'tokens> {
@@ -45,6 +46,7 @@ impl<'tokens> ParserState<'tokens> {
             has_superclass: false,
             inside_method: false,
             terminator_diagnostic: None,
+            project_mode: false,
         }
     }
 

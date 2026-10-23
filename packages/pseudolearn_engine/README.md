@@ -75,10 +75,11 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 |---|---|---|---|
 | 0 | pseudolearn_source | Representa el texto fuente original con posiciones verificadas | — |
 | 0 | pseudolearn_abi | Declara la disposición compartida de los valores de ejecución | — |
+| 1 | pseudolearn_project | Modela paquetes, módulos y entradas de un proyecto en memoria | source |
 | 1 | pseudolearn_diagnostics | Representa diagnósticos mediante códigos con argumentos tipados | source |
 | 1 | pseudolearn_lexicon | Expone vocabularios bilingües generados desde el corpus | source |
 | 2 | pseudolearn_syntax | Construye un árbol sintáctico sin pérdida para cualquier texto | source, diagnostics, lexicon |
-| 3 | pseudolearn_semantic | Produce un HIR tipado desde la resolución estática | source, diagnostics, lexicon, syntax |
+| 3 | pseudolearn_semantic | Produce un HIR tipado desde la resolución estática | source, project, diagnostics, lexicon, syntax |
 | 3 | pseudolearn_ir | Define la representación intermedia verificada | source, abi |
 | 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
 | 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
@@ -89,7 +90,7 @@ Los niveles siguientes solo importan los anteriores permitidos explícitamente.
 | 6 | pseudolearn_service | Proporciona análisis incremental por unidad, autocompletado bilingüe, hover, formateo canónico, traducción y sesión LSP | source, diagnostics, lexicon, syntax, semantic |
 | 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
 | 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
-| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
+| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | source, project, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
 | 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
 | 10 | pseudolearn_wasm | Expone la API pública como módulo para navegadores | api |
 | tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
@@ -143,6 +144,14 @@ Alternativas descartadas: Carbon y Zig inspiran tokens en columnas y postorden; 
 
 Problema: produce un hir tipado desde la resolución estática. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión; desvirtualización por jerarquía de clases en mundo cerrado.
 Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.
+
+### project
+
+Problema: modelar paquetes, módulos y entradas sin tocar disco ni sintaxis. Elección: `ProjectCatalog` inmutable
+construido desde datos, con módulos ordenados por ruta y una fuente con identidad por módulo; la resolución de
+nombres vive en semantic.
+Alternativas descartadas: Gleam y Rust inspiran módulo por archivo y nombre calificado; se rechazan la búsqueda en
+disco y la declaración de módulos dentro del código.
 
 ### ir
 

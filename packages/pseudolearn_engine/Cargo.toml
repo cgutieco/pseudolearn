@@ -2,6 +2,7 @@
 members = [
     "crates/pseudolearn_source",
     "crates/pseudolearn_abi",
+    "crates/pseudolearn_project",
     "crates/pseudolearn_diagnostics",
     "crates/pseudolearn_lexicon",
     "crates/pseudolearn_syntax",

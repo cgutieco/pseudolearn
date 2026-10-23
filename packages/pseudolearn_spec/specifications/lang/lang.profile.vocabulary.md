@@ -582,6 +582,26 @@
         "en": []
       }
     },
+    "importKeyword": {
+      "lexemas": {
+        "es": "Importar",
+        "en": "import"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "exportKeyword": {
+      "lexemas": {
+        "es": "Exportar",
+        "en": "export"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
     "newInstance": {
       "lexemas": {
         "es": "Nuevo",

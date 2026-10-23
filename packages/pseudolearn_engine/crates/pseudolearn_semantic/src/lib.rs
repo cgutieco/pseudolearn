@@ -20,16 +20,23 @@ pub mod hir;
 mod hir_finalization;
 pub mod identities;
 mod local_registry;
+mod module_calls;
+mod module_exports;
+mod module_imports;
+mod module_structure;
+mod module_symbols;
 mod name_resolution;
 mod operator_diagnostics;
 mod operator_tokens;
 mod operator_types;
 mod operators;
 mod postfix_checker;
+pub mod project_analysis;
 pub mod service_analysis;
 pub mod service_collection;
 pub mod service_model;
 mod session;
+mod session_units;
 mod statement_checker;
 pub mod statement_model;
 mod switch_checker;
@@ -44,8 +51,10 @@ pub use expression_model::{
 };
 pub use hir::{
     FunctionKind, HirClass, HirField, HirFunction, HirLocal, HirModule, Passing, SemanticModel,
+    UnitTable,
 };
 pub use identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, StatementId, TypeId};
+pub use project_analysis::{ProjectUnit, analyze_project};
 pub use service_analysis::{
     ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,
     analyze_for_service,

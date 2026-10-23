@@ -65,8 +65,40 @@ pub struct HirClass {
     pub syntax: usize,
 }
 
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct UnitTable {
+    pub qualifiers: Vec<String>,
+    pub functions: Vec<u32>,
+    pub classes: Vec<u32>,
+    pub exported: Vec<FunctionId>,
+    pub entry: Option<FunctionId>,
+}
+
+impl UnitTable {
+    pub fn is_project(&self) -> bool {
+        !self.qualifiers.is_empty()
+    }
+
+    pub fn function_unit(&self, function: FunctionId) -> usize {
+        usize::try_from(function.0)
+            .ok()
+            .and_then(|index| self.functions.get(index))
+            .and_then(|unit| usize::try_from(*unit).ok())
+            .unwrap_or(0)
+    }
+
+    pub fn class_unit(&self, class: ClassId) -> usize {
+        usize::try_from(class.0)
+            .ok()
+            .and_then(|index| self.classes.get(index))
+            .and_then(|unit| usize::try_from(*unit).ok())
+            .unwrap_or(0)
+    }
+}
+
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct HirModule {
+    pub units: UnitTable,
     pub functions: Vec<HirFunction>,
     pub classes: Vec<HirClass>,
     pub locals: Vec<HirLocal>,

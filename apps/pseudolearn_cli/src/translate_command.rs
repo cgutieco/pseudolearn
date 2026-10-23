@@ -64,6 +64,7 @@ fn collision_diagnostic(coordinates: (u32, u32), identifier: &str) -> ApiDiagnos
         severity: String::from("error"),
         message: String::new(),
         span: ApiSpan {
+            source: None,
             start: ApiPosition { line, column },
             end: ApiPosition {
                 line,
@@ -136,6 +137,7 @@ fn emit_parse_diagnostics(options: &CliOptions, target_path: &str, source_conten
             .to_owned()
     });
     let analysis_request = AnalyzeRequest {
+        source: None,
         program: source_content.to_owned(),
         profile: vocabulary_name,
         strictness: String::from("strict"),

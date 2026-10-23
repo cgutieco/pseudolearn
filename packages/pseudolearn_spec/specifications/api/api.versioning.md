@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion, service_help y generated_vocabulary. Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
+  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion, service_help, generated_vocabulary, source_identity y event_binary (definidas por API.WIRE-FORMAT). Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
   "verificacion": [
     "P1"
   ]
@@ -89,7 +89,7 @@
   "espera": {
     "api": {
       "results": [
-        {"value": {"capabilities": ["analyze", "interface_language", "ir", "execute", "observe", "seek", "gc_stress", "api", "program_view", "state_pages", "service_completion", "service_help", "generated_vocabulary"]}},
+        {"value": {"capabilities": ["analyze", "interface_language", "ir", "execute", "observe", "seek", "gc_stress", "api", "program_view", "state_pages", "service_completion", "service_help", "generated_vocabulary", "source_identity", "event_binary"]}},
         {"value": ["analysis", "document", "advance", "input", "cancel", "complete", "completion_templates", "open_edit_session", "apply_edit", "edit_complete", "edit_accept", "edit_insert_template", "edit_on_type", "edit_navigate_stop", "help_query", "query_state", "release"]},
         {"value": null}
       ]

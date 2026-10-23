@@ -193,9 +193,9 @@
   "espera": {
     "api": {
       "results": [
-        {"value": {"resource": 2, "document": 1}},
+        {"value": {}},
         {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 2}}}]}},
-        {"value": {"resource": 4, "document": 3}},
+        {"value": {}},
         {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 3}}}]}}
       ]
     }

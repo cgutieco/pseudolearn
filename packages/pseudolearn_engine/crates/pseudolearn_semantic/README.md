@@ -72,6 +72,26 @@ expresión por intervalo. `service_collection` los recopila desde el módulo ya 
 
 Los constructores comprueban la llamada inicial al constructor de la superclase cuando este exige argumentos. `constructor_rules` publica la consulta estructural del primer constructor padre para que el lowering use el mismo criterio, sin duplicar interpretación del HIR.
 
+Problema: un proyecto aporta varios árboles y fuentes a un único HIR. Elección: `analyze_project` registra
+declaraciones de todas las unidades, resuelve imports y exportaciones por identidad y solo después analiza los
+cuerpos. La sesión conserva un par árbol y fuente por unidad y un ámbito de nombres por unidad (subprogramas,
+clases y alias de módulo); cambiar de unidad guarda y carga ese ámbito, de modo que los verificadores existentes
+siguen consultando mapas de nombres locales y reciben identidades globales. Cada función y clase registra su
+unidad en `UnitTable`, que también guarda los calificadores de módulo, las funciones exportadas y la entrada
+seleccionada. Se rechaza concatenar fuentes y analizar módulos con sesiones separadas, porque renumerar
+identidades dentro de columnas de expresiones multiplicaría los puntos de fallo.
+
+Problema: importar, reexportar y alias deben conservar una sola identidad. Elección: `module_symbols` extrae
+declaraciones y directivas; `module_exports` calcula la tabla de exportación de cada módulo (símbolos públicos
+más reexportaciones encadenadas, memoizada y con guarda contra recursión, de modo que un ciclo termina sin
+colgarse; su rechazo diagnosticado pertenece al punto de ciclos); `module_imports` crea los enlaces locales y
+detecta colisiones. Un alias solo cambia el nombre local. El orden de registro es el orden de rutas del
+catálogo; una clase importada comparte `ClassId` con su origen, por lo que la desvirtualización por jerarquía
+conserva su mundo cerrado. Un alias de módulo solo resuelve llamadas a subprogramas (`alias.Nombre(...)`); las
+clases se importan por símbolo. El nombre de enlace de una función o clase de proyecto lleva el calificador
+del módulo para que dos símbolos homónimos de paquetes distintos no colisionen en la RI. Las funciones públicas
+no se avisan como no usadas, porque su uso puede estar fuera del proyecto.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

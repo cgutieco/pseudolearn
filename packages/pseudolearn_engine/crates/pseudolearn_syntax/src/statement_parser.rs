@@ -159,7 +159,7 @@ fn designator(state: &ParserState<'_>, index: usize) -> bool {
         && matches!(operator, Some(TokenKind::LeftBracket | TokenKind::Dot))
 }
 
-fn terminator(state: &mut ParserState<'_>) -> Result<(), ()> {
+pub(crate) fn terminator(state: &mut ParserState<'_>) -> Result<(), ()> {
     if state.eat(TokenKind::Semicolon) {
         return Ok(());
     }

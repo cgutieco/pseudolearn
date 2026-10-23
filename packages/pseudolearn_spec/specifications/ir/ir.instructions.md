@@ -2374,3 +2374,67 @@
   "sin_ri": "Nombres y firmas estáticos; cada función incorporada tiene instrucción propia en las coberturas de LIB.CORE."
 }
 ```
+
+```cobertura
+{
+  "id": "V88",
+  "regla": "LANG.MODULE.MODEL#R1",
+  "sin_ri": "La pertenencia de módulos a paquetes se resuelve antes de la RI; la RI recibe un único módulo enlazado."
+}
+```
+
+```cobertura
+{
+  "id": "V89",
+  "regla": "LANG.MODULE.MODEL#R2",
+  "sin_ri": "La selección de entrada y la presencia de algoritmos se validan antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V90",
+  "regla": "LANG.MODULE.MODEL#R3",
+  "sin_ri": "Diagnóstico de análisis sobre formas que no llegan a la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V91",
+  "regla": "LANG.MODULE.IMPORT#R1",
+  "sin_ri": "Los imports se resuelven por identidad antes de la RI; la RI contiene llamadas directas a la función importada."
+}
+```
+
+```cobertura
+{
+  "id": "V92",
+  "regla": "LANG.MODULE.IMPORT#R2",
+  "sin_ri": "La visibilidad es una comprobación estática previa a la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V93",
+  "regla": "LANG.MODULE.IMPORT#R3",
+  "sin_ri": "Las colisiones de nombres se diagnostican antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V94",
+  "regla": "LANG.MODULE.IMPORT#R4",
+  "sin_ri": "Las exportaciones y reexportaciones son una tabla estática de símbolos sin representación en la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V95",
+  "regla": "LANG.MODULE.IMPORT#R5",
+  "sin_ri": "Importar no genera instrucciones: la RI no contiene código de inicialización de módulo."
+}
+```
