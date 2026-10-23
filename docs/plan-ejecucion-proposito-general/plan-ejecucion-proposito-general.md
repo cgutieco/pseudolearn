@@ -294,7 +294,9 @@ Puntos a cumplir:
 
 Fuera de alcance: registro público, rangos de versiones, compilación separada y carga dinámica.
 
-Plan detallado: `fase-pg-1-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-1-plan-ejecucion.md](fase-pg-1-plan-ejecucion.md), preparado el 2026-10-23
+por solicitud de la persona. Pendiente de revisión y autorización de implementación; su creación no
+marca C01/C02 ni inicia los puntos de la fase.
 
 Cierre común (definiciones en §4.0):
 
@@ -926,7 +928,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 |---|---|---|---|---|
 | PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
-| PG-1 | Sin iniciar | No | | |
+| PG-1 | Implementación sin iniciar | Sí, pendiente de revisión | | Autorización de implementación y coherencia documental del cierre de PG-0 |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |
 | PG-4 | Sin iniciar | No | | |
