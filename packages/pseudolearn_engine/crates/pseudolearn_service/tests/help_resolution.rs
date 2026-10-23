@@ -185,3 +185,35 @@ fn profile_and_strictness_matrix_keeps_construction_identity() -> Result<(), Str
     }
     Ok(())
 }
+
+#[test]
+fn boolean_words_resolve_to_their_lexical_identity_and_other_literals_do_not() -> Result<(), String>
+{
+    let program = "Algoritmo P\nEscribir Verd|adero;\nEscribir Falso;\nEscribir 4;\nFinAlgoritmo\n";
+    let result = resolve(program, Profile::Spanish, true).ok_or("missing resolution")?;
+    assert_eq!(
+        identity(&result.resolution),
+        Some((&HelpIdentityKind::Keyword, "booleanTrue", "literal"))
+    );
+    assert_eq!(result.resolution.certainty, HelpCertainty::Certain);
+    assert_eq!(result.token_identity.as_deref(), Some("booleanTrue"));
+    let falsy = resolve(
+        "Algoritmo P\nEscribir Fal|so;\nFinAlgoritmo\n",
+        Profile::Spanish,
+        true,
+    )
+    .ok_or("missing resolution")?;
+    assert_eq!(
+        identity(&falsy.resolution),
+        Some((&HelpIdentityKind::Keyword, "booleanFalse", "literal"))
+    );
+    assert!(
+        resolve(
+            "Algoritmo P\nEscribir |4;\nFinAlgoritmo\n",
+            Profile::Spanish,
+            true
+        )
+        .is_none()
+    );
+    Ok(())
+}

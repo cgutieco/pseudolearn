@@ -91,7 +91,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La resolución por posición selecciona el token no trivia cuyo tramo original contiene la posición; una posición al inicio de un token selecciona ese token y gana sobre el final del token anterior. El final exacto de un token puede seleccionarlo, pero una posición posterior dentro de trivia, comentarios, saltos de línea, literales, EOF o fuera del documento no hereda ayuda. Los tokens compuestos conservan el lexema y el tramo completos, incluidos espacios o tabuladores horizontales internos; cada posición dentro del compuesto resuelve la misma identidad. Una referencia semántica de usuario tiene prioridad sobre una función incorporada homónima. La construcción y el papel contextual se asignan desde CST y análisis semántico; si la recuperación no demuestra el papel, solo se devuelve la identidad léxica con certeza parcial. Nunca se infiere una identidad desde palabras cercanas sin token. Los alias de un mismo lexema lógico comparten identidad, conservando el tramo original.",
+  "texto": "La resolución por posición selecciona el token no trivia cuyo tramo original contiene la posición; una posición al inicio de un token selecciona ese token y gana sobre el final del token anterior. El final exacto de un token puede seleccionarlo, pero una posición posterior dentro de trivia, comentarios, saltos de línea, literales, EOF o fuera del documento no hereda ayuda. Los tokens compuestos conservan el lexema y el tramo completos, incluidos espacios o tabuladores horizontales internos; cada posición dentro del compuesto resuelve la misma identidad. Una referencia semántica de usuario tiene prioridad sobre una función incorporada homónima. La construcción y el papel contextual se asignan desde CST y análisis semántico; si la recuperación no demuestra el papel, solo se devuelve la identidad léxica con certeza parcial. Nunca se infiere una identidad desde palabras cercanas sin token. Los alias de un mismo lexema lógico comparten identidad, conservando el tramo original. Las palabras booleanas literales resuelven su identidad léxica booleanTrue o booleanFalse con papel literal y la certeza del árbol; ningún otro literal resuelve ayuda.",
   "verificacion": [
     "C5",
     "C6",
@@ -102,7 +102,8 @@
     "C11",
     "C12",
     "C13",
-    "C14"
+    "C14",
+    "C15"
   ]
 }
 ```
@@ -464,6 +465,42 @@
     "suboperacion": "hover",
     "documento": "Algoritmo P\nMientras",
     "posicion": {"line": 2, "column": 5},
+    "proyeccion": "resolucion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "resolucion": {
+        "identity": {
+          "kind": "keyword",
+          "id": "booleanTrue",
+          "role": "literal"
+        },
+        "certainty": "certain"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo P\nEscribir Verdadero;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 10
+    },
     "proyeccion": "resolucion"
   }
 }

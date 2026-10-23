@@ -75,6 +75,7 @@ pub use edit_session::{Acceptance, Accepted, EditError, EditSession};
 pub use formatter::{FormatOptions, format_checked, format_source};
 pub use help_catalog::HelpLocale;
 pub use help_content::{HelpContent, help_content};
+pub use help_rendering::{HelpFormat, HelpRenderError, render_help};
 pub use help_resolution::{
     HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome, HelpResolution, HelpSymbol,
     resolve_help_at_position, resolve_help_with_locale,

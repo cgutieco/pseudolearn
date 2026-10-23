@@ -1,6 +1,7 @@
 mod completion_quality;
 mod corpus;
 mod edit_session_latency;
+mod help_campaign;
 mod incremental_latency;
 mod measurement_file;
 mod precision_tally;
@@ -19,6 +20,7 @@ pub fn collect(arguments: &[String]) -> Result<(), String> {
         "e09" => completion_quality::run(argument(1), measurements),
         "incremental" => incremental_latency::run(argument(1), measurements),
         "e20" => toolchain::run(argument(1), argument(2)),
+        "help" => help_campaign::collect(arguments.get(1..).unwrap_or_default()),
         _ => Err(
             "Usage: service e09|incremental <output> [measurements] | e20 <pseudo> <output>"
                 .to_owned(),
