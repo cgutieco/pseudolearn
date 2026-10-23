@@ -5,8 +5,9 @@
 - Fase: PG-H; requisitos R-17, R-18 y R-20; capacidad C-16; ADR-13; riesgos K-16 y K-17;
   experimento E-PG-11; tratamiento de CF-17.
 - Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: 2026-10-22.
-- Alcance autorizado en mensaje nuevo del 2026-10-22: implementación de `PG-H.04 · Cobertura editorial 2026`
-  en una iteración; no autoriza `PG-H.05` ni cierra PG-H.
+- Alcance autorizado: el mensaje del 2026-10-22 autorizó `PG-H.04`; el encargo del 2026-10-23 («Completa las
+  fases restantes de `fase-pg-h-plan-ejecucion.md` en una sola iteración») autoriza `PG-H.05` a `PG-H.12` y el
+  cierre común. El cierre de PG-H no autoriza PG-1, PG-6A ni PG-A.
 - Revisión de esta preparación: `2f5fccb6d046edfbaa054a2160b116259a1cd61b`; árbol limpio al comenzar la lectura.
   El borrador anterior se preparó sobre `d42a9e3047ebe664b74a709336934bc20ab8a916`, antes del cierre de PG-0.
 - Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
@@ -19,8 +20,10 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador; `PG-H.10` y `PG-H.11` completos. `PG-H.C01` queda satisfecho para la
-  autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
+- Estado: `PG-H.01` a `PG-H.12` ejecutados, con las salvedades de las filas parciales (`PG-H.09.06` sin humo en
+  simulador; `PG-H.12.04` sin comparación de la aplicación por el puente) y `PG-H.C02`, `PG-H.C03` y `PG-H.C13`
+  sin cerrar: falta la revisión de la persona y la revisión independiente de las reglas añadidas. PG-H permanece
+  abierta hasta esa decisión.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
 y de la [hoja de ruta](../hoja-de-ruta-proposito-general.md). Ningún archivo fuera de `docs/`
@@ -275,16 +278,16 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.12 · E-PG-11 y evidencia de salida
 
-- [ ] `PG-H.12.01` Formalizar protocolo, métricas candidatas, controles y manifest de procedencia conforme a §6–7;
+- [x] `PG-H.12.01` Formalizar protocolo, métricas candidatas, controles y manifest de procedencia conforme a §6–7;
   los presupuestos PERF vigentes no se sustituyen por el objetivo candidato de ayuda.
-- [ ] `PG-H.12.02` Congelar conjunto y resultados derivados de la matriz 2026 de §7, semilla y cantidades;
+- [x] `PG-H.12.02` Congelar conjunto y resultados derivados de la matriz 2026 de §7, semilla y cantidades;
   incluir ausencias válidas y fallos, sin recortar corpus para obtener cobertura.
-- [ ] `PG-H.12.03` Preparar tests del arnés: respuesta incorrecta, muestra faltante, revisión cruzada,
+- [x] `PG-H.12.03` Preparar tests del arnés: respuesta incorrecta, muestra faltante, revisión cruzada,
   fallo de reloj y resumen alterado deben invalidar la campaña.
 - [ ] `PG-H.12.04` Implementar modo acotado del trabajador sobre API pública y comparación por LSP/puente;
   capturar muestras y resultados crudos en directorio nuevo, preservando campañas anteriores.
-- [ ] `PG-H.12.05` Documentar reproducción en README del trabajador y miembros afectados, sin citar este plan.
-- [ ] `PG-H.12.06` Ejecutar, recalcular e informar cobertura, errores, p95 caliente, coste frío y bytes;
+- [x] `PG-H.12.05` Documentar reproducción en README del trabajador y miembros afectados, sin citar este plan.
+- [x] `PG-H.12.06` Ejecutar, recalcular e informar cobertura, errores, p95 caliente, coste frío y bytes;
   aplicar éxito/descarte, completar resumen y revisar riesgos sin declarar mediciones no realizadas.
 
 ## 5. Capas y archivos
@@ -575,35 +578,52 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.11.04 | Cumplido | `see_validation/src/resources/help_catalog/safety.rs`; `help_rendering.rs`; `lsp_help.rs` | Saneamiento en el origen y proyección acotada en el servicio; el contenido del usuario se escapa como texto. Una consulta no ejecuta ejemplos. |
 | PG-H.11.05 | Cumplido | README de `pseudolearn_service`, `see_validation` y `pseudolearn_app` | Política y límites documentados junto a la prueba que los exige. |
 | PG-H.11.06 | Cumplido | `cargo xtask verify` de engine y de spec (1 566 observaciones, 0 divergencias); `flutter test` (2 265); `see conform --subject app` (230, 0) | Todos los intentos hostiles se rechazan en el origen o se muestran como texto inerte. La puerta de spec falló una vez en `cargo fmt` por un archivo nuevo sin formatear; la afirmación inicial de éxito se hizo sin leer el registro y se corrigió al leerlo. |
-| PG-H.12.01 | | | Pendiente de ejecución |
-| PG-H.12.02 | | | Pendiente de ejecución |
-| PG-H.12.03 | | | Pendiente de ejecución |
-| PG-H.12.04 | | | Pendiente de ejecución |
-| PG-H.12.05 | | | Pendiente de ejecución |
-| PG-H.12.06 | | | Pendiente de ejecución |
+| PG-H.12.01 | Cumplido | `tool/e_pg_11.sh`; README de `pseudolearn_bench_worker`; `provenance/` | Protocolo y métricas candidatas según §6–7; procedencia (revisión, árbol, hashes de fuentes y de corpus, toolchain, SO, hardware) capturada antes de compilar y hash del binario después. Los presupuestos PERF vigentes no se sustituyeron. |
+| PG-H.12.02 | Cumplido | `functional/summary.json` (huella de dataset `0c4fcaff43872e55`, semilla 42) | 28 896 consultas por transporte: 172 programas de referencia, completos y recortados, ambos rigores e idiomas, más 608 ausencias válidas. Cobertura de palabras y funciones de una sola palabra; los operadores simbólicos, los compuestos y los literales de texto no están en el conjunto. |
+| PG-H.12.03 | Cumplido | `help_campaign/*_tests.rs` (21 pruebas) | Escáner, estadística, huellas y las invalidaciones exigidas: respuesta incorrecta, muestra o proceso faltante, reloj sin resolución, resumen alterado, crudo alterado, consultas sin completar y resumen funcional ausente. |
+| PG-H.12.04 | Parcial | `pseudolearn_bench_worker service help` | Modo acotado sobre la API pública y comparación API/LSP por consulta. No compara la aplicación por el puente: esa consulta la cubre el sujeto `app`, no esta campaña. Directorio nuevo; no se sobrescribe ninguna campaña anterior. |
+| PG-H.12.05 | Cumplido | README de `pseudolearn_bench_worker` | Reproducción y límites documentados sin citar este plan. |
+| PG-H.12.06 | Cumplido | `packages/pseudolearn_spec/results/pg-h-campaign-2026-10-23/` (`summary.json` verificado por `service help verify`) | Funcional: 0 respuestas erróneas y 0 discrepancias API/LSP. Caliente, 10 000 líneas: p95 API 2,299 ms (IC95 % 2,292–2,302) y núcleo 1,742 ms, bajo el criterio candidato de 20 ms; 40 líneas: 0,023 ms. Frío: 7,676 ms (10 000 líneas) y 0,061 ms (40 líneas). Reloj de 41 ns. Se detectan candidatos a punto de cambio en las diez series del documento grande; su causa no se demostró (hipótesis: el coste lineal de localizar el token depende de la posición consultada). Memoria, cota de dos lecturas por proceso: 38 096 KiB caliente y 27 856 KiB frío. Tamaños: iOS arm64 3 135 792 B (límite 3 145 728, margen 0,32 %; PG-0: 2 985 792 B) y Wasm Brotli 553 882 B (límite 614 400; PG-0: 530 599 B). Mismo hardware que PG-0 (Apple M2, Mac14,3). La paridad de ejemplos entre transportes no se mide: solo identidad, ficha y rango. |
 | PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autoriza la implementación de `PG-H.04`; no autoriza `.05` ni el cierre de PG-H. |
-| PG-H.C02 | | | Pendiente de ejecución |
-| PG-H.C03 | | | Pendiente de ejecución |
-| PG-H.C04 | | | Pendiente de ejecución |
-| PG-H.C05 | | | Pendiente de ejecución |
-| PG-H.C06 | | | Pendiente de ejecución |
-| PG-H.C07 | | | Pendiente de ejecución |
-| PG-H.C08 | | | Pendiente de ejecución |
-| PG-H.C09 | | | Pendiente de ejecución |
-| PG-H.C10 | | | Pendiente de ejecución |
-| PG-H.C11 | | | Pendiente de ejecución |
+| PG-H.C02 |  |  | Pendiente: requiere la revisión integral de la persona. |
+| PG-H.C03 | Parcial | `SPEC-FIRST` en cada punto; versiones y estados congelados | Contrato antes de caso, caso antes de código, y oráculo de la campaña independiente del lexer. Falta la revisión independiente de las reglas añadidas (ver el informe); no se completó. |
+| PG-H.C04 | Cumplido | Vínculos en `conformance*.yaml`; evidencia estructural o de ejecutor | Cada regla nueva tiene casos propios o evidencia estructural con fixtures; los vínculos son datos. |
+| PG-H.C05 | Cumplido | Pruebas espejo en `see_validation`, `pseudolearn_service`, `pseudolearn_api`, `pseudolearn_bench_worker` y `pseudolearn_app` | Camino feliz, infeliz y límites en cada pieza. |
+| PG-H.C06 | Cumplido | `rust-checks all .` en engine, spec y `native/`; límites, contenido y diseño de la app | Los avisos de tamaño que aparecieron se corrigieron con módulos nuevos, no con excepciones. |
+| PG-H.C07 | Cumplido | Verificadores de comentarios y de nombres | Sin comentarios ni TODO; sin pánicos ni `unsafe`. |
+| PG-H.C08 | Cumplido | README de los miembros afectados; puerta de referencias transitorias de spec | Sin referencias a `docs/` fuera de la carpeta transitoria. |
+| PG-H.C09 | Cumplido | Catálogo 2026: 143 filas identidad/rol cubiertas | La fase no incorpora sintaxis nueva. Límite declarado: los literales de texto y los operadores simbólicos no tienen resolución propia ni están en la campaña funcional. |
+| PG-H.C10 | Cumplido | K-16 y K-17 revisados; E-PG-11 con procedencia y resultados | K-17 se materializó una vez: `Verdadero` y `Falso` tenían ficha sin resolución; se corrigió con contrato y caso. El resto de hallazgos de la campaña son límites de oráculo, corregidos. |
+| PG-H.C11 | Cumplido | `cargo xtask verify` de engine y spec; `flutter test` (2 265); app y `native/` en verde | Puertas leídas en sus registros. El humo en simulador no se ejecutó y no hay cobertura de dispositivo físico. |
 | PG-H.C12 | | | Pendiente de ejecución |
 | PG-H.C13 | | | Pendiente de ejecución |
 
-PG-H no se cierra ni publica con este punto. Para `PG-H.01`, las pruebas dirigidas, Clippy, formato,
-`rust-checks all .`, validación, refresco del anclaje y comprobación de exportación están en verde.
-`cargo xtask verify` de `.01` queda parcialmente limitado por la actualización remota de `cargo deny`; su
-modo `--offline` pasó. Para `.02`, los casos API, las pruebas y las verificaciones de ambos miembros
-están en verde; el chequeo offline de `cargo deny` pasó con su lock temporal disponible. Para `.03`,
-`rust-checks all .`, `see validate`, conformidad, las pruebas del workspace, Clippy, formato y
-`cargo deny check` están en verde. `PG-H.C02` conserva pendiente la revisión integral del plan.
-Las seis subtareas de `.01`–`.04` están cumplidas; `.05`–`.12` siguen pendientes y PG-H
-permanece abierta.
+Resumen de `PG-H.05`–`PG-H.12` (2026-10-23). `.05`: el servicio genera sus fichas desde la exportación del corpus,
+el idioma de interfaz es independiente del perfil y `keyword_help.rs` se retiró. `.06`: las 38 fichas enlazan
+casos del corpus por idioma, con la clase derivada del caso. `.07`: el verificador del catálogo rechaza cada
+violación con su diagnóstico (21 fixtures aislados). `.08`: hover, comando `pseudolearn.explain` y `help_query`
+comparten resolución y ficha. `.09`: la app consulta por un puerto propio con sesión efímera y descarta respuestas
+de revisiones antiguas. `.10`: una auditoría rechaza copias de prosa del catálogo en motor, CLI, app y sitio web.
+`.11`: texto plano en el origen, escape en cada proyección, límites y exceso tipado. `.12`: campaña E-PG-11 con
+procedencia y resumen verificable.
+
+Hallazgos y correcciones durante la ejecución, todos conservados: el oráculo del corpus detectó que la API devuelve
+rangos en escalares Unicode aunque la consulta use UTF-16 (error del adaptador de la app, corregido con su prueba);
+una primera campaña funcional mostró que `Verdadero` y `Falso` tenían ficha sin resolución (corregido con contrato y
+caso, decisión que la persona debe revisar) y dos límites del propio oráculo (programas que sombrean una incorporada
+y un recorte que dejaba el programa válido); varias puertas fallaron una vez por formato, nombres o tamaño de archivo
+y se repitieron tras corregirlas, y una afirmación de éxito sobre la puerta de spec se hizo sin leer su registro y
+fue corregida al leerlo. No se recortó ningún conjunto ni se descartó ninguna muestra.
+
+Resultados de E-PG-11 sobre la revisión `935c9d5` (árbol limpio, Apple M2 Mac14,3, mismo equipo que PG-0): ver la
+fila `PG-H.12.06`. El margen de tamaño de iOS arm64 quedó en 9 936 bytes (0,32 %) frente a su límite de 3 MiB.
+
+Puertas leídas en sus registros: `cargo xtask verify` de engine y de spec; `flutter test` (2 265 pruebas), análisis
+estricto, límites, contenido y diseño de la app, `bridge.sh check`, formato, Clippy, pruebas, `cargo deny` y
+`rust-checks` de `native/`; conformidad `app` (230 observaciones), `service` y `engine` (1 566) sin divergencias.
+No ejecutado: humo en simulador y cualquier cobertura de dispositivo físico. Revisiones independientes: no existen
+para las reglas añadidas a `TOOL.SERVICE.CATALOG` (R5–R9), `TOOL.LSP.CAPABILITIES` R5, `API.MODEL` R6,
+`TOOL.SERVICE.HOVER` R4 y `APP.EDITOR.COMPLETION` R8–R13; no se rellenaron revisores.
 
 Comprobaciones de preparación documental del 2026-10-22: `git diff --check` en verde;
 72 subtareas únicas, 13 puntos de cierre y sus 85 filas de resumen comprobados; enlaces locales

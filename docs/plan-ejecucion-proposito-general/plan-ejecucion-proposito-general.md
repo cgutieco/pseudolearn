@@ -23,8 +23,9 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
-sandbox de las campañas de app y rendimiento. La autorización nueva del 2026-10-22 cubre `PG-H.04`
-en una iteración; PG-H sigue abierta y PG-1 requiere autorización nueva.
+sandbox de las campañas de app y rendimiento. La autorización del 2026-10-22 cubrió `PG-H.04`; la del 2026-10-23 cubre `PG-H.05` a `PG-H.12` y el cierre
+común en una iteración. PG-H queda ejecutada con salvedades y abierta hasta la decisión de la persona; PG-1 requiere
+autorización nueva.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -207,26 +208,26 @@ capacidad C-16; riesgos K-16, K-17; experimento E-PG-11; ADR-13.
 
 Puntos a cumplir:
 
-- [ ] `PG-H.01` Especificación del catálogo de ayuda en el corpus: esquema, identidad de ficha, roles, disponibilidad por
+- [x] `PG-H.01` Especificación del catálogo de ayuda en el corpus: esquema, identidad de ficha, roles, disponibilidad por
   edición/rigor, anclajes y exportación.
-- [ ] `PG-H.02` Contrato público de consulta de ayuda: entrada (documento, revisión, posición y unidad de coordenadas,
+- [x] `PG-H.02` Contrato público de consulta de ayuda: entrada (documento, revisión, posición y unidad de coordenadas,
   idioma, detalle), respuesta estructurada y rechazo de revisión obsoleta.
-- [ ] `PG-H.03` Reglas de resolución por posición especificadas con casos: fronteras del token, lexemas compuestos,
+- [x] `PG-H.03` Reglas de resolución por posición especificadas con casos: fronteras del token, lexemas compuestos,
   Hacer y Hasta por contexto, comentarios, literales, código incompleto y nombres sombreados.
 - [x] `PG-H.04` Fichas es/en para el 100 % de keywords, operadores, incorporadas y roles pedagógicos activos de 2026, o
   exclusión tipada justificada.
-- [ ] `PG-H.05` El contenido útil de la ayuda incrustada actualmente en el servicio queda migrado a datos, sin pérdida de
+- [x] `PG-H.05` El contenido útil de la ayuda incrustada actualmente en el servicio queda migrado a datos, sin pérdida de
   información.
-- [ ] `PG-H.06` Ejemplos vinculados a reglas o casos, válidos por perfil y rigor, con esperados derivados de la regla.
-- [ ] `PG-H.07` Verificador del catálogo con casos negativos: ficha huérfana, vínculo roto, forma retirada, ejemplo
+- [x] `PG-H.06` Ejemplos vinculados a reglas o casos, válidos por perfil y rigor, con esperados derivados de la regla.
+- [x] `PG-H.07` Verificador del catálogo con casos negativos: ficha huérfana, vínculo roto, forma retirada, ejemplo
   inválido, traducción ausente.
-- [ ] `PG-H.08` El servicio resuelve identidad y rol desde el árbol sintáctico; LSP ofrece hover y un comando de explicar
+- [x] `PG-H.08` El servicio resuelve identidad y rol desde el árbol sintáctico; LSP ofrece hover y un comando de explicar
   sintaxis; la API ofrece la respuesta estructurada.
-- [ ] `PG-H.09` La app consume la misma consulta por su puente, con acceso por teclado y táctil sin romper la colocación
+- [x] `PG-H.09` La app consume la misma consulta por su puente, con acceso por teclado y táctil sin romper la colocación
   del cursor ni la navegación.
-- [ ] `PG-H.10` Ningún consumidor contiene prosa normativa local, parser ni reconocimiento por expresiones regulares.
-- [ ] `PG-H.11` Render seguro: Markdown saneado, sin HTML ejecutable, comandos ni enlaces arbitrarios.
-- [ ] `PG-H.12` E-PG-11 ejecutado e informado con sus criterios de éxito o descarte.
+- [x] `PG-H.10` Ningún consumidor contiene prosa normativa local, parser ni reconocimiento por expresiones regulares.
+- [x] `PG-H.11` Render seguro: Markdown saneado, sin HTML ejecutable, comandos ni enlaces arbitrarios.
+- [x] `PG-H.12` E-PG-11 ejecutado e informado con sus criterios de éxito o descarte.
 
 Fuera de alcance: fichas de sintaxis que aún no existe.
 
@@ -236,17 +237,17 @@ están completos. La revisión integral del plan sigue pendiente; `.05`–`.12` 
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-H.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-H.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
 - [ ] `PG-H.C02` Plan detallado creado según §5 y revisado por la persona.
 - [ ] `PG-H.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-H.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-H.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-H.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-H.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-H.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-H.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-H.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-H.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-H.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-H.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-H.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-H.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-H.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-H.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-H.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-H.C11` Tests y verificadores de los miembros afectados en verde.
 - [ ] `PG-H.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-H.C13` Resumen completo, informe a la persona y parada.
 
@@ -254,9 +255,12 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-H.01–.08 | Cumplido | Detalle en `fase-pg-h-plan-ejecucion.md` | Contratos, casos, tests y puertas de engine y spec en verde. |
+| PG-H.09 | Cumplido con salvedad | Suite de Flutter, conformidad `app` y puente real | Sin humo en simulador ni cobertura física. |
+| PG-H.10–.11 | Cumplido | Auditoría de consumidores y pruebas adversarias | Sin copias de prosa; texto inerte en todos los renderizadores. |
+| PG-H.12 | Cumplido con salvedad | Campaña `pg-h-campaign-2026-10-23` | p95 caliente 2,299 ms (criterio 20 ms); la app no se compara en esa campaña; margen iOS 0,32 %. |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: `935c9d5` y los commits documentales posteriores · Verificadores ejecutados: engine, spec, app y `native/`, leídos en sus registros · Pendientes justificados: humo en simulador, comparación de la app en E-PG-11, revisión independiente de las reglas añadidas, causa de los candidatos a punto de cambio · Decisiones de la persona: revisión del plan (C02), de la regla de literales booleanos y de las reglas sin revisor; cierre de PG-H.
 
 ### 4.3 PG-1 · Identidad y proyectos
 
@@ -921,7 +925,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | Fase | Estado | Plan detallado creado | Revisión Git de cierre | Puntos pendientes o diferidos |
 |---|---|---|---|---|
 | PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
-| PG-H | En ejecución · PG-H.01–.04 cumplidos | Sí | Sin cierre | PG-H.05–.12 y cierre común pendientes |
+| PG-H | Ejecutada con salvedades · PG-H.01–.12 | Sí | Sin cierre | Revisión de la persona (C02), revisión independiente de reglas (C03) y parada (C13); humo en simulador y comparación de la app en E-PG-11 pendientes |
 | PG-1 | Sin iniciar | No | | |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |
