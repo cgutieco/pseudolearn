@@ -129,17 +129,25 @@ fn exclusion_reference(exclusion: &Value, corpus: &Corpus) -> Vec<String> {
     }
 }
 
+pub(super) fn specification<'corpus>(
+    corpus: &'corpus Corpus,
+    identifier: &str,
+    version: &str,
+) -> Option<&'corpus see_model::Specification> {
+    corpus.iter().find(|specification| {
+        specification.metadata.id == identifier
+            && specification.metadata.version == version
+            && specification.metadata.estado != "retirado"
+    })
+}
+
 fn target_specification<'corpus>(
     corpus: &'corpus Corpus,
     reference: &Value,
 ) -> Option<&'corpus see_model::Specification> {
     let identifier = reference.get("specification")?.as_str()?;
     let version = reference.get("version")?.as_str()?;
-    corpus.iter().find(|specification| {
-        specification.metadata.id == identifier
-            && specification.metadata.version == version
-            && specification.metadata.estado != "retirado"
-    })
+    specification(corpus, identifier, version)
 }
 
 fn has_element(corpus: &Corpus, reference: &Value) -> bool {

@@ -8,10 +8,26 @@ pub(super) fn check(value: &Value) -> Result<(), String> {
     .map_err(|error| format!("SEE-HELP-CATALOG: invalid package schema: {error}"))?;
     crate::schema_engine::check(value, &schema, &schema, 0)
         .map_err(|error| format!("SEE-HELP-CATALOG: {error}"))?;
+    unique_roles(value)?;
     unique_cards(value)?;
     unique_exclusions(value)?;
     check_examples(value)?;
-    check_exclusion_conflicts(value)
+    check_exclusion_conflicts(value)?;
+    check_exclusion_justifications(value)
+}
+
+fn unique_roles(value: &Value) -> Result<(), String> {
+    let roles = value
+        .pointer("/inventory/roles")
+        .and_then(Value::as_array)
+        .ok_or("SEE-HELP-CATALOG: missing role inventory")?;
+    let mut identities = BTreeSet::new();
+    for role in roles {
+        if !identities.insert(identity_key(role)?) {
+            return Err("SEE-HELP-CATALOG: duplicate inventory role identity".to_owned());
+        }
+    }
+    Ok(())
 }
 
 fn unique_cards(value: &Value) -> Result<(), String> {
@@ -87,15 +103,106 @@ fn check_exclusion_conflicts(value: &Value) -> Result<(), String> {
     Ok(())
 }
 
-fn identity_key(value: &Value) -> Result<(String, String, String), String> {
-    let identity = value
-        .get("identity")
-        .ok_or("SEE-HELP-CATALOG: missing identity")?;
+fn check_exclusion_justifications(value: &Value) -> Result<(), String> {
+    let roles = value
+        .pointer("/inventory/roles")
+        .and_then(Value::as_array)
+        .ok_or("SEE-HELP-CATALOG: missing role inventory")?;
+    for exclusion in array(value, "exclusions")? {
+        let reason = required_text(exclusion, "reason")?;
+        let identity = identity_key(exclusion)?;
+        let active_role = roles
+            .iter()
+            .any(|role| identity_key(role).is_ok_and(|key| key == identity));
+        if active_role && reason != "alias_of" {
+            return Err("SEE-HELP-CATALOG: active role exclusion must name an alias".to_owned());
+        }
+        if reason == "alias_of" {
+            check_alias_exclusion(exclusion, &identity, roles, array(value, "cards")?)?;
+        } else if exclusion.get("alias_of").is_some() {
+            return Err("SEE-HELP-CATALOG: unexpected alias target".to_owned());
+        }
+    }
+    Ok(())
+}
+
+fn check_alias_exclusion(
+    exclusion: &Value,
+    identity: &(String, String, String),
+    roles: &[Value],
+    cards: &[Value],
+) -> Result<(), String> {
+    let alias = exclusion
+        .get("alias_of")
+        .ok_or("SEE-HELP-CATALOG: missing alias target")?;
+    let target_identity = identity_fields(alias)?;
+    if &target_identity == identity {
+        return Err("SEE-HELP-CATALOG: alias target repeats its identity".to_owned());
+    }
+    let role = roles
+        .iter()
+        .find(|role| identity_key(role).is_ok_and(|key| &key == identity))
+        .ok_or("SEE-HELP-CATALOG: excluded alias has no inventory role")?;
+    let card = cards
+        .iter()
+        .find(|card| identity_key(card).is_ok_and(|key| key == target_identity))
+        .ok_or("SEE-HELP-CATALOG: alias target has no card")?;
+    if role_tokens(role)? != card_tokens(card)? || !scope_contains(card, exclusion) {
+        return Err("SEE-HELP-CATALOG: alias target does not cover the excluded role".to_owned());
+    }
+    Ok(())
+}
+
+fn identity_fields(identity: &Value) -> Result<(String, String, String), String> {
     Ok((
         required_text(identity, "kind")?.to_owned(),
         required_text(identity, "id")?.to_owned(),
         required_text(identity, "role")?.to_owned(),
     ))
+}
+
+fn role_tokens(role: &Value) -> Result<BTreeSet<String>, String> {
+    array(role, "tokens")?
+        .iter()
+        .map(|token| {
+            token
+                .as_str()
+                .map(str::to_owned)
+                .ok_or_else(|| "SEE-HELP-CATALOG: invalid role token identity".to_owned())
+        })
+        .collect()
+}
+
+fn card_tokens(card: &Value) -> Result<BTreeSet<String>, String> {
+    array(card, "tokens")?
+        .iter()
+        .map(|token| required_text(token, "identity").map(str::to_owned))
+        .collect()
+}
+
+fn scope_contains(container: &Value, contained: &Value) -> bool {
+    ["editions", "profiles", "strictness"]
+        .iter()
+        .all(|dimension| {
+            let available = container
+                .pointer(&format!("/availability/{dimension}"))
+                .and_then(Value::as_array);
+            let requested = contained
+                .pointer(&format!("/availability/{dimension}"))
+                .and_then(Value::as_array);
+            available
+                .zip(requested)
+                .is_some_and(|(available, requested)| {
+                    requested.iter().all(|value| available.contains(value))
+                })
+        })
+}
+
+fn identity_key(value: &Value) -> Result<(String, String, String), String> {
+    let identity = value
+        .get("identity")
+        .ok_or("SEE-HELP-CATALOG: missing identity")?;
+    identity_fields(identity)
 }
 
 fn required_text<'value>(value: &'value Value, name: &str) -> Result<&'value str, String> {

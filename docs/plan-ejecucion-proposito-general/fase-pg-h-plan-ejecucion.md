@@ -5,21 +5,22 @@
 - Fase: PG-H; requisitos R-17, R-18 y R-20; capacidad C-16; ADR-13; riesgos K-16 y K-17;
   experimento E-PG-11; tratamiento de CF-17.
 - Fecha de preparación: 2026-10-22. Fecha de inicio de implementación: 2026-10-22.
-- Alcance autorizado en mensaje nuevo del 2026-10-22: implementación de `PG-H.03` en una iteración;
-  no autoriza `PG-H.04` ni cierra PG-H.
+- Alcance autorizado en mensaje nuevo del 2026-10-22: implementación de `PG-H.04 · Cobertura editorial 2026`
+  en una iteración; no autoriza `PG-H.05` ni cierra PG-H.
 - Revisión de esta preparación: `2f5fccb6d046edfbaa054a2160b116259a1cd61b`; árbol limpio al comenzar la lectura.
   El borrador anterior se preparó sobre `d42a9e3047ebe664b74a709336934bc20ab8a916`, antes del cierre de PG-0.
 - Rama: `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`).
 - Encargo de preparación: «Crea el plan de ejecución para `PG-H · Catálogo y ayuda temprana`»;
   autorizó solo esta preparación documental. Encargos de implementación del 2026-10-22:
   «implementa `PG-H.02` de `fase-pg-h-plan-ejecucion.md` en una sola iteración» y
-  «implementa `PG-H.03 · Resolución por posición` en una sola iteración»; el mensaje nuevo autoriza
-  `.03`, no puntos posteriores ni el cierre de PG-H.
+  «implementa `PG-H.03 · Resolución por posición` en una sola iteración» y
+  «Implementa `PG-H.04 · Cobertura editorial 2026` en una sola iteración»; el mensaje más reciente
+  autoriza `.04`, no puntos posteriores ni el cierre de PG-H.
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01`, `PG-H.02` y `PG-H.03` completos. `PG-H.C01` queda satisfecho para `.03`; la revisión
-  integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
+- Estado: `PG-H.01`, `PG-H.02`, `PG-H.03` y `PG-H.04` completos. `PG-H.C01` queda satisfecho para la
+  autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
 y de la [hoja de ruta](../hoja-de-ruta-proposito-general.md). Ningún archivo fuera de `docs/`
@@ -122,7 +123,7 @@ Los símbolos de usuario conservarán su firma/tipo sin atribuirles intención p
 
 El orden de cada lista es especificación → casos → tests → código/datos → documentación →
 verificación. Las dependencias entre puntos se concretan en §10. `PG-H.01` se completó;
-los puntos `PG-H.02`–`.12` siguen pendientes.
+los puntos `PG-H.05`–`.12` siguen pendientes.
 
 ### Trazabilidad de entregables y aceptación
 
@@ -182,13 +183,13 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.04 · Cobertura editorial 2026
 
-- [ ] `PG-H.04.01` Definir inventario exigible desde vocabulario, operadores, incorporadas y roles
+- [x] `PG-H.04.01` Definir inventario exigible desde vocabulario, operadores, incorporadas y roles
   de gramática; declarar explícitamente roles pedagógicos sin pretender derivarlos de la EBNF sola.
-- [ ] `PG-H.04.02` Añadir casos de alias, rol sin ficha, exclusión válida/abusiva y traducción faltante.
-- [ ] `PG-H.04.03` Preparar tests de denominador, unicidad de identidad y cobertura de ambos idiomas.
-- [ ] `PG-H.04.04` Redactar fichas es/en y exclusiones justificadas; generar formas/firmas desde sus dueños.
-- [ ] `PG-H.04.05` Documentar autoría editorial, revisión y mantenimiento del inventario en README spec.
-- [ ] `PG-H.04.06` Producir matriz identidad/rol → ficha o exclusión; exigir 100 % sin usar fallback genérico como cobertura.
+- [x] `PG-H.04.02` Añadir casos de alias, rol sin ficha, exclusión válida/abusiva y traducción faltante.
+- [x] `PG-H.04.03` Preparar tests de denominador, unicidad de identidad y cobertura de ambos idiomas.
+- [x] `PG-H.04.04` Redactar fichas es/en y exclusiones justificadas; generar formas/firmas desde sus dueños.
+- [x] `PG-H.04.05` Documentar autoría editorial, revisión y mantenimiento del inventario en README spec.
+- [x] `PG-H.04.06` Producir matriz identidad/rol → ficha o exclusión; exigir 100 % sin usar fallback genérico como cobertura.
 
 ### PG-H.05 · Migración de ayuda incrustada
 
@@ -491,12 +492,20 @@ salvo un conflicto de fuentes o cambio de alcance que active `CONFLICT-REPORT`.
 refrescó y `see export --check` confirmó la exportación determinista. `PG-H.02` quedó completo tras
 ejecutar sus casos: `API.MODEL` produjo 7 observaciones y `API.VERSIONING` 2, sin divergencias.
 `PG-H.03` quedó completo con las reglas `TOOL.SERVICE.HOVER` R4 y `API.MODEL` R5, 24 y 11
-observaciones SEE sin divergencias, matriz bilingüe de servicio y regresiones. `see validate` pasó
-(159 especificaciones); `cargo xtask verify` completó exportación, formato, Clippy, tests del workspace
-y verificadores Rust. La última puerta, `cargo deny`, no pudo adquirir el lock global en modo normal;
-`cargo deny --offline check` pasó con el lock local autorizado. Se ejecutaron las 7 propiedades del
-sujeto service y las 2 de `API.MODEL`; el barrido exhaustivo de propiedades del sujeto engine se
-interrumpió por su duración. PG-H permanece abierta; `.04`–`.12` siguen pendientes.
+observaciones SEE sin divergencias, matriz bilingüe de servicio y regresiones.
+
+`PG-H.04` quedó completo con 47 identidades de keyword, 17 de operador, 18 incorporadas y 38 roles
+pedagógicos; la matriz validada contiene 143 filas identidad/rol, todas asignadas a una ficha o
+exclusión válida. No se necesitó excluir elementos del inventario activo. Se registró R4 como prueba
+estructural en el sujeto `service`. La prueba de matriz incluye conteos por categoría, alias, unicidad
+de rol, ausencia de ficha, exclusión válida/abusiva y traducción faltante.
+
+`see validate` pasó (159 especificaciones), `see lock --check` confirmó el anclaje y `see export --check`
+confirmó la salida generada. `cargo xtask verify` terminó en verde: formato, Clippy, tests del workspace,
+`cargo deny`, verificadores Rust y de cadena, 30 propiedades del motor sin pendientes y 1 563
+observaciones sin divergencias. Las propiedades del sujeto `service` produjeron 7 resultados sin
+pendientes; su conformidad integral produjo 110 observaciones sin divergencias. PG-H permanece abierta;
+`.05`–`.12` y el cierre común siguen pendientes.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -518,12 +527,12 @@ interrumpió por su duración. PG-H permanece abierta; `.04`–`.12` siguen pend
 | PG-H.03.04 | Cumplido | `pseudolearn_service/src/help_resolution.rs` y submódulos | Resolver desde CST y semántica, certeza parcial y rangos completos; sin cambios al lexer ni inferencia por texto vecino. |
 | PG-H.03.05 | Cumplido | README de `pseudolearn_service`, `pseudolearn_api` y `pseudolearn_conformance` | Prioridades, rangos, respuesta pública y proyección documentados; `pseudolearn_source` no requirió cambios. |
 | PG-H.03.06 | Cumplido | `see conform --subject service --only TOOL.SERVICE.HOVER` (24); `see conform --subject engine --only API.MODEL` (11); `cargo xtask verify` hasta cargo-deny; `cargo deny --offline check` | Sin divergencias; español/inglés × estricto/flexible y regresiones de hover, navegación y completado en verde. El chequeo normal no adquirió el lock global de la base de avisos. |
-| PG-H.04.01 | | | Pendiente de ejecución |
-| PG-H.04.02 | | | Pendiente de ejecución |
-| PG-H.04.03 | | | Pendiente de ejecución |
-| PG-H.04.04 | | | Pendiente de ejecución |
-| PG-H.04.05 | | | Pendiente de ejecución |
-| PG-H.04.06 | | | Pendiente de ejecución |
+| PG-H.04.01 | Cumplido | `TOOL.SERVICE.CATALOG` R4; `coverage_inventory.rs`; `coverage.rs` | Palabras reservadas desde vocabulario, operadores desde gramática, incorporadas desde biblioteca y 38 roles declarados como inventario pedagógico. |
+| PG-H.04.02 | Cumplido | `tests/resources/help_catalog/coverage.rs`; `resources/help_catalog/shape.rs` | Casos aceptan alias tipado y rechazan rol sin ficha, exclusión que cambia tokens, identidad fuera del inventario y traducción faltante. |
+| PG-H.04.03 | Cumplido | `produces_complete_2026_identity_role_matrix`; `rejects_missing_token_translation_and_duplicate_role_identity` | Denominador: 47 keywords, 17 operadores, 18 incorporadas y 38 roles; 143 filas identidad/rol completas, con contenido es/en. |
+| PG-H.04.04 | Cumplido | `TOOL.SERVICE.CATALOG` D1; `specifications/cases/catalogs.json` | Fichas bilingües usan identidades fuente; formas y firmas siguen generadas desde sus dueños. No hay exclusiones activas en 2026. |
+| PG-H.04.05 | Cumplido | README de `pseudolearn_spec` y `see_validation` | Autoría editorial, revisión y mantenimiento del inventario documentados junto al paquete dueño. |
+| PG-H.04.06 | Cumplido | `coverage_matrix`; `see validate` (159 especificaciones); `see conform --subject service` (110 observaciones, 0 divergencias) | Matriz identidad/rol → ficha con 143/143 destinos presentes; R4 estructural con anclaje vigente y sin fallback genérico como cobertura. |
 | PG-H.05.01 | | | Pendiente de ejecución |
 | PG-H.05.02 | | | Pendiente de ejecución |
 | PG-H.05.03 | | | Pendiente de ejecución |
@@ -572,7 +581,7 @@ interrumpió por su duración. PG-H permanece abierta; `.04`–`.12` siguen pend
 | PG-H.12.04 | | | Pendiente de ejecución |
 | PG-H.12.05 | | | Pendiente de ejecución |
 | PG-H.12.06 | | | Pendiente de ejecución |
-| PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autorización limitada a `PG-H.03`; no autoriza `.04` ni el cierre de PG-H. |
+| PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autoriza la implementación de `PG-H.04`; no autoriza `.05` ni el cierre de PG-H. |
 | PG-H.C02 | | | Pendiente de ejecución |
 | PG-H.C03 | | | Pendiente de ejecución |
 | PG-H.C04 | | | Pendiente de ejecución |
@@ -591,9 +600,9 @@ PG-H no se cierra ni publica con este punto. Para `PG-H.01`, las pruebas dirigid
 `cargo xtask verify` de `.01` queda parcialmente limitado por la actualización remota de `cargo deny`; su
 modo `--offline` pasó. Para `.02`, los casos API, las pruebas y las verificaciones de ambos miembros
 están en verde; el chequeo offline de `cargo deny` pasó con su lock temporal disponible. Para `.03`,
-`rust-checks all .`, `see validate`, conformidad dirigida, las pruebas del workspace, Clippy, formato y
-`cargo deny --offline check` están en verde. `PG-H.C02` conserva pendiente la revisión integral del plan.
-Las seis subtareas de `.01`, `.02` y `.03` están cumplidas; `.04`–`.12` siguen pendientes y PG-H
+`rust-checks all .`, `see validate`, conformidad, las pruebas del workspace, Clippy, formato y
+`cargo deny check` están en verde. `PG-H.C02` conserva pendiente la revisión integral del plan.
+Las seis subtareas de `.01`–`.04` están cumplidas; `.05`–`.12` siguen pendientes y PG-H
 permanece abierta.
 
 Comprobaciones de preparación documental del 2026-10-22: `git diff --check` en verde;

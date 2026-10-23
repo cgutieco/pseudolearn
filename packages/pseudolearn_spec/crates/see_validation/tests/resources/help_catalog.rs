@@ -2,6 +2,8 @@ use see_validation::resources::check_references;
 use see_validation::resources::help_catalog::{check, references};
 use serde_json::{Value, json};
 
+#[path = "help_catalog/coverage.rs"]
+mod coverage;
 #[path = "../support/mod.rs"]
 mod support;
 
@@ -127,7 +129,11 @@ fn rejects_examples_outside_the_referenced_case_rigor() -> Result<(), String> {
         "/cards/0/content/es/examples/0/strictness",
         json!("flexible"),
     )?;
-    assert!(references(&catalog, &corpus).is_empty());
+    assert!(
+        references(&catalog, &corpus)
+            .iter()
+            .all(|error| !error.contains("stale example"))
+    );
     Ok(())
 }
 
@@ -193,17 +199,35 @@ fn vocabulary_specification() -> Result<see_model::Specification, String> {
 }
 
 fn reference_corpus() -> Result<see_model::Corpus, String> {
-    Ok(vec![
-        see_format::parsing::parse(
-            "lang.program.structure.md",
-            include_str!("../../../../specifications/lang/lang.program.structure.md"),
-        )?,
-        vocabulary_specification()?,
-        see_format::parsing::parse(
-            "tool.service.catalog.md",
-            include_str!("../../../../specifications/tool/tool.service.catalog.md"),
-        )?,
-    ])
+    let root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../specifications");
+    let mut paths = Vec::new();
+    collect_markdown_files(&root, &mut paths)?;
+    let mut corpus = Vec::new();
+    for path in paths {
+        let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+        let relative = path
+            .strip_prefix(&root)
+            .map_err(|error| error.to_string())?
+            .display()
+            .to_string();
+        corpus.push(see_format::parsing::parse(&relative, &text)?);
+    }
+    Ok(corpus)
+}
+
+fn collect_markdown_files(
+    directory: &std::path::Path,
+    paths: &mut Vec<std::path::PathBuf>,
+) -> Result<(), String> {
+    for entry in std::fs::read_dir(directory).map_err(|error| error.to_string())? {
+        let path = entry.map_err(|error| error.to_string())?.path();
+        if path.is_dir() {
+            collect_markdown_files(&path, paths)?;
+        } else if path.extension().is_some_and(|extension| extension == "md") {
+            paths.push(path);
+        }
+    }
+    Ok(())
 }
 
 fn catalog_resource_mut(corpus: &mut see_model::Corpus) -> Result<&mut Value, String> {
@@ -245,6 +269,14 @@ fn set(value: &mut Value, path: &str, replacement: Value) -> Result<(), String> 
 fn sample_catalog() -> Value {
     json!({
         "format":"help-catalog/1",
+        "inventory":{
+            "operators":[],
+            "roles":[{
+                "identity":{"kind":"construction","id":"sample","role":"body"},
+                "productions":["program"],
+                "tokens":["algorithm"]
+            }]
+        },
         "cards":[{
             "id":"construct.sample",
             "identity":{"kind":"construction","id":"sample","role":"body"},
@@ -252,8 +284,8 @@ fn sample_catalog() -> Value {
             "availability":{"editions":["2026"],"profiles":["es","en"],"strictness":["estricto","flexible"]},
             "anchors":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","element":"R1"}],
             "content":{
-                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"body","text":"Cuerpo"}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","strictness":"estricto","label":"Ejemplo"}]},
-                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"body","text":"Body"}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","strictness":"flexible","label":"Example"}]}
+                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","strictness":"estricto","label":"Ejemplo"}]},
+                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","strictness":"flexible","label":"Example"}]}
             }
         }],
         "exclusions":[]

@@ -12,6 +12,9 @@
         "$ref": "#/$defs/card"
       }
     },
+    "inventory": {
+      "$ref": "#/$defs/inventory"
+    },
     "exclusions": {
       "type": "array",
       "items": {
@@ -22,6 +25,7 @@
   "required": [
     "format",
     "cards",
+    "inventory",
     "exclusions"
   ],
   "additionalProperties": false,
@@ -53,6 +57,62 @@
         "kind",
         "id",
         "role"
+      ],
+      "additionalProperties": false
+    },
+    "roleInventory": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/identity"
+        },
+        "productions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "identity",
+        "productions",
+        "tokens"
+      ],
+      "additionalProperties": false
+    },
+    "inventory": {
+      "type": "object",
+      "properties": {
+        "operators": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/roleInventory"
+          }
+        }
+      },
+      "required": [
+        "operators",
+        "roles"
       ],
       "additionalProperties": false
     },
@@ -316,6 +376,9 @@
             "outside_edition_scope",
             "not_pedagogical"
           ]
+        },
+        "alias_of": {
+          "$ref": "#/$defs/identity"
         },
         "anchor": {
           "$ref": "#/$defs/anchor"

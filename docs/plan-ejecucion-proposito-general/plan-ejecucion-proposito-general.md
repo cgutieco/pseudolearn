@@ -23,7 +23,8 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
 El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
-sandbox de las campañas de app y rendimiento. PG-H y PG-1 requieren una autorización nueva.
+sandbox de las campañas de app y rendimiento. La autorización nueva del 2026-10-22 cubre `PG-H.04`
+en una iteración; PG-H sigue abierta y PG-1 requiere autorización nueva.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -212,7 +213,7 @@ Puntos a cumplir:
   idioma, detalle), respuesta estructurada y rechazo de revisión obsoleta.
 - [ ] `PG-H.03` Reglas de resolución por posición especificadas con casos: fronteras del token, lexemas compuestos,
   Hacer y Hasta por contexto, comentarios, literales, código incompleto y nombres sombreados.
-- [ ] `PG-H.04` Fichas es/en para el 100 % de keywords, operadores, incorporadas y roles pedagógicos activos de 2026, o
+- [x] `PG-H.04` Fichas es/en para el 100 % de keywords, operadores, incorporadas y roles pedagógicos activos de 2026, o
   exclusión tipada justificada.
 - [ ] `PG-H.05` El contenido útil de la ayuda incrustada actualmente en el servicio queda migrado a datos, sin pérdida de
   información.
@@ -230,8 +231,8 @@ Puntos a cumplir:
 Fuera de alcance: fichas de sintaxis que aún no existe.
 
 Plan detallado: [fase-pg-h-plan-ejecucion.md](fase-pg-h-plan-ejecucion.md), preparado por solicitud
-de la persona y actualizado al cierre de PG-0 el 2026-10-22. Dependencia PG-0 satisfecha;
-pendiente de revisión del plan y autorización de implementación en un mensaje nuevo.
+de la persona y actualizado al cierre de PG-0 el 2026-10-22. Dependencia PG-0 satisfecha; `.01`–`.04`
+están completos. La revisión integral del plan sigue pendiente; `.05`–`.12` requieren autorización propia.
 
 Cierre común (definiciones en §4.0):
 
@@ -920,7 +921,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | Fase | Estado | Plan detallado creado | Revisión Git de cierre | Puntos pendientes o diferidos |
 |---|---|---|---|---|
 | PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
-| PG-H | Sin iniciar | No | | |
+| PG-H | En ejecución · PG-H.01–.04 cumplidos | Sí | Sin cierre | PG-H.05–.12 y cierre común pendientes |
 | PG-1 | Sin iniciar | No | | |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |

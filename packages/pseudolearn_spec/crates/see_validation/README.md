@@ -16,6 +16,14 @@ Imports internos permitidos: model, graph, change. Prohibidas las capas superior
 
 Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2026 por perfil/rigor, contenido es/en, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen resultados duplicados; su referencia debe quedar dentro de la disponibilidad de la ficha. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
 
+La validación del catálogo compara los operadores declarados con las producciones de asignación y
+expresión, deriva las palabras reservadas del vocabulario y las incorporadas de la biblioteca, y
+comprueba cada rol declarado contra una producción de gramática vigente. La matriz identidad/rol
+requiere una ficha o exclusión con disponibilidad completa en 2026, ambos perfiles y ambos rigores;
+cada token cubierto debe tener una parte editorial es/en propia. La función `coverage_matrix` expone
+las filas ordenadas que justifican el 100 % y los negativos ejercitan identidad duplicada, rol sin
+ficha, alias, exclusión incompatible y traducción ausente.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 

@@ -3412,12 +3412,12 @@
             ],
             "parts": [
               {
-                "identity": "opening",
-                "text": "Declares the algorithm name."
+                "identity": "algorithm",
+                "text": "Names the algorithm that serves as the program entry point."
               },
               {
-                "identity": "closing",
-                "text": "Closes the unit that contains the algorithm."
+                "identity": "endAlgorithm",
+                "text": "Closes the algorithm block."
               }
             ],
             "purpose": "Delimits the unit that starts execution of the program text.",
@@ -3441,12 +3441,12 @@
             ],
             "parts": [
               {
-                "identity": "opening",
-                "text": "Declara el nombre del algoritmo."
+                "identity": "algorithm",
+                "text": "Identifica el algoritmo que constituye el punto de entrada del programa."
               },
               {
-                "identity": "closing",
-                "text": "Cierra la unidad que contiene el algoritmo."
+                "identity": "endAlgorithm",
+                "text": "Cierra el bloque del algoritmo."
               }
             ],
             "purpose": "Delimita la unidad que inicia la ejecución del texto de programa.",
@@ -3478,10 +3478,4041 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.DECL.VARIABLE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "declare",
+                "text": "Starts the declaration of one or more variables."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separates declared names from the type they receive."
+              },
+              {
+                "identity": "integerType",
+                "text": "Represents whole-number values without a fractional part."
+              },
+              {
+                "identity": "realType",
+                "text": "Represents numeric values that may have a fractional part."
+              },
+              {
+                "identity": "booleanType",
+                "text": "Represents the logical values true and false."
+              },
+              {
+                "identity": "characterType",
+                "text": "Represents one individual character."
+              },
+              {
+                "identity": "stringType",
+                "text": "Represents a sequence of characters."
+              }
+            ],
+            "purpose": "A declaration may include several names before the type connector.",
+            "summary": "Associates names with a declared type.",
+            "title": "Variable declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "declare",
+                "text": "Inicia la declaración de una o más variables."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separa los nombres declarados del tipo que reciben."
+              },
+              {
+                "identity": "integerType",
+                "text": "Representa valores enteros sin parte fraccionaria."
+              },
+              {
+                "identity": "realType",
+                "text": "Representa valores numéricos que pueden tener parte fraccionaria."
+              },
+              {
+                "identity": "booleanType",
+                "text": "Representa los valores lógicos verdadero y falso."
+              },
+              {
+                "identity": "characterType",
+                "text": "Representa un carácter individual."
+              },
+              {
+                "identity": "stringType",
+                "text": "Representa una secuencia de caracteres."
+              }
+            ],
+            "purpose": "La declaración puede incluir varios nombres antes del conector de tipo.",
+            "summary": "Asocia nombres con un tipo declarado.",
+            "title": "Declarar variables"
+          }
+        },
+        "id": "help.variables",
+        "identity": {
+          "id": "declaration",
+          "kind": "construction",
+          "role": "variable_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "declare",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "integerType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "realType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "booleanType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "characterType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "stringType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.ARRAY.DIMENSION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "dimension",
+                "text": "Declares a variable with array dimensions."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separates declared names from the type they receive."
+              }
+            ],
+            "purpose": "Each dimension is written inside the declaration brackets.",
+            "summary": "Defines indexed variables and their dimensions.",
+            "title": "Declaring dimensions"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "dimension",
+                "text": "Declara una variable con dimensiones de arreglo."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separa los nombres declarados del tipo que reciben."
+              }
+            ],
+            "purpose": "Cada dimensión se expresa en los corchetes de la declaración.",
+            "summary": "Define variables indexadas y sus dimensiones.",
+            "title": "Declarar dimensiones"
+          }
+        },
+        "id": "help.arrays",
+        "identity": {
+          "id": "dimensionDeclaration",
+          "kind": "construction",
+          "role": "array_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "dimension",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "leftBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "rightBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.STMT.ASSIGNMENT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "assignment",
+                "text": "Assigns the right-hand result to the left-hand designator."
+              }
+            ],
+            "purpose": "The destination appears before the operator and the source expression after it.",
+            "summary": "Transfers the evaluated value to the destination designator.",
+            "title": "Assignment"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "assignment",
+                "text": "Asigna el resultado de la derecha al designador de la izquierda."
+              }
+            ],
+            "purpose": "El destino aparece antes del operador y la expresión fuente después.",
+            "summary": "Transfiere el valor calculado al designador de destino.",
+            "title": "Asignación"
+          }
+        },
+        "id": "help.assignment",
+        "identity": {
+          "id": "assignmentStatement",
+          "kind": "construction",
+          "role": "value_assignment"
+        },
+        "tokens": [
+          {
+            "identity": "assignment",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.IO.INPUT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "read",
+                "text": "Requests a value and assigns it to the selected designator."
+              }
+            ],
+            "purpose": "Input requires assignable destinations.",
+            "summary": "Reads external values and stores them in designators.",
+            "title": "Input reading"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "read",
+                "text": "Solicita un valor y lo asigna al designador indicado."
+              }
+            ],
+            "purpose": "La entrada requiere destinos asignables.",
+            "summary": "Lee valores externos y los guarda en designadores.",
+            "title": "Lectura de entrada"
+          }
+        },
+        "id": "help.input",
+        "identity": {
+          "id": "input",
+          "kind": "construction",
+          "role": "designator_input"
+        },
+        "tokens": [
+          {
+            "identity": "read",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.IO.OUTPUT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "write",
+                "text": "Evaluates and displays one or more expressions."
+              },
+              {
+                "identity": "withoutNewline",
+                "text": "Suppresses the final newline in the output."
+              }
+            ],
+            "purpose": "Without newline changes the output ending, not expression evaluation.",
+            "summary": "Evaluates a list of expressions for display.",
+            "title": "Expression output"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "write",
+                "text": "Evalúa y muestra una o más expresiones."
+              },
+              {
+                "identity": "withoutNewline",
+                "text": "Evita el salto de línea final de la salida."
+              }
+            ],
+            "purpose": "Sin Saltar modifica el cierre de la salida y no la evaluación de expresiones.",
+            "summary": "Evalúa una lista de expresiones para mostrarlas.",
+            "title": "Salida de expresiones"
+          }
+        },
+        "id": "help.output",
+        "identity": {
+          "id": "output",
+          "kind": "construction",
+          "role": "expression_output"
+        },
+        "tokens": [
+          {
+            "identity": "write",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "withoutNewline",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CONTROL.IF",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "ifKeyword",
+                "text": "Starts a selection whose first body depends on a condition."
+              },
+              {
+                "identity": "then",
+                "text": "Separates the condition from the first conditional body."
+              },
+              {
+                "identity": "elseKeyword",
+                "text": "Starts the alternate body when the condition is false."
+              },
+              {
+                "identity": "endIf",
+                "text": "Closes the conditional selection."
+              }
+            ],
+            "purpose": "The alternate branch is optional and the closing form delimits the selection.",
+            "summary": "Selects which body to execute from a condition value.",
+            "title": "Conditional selection"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "ifKeyword",
+                "text": "Inicia una selección cuyo primer bloque depende de una condición."
+              },
+              {
+                "identity": "then",
+                "text": "Separa la condición del primer bloque condicional."
+              },
+              {
+                "identity": "elseKeyword",
+                "text": "Inicia el bloque alternativo cuando la condición no se cumple."
+              },
+              {
+                "identity": "endIf",
+                "text": "Cierra la selección condicional."
+              }
+            ],
+            "purpose": "La rama alternativa es opcional y el cierre delimita ambas ramas.",
+            "summary": "Elige qué bloque ejecutar según el valor lógico de una condición.",
+            "title": "Selección condicional"
+          }
+        },
+        "id": "help.conditional",
+        "identity": {
+          "id": "conditional",
+          "kind": "construction",
+          "role": "conditional_branch"
+        },
+        "tokens": [
+          {
+            "identity": "ifKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "then",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "elseKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endIf",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CONTROL.SWITCH",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "switchKeyword",
+                "text": "Starts a selection among cases of an expression."
+              },
+              {
+                "identity": "defaultCase",
+                "text": "Declares the branch used when no case matches."
+              },
+              {
+                "identity": "endSwitch",
+                "text": "Closes the case selection."
+              }
+            ],
+            "purpose": "Labels belong to a branch, and the default branch may be omitted.",
+            "summary": "Matches an expression against case labels and uses the default branch when provided.",
+            "title": "Case selection"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "switchKeyword",
+                "text": "Inicia una selección entre casos de una expresión."
+              },
+              {
+                "identity": "defaultCase",
+                "text": "Declara la rama usada cuando ningún caso coincide."
+              },
+              {
+                "identity": "endSwitch",
+                "text": "Cierra la selección de casos."
+              }
+            ],
+            "purpose": "Las etiquetas se agrupan por rama y la rama por omisión puede faltar.",
+            "summary": "Compara una expresión con etiquetas de caso y, si corresponde, usa la rama por omisión.",
+            "title": "Selección por casos"
+          }
+        },
+        "id": "help.switch",
+        "identity": {
+          "id": "switch",
+          "kind": "construction",
+          "role": "case_selection"
+        },
+        "tokens": [
+          {
+            "identity": "switchKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "defaultCase",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endSwitch",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "branchSeparator",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CONTROL.WHILE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "whileKeyword",
+                "text": "Starts a loop that checks its condition before each iteration."
+              },
+              {
+                "identity": "doKeyword",
+                "text": "Separates a loop or selection header from its body."
+              },
+              {
+                "identity": "endWhile",
+                "text": "Closes the body of a while loop."
+              }
+            ],
+            "purpose": "The condition is checked before entering each iteration.",
+            "summary": "Repeats the body while the condition is true.",
+            "title": "While loop"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "whileKeyword",
+                "text": "Inicia un bucle que comprueba la condición antes de cada iteración."
+              },
+              {
+                "identity": "doKeyword",
+                "text": "Separa la cabecera del bucle o selección de su cuerpo."
+              },
+              {
+                "identity": "endWhile",
+                "text": "Cierra el cuerpo del bucle Mientras."
+              }
+            ],
+            "purpose": "La condición se comprueba antes de entrar en cada iteración.",
+            "summary": "Repite el cuerpo mientras la condición sea verdadera.",
+            "title": "Bucle Mientras"
+          }
+        },
+        "id": "help.while",
+        "identity": {
+          "id": "whileLoop",
+          "kind": "construction",
+          "role": "precondition_loop"
+        },
+        "tokens": [
+          {
+            "identity": "whileKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "doKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endWhile",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CONTROL.REPEAT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "repeat",
+                "text": "Starts a loop that executes its body before checking the condition."
+              },
+              {
+                "identity": "until",
+                "text": "Introduces the condition that ends a repeat loop."
+              }
+            ],
+            "purpose": "The body executes at least once.",
+            "summary": "Executes the body and then checks whether it should stop.",
+            "title": "Repeat loop"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "repeat",
+                "text": "Inicia un bucle que ejecuta el cuerpo antes de comprobar la condición."
+              },
+              {
+                "identity": "until",
+                "text": "Indica la condición que termina un bucle Repetir."
+              }
+            ],
+            "purpose": "El cuerpo se ejecuta al menos una vez.",
+            "summary": "Ejecuta el cuerpo y comprueba después si debe terminar.",
+            "title": "Bucle Repetir"
+          }
+        },
+        "id": "help.repeat",
+        "identity": {
+          "id": "repeatLoop",
+          "kind": "construction",
+          "role": "postcondition_loop"
+        },
+        "tokens": [
+          {
+            "identity": "repeat",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "until",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CONTROL.FOR",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "forKeyword",
+                "text": "Starts an iteration controlled by a variable."
+              },
+              {
+                "identity": "assignment",
+                "text": "Assigns the right-hand result to the left-hand designator."
+              },
+              {
+                "identity": "to",
+                "text": "Marks the final bound of the controlled iteration."
+              },
+              {
+                "identity": "step",
+                "text": "Introduces the increment applied to the control variable."
+              },
+              {
+                "identity": "doKeyword",
+                "text": "Separates a loop or selection header from its body."
+              },
+              {
+                "identity": "endFor",
+                "text": "Closes the controlled iteration."
+              }
+            ],
+            "purpose": "To introduces the final bound, and step allows an explicit increment.",
+            "summary": "Iterates through a sequence of values using a control variable.",
+            "title": "For loop"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "forKeyword",
+                "text": "Inicia un recorrido controlado por una variable."
+              },
+              {
+                "identity": "assignment",
+                "text": "Asigna el resultado de la derecha al designador de la izquierda."
+              },
+              {
+                "identity": "to",
+                "text": "Marca el límite final del recorrido controlado."
+              },
+              {
+                "identity": "step",
+                "text": "Introduce el incremento aplicado a la variable de control."
+              },
+              {
+                "identity": "doKeyword",
+                "text": "Separa la cabecera del bucle o selección de su cuerpo."
+              },
+              {
+                "identity": "endFor",
+                "text": "Cierra el recorrido controlado."
+              }
+            ],
+            "purpose": "Hasta introduce el límite final y Con Paso permite declarar el incremento.",
+            "summary": "Recorre una secuencia de valores mediante una variable de control.",
+            "title": "Bucle Para"
+          }
+        },
+        "id": "help.counted-loop",
+        "identity": {
+          "id": "forLoop",
+          "kind": "construction",
+          "role": "counted_loop"
+        },
+        "tokens": [
+          {
+            "identity": "forKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "assignment",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "to",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "step",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "doKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endFor",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.SUBPROGRAM.DECLARATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "subroutine",
+                "text": "Starts a subprogram declaration with parameters."
+              },
+              {
+                "identity": "endSubroutine",
+                "text": "Closes the subprogram declaration."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separates declared names from the type they receive."
+              }
+            ],
+            "purpose": "The return type is optional, and the closing form must match the opener.",
+            "summary": "Defines a named operation with parameters and a body.",
+            "title": "Subprogram declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "subroutine",
+                "text": "Inicia una declaración de subprograma con parámetros."
+              },
+              {
+                "identity": "endSubroutine",
+                "text": "Cierra la declaración del subprograma."
+              },
+              {
+                "identity": "typeConnector",
+                "text": "Separa los nombres declarados del tipo que reciben."
+              }
+            ],
+            "purpose": "El tipo de retorno es opcional; la forma de cierre debe corresponder a la apertura.",
+            "summary": "Define una operación nombrada con parámetros y un cuerpo.",
+            "title": "Declaración de subprograma"
+          }
+        },
+        "id": "help.subprogram",
+        "identity": {
+          "id": "subprogram",
+          "kind": "construction",
+          "role": "subprogram_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "subroutine",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endSubroutine",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "typeConnector",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.SUBPROGRAM.PARAMETERS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "byReference",
+                "text": "Declares that a parameter receives a modifiable designator."
+              },
+              {
+                "identity": "byValue",
+                "text": "Declares that a parameter receives the evaluated argument value."
+              }
+            ],
+            "purpose": "Reference mode preserves the identity of the received storage.",
+            "summary": "Determines whether a parameter receives a value or a designator by reference.",
+            "title": "Parameter mode"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "byReference",
+                "text": "Declara que el parámetro recibe un designador modificable."
+              },
+              {
+                "identity": "byValue",
+                "text": "Declara que el parámetro recibe el valor evaluado del argumento."
+              }
+            ],
+            "purpose": "El modo por referencia conserva la identidad del almacenamiento recibido.",
+            "summary": "Determina si el parámetro recibe un valor o un designador por referencia.",
+            "title": "Modo del parámetro"
+          }
+        },
+        "id": "help.parameter-mode",
+        "identity": {
+          "id": "parameter",
+          "kind": "construction",
+          "role": "parameter_passing_mode"
+        },
+        "tokens": [
+          {
+            "identity": "byReference",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "byValue",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.SUBPROGRAM.RETURN",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "returnKeyword",
+                "text": "Ends a call by returning an expression when one is present."
+              }
+            ],
+            "purpose": "The return expression must agree with the subprogram return type.",
+            "summary": "Ends the current call and may produce a value.",
+            "title": "Return"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "returnKeyword",
+                "text": "Termina una llamada al devolver, si existe, una expresión."
+              }
+            ],
+            "purpose": "La expresión de retorno depende del tipo declarado por el subprograma.",
+            "summary": "Finaliza la llamada actual y puede producir un valor.",
+            "title": "Retorno"
+          }
+        },
+        "id": "help.return",
+        "identity": {
+          "id": "returnStatement",
+          "kind": "construction",
+          "role": "subprogram_return"
+        },
+        "tokens": [
+          {
+            "identity": "returnKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.DECLARATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "classKeyword",
+                "text": "Starts a class declaration."
+              },
+              {
+                "identity": "endClass",
+                "text": "Closes a class declaration."
+              }
+            ],
+            "purpose": "A class is declared outside the algorithm body.",
+            "summary": "Groups fields, methods, and constructors under a reference type.",
+            "title": "Class declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "classKeyword",
+                "text": "Inicia la declaración de una clase."
+              },
+              {
+                "identity": "endClass",
+                "text": "Cierra la declaración de una clase."
+              }
+            ],
+            "purpose": "La clase se declara fuera del cuerpo del algoritmo.",
+            "summary": "Agrupa campos, métodos y constructores bajo un tipo de referencia.",
+            "title": "Declaración de clase"
+          }
+        },
+        "id": "help.class",
+        "identity": {
+          "id": "classUnit",
+          "kind": "construction",
+          "role": "class_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "classKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endClass",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.FIELDS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Allows public access to the class member."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Restricts access to the member from its class."
+              }
+            ],
+            "purpose": "Visibility applies to the members that the grammar allows it to modify.",
+            "summary": "Controls where a class member can be accessed from.",
+            "title": "Member visibility"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "publicVisibility",
+                "text": "Permite el acceso público al miembro de clase."
+              },
+              {
+                "identity": "privateVisibility",
+                "text": "Restringe el acceso al miembro desde su clase."
+              }
+            ],
+            "purpose": "La visibilidad afecta a los miembros que la gramática permite modificar.",
+            "summary": "Controla desde dónde puede accederse a un miembro de clase.",
+            "title": "Visibilidad del miembro"
+          }
+        },
+        "id": "help.visibility",
+        "identity": {
+          "id": "visibility",
+          "kind": "construction",
+          "role": "member_visibility"
+        },
+        "tokens": [
+          {
+            "identity": "publicVisibility",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "privateVisibility",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.METHODS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "method",
+                "text": "Starts a class member that is invoked as a method."
+              },
+              {
+                "identity": "endMethod",
+                "text": "Closes a method or constructor body."
+              }
+            ],
+            "purpose": "A method has parameters, a body, and its own closing form.",
+            "summary": "Declares an operation associated with a class.",
+            "title": "Class method"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "method",
+                "text": "Inicia un miembro de clase que se invoca como método."
+              },
+              {
+                "identity": "endMethod",
+                "text": "Cierra el cuerpo de un método o constructor."
+              }
+            ],
+            "purpose": "El método tiene parámetros, cuerpo y un cierre propio.",
+            "summary": "Declara una operación asociada a una clase.",
+            "title": "Método de clase"
+          }
+        },
+        "id": "help.method",
+        "identity": {
+          "id": "methodMember",
+          "kind": "construction",
+          "role": "method_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "method",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endMethod",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.CONSTRUCTOR",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "constructor",
+                "text": "Identifies the special method that constructs an instance."
+              },
+              {
+                "identity": "method",
+                "text": "Starts a class member that is invoked as a method."
+              },
+              {
+                "identity": "endMethod",
+                "text": "Closes a method or constructor body."
+              }
+            ],
+            "purpose": "A constructor declares neither a return type nor a visibility modifier.",
+            "summary": "Initializes an instance when it is created.",
+            "title": "Constructor"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "constructor",
+                "text": "Identifica el método especial que construye una instancia."
+              },
+              {
+                "identity": "method",
+                "text": "Inicia un miembro de clase que se invoca como método."
+              },
+              {
+                "identity": "endMethod",
+                "text": "Cierra el cuerpo de un método o constructor."
+              }
+            ],
+            "purpose": "El constructor no declara tipo de retorno ni modificador de visibilidad.",
+            "summary": "Inicializa una instancia cuando se crea.",
+            "title": "Constructor"
+          }
+        },
+        "id": "help.constructor",
+        "identity": {
+          "id": "constructorMember",
+          "kind": "construction",
+          "role": "constructor_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "constructor",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "method",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endMethod",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.INHERITANCE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "inheritsFrom",
+                "text": "Declares the base class inherited by a class."
+              }
+            ],
+            "purpose": "The clause appears in the class header and does not create an instance.",
+            "summary": "Relates a class to its immediate base class.",
+            "title": "Inheritance"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "inheritsFrom",
+                "text": "Declara la clase base de la que hereda una clase."
+              }
+            ],
+            "purpose": "La cláusula aparece en la cabecera de clase y no crea una instancia.",
+            "summary": "Relaciona una clase con su clase base inmediata.",
+            "title": "Herencia"
+          }
+        },
+        "id": "help.inheritance",
+        "identity": {
+          "id": "classUnit",
+          "kind": "construction",
+          "role": "inheritance_clause"
+        },
+        "tokens": [
+          {
+            "identity": "inheritsFrom",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.INSTANTIATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "newInstance",
+                "text": "Requests a new instance of the selected class."
+              }
+            ],
+            "purpose": "The expression includes the class name and constructor arguments.",
+            "summary": "Constructs an object of the class and runs its constructor.",
+            "title": "Creating an instance"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "newInstance",
+                "text": "Solicita una instancia nueva de la clase indicada."
+              }
+            ],
+            "purpose": "La expresión incluye el nombre de clase y los argumentos del constructor.",
+            "summary": "Construye un objeto de la clase y ejecuta su constructor.",
+            "title": "Crear una instancia"
+          }
+        },
+        "id": "help.instantiation",
+        "identity": {
+          "id": "instantiation",
+          "kind": "construction",
+          "role": "object_creation"
+        },
+        "tokens": [
+          {
+            "identity": "newInstance",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.SELF-AND-SUPER",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "thisObject",
+                "text": "Names the instance object executing the method."
+              },
+              {
+                "identity": "superClass",
+                "text": "Accesses a member of the immediate base class."
+              }
+            ],
+            "purpose": "Super refers to the immediate base, and this refers to the object executing the method.",
+            "summary": "Selects a member from the current instance or its base class.",
+            "title": "Instance or base receiver"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "thisObject",
+                "text": "Nombra el objeto de la instancia que ejecuta el método."
+              },
+              {
+                "identity": "superClass",
+                "text": "Accede a un miembro de la clase base inmediata."
+              }
+            ],
+            "purpose": "Super refiere a la base inmediata y Este al objeto que ejecuta el método.",
+            "summary": "Selecciona un miembro desde la instancia actual o desde su clase base.",
+            "title": "Receptor de instancia o base"
+          }
+        },
+        "id": "help.object-context",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "instance_or_base_receiver"
+        },
+        "tokens": [
+          {
+            "identity": "thisObject",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "superClass",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "dot",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.CLASS.MEMBER-ACCESS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "The receiver and member name are separated by a dot.",
+            "summary": "Selects an object member by name.",
+            "title": "Member access"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "El receptor y el nombre del miembro se separan con el punto.",
+            "summary": "Selecciona un miembro de un objeto mediante su nombre.",
+            "title": "Acceso a miembro"
+          }
+        },
+        "id": "help.member-access",
+        "identity": {
+          "id": "postfix",
+          "kind": "role",
+          "role": "named_member_access"
+        },
+        "tokens": [
+          {
+            "identity": "dot",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.ARRAY.ACCESS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "Indices appear inside one pair of brackets.",
+            "summary": "Selects an element using one or more index expressions.",
+            "title": "Indexed access"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "Los índices se escriben en un único par de corchetes.",
+            "summary": "Selecciona un elemento usando una o más expresiones índice.",
+            "title": "Acceso indexado"
+          }
+        },
+        "id": "help.array-access",
+        "identity": {
+          "id": "postfix",
+          "kind": "role",
+          "role": "indexed_access"
+        },
+        "tokens": [
+          {
+            "identity": "leftBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "rightBracket",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TYPES.BOOLEAN",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "booleanTrue",
+                "text": "Produces the logical true value."
+              },
+              {
+                "identity": "booleanFalse",
+                "text": "Produces the logical false value."
+              }
+            ],
+            "purpose": "True and false are logical values; quotation marks delimit text or character literals.",
+            "summary": "Introduces values written directly in the program.",
+            "title": "Literal values"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "booleanTrue",
+                "text": "Produce el valor lógico verdadero."
+              },
+              {
+                "identity": "booleanFalse",
+                "text": "Produce el valor lógico falso."
+              }
+            ],
+            "purpose": "Verdadero y Falso son valores lógicos; las comillas delimitan literales de texto o carácter.",
+            "summary": "Introduce valores escritos directamente en el programa.",
+            "title": "Valores literales"
+          }
+        },
+        "id": "help.literal",
+        "identity": {
+          "id": "literal",
+          "kind": "role",
+          "role": "literal_value"
+        },
+        "tokens": [
+          {
+            "identity": "booleanTrue",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "booleanFalse",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "quote",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.SUBPROGRAM.CALL",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "Arguments are comma-separated, and the list may be empty.",
+            "summary": "Groups the expressions received by an invocation.",
+            "title": "Call arguments"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "Los argumentos se separan con coma y la lista puede estar vacía.",
+            "summary": "Agrupa las expresiones que recibe una invocación.",
+            "title": "Argumentos de llamada"
+          }
+        },
+        "id": "help.argument-list",
+        "identity": {
+          "id": "arguments",
+          "kind": "construction",
+          "role": "invocation_arguments"
+        },
+        "tokens": [
+          {
+            "identity": "leftParenthesis",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "rightParenthesis",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "comma",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.SUBPROGRAM.CALL",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "A call used as a statement may discard a return value.",
+            "summary": "Invokes a named operation with arguments.",
+            "title": "Subprogram call"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "Una llamada como sentencia puede descartar un valor de retorno.",
+            "summary": "Invoca una operación nombrada con argumentos.",
+            "title": "Llamada a subprograma"
+          }
+        },
+        "id": "help.subprogram-call",
+        "identity": {
+          "id": "callStatement",
+          "kind": "construction",
+          "role": "subprogram_invocation"
+        },
+        "tokens": [
+          {
+            "identity": "leftParenthesis",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "rightParenthesis",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "comma",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.STMT.TERMINATION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "A line ending may also terminate a statement under the active strictness.",
+            "summary": "Delimits the end of a simple statement in strict mode.",
+            "title": "Simple statement ending"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [],
+            "purpose": "El salto de línea también puede terminar una sentencia según el rigor activo.",
+            "summary": "Delimita el final de una sentencia simple en rigor estricto.",
+            "title": "Fin de sentencia simple"
+          }
+        },
+        "id": "help.terminator",
+        "identity": {
+          "id": "terminator",
+          "kind": "construction",
+          "role": "simple_statement_termination"
+        },
+        "tokens": [
+          {
+            "identity": "semicolon",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.OPS.ARITHMETIC",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "plus",
+                "text": "Adds two values or preserves the sign of one value."
+              },
+              {
+                "identity": "minus",
+                "text": "Subtracts two values or reverses the sign of one value."
+              },
+              {
+                "identity": "multiply",
+                "text": "Multiplies two numeric values."
+              },
+              {
+                "identity": "divide",
+                "text": "Divides numeric values and produces a real result."
+              },
+              {
+                "identity": "integerDivide",
+                "text": "Divides integers and keeps only the integer quotient."
+              },
+              {
+                "identity": "modulo",
+                "text": "Returns the remainder of an integer division."
+              }
+            ],
+            "purpose": "Div and mod require integer operands; ordinary division produces a real value.",
+            "summary": "Combines numeric operands by addition, subtraction, product, quotient, or remainder.",
+            "title": "Arithmetic operations"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "plus",
+                "text": "Suma dos valores o conserva el signo de un valor."
+              },
+              {
+                "identity": "minus",
+                "text": "Resta dos valores o invierte el signo de un valor."
+              },
+              {
+                "identity": "multiply",
+                "text": "Multiplica dos valores numéricos."
+              },
+              {
+                "identity": "divide",
+                "text": "Divide valores numéricos y produce un resultado real."
+              },
+              {
+                "identity": "integerDivide",
+                "text": "Divide enteros y conserva solo el cociente entero."
+              },
+              {
+                "identity": "modulo",
+                "text": "Obtiene el residuo de una división entera."
+              }
+            ],
+            "purpose": "Div y mod requieren operandos enteros; la división ordinaria produce un real.",
+            "summary": "Combina operandos numéricos mediante suma, resta, producto, cociente o residuo.",
+            "title": "Operaciones aritméticas"
+          }
+        },
+        "id": "help.arithmetic",
+        "identity": {
+          "id": "addition",
+          "kind": "role",
+          "role": "binary_arithmetic"
+        },
+        "tokens": [
+          {
+            "identity": "plus",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "minus",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "multiply",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "divide",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "integerDivide",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "modulo",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.OPS.POWER",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "power",
+                "text": "Raises a base to an exponent."
+              }
+            ],
+            "purpose": "Power associates to the right.",
+            "summary": "Raises a base expression to an exponent expression.",
+            "title": "Power"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "power",
+                "text": "Eleva una base a un exponente."
+              }
+            ],
+            "purpose": "La potencia se asocia hacia la derecha.",
+            "summary": "Eleva una expresión base a otra expresión exponente.",
+            "title": "Potencia"
+          }
+        },
+        "id": "help.power",
+        "identity": {
+          "id": "powerExpression",
+          "kind": "role",
+          "role": "exponentiation"
+        },
+        "tokens": [
+          {
+            "identity": "power",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.OPS.COMPARISON",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "lessThan",
+                "text": "Compares whether the left value is less than the right value."
+              },
+              {
+                "identity": "lessThanOrEqual",
+                "text": "Compares whether the left value is no greater than the right value."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Compares whether the left value is greater than the right value."
+              },
+              {
+                "identity": "greaterThanOrEqual",
+                "text": "Compares whether the left value is no less than the right value."
+              },
+              {
+                "identity": "equal",
+                "text": "Checks whether two values are equal."
+              },
+              {
+                "identity": "notEqual",
+                "text": "Checks whether two values are different."
+              }
+            ],
+            "purpose": "Equality and ordering are distinct from assignment.",
+            "summary": "Relates two values and produces a logical result.",
+            "title": "Comparisons"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "lessThan",
+                "text": "Compara si el valor izquierdo es menor que el derecho."
+              },
+              {
+                "identity": "lessThanOrEqual",
+                "text": "Compara si el valor izquierdo no supera al derecho."
+              },
+              {
+                "identity": "greaterThan",
+                "text": "Compara si el valor izquierdo es mayor que el derecho."
+              },
+              {
+                "identity": "greaterThanOrEqual",
+                "text": "Compara si el valor izquierdo no es menor que el derecho."
+              },
+              {
+                "identity": "equal",
+                "text": "Comprueba si dos valores son iguales."
+              },
+              {
+                "identity": "notEqual",
+                "text": "Comprueba si dos valores son distintos."
+              }
+            ],
+            "purpose": "Igualdad y orden son relaciones distintas de la asignación.",
+            "summary": "Relaciona dos valores y produce un resultado lógico.",
+            "title": "Comparaciones"
+          }
+        },
+        "id": "help.comparison",
+        "identity": {
+          "id": "equality",
+          "kind": "role",
+          "role": "value_comparison"
+        },
+        "tokens": [
+          {
+            "identity": "lessThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "lessThanOrEqual",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "greaterThan",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "greaterThanOrEqual",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "equal",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "notEqual",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.OPS.LOGICAL",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "and",
+                "text": "Produces true only when both operands are true."
+              },
+              {
+                "identity": "or",
+                "text": "Produces true when at least one operand is true."
+              }
+            ],
+            "purpose": "And and or have distinct precedence and group binary operators.",
+            "summary": "Combines conditions into a larger logical expression.",
+            "title": "Logical combination"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "and",
+                "text": "Produce verdadero solo cuando ambos operandos son verdaderos."
+              },
+              {
+                "identity": "or",
+                "text": "Produce verdadero cuando al menos un operando es verdadero."
+              }
+            ],
+            "purpose": "Y y O tienen precedencias distintas y agrupan operadores binarios.",
+            "summary": "Combina condiciones para construir una expresión lógica mayor.",
+            "title": "Combinación lógica"
+          }
+        },
+        "id": "help.logical",
+        "identity": {
+          "id": "disjunction",
+          "kind": "role",
+          "role": "logical_combination"
+        },
+        "tokens": [
+          {
+            "identity": "and",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "or",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.OPS.PRECEDENCE",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "plus",
+                "text": "Adds two values or preserves the sign of one value."
+              },
+              {
+                "identity": "minus",
+                "text": "Subtracts two values or reverses the sign of one value."
+              },
+              {
+                "identity": "not",
+                "text": "Reverses the logical value of its operand."
+              }
+            ],
+            "purpose": "Unary use is distinguished from binary use by its syntactic position.",
+            "summary": "Acts on one operand to preserve or reverse its sign, or negate its logical value.",
+            "title": "Unary operators"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "plus",
+                "text": "Suma dos valores o conserva el signo de un valor."
+              },
+              {
+                "identity": "minus",
+                "text": "Resta dos valores o invierte el signo de un valor."
+              },
+              {
+                "identity": "not",
+                "text": "Invierte el valor lógico de su operando."
+              }
+            ],
+            "purpose": "El uso unario se distingue del uso binario por la posición sintáctica.",
+            "summary": "Actúa sobre un solo operando para conservar o invertir su signo, o negar su valor lógico.",
+            "title": "Operadores unarios"
+          }
+        },
+        "id": "help.unary",
+        "identity": {
+          "id": "unary",
+          "kind": "role",
+          "role": "unary_sign_or_negation"
+        },
+        "tokens": [
+          {
+            "identity": "plus",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "minus",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "not",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.MATH",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "squareRoot",
+                "text": "Calculates the square root of the numeric argument."
+              },
+              {
+                "identity": "absoluteValue",
+                "text": "Returns the nonnegative magnitude of the argument."
+              },
+              {
+                "identity": "naturalLogarithm",
+                "text": "Calculates the natural logarithm of the argument."
+              },
+              {
+                "identity": "exponential",
+                "text": "Calculates the exponential function of the argument."
+              },
+              {
+                "identity": "sine",
+                "text": "Calculates the sine of the angular argument in radians."
+              },
+              {
+                "identity": "cosine",
+                "text": "Calculates the cosine of the angular argument in radians."
+              },
+              {
+                "identity": "arcTangent",
+                "text": "Calculates the argument arctangent and returns radians."
+              }
+            ],
+            "purpose": "Each function keeps the identity and signature declared by the library.",
+            "summary": "Calculates mathematical transformations from numeric arguments.",
+            "title": "Mathematical functions"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "squareRoot",
+                "text": "Calcula la raíz cuadrada del argumento numérico."
+              },
+              {
+                "identity": "absoluteValue",
+                "text": "Devuelve la magnitud no negativa del argumento."
+              },
+              {
+                "identity": "naturalLogarithm",
+                "text": "Calcula el logaritmo natural del argumento."
+              },
+              {
+                "identity": "exponential",
+                "text": "Calcula la función exponencial del argumento."
+              },
+              {
+                "identity": "sine",
+                "text": "Calcula el seno del argumento angular en radianes."
+              },
+              {
+                "identity": "cosine",
+                "text": "Calcula el coseno del argumento angular en radianes."
+              },
+              {
+                "identity": "arcTangent",
+                "text": "Calcula el arco tangente del argumento y devuelve radianes."
+              }
+            ],
+            "purpose": "Cada función conserva su identidad y firma declaradas por la biblioteca.",
+            "summary": "Calcula transformaciones matemáticas a partir de argumentos numéricos.",
+            "title": "Funciones matemáticas"
+          }
+        },
+        "id": "help.builtin-math",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "mathematical_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "squareRoot",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "absoluteValue",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "naturalLogarithm",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "exponential",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "sine",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "cosine",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "arcTangent",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.ROUNDING",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "truncate",
+                "text": "Discards the fractional part and returns the resulting integer."
+              },
+              {
+                "identity": "round",
+                "text": "Rounds the real value to the nearest integer under the defined rule."
+              }
+            ],
+            "purpose": "The exact rounding rule belongs to the function contract.",
+            "summary": "Converts real values to integers by truncation or rounding.",
+            "title": "Integer rounding"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "truncate",
+                "text": "Descarta la parte fraccionaria y devuelve el entero resultante."
+              },
+              {
+                "identity": "round",
+                "text": "Redondea el valor real al entero más cercano según la regla vigente."
+              }
+            ],
+            "purpose": "La regla exacta de redondeo pertenece al contrato de la función.",
+            "summary": "Convierte valores reales en enteros mediante truncamiento o redondeo.",
+            "title": "Redondeo a entero"
+          }
+        },
+        "id": "help.builtin-rounding",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "integer_conversion_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "truncate",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "round",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.RANDOM",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "random",
+                "text": "Obtains a pseudorandom value from the process generator."
+              }
+            ],
+            "purpose": "The function takes no arguments.",
+            "summary": "Requests a sample from the process pseudorandom generator.",
+            "title": "Pseudorandom value"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "random",
+                "text": "Obtiene un valor seudoaleatorio según el generador del proceso."
+              }
+            ],
+            "purpose": "La función no recibe argumentos.",
+            "summary": "Solicita una muestra al generador seudoaleatorio del proceso.",
+            "title": "Valor seudoaleatorio"
+          }
+        },
+        "id": "help.builtin-random",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "random_value_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "random",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.CONVERSION",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "toText",
+                "text": "Converts a primitive value to its textual representation."
+              },
+              {
+                "identity": "textToInteger",
+                "text": "Converts text representing an integer to an integer value."
+              },
+              {
+                "identity": "textToReal",
+                "text": "Converts text representing a real to a real value."
+              }
+            ],
+            "purpose": "Each conversion declares its own input and return types.",
+            "summary": "Converts primitive values between text and numeric types.",
+            "title": "Text conversions"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "toText",
+                "text": "Convierte un valor primitivo a su representación textual."
+              },
+              {
+                "identity": "textToInteger",
+                "text": "Convierte texto que representa un entero a un valor entero."
+              },
+              {
+                "identity": "textToReal",
+                "text": "Convierte texto que representa un real a un valor real."
+              }
+            ],
+            "purpose": "Cada conversión declara un tipo de entrada y otro de retorno propios.",
+            "summary": "Transforma valores primitivos entre texto y tipos numéricos.",
+            "title": "Conversiones de texto"
+          }
+        },
+        "id": "help.builtin-conversion",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "text_conversion_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "toText",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "textToInteger",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "textToReal",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.TEXT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "length",
+                "text": "Counts the characters in a string."
+              },
+              {
+                "identity": "characterAt",
+                "text": "Gets the character at the selected position."
+              },
+              {
+                "identity": "characterCode",
+                "text": "Gets the numeric code of the character."
+              },
+              {
+                "identity": "characterFromCode",
+                "text": "Builds a character from its numeric code."
+              }
+            ],
+            "purpose": "Positions and codes follow the text contract.",
+            "summary": "Queries a string length, characters, and character codes.",
+            "title": "Text inspection"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "length",
+                "text": "Cuenta los caracteres de una cadena."
+              },
+              {
+                "identity": "characterAt",
+                "text": "Obtiene el carácter en la posición indicada."
+              },
+              {
+                "identity": "characterCode",
+                "text": "Obtiene el código numérico del carácter."
+              },
+              {
+                "identity": "characterFromCode",
+                "text": "Construye un carácter a partir de su código numérico."
+              }
+            ],
+            "purpose": "Las posiciones y los códigos siguen las reglas del contrato de texto.",
+            "summary": "Consulta longitud, caracteres y códigos de una cadena.",
+            "title": "Consulta de texto"
+          }
+        },
+        "id": "help.builtin-text",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "text_inspection_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "length",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "characterAt",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "characterCode",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "characterFromCode",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LIB.CORE.COPY",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "shallowCopy",
+                "text": "Creates a shallow copy of the supplied instance."
+              }
+            ],
+            "purpose": "The copy retains the class of the first argument.",
+            "summary": "Creates a new instance with the shallow state of the supplied instance.",
+            "title": "Shallow copy"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [],
+            "parts": [
+              {
+                "identity": "shallowCopy",
+                "text": "Crea una copia superficial de la instancia recibida."
+              }
+            ],
+            "purpose": "La copia conserva la clase del primer argumento.",
+            "summary": "Crea una instancia nueva con el estado superficial de la instancia recibida.",
+            "title": "Copia superficial"
+          }
+        },
+        "id": "help.builtin-copy",
+        "identity": {
+          "id": "primary",
+          "kind": "role",
+          "role": "class_copy_builtin"
+        },
+        "tokens": [
+          {
+            "identity": "shallowCopy",
+            "source": {
+              "element": "D1",
+              "specification": "LIB.MODEL",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
-    "format": "help-catalog/1"
+    "format": "help-catalog/1",
+    "inventory": {
+      "operators": [
+        "assignment",
+        "plus",
+        "minus",
+        "multiply",
+        "divide",
+        "integerDivide",
+        "modulo",
+        "power",
+        "lessThan",
+        "lessThanOrEqual",
+        "greaterThan",
+        "greaterThanOrEqual",
+        "equal",
+        "notEqual",
+        "and",
+        "or",
+        "not"
+      ],
+      "roles": [
+        {
+          "identity": {
+            "id": "algorithm",
+            "kind": "construction",
+            "role": "program_entry"
+          },
+          "productions": [
+            "program",
+            "algorithmUnit"
+          ],
+          "tokens": [
+            "algorithm",
+            "endAlgorithm"
+          ]
+        },
+        {
+          "identity": {
+            "id": "declaration",
+            "kind": "construction",
+            "role": "variable_declaration"
+          },
+          "productions": [
+            "declaration"
+          ],
+          "tokens": [
+            "declare",
+            "typeConnector",
+            "integerType",
+            "realType",
+            "booleanType",
+            "characterType",
+            "stringType"
+          ]
+        },
+        {
+          "identity": {
+            "id": "dimensionDeclaration",
+            "kind": "construction",
+            "role": "array_declaration"
+          },
+          "productions": [
+            "dimensionDeclaration"
+          ],
+          "tokens": [
+            "dimension",
+            "typeConnector",
+            "leftBracket",
+            "rightBracket"
+          ]
+        },
+        {
+          "identity": {
+            "id": "assignmentStatement",
+            "kind": "construction",
+            "role": "value_assignment"
+          },
+          "productions": [
+            "assignmentStatement"
+          ],
+          "tokens": [
+            "assignment"
+          ]
+        },
+        {
+          "identity": {
+            "id": "input",
+            "kind": "construction",
+            "role": "designator_input"
+          },
+          "productions": [
+            "input"
+          ],
+          "tokens": [
+            "read"
+          ]
+        },
+        {
+          "identity": {
+            "id": "output",
+            "kind": "construction",
+            "role": "expression_output"
+          },
+          "productions": [
+            "output"
+          ],
+          "tokens": [
+            "write",
+            "withoutNewline"
+          ]
+        },
+        {
+          "identity": {
+            "id": "conditional",
+            "kind": "construction",
+            "role": "conditional_branch"
+          },
+          "productions": [
+            "conditional"
+          ],
+          "tokens": [
+            "ifKeyword",
+            "then",
+            "elseKeyword",
+            "endIf"
+          ]
+        },
+        {
+          "identity": {
+            "id": "switch",
+            "kind": "construction",
+            "role": "case_selection"
+          },
+          "productions": [
+            "switch"
+          ],
+          "tokens": [
+            "switchKeyword",
+            "defaultCase",
+            "endSwitch",
+            "branchSeparator"
+          ]
+        },
+        {
+          "identity": {
+            "id": "whileLoop",
+            "kind": "construction",
+            "role": "precondition_loop"
+          },
+          "productions": [
+            "whileLoop"
+          ],
+          "tokens": [
+            "whileKeyword",
+            "doKeyword",
+            "endWhile"
+          ]
+        },
+        {
+          "identity": {
+            "id": "repeatLoop",
+            "kind": "construction",
+            "role": "postcondition_loop"
+          },
+          "productions": [
+            "repeatLoop"
+          ],
+          "tokens": [
+            "repeat",
+            "until"
+          ]
+        },
+        {
+          "identity": {
+            "id": "forLoop",
+            "kind": "construction",
+            "role": "counted_loop"
+          },
+          "productions": [
+            "forLoop"
+          ],
+          "tokens": [
+            "forKeyword",
+            "assignment",
+            "to",
+            "step",
+            "doKeyword",
+            "endFor"
+          ]
+        },
+        {
+          "identity": {
+            "id": "subprogram",
+            "kind": "construction",
+            "role": "subprogram_declaration"
+          },
+          "productions": [
+            "subprogram"
+          ],
+          "tokens": [
+            "subroutine",
+            "endSubroutine",
+            "typeConnector"
+          ]
+        },
+        {
+          "identity": {
+            "id": "parameter",
+            "kind": "construction",
+            "role": "parameter_passing_mode"
+          },
+          "productions": [
+            "parameter"
+          ],
+          "tokens": [
+            "byReference",
+            "byValue"
+          ]
+        },
+        {
+          "identity": {
+            "id": "returnStatement",
+            "kind": "construction",
+            "role": "subprogram_return"
+          },
+          "productions": [
+            "returnStatement"
+          ],
+          "tokens": [
+            "returnKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "id": "classUnit",
+            "kind": "construction",
+            "role": "class_declaration"
+          },
+          "productions": [
+            "classUnit"
+          ],
+          "tokens": [
+            "classKeyword",
+            "endClass"
+          ]
+        },
+        {
+          "identity": {
+            "id": "visibility",
+            "kind": "construction",
+            "role": "member_visibility"
+          },
+          "productions": [
+            "visibility"
+          ],
+          "tokens": [
+            "publicVisibility",
+            "privateVisibility"
+          ]
+        },
+        {
+          "identity": {
+            "id": "methodMember",
+            "kind": "construction",
+            "role": "method_declaration"
+          },
+          "productions": [
+            "methodMember"
+          ],
+          "tokens": [
+            "method",
+            "endMethod"
+          ]
+        },
+        {
+          "identity": {
+            "id": "constructorMember",
+            "kind": "construction",
+            "role": "constructor_declaration"
+          },
+          "productions": [
+            "constructorMember"
+          ],
+          "tokens": [
+            "constructor",
+            "method",
+            "endMethod"
+          ]
+        },
+        {
+          "identity": {
+            "id": "classUnit",
+            "kind": "construction",
+            "role": "inheritance_clause"
+          },
+          "productions": [
+            "classUnit"
+          ],
+          "tokens": [
+            "inheritsFrom"
+          ]
+        },
+        {
+          "identity": {
+            "id": "instantiation",
+            "kind": "construction",
+            "role": "object_creation"
+          },
+          "productions": [
+            "instantiation"
+          ],
+          "tokens": [
+            "newInstance"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "instance_or_base_receiver"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "thisObject",
+            "superClass",
+            "dot"
+          ]
+        },
+        {
+          "identity": {
+            "id": "postfix",
+            "kind": "role",
+            "role": "named_member_access"
+          },
+          "productions": [
+            "postfix"
+          ],
+          "tokens": [
+            "dot"
+          ]
+        },
+        {
+          "identity": {
+            "id": "postfix",
+            "kind": "role",
+            "role": "indexed_access"
+          },
+          "productions": [
+            "postfix",
+            "dimensioned"
+          ],
+          "tokens": [
+            "leftBracket",
+            "rightBracket"
+          ]
+        },
+        {
+          "identity": {
+            "id": "literal",
+            "kind": "role",
+            "role": "literal_value"
+          },
+          "productions": [
+            "literal"
+          ],
+          "tokens": [
+            "booleanTrue",
+            "booleanFalse",
+            "quote"
+          ]
+        },
+        {
+          "identity": {
+            "id": "arguments",
+            "kind": "construction",
+            "role": "invocation_arguments"
+          },
+          "productions": [
+            "arguments"
+          ],
+          "tokens": [
+            "leftParenthesis",
+            "rightParenthesis",
+            "comma"
+          ]
+        },
+        {
+          "identity": {
+            "id": "callStatement",
+            "kind": "construction",
+            "role": "subprogram_invocation"
+          },
+          "productions": [
+            "callStatement"
+          ],
+          "tokens": [
+            "leftParenthesis",
+            "rightParenthesis",
+            "comma"
+          ]
+        },
+        {
+          "identity": {
+            "id": "terminator",
+            "kind": "construction",
+            "role": "simple_statement_termination"
+          },
+          "productions": [
+            "terminator"
+          ],
+          "tokens": [
+            "semicolon"
+          ]
+        },
+        {
+          "identity": {
+            "id": "addition",
+            "kind": "role",
+            "role": "binary_arithmetic"
+          },
+          "productions": [
+            "addition",
+            "multiplication"
+          ],
+          "tokens": [
+            "plus",
+            "minus",
+            "multiply",
+            "divide",
+            "integerDivide",
+            "modulo"
+          ]
+        },
+        {
+          "identity": {
+            "id": "powerExpression",
+            "kind": "role",
+            "role": "exponentiation"
+          },
+          "productions": [
+            "powerExpression"
+          ],
+          "tokens": [
+            "power"
+          ]
+        },
+        {
+          "identity": {
+            "id": "equality",
+            "kind": "role",
+            "role": "value_comparison"
+          },
+          "productions": [
+            "equality",
+            "ordering"
+          ],
+          "tokens": [
+            "lessThan",
+            "lessThanOrEqual",
+            "greaterThan",
+            "greaterThanOrEqual",
+            "equal",
+            "notEqual"
+          ]
+        },
+        {
+          "identity": {
+            "id": "disjunction",
+            "kind": "role",
+            "role": "logical_combination"
+          },
+          "productions": [
+            "disjunction",
+            "conjunction"
+          ],
+          "tokens": [
+            "and",
+            "or"
+          ]
+        },
+        {
+          "identity": {
+            "id": "unary",
+            "kind": "role",
+            "role": "unary_sign_or_negation"
+          },
+          "productions": [
+            "unary"
+          ],
+          "tokens": [
+            "plus",
+            "minus",
+            "not"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "mathematical_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "squareRoot",
+            "absoluteValue",
+            "naturalLogarithm",
+            "exponential",
+            "sine",
+            "cosine",
+            "arcTangent"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "integer_conversion_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "truncate",
+            "round"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "random_value_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "random"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "text_conversion_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "toText",
+            "textToInteger",
+            "textToReal"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "text_inspection_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "length",
+            "characterAt",
+            "characterCode",
+            "characterFromCode"
+          ]
+        },
+        {
+          "identity": {
+            "id": "primary",
+            "kind": "role",
+            "role": "class_copy_builtin"
+          },
+          "productions": [
+            "primary"
+          ],
+          "tokens": [
+            "shallowCopy"
+          ]
+        }
+      ]
+    }
   },
   "traceEvents": {
     "call": {

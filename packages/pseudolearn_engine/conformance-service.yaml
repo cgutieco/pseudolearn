@@ -35,6 +35,11 @@
       "resuelve_en": "catalogo-ayuda-operativo"
     },
     {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R4",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.FORMAT.STYLE@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

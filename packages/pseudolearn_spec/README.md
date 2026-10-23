@@ -87,6 +87,17 @@ formas y firmas permanecen en vocabulario, gramática y biblioteca. `see_validat
 esquema del recurso y sus referencias versionadas; `see_export` lo extrae sin convertirlo en una
 dependencia de documentación transitoria.
 
+El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
+expresión y asignación, e incorporadas de `functions`. Las 38 agrupaciones pedagógicas se declaran
+como datos con sus producciones fuente; no se infieren de la EBNF. Las 47 palabras reservadas, 17
+operadores y 18 incorporadas se explican en el contexto de una ficha mediante partes es/en. La matriz
+contiene 143 filas identidad/rol: 52 asociaciones de keyword, 20 de operador, 18 de incorporada,
+15 de token no alfabético y 38 de rol. Los alias conservan la identidad de su entrada fuente y no generan filas
+adicionales. Las fichas se
+redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el inventario se revisan
+texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
+a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
+
 Las peticiones de ejecución del corpus fijan explícitamente 1 000 marcos cuando el caso no declara profundidad, para comparar los sujetos bajo el mismo límite. Un límite declarado prevalece. Los valores por omisión de cada producto se verifican en sus pruebas de anfitrión; no se infieren de esta configuración experimental.
 
 Problema: una regla estructural no produce un caso de ejecución. Elección: los vínculos con verificación `estructural` registran una observación del validador con hash del contrato, después de ejecutar `see validate`; se rechaza aplicarla a una regla que no declara verificación estructural. El esquema de límites y la cobertura de RI usan esta evidencia. Una revisión humana no se convierte en evidencia estructural automática.
