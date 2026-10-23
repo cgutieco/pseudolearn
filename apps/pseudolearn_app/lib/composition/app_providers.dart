@@ -5,6 +5,7 @@ import '../application/dashboard/dashboard_loader.dart';
 import '../application/diagram/diagram_cubit.dart';
 import '../application/diagram/diagram_projection.dart';
 import '../application/editor/editor_cubit.dart';
+import '../application/editor/help/syntax_help_cubit.dart';
 import '../application/execution/execution_cubit.dart';
 import '../application/export/export_cubit.dart';
 import '../application/knowledge/bank/exercise_bank_cubit.dart';
@@ -48,6 +49,7 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
       ),
     ),
     createEditorProvider(dependencies),
+    createSyntaxHelpProvider(dependencies),
     BlocProvider<ExecutionCubit>(create: (_) => execution),
     BlocProvider<DiagramCubit>(
       create: (_) => DiagramCubit(
@@ -81,6 +83,14 @@ BlocProvider<EditorCubit> createEditorProvider(AppDependencies dependencies) {
       textEntry: dependencies.textEntryModality,
       clock: dependencies.clock,
     ),
+  );
+}
+
+BlocProvider<SyntaxHelpCubit> createSyntaxHelpProvider(
+  AppDependencies dependencies,
+) {
+  return BlocProvider<SyntaxHelpCubit>(
+    create: (_) => SyntaxHelpCubit(source: dependencies.syntaxHelpSource),
   );
 }
 

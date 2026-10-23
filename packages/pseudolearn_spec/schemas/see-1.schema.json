@@ -1555,7 +1555,9 @@
                 "completion",
                 "edit_assistance",
                 "accept_candidate",
-                "template_navigation"
+                "template_navigation",
+                "help",
+                "help_revision"
               ]
             },
             "input": {

@@ -3,6 +3,7 @@ import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 import 'see_app_assist.dart';
 import 'see_app_boundary.dart';
 import 'see_app_completion.dart';
+import 'see_app_help.dart';
 import 'see_app_pace.dart';
 import 'see_app_snapshot.dart';
 
@@ -22,6 +23,8 @@ Future<Map<String, Object?>> handleAppScenario(
       transport,
       input,
     ),
+    'help' => await runHelpScenario(transport, input),
+    'help_revision' => await runHelpRevisionScenario(transport, input),
     _ => {'error': 'unsupported_scenario'},
   };
   return {'kind': 'app', 'app': result};

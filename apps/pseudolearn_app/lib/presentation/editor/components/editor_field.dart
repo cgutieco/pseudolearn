@@ -16,6 +16,7 @@ final class EditorField extends StatelessWidget {
   final ValueChanged<EditorKey> onKeyPressed;
   final bool assistanceEnabled;
   final bool usesSuggestionBar;
+  final VoidCallback? onHelpRequested;
 
   const EditorField({
     super.key,
@@ -27,6 +28,7 @@ final class EditorField extends StatelessWidget {
     required this.onKeyPressed,
     this.assistanceEnabled = false,
     this.usesSuggestionBar = false,
+    this.onHelpRequested,
   });
 
   @override
@@ -35,6 +37,7 @@ final class EditorField extends StatelessWidget {
       onIndent: () => onKeyPressed(const EditorKey.indent()),
       onDedent: () => onKeyPressed(const EditorKey.dedent()),
       onReleaseFocus: focusNode.unfocus,
+      onHelp: onHelpRequested,
       child: EditorAssistLayer(
         controller: controller,
         focusNode: focusNode,
@@ -51,6 +54,7 @@ final class EditorField extends StatelessWidget {
               : null,
           isReadOnly: executionState.isInFlight,
           onChanged: onCodeChanged,
+          onExplain: onHelpRequested,
         ),
       ),
     );

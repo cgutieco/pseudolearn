@@ -72,6 +72,24 @@ vinculos:
   - regla: APP.EDITOR.COMPLETION@1.0.0#R7
     verificacion: ejecutor
     estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R8
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R9
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R10
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R11
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R12
+    verificacion: ejecutor
+    estado: cumple
+  - regla: APP.EDITOR.COMPLETION@1.0.0#R13
+    verificacion: ejecutor
+    estado: cumple
   - regla: API.PROGRAM.VIEW@1.0.0#R1
     verificacion: ejecutor
     estado: cumple

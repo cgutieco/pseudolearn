@@ -13,17 +13,23 @@ final class _ReleaseFocusIntent extends Intent {
   const _ReleaseFocusIntent();
 }
 
+final class _HelpIntent extends Intent {
+  const _HelpIntent();
+}
+
 const Map<ShortcutActivator, Intent> _editorShortcuts =
     <ShortcutActivator, Intent>{
   SingleActivator(LogicalKeyboardKey.tab): _IndentIntent(),
   SingleActivator(LogicalKeyboardKey.tab, shift: true): _DedentIntent(),
   SingleActivator(LogicalKeyboardKey.escape): _ReleaseFocusIntent(),
+  SingleActivator(LogicalKeyboardKey.f1): _HelpIntent(),
 };
 
 final class EditorKeyShortcuts extends StatelessWidget {
   final VoidCallback onIndent;
   final VoidCallback onDedent;
   final VoidCallback onReleaseFocus;
+  final VoidCallback? onHelp;
   final Widget child;
 
   const EditorKeyShortcuts({
@@ -31,6 +37,7 @@ final class EditorKeyShortcuts extends StatelessWidget {
     required this.onIndent,
     required this.onDedent,
     required this.onReleaseFocus,
+    this.onHelp,
     required this.child,
   });
 
@@ -46,6 +53,7 @@ final class EditorKeyShortcuts extends StatelessWidget {
               CallbackAction<_DedentIntent>(onInvoke: (_) => onDedent()),
           _ReleaseFocusIntent: CallbackAction<_ReleaseFocusIntent>(
               onInvoke: (_) => onReleaseFocus()),
+          _HelpIntent: CallbackAction<_HelpIntent>(onInvoke: (_) => onHelp?.call()),
         },
         child: child,
       ),

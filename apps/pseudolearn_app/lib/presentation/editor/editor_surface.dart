@@ -8,6 +8,7 @@ import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
 import 'components/editor_diagnostics_strip.dart';
 import 'components/editor_field.dart';
+import 'components/editor_help_action.dart';
 import 'editor_key_bar.dart';
 import 'highlight_controller.dart';
 
@@ -24,6 +25,8 @@ final class EditorSurface extends StatefulWidget {
   final VoidCallback onRun;
   final bool keepsKeyBar;
   final bool assistanceEnabled;
+  final ValueChanged<CaretRange>? onHelpRequested;
+  final Widget? helpPanel;
 
   const EditorSurface({
     super.key,
@@ -36,6 +39,8 @@ final class EditorSurface extends StatefulWidget {
     required this.onRun,
     this.keepsKeyBar = true,
     this.assistanceEnabled = false,
+    this.onHelpRequested,
+    this.helpPanel,
   });
 
   @override
@@ -121,6 +126,8 @@ final class _EditorSurfaceState extends State<EditorSurface> {
 
   void _press(EditorKey key) => widget.onKeyPressed(key, _caret());
 
+  void _requestHelp() => widget.onHelpRequested?.call(_caret());
+
   void _run() {
     _focusNode.unfocus();
     widget.onRun();
@@ -129,8 +136,8 @@ final class _EditorSurfaceState extends State<EditorSurface> {
   bool get _canRun =>
       widget.editorState.report.isExecutable && widget.executionState.canStart;
 
-  bool _hidesFooter(DesignCanvasData canvas) =>
-      canvas.deviceClass == DeviceClass.compact && canvas.isKeyboardVisible;
+  VoidCallback? get _help =>
+      widget.onHelpRequested == null ? null : _requestHelp;
 
   @override
   Widget build(BuildContext context) {
@@ -146,18 +153,18 @@ final class _EditorSurfaceState extends State<EditorSurface> {
             onKeyPressed: _press,
             assistanceEnabled: widget.assistanceEnabled,
             usesSuggestionBar: _usesSuggestionBar,
+            onHelpRequested: _help,
           ),
         ),
         _UnderFieldBars(
           editorState: widget.editorState,
           offersKeyBar: _usesSuggestionBar,
-          offersExitActions: _hidesFooter(DesignCanvasScope.of(context)),
-          canRun: _canRun,
           onDiagnosticTap: widget.onDiagnosticSelected,
           onKeyPressed: _press,
           assistanceEnabled: widget.assistanceEnabled,
-          onRun: _run,
+          onRun: _canRun ? _run : null,
           onHideKeyboard: _focusNode.unfocus,
+          help: EditorHelpDock(onPressed: _help, panel: widget.helpPanel),
         ),
       ],
     );
@@ -173,37 +180,39 @@ final class _EditorSurfaceState extends State<EditorSurface> {
 final class _UnderFieldBars extends StatelessWidget {
   final EditorState editorState;
   final bool offersKeyBar;
-  final bool offersExitActions;
-  final bool canRun;
   final bool assistanceEnabled;
   final ValueChanged<AppDiagnostic> onDiagnosticTap;
   final ValueChanged<EditorKey> onKeyPressed;
-  final VoidCallback onRun;
+  final VoidCallback? onRun;
   final VoidCallback onHideKeyboard;
+  final Widget help;
 
   const _UnderFieldBars({
     required this.editorState,
     required this.offersKeyBar,
-    required this.offersExitActions,
-    required this.canRun,
     required this.assistanceEnabled,
     required this.onDiagnosticTap,
     required this.onKeyPressed,
     required this.onRun,
     required this.onHideKeyboard,
+    required this.help,
   });
 
   @override
   Widget build(BuildContext context) {
+    final canvas = DesignCanvasScope.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        help,
         EditorDiagnosticsStrip(
           diagnostics: editorState.report.diagnostics,
           onDiagnosticTap: onDiagnosticTap,
-          offersExitActions: offersExitActions,
-          canRun: canRun,
-          onRun: onRun,
+          offersExitActions:
+              canvas.deviceClass == DeviceClass.compact &&
+              canvas.isKeyboardVisible,
+          canRun: onRun != null,
+          onRun: onRun ?? onHideKeyboard,
           onHideKeyboard: onHideKeyboard,
         ),
         if (offersKeyBar)

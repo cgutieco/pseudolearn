@@ -4,6 +4,7 @@ import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/domain/model/analysis/analysis_report.dart';
 import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
+import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
@@ -12,6 +13,7 @@ import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
 import 'package:pseudolearn_app/engine/rust/rust_completion_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_analyzer.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
+import 'package:pseudolearn_app/engine/rust/rust_syntax_help_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 const String fibonacci =
@@ -307,5 +309,36 @@ void main() {
       () => transport.call('version', <String, Object?>{}),
       throwsA(isA<RustBridgeFailure>()),
     );
+  });
+
+  test('help is explained from the real service in both languages', () {
+    const program =
+        'Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n';
+    final source = RustSyntaxHelpSource(transport);
+    HelpQueryResult ask(UiLanguageId language) => source.query(
+      sourceCode: program,
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: language,
+      cursorUtf16: 16,
+      revision: 1,
+    );
+    final spanish = ask(UiLanguageId.spanish);
+    final english = ask(UiLanguageId.english);
+    expect(spanish.outcome, HelpOutcome.help);
+    expect(spanish.help?.card?.title, 'Bucle Mientras');
+    expect(english.help?.card?.title, 'While loop');
+    expect(english.help?.range, spanish.help?.range);
+    expect(english.help?.card?.examples, isNotEmpty);
+  });
+
+  test('help reports a position without a token as no help', () {
+    final result = RustSyntaxHelpSource(transport).query(
+      sourceCode: 'Algoritmo P\n  Mientras 1 = 1 Hacer\nFinAlgoritmo\n',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
+      cursorUtf16: 13,
+      revision: 1,
+    );
+    expect(result.outcome, HelpOutcome.noHelp);
   });
 }

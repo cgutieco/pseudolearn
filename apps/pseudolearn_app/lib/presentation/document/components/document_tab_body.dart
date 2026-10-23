@@ -12,14 +12,12 @@ import '../../../application/settings/settings_cubit.dart';
 import '../../../application/settings/settings_state.dart';
 import '../../../application/trace/trace_cubit.dart';
 import '../../../application/trace/trace_state.dart';
-import '../../../domain/model/editor/caret_range.dart';
-import '../../../domain/model/editor/editor_key.dart';
 import '../../../domain/model/profiles/syntax_profile_id.dart';
 import '../../diagram/flowchart_tab_view.dart';
-import '../../editor/editor_tab_view.dart';
 import '../../export/export_tab_view.dart';
 import '../../trace/trace_table_tab_view.dart';
 import 'companion_layout.dart';
+import 'editor_tab_item.dart';
 import 'tab_selector.dart';
 
 final class DocumentTabBody extends StatelessWidget {
@@ -67,7 +65,7 @@ final class DocumentTabContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (activeTab) {
-      DocumentTabKind.editor => _EditorTabItem(
+      DocumentTabKind.editor => EditorTabItem(
         editorState: editorState,
         execState: execState,
         onRun: onRun,
@@ -144,79 +142,6 @@ final class _ExportTabItem extends StatelessWidget {
                   SyntaxProfileId.classicSpanish,
             ),
       ),
-    );
-  }
-}
-
-final class _EditorTabItem extends StatelessWidget {
-  final EditorState editorState;
-  final ExecutionState execState;
-  final VoidCallback onRun;
-  final bool keepsKeys;
-
-  const _EditorTabItem({
-    required this.editorState,
-    required this.execState,
-    required this.onRun,
-    required this.keepsKeys,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return EditorTabView(
-      editorState: editorState,
-      executionState: execState,
-      keepsKeyBar: keepsKeys,
-      assistanceEnabled: context.select<SettingsCubit, bool>(
-        (cubit) => cubit.state.editorAssistance,
-      ),
-      onCodeChanged: (code, cursor) => _propagate(context, code, cursor),
-      onCursorMoved: (cursor) =>
-          context.read<EditorCubit>().updateCompletionCursor(cursor),
-      onKeyPressed: (key, caret) => _applyKey(context, key, caret),
-      onDiagnosticSelected: (d) =>
-          context.read<EditorCubit>().selectDiagnostic(d),
-      onDismissStatusBanner: () =>
-          context.read<ExecutionCubit>().dismissStatusBanner(),
-      onRun: onRun,
-    );
-  }
-
-  void _propagate(BuildContext context, String code, int cursorUtf16) {
-    context.read<ExecutionCubit>().stop();
-    final languageId = context.read<SettingsCubit>().state.language;
-    context.read<EditorCubit>().updateSourceCode(
-      code,
-      cursorUtf16: cursorUtf16,
-      languageId: languageId,
-      assisted: context.read<SettingsCubit>().state.editorAssistance,
-    );
-    _refreshCompanions(context, context.read<EditorCubit>().state.sourceCode);
-  }
-
-  void _applyKey(BuildContext context, EditorKey key, CaretRange caret) {
-    context.read<ExecutionCubit>().stop();
-    final editor = context.read<EditorCubit>();
-    editor.applyKey(
-      key,
-      caret,
-      languageId: context.read<SettingsCubit>().state.language,
-    );
-    _refreshCompanions(context, editor.state.sourceCode);
-  }
-
-  void _refreshCompanions(BuildContext context, String code) {
-    final profileId =
-        editorState.document?.profileId ?? SyntaxProfileId.classicSpanish;
-    final languageId = context.read<SettingsCubit>().state.language;
-    context.read<DiagramCubit>().updateDiagram(
-      sourceCode: code,
-      profileId: profileId,
-      languageId: languageId,
-    );
-    context.read<ExportCubit>().updateSource(
-      sourceCode: code,
-      profileId: profileId,
     );
   }
 }

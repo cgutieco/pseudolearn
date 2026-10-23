@@ -172,6 +172,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
       assembly.engine.syntaxReferenceSource,
     ),
     syntaxReferenceSource: assembly.engine.syntaxReferenceSource,
+    syntaxHelpSource: assembly.engine.syntaxHelpSource,
     programExporter: assembly.engine.programExporter,
     localProgressStore: assembly.stores.progress,
     progressHistory: assembly.stores.history,

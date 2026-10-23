@@ -1653,5 +1653,73 @@
   "settingsEditorAssistOptions": "While typing",
   "settingsEditorAssistOn": "Suggest and complete while typing",
   "settingsEditorAssistOff": "Only when requested",
-  "settingsEditorAssistNotice": "With assistance on, the editor shows suggestions while you type, closes blocks and parentheses, and jumps between the blanks of a template. You can ask for suggestions at any time with Ctrl+Space."
+  "settingsEditorAssistNotice": "With assistance on, the editor shows suggestions while you type, closes blocks and parentheses, and jumps between the blanks of a template. You can ask for suggestions at any time with Ctrl+Space.",
+  "helpExplainAction": "Explain",
+  "@helpExplainAction": {
+    "description": "Acción del editor que explica el elemento bajo el cursor"
+  },
+  "helpExplainSemantic": "Explain the element at the cursor",
+  "@helpExplainSemantic": {
+    "description": "Etiqueta accesible de la acción de explicar"
+  },
+  "helpPanelLabel": "Language help",
+  "@helpPanelLabel": {
+    "description": "Etiqueta accesible del panel de ayuda del editor"
+  },
+  "helpClose": "Close help",
+  "@helpClose": {
+    "description": "Cierra el panel de ayuda del editor"
+  },
+  "helpNoHelp": "No help is available at this position.",
+  "@helpNoHelp": {
+    "description": "Mensaje cuando la posición no selecciona ningún elemento con ayuda"
+  },
+  "helpInvalidPosition": "The cursor position is not valid.",
+  "@helpInvalidPosition": {
+    "description": "Mensaje cuando la posición del cursor no puede consultarse"
+  },
+  "helpFailure": "The help could not be retrieved.",
+  "@helpFailure": {
+    "description": "Mensaje cuando el servicio de ayuda falla"
+  },
+  "helpPartialNote": "The program has errors; the help may not match what you meant to write.",
+  "@helpPartialNote": {
+    "description": "Aviso cuando la resolución de ayuda es parcial por errores del programa"
+  },
+  "helpSymbolNote": "A name defined in your program.",
+  "@helpSymbolNote": {
+    "description": "Nota para un símbolo del usuario sin ficha"
+  },
+  "helpSectionPurpose": "Purpose",
+  "@helpSectionPurpose": {
+    "description": "Encabezado de la sección de propósito de una ficha"
+  },
+  "helpSectionParts": "Parts",
+  "@helpSectionParts": {
+    "description": "Encabezado de la sección de partes de una ficha"
+  },
+  "helpSectionConstraints": "Constraints",
+  "@helpSectionConstraints": {
+    "description": "Encabezado de la sección de restricciones de una ficha"
+  },
+  "helpSectionCommonErrors": "Common errors",
+  "@helpSectionCommonErrors": {
+    "description": "Encabezado de la sección de errores comunes de una ficha"
+  },
+  "helpSectionExamples": "Examples",
+  "@helpSectionExamples": {
+    "description": "Encabezado de la sección de ejemplos de una ficha"
+  },
+  "helpExampleExecutable": "Runs",
+  "@helpExampleExecutable": {
+    "description": "Clase de ejemplo: programa que se ejecuta"
+  },
+  "helpExampleAccepted": "Valid",
+  "@helpExampleAccepted": {
+    "description": "Clase de ejemplo: programa válido que se analiza"
+  },
+  "helpExampleDiagnostic": "Deliberate diagnostic",
+  "@helpExampleDiagnostic": {
+    "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
+  }
 }

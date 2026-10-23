@@ -113,7 +113,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
 | Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.85 MiB y 518.16 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
-| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 221 observaciones y dos propiedades API por el puente real pasan sin divergencias |
+| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 230 observaciones y dos propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
@@ -2228,6 +2228,18 @@ con preparación, solicitudes cronometradas, verificación posterior y expectati
 Usa el transporte generado real y puede medir `ExecutionCubit` hasta preparar el modelo visible.
 Cada iteración cierra el cubit y la sesión. El renderizado requiere la captura de plataforma posterior;
 el trabajador no publica fotogramas inventados ni certifica dispositivos a partir de llamadas locales.
+
+### 4.53 Consulta de ayuda del editor: puerto propio, sesión efímera y estado separado del búfer
+
+Problema: el editor debe explicar el elemento bajo el cursor sin reconocer el lenguaje ni conservar descripciones propias, y sin que un resultado tardío se muestre sobre un texto que ya cambió. Elección: `SyntaxHelpSource` es un puerto pequeño de dominio (texto, perfil, idioma de interfaz, cursor UTF-16 y revisión) y `RustSyntaxHelpSource` lo adapta a `help_query`: abre una sesión de edición, consulta y la libera siempre, sin conservar un segundo búfer ni mantener sesión entre consultas. La consulta es una acción explícita, así que el coste de abrir la sesión se paga una vez por pulsación del usuario, no por tecla. `SyntaxHelpCubit` guarda solo el último resultado y la revisión del documento; su estado no pertenece a `EditorCubit`, que no gana responsabilidades ni métodos.
+
+La posición se convierte a línea y columna en unidades UTF-16 (`Utf16LineIndex`) y se rechaza sin consultar si cae dentro de un par sustituto. El servicio devuelve los rangos en columnas de escalares Unicode, no en UTF-16, aunque la consulta use UTF-16; el adaptador los convierte a desplazamientos UTF-16 del documento. Esa asimetría la detectó el caso de conformidad con un emoji antes del token, no una revisión del código, y por eso hay una prueba propia.
+
+Vigencia: cada consulta pertenece a la revisión del documento con que se pidió (la revisión de completado del editor, monótona). Cuando el documento cambia, la ayuda visible se descarta; una consulta de una revisión anterior a la vigente se ignora. El resultado distingue ayuda de ficha, símbolo del usuario, posición sin ayuda, posición no válida y fallo del servicio; un fallo nunca se presenta como ausencia de ayuda.
+
+Presentación: el panel muestra solo texto, con encabezados semánticos, región activa y desplazamiento propio con un máximo de altura, de modo que el escalado de texto no desborda. Hay tres entradas: la acción visible «Explicar», F1 y la opción del menú contextual del campo (pulsación mantenida). Con teclado en pantalla en un dispositivo `compact` la fila de la acción se oculta para no desbordar la altura disponible, y F1 y el menú contextual siguen disponibles; el panel ya abierto se conserva. La consulta explícita funciona con la asistencia automática desactivada, no modifica el documento y no cambia selección ni foco, porque no emite ninguna edición pendiente. Las etiquetas de interfaz (acción, encabezados de sección, mensajes de ausencia) viven en los recursos localizados; título, resumen, descripción y secciones son los de la ficha devuelta. El idioma de interfaz se resuelve en presentación y es independiente del perfil del documento.
+
+Verificación: los casos `APP.EDITOR.COMPLETION` R8–R13 los ejecuta el sujeto `app` por el transporte generado; las pruebas de widgets no sustituyen el puente, y `tool/native_bridge_adapters_test.dart` ejercita la consulta contra la biblioteca nativa real. La cobertura en dispositivo físico no se ha medido.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

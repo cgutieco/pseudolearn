@@ -10,6 +10,7 @@ import '../domain/ports/program_execution.dart';
 import '../domain/ports/program_exporter.dart';
 import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
+import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 
 abstract interface class EngineServices {
@@ -32,6 +33,8 @@ abstract interface class EngineServices {
   EditorKeySource get editorKeySource;
 
   SyntaxReferenceSource get syntaxReferenceSource;
+
+  SyntaxHelpSource get syntaxHelpSource;
 
   ProgramExporter get programExporter;
 

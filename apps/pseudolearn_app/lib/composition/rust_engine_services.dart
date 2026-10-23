@@ -25,10 +25,12 @@ import '../engine/rust/rust_program_execution.dart';
 import '../engine/rust/rust_structural_assertion_checker.dart';
 import '../engine/rust/rust_structogram_builder.dart';
 import '../engine/rust/rust_template_source.dart';
+import '../engine/rust/rust_syntax_help_source.dart';
 import '../engine/rust/rust_syntax_reference_source.dart';
 import '../engine/rust/rust_transport.dart';
 import '../engine/rust/export/rust_program_exporter.dart';
 import '../domain/ports/program_exporter.dart';
+import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import 'engine_services.dart';
 
@@ -58,6 +60,8 @@ final class RustEngineServices implements EngineServices {
   @override
   final SyntaxReferenceSource syntaxReferenceSource;
   @override
+  final SyntaxHelpSource syntaxHelpSource;
+  @override
   final ProgramExporter programExporter;
 
   const RustEngineServices({
@@ -73,6 +77,7 @@ final class RustEngineServices implements EngineServices {
     required this.structogramBuilder,
     required this.classDiagramBuilder,
     required this.syntaxReferenceSource,
+    required this.syntaxHelpSource,
     required this.programExporter,
   });
 }
@@ -93,6 +98,7 @@ RustEngineServices buildRustEngineServices(RustTransport transport) {
     structogramBuilder: RustStructogramBuilder(transport),
     classDiagramBuilder: RustClassDiagramBuilder(transport),
     syntaxReferenceSource: RustSyntaxReferenceSource(transport),
+    syntaxHelpSource: RustSyntaxHelpSource(transport),
     programExporter: RustProgramExporter(transport),
     exerciseChecker: RustExerciseChecker(
       behaviour: BehaviourChecker(

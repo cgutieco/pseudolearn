@@ -26,6 +26,7 @@ import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
+import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/syntax_reference_source.dart';
 import '../domain/ports/text_entry_modality.dart';
 
@@ -55,6 +56,7 @@ final class AppDependencies {
   final AppVersionSource appVersionSource;
   final KnowledgeRepository knowledgeRepository;
   final SyntaxReferenceSource syntaxReferenceSource;
+  final SyntaxHelpSource syntaxHelpSource;
   final ProgramExporter programExporter;
   final LocalProgressStore localProgressStore;
   final ProgressHistory progressHistory;
@@ -87,6 +89,7 @@ final class AppDependencies {
     required this.appVersionSource,
     required this.knowledgeRepository,
     required this.syntaxReferenceSource,
+    required this.syntaxHelpSource,
     required this.programExporter,
     required this.localProgressStore,
     required this.progressHistory,

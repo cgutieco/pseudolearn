@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../application/editor/editor_state.dart';
 import '../../application/execution/execution_state.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
+import '../../domain/model/editor/caret_range.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../components/status_banner.dart';
 import 'editor_surface.dart';
@@ -17,6 +18,8 @@ final class EditorTabView extends StatelessWidget {
   final VoidCallback onRun;
   final bool keepsKeyBar;
   final bool assistanceEnabled;
+  final ValueChanged<CaretRange>? onHelpRequested;
+  final Widget? helpPanel;
 
   const EditorTabView({
     super.key,
@@ -30,6 +33,8 @@ final class EditorTabView extends StatelessWidget {
     required this.onRun,
     this.keepsKeyBar = true,
     this.assistanceEnabled = false,
+    this.onHelpRequested,
+    this.helpPanel,
   });
 
   @override
@@ -53,6 +58,8 @@ final class EditorTabView extends StatelessWidget {
             onRun: onRun,
             keepsKeyBar: keepsKeyBar,
             assistanceEnabled: assistanceEnabled,
+            onHelpRequested: onHelpRequested,
+            helpPanel: helpPanel,
           ),
         ),
       ],

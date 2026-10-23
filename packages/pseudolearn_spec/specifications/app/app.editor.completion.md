@@ -498,3 +498,399 @@
   }
 }
 ```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El editor solicita la ayuda mediante help_query de una sesión de edición con el texto, el perfil del pseudocódigo, la posición del cursor y el idioma de interfaz. El título, el resumen, la descripción y las secciones que muestra son los de la respuesta; el editor no conserva tablas de palabras, de firmas ni de descripciones.",
+  "verificacion": [
+    "C16"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El cursor se expresa en unidades UTF-16 desde cero. El editor lo convierte a línea y columna desde uno en unidades UTF-16 para la consulta y convierte el rango léxico devuelto a desplazamientos UTF-16 del documento. Un cursor dentro de un par sustituto se rechaza sin enviar la consulta ni modificar el documento.",
+  "verificacion": [
+    "C17",
+    "C18"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El resultado de una consulta distingue cuatro situaciones: ayuda de ficha, símbolo del usuario sin ficha, posición sin ayuda y posición no válida. Un fallo del servicio es una quinta situación distinta y nunca se presenta como ausencia de ayuda.",
+  "verificacion": [
+    "C19",
+    "C20"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R11",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada consulta pertenece a la revisión del documento con que se pidió. Cuando el documento cambia a una revisión posterior, la ayuda visible se descarta, y una consulta de una revisión anterior a la vigente se ignora sin alterar la ayuda, la selección ni el texto de la revisión vigente.",
+  "verificacion": [
+    "C21",
+    "C22"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R12",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El idioma de interfaz y el perfil del pseudocódigo son independientes: cambiar el idioma solo cambia la prosa de la ficha y no cambia la identidad resuelta ni el rango del token.",
+  "verificacion": [
+    "C23"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R13",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La consulta explícita está disponible con la asistencia automática desactivada, no modifica el documento y conserva la selección y el foco del editor.",
+  "verificacion": [
+    "C24"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+      "cursor_utf16": 16,
+      "profile": "es",
+      "interface_language": "en"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "outcome": "help",
+      "title": "While loop",
+      "summary": "Repeats the body while the condition is true.",
+      "range_utf16": [
+        14,
+        22
+      ],
+      "source": "API.MODEL"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\nEscribir \"🧩\"; Longitud(\"x\");\nFinAlgoritmo\n",
+      "cursor_utf16": 31,
+      "profile": "es",
+      "interface_language": "es"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "outcome": "help",
+      "title": "Consulta de texto",
+      "range_utf16": [
+        27,
+        35
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\nEscribir \"🧩\"; Longitud(\"x\");\nFinAlgoritmo\n",
+      "cursor_utf16": 23,
+      "profile": "es",
+      "interface_language": "es"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "outcome": "invalid_position",
+      "request_sent": false,
+      "document_changed": false
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+      "cursor_utf16": 13,
+      "profile": "es",
+      "interface_language": "es"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "outcome": "no_help",
+      "request_sent": true
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\n  Definir x Como Entero;\n  x <- 1;\nFinAlgoritmo\n",
+      "cursor_utf16": 39,
+      "profile": "es",
+      "interface_language": "es"
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "outcome": "symbol",
+      "identifier": "x",
+      "type_name": "Entero"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R11",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help_revision",
+    "input": {
+      "events": [
+        {
+          "type": "document_changed",
+          "revision": 1
+        },
+        {
+          "type": "request",
+          "revision": 1,
+          "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+          "cursor_utf16": 16
+        },
+        {
+          "type": "document_changed",
+          "revision": 2
+        }
+      ]
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "visible_revision": null,
+      "help_visible": false
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R11",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help_revision",
+    "input": {
+      "events": [
+        {
+          "type": "document_changed",
+          "revision": 2
+        },
+        {
+          "type": "request",
+          "revision": 1,
+          "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+          "cursor_utf16": 16
+        },
+        {
+          "type": "request",
+          "revision": 2,
+          "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+          "cursor_utf16": 16
+        }
+      ]
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "visible_revision": 2,
+      "stale_request_applied": false
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R12",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+      "cursor_utf16": 16,
+      "profile": "es",
+      "interface_languages": [
+        "es",
+        "en"
+      ]
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "titles": [
+        "Bucle Mientras",
+        "While loop"
+      ],
+      "same_identity": true,
+      "same_range": true
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R13",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "app",
+  "aplicacion": {
+    "scenario": "help",
+    "input": {
+      "document": "Algoritmo P\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+      "cursor_utf16": 16,
+      "selection_utf16": [
+        16,
+        16
+      ],
+      "profile": "es",
+      "interface_language": "es",
+      "assistance_enabled": false
+    }
+  },
+  "espera": {
+    "aplicacion": {
+      "help_requested": true,
+      "document_changed": false,
+      "selection_preserved": true
+    }
+  }
+}
+```

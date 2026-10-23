@@ -16,6 +16,7 @@ import 'package:pseudolearn_app/domain/ports/progress_history.dart';
 import 'package:pseudolearn_app/domain/ports/remote_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
 import 'package:pseudolearn_app/domain/ports/sync_queue.dart';
+import 'package:pseudolearn_app/domain/ports/syntax_help_source.dart';
 import 'package:pseudolearn_app/domain/ports/syntax_reference_source.dart';
 import 'package:pseudolearn_app/composition/engine_services.dart';
 import 'fake_account_deletion_gateway.dart';
@@ -32,6 +33,7 @@ import 'fake_local_account_data_purger.dart';
 import 'fake_remote_progress_store.dart';
 import 'fake_sync_coordinator.dart';
 import 'fake_sync_queue.dart';
+import 'fake_syntax_help_source.dart';
 import 'fake_syntax_reference_source.dart';
 import 'fake_app_version_source.dart';
 import 'fake_text_entry_modality.dart';
@@ -46,6 +48,7 @@ AppDependencies buildTestDependencies({
   FakeClock? clock,
   KnowledgeRepository? knowledgeRepository,
   SyntaxReferenceSource? syntaxReferenceSource,
+  SyntaxHelpSource? syntaxHelpSource,
   ProgramExporter? programExporter,
   LocalProgressStore? localProgressStore,
   ProgressHistory? progressHistory,
@@ -102,6 +105,10 @@ AppDependencies buildTestDependencies({
         syntaxReferenceSource ??
         engine?.syntaxReferenceSource ??
         FakeSyntaxReferenceSource(),
+    syntaxHelpSource:
+        syntaxHelpSource ??
+        engine?.syntaxHelpSource ??
+        FakeSyntaxHelpSource(),
     programExporter:
         programExporter ?? engine?.programExporter ?? FakeProgramExporter(),
     localProgressStore: localProgressStore ?? InMemoryLocalProgressStore(),

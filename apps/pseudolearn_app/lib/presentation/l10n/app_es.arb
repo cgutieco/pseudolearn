@@ -1743,5 +1743,73 @@
   "settingsEditorAssistNotice": "Con la asistencia activa, el editor muestra sugerencias mientras escribes, cierra los bloques y los paréntesis y salta entre los huecos de una plantilla. Puedes pedir sugerencias en cualquier momento con Ctrl+Espacio.",
   "@settingsEditorAssistNotice": {
     "description": "Aviso del ajuste de asistencia de edición"
+  },
+  "helpExplainAction": "Explicar",
+  "@helpExplainAction": {
+    "description": "Acción del editor que explica el elemento bajo el cursor"
+  },
+  "helpExplainSemantic": "Explicar el elemento bajo el cursor",
+  "@helpExplainSemantic": {
+    "description": "Etiqueta accesible de la acción de explicar"
+  },
+  "helpPanelLabel": "Ayuda del lenguaje",
+  "@helpPanelLabel": {
+    "description": "Etiqueta accesible del panel de ayuda del editor"
+  },
+  "helpClose": "Cerrar ayuda",
+  "@helpClose": {
+    "description": "Cierra el panel de ayuda del editor"
+  },
+  "helpNoHelp": "No hay ayuda para esta posición.",
+  "@helpNoHelp": {
+    "description": "Mensaje cuando la posición no selecciona ningún elemento con ayuda"
+  },
+  "helpInvalidPosition": "La posición del cursor no es válida.",
+  "@helpInvalidPosition": {
+    "description": "Mensaje cuando la posición del cursor no puede consultarse"
+  },
+  "helpFailure": "No se pudo consultar la ayuda.",
+  "@helpFailure": {
+    "description": "Mensaje cuando el servicio de ayuda falla"
+  },
+  "helpPartialNote": "El programa tiene errores; la ayuda puede no corresponder a lo que querías escribir.",
+  "@helpPartialNote": {
+    "description": "Aviso cuando la resolución de ayuda es parcial por errores del programa"
+  },
+  "helpSymbolNote": "Nombre definido en tu programa.",
+  "@helpSymbolNote": {
+    "description": "Nota para un símbolo del usuario sin ficha"
+  },
+  "helpSectionPurpose": "Propósito",
+  "@helpSectionPurpose": {
+    "description": "Encabezado de la sección de propósito de una ficha"
+  },
+  "helpSectionParts": "Partes",
+  "@helpSectionParts": {
+    "description": "Encabezado de la sección de partes de una ficha"
+  },
+  "helpSectionConstraints": "Restricciones",
+  "@helpSectionConstraints": {
+    "description": "Encabezado de la sección de restricciones de una ficha"
+  },
+  "helpSectionCommonErrors": "Errores comunes",
+  "@helpSectionCommonErrors": {
+    "description": "Encabezado de la sección de errores comunes de una ficha"
+  },
+  "helpSectionExamples": "Ejemplos",
+  "@helpSectionExamples": {
+    "description": "Encabezado de la sección de ejemplos de una ficha"
+  },
+  "helpExampleExecutable": "Se ejecuta",
+  "@helpExampleExecutable": {
+    "description": "Clase de ejemplo: programa que se ejecuta"
+  },
+  "helpExampleAccepted": "Válido",
+  "@helpExampleAccepted": {
+    "description": "Clase de ejemplo: programa válido que se analiza"
+  },
+  "helpExampleDiagnostic": "Diagnóstico deliberado",
+  "@helpExampleDiagnostic": {
+    "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
   }
 }

@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.08` completos. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -240,14 +240,14 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.09 · Consulta de la app por puente
 
-- [ ] `PG-H.09.01` Especificar contrato APP de consulta, accesibilidad, vigencia, apertura/cierre y
+- [x] `PG-H.09.01` Especificar contrato APP de consulta, accesibilidad, vigencia, apertura/cierre y
   selección conservada; consulta explícita aun con asistencia automática desactivada.
-- [ ] `PG-H.09.02` Derivar escenarios de teclado, menú/pulsación mantenida, cursor normal, selección,
+- [x] `PG-H.09.02` Derivar escenarios de teclado, menú/pulsación mantenida, cursor normal, selección,
   composición IME, scroll, cambio de documento, fallo de puente y respuesta obsoleta.
-- [ ] `PG-H.09.03` Preparar tests de puerto/estado, widgets semánticos, foco/geometría y transporte real.
-- [ ] `PG-H.09.04` Añadir modelo, puerto, adaptador y estado específicos; integrar panel/acción en editor
+- [x] `PG-H.09.03` Preparar tests de puerto/estado, widgets semánticos, foco/geometría y transporte real.
+- [x] `PG-H.09.04` Añadir modelo, puerto, adaptador y estado específicos; integrar panel/acción en editor
   sin parser, nueva fuente de texto ni método extra que exceda el límite de EditorCubit.
-- [ ] `PG-H.09.05` Documentar flujo y límites en README app; documentar/regenerar puente solo si su firma cambia.
+- [x] `PG-H.09.05` Documentar flujo y límites en README app; documentar/regenerar puente solo si su firma cambia.
 - [ ] `PG-H.09.06` Ejecutar widgets y FFI real, conformidad app, accesibilidad y humo automatizable en simulador;
   registrar por separado cualquier cobertura física ausente.
 
@@ -557,12 +557,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.08.04 | Cumplido | `help_content.rs`, `help_rendering.rs`, `lsp_help.rs`, `service_help.rs`, `service_help_card.rs` | Hover y comando sobre el resolutor común, con la ficha elegida por identidad léxica y contexto; comando anunciado solo al estar implementado; locale de sesión. |
 | PG-H.08.05 | Cumplido | README de `pseudolearn_service`, `pseudolearn_api`, `pseudolearn_conformance` | Capacidades, elección de ficha y formato seguro documentados. |
 | PG-H.08.06 | Cumplido | `see conform --subject service` (123 observaciones) y `--subject engine` (1 566), 0 divergencias; `cargo xtask verify` de engine y de spec en verde | No hay tabla paralela: la prueba de fuentes del servicio lo exige. Un intento previo de la puerta de engine falló en `rust-checks` por un nombre (`params`) y se repitió tras corregirlo. |
-| PG-H.09.01 | | | Pendiente de ejecución |
-| PG-H.09.02 | | | Pendiente de ejecución |
-| PG-H.09.03 | | | Pendiente de ejecución |
-| PG-H.09.04 | | | Pendiente de ejecución |
-| PG-H.09.05 | | | Pendiente de ejecución |
-| PG-H.09.06 | | | Pendiente de ejecución |
+| PG-H.09.01 | Cumplido | `APP.EDITOR.COMPLETION` R8–R13 | Consulta, coordenadas UTF-16, resultados distintos, vigencia, idioma independiente y consulta explícita con asistencia desactivada. Se añadieron al contrato existente: la herramienta obliga a que una identidad nueva nazca estable, lo que exige una revisión independiente que no existe, así que no se creó `APP.EDITOR.HELP`. |
+| PG-H.09.02 | Cumplido | `APP.EDITOR.COMPLETION` C16–C24; pruebas de widgets | Casos de conformidad de consulta, posición inválida, símbolo, ausencia de ayuda, revisión y consulta explícita; escenarios de teclado (F1), botón y menú contextual en widgets. IME, scroll y cambio de documento no tienen prueba propia: el cambio de documento se cubre en el cubit y en el caso de revisión. |
+| PG-H.09.03 | Cumplido | `test/engine/rust/utf16_line_index_test.dart`, `rust_syntax_help_source_test.dart`; `test/application/editor/help/`; `test/presentation/editor/help/`; `tool/native_bridge_adapters_test.dart` | Puerto/adaptador, cubit, widgets semánticos, desbordes con escalado de texto y transporte real. |
+| PG-H.09.04 | Cumplido | `SyntaxHelpSource`, `RustSyntaxHelpSource`, `SyntaxHelpCubit`, `SyntaxHelpPanel`, `EditorHelpDock` | Estado y puerto específicos; `EditorCubit` no ganó métodos ni parser. Un error propio (columnas de escalares frente a UTF-16) lo detectó el oráculo del corpus y quedó corregido con prueba. |
+| PG-H.09.05 | Cumplido | README de `pseudolearn_app` §4.53 | Flujo y límites documentados; el puente no cambió de firma, por lo que no se regeneró. |
+| PG-H.09.06 | Parcial | `flutter test` (2 264 pruebas); `see conform --subject app` (230 observaciones, 0 divergencias); `bash tool/bridge.sh check`; fmt, Clippy, tests y `cargo deny` de `native/`; análisis estricto, límites, contenido y diseño | No se ejecutó el humo en simulador ni hay cobertura de dispositivo físico. Un primer intento falló por un desborde a 360×640 con teclado, corregido ocultando la fila de la acción en ese caso, y por la frescura de la biblioteca nativa tras `bridge.sh check`, resuelta recompilando. |
 | PG-H.10.01 | | | Pendiente de ejecución |
 | PG-H.10.02 | | | Pendiente de ejecución |
 | PG-H.10.03 | | | Pendiente de ejecución |

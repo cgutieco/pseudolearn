@@ -16,6 +16,7 @@ final class CodeField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final bool isReadOnly;
   final FocusNode? focusNode;
+  final VoidCallback? onExplain;
 
   const CodeField({
     super.key,
@@ -26,6 +27,7 @@ final class CodeField extends StatefulWidget {
     this.onChanged,
     this.isReadOnly = false,
     this.focusNode,
+    this.onExplain,
   });
 
   Set<int> get focusedLines => focus == null
@@ -142,6 +144,7 @@ final class _CodeFieldState extends State<CodeField> {
         isReadOnly: widget.isReadOnly,
         focusNode: widget.focusNode,
         onChanged: _onTextChanged,
+        onExplain: widget.onExplain,
       ),
     );
   }
@@ -155,6 +158,7 @@ final class _CodeFieldBody extends StatelessWidget {
   final bool isReadOnly;
   final FocusNode? focusNode;
   final ValueChanged<String> onChanged;
+  final VoidCallback? onExplain;
 
   const _CodeFieldBody({
     required this.scrollController,
@@ -164,6 +168,7 @@ final class _CodeFieldBody extends StatelessWidget {
     required this.isReadOnly,
     required this.focusNode,
     required this.onChanged,
+    required this.onExplain,
   });
 
   @override
@@ -180,6 +185,7 @@ final class _CodeFieldBody extends StatelessWidget {
               isReadOnly: isReadOnly,
               focusNode: focusNode,
               onChanged: onChanged,
+              onExplain: onExplain,
             ),
           ),
         ],
@@ -193,12 +199,14 @@ final class _HorizontalCodeScroll extends StatelessWidget {
   final bool isReadOnly;
   final FocusNode? focusNode;
   final ValueChanged<String> onChanged;
+  final VoidCallback? onExplain;
 
   const _HorizontalCodeScroll({
     required this.controller,
     required this.isReadOnly,
     required this.focusNode,
     required this.onChanged,
+    required this.onExplain,
   });
 
   @override
@@ -216,6 +224,7 @@ final class _HorizontalCodeScroll extends StatelessWidget {
                 focusNode: focusNode,
                 isReadOnly: isReadOnly,
                 onChanged: onChanged,
+                onExplain: onExplain,
               ),
             ),
           ),
