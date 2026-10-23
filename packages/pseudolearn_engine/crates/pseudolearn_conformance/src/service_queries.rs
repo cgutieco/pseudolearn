@@ -1,7 +1,7 @@
 use crate::service_request::{ServiceRequest, position_of, strings_of};
 use pseudolearn_api::service::{
-    CompletionEntry, HelpCertainty, HelpIdentityKind, HighlightKind, Range,
-    resolve_help_at_position,
+    CompletionEntry, HelpCertainty, HelpIdentityKind, HelpLocale, HighlightKind, Range,
+    resolve_help_at_position, resolve_help_with_locale,
 };
 use serde_json::{Map, Value, json};
 
@@ -104,6 +104,9 @@ pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
     if request.text("proyeccion") == "resolucion" {
         return project_resolution(request);
     }
+    if request.text("proyeccion") == "descripcion" {
+        return project_description(request);
+    }
     let Some(outcome) = request.session().queries().hover(position_of(request)) else {
         return json!({});
     };
@@ -113,6 +116,19 @@ pub fn handle_hover(request: &ServiceRequest<'_>) -> Value {
             json!({ "es_intrinseca": outcome.is_intrinsic, "identificador": outcome.identifier })
         }
         other => json!({ "error": format!("unsupported projection: {other}") }),
+    }
+}
+
+fn project_description(request: &ServiceRequest<'_>) -> Value {
+    let document = request.session();
+    let locale = HelpLocale::from_code(request.text("idioma"))
+        .unwrap_or_else(|| HelpLocale::from_profile(request.profile()));
+    let description = resolve_help_with_locale(&document, position_of(request), locale)
+        .and_then(|outcome| outcome.hover)
+        .and_then(|hover| hover.description);
+    match description {
+        Some(text) => json!({ "descripcion": text }),
+        None => json!({}),
     }
 }
 

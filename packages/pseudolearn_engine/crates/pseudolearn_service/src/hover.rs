@@ -1,4 +1,4 @@
-use crate::keyword_help::keyword_description;
+use crate::help_catalog::token_description;
 use crate::navigation::Position;
 use crate::positions::offset_at;
 use crate::query_context::QueryContext;
@@ -62,7 +62,7 @@ fn keyword_hover(context: &QueryContext<'_>, kind: KeywordKind) -> HoverOutcome 
         is_intrinsic: false,
         identifier: keyword_spelling(kind, context.profile),
         signature: None,
-        description: Some(keyword_description(kind, context.profile).to_owned()),
+        description: token_description(kind.as_str(), context.locale).map(str::to_owned),
     }
 }
 

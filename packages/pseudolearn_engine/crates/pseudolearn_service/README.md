@@ -8,7 +8,7 @@ Fuera de alcance: ejecución del motor, máquinas virtuales, interfaz de línea 
 
 | Pendiente | Motivo | Condición de resolución |
 |---|---|---|
-| Consulta contextual de `helpCatalog` por identidad y papel | El servicio aún no carga las fichas editoriales; la resolución de identidad y papel por posición ya está disponible | Cargar fichas exportadas y consultarlas por identidad y papel sobre la revisión vigente, sin reconocer lexemas en el cliente |
+| Consulta contextual de `helpCatalog` por identidad y papel | El servicio ya carga las fichas y resuelve la descripción de un token; falta exponer la ficha completa por identidad y papel en API y LSP | Consultar fichas por identidad y papel sobre la revisión vigente, sin reconocer lexemas en el cliente |
 | Reutilizar resultados semánticos entre ediciones | Cada edición reconstruye árbol, análisis e índice del documento completo; las huellas por unidad solo informan qué unidades cambiaron. El costo medido cumple el presupuesto de latencia hasta diez mil líneas | Un presupuesto de latencia que el reanálisis completo deje de cumplir, o documentos de decenas de miles de líneas |
 | Extensión mínima para VS Code | Opcional; el servidor LSP ya sirve a cualquier editor compatible | Decisión de producto sobre distribución de extensiones |
 
@@ -32,7 +32,8 @@ Nivel 6. Importa `pseudolearn_source`, `pseudolearn_diagnostics`, `pseudolearn_l
 | `help_resolution` | Identidad, papel, certeza y rangos de la entidad resuelta en una posición; contexto de construcción desde CST y símbolos desde semántica |
 | `cursor_context` | Contexto léxico del cursor: prefijo, comentario o literal, bloques abiertos, miembro, posición de tipo |
 | `completion*` | Fuentes de candidatos (palabras clave, símbolos, miembros, tipos, funciones estándar), pistas bilingües, plantillas y ordenación |
-| `hover`, `keyword_help`, `type_names` | Información emergente y ayuda de firma en el idioma del perfil |
+| `help_catalog` | Fichas editoriales materializadas por `build.rs` desde la exportación del corpus; `HelpLocale` (idioma de interfaz, independiente del perfil) y descripción de un token por identidad |
+| `hover`, `type_names` | Información emergente y ayuda de firma; la descripción de una palabra reservada sale del catálogo |
 | `navigation` | Definición, referencias, resaltado y símbolos del documento |
 | `formatter`, `block_layout`, `line_renderer`, `source_lines`, `spelling`, `identifier_roles` | Formateador canónico sobre tokens |
 | `translator` | Traducción entre perfiles sobre tokens y análisis semántico |
@@ -46,6 +47,8 @@ La resolución por posición selecciona solo tokens reales: el comienzo pertenec
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: mantener un documento editable con latencia baja. Elección: la sesión aplica ediciones por rango (posiciones en caracteres; en el protocolo, unidades UTF-16), reconstruye árbol, análisis e índice y calcula las huellas de firma y de cuerpo de cada unidad para informar qué unidades cambiaron y si alguna firma se invalidó. Las huellas emparejan unidades por nombre, tipo y ordinal, de modo que homónimas y renombrados no falsean el informe. La equivalencia con el análisis desde cero es verificable (`matches_cold_analysis`) y se somete a secuencias de ediciones aleatorias. Alternativas descartadas: dependencias de cómputo incremental (`salsa`, `rowan`), que duplican el árbol plano existente, y una caché de resultados semánticos por unidad, que exige desplazar todos los intervalos posteriores a la edición y no se justifica con las latencias medidas.
+
+Problema: la descripción de una palabra reservada vivía en una tabla de Rust paralela al catálogo editorial y su idioma dependía del perfil. Elección: `build.rs` lee `resources.helpCatalog` de la exportación (mismo camino que el léxico), `codegen/help_cards.rs` emite datos estáticos sin lógica, y `help_catalog` los consulta por identidad de token: gana la primera ficha del catálogo que declara el token y tiene una parte editorial para él. No existe descripción genérica sustituta; sin parte editorial la descripción es ausente. `HelpLocale` selecciona el idioma por consulta (`resolve_help_with_locale`); la consulta ordinaria lo deriva del perfil. Las 28 descripciones anteriores se sustituyeron por las partes de ficha correspondientes, más específicas y revisadas junto con el catálogo; ningún dato útil quedó sin destino. Alternativas descartadas: leer la exportación en tiempo de ejecución (acceso ambiental y arranque), y conservar la tabla como respaldo (dos dueños que divergen).
 
 Problema: formatear sin destruir código ni comentarios. Elección: el formateador trabaja sobre los tokens del analizador sin pérdida; la sangría sale de una pila de bloques abiertos (con las ramas de selección en un nivel propio), el espaciado de reglas por tipo de token, y la ortografía canónica de cada palabra clave y función estándar sale del vocabulario generado del perfil (con tres preferencias explícitas en español: `Algoritmo`, `FinAlgoritmo` y `Sino`). Los comentarios conservan orden y posición relativa; los de línea se normalizan a `// texto` y los de bloque se emiten tal cual. Si el texto tiene errores léxicos o sintácticos, se devuelve sin cambios. Las líneas en blanco se colapsan a una, no se conservan tras un comentario y se garantiza una entre unidades de nivel superior. Los identificadores nunca se renombran: la semántica distingue mayúsculas de minúsculas, de modo que un uso resuelto ya comparte grafía con su declaración. Alternativas descartadas: formateo por líneas de texto, que no distingue cadenas, comentarios ni sombreado.
 
@@ -67,7 +70,7 @@ Código en inglés, cero comentarios, sin atributos `doc`, `allow` ni `expect` n
 
 ## 6. Decisiones de producto que condicionan el código
 
-Contratos: `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP` y `TOOL.LSP.CAPABILITIES`. Bilingüismo estricto con idéntica fidelidad en español e inglés. Los textos de ayuda y los marcadores de plantilla se emiten solo en el idioma del perfil activo.
+Contratos: `TOOL.SERVICE.*`, `TOOL.FORMAT.STYLE`, `TOOL.TRANSLATE.ROUND-TRIP` y `TOOL.LSP.CAPABILITIES`. Bilingüismo estricto con idéntica fidelidad en español e inglés. Los marcadores de plantilla se emiten solo en el idioma del perfil activo; la descripción de ayuda sigue el idioma de interfaz, que por omisión es el del perfil y puede solicitarse aparte.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

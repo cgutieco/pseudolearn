@@ -280,6 +280,168 @@
 }
 ```
 
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La descripción de una palabra reservada que presenta la ayuda tiene como único dueño de datos la parte editorial de su ficha en el recurso helpCatalog, en el idioma de interfaz solicitado, que es independiente del perfil sintáctico del documento. El servicio materializa esos datos desde la exportación del corpus y no conserva tablas editoriales paralelas ni una descripción genérica sustituta: una palabra reservada sin parte editorial no tiene descripción. Cuando varias fichas declaran el mismo token, prevalece la primera en el orden del catálogo.",
+  "justificacion": "Una sola fuente editorial impide que la ayuda del servicio y el catálogo diverjan. La descripción genérica ocultaría una cobertura incompleta, y vincular el idioma al perfil impediría explicar un programa en un idioma distinto del que se escribió.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Inicia un bucle que comprueba la condición antes de cada iteración."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 5
+    },
+    "proyeccion": "descripcion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Starts a loop that checks its condition before each iteration."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 5
+    },
+    "proyeccion": "descripcion",
+    "idioma": "en"
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R5",
+  "perfiles": [
+    "en"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Inicia un bucle que comprueba la condición antes de cada iteración."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algorithm Main\n  While 1 = 1 Do\n  EndWhile\nEndAlgorithm\n",
+    "posicion": {
+      "line": 2,
+      "column": 5
+    },
+    "proyeccion": "descripcion",
+    "idioma": "es"
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R5",
+  "perfiles": [
+    "en"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Starts a loop that checks its condition before each iteration."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algorithm Main\n  While 1 = 1 Do\n  EndWhile\nEndAlgorithm\n",
+    "posicion": {
+      "line": 2,
+      "column": 5
+    },
+    "proyeccion": "descripcion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {}
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo Principal\n  Definir contador Como Entero;\n  contador <- 1;\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 3,
+      "column": 5
+    },
+    "proyeccion": "descripcion"
+  }
+}
+```
+
 ```definicion
 {
   "id": "D1",

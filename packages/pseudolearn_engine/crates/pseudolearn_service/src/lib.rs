@@ -21,11 +21,11 @@ pub mod edit_probe;
 pub mod edit_session;
 pub mod expected_slot;
 pub mod formatter;
+pub mod help_catalog;
 mod help_resolution;
 pub mod hover;
 pub mod identifier_roles;
 pub mod insertion;
-pub mod keyword_help;
 pub mod line_renderer;
 pub mod lsp_changes;
 pub mod lsp_documents;
@@ -70,9 +70,10 @@ pub use document_session::{DocumentOptions, DocumentSession, LanguageService, Te
 pub use edit_probe::{IdentityCheck, IncrementalProbe};
 pub use edit_session::{Acceptance, Accepted, EditError, EditSession};
 pub use formatter::{FormatOptions, format_checked, format_source};
+pub use help_catalog::HelpLocale;
 pub use help_resolution::{
     HelpCertainty, HelpIdentity, HelpIdentityKind, HelpQueryOutcome, HelpResolution, HelpSymbol,
-    resolve_help_at_position,
+    resolve_help_at_position, resolve_help_with_locale,
 };
 pub use hover::{HoverCategory, HoverOutcome, SignatureHelp};
 pub use insertion::{Insertion, StopRange, TextChange, apply_change, build_insertion};

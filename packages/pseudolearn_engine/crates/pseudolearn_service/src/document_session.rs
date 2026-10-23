@@ -1,5 +1,6 @@
 use crate::completion::{CompletionQuery, CompletionResult, complete_at_position_with_edit};
 use crate::formatter::{FormatOptions, format_source};
+use crate::help_catalog::HelpLocale;
 use crate::hover::{HoverOutcome, SignatureHelp, hover_at_position, signature_help_at_position};
 use crate::navigation::{
     DocumentHighlight, DocumentSymbolEntry, Position, Range, document_highlights, document_symbols,
@@ -112,12 +113,17 @@ impl DocumentSession {
     }
 
     pub(crate) fn query_context(&self) -> QueryContext<'_> {
+        self.localized_query_context(HelpLocale::from_profile(self.profile))
+    }
+
+    pub(crate) fn localized_query_context(&self, locale: HelpLocale) -> QueryContext<'_> {
         QueryContext {
             tree: &self.tree,
             source: &self.source,
             analysis: &self.analysis,
             index: &self.index,
             profile: self.profile,
+            locale,
         }
     }
 }

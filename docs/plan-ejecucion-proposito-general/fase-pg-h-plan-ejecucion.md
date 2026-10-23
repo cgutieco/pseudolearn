@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01`, `PG-H.02`, `PG-H.03` y `PG-H.04` completos. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.05` completos. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -193,14 +193,14 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.05 · Migración de ayuda incrustada
 
-- [ ] `PG-H.05.01` Fijar en el contrato que la descripción útil tiene dueño único de datos, sin alterar semántica.
-- [ ] `PG-H.05.02` Inventariar las 29 entradas y fallback actuales, relacionando cada dato útil con destino,
+- [x] `PG-H.05.01` Fijar en el contrato que la descripción útil tiene dueño único de datos, sin alterar semántica.
+- [x] `PG-H.05.02` Inventariar las 29 entradas y fallback actuales, relacionando cada dato útil con destino,
   corrección editorial justificada o reemplazo específico; derivar casos de preservación.
-- [ ] `PG-H.05.03` Preparar tests de materialización desde exportación y ausencia de tablas editoriales paralelas.
-- [ ] `PG-H.05.04` Migrar/revisar contenido y retirar `keyword_help.rs` o reducirlo a acceso a datos generados;
+- [x] `PG-H.05.03` Preparar tests de materialización desde exportación y ausencia de tablas editoriales paralelas.
+- [x] `PG-H.05.04` Migrar/revisar contenido y retirar `keyword_help.rs` o reducirlo a acceso a datos generados;
   separar locale de perfil sin perder las firmas de usuario.
-- [ ] `PG-H.05.05` Documentar generación y motivos de correcciones en README service, sin referencias transitorias.
-- [ ] `PG-H.05.06` Revisar correspondencia completa origen/destino y ejecutar regresiones bilingües.
+- [x] `PG-H.05.05` Documentar generación y motivos de correcciones en README service, sin referencias transitorias.
+- [x] `PG-H.05.06` Revisar correspondencia completa origen/destino y ejecutar regresiones bilingües.
 
 ### PG-H.06 · Ejemplos derivados
 
@@ -533,12 +533,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.04.04 | Cumplido | `TOOL.SERVICE.CATALOG` D1; `specifications/cases/catalogs.json` | Fichas bilingües usan identidades fuente; formas y firmas siguen generadas desde sus dueños. No hay exclusiones activas en 2026. |
 | PG-H.04.05 | Cumplido | README de `pseudolearn_spec` y `see_validation` | Autoría editorial, revisión y mantenimiento del inventario documentados junto al paquete dueño. |
 | PG-H.04.06 | Cumplido | `coverage_matrix`; `see validate` (159 especificaciones); `see conform --subject service` (110 observaciones, 0 divergencias) | Matriz identidad/rol → ficha con 143/143 destinos presentes; R4 estructural con anclaje vigente y sin fallback genérico como cobertura. |
-| PG-H.05.01 | | | Pendiente de ejecución |
-| PG-H.05.02 | | | Pendiente de ejecución |
-| PG-H.05.03 | | | Pendiente de ejecución |
-| PG-H.05.04 | | | Pendiente de ejecución |
-| PG-H.05.05 | | | Pendiente de ejecución |
-| PG-H.05.06 | | | Pendiente de ejecución |
+| PG-H.05.01 | Cumplido | `TOOL.SERVICE.CATALOG` R5 | Dueño único de la descripción de palabras reservadas: la parte editorial de su ficha; sin descripción genérica. |
+| PG-H.05.02 | Cumplido | 28 entradas de `keyword_help.rs` → partes de ficha (`tests/help_catalog.rs`) | Las 28 tenían parte equivalente en ficha; el texto se reemplazó por el editorial revisado (más específico). El fallback genérico se retiró y su ausencia se comprueba. Las 28 existentes más el fallback componen las 29 del plan. |
+| PG-H.05.03 | Cumplido | `pseudolearn_service/tests/help_catalog.rs` | Cobertura bilingüe, ausencia de genérico, orden de fichas, locale independiente y ausencia de tablas paralelas. |
+| PG-H.05.04 | Cumplido | `build.rs`, `codegen/help_cards.rs`, `src/help_catalog.rs`; `keyword_help.rs` retirado | Datos estáticos generados desde la exportación; `HelpLocale` separado del perfil; las firmas de usuario no cambian. |
+| PG-H.05.05 | Cumplido | README de `pseudolearn_service` | Generación, elección de fuente y motivo de las correcciones documentados sin referencias transitorias. |
+| PG-H.05.06 | Cumplido | `see conform --subject service` (115 observaciones, 0 divergencias); `cargo xtask verify` en verde | `TOOL.SERVICE.CATALOG` R5 con 5 casos propios; regresiones de hover/navegación/completado en verde. |
 | PG-H.06.01 | | | Pendiente de ejecución |
 | PG-H.06.02 | | | Pendiente de ejecución |
 | PG-H.06.03 | | | Pendiente de ejecución |

@@ -2,6 +2,7 @@ mod context;
 mod operator;
 
 use crate::document_session::DocumentSession;
+use crate::help_catalog::HelpLocale;
 use crate::hover::{HoverOutcome, hover_for_token};
 use crate::navigation::{Position, Range, span_to_range};
 use crate::positions::{offset_at, position_at};
@@ -69,6 +70,14 @@ pub fn resolve_help_at_position(
     position: Position,
 ) -> Option<HelpQueryOutcome> {
     resolve_help_in_context(&document.query_context(), position)
+}
+
+pub fn resolve_help_with_locale(
+    document: &DocumentSession,
+    position: Position,
+    locale: HelpLocale,
+) -> Option<HelpQueryOutcome> {
+    resolve_help_in_context(&document.localized_query_context(locale), position)
 }
 
 pub(crate) fn resolve_help_in_context(
