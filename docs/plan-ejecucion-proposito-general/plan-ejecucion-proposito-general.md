@@ -248,8 +248,8 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-H.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [x] `PG-H.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [x] `PG-H.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-H.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-H.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-H.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-H.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-H
 

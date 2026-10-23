@@ -595,8 +595,8 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.C09 | Cumplido | Catálogo 2026: 143 filas identidad/rol cubiertas | La fase no incorpora sintaxis nueva. Límite declarado: los literales de texto y los operadores simbólicos no tienen resolución propia ni están en la campaña funcional. |
 | PG-H.C10 | Cumplido | K-16 y K-17 revisados; E-PG-11 con procedencia y resultados | K-17 se materializó una vez: `Verdadero` y `Falso` tenían ficha sin resolución; se corrigió con contrato y caso. El resto de hallazgos de la campaña son límites de oráculo, corregidos. |
 | PG-H.C11 | Cumplido | `cargo xtask verify` de engine y spec; `flutter test` (2 265); app y `native/` en verde | Puertas leídas en sus registros. El humo en simulador no se ejecutó y no hay cobertura de dispositivo físico. |
-| PG-H.C12 | | | Pendiente de ejecución |
-| PG-H.C13 | | | Pendiente de ejecución |
+| PG-H.C12 | Cumplido | `git ls-remote` y el informe del turno | Commits sin atribución de IA conforme a la skill; push ordinario a `feature/agregar-ruta-de-especificacion` comprobado contra el remoto (`587e412`). Los commits de implementación van de `1776d40` a `935c9d5`. |
+| PG-H.C13 | Cumplido | `git ls-remote` y el informe del turno | Informe entregado a la persona al terminar el turno; se detiene la ejecución (`PHASE-STOP`). El cierre de PG-H no autoriza PG-1, PG-6A ni PG-A. |
 
 Resumen de `PG-H.05`–`PG-H.12` (2026-10-23). `.05`: el servicio genera sus fichas desde la exportación del corpus,
 el idioma de interfaz es independiente del perfil y `keyword_help.rs` se retiró. `.06`: las 38 fichas enlazan
