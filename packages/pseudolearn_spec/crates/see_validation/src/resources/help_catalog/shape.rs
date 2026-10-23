@@ -1,7 +1,14 @@
 use serde_json::Value;
 use std::collections::BTreeSet;
 
+const MAXIMUM_NESTING: usize = 10;
+
 pub(super) fn check(value: &Value) -> Result<(), String> {
+    if exceeds_nesting(value, 0) {
+        return Err(format!(
+            "SEE-HELP-CATALOG: resource nesting exceeds {MAXIMUM_NESTING}"
+        ));
+    }
     let schema: Value = serde_json::from_str(include_str!(
         "../../../../../schemas/help-catalog-1.schema.json"
     ))
@@ -14,6 +21,18 @@ pub(super) fn check(value: &Value) -> Result<(), String> {
     check_examples(value)?;
     check_exclusion_conflicts(value)?;
     check_exclusion_justifications(value)
+}
+
+fn exceeds_nesting(value: &Value, depth: usize) -> bool {
+    if depth > MAXIMUM_NESTING {
+        return true;
+    }
+    let next = depth.saturating_add(1);
+    match value {
+        Value::Object(entries) => entries.values().any(|entry| exceeds_nesting(entry, next)),
+        Value::Array(items) => items.iter().any(|item| exceeds_nesting(item, next)),
+        _ => false,
+    }
 }
 
 fn unique_roles(value: &Value) -> Result<(), String> {

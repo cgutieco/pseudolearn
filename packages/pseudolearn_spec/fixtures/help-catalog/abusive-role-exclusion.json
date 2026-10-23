@@ -1,0 +1,43 @@
+{
+  "violation": "active role hidden behind a non-alias exclusion",
+  "expect": "must name an alias",
+  "edits": [
+    {
+      "op": "remove",
+      "path": "/cards/0"
+    },
+    {
+      "op": "set",
+      "path": "/exclusions",
+      "value": [
+        {
+          "id": "excluded.algorithm",
+          "identity": {
+            "kind": "construction",
+            "id": "algorithm",
+            "role": "program_entry"
+          },
+          "availability": {
+            "editions": [
+              "2026"
+            ],
+            "profiles": [
+              "es",
+              "en"
+            ],
+            "strictness": [
+              "estricto",
+              "flexible"
+            ]
+          },
+          "reason": "not_pedagogical",
+          "anchor": {
+            "specification": "LANG.PROGRAM.STRUCTURE",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        }
+      ]
+    }
+  ]
+}

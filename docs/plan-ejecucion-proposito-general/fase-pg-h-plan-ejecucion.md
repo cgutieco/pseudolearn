@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.06` completos. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.07` completos. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -216,15 +216,15 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.07 · Verificador del catálogo
 
-- [ ] `PG-H.07.01` Especificar invariantes y diagnósticos estables del verificador y la separación
+- [x] `PG-H.07.01` Especificar invariantes y diagnósticos estables del verificador y la separación
   entre integridad estructural, ejecución de ejemplos y revisión editorial independiente.
-- [ ] `PG-H.07.02` Crear fixtures negativos aislados: ficha huérfana, anclaje roto/retirado, forma retirada,
+- [x] `PG-H.07.02` Crear fixtures negativos aislados: ficha huérfana, anclaje roto/retirado, forma retirada,
   ejemplo inválido, traducción ausente, identidad duplicada, exclusión abusiva y recurso demasiado profundo.
-- [ ] `PG-H.07.03` Preparar tests que exijan el diagnóstico correcto por fixture y aceptación del catálogo válido.
-- [ ] `PG-H.07.04` Implementar verificación en see_validation y ejecución de ejemplos por conformidad/CLI;
+- [x] `PG-H.07.03` Preparar tests que exijan el diagnóstico correcto por fixture y aceptación del catálogo válido.
+- [x] `PG-H.07.04` Implementar verificación en see_validation y ejecución de ejemplos por conformidad/CLI;
   no importar ni ejecutar el motor dentro del validador estructural.
-- [ ] `PG-H.07.05` Documentar reglas, límites y comando de verificación en README spec/validation.
-- [ ] `PG-H.07.06` Integrar en `cargo xtask verify`; demostrar rechazo individual y fallo de exportación obsoleta.
+- [x] `PG-H.07.05` Documentar reglas, límites y comando de verificación en README spec/validation.
+- [x] `PG-H.07.06` Integrar en `cargo xtask verify`; demostrar rechazo individual y fallo de exportación obsoleta.
 
 ### PG-H.08 · Servicio, API y LSP comunes
 
@@ -545,12 +545,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.06.04 | Cumplido | `see_validation/src/resources/help_catalog/examples.rs`, `references.rs`, `shape.rs` | No hizo falta añadir casos: cada especificación anclada ya tenía casos aplicables. La comparación de conformidad no se modificó; la ejecución verifica el caso y nunca produce el esperado. |
 | PG-H.06.05 | Cumplido | README de `pseudolearn_spec` y `see_validation` | Procedencia, clases y validación documentadas. |
 | PG-H.06.06 | Cumplido | `see conform --subject engine` (1 563 observaciones, 0 divergencias); `--subject service` (116, 0); `cargo xtask verify` de spec en verde | Los casos enlazados se ejecutan en sus sujetos; los negativos del validador pasan. Sin fallos reales que preservar. |
-| PG-H.07.01 | | | Pendiente de ejecución |
-| PG-H.07.02 | | | Pendiente de ejecución |
-| PG-H.07.03 | | | Pendiente de ejecución |
-| PG-H.07.04 | | | Pendiente de ejecución |
-| PG-H.07.05 | | | Pendiente de ejecución |
-| PG-H.07.06 | | | Pendiente de ejecución |
+| PG-H.07.01 | Cumplido | `TOOL.SERVICE.CATALOG` R7 | Invariantes y diagnósticos con prefijo `SEE-HELP-CATALOG`; separación entre integridad estructural, ejecución de ejemplos y revisión editorial. |
+| PG-H.07.02 | Cumplido | `fixtures/help-catalog/*.json` (9) | Ficha huérfana, anclaje roto, forma léxica retirada, ejemplo inválido, traducción ausente, identidad duplicada, exclusión solapada, exclusión abusiva de rol y recurso profundo; cada una aislada sobre el catálogo real. |
+| PG-H.07.03 | Cumplido | `see_validation/tests/resources/help_catalog/fixtures.rs` | Exige el diagnóstico correcto por fixture, catálogo vigente sin diagnósticos y un mínimo de fixtures. |
+| PG-H.07.04 | Cumplido | `see_validation/src/resources/help_catalog/shape.rs` | Se añadió el límite de anidamiento; el validador sigue sin importar ni ejecutar el motor. La ejecución de ejemplos permanece en los sujetos de conformidad. |
+| PG-H.07.05 | Cumplido | README de `see_validation` | Reglas, diagnósticos y límites documentados. |
+| PG-H.07.06 | Cumplido | `cargo xtask verify` de spec y de engine en verde; `see export --check` falla con `SEE-STALE` tras alterar `catalogs.json` | Las pruebas con fixtures corren dentro de `cargo test` de la puerta integral; la alteración manual se restauró. |
 | PG-H.08.01 | | | Pendiente de ejecución |
 | PG-H.08.02 | | | Pendiente de ejecución |
 | PG-H.08.03 | | | Pendiente de ejecución |

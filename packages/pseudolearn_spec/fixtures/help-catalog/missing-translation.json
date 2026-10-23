@@ -1,0 +1,10 @@
+{
+  "violation": "card without English content",
+  "expect": "uncovered keyword identity algorithm",
+  "edits": [
+    {
+      "op": "remove",
+      "path": "/cards/0/content/en"
+    }
+  ]
+}

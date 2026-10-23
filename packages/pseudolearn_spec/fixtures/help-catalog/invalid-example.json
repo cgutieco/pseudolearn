@@ -1,0 +1,11 @@
+{
+  "violation": "example that references a case that does not exist",
+  "expect": "stale example",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/examples/0/case",
+      "value": "C99"
+    }
+  ]
+}

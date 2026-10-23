@@ -4,6 +4,8 @@ use serde_json::{Value, json};
 
 #[path = "help_catalog/coverage.rs"]
 mod coverage;
+#[path = "help_catalog/fixtures.rs"]
+mod fixtures;
 #[path = "../support/mod.rs"]
 mod support;
 

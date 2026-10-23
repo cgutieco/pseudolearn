@@ -310,6 +310,19 @@
 }
 ```
 
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El verificador del catálogo comprueba la integridad estructural sin ejecutar programas: rechaza una ficha sin papel declarado, un anclaje o una identidad léxica que ya no existe, un ejemplo que no resuelve un caso vigente, contenido sin traducción, identidades repetidas, una exclusión que oculta un rol activo o se solapa con una ficha, y un recurso cuyo anidamiento supera diez niveles. Cada violación tiene un diagnóstico propio con prefijo SEE-HELP-CATALOG y se ejercita con una violación deliberada aislada. La ejecución de los ejemplos pertenece a los sujetos de conformidad y la corrección de la prosa a la revisión editorial independiente; ninguna de las dos la sustituye la verificación estructural.",
+  "justificacion": "Separar integridad, ejecución y revisión evita presentar una verificación mecánica como juicio editorial y garantiza que cada comprobación pueda fallar por una sola causa.",
+  "verificacion": [
+    "estructural"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",

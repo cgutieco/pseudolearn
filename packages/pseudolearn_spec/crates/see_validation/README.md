@@ -30,6 +30,18 @@ referencias resuelven el caso exacto y derivan su clase (`executable`, `accepted
 operación y esperado; una clase distinta, un caso retirado o una ficha sin ejemplo en algún idioma son
 errores. El validador no ejecuta programas: la ejecución del caso pertenece a los sujetos de conformidad.
 
+El catálogo tiene tres comprobaciones separadas: la integridad estructural, que vive aquí y no ejecuta ni
+importa el motor; la ejecución de los ejemplos, que corresponde a los sujetos de conformidad sobre sus
+casos; y la revisión editorial independiente de la prosa, que ninguna herramienta sustituye. Los
+diagnósticos tienen el prefijo `SEE-HELP-CATALOG` y una causa cada uno: ficha sin papel declarado
+(`no declared inventory role`), anclaje retirado o roto (`stale anchor`), identidad léxica retirada
+(`stale token identity`), ejemplo inválido (`stale example`), clase discrepante (`mismatched kind`),
+traducción ausente (`uncovered … identity`), identidad repetida (`duplicate`), exclusión abusiva
+(`overlaps an available card`, `must name an alias`) y recurso demasiado profundo (`nesting exceeds`).
+Cada uno se ejercita con un fixture aislado de `fixtures/help-catalog/` aplicado sobre el catálogo real:
+el catálogo vigente debe quedar sin diagnósticos y cada fixture debe ser rechazado por su diagnóstico.
+La prueba exige un mínimo de fixtures para que borrarlos no la debilite.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 
