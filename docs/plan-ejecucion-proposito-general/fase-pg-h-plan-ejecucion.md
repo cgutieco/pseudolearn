@@ -20,10 +20,10 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.12` ejecutados, con las salvedades de las filas parciales (`PG-H.09.06` sin humo en
-  simulador; `PG-H.12.04` sin comparación de la aplicación por el puente) y `PG-H.C02`, `PG-H.C03` y `PG-H.C13`
-  sin cerrar: falta la revisión de la persona y la revisión independiente de las reglas añadidas. PG-H permanece
-  abierta hasta esa decisión.
+- Estado: PG-H cerrada el 2026-10-23 por decisión de la persona, que aceptó los cambios. Pendientes justificados que
+  se declaran y no bloquean el cierre: humo en simulador (`PG-H.09.06`), comparación de la aplicación por el puente
+  en la campaña (`PG-H.12.04`), causa de los candidatos a punto de cambio y margen de tamaño de iOS (0,32 %).
+  PG-1, PG-6A y PG-A siguen sin autorización (`PHASE-STOP`).
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
 y de la [hoja de ruta](../hoja-de-ruta-proposito-general.md). Ningún archivo fuera de `docs/`
@@ -585,8 +585,8 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.12.05 | Cumplido | README de `pseudolearn_bench_worker` | Reproducción y límites documentados sin citar este plan. |
 | PG-H.12.06 | Cumplido | `packages/pseudolearn_spec/results/pg-h-campaign-2026-10-23/` (`summary.json` verificado por `service help verify`) | Funcional: 0 respuestas erróneas y 0 discrepancias API/LSP. Caliente, 10 000 líneas: p95 API 2,299 ms (IC95 % 2,292–2,302) y núcleo 1,742 ms, bajo el criterio candidato de 20 ms; 40 líneas: 0,023 ms. Frío: 7,676 ms (10 000 líneas) y 0,061 ms (40 líneas). Reloj de 41 ns. Se detectan candidatos a punto de cambio en las diez series del documento grande; su causa no se demostró (hipótesis: el coste lineal de localizar el token depende de la posición consultada). Memoria, cota de dos lecturas por proceso: 38 096 KiB caliente y 27 856 KiB frío. Tamaños: iOS arm64 3 135 792 B (límite 3 145 728, margen 0,32 %; PG-0: 2 985 792 B) y Wasm Brotli 553 882 B (límite 614 400; PG-0: 530 599 B). Mismo hardware que PG-0 (Apple M2, Mac14,3). La paridad de ejemplos entre transportes no se mide: solo identidad, ficha y rango. |
 | PG-H.C01 | Cumplido | Mensaje nuevo de ejecución del 2026-10-22 | Autoriza la implementación de `PG-H.04`; no autoriza `.05` ni el cierre de PG-H. |
-| PG-H.C02 |  |  | Pendiente: requiere la revisión integral de la persona. |
-| PG-H.C03 | Parcial | `SPEC-FIRST` en cada punto; versiones y estados congelados | Contrato antes de caso, caso antes de código, y oráculo de la campaña independiente del lexer. Falta la revisión independiente de las reglas añadidas (ver el informe); no se completó. |
+| PG-H.C02 | Cumplido | Mensaje de la persona del 2026-10-23 | La persona revisó el plan y el resumen de cambios y aceptó los cambios; decidió cerrar PG-H. |
+| PG-H.C03 | Cumplido | Mensaje de la persona del 2026-10-23 | Aceptación de la persona sobre las reglas añadidas y sobre la regla de literales booleanos, a partir de un resumen de los cambios; no hubo una revisión regla por regla de una tercera persona. |
 | PG-H.C04 | Cumplido | Vínculos en `conformance*.yaml`; evidencia estructural o de ejecutor | Cada regla nueva tiene casos propios o evidencia estructural con fixtures; los vínculos son datos. |
 | PG-H.C05 | Cumplido | Pruebas espejo en `see_validation`, `pseudolearn_service`, `pseudolearn_api`, `pseudolearn_bench_worker` y `pseudolearn_app` | Camino feliz, infeliz y límites en cada pieza. |
 | PG-H.C06 | Cumplido | `rust-checks all .` en engine, spec y `native/`; límites, contenido y diseño de la app | Los avisos de tamaño que aparecieron se corrigieron con módulos nuevos, no con excepciones. |

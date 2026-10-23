@@ -24,7 +24,7 @@ El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
 sandbox de las campañas de app y rendimiento. La autorización del 2026-10-22 cubrió `PG-H.04`; la del 2026-10-23 cubre `PG-H.05` a `PG-H.12` y el cierre
-común en una iteración. PG-H queda ejecutada con salvedades y abierta hasta la decisión de la persona; PG-1 requiere
+común en una iteración. PG-H quedó cerrada el 2026-10-23 por decisión de la persona; PG-1 requiere
 autorización nueva.
 
 
@@ -238,8 +238,8 @@ están completos. La revisión integral del plan sigue pendiente; `.05`–`.12` 
 Cierre común (definiciones en §4.0):
 
 - [x] `PG-H.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-H.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-H.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-H.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-H.C03` SPEC-FIRST y congelamiento respetados.
 - [x] `PG-H.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
 - [x] `PG-H.C05` Tests feliz, infeliz y límite en carpetas espejo.
 - [x] `PG-H.C06` Capas declaradas, imports permitidos y límites de tamaño.
@@ -260,7 +260,7 @@ Cierre común (definiciones en §4.0):
 | PG-H.10–.11 | Cumplido | Auditoría de consumidores y pruebas adversarias | Sin copias de prosa; texto inerte en todos los renderizadores. |
 | PG-H.12 | Cumplido con salvedad | Campaña `pg-h-campaign-2026-10-23` | p95 caliente 2,299 ms (criterio 20 ms); la app no se compara en esa campaña; margen iOS 0,32 %. |
 
-Revisión Git de cierre: `935c9d5` y los commits documentales posteriores · Verificadores ejecutados: engine, spec, app y `native/`, leídos en sus registros · Pendientes justificados: humo en simulador, comparación de la app en E-PG-11, revisión independiente de las reglas añadidas, causa de los candidatos a punto de cambio · Decisiones de la persona: revisión del plan (C02), de la regla de literales booleanos y de las reglas sin revisor; cierre de PG-H.
+Revisión Git de cierre: `935c9d5` y los commits documentales posteriores · Verificadores ejecutados: engine, spec, app y `native/`, leídos en sus registros · Pendientes justificados: humo en simulador, comparación de la app en E-PG-11, revisión independiente de las reglas añadidas, causa de los candidatos a punto de cambio · Decisiones de la persona: aceptó los cambios, incluida la regla de literales booleanos y las reglas añadidas, y cerró PG-H el 2026-10-23.
 
 ### 4.3 PG-1 · Identidad y proyectos
 
@@ -925,7 +925,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | Fase | Estado | Plan detallado creado | Revisión Git de cierre | Puntos pendientes o diferidos |
 |---|---|---|---|---|
 | PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
-| PG-H | Ejecutada con salvedades · PG-H.01–.12 | Sí | Sin cierre | Revisión de la persona (C02), revisión independiente de reglas (C03) y parada (C13); humo en simulador y comparación de la app en E-PG-11 pendientes |
+| PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | Sin iniciar | No | | |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |
