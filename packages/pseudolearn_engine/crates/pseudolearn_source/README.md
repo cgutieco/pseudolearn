@@ -22,9 +22,9 @@ La comprobación disponible usa, desde la raíz del monorepo,
 Nivel 0. Dependencias internas permitidas: ninguna capa interna. Externas: unicode-normalization, unicode-ident.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
-Estructuras y algoritmos: `SourceText` con los bytes originales; índice de inicios de línea; conversión perezosa de desplazamiento de byte a columna en puntos de código; detección de BOM; NFC solo para comparar nombres, con camino rápido ASCII.
+Estructuras y algoritmos: `SourceText` con los bytes originales e índice de inicios de línea; funciones del módulo convierten desplazamientos UTF-8 a puntos de código Unicode o unidades UTF-16 y validan tramos. La identidad se consulta con funciones separadas para mantener pequeña la interfaz del texto. BOM; NFC solo para comparar nombres, con camino rápido ASCII. `SourceIdentity` combina proyecto, revisión y archivo; `SourceTable` ordena fuentes por ID y valida nodos y tramos antes de resolver una localización.
 
-Invariantes: Los desplazamientos son siempre límites de carácter UTF-8; el texto original nunca se modifica.
+Invariantes: Los desplazamientos son siempre límites de carácter UTF-8; el texto original nunca se modifica. La identidad de fuente es distinta del nombre visible; el ID cero se reserva al documento suelto. Una tabla representa una revisión inmutable: una localización de otro proyecto o revisión no se resuelve y un ID no se reutiliza dentro de la tabla.
 
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
 
@@ -33,6 +33,10 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 Problema: representa el texto fuente original con posiciones verificadas respetando los observables del corpus.
 Elección: `SourceText` con los bytes originales; índice de inicios de línea; conversión perezosa de desplazamiento de byte a columna en puntos de código; detección de BOM; NFC solo para comparar nombres, con camino rápido ASCII.
 Alternativas descartadas y fundamento: Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
+
+Problema: dos archivos pueden tener el mismo nombre y rango local. Elección: offsets UTF-8 compactos con `SourceId` y una identidad compuesta de proyecto/revisión/archivo; las búsquedas usan ID, no el nombre. `SourceTable` valida la revisión antes de devolver una fuente. Se rechaza repetir URI o ruta en cada tramo y combinar tramos de fuentes distintas.
+
+Problema: los consumidores usan unidades de coordenadas distintas. Elección: el núcleo conserva offsets de byte; funciones públicas del módulo convierten a línea/columna en escalares Unicode o UTF-16 solo en límites válidos, y rechazan los interiores de un par sustituto. Estas funciones reciben `SourceText` por referencia y mantienen sus métodos centrados en el contenido original. CRLF cuenta como un salto de línea y el BOM permanece en el texto original.
 
 Problema: NFC debe aplicarse después de consumir el nombre completo. Elección: el scanner consulta
 `IdentifierNormalizer::is_continuation` para conservar las marcas combinantes dentro del mismo token.

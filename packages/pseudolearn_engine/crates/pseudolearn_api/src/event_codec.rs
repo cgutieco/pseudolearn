@@ -9,12 +9,24 @@ pub(crate) fn encode(arguments: &Value) -> Result<Value, ApiError> {
         .get("events")
         .and_then(Value::as_array)
         .ok_or_else(|| usage("missing events"))?;
-    validate_events(events)?;
     match arguments.get("encoding").and_then(Value::as_str) {
-        Some("json") => serde_json::to_string(&canonical_events(events))
-            .map(Value::String)
-            .map_err(serialization_failure),
-        Some("binary") => Ok(json!(crate::event_binary::encode_binary(events)?)),
+        Some("json") => {
+            validate_events(events, 2)?;
+            serde_json::to_string(&canonical_events(events))
+                .map(Value::String)
+                .map_err(serialization_failure)
+        }
+        Some("binary") => {
+            let version = match arguments.get("version") {
+                None => 2,
+                Some(value) => value
+                    .as_u64()
+                    .and_then(|version| u16::try_from(version).ok())
+                    .ok_or_else(|| usage("invalid wire version"))?,
+            };
+            validate_events(events, version)?;
+            Ok(json!(crate::event_binary::encode_binary(events, version)?))
+        }
         _ => Err(usage("unsupported encoding")),
     }
 }
@@ -40,14 +52,14 @@ fn decode_json(encoded: &Value) -> Result<Value, ApiError> {
         .ok_or_else(|| usage("invalid JSON event batch"))?;
     let events: Vec<Value> =
         serde_json::from_str(text).map_err(|error| usage(&error.to_string()))?;
-    validate_events(&events)?;
+    validate_events(&events, 2)?;
     Ok(json!(events))
 }
 
-fn validate_events(events: &[Value]) -> Result<(), ApiError> {
+fn validate_events(events: &[Value], version: u16) -> Result<(), ApiError> {
     for event in events {
         decode_event(event)?;
-        validate_source(event)?;
+        validate_source_version(event, version)?;
     }
     Ok(())
 }
@@ -70,14 +82,47 @@ pub(super) fn canonical_value(value: Value) -> Value {
     }
 }
 
-pub(super) fn validate_source(event: &Value) -> Result<(), ApiError> {
-    if event
-        .get("source")
-        .is_some_and(|source| !source.is_null() && !source.is_object())
+pub(super) fn validate_source_version(event: &Value, version: u16) -> Result<(), ApiError> {
+    let Some(source) = event.get("source") else {
+        return Ok(());
+    };
+    if source.is_null() {
+        return Ok(());
+    }
+    let Some(fields) = source.as_object() else {
+        return Err(usage("invalid event source"));
+    };
+    if fields.get("revision_id").and_then(Value::as_str).is_none()
+        || fields.get("node_id").and_then(Value::as_str).is_none()
+        || fields.get("span").and_then(Value::as_object).is_none()
     {
         return Err(usage("invalid event source"));
     }
+    let identity = fields.get("identity");
+    if version == 1 && identity.is_some() {
+        return Err(usage("source identity requires wire version 2"));
+    }
+    if let Some(identity) = identity {
+        let Some(identity) = identity.as_object() else {
+            return Err(usage("invalid event source identity"));
+        };
+        let project_id = identity.get("project_id").and_then(decimal_identifier);
+        let revision_id = identity.get("revision_id").and_then(decimal_identifier);
+        let source_id = identity.get("source_id").and_then(Value::as_u64);
+        if !project_id.is_some_and(|value| value > 0)
+            || !revision_id.is_some_and(|value| value > 0)
+            || !source_id.is_some_and(|value| u32::try_from(value).is_ok_and(|id| id > 0))
+        {
+            return Err(usage("invalid event source identity"));
+        }
+    }
     Ok(())
+}
+
+fn decimal_identifier(value: &Value) -> Option<u64> {
+    let text = value.as_str()?;
+    let identifier = text.parse::<u64>().ok()?;
+    (identifier.to_string() == text).then_some(identifier)
 }
 
 pub(super) fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {

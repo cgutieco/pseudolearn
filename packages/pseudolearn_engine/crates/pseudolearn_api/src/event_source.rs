@@ -8,21 +8,29 @@ pub(crate) fn source_of(view: &ProgramView, event: &TraceEvent) -> Value {
     let Some(span) = event.span else {
         return Value::Null;
     };
+    if span.source_id != view.source_id() {
+        return Value::Null;
+    }
     let Some(ordinal) = resolve(view, span, event.class) else {
         return Value::Null;
     };
     let Some(node) = view.node(ordinal) else {
         return Value::Null;
     };
-    json!({
+    let mut source = json!({
         "revision_id": view.revision(),
         "node_id": view.node_identifier(ordinal),
         "span": span_json(node),
-    })
+    });
+    if let (Some(identity), Some(fields)) = (node.source, source.as_object_mut()) {
+        fields.insert("identity".to_owned(), json!(identity));
+    }
+    source
 }
 
 fn resolve(view: &ProgramView, span: SourceSpan, class: TraceClass) -> Option<usize> {
     let key: SpanKey = (
+        span.source_id,
         (span.start_line, span.start_column),
         (span.end_line, span.end_column),
     );
@@ -59,10 +67,13 @@ fn preference_for(class: TraceClass) -> [ViewKind; 3] {
 }
 
 fn innermost_containing(view: &ProgramView, key: &SpanKey) -> Option<usize> {
+    if key.0 != view.source_id() {
+        return None;
+    }
     let mut best: Option<usize> = None;
     let mut ordinal = 0;
     while let Some(node) = view.node(ordinal) {
-        if node.start <= key.0 && key.1 <= node.end {
+        if node.start <= key.1 && key.2 <= node.end {
             best = Some(ordinal);
         }
         ordinal = ordinal.saturating_add(1);

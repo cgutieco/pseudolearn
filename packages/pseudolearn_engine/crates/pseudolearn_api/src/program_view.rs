@@ -3,13 +3,12 @@ use crate::program_view_kind::ViewKind;
 use crate::{AnalyzeRequest, ApiError};
 use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::Profile;
-use pseudolearn_source::SourceText;
 use pseudolearn_syntax::parse_source_with_terminator;
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 
 pub(crate) type Position = (u32, u32);
-pub(crate) type SpanKey = (Position, Position);
+pub(crate) type SpanKey = (pseudolearn_source::SourceId, Position, Position);
 
 pub(crate) struct ViewNode {
     pub(crate) syntax_index: usize,
@@ -24,6 +23,7 @@ pub(crate) struct ViewNode {
     pub(crate) child_roles: Vec<&'static str>,
     pub(crate) dimensions: Option<usize>,
     pub(crate) attributes: crate::program_view_annotations::Attributes,
+    pub(crate) source: Option<crate::ApiSourceIdentity>,
 }
 
 pub(crate) struct ProgramView {
@@ -34,18 +34,15 @@ pub(crate) struct ProgramView {
     inheritance: Value,
     methods: Value,
     members: Value,
+    source_id: pseudolearn_source::SourceId,
+    source: Option<crate::ApiSourceIdentity>,
 }
 
 impl ProgramView {
     pub(crate) fn build(request: &AnalyzeRequest, revision: String) -> Result<Self, ApiError> {
         let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
         let strict = request.strictness != "flexible";
-        let source = SourceText::new(request.program.clone());
-        let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
-        let (tree, _) = parse_source_with_terminator(&source, profile, terminator);
-        if tree.has_errors {
-            return Err(crate::execution_resource::usage("analysis has errors"));
-        }
+        let (source, tree) = parse_view_source(request, strict, profile)?;
         let mut nodes = crate::program_view_tree::collect_nodes(&tree, &source);
         let context = AnnotationContext {
             tree: &tree,
@@ -74,6 +71,8 @@ impl ProgramView {
             inheritance,
             methods,
             members,
+            source_id: pseudolearn_source::source_id(&source),
+            source: crate::source_identity::api_identity(&source),
         })
     }
 
@@ -82,7 +81,17 @@ impl ProgramView {
     }
 
     pub(crate) fn node_identifier(&self, ordinal: usize) -> String {
-        format!("{}.n{ordinal:x}", self.revision)
+        match self.source {
+            Some(source) => format!(
+                "p{:x}.r{:x}.f{:x}.n{ordinal:x}",
+                source.project_id, source.revision_id, source.source_id
+            ),
+            None => format!("{}.n{ordinal:x}", self.revision),
+        }
+    }
+
+    pub(crate) fn source_id(&self) -> pseudolearn_source::SourceId {
+        self.source_id
     }
 
     pub(crate) fn node(&self, ordinal: usize) -> Option<&ViewNode> {
@@ -94,9 +103,16 @@ impl ProgramView {
     }
 
     pub(crate) fn ordinal_of(&self, identifier: &str) -> Option<usize> {
-        let suffix = identifier
-            .strip_prefix(self.revision.as_str())?
-            .strip_prefix(".n")?;
+        let prefix = self.source.map_or_else(
+            || format!("{}.n", self.revision),
+            |source| {
+                format!(
+                    "p{:x}.r{:x}.f{:x}.n",
+                    source.project_id, source.revision_id, source.source_id
+                )
+            },
+        );
+        let suffix = identifier.strip_prefix(&prefix)?;
         usize::from_str_radix(suffix, 16)
             .ok()
             .filter(|ordinal| *ordinal < self.nodes.len())
@@ -133,7 +149,7 @@ impl ProgramView {
         let nodes: Vec<Value> = (0..self.nodes.len())
             .filter_map(|ordinal| self.node_json(ordinal))
             .collect();
-        json!({
+        let mut value = json!({
             "revision_id": self.revision,
             "child_order": "source",
             "units": self.units,
@@ -141,15 +157,46 @@ impl ProgramView {
             "inheritance": self.inheritance,
             "methods": self.methods,
             "members": self.members,
-        })
+        });
+        if let (Some(source), Some(fields)) = (self.source, value.as_object_mut()) {
+            fields.insert("source".to_owned(), json!(source));
+        }
+        value
     }
+}
+
+fn parse_view_source(
+    request: &AnalyzeRequest,
+    strict: bool,
+    profile: Profile,
+) -> Result<
+    (
+        pseudolearn_source::SourceText,
+        pseudolearn_syntax::SyntaxTree,
+    ),
+    ApiError,
+> {
+    let source = crate::source_identity::source_text(request.program.clone(), request.source);
+    let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
+    let (tree, _) = parse_source_with_terminator(&source, profile, terminator);
+    if tree.has_errors {
+        return Err(crate::execution_resource::usage("analysis has errors"));
+    }
+    Ok((source, tree))
 }
 
 fn index_by_span(nodes: &[ViewNode]) -> BTreeMap<SpanKey, Vec<usize>> {
     let mut by_span: BTreeMap<SpanKey, Vec<usize>> = BTreeMap::new();
     for (ordinal, node) in nodes.iter().enumerate() {
         by_span
-            .entry((node.start, node.end))
+            .entry((
+                node.source
+                    .map_or(pseudolearn_source::SourceId::STANDALONE, |source| {
+                        pseudolearn_source::SourceId::new(source.source_id)
+                    }),
+                node.start,
+                node.end,
+            ))
             .or_default()
             .push(ordinal);
     }
@@ -157,10 +204,14 @@ fn index_by_span(nodes: &[ViewNode]) -> BTreeMap<SpanKey, Vec<usize>> {
 }
 
 pub(crate) fn span_json(node: &ViewNode) -> Value {
-    json!({
+    let mut span = json!({
         "start_byte": node.start_byte.to_string(),
         "end_byte": node.end_byte.to_string(),
         "start": {"line": node.start.0, "column": node.start.1},
         "end": {"line": node.end.0, "column": node.end.1},
-    })
+    });
+    if let (Some(source), Some(fields)) = (node.source, span.as_object_mut()) {
+        fields.insert("source".to_owned(), json!(source));
+    }
+    span
 }

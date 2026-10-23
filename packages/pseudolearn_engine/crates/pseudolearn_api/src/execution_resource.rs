@@ -33,14 +33,16 @@ pub(crate) struct ExecutionResource {
     profile: String,
     warnings: Vec<ApiDiagnostic>,
     view: Option<crate::program_view::ProgramView>,
+    source: Option<crate::ApiSourceIdentity>,
 }
 
 impl ExecutionResource {
     pub(crate) fn start(request: &ExecuteRequest) -> Result<Self, ApiError> {
-        let (module, warnings) = crate::ir_execution::compile_source_with_warnings(
+        let (module, warnings) = crate::ir_execution::compile_source_with_identity(
             &request.program,
             &request.profile,
             &request.strictness,
+            request.source,
         )
         .map_err(|_| usage("analysis has errors"))?;
         let bytecode = pseudolearn_bytecode::compile_module(&module)
@@ -53,11 +55,7 @@ impl ExecutionResource {
         options.cancelled = Some(cancelled.clone());
         let machine = create_owned_machine(program.clone(), Fuel::unlimited(), options.clone())
             .map_err(|trap| usage(trap.code))?;
-        let initial_state = crate::execution_state::capture(&machine);
-        let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
-        store
-            .record(&machine, 0)
-            .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
+        let (initial_state, store) = initial_checkpoint(&machine)?;
         Ok(Self {
             program,
             machine,
@@ -74,6 +72,7 @@ impl ExecutionResource {
             profile: request.profile.clone(),
             warnings,
             view: None,
+            source: request.source,
         })
     }
 
@@ -102,12 +101,15 @@ impl ExecutionResource {
                 }
             }
         }
-        let response = advance_response(
-            &self.machine,
-            (0, self.terminal.as_ref()),
-            (&self.profile, &self.warnings),
-            self.view.as_ref(),
-        );
+        let response = advance_response(AdvanceResponseInput {
+            machine: &self.machine,
+            start: 0,
+            terminal: self.terminal.as_ref(),
+            profile: &self.profile,
+            warnings: &self.warnings,
+            view: self.view.as_ref(),
+            source: self.source,
+        });
         self.delivered = machine_event_count(&self.machine);
         take_machine_events(&mut self.machine);
         self.record_checkpoint()?;
@@ -221,33 +223,53 @@ impl ExecutionResource {
     }
 }
 
-fn advance_response(
-    machine: &Machine<'_>,
-    (start, terminal): (usize, Option<&RunExit>),
-    (profile, warnings): (&str, &[ApiDiagnostic]),
-    view: Option<&crate::program_view::ProgramView>,
-) -> Value {
-    let events: Vec<_> = machine_events(machine)
-        .get(start..)
+struct AdvanceResponseInput<'borrow, 'program> {
+    machine: &'borrow Machine<'program>,
+    start: usize,
+    terminal: Option<&'borrow RunExit>,
+    profile: &'borrow str,
+    warnings: &'borrow [ApiDiagnostic],
+    view: Option<&'borrow crate::program_view::ProgramView>,
+    source: Option<crate::ApiSourceIdentity>,
+}
+
+fn advance_response(input: AdvanceResponseInput<'_, '_>) -> Value {
+    let events: Vec<_> = machine_events(input.machine)
+        .get(input.start..)
         .unwrap_or_default()
         .iter()
-        .map(|event| crate::execution_wire::event_with_source(event, view))
+        .map(|event| crate::execution_wire::event_with_source(event, input.view))
         .collect();
-    let termination = terminal
+    let termination = input
+        .terminal
         .map(crate::execution_wire::termination)
         .unwrap_or(json!({"kind":"running"}));
-    let mut diagnostics: Vec<_> = warnings.to_vec();
+    let mut diagnostics: Vec<_> = input.warnings.to_vec();
     diagnostics.extend(
-        machine
+        input
+            .machine
             .execution_diagnostics()
             .iter()
-            .map(|trap| crate::execution_wire::diagnostic(trap, profile)),
+            .map(|trap| crate::execution_wire::diagnostic(trap, input.profile, input.source)),
     );
-    if let Some(RunExit::Trap(trap)) = terminal {
-        diagnostics.push(crate::execution_wire::diagnostic(trap, profile));
+    if let Some(RunExit::Trap(trap)) = input.terminal {
+        diagnostics.push(crate::execution_wire::diagnostic(
+            trap,
+            input.profile,
+            input.source,
+        ));
     }
-    json!({"events":events,"output":machine_output(machine),"termination":termination,
-        "inputs_consumed":machine.input_consumed_count(),"diagnostics":diagnostics})
+    json!({"events":events,"output":machine_output(input.machine),"termination":termination,
+        "inputs_consumed":input.machine.input_consumed_count(),"diagnostics":diagnostics})
+}
+
+fn initial_checkpoint(machine: &Machine<'_>) -> Result<(Value, CheckpointStore), ApiError> {
+    let state = crate::execution_state::capture(machine);
+    let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
+    store
+        .record(machine, 0)
+        .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
+    Ok((state, store))
 }
 
 pub(crate) fn usage(detail: &str) -> ApiError {

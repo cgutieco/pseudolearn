@@ -60,6 +60,8 @@ memoria fuera de una llamada. La API del puente no importa Flutter ni tipos de d
 `tests/api_execution.rs` y `tests/api_event_codec.rs` verifican la frontera mediante llamadas reales
 al crate.
 
+El sobre JSON conserva la identidad opcional `source` de la API sin convertirla en tipos de transporte duplicados. `project_id` y `revision_id` viajan como cadenas decimales u64 y `source_id` como u32. El cliente de documento único omite esa identidad y mantiene sus respuestas previas; una ubicación identificada conserva el ID de fuente y no lo sustituye por el nombre visible.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 `ApiSession` contiene estado `!Sync`, mientras los puertos de la app son síncronos. La sesión vive en

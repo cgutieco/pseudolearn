@@ -52,6 +52,7 @@ fn source_case(source: &Source, generator: &mut Generator) -> Outcome {
         program: mutated.clone(),
         profile: source.profile.clone(),
         strictness: "strict".to_owned(),
+        source: None,
     });
     let analysis_fault = analysis
         .diagnostics
@@ -87,6 +88,7 @@ fn ir_case(source: &Source, generator: &mut Generator) -> Outcome {
         program: String::new(),
         profile: source.profile.clone(),
         strictness: "strict".to_owned(),
+        source: None,
     });
     if response.ir.accepted {
         Outcome::Clean

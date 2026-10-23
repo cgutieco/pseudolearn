@@ -59,6 +59,33 @@ fn version_reports_only_available_capabilities() {
 }
 
 #[test]
+fn source_identity_crosses_the_native_json_boundary_exactly() {
+    let session = session_identifier();
+    let created = send(
+        session,
+        "create_analysis",
+        json!({
+            "program":"Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
+            "profile":"es",
+            "strictness":"strict",
+            "source":{"project_id":"18446744073709551615","revision_id":"9007199254740993","source_id":2}
+        }),
+    );
+    let resource = created.pointer("/value/resource").cloned();
+    assert!(resource.is_some());
+    let analysis = send(session, "analysis", json!({"resource":resource}));
+    assert_eq!(
+        analysis.pointer("/value/diagnostics/0/span/source"),
+        Some(&json!({
+            "project_id":"18446744073709551615",
+            "revision_id":"9007199254740993",
+            "source_id":2
+        }))
+    );
+    assert!(close_session(session).is_ok());
+}
+
+#[test]
 fn invalid_requests_return_typed_failures() {
     let response = call_session(u64::MAX, "{".to_owned());
     assert!(response.contains("request is not valid JSON"));

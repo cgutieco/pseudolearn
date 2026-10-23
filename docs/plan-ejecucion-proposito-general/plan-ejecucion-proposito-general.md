@@ -24,8 +24,10 @@ El detalle operativo está en [el plan de PG-0](fase-pg-0-plan-ejecucion.md).
 La petición directa de implementar PG-0 revisó y autorizó el plan. PG-0 quedó cerrada el 2026-10-22 con
 verificaciones en verde, tras autorizar la persona el reanclaje de seis identidades y la ejecución fuera del
 sandbox de las campañas de app y rendimiento. La autorización del 2026-10-22 cubrió `PG-H.04`; la del 2026-10-23 cubre `PG-H.05` a `PG-H.12` y el cierre
-común en una iteración. PG-H quedó cerrada el 2026-10-23 por decisión de la persona; PG-1 requiere
-autorización nueva.
+común en una iteración. PG-H quedó cerrada el 2026-10-23 por decisión de la persona. El mensaje del
+2026-10-23 «Implementa en una iteración `PG-1.01 · Identidad de fuente de extremo a extremo`» autoriza
+ese punto de PG-1, sin iniciar ni cerrar la fase completa; los puntos `.02` en adelante requieren
+autorización explícita propia.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -270,7 +272,7 @@ E-PG-01, E-PG-02; ADR-01, ADR-04, ADR-05.
 
 Puntos a cumplir:
 
-- [ ] `PG-1.01` Identidad de fuente especificada: proyecto, revisión, archivo y tramo, propagada a diagnósticos, vistas
+- [x] `PG-1.01` Identidad de fuente especificada: proyecto, revisión, archivo y tramo, propagada a diagnósticos, vistas
   públicas, RI, trampas AOT, eventos y formatos de intercambio con protocolo versionado.
 - [ ] `PG-1.02` Módulo = archivo; paquete por manifiesto; workspace local; una entrada por aplicación; bibliotecas sin
   algoritmo obligatorio.
@@ -295,8 +297,9 @@ Puntos a cumplir:
 Fuera de alcance: registro público, rangos de versiones, compilación separada y carga dinámica.
 
 Plan detallado: [fase-pg-1-plan-ejecucion.md](fase-pg-1-plan-ejecucion.md), preparado el 2026-10-23
-por solicitud de la persona. Pendiente de revisión y autorización de implementación; su creación no
-marca C01/C02 ni inicia los puntos de la fase.
+por solicitud de la persona. La autorización del 2026-10-23 cubrió solo PG-1.01, ya implementado y
+verificado. No equivale a revisión integral ni a autorización de la fase completa; PG-1.C01/C02 y los
+puntos PG-1.02–.13 siguen pendientes.
 
 Cierre común (definiciones en §4.0):
 
@@ -926,9 +929,9 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 
 | Fase | Estado | Plan detallado creado | Revisión Git de cierre | Puntos pendientes o diferidos |
 |---|---|---|---|---|
-| PG-0 | Incompleta; PHASE-GREEN pendiente | Sí, C02 revisado | Sin cierre | Conformidad incompleta y con reglas sin evidencia, paired bloqueado antes de medir, iOS ausente, lock local PERF y estimaciones; licencia diferida a PG-7.07 |
+| PG-0 | Cerrada · PG-0.01–.12 | Sí, C02 revisado | 2026-10-22 | Diferimientos autorizados registrados en §4.1 del plan de PG-0; licencia abierta diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
-| PG-1 | Implementación sin iniciar | Sí, pendiente de revisión | | Autorización de implementación y coherencia documental del cierre de PG-0 |
+| PG-1 | PG-1.01 cumplido · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.02–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |
 | PG-4 | Sin iniciar | No | | |

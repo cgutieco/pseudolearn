@@ -63,16 +63,23 @@ fn keyword_name(kind: TokenKind) -> Option<&'static str> {
 }
 
 fn convert_span(span: Span, source: &SourceText) -> ApiSpan {
+    if !pseudolearn_source::is_valid_span(source, span) {
+        return ApiSpan::new(
+            ApiPosition { line: 1, column: 1 },
+            ApiPosition { line: 1, column: 1 },
+        );
+    }
     let start = source.line_and_column(span.start);
     let end = source.line_and_column(span.ending);
-    ApiSpan {
-        start: ApiPosition {
+    ApiSpan::in_source(
+        ApiPosition {
             line: start.0,
             column: start.1,
         },
-        end: ApiPosition {
+        ApiPosition {
             line: end.0,
             column: end.1,
         },
-    }
+        crate::source_identity::api_identity(source),
+    )
 }

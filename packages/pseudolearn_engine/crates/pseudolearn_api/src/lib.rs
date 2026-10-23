@@ -17,7 +17,8 @@ pub use model::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, ApiHelpCard, ApiHelpCoordinateUnit,
     ApiHelpDetail, ApiHelpEntry, ApiHelpExample, ApiHelpIdentity, ApiHelpPart,
     ApiHelpQueryPosition, ApiHelpQueryRequest, ApiHelpQueryResponse, ApiHelpResolution,
-    ApiHelpSymbol, ApiPosition, ApiSpan, ApiToken, ApiUnit, IrOutcome, IrRequest, IrResponse,
+    ApiHelpSymbol, ApiPosition, ApiSourceIdentity, ApiSpan, ApiToken, ApiUnit, IrOutcome,
+    IrRequest, IrResponse,
 };
 pub use probes::probe;
 pub use versioning::{
@@ -63,6 +64,7 @@ mod service_completion;
 mod service_help;
 mod service_help_card;
 mod service_operations;
+mod source_identity;
 mod state_pages;
 mod token_conversion;
 mod typed_values;

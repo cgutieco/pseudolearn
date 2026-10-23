@@ -43,12 +43,19 @@ pub(crate) fn termination(exit: &RunExit) -> Value {
     }
 }
 
-pub(crate) fn diagnostic(trap: &VmTrap, locale: &str) -> ApiDiagnostic {
+pub(crate) fn diagnostic(
+    trap: &VmTrap,
+    locale: &str,
+    source: Option<crate::ApiSourceIdentity>,
+) -> ApiDiagnostic {
     let code = DiagnosticCode::from_name(trap.code).unwrap_or(DiagnosticCode::InternalFault);
     let position = |line, column| ApiPosition { line, column };
-    let span = |original: pseudolearn_bytecode::SourceSpan| ApiSpan {
-        start: position(original.start_line, original.start_column),
-        end: position(original.end_line, original.end_column),
+    let span = |original: pseudolearn_bytecode::SourceSpan| {
+        ApiSpan::in_source(
+            position(original.start_line, original.start_column),
+            position(original.end_line, original.end_column),
+            source.filter(|identity| identity.source_id == original.source_id.value()),
+        )
     };
     let mut diagnostic = ApiDiagnostic {
         code: code.as_str().to_owned(),
@@ -60,10 +67,10 @@ pub(crate) fn diagnostic(trap: &VmTrap, locale: &str) -> ApiDiagnostic {
         }
         .to_owned(),
         message: String::new(),
-        span: trap.span.map(span).unwrap_or(ApiSpan {
-            start: position(1, 1),
-            end: position(1, 1),
-        }),
+        span: trap
+            .span
+            .map(span)
+            .unwrap_or_else(|| ApiSpan::in_source(position(1, 1), position(1, 1), source)),
         arguments: trap
             .arguments
             .iter()

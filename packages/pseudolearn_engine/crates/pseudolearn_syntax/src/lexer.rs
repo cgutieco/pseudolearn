@@ -5,7 +5,7 @@ use crate::operator_scanner::scan_operator_or_punctuation;
 use crate::tokens::{TokenKind, Tokens};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
 use pseudolearn_lexicon::{KeywordKind, Profile, find_keyword};
-use pseudolearn_source::{SourceText, Span};
+use pseudolearn_source::{SourceText, Span, source_id};
 
 pub struct Lexer<'source> {
     source: &'source SourceText,
@@ -22,7 +22,7 @@ impl<'source> Lexer<'source> {
             source,
             profile,
             cursor: initial_cursor,
-            tokens: Tokens::new(),
+            tokens: Tokens::for_source(source_id(source)),
             diagnostics: Vec::new(),
         }
     }
@@ -124,7 +124,7 @@ impl<'source> Lexer<'source> {
         self.advance_by(advance);
         let ending_offset = self.current_u32();
         if !closed {
-            let span = Span::new(start_offset, ending_offset);
+            let span = self.source_span(start_offset, ending_offset);
             self.diagnostics
                 .push(Diagnostic::new(DiagnosticCode::UnterminatedString, span));
         }
@@ -135,7 +135,7 @@ impl<'source> Lexer<'source> {
     fn scan_string_token(&mut self, start_offset: u32) {
         let literal = scan_literal(self.current_slice());
         self.advance_by(literal.bytes);
-        let span = Span::new(start_offset, self.current_u32());
+        let span = self.source_span(start_offset, self.current_u32());
         if !literal.closed {
             self.diagnostics
                 .push(Diagnostic::new(DiagnosticCode::UnterminatedString, span));
@@ -146,7 +146,7 @@ impl<'source> Lexer<'source> {
             self.diagnostics.push(
                 Diagnostic::new(
                     DiagnosticCode::InvalidEscapeSequence,
-                    Span::new(start, ending),
+                    self.source_span(start, ending),
                 )
                 .with_argument("lexeme", escape),
             );
@@ -180,7 +180,7 @@ impl<'source> Lexer<'source> {
             self.diagnostics.push(
                 Diagnostic::new(
                     DiagnosticCode::IntegerLiteralOutOfRange,
-                    Span::new(start_offset, ending),
+                    self.source_span(start_offset, ending),
                 )
                 .with_argument("lexeme", lexeme),
             );
@@ -198,7 +198,7 @@ impl<'source> Lexer<'source> {
         self.advance_by(advance);
         let ending_offset = self.current_u32();
         if kind == TokenKind::InvalidCharacter {
-            let span = Span::new(start_offset, ending_offset);
+            let span = self.source_span(start_offset, ending_offset);
             let bad_character = self.slice_from(start_offset, ending_offset);
             self.diagnostics.push(
                 Diagnostic::new(DiagnosticCode::UnrecognizedCharacter, span)
@@ -236,6 +236,10 @@ impl<'source> Lexer<'source> {
 
     pub(crate) fn current_slice(&self) -> &'source str {
         self.source.as_str().get(self.cursor..).unwrap_or("")
+    }
+
+    fn source_span(&self, start: u32, ending: u32) -> Span {
+        Span::in_source(pseudolearn_source::source_id(self.source), start, ending)
     }
 
     fn slice_from(&self, start: u32, ending: u32) -> &'source str {

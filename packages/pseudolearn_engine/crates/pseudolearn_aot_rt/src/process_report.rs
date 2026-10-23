@@ -84,6 +84,7 @@ pub(crate) fn diagnostic_report(record: &FaultRecord, settings: &ExecutableSetti
     let message = render_fault(record, &settings.locale).unwrap_or_default();
     let line = record.range.start_line.to_string();
     let column = record.range.start_column.to_string();
+    let source_id = record.range.source_id.to_string();
     let end_line = record.range.end_line.to_string();
     let end_column = record.range.end_column.to_string();
     let arguments = arguments_json(record, code, settings);
@@ -91,6 +92,7 @@ pub(crate) fn diagnostic_report(record: &FaultRecord, settings: &ExecutableSetti
         template_for(code, settings),
         &[
             ("path", &settings.source_name),
+            ("source_id", &source_id),
             ("line", &line),
             ("column", &column),
             ("end_line", &end_line),

@@ -4,7 +4,7 @@ use crate::fault::{FaultSite, SourceRange};
 use crate::metadata::{ExecutableMetadata, ExecutableSettings};
 use pseudolearn_diagnostics::DiagnosticCode;
 
-const MAGIC: &[u8; 4] = b"PLM2";
+const MAGIC: &[u8; 4] = b"PLM3";
 
 #[derive(Default)]
 struct Writer {
@@ -70,6 +70,7 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
 fn write_site(writer: &mut Writer, site: &FaultSite) {
     writer.text(site.code.as_str());
     writer.text(&site.lexeme);
+    writer.unsigned32(site.range.source_id);
     writer.unsigned32(site.range.start_line);
     writer.unsigned32(site.range.start_column);
     writer.unsigned32(site.range.end_line);
@@ -177,6 +178,7 @@ fn read_site(reader: &mut Reader<'_>) -> Option<FaultSite> {
         lexeme,
         code,
         range: SourceRange {
+            source_id: reader.unsigned32()?,
             start_line: reader.unsigned32()?,
             start_column: reader.unsigned32()?,
             end_line: reader.unsigned32()?,

@@ -1,15 +1,27 @@
 use crate::ApiError;
-use crate::event_codec::{canonical_value, decode_event, serialization_failure, validate_source};
+use crate::event_codec::{canonical_value, decode_event, serialization_failure};
 use crate::execution_resource::usage;
 use pseudolearn_vm::TraceClass;
 use serde_json::{Value, json};
 
 const HEADER_SIZE: usize = 16;
 const WIRE_SIGNATURE: &[u8; 4] = b"PLEV";
-const WIRE_VERSION: u16 = 1;
+const WIRE_VERSION: u16 = 2;
+const LEGACY_WIRE_VERSION: u16 = 1;
 const WIRE_RESERVED: u16 = 0;
 
-pub(super) fn encode_binary(events: &[Value]) -> Result<Vec<u8>, ApiError> {
+struct EventRecord {
+    class: TraceClass,
+    line: u32,
+    depth: u32,
+    record: Value,
+    version: u16,
+}
+
+pub(super) fn encode_binary(events: &[Value], version: u16) -> Result<Vec<u8>, ApiError> {
+    if version != WIRE_VERSION && version != LEGACY_WIRE_VERSION {
+        return Err(usage("unsupported wire version"));
+    }
     let mut classes = Vec::with_capacity(events.len());
     let mut lines = Vec::with_capacity(events.len());
     let mut depths = Vec::with_capacity(events.len());
@@ -33,7 +45,7 @@ pub(super) fn encode_binary(events: &[Value]) -> Result<Vec<u8>, ApiError> {
     let pool_length = u32::try_from(pool.len()).map_err(|_| usage("event pool is too large"))?;
     let mut encoded = Vec::new();
     encoded.extend_from_slice(WIRE_SIGNATURE);
-    encoded.extend_from_slice(&WIRE_VERSION.to_le_bytes());
+    encoded.extend_from_slice(&version.to_le_bytes());
     encoded.extend_from_slice(&WIRE_RESERVED.to_le_bytes());
     encoded.extend_from_slice(&event_count.to_le_bytes());
     encoded.extend_from_slice(&classes);
@@ -52,7 +64,7 @@ fn append_words(values: &[u32], output: &mut Vec<u8>) {
 }
 
 pub(super) fn decode_binary(bytes: &[u8]) -> Result<Vec<Value>, ApiError> {
-    validate_header(bytes)?;
+    let version = validate_header(bytes)?;
     let event_count =
         usize::try_from(read_u64_at(bytes, 8)?).map_err(|_| usage("event count is too large"))?;
     let layout = WireLayout::new(event_count)?;
@@ -69,7 +81,7 @@ pub(super) fn decode_binary(bytes: &[u8]) -> Result<Vec<Value>, ApiError> {
         .get(layout.pool_start..)
         .ok_or_else(|| usage("invalid event pool"))?;
     let pool = std::str::from_utf8(pool_bytes).map_err(|_| usage("invalid event pool"))?;
-    decode_records(bytes, pool, &layout)
+    decode_records(bytes, pool, &layout, version)
 }
 
 struct WireLayout {
@@ -115,20 +127,26 @@ impl WireLayout {
     }
 }
 
-fn validate_header(bytes: &[u8]) -> Result<(), ApiError> {
+fn validate_header(bytes: &[u8]) -> Result<u16, ApiError> {
     if bytes.get(0..4) != Some(WIRE_SIGNATURE.as_slice()) {
         return Err(usage("invalid wire signature"));
     }
-    if read_u16_at(bytes, 4)? != WIRE_VERSION {
+    let version = read_u16_at(bytes, 4)?;
+    if version != WIRE_VERSION && version != LEGACY_WIRE_VERSION {
         return Err(usage("unsupported wire version"));
     }
     if read_u16_at(bytes, 6)? != WIRE_RESERVED {
         return Err(usage("invalid reserved header"));
     }
-    Ok(())
+    Ok(version)
 }
 
-fn decode_records(bytes: &[u8], pool: &str, layout: &WireLayout) -> Result<Vec<Value>, ApiError> {
+fn decode_records(
+    bytes: &[u8],
+    pool: &str,
+    layout: &WireLayout,
+    version: u16,
+) -> Result<Vec<Value>, ApiError> {
     let mut events = Vec::with_capacity(layout.event_count);
     for index in 0..layout.event_count {
         let class_offset = layout
@@ -142,7 +160,13 @@ fn decode_records(bytes: &[u8], pool: &str, layout: &WireLayout) -> Result<Vec<V
         let line = read_word_column(bytes, layout.lines_start, index)?;
         let depth = read_word_column(bytes, layout.depths_start, index)?;
         let record = read_pool_record(bytes, pool, layout, index)?;
-        events.push(event_from_record(class, line, depth, record)?);
+        events.push(event_from_record(EventRecord {
+            class,
+            line,
+            depth,
+            record,
+            version,
+        })?);
     }
     Ok(events)
 }
@@ -173,13 +197,9 @@ fn read_pool_record(
     serde_json::from_str(record).map_err(|error| usage(&error.to_string()))
 }
 
-fn event_from_record(
-    class: TraceClass,
-    line: u32,
-    depth: u32,
-    record: Value,
-) -> Result<Value, ApiError> {
-    let fields = record
+fn event_from_record(input: EventRecord) -> Result<Value, ApiError> {
+    let fields = input
+        .record
         .as_object()
         .ok_or_else(|| usage("invalid event record"))?;
     let event_payload = fields
@@ -190,7 +210,7 @@ fn event_from_record(
         .get("source")
         .cloned()
         .ok_or_else(|| usage("missing event source"))?;
-    let mut event = json!({"class":class.as_str(),"line":line,"depth":depth});
+    let mut event = json!({"class":input.class.as_str(),"line":input.line,"depth":input.depth});
     if let Some(event_fields) = event.as_object_mut() {
         if !event_payload.is_null() {
             event_fields.insert("data".to_owned(), event_payload);
@@ -198,7 +218,7 @@ fn event_from_record(
         event_fields.insert("source".to_owned(), source);
     }
     decode_event(&event)?;
-    validate_source(&event)?;
+    crate::event_codec::validate_source_version(&event, input.version)?;
     Ok(event)
 }
 

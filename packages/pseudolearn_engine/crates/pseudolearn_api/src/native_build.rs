@@ -1,6 +1,5 @@
 use crate::ApiDiagnostic;
 use crate::execution_model::ExecutionLimits;
-use crate::ir_execution::compile_source_with_warnings;
 use pseudolearn_aot_rt::{AotLimits, BooleanWords, ExecutableSettings};
 use pseudolearn_codegen::{TargetConfig, compile_module_to_executable_object};
 
@@ -13,6 +12,7 @@ pub struct NativeBuildRequest {
     pub forced_collection: bool,
     pub limits: ExecutionLimits,
     pub source_name: String,
+    pub source: Option<crate::ApiSourceIdentity>,
     pub locale: String,
     pub error_template: String,
     pub warning_template: String,
@@ -44,9 +44,13 @@ pub fn build_native_object(
 }
 
 fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailure> {
-    let (module, warnings) =
-        compile_source_with_warnings(&request.program, &request.profile, &request.strictness)
-            .map_err(NativeBuildFailure::Rejected)?;
+    let (module, warnings) = crate::ir_execution::compile_source_with_identity(
+        &request.program,
+        &request.profile,
+        &request.strictness,
+        request.source,
+    )
+    .map_err(NativeBuildFailure::Rejected)?;
     let compiled =
         compile_module_to_executable_object(&module, &TargetConfig::host(), &settings_of(request))
             .map_err(|error| NativeBuildFailure::Backend(error.to_string()))?;

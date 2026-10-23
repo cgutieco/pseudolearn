@@ -1,4 +1,3 @@
-use crate::ir_execution::compile_source_with_warnings;
 use crate::{ApiDiagnostic, ExecuteRequest, ExecuteResponse};
 use pseudolearn_runtime::{CollectionPolicy, MemoryOptions};
 use pseudolearn_vm::{
@@ -30,8 +29,12 @@ pub struct PreparedProgram {
 pub fn prepare_program(
     request: &ExecuteRequest,
 ) -> Result<PreparedProgram, Vec<crate::ApiDiagnostic>> {
-    let (module, warnings) =
-        compile_source_with_warnings(&request.program, &request.profile, &request.strictness)?;
+    let (module, warnings) = crate::ir_execution::compile_source_with_identity(
+        &request.program,
+        &request.profile,
+        &request.strictness,
+        request.source,
+    )?;
     let bytecode = pseudolearn_bytecode::compile_module(&module)
         .map_err(|_| crate::diagnostic_conversion::internal_fault().diagnostics)?;
     let program =
@@ -49,7 +52,7 @@ pub fn execute_prepared(prepared: &PreparedProgram, request: &ExecuteRequest) ->
     let mut machine = match create_machine(program, Fuel::unlimited(), options) {
         Ok(machine) => machine,
         Err(trap) => {
-            let mut response = failure(&trap, &request.profile);
+            let mut response = failure(&trap, &request.profile, request.source);
             response.diagnostics = with_compile_warnings(warnings, response.diagnostics);
             return response;
         }
@@ -78,7 +81,10 @@ pub(crate) fn run_request(
         } else {
             crate::execution_wire::termination(&exit)
         },
-        diagnostics: with_compile_warnings(warnings, diagnostics(machine, &exit, &request.profile)),
+        diagnostics: with_compile_warnings(
+            warnings,
+            diagnostics(machine, &exit, &request.profile, request.source),
+        ),
         events: if request.observe == "events" {
             machine_events(machine)
                 .iter()
@@ -124,14 +130,19 @@ pub(crate) fn options(request: &ExecuteRequest) -> RunOptions {
     }
 }
 
-fn diagnostics(machine: &Machine<'_>, exit: &RunExit, locale: &str) -> Vec<crate::ApiDiagnostic> {
+fn diagnostics(
+    machine: &Machine<'_>,
+    exit: &RunExit,
+    locale: &str,
+    source: Option<crate::ApiSourceIdentity>,
+) -> Vec<crate::ApiDiagnostic> {
     let mut diagnostics: Vec<_> = machine
         .execution_diagnostics()
         .iter()
-        .map(|trap| crate::execution_wire::diagnostic(trap, locale))
+        .map(|trap| crate::execution_wire::diagnostic(trap, locale, source))
         .collect();
     if let RunExit::Trap(trap) = exit {
-        diagnostics.push(crate::execution_wire::diagnostic(trap, locale));
+        diagnostics.push(crate::execution_wire::diagnostic(trap, locale, source));
     }
     diagnostics
 }
@@ -157,8 +168,14 @@ fn rejected(diagnostics: Vec<crate::ApiDiagnostic>) -> ExecuteResponse {
     }
 }
 
-fn failure(trap: &pseudolearn_vm::VmTrap, locale: &str) -> ExecuteResponse {
-    let mut response = rejected(vec![crate::execution_wire::diagnostic(trap, locale)]);
+fn failure(
+    trap: &pseudolearn_vm::VmTrap,
+    locale: &str,
+    source: Option<crate::ApiSourceIdentity>,
+) -> ExecuteResponse {
+    let mut response = rejected(vec![crate::execution_wire::diagnostic(
+        trap, locale, source,
+    )]);
     response.termination = json!({"kind":"failed","code":trap.code});
     response
 }
@@ -172,10 +189,14 @@ fn execute_bulk(
     let mut diagnostics: Vec<_> = result
         .diagnostics
         .iter()
-        .map(|trap| crate::execution_wire::diagnostic(trap, &request.profile))
+        .map(|trap| crate::execution_wire::diagnostic(trap, &request.profile, request.source))
         .collect();
     if let RunExit::Trap(trap) = &result.exit {
-        diagnostics.push(crate::execution_wire::diagnostic(trap, &request.profile));
+        diagnostics.push(crate::execution_wire::diagnostic(
+            trap,
+            &request.profile,
+            request.source,
+        ));
     }
     let diagnostics = with_compile_warnings(warnings, diagnostics);
     let view = event_view(request);
@@ -206,6 +227,7 @@ fn event_view(request: &ExecuteRequest) -> Option<crate::program_view::ProgramVi
         program: request.program.clone(),
         profile: request.profile.clone(),
         strictness: request.strictness.clone(),
+        source: request.source,
     };
     crate::program_view::ProgramView::build(&analysis, "rev0".to_owned()).ok()
 }

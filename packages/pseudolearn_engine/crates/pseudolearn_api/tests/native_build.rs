@@ -13,6 +13,7 @@ fn request(program: &str) -> NativeBuildRequest {
         forced_collection: false,
         limits: ExecutionLimits::default(),
         source_name: "p.pseudo".to_owned(),
+        source: None,
         locale: "es".to_owned(),
         error_template: "{path}\n".to_owned(),
         warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),

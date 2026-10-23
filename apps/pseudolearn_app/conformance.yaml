@@ -112,6 +112,12 @@ vinculos:
     justificacion: El adaptador nativo de app no anuncia la capacidad wasm; el
       transporte Wasm real lo acredita la prueba de Chrome de pseudolearn_wasm
       (tool/wasm.sh test) con un lote PLEV y crecimiento de memoria.
+  - regla: API.WIRE-FORMAT@1.0.0#R4
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.WIRE-FORMAT@1.0.0#R5
+    verificacion: ejecutor
+    estado: cumple
   - regla: LANG.SOURCE.POSITION@1.0.0#R1
     verificacion: ejecutor
     estado: cumple

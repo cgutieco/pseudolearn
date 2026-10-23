@@ -36,6 +36,7 @@ impl FaultTable {
 
 fn range_of(span: Option<IrSpan>) -> SourceRange {
     span.map_or_else(SourceRange::default, |entry| SourceRange {
+        source_id: entry.source_id.value(),
         start_line: entry.start_line,
         start_column: entry.start_column,
         end_line: entry.end_line,

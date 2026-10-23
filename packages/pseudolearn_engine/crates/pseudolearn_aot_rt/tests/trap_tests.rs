@@ -7,6 +7,7 @@ fn site(code: DiagnosticCode) -> FaultSite {
         lexeme: String::new(),
         code,
         range: SourceRange {
+            source_id: 0,
             start_line: 3,
             start_column: 5,
             end_line: 3,

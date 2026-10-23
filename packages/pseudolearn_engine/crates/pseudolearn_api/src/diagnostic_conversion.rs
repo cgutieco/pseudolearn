@@ -46,18 +46,25 @@ pub fn render_diagnostic(diagnostic: &ApiDiagnostic, locale: &str) -> String {
 }
 
 fn span(original: Span, source: &SourceText) -> ApiSpan {
+    if !pseudolearn_source::is_valid_span(source, original) {
+        return ApiSpan::new(
+            ApiPosition { line: 1, column: 1 },
+            ApiPosition { line: 1, column: 1 },
+        );
+    }
     let start = source.line_and_column(original.start);
     let ending = source.line_and_column(original.ending);
-    ApiSpan {
-        start: ApiPosition {
+    ApiSpan::in_source(
+        ApiPosition {
             line: start.0,
             column: start.1,
         },
-        end: ApiPosition {
+        ApiPosition {
             line: ending.0,
             column: ending.1,
         },
-    }
+        crate::source_identity::api_identity(source),
+    )
 }
 
 pub(crate) fn schema(tree: &SyntaxTree, source: &SourceText) -> Vec<ApiUnit> {

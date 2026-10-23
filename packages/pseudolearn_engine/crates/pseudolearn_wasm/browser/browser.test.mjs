@@ -164,6 +164,7 @@ describe('pseudolearn_wasm browser package', () => {
             source: {
               revision_id: 'rev1',
               node_id: 'rev1.n1',
+              identity: { project_id: '7', revision_id: '11', source_id: 2 },
               span: {
                 start: { line: 1, column: 1 },
                 end: { line: 1, column: 2 },
@@ -185,6 +186,7 @@ describe('pseudolearn_wasm browser package', () => {
         ));
         return {
           signature: new TextDecoder().decode(retained.subarray(0, 4)),
+          version: retained[4],
           grew: memory.buffer.byteLength > bufferBeforeGrowth.byteLength,
           retainedBuffer: retained.buffer === memory.buffer,
           retainedLength: retained.byteLength,
@@ -194,6 +196,7 @@ describe('pseudolearn_wasm browser package', () => {
       });
 
       assert.equal(report.signature, 'PLEV');
+      assert.equal(report.version, 2);
       assert.equal(report.grew, true);
       assert.equal(report.retainedBuffer, false);
       assert.ok(report.retainedLength > 16);

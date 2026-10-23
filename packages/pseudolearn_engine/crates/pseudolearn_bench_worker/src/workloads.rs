@@ -64,6 +64,7 @@ pub fn generated(
         program,
         profile: profile.to_owned(),
         strictness: strictness.to_owned(),
+        source: None,
     };
     Ok(Workload {
         requests: vec![request],
@@ -153,6 +154,7 @@ fn append_case(requests: &mut Vec<AnalyzeRequest>, block: &Value, profile: &str,
             program: program.to_owned(),
             profile: profile.to_owned(),
             strictness: strictness.to_owned(),
+            source: None,
         });
     }
 }

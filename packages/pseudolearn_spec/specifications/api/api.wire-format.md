@@ -39,7 +39,7 @@
 {
   "id": "D1",
   "termino": "esquema de intercambio",
-  "texto": "Claves ASCII en inglés y snake_case, independientes del idioma de interfaz. Diagnóstico: code, class, severity, span {start, end} con line y column, related y arguments. Resultado de análisis: tree y diagnostics. Resultado de ejecución: output, termination {kind, code, limit}, diagnostics y events. Evento: class, line, data y source opcional; source contiene revisión, identificador opaco de nodo y tramo cuando procede de una construcción de fuente, o null para un evento sintético. Las mismas formas son las respuestas de see-protocol/1."
+  "texto": "Claves ASCII en inglés y snake_case, independientes del idioma de interfaz. Diagnóstico: code, class, severity, span {start, end, source?} con line y column, related y arguments. Resultado de análisis: tree y diagnostics. Resultado de ejecución: output, termination {kind, code, limit}, diagnostics y events. Evento: class, line, data y source opcional; source contiene revisión, identificador opaco de nodo, tramo y, si está disponible, identity {project_id, revision_id, source_id}; source es null para un evento sintético. Los u64 de identity se codifican como cadenas decimales canónicas y source_id como u32. Las mismas formas son las respuestas de see-protocol/1."
 }
 ```
 
@@ -47,7 +47,7 @@
 {
   "id": "D2",
   "termino": "lote binario de eventos",
-  "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición de la clase en el alfabeto de ENG.TRACE.EVENTS), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final contiene, precedido por su longitud total u32, un objeto JSON canónico UTF-8 por evento con las claves data y source; source es null para un evento sintético y contiene revisión, node_id y tramo para un evento originado por el programa. Los desplazamientos apuntan al inicio de cada objeto y las claves se ordenan por puntos de código."
+  "texto": "Encabezado de 16 bytes: firma ASCII PLEV, versión u16 igual a 1 o 2, reservado u16 igual a 0 y número de eventos n como u64. Siguen cuatro columnas de n elementos en little endian: clase u8 (posición de la clase en el alfabeto de ENG.TRACE.EVENTS), línea u32, profundidad de marco u32 y desplazamiento u32 en el pool. El pool final contiene, precedido por su longitud total u32, un objeto JSON canónico UTF-8 por evento con las claves data y source; source es null para un evento sintético y contiene revisión, node_id y tramo para un evento originado por el programa. La versión 2 puede añadir identity {project_id, revision_id, source_id} a source; la versión 1 conserva su significado y no admite ese campo. Los desplazamientos apuntan al inicio de cada objeto y las claves se ordenan por puntos de código."
 }
 ```
 
@@ -75,7 +75,8 @@
   "texto": "El JSON canónico es UTF-8, sin espacios entre símbolos y con las claves de cada objeto ordenadas por puntos de código. Los enteros i64 y u64 siguen D3 y el resto de números enteros se escribe en decimal exacto. Las cadenas preservan los escalares y bytes UTF-8 del texto fuente sin normalización.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C4"
   ]
 }
 ```
@@ -173,6 +174,36 @@
 }
 ```
 
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "create_analysis", "arguments": {"program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "11", "source_id": 2}}},
+      {"operation": "analysis", "resource_from": 0, "arguments": {}},
+      {"operation": "create_analysis", "arguments": {"program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "11", "source_id": 3}}},
+      {"operation": "analysis", "resource_from": 2, "arguments": {}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"resource": 2, "document": 1}},
+        {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 2}}}]}},
+        {"value": {"resource": 4, "document": 3}},
+        {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 3}}}]}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
 ```regla
 {
   "id": "R2",
@@ -195,6 +226,34 @@
   "propiedad": "decodificar(codificar(x)) = x en las dos codificaciones y las dos decodificaciones coinciden.",
   "oraculo": "Igualdad estructural de los eventos.",
   "justificacion": "La ejecuta el sujeto engine en R5."
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las peticiones admiten una identidad de fuente opcional con project_id y revision_id como cadenas decimales u64 canónicas y source_id como u32 positivo. El valor cero se reserva al documento suelto. Cuando una respuesta localiza un tramo, source identifica exactamente el proyecto, revisión y archivo de ese tramo; los nombres visibles no sustituyen la identidad. Una identidad incompleta o con un componente fuera de rango devuelve un error de uso.",
+  "verificacion": ["C5"]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "create_analysis", "arguments": {"program": "", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "0", "source_id": 2}}}
+    ]
+  },
+  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
+  "sujetos": ["engine"]
 }
 ```
 
@@ -428,5 +487,101 @@
   "sujetos": [
     "app"
   ]
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "sistema",
+  "texto": "La negociación de eventos binarios selecciona la versión de escritura más alta que ambas partes anuncian y declara las versiones que puede leer. El emisor PLEV 1 no escribe identidades de fuente; PLEV 2 las conserva. Una versión desconocida o un lote truncado produce un error de uso.",
+  "verificacion": ["C6", "C7", "C8", "C9"]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "negotiate", "arguments": {"event_binary_versions": [1, 2]}},
+      {"operation": "negotiate", "arguments": {"event_binary_versions": [1]}},
+      {"operation": "negotiate", "arguments": {"event_binary_versions": [3]}}
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"value": {"event_binary_version": 2, "event_binary_write_version": 2, "event_binary_read_versions": [1, 2]}},
+        {"value": {"event_binary_version": 1, "event_binary_write_version": 1, "event_binary_read_versions": [1, 2]}},
+        {"failure": {"family": "version"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 1, "events": [{"class": "statement_entered", "line": 1, "depth": 1, "source": {"revision_id": "11", "node_id": "p7.r11.f2.n1", "identity": {"project_id": "7", "revision_id": "11", "source_id": 2}, "span": {"start": {"line": 1, "column": 1}, "end": {"line": 1, "column": 2}}}}]}}
+    ]
+  },
+  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "decode_events", "arguments": {"encoding": "binary", "encoded": [80, 76, 69, 86, 2]}}
+    ]
+  },
+  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 3, "events": []}},
+      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 65536, "events": []}}
+    ]
+  },
+  "espera": {"api": {"results": [
+    {"failure": {"family": "usage"}},
+    {"failure": {"family": "usage"}}
+  ]}},
+  "sujetos": ["engine"]
 }
 ```

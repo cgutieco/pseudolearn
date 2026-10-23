@@ -7,6 +7,7 @@ fn site(code: DiagnosticCode) -> FaultSite {
         lexeme: String::new(),
         code,
         range: SourceRange {
+            source_id: 0,
             start_line: 3,
             start_column: 5,
             end_line: 3,
@@ -83,6 +84,21 @@ fn logarithm_of_a_negative_number_is_a_domain_failure() {
     assert_eq!(
         fault_code(&session),
         Some(DiagnosticCode::NonFiniteRealResult)
+    );
+}
+
+#[test]
+fn library_fault_preserves_the_fault_sites_source_identifier() {
+    let mut fault_site = site(DiagnosticCode::NonFiniteRealResult);
+    fault_site.range.source_id = 9;
+    let mut session = session_with(vec![fault_site], "");
+    assert_eq!(unary(&mut session, MATH_LOGARITHM, -1.0), STATUS_FAILED);
+    assert_eq!(
+        session
+            .engine()
+            .fault()
+            .map(|record| record.range.source_id),
+        Some(9)
     );
 }
 

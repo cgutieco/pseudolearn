@@ -64,6 +64,48 @@ fn events_carry_node_identity_from_the_document_view() {
 }
 
 #[test]
+fn source_identity_survives_the_native_view_and_event_boundary() -> Result<(), String> {
+    let session = session_identifier();
+    let identity = json!({"project_id":"7","revision_id":"11","source_id":2});
+    let created = send(
+        session,
+        "create_analysis",
+        json!({
+            "program":"Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+            "source":identity
+        }),
+    );
+    let analysis = resource(&created);
+    let document = created
+        .pointer("/value/document")
+        .and_then(Value::as_u64)
+        .ok_or("missing source document")?;
+    let view = send(session, "program_view", json!({"resource":document}));
+    assert_eq!(view.pointer("/value/source"), Some(&identity));
+    let execution = resource(&send(
+        session,
+        "start",
+        json!({"analysis":analysis,"observe":"events"}),
+    ));
+    let batch = send(
+        session,
+        "advance",
+        json!({"resource":execution,"batch_size":64}),
+    );
+    let event_identity = batch
+        .pointer("/value/events")
+        .and_then(Value::as_array)
+        .and_then(|events| {
+            events
+                .iter()
+                .find_map(|event| event.pointer("/source/identity"))
+        });
+    assert_eq!(event_identity, Some(&identity));
+    assert!(close_session(session).is_ok());
+    Ok(())
+}
+
+#[test]
 fn document_view_and_node_queries_cross_the_bridge() {
     let session = session_identifier();
     let document = resource(&send(

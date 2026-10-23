@@ -5,6 +5,7 @@ use crate::context::{STATUS_FAILED, STATUS_LIMIT};
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct SourceRange {
+    pub source_id: u32,
     pub start_line: u32,
     pub start_column: u32,
     pub end_line: u32,

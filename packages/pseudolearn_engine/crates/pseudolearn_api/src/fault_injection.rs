@@ -25,6 +25,7 @@ pub(crate) fn inject(arguments: &Value) -> Result<Value, ApiError> {
         program: request.program.clone(),
         profile: request.profile.clone(),
         strictness: request.strictness.clone(),
+        source: request.source,
     };
     let _ = crate::execute_analyze(&analysis);
     strike(stage, "analysis");

@@ -8,6 +8,7 @@ fn analyzes_valid_program() {
                 .to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     };
     let response = execute_analyze(&request);
     assert_eq!(response.kind, "analyze");
@@ -21,6 +22,7 @@ fn reports_diagnostics_for_invalid_program() {
         program: "Algoritmo Test\n  a <- 1;\nFinAlgoritmo\n".to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     };
     let response = execute_analyze(&request);
     assert_eq!(response.kind, "analyze");

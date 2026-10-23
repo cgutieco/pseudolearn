@@ -7,12 +7,13 @@ use serde_json::{Value, json};
 use std::collections::BTreeMap;
 
 const SOURCE_NAME: &str = "program.pseudo";
-const FIELD_COUNT: usize = 7;
-const ERROR_TEMPLATE: &str = "E\t{code}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
+const FIELD_COUNT: usize = 8;
+const ERROR_TEMPLATE: &str =
+    "E\t{code}\t{source_id}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
 const WARNING_TEMPLATE: &str =
-    "W\t{code}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
+    "W\t{code}\t{source_id}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
 const INFORMATION_TEMPLATE: &str =
-    "I\t{code}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
+    "I\t{code}\t{source_id}\t{line}\t{column}\t{end_line}\t{end_column}\t{arguments}\n";
 const EXHAUSTED_TEMPLATE: &str = "X\n";
 
 #[derive(Clone, Debug, Default)]
@@ -36,6 +37,7 @@ pub fn conformance_build_request(request: &ExecuteRequest) -> NativeBuildRequest
         forced_collection: request.gc_stress,
         limits: request.limits.clone(),
         source_name: SOURCE_NAME.to_owned(),
+        source: request.source,
         locale: request.profile.clone(),
         error_template: ERROR_TEMPLATE.to_owned(),
         warning_template: WARNING_TEMPLATE.to_owned(),
@@ -57,7 +59,7 @@ pub fn native_execute_response(
     warnings: Vec<ApiDiagnostic>,
     run: &NativeRunReport,
 ) -> ExecuteResponse {
-    let reported = parse_report(&run.errors, &request.profile);
+    let reported = parse_report(&run.errors, &request.profile, request.source);
     let termination = termination(run, &reported);
     let mut diagnostics = warnings;
     diagnostics.extend(reported.into_iter().map(|entry| entry.diagnostic));
@@ -103,43 +105,46 @@ fn fatal_code(reported: &[ReportedDiagnostic]) -> String {
         )
 }
 
-fn parse_report(errors: &str, locale: &str) -> Vec<ReportedDiagnostic> {
+fn parse_report(
+    errors: &str,
+    locale: &str,
+    source: Option<crate::ApiSourceIdentity>,
+) -> Vec<ReportedDiagnostic> {
     errors
         .lines()
-        .filter_map(|line| parse_line(line, locale))
+        .filter_map(|line| parse_line(line, locale, source))
         .collect()
 }
 
-fn parse_line(line: &str, locale: &str) -> Option<ReportedDiagnostic> {
-    let fields: Vec<&str> = line.splitn(FIELD_COUNT, '\t').collect();
+fn parse_line(
+    line: &str,
+    locale: &str,
+    source: Option<crate::ApiSourceIdentity>,
+) -> Option<ReportedDiagnostic> {
     let [
         tag,
         code,
+        source_id,
         start_line,
         start_column,
         end_line,
         end_column,
         arguments,
-    ] = fields.as_slice()
-    else {
-        return None;
-    };
+    ] = report_fields(line)?;
     let name = DiagnosticCode::from_name(code)?;
-    let position = |line: &str, column: &str| {
-        Some(ApiPosition {
-            line: line.parse().ok()?,
-            column: column.parse().ok()?,
-        })
-    };
+    let source = source.filter(|identity| {
+        identity.is_valid() && source_id.parse::<u32>().ok() == Some(identity.source_id)
+    });
     let mut diagnostic = ApiDiagnostic {
         code: name.as_str().to_owned(),
         class: name.default_class().as_str().to_owned(),
         severity: severity_name(tag)?.to_owned(),
         message: String::new(),
-        span: ApiSpan {
-            start: position(start_line, start_column)?,
-            end: position(end_line, end_column)?,
-        },
+        span: ApiSpan::in_source(
+            parse_position(start_line, start_column)?,
+            parse_position(end_line, end_column)?,
+            source,
+        ),
         arguments: serde_json::from_str::<BTreeMap<String, Value>>(arguments).ok()?,
         related: Vec::new(),
     };
@@ -148,6 +153,27 @@ fn parse_line(line: &str, locale: &str) -> Option<ReportedDiagnostic> {
         tag: tag.chars().next()?,
         diagnostic,
     })
+}
+
+fn parse_position(line: &str, column: &str) -> Option<ApiPosition> {
+    Some(ApiPosition {
+        line: line.parse().ok()?,
+        column: column.parse().ok()?,
+    })
+}
+
+fn report_fields(line: &str) -> Option<[&str; FIELD_COUNT]> {
+    let mut fields = line.splitn(FIELD_COUNT, '\t');
+    Some([
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+        fields.next()?,
+    ])
 }
 
 fn severity_name(tag: &str) -> Option<&'static str> {

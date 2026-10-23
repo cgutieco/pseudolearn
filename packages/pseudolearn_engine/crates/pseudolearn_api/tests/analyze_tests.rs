@@ -6,6 +6,7 @@ fn suppresses_semantics_after_syntax_errors() {
         program: "algorithm Entry\ndefine as integer;\nwrite absent;\nendAlgorithm\n".to_owned(),
         profile: "en".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     };
     let response = execute_analyze(&request);
     assert!(response.tree);
@@ -29,6 +30,7 @@ fn exposes_positions_with_independent_presentation_language() -> Result<(), Stri
         program: "algorithm Entry\nwrite @;\nendAlgorithm\n".to_owned(),
         profile: "en".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     });
     let diagnostic = response.diagnostics.first().ok_or("Missing diagnostic")?;
     assert_eq!(diagnostic.span.start.line, 2);
@@ -48,6 +50,7 @@ fn exposes_lexical_tokens_in_source_order_with_unicode_positions() -> Result<(),
         program: "Algoritmo P\n// ñ\nFinAlgoritmo\n".to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     });
     let comment = response
         .tokens
@@ -74,6 +77,7 @@ fn retains_lexical_tokens_after_syntax_errors() {
         program: "Algoritmo P\n@\nFinAlgoritmo\n".to_owned(),
         profile: "es".to_owned(),
         strictness: "strict".to_owned(),
+        source: None,
     });
     assert!(!response.diagnostics.is_empty());
     assert!(

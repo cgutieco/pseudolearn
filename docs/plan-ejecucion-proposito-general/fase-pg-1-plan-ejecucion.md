@@ -11,12 +11,12 @@
 - Autorización documental: «Crea el plan de ejecución detallado para `PG-1 · Identidad y proyectos`
   considera que se deben seguir las mejores practicas de programación y microarquitectonicas para
   obtener le mejor rendimiento, pero sin poner limites absurdos o imposibles de cumplir como test.»
-- Estado: plan preparado para revisión. Este encargo autoriza su redacción; no autoriza implementar
-  PG-1, marcar `PG-1.C01`/`C02`, cerrar la fase ni iniciar las siguientes.
-- Dependencia: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La tabla global
-  del plan general todavía dice «Incompleta; PHASE-GREEN pendiente». Se reporta la contradicción
-  documental; antes de implementar se debe confirmar y sincronizar ese estado (`CONFLICT-REPORT`).
-  La preparación de este documento no depende de resolverla.
+- Estado: el mensaje de la persona «Implementa en una iteración `PG-1.01 · Identidad de fuente de
+  extremo a extremo`» del 2026-10-23 autoriza únicamente PG-1.01. La respuesta «Sí, sincroniza y
+  continúa» autoriza alinear el estado global de PG-0 con su registro de cierre. PG-1.02 en adelante,
+  `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes permanecen sin autorizar.
+- Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
+  tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
 Documento transitorio de `docs/`. Desarrolla el [plan general](plan-ejecucion-proposito-general.md)
 y la [hoja de ruta](../hoja-de-ruta-proposito-general.md). Ningún archivo fuera de `docs/` lo cita
@@ -131,12 +131,12 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.01 · Identidad de fuente de extremo a extremo
 
-- [ ] `PG-1.01.01` Especificar proyecto, snapshot/revisión, archivo, nodo y tramo; vida útil, rechazo de revisión ajena y conversiones de coordenadas. Ampliar `LANG.SOURCE.POSITION`, `IR.SOURCE-MAP`, API, eventos, trampas AOT y negociación de formatos sin cambiar versiones congeladas de especificación.
-- [ ] `PG-1.01.02` Derivar casos con dos archivos de igual nombre/offset, revisión antigua, UTF-8/UTF-16, CRLF, BOM, texto vacío, caracteres suplementarios y relacionados en otro archivo; incluir fallos AOT en biblioteca.
-- [ ] `PG-1.01.03` Escribir tests espejo de identidad, lookup de fuente, validez de rangos y códecs; negativos de fuente inexistente, versión desconocida, lote truncado y revisión cruzada.
-- [ ] `PG-1.01.04` Implementar IDs/localizaciones, tablas de fuente y propagación por diagnóstico, HIR/RI/bytecode, sitio de fallo, evento y vista pública; adaptar lectores de documento único y consumidores reales.
-- [ ] `PG-1.01.05` Actualizar README de source, diagnostics, IR, ejecución, API, service y puentes afectados; documentar compatibilidad y reglas de import necesarias.
-- [ ] `PG-1.01.06` Verificar ida/vuelta JSON/binario/RI, procedencia exacta de fallo y evento, aislamiento Wasm/móvil y no reciclaje entre revisiones; medir bytes de mapa frente a base.
+- [x] `PG-1.01.01` Especificar proyecto, snapshot/revisión, archivo, nodo y tramo; vida útil, rechazo de revisión ajena y conversiones de coordenadas. Ampliar `LANG.SOURCE.POSITION`, `IR.SOURCE-MAP`, API, eventos, trampas AOT y negociación de formatos sin cambiar versiones congeladas de especificación.
+- [x] `PG-1.01.02` Derivar casos con dos archivos de igual nombre/offset, revisión antigua, UTF-8/UTF-16, CRLF, BOM, texto vacío, caracteres suplementarios y relacionados en otro archivo; incluir fallos AOT en biblioteca.
+- [x] `PG-1.01.03` Escribir tests espejo de identidad, lookup de fuente, validez de rangos y códecs; negativos de fuente inexistente, versión desconocida, lote truncado y revisión cruzada.
+- [x] `PG-1.01.04` Implementar IDs/localizaciones, tablas de fuente y propagación por diagnóstico, HIR/RI/bytecode, sitio de fallo, evento y vista pública; adaptar lectores de documento único y consumidores reales.
+- [x] `PG-1.01.05` Actualizar README de source, diagnostics, IR, ejecución, API, service y puentes afectados; documentar compatibilidad y reglas de import necesarias.
+- [x] `PG-1.01.06` Verificar ida/vuelta JSON/binario/RI, procedencia exacta de fallo y evento, aislamiento Wasm/móvil y no reciclaje entre revisiones; medir bytes de mapa frente a base.
 
 ### PG-1.02 · Modelo de módulo, paquete, workspace y entrada
 
@@ -421,13 +421,15 @@ todavía: se publicarán y verificarán en README del trabajador antes de ejecut
 | PG1-R05 Evidencia incompleta | Caso multiarchivo no enviado al sujeto; capacidad ausente marcada cumple | Negativos de ejecutor/capacidad y matriz de vínculos; ningún verde por ausencia de ejecución |
 
 No se reduce probabilidad o impacto por haber escrito estas mitigaciones: el cierre requiere su
-evidencia. La discrepancia de cierre PG-0 de §0 se mantiene explícita hasta revisión de la persona.
+evidencia. La discrepancia documental de PG-0 quedó sincronizada con su registro de cierre por
+instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia de sus puntos dueños.
 
 ## 9. Dependencias de la persona
 
 | Momento | Dependencia | Efecto |
 |---|---|---|
-| Antes de implementar | Revisar este plan y autorizar PG-1 en mensaje nuevo; confirmar/sincronizar cierre PG-0 contradictorio en tabla | C01/C02 pendientes; este documento no inicia implementación |
+| PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
+| Antes de PG-1.02 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
 | Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
@@ -443,7 +445,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Preparación aprobada | C01/C02, cierre PG-0 coherente; inventario y línea base funcional/tamaños en revisión de implementación | Autorización nueva, plan revisado, rama correcta y estado inicial registrado |
+| 0 Autorización acotada | El mensaje del 2026-10-23 cubre PG-1.01 y PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`; revisar el plan y recibir nueva autorización antes de `.02` |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -453,9 +455,9 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 | 7 Campaña | `.13`, tamaños y controles vigentes | Crudos válidos, resumen recalculado y resultado aunque sea desfavorable |
 | 8 Cierre | C03–C13; completar resúmenes por tarea y del plan general | Puertas verdes, decisiones pendientes resueltas, commit/push ordinario comprobado y parada |
 
-Los pasos son puntos de control internos de una fase, no fases nuevas. No requieren permiso
-adicional si la autorización de implementación cubre PG-1 completo. Se detiene por conflicto real,
-aprobación requerida o al cierre de fase (`PHASE-STOP`), sin suponer aprobación de fases siguientes.
+Los pasos son puntos de control internos de una fase, no fases nuevas. La autorización recibida cubre
+solo PG-1.01 y permite completar ese punto sin dar por satisfechas C01/C02 de la fase completa. Se
+detiene al terminar la iteración; los demás puntos requieren autorización propia (`PHASE-STOP`).
 
 ### 10.1 Verificaciones ejecutables al implementar
 
@@ -499,13 +501,18 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 
 ### 11.1 Registro por tarea
 
-Las 78 tareas `.nn.mm` de §4 siguen pendientes; sus casillas no se marcan por preparar el plan.
-Al ejecutar se añadirá una fila individual por tarea en esta tabla. Se usarán exclusivamente los
-estados del plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado. La tabla queda sin
-filas de ejecución hasta que exista evidencia; «pendiente» no se convierte en éxito ni en diferimiento.
+Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. Esta iteración completa las seis
+tareas de PG-1.01; las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
+plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
+| PG-1.01.01 | Cumplido | `LANG.SOURCE.POSITION`, `IR.SOURCE-MAP` y `API.WIRE-FORMAT` especifican identidad, coordenadas, procedencia y compatibilidad | Versiones conservadas en `1.0.0`; lock reanclado para las tres identidades autorizadas |
+| PG-1.01.02 | Cumplido | Casos de identidad, revisión, límites UTF-8/UTF-16, BOM, CRLF, texto vacío, Unicode suplementario y fallo AOT | Casos agregados al corpus existente sin cambiar versiones ni esperados previos |
+| PG-1.01.03 | Cumplido | Tests espejo de tabla y conversión de coordenadas, spans, API, códec de eventos y fallos negativos | Cubre fuente ausente, rango inválido, revisión cruzada, versión desconocida y registro truncado |
+| PG-1.01.04 | Cumplido | Identidad propagada por source, sintaxis, lowering, RI, bytecode, diagnósticos, AOT, API, vistas, eventos y puente nativo | Formato standalone preservado; eventos con identidad usan PLEV2 |
+| PG-1.01.05 | Cumplido | README de source, IR, bytecode, diagnostics, VM, AOT runtime, codegen, API, service y puente nativo actualizados | Incluye compatibilidad, límites y decisiones de representación |
+| PG-1.01.06 | Cumplido | Roundtrip JSON/binario/RI, procedencia de fallos y eventos, tests Wasm y nativos; `IrSpan` medido en 20 bytes frente a 16 | Wasm: cuatro pruebas Chrome; app nativa y verificadores de paquetes en verde |
 
 ### 11.2 Cierre común de PG-1
 
@@ -523,9 +530,13 @@ filas de ejecución hasta que exista evidencia; «pendiente» no se convierte en
 - [ ] `PG-1.C12` Commit con skill `commit-message`, sin atribución de IA, y push ordinario comprobado a rama única.
 - [ ] `PG-1.C13` Resumen por tarea/punto y plan general actualizados; informe y parada.
 
-Revisión Git de cierre: sin cierre de fase. Verificadores de implementación: no ejecutados durante
-esta preparación documental. Pendientes justificados: revisión del plan, autorización de implementación
-y coherencia documental de PG-0. Puntos PG-1.01–.13 cumplidos: ninguno por este encargo.
+Revisión Git de cierre: sin cierre de fase, commit ni push. Verificadores ejecutados para este punto:
+`cargo xtask verify` del motor (tests y `rust-checks` en verde; `cargo deny check` pasó al repetirlo
+con acceso a su caché de avisos), `rust-checks toolchain`, tests del puente nativo, `cargo fmt --check`,
+`rust-checks all` e `isolation` de la app, cuatro pruebas Chrome Wasm, `see validate`, `lock --check`,
+`export --check`, propiedades del motor y conformidad estructural de los tres contratos. `git diff
+--check` sin errores. Pendientes justificados: PG-1.02–.13, revisión integral del plan y cierre común
+C01–C13; requieren autorización nueva. PG-1.01.01–.06 cumplidos; no se cierra PG-1.
 
 Al cerrar se consignarán comandos/resultados, hashes de campañas y artefactos, pendientes aprobados,
 decisiones de la persona y revisión remota de la rama. La fase siguiente requiere autorización nueva.

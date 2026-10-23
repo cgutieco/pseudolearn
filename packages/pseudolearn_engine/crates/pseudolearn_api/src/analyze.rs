@@ -13,7 +13,7 @@ pub fn execute_analyze(request: &AnalyzeRequest) -> AnalyzeResponse {
 fn perform_analysis(request: &AnalyzeRequest) -> AnalyzeResponse {
     let profile = Profile::from_name(&request.profile).unwrap_or(Profile::Spanish);
     let strict = request.strictness != "flexible";
-    let source = SourceText::new(request.program.clone());
+    let source = crate::source_identity::source_text(request.program.clone(), request.source);
     let terminator = strict.then_some(DiagnosticCode::MissingStatementTerminator);
     let (tree, mut diagnostics) = parse_source_with_terminator(&source, profile, terminator);
     if !tree.has_errors {

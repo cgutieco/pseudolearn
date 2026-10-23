@@ -109,6 +109,19 @@ fn trapping_instructions_register_fault_sites_with_their_exact_span() -> Result<
 }
 
 #[test]
+fn fault_sites_preserve_source_identity_from_ir_spans() -> Result<(), String> {
+    let source = PROGRAM.replace("@2:5-2:9", "@f9:2:5-2:9");
+    let compiled = compile(&source)?;
+    assert!(compiled.fault_sites.iter().any(|site| {
+        site.code.as_str() == "integerOverflow"
+            && site.range.source_id == 9
+            && site.range.start_line == 2
+            && site.range.start_column == 5
+    }));
+    Ok(())
+}
+
+#[test]
 fn function_symbols_follow_module_order() -> Result<(), String> {
     let compiled = compile(PROGRAM)?;
     let names: Vec<_> = compiled

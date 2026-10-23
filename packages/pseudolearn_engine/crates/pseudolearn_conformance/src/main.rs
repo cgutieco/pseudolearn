@@ -111,27 +111,7 @@ fn respond_shutdown() {
 }
 
 fn respond_analyze(request_value: &Value) {
-    let program = request_value
-        .get("program")
-        .and_then(Value::as_str)
-        .unwrap_or("")
-        .to_owned();
-    let profile = request_value
-        .get("profile")
-        .and_then(Value::as_str)
-        .unwrap_or("es")
-        .to_owned();
-    let strictness = request_value
-        .get("strictness")
-        .and_then(Value::as_str)
-        .unwrap_or("strict")
-        .to_owned();
-
-    let request = AnalyzeRequest {
-        program,
-        profile,
-        strictness,
-    };
+    let request = analyze_request(request_value);
     let response = execute_analyze(&request);
     let mut serialized = match serde_json::to_value(&response) {
         Ok(value) => value,
@@ -149,6 +129,31 @@ fn respond_analyze(request_value: &Value) {
         fields.insert("program_view".to_owned(), view);
     }
     send_response(&serialized);
+}
+
+fn analyze_request(request_value: &Value) -> AnalyzeRequest {
+    let program = request_value
+        .get("program")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_owned();
+    let profile = request_value
+        .get("profile")
+        .and_then(Value::as_str)
+        .unwrap_or("es")
+        .to_owned();
+    let strictness = request_value
+        .get("strictness")
+        .and_then(Value::as_str)
+        .unwrap_or("strict")
+        .to_owned();
+
+    AnalyzeRequest {
+        program,
+        profile,
+        strictness,
+        source: None,
+    }
 }
 
 fn respond_ir(request_value: &Value) {
@@ -178,6 +183,7 @@ fn respond_ir(request_value: &Value) {
         program,
         profile,
         strictness,
+        source: None,
     };
     let response = execute_ir(&request);
     let serialized = match serde_json::to_value(&response) {

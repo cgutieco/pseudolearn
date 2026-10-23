@@ -35,9 +35,12 @@ impl SyntaxTree {
         let node = self.nodes.get(index)?;
         let first = usize::try_from(node.first_token).ok()?;
         let ending = usize::try_from(*self.ending_tokens.get(index)?).ok()?;
-        Some(Span::new(
-            self.tokens.span(first)?.start,
-            self.tokens.span(ending)?.ending,
+        let first_span = self.tokens.span(first)?;
+        let ending_span = self.tokens.span(ending)?;
+        (first_span.source_id == ending_span.source_id).then_some(Span::in_source(
+            first_span.source_id,
+            first_span.start,
+            ending_span.ending,
         ))
     }
 

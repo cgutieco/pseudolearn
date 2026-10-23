@@ -1,8 +1,8 @@
 #![cfg(feature = "native")]
 
 use pseudolearn_api::{
-    ExecuteRequest, NativeRunReport, conformance_build_request, native_execute_response,
-    rejected_native_response,
+    ApiSourceIdentity, ExecuteRequest, NativeRunReport, conformance_build_request,
+    native_execute_response, rejected_native_response,
 };
 use serde_json::json;
 
@@ -28,7 +28,7 @@ fn a_completed_run_keeps_its_output_and_has_no_diagnostics() {
 
 #[test]
 fn a_failed_run_reports_the_fatal_code_position_and_arguments() {
-    let errors = "E\tdivisionByZero\t5\t9\t5\t12\t{}\n";
+    let errors = "E\tdivisionByZero\t0\t5\t9\t5\t12\t{}\n";
     let response = respond(&run(Some(3), "1\n", errors));
     assert_eq!(
         response.termination,
@@ -44,7 +44,7 @@ fn a_failed_run_reports_the_fatal_code_position_and_arguments() {
 
 #[test]
 fn warnings_precede_the_fatal_diagnostic_and_keep_typed_arguments() {
-    let errors = "W\treadValueTypeMismatch\t2\t1\t2\t5\t{\"expected\":\"Entero\",\"found\":\"x\"}\nE\trecursionDepthExceeded\t3\t1\t3\t4\t{\"limit\":3}\n";
+    let errors = "W\treadValueTypeMismatch\t0\t2\t1\t2\t5\t{\"expected\":\"Entero\",\"found\":\"x\"}\nE\trecursionDepthExceeded\t0\t3\t1\t3\t4\t{\"limit\":3}\n";
     let response = respond(&run(Some(3), "", errors));
     let codes: Vec<&str> = response
         .diagnostics
@@ -68,7 +68,7 @@ fn exit_four_distinguishes_exhausted_input_from_the_statement_limit() {
     let limited = respond(&run(
         Some(4),
         "",
-        "I\tstatementBudgetExhausted\t1\t1\t1\t4\t{\"limit\":9}\n",
+        "I\tstatementBudgetExhausted\t0\t1\t1\t1\t4\t{\"limit\":9}\n",
     ));
     assert_eq!(
         limited.termination,
@@ -100,7 +100,7 @@ fn internal_exits_signals_and_unreadable_reports_become_an_internal_fault() {
 
 #[test]
 fn malformed_report_lines_are_ignored() {
-    let errors = "E\tnoSuchCode\t1\t1\t1\t1\t{}\nE\tdivisionByZero\tx\t1\t1\t1\t{}\nE\tdivisionByZero\t1\t1\t1\t1\tnot json\n";
+    let errors = "E\tnoSuchCode\t0\t1\t1\t1\t1\t{}\nE\tdivisionByZero\t0\tx\t1\t1\t1\t{}\nE\tdivisionByZero\t0\t1\t1\t1\t1\tnot json\n";
     assert!(respond(&run(Some(0), "", errors)).diagnostics.is_empty());
 }
 
@@ -121,6 +121,36 @@ fn the_conformance_build_request_carries_the_machine_readable_templates() {
     };
     let build = conformance_build_request(&request);
     assert_eq!(build.seed, 7);
-    assert!(build.error_template.starts_with("E\t{code}"));
+    assert!(build.error_template.starts_with("E\t{code}\t{source_id}"));
     assert_eq!(build.exhausted_template, "X\n");
+}
+
+#[test]
+fn aot_report_identity_must_match_the_requested_source() {
+    let identity = ApiSourceIdentity {
+        project_id: 7,
+        revision_id: 11,
+        source_id: 2,
+    };
+    let request = ExecuteRequest {
+        source: Some(identity),
+        ..ExecuteRequest::default()
+    };
+    let report = run(Some(3), "", "E\tdivisionByZero\t2\t5\t9\t5\t12\t{}\n");
+    let response = native_execute_response(&request, Vec::new(), &report);
+    assert_eq!(
+        response
+            .diagnostics
+            .first()
+            .and_then(|diagnostic| diagnostic.span.source),
+        Some(identity)
+    );
+    let mismatch = run(Some(3), "", "E\tdivisionByZero\t3\t5\t9\t5\t12\t{}\n");
+    let response = native_execute_response(&request, Vec::new(), &mismatch);
+    assert!(
+        response
+            .diagnostics
+            .first()
+            .is_some_and(|diagnostic| diagnostic.span.source.is_none())
+    );
 }

@@ -1015,6 +1015,16 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.WIRE-FORMAT@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.WIRE-FORMAT@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.ERRORS@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"

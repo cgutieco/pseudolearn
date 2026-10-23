@@ -146,16 +146,16 @@ fn identity_kind_name(kind: HelpIdentityKind) -> &'static str {
 }
 
 fn api_span(range: Range) -> ApiSpan {
-    ApiSpan {
-        start: ApiPosition {
+    ApiSpan::new(
+        ApiPosition {
             line: range.start.line,
             column: range.start.column,
         },
-        end: ApiPosition {
+        ApiPosition {
             line: range.end.line,
             column: range.end.column,
         },
-    }
+    )
 }
 
 fn category_name(category: HoverCategory) -> &'static str {

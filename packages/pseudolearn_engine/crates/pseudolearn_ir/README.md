@@ -22,7 +22,7 @@ de métodos necesarios para especializar llamadas sin volver a resolver nombres 
 
 Nivel 3. Importa source y abi; serde_json solo para generación en build.rs. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
-Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. Operation (con la lista `Operation::ALL` de todas las operaciones), firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R9 con dominadores iterativos de Cooper–Harvey–Kennedy.
+Módulo con clases, funciones y tabla lateral de orígenes; funciones con bloques SSA parametrizados. Instrucciones en columnas de operación, operandos, rangos, resultado y tramo. El tramo añade un ID de fuente compacto; el documento suelto conserva el ID cero. Operation (con la lista `Operation::ALL` de todas las operaciones), firmas, efectos y trampas se generan desde IR.INSTRUCTIONS. Lector y escritor del texto canónico. Verificador de R1–R9 con dominadores iterativos de Cooper–Harvey–Kennedy.
 
 Invariantes: Toda RI traducida pasa el verificador y toda instrucción que puede atrapar u observar conserva tramo. Se informa la primera violación en orden textual.
 
@@ -32,6 +32,8 @@ La tabla de orígenes vincula valores SSA con variables declaradas para observac
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
+
+Problema: dos rangos locales iguales pueden pertenecer a archivos distintos. Elección: `IrSpan` conserva `SourceId` junto con línea y columna; el formato canónico escribe `@f<ID>:` para IDs no nulos y mantiene la forma anterior `@` para el documento suelto. El verificador rechaza coordenadas vacías o invertidas. Se rechaza inferir el archivo por nombre o por orden de carga. Medición del registro en el host: 20 bytes por tramo frente a los 16 bytes del diseño previo, un incremento fijo de 4 bytes (25 %) por tramo; el ID evita almacenar rutas o identidades compuestas repetidas en cada entrada.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

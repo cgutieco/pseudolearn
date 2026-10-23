@@ -50,6 +50,8 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 La creación de un documento admite `previous_document` cuando representa una revisión sucesora. Valida la fuente y el recurso previo antes de crear el nuevo; solo después libera la revisión anterior y sus recursos dependientes. Un destino previo inválido conserva todos los documentos. El identificador nuevo cambia las identidades de nodos aunque el texto sea idéntico; las vistas retenidas del anterior no se pueden consultar. Los documentos ajenos permanecen vivos.
 
+Las peticiones de análisis, RI, ejecución y construcción nativa admiten `source` opcional con `project_id` y `revision_id` como cadenas decimales u64 y `source_id` como u32 positivo. El ID cero permanece reservado al documento suelto. Diagnósticos, tokens y vistas devuelven esa identidad en cada tramo; una petición de documento suelto conserva las formas anteriores sin el campo.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: configurar el montón desde la API debe preservar el calendario de la VM. Elección: las ejecuciones del sujeto engine conservan el mínimo automático de 4096 celdas. Se descarta heredar la configuración específica de AOT.
@@ -78,6 +80,8 @@ añadir identidad de documento al modelo de eventos de la VM. Elección: el code
 respuesta completa. El codec JSON valida y conserva los objetos recibidos. Los eventos sintéticos llevan
 `source: null`. Se descarta resolver la fuente después de decodificar, porque la revisión y el nodo no se
 pueden recuperar solo desde el tramo.
+
+La versión PLEV 2 añade identidad compuesta al registro `source`; PLEV 1 sigue decodificándose y solo puede escribirse si ningún evento contiene esa identidad. `negotiate` elige la versión de escritura entre las versiones anunciadas y expone por separado las versiones de lectura. Los enteros u64 de la identidad usan cadenas decimales canónicas; `source_id` sigue siendo u32. El binario nunca asigna significado nuevo a bytes PLEV 1.
 
 Problema: los emisores, diagramas y comprobaciones estructurales consumían árboles internos del núcleo Dart. Elección: la API publicará una vista inmutable por revisión con unidades, nodos, relaciones, tramos y eventos enlazados por identificador opaco. La vista no revela índices del CST, HIR ni bytecode y el consumidor no vuelve a analizar el texto.
 

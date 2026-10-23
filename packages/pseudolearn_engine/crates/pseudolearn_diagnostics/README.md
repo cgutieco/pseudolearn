@@ -54,7 +54,7 @@ Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; n
 
 Contratos: `DIAG.*`.
 La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
+Los identificadores del usuario, el texto original y la salida del programa se conservan. Cada diagnóstico conserva el ID de la fuente de su tramo y de cada tramo relacionado; un consumidor no aplica coordenadas de un archivo a otro.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 

@@ -37,6 +37,6 @@ pub use operand::{Operand, PredicateKind};
 pub use operation::Operation;
 pub use parser::parse_module;
 pub use printer::print_canonical;
-pub use span::IrSpan;
+pub use span::{IrPosition, IrSpan};
 pub use types::{IrType, ValueClass};
 pub use verifier::verify_module;

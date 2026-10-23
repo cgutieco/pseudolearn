@@ -6,6 +6,51 @@ pub struct AnalyzeRequest {
     pub program: String,
     pub profile: String,
     pub strictness: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<ApiSourceIdentity>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ApiSourceIdentity {
+    #[serde(with = "decimal_u64")]
+    pub project_id: u64,
+    #[serde(with = "decimal_u64")]
+    pub revision_id: u64,
+    pub source_id: u32,
+}
+
+impl ApiSourceIdentity {
+    pub fn is_valid(self) -> bool {
+        self.project_id != 0 && self.revision_id != 0 && self.source_id != 0
+    }
+}
+
+mod decimal_u64 {
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<SerializerType>(
+        value: &u64,
+        serializer: SerializerType,
+    ) -> Result<SerializerType::Ok, SerializerType::Error>
+    where
+        SerializerType: Serializer,
+    {
+        serializer.serialize_str(&value.to_string())
+    }
+
+    pub fn deserialize<'deserialize, DeserializerType>(
+        deserializer: DeserializerType,
+    ) -> Result<u64, DeserializerType::Error>
+    where
+        DeserializerType: Deserializer<'deserialize>,
+    {
+        let text = String::deserialize(deserializer)?;
+        let value = text.parse::<u64>().map_err(serde::de::Error::custom)?;
+        if value.to_string() != text {
+            return Err(serde::de::Error::custom("non-canonical unsigned integer"));
+        }
+        Ok(value)
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -131,6 +176,26 @@ pub struct ApiHelpEntry {
 pub struct ApiSpan {
     pub start: ApiPosition,
     pub end: ApiPosition,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<ApiSourceIdentity>,
+}
+
+impl ApiSpan {
+    pub fn new(start: ApiPosition, end: ApiPosition) -> Self {
+        Self {
+            start,
+            end,
+            source: None,
+        }
+    }
+
+    pub fn in_source(
+        start: ApiPosition,
+        end: ApiPosition,
+        source: Option<ApiSourceIdentity>,
+    ) -> Self {
+        Self { start, end, source }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -188,6 +253,8 @@ pub struct IrRequest {
     pub program: String,
     pub profile: String,
     pub strictness: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<ApiSourceIdentity>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

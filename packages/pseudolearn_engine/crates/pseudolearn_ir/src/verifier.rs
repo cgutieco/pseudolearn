@@ -176,6 +176,12 @@ fn check_span_requirement(
     columns: &InstructionColumns,
     instruction_id: InstructionId,
 ) -> Result<(), &'static str> {
+    if columns
+        .span(instruction_id)
+        .is_some_and(|span| !span.is_valid())
+    {
+        return Err("IR.WELL-FORMEDNESS#R7");
+    }
     if (operation.can_trap() || operation.is_observation())
         && columns.span(instruction_id).is_none()
     {

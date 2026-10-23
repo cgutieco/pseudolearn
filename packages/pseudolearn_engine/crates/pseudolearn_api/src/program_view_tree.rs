@@ -77,6 +77,13 @@ impl NodeCollector<'_> {
             child_roles: Vec::new(),
             dimensions: parameter_dimensions(self.tree, index),
             attributes: Vec::new(),
+            source: pseudolearn_source::source_identity(self.source).map(|identity| {
+                crate::ApiSourceIdentity {
+                    project_id: identity.project_id.value(),
+                    revision_id: identity.revision_id.value(),
+                    source_id: identity.source_id.value(),
+                }
+            }),
         });
         self.link_parent(ordinal, pending_node);
         Some(ordinal)

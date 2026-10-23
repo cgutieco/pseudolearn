@@ -45,6 +45,7 @@ crate del motor lo importa salvo el enlazador y el adaptador `aot`.
 Fachada: `compile_module_to_object(&Module, &TargetConfig) -> Result<CompiledObject, CodegenError>`. Verifica el módulo
 con `verify_module` antes de emitir. `CompiledObject` contiene los bytes del objeto, la tabla `fault_sites` que la sesión
 de `pseudolearn_aot_rt` recibe tal cual y la lista `function_symbols` (nombre en la RI y símbolo).
+Cada `FaultSite` conserva el `source_id` de su `IrSpan`; el bloque frío compartido sigue seleccionando el sitio por índice y no busca por nombre de archivo.
 
 Modo ejecutable: `compile_module_to_executable_object(&Module, &TargetConfig, &ExecutableSettings)` emite además un
 `main` de C que llama a `pseudolearn_aot_main(@main, __pl_metadata, longitud)` y devuelve su resultado, y guarda como dato

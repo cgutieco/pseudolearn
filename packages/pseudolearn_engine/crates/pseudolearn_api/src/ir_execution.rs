@@ -22,7 +22,12 @@ pub fn execute_ir(request: &IrRequest) -> IrResponse {
         return parse_ir_and_respond(&request.program_ir);
     }
     if !request.program.is_empty() {
-        return match compile_source_to_ir(&request.program, &request.profile, &request.strictness) {
+        return match compile_source_to_ir_with_identity(
+            &request.program,
+            &request.profile,
+            &request.strictness,
+            request.source,
+        ) {
             Ok(canonical_reprint) => IrResponse::accepted(canonical_reprint),
             Err(_) => IrResponse::rejected("IR.WELL-FORMEDNESS#R1".to_owned()),
         };
@@ -51,6 +56,16 @@ pub fn compile_source_to_ir(
         .map(|module| pseudolearn_ir::print_canonical(&module))
 }
 
+fn compile_source_to_ir_with_identity(
+    source_content: &str,
+    profile_name: &str,
+    strictness_mode: &str,
+    identity: Option<crate::ApiSourceIdentity>,
+) -> Result<String, Vec<ApiDiagnostic>> {
+    compile_source_with_identity(source_content, profile_name, strictness_mode, identity)
+        .map(|(module, _)| pseudolearn_ir::print_canonical(&module))
+}
+
 pub fn compile_source_to_module(
     source_content: &str,
     profile_name: &str,
@@ -65,11 +80,20 @@ pub(crate) fn compile_source_with_warnings(
     profile_name: &str,
     strictness_mode: &str,
 ) -> Result<(Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>> {
+    compile_source_with_identity(source_content, profile_name, strictness_mode, None)
+}
+
+pub(crate) fn compile_source_with_identity(
+    source_content: &str,
+    profile_name: &str,
+    strictness_mode: &str,
+    identity: Option<crate::ApiSourceIdentity>,
+) -> Result<(Module, Vec<ApiDiagnostic>), Vec<ApiDiagnostic>> {
     let mode = CompilationMode {
         profile: Profile::from_name(profile_name).unwrap_or(Profile::Spanish),
         is_strict: strictness_mode != "flexible",
     };
-    let source_text = SourceText::new(source_content.to_owned());
+    let source_text = crate::source_identity::source_text(source_content.to_owned(), identity);
     let terminator = mode
         .is_strict
         .then_some(DiagnosticCode::MissingStatementTerminator);

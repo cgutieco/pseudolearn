@@ -35,6 +35,7 @@ fn parse_site(line: &str) -> FaultSite {
         lexeme: String::new(),
         code: DiagnosticCode::from_name(fields[0]).unwrap(),
         range: SourceRange {
+            source_id: 0,
             start_line: fields[1].parse().unwrap(),
             start_column: fields[2].parse().unwrap(),
             end_line: fields[3].parse().unwrap(),

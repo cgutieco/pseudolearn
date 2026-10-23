@@ -26,7 +26,8 @@ suspendidas consultan el mapa de su llamada. Los mapas son datos verificados ant
 Nivel 5. Importa ir y source; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
 
 El catálogo de opcodes y sus identidades se generan desde la exportación de `IR.INSTRUCTIONS`. Cada función
-conserva descriptores de bloque, tablas de constantes, tipos de registro y spans laterales. Las ranuras se
+conserva descriptores de bloque, tablas de constantes, tipos de registro y spans laterales con su ID de fuente.
+El ID no se copia a cada valor ni cambia su representación. Las ranuras se
 asignan en orden estable y se separan por clase de valor. La salida SSA transporta argumentos de bloque
 como copias paralelas; los gemelos rápido y sondeado comparten registros, constantes, descriptores y puntos
 de retorno.

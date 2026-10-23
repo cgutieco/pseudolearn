@@ -25,5 +25,7 @@ pub fn supported_capabilities() -> Vec<&'static str> {
         "service_completion",
         "service_help",
         "generated_vocabulary",
+        "source_identity",
+        "event_binary",
     ]
 }

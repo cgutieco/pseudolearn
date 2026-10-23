@@ -26,6 +26,7 @@ fn sample() -> ExecutableMetadata {
             lexeme: "sourceName".to_owned(),
             code: DiagnosticCode::InternalFault,
             range: SourceRange {
+                source_id: 7,
                 start_line: 1,
                 start_column: 2,
                 end_line: 3,
