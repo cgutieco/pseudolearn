@@ -1,6 +1,8 @@
 use crate::help_catalog::HelpLocale;
 use crate::help_content::help_content;
-use crate::help_rendering::{HelpFormat, escape_markdown, render_help};
+use crate::help_rendering::{
+    HelpFormat, HelpRenderError, escape_markdown, inert_text, omitted_notice, render_help,
+};
 use crate::help_resolution::{HelpQueryOutcome, resolve_help_with_locale};
 use crate::lsp_protocol::{
     CONTENT_MODIFIED, INVALID_PARAMS, failure, lsp_range, position_from_request, success,
@@ -71,16 +73,20 @@ fn hover_text(
     if let Some(hover) = &outcome.hover {
         blocks.push(headline(hover, format));
     }
-    if let Some(content) =
-        help_content(outcome, locale).map(|content| render_help(&content, locale, format))
-    {
-        blocks.push(content);
-    } else if let Some(description) = outcome
-        .hover
-        .as_ref()
-        .and_then(|hover| hover.description.as_ref())
-    {
-        blocks.push(description.clone());
+    match help_content(outcome, locale).map(|content| render_help(&content, locale, format)) {
+        Some(Ok(rendered)) => blocks.push(rendered),
+        Some(Err(HelpRenderError::TooLarge { .. })) => {
+            blocks.push(omitted_notice(locale).to_owned());
+        }
+        None => {
+            if let Some(description) = outcome
+                .hover
+                .as_ref()
+                .and_then(|hover| hover.description.as_ref())
+            {
+                blocks.push(inert_text(description, format));
+            }
+        }
     }
     (!blocks.is_empty()).then(|| blocks.join("\n\n"))
 }

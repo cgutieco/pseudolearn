@@ -42,6 +42,8 @@ Cada uno se ejercita con un fixture aislado de `fixtures/help-catalog/` aplicado
 el catálogo vigente debe quedar sin diagnósticos y cada fixture debe ser rechazado por su diagnóstico.
 La prueba exige un mínimo de fixtures para que borrarlos no la debilite.
 
+El texto editorial es texto plano: el validador rechaza `<`, `>`, comillas inversas, `&`, `\`, corchetes y `|`, esquemas de URI activos (`javascript:`, `data:`, `file:`, `command:`, `http(s):`, `mailto:` y cualquier `://`), caracteres de control o de dirección, campos fuera de longitud (título 80, propósito 560, resto 280), demasiados elementos por lista (16 partes, 8 restricciones, 8 errores comunes, 6 ejemplos) y más de 4 096 bytes de texto por idioma. Cada rechazo tiene fixture propio. Este control es la primera defensa; los clientes escapan de todos modos.
+
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.
 

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -154,5 +155,43 @@ void main() {
     );
     expect(tester.takeException(), isNull);
     expect(find.byType(SingleChildScrollView), findsOneWidget);
+  });
+
+  testWidgets('hostile text is shown literally and never becomes a link', (
+    tester,
+  ) async {
+    const hostile = HelpCardSections(
+      id: 'hostile',
+      title: '<b>Titulo</b>',
+      summary: '[abrir](javascript:alert(1)) ![x](https://evil.invalid/a.png)',
+      purpose: '`codigo` y <script>alert(1)</script>',
+      parts: [HelpPart(identity: 'p', text: 'command:workbench.action.reload')],
+    );
+    await tester.pumpWidget(
+      _host(
+        const HelpQueryResult.help(
+          SyntaxHelp(headline: 'x', range: _range, card: hostile),
+          revision: 1,
+        ),
+      ),
+    );
+    expect(find.text('<b>Titulo</b>'), findsOneWidget);
+    expect(
+      find.text('[abrir](javascript:alert(1)) ![x](https://evil.invalid/a.png)'),
+      findsOneWidget,
+    );
+    expect(find.byType(Image), findsNothing);
+    var recognizers = 0;
+    for (final element in find.byType(RichText).evaluate()) {
+      (element.widget as RichText).text.visitChildren((span) {
+        if (span is TextSpan && span.recognizer is GestureRecognizer) {
+          recognizers++;
+        }
+        return true;
+      });
+    }
+    expect(recognizers, 0);
+    expect(find.byType(InkWell), findsOneWidget);
+    expect(find.byTooltip('Cerrar ayuda'), findsOneWidget);
   });
 }

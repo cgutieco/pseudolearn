@@ -1,0 +1,11 @@
+{
+  "violation": "command URI in editorial text",
+  "expect": "active URI",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Ejecuta command:workbench.action.reload ahora"
+    }
+  ]
+}

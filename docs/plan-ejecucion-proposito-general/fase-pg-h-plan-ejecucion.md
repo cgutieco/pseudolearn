@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador; `PG-H.10` completo. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador; `PG-H.10` y `PG-H.11` completos. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -263,15 +263,15 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.11 · Render seguro
 
-- [ ] `PG-H.11.01` Especificar subconjunto admitido, escape de texto fuente, enlaces internos y límites
+- [x] `PG-H.11.01` Especificar subconjunto admitido, escape de texto fuente, enlaces internos y límites
   de bytes/secciones/profundidad; sin HTML activo, imágenes remotas, ejecución ni enlaces arbitrarios.
-- [ ] `PG-H.11.02` Derivar casos de etiquetas HTML, URI command/javascript/data/file, enlaces codificados,
+- [x] `PG-H.11.02` Derivar casos de etiquetas HTML, URI command/javascript/data/file, enlaces codificados,
   cercas Markdown en nombres/textos, contenido excesivo y referencias internas inexistentes.
-- [ ] `PG-H.11.03` Preparar tests adversarios de validación y de los renderizadores LSP/app, incluido texto plano.
-- [ ] `PG-H.11.04` Implementar saneamiento y proyección acotada en sus dueños; contenido del usuario nunca se interpreta
+- [x] `PG-H.11.03` Preparar tests adversarios de validación y de los renderizadores LSP/app, incluido texto plano.
+- [x] `PG-H.11.04` Implementar saneamiento y proyección acotada en sus dueños; contenido del usuario nunca se interpreta
   como marcado confiable. Una consulta no ejecuta sus ejemplos.
-- [ ] `PG-H.11.05` Documentar política y límites elegidos en README service/app, junto a la prueba que los exige.
-- [ ] `PG-H.11.06` Verificar que todos los intentos hostiles se rechazan o muestran como texto inerte sin abrir recursos.
+- [x] `PG-H.11.05` Documentar política y límites elegidos en README service/app, junto a la prueba que los exige.
+- [x] `PG-H.11.06` Verificar que todos los intentos hostiles se rechazan o muestran como texto inerte sin abrir recursos.
 
 ### PG-H.12 · E-PG-11 y evidencia de salida
 
@@ -569,12 +569,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.10.04 | Cumplido | Auditoría de `apps/` y `packages/` | No había descripciones locales de palabras del lenguaje que sustituir fuera de `keyword_help.rs`, retirado en `.05`. La narrativa curricular propia no se modificó y no se enlazaron fichas desde el currículo (SCOPE-YAGNI). |
 | PG-H.10.05 | Cumplido | README de `pseudolearn_service` y de `pseudolearn_app` §4.53 | Frontera entre currículo, interfaz y catálogo documentada. |
 | PG-H.10.06 | Cumplido | Sonda de propagación; `cargo xtask verify` de engine y de spec en verde | Un cambio temporal del título inglés de una ficha llegó a la API tras regenerar, sin tocar código; se revirtió y se comprobó que no quedó rastro. La verificación de engine falló una vez en Clippy por una resta en una prueba y se repitió tras corregirla. |
-| PG-H.11.01 | | | Pendiente de ejecución |
-| PG-H.11.02 | | | Pendiente de ejecución |
-| PG-H.11.03 | | | Pendiente de ejecución |
-| PG-H.11.04 | | | Pendiente de ejecución |
-| PG-H.11.05 | | | Pendiente de ejecución |
-| PG-H.11.06 | | | Pendiente de ejecución |
+| PG-H.11.01 | Cumplido | `TOOL.SERVICE.CATALOG` R9 | Texto plano en el origen, escape en cada proyección, sin enlaces ni HTML ni imágenes ni ejecución, límites de longitud, cantidad y tamaño (8 KiB por proyección). No se admite subconjunto de Markdown. |
+| PG-H.11.02 | Cumplido | `fixtures/help-catalog/` (12 nuevos); `tests/help_rendering.rs`; prueba de widgets hostil | Etiquetas HTML, URI javascript/data/file/command/remotas, enlace Markdown con esquema codificado, cercas, caracteres de control y de dirección, contenido excesivo y demasiados elementos. Las referencias internas inexistentes ya las rechaza `stale example`. |
+| PG-H.11.03 | Cumplido | `pseudolearn_service/tests/help_rendering.rs`; `see_validation/tests/resources/help_catalog/fixtures.rs`; `test/presentation/editor/help/syntax_help_panel_test.dart` | Pruebas adversarias de validación y de los tres renderizadores: Markdown y texto plano del servicio, hover LSP y panel de la app. |
+| PG-H.11.04 | Cumplido | `see_validation/src/resources/help_catalog/safety.rs`; `help_rendering.rs`; `lsp_help.rs` | Saneamiento en el origen y proyección acotada en el servicio; el contenido del usuario se escapa como texto. Una consulta no ejecuta ejemplos. |
+| PG-H.11.05 | Cumplido | README de `pseudolearn_service`, `see_validation` y `pseudolearn_app` | Política y límites documentados junto a la prueba que los exige. |
+| PG-H.11.06 | Cumplido | `cargo xtask verify` de engine y de spec (1 566 observaciones, 0 divergencias); `flutter test` (2 265); `see conform --subject app` (230, 0) | Todos los intentos hostiles se rechazan en el origen o se muestran como texto inerte. La puerta de spec falló una vez en `cargo fmt` por un archivo nuevo sin formatear; la afirmación inicial de éxito se hizo sin leer el registro y se corrigió al leerlo. |
 | PG-H.12.01 | | | Pendiente de ejecución |
 | PG-H.12.02 | | | Pendiente de ejecución |
 | PG-H.12.03 | | | Pendiente de ejecución |

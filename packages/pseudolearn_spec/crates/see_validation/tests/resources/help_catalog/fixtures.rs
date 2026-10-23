@@ -3,7 +3,7 @@ use see_validation::resources::help_catalog::references;
 use serde_json::Value;
 use std::path::PathBuf;
 
-const MINIMUM_FIXTURES: usize = 9;
+const MINIMUM_FIXTURES: usize = 21;
 
 fn fixture_paths() -> Result<Vec<PathBuf>, String> {
     let directory = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/help-catalog");

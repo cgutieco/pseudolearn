@@ -4,6 +4,8 @@ mod catalog_coverage;
 mod catalog_examples;
 #[path = "help_catalog/references.rs"]
 mod catalog_references;
+#[path = "help_catalog/safety.rs"]
+mod catalog_safety;
 #[path = "help_catalog/shape.rs"]
 mod catalog_shape;
 
@@ -19,7 +21,8 @@ pub struct CoverageRow {
 }
 
 pub fn check(value: &Value) -> Result<(), String> {
-    catalog_shape::check(value)
+    catalog_shape::check(value)?;
+    catalog_safety::check(value)
 }
 
 pub fn references(value: &Value, corpus: &Corpus) -> Vec<String> {

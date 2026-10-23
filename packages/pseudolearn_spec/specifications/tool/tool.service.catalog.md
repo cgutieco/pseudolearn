@@ -338,6 +338,19 @@
 }
 ```
 
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El texto editorial de una ficha es texto plano: no contiene marcado ni etiquetas, ni caracteres de control o de dirección, ni esquemas de URI activos ni recursos remotos, y respeta límites de longitud por campo (título 80 caracteres, propósito 560 y el resto 280), de cantidad (16 partes, 8 restricciones, 8 errores comunes y 6 ejemplos) y de tamaño por idioma (4 096 bytes). Los clientes proyectan la ficha escapándola como texto: sin enlaces, sin HTML, sin imágenes y sin ejecutar ejemplos; la proyección no supera 8 KiB y un contenido mayor produce un valor tipado de exceso, nunca un truncado silencioso.",
+  "justificacion": "La ayuda se muestra dentro de editores y de la aplicación; si el catálogo admitiera marcado, una ficha o un nombre del programa podría abrir recursos o alterar la presentación. Rechazar el marcado en el origen y escapar en cada proyección son dos defensas independientes.",
+  "verificacion": [
+    "estructural"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",

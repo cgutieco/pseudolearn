@@ -1,0 +1,66 @@
+{
+  "violation": "more parts than the declared limit",
+  "expect": "too many parts",
+  "edits": [
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/parts/0"
+    }
+  ]
+}

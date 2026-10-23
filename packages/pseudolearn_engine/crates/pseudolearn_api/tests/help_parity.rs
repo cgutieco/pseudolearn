@@ -110,7 +110,7 @@ fn utf16_range(program: &str, range: &Value) -> Result<Value, String> {
 fn escape(text: &str) -> String {
     text.chars()
         .flat_map(|glyph| {
-            if "\\`*_{}[]()#+-.!|<>~&".contains(glyph) {
+            if "\\`*_{}[]()#+-.!|<>~&:/@".contains(glyph) {
                 vec!['\\', glyph]
             } else {
                 vec![glyph]

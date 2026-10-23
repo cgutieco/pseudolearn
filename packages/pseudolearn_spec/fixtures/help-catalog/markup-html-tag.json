@@ -1,0 +1,11 @@
+{
+  "violation": "active HTML tag in editorial text",
+  "expect": "contains markup",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Texto <script>alert(1)</script> inyectado"
+    }
+  ]
+}
