@@ -2241,6 +2241,8 @@ Presentación: el panel muestra solo texto, con encabezados semánticos, región
 
 Verificación: los casos `APP.EDITOR.COMPLETION` R8–R13 los ejecuta el sujeto `app` por el transporte generado; las pruebas de widgets no sustituyen el puente, y `tool/native_bridge_adapters_test.dart` ejercita la consulta contra la biblioteca nativa real. La cobertura en dispositivo físico no se ha medido.
 
+Frontera entre currículo, interfaz y catálogo: la base de conocimiento conserva su narrativa pedagógica; la interfaz, sus etiquetas y mensajes localizados; la semántica normativa del lenguaje (qué hace una palabra, sus partes, restricciones y ejemplos) solo llega de la ficha que devuelve la consulta. Ningún archivo de `lib/` ni recurso localizado puede repetir prosa de una ficha: lo comprueba una prueba del motor que recorre esta aplicación, con una violación deliberada que demuestra que falla. Una modificación de una ficha llega a la API, al servidor LSP y a esta consulta por generación, sin cambios de código.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 ### 5.1 Filosofía de código auto-explicativo

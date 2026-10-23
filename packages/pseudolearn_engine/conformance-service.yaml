@@ -50,6 +50,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.CATALOG@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"

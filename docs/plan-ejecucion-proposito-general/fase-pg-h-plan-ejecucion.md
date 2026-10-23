@@ -19,7 +19,7 @@
 - Dependencia satisfecha: PG-0 cerrada el 2026-10-22 en la revisión de esta preparación,
   con campañas y verificadores en verde según su resumen de cierre. Las autorizaciones de implementación
   cubren `.02` y, en el mensaje nuevo, `.03`; los puntos posteriores requieren autorización propia.
-- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador. `PG-H.C01` queda satisfecho para la
+- Estado: `PG-H.01` a `PG-H.08` completos; `PG-H.09` completo salvo el humo en simulador; `PG-H.10` completo. `PG-H.C01` queda satisfecho para la
   autorización concreta de `.04`; la revisión integral del plan (`PG-H.C02`) sigue pendiente. PG-H permanece abierta.
 
 Documento transitorio de `docs/`, dependiente del [plan general](plan-ejecucion-proposito-general.md)
@@ -253,13 +253,13 @@ producir y verificar la evidencia; completar este documento no satisface ninguna
 
 ### PG-H.10 · Fuente única en consumidores
 
-- [ ] `PG-H.10.01` Especificar propiedad de paridad y ausencia de reconocimiento/prosa normativa duplicados.
-- [ ] `PG-H.10.02` Añadir casos de locale distinto del perfil y negativos de copia local/regex de lenguaje.
-- [ ] `PG-H.10.03` Preparar prueba de arquitectura con violaciones deliberadas y equivalencia de respuesta normalizada.
-- [ ] `PG-H.10.04` Sustituir descripciones locales por consulta; mantener solo etiquetas de interfaz localizadas y
+- [x] `PG-H.10.01` Especificar propiedad de paridad y ausencia de reconocimiento/prosa normativa duplicados.
+- [x] `PG-H.10.02` Añadir casos de locale distinto del perfil y negativos de copia local/regex de lenguaje.
+- [x] `PG-H.10.03` Preparar prueba de arquitectura con violaciones deliberadas y equivalencia de respuesta normalizada.
+- [x] `PG-H.10.04` Sustituir descripciones locales por consulta; mantener solo etiquetas de interfaz localizadas y
   narrativa curricular propia, enlazando fichas compartidas cuando expongan semántica del lenguaje.
-- [ ] `PG-H.10.05` Documentar límites entre currículo, interfaz y catálogo en README app/service.
-- [ ] `PG-H.10.06` Auditar consumidores alcanzables y demostrar que una modificación de ficha llega a todos por generación.
+- [x] `PG-H.10.05` Documentar límites entre currículo, interfaz y catálogo en README app/service.
+- [x] `PG-H.10.06` Auditar consumidores alcanzables y demostrar que una modificación de ficha llega a todos por generación.
 
 ### PG-H.11 · Render seguro
 
@@ -563,12 +563,12 @@ pendientes; su conformidad integral produjo 110 observaciones sin divergencias. 
 | PG-H.09.04 | Cumplido | `SyntaxHelpSource`, `RustSyntaxHelpSource`, `SyntaxHelpCubit`, `SyntaxHelpPanel`, `EditorHelpDock` | Estado y puerto específicos; `EditorCubit` no ganó métodos ni parser. Un error propio (columnas de escalares frente a UTF-16) lo detectó el oráculo del corpus y quedó corregido con prueba. |
 | PG-H.09.05 | Cumplido | README de `pseudolearn_app` §4.53 | Flujo y límites documentados; el puente no cambió de firma, por lo que no se regeneró. |
 | PG-H.09.06 | Parcial | `flutter test` (2 264 pruebas); `see conform --subject app` (230 observaciones, 0 divergencias); `bash tool/bridge.sh check`; fmt, Clippy, tests y `cargo deny` de `native/`; análisis estricto, límites, contenido y diseño | No se ejecutó el humo en simulador ni hay cobertura de dispositivo físico. Un primer intento falló por un desborde a 360×640 con teclado, corregido ocultando la fila de la acción en ese caso, y por la frescura de la biblioteca nativa tras `bridge.sh check`, resuelta recompilando. |
-| PG-H.10.01 | | | Pendiente de ejecución |
-| PG-H.10.02 | | | Pendiente de ejecución |
-| PG-H.10.03 | | | Pendiente de ejecución |
-| PG-H.10.04 | | | Pendiente de ejecución |
-| PG-H.10.05 | | | Pendiente de ejecución |
-| PG-H.10.06 | | | Pendiente de ejecución |
+| PG-H.10.01 | Cumplido | `TOOL.SERVICE.CATALOG` R8 | Propiedad de paridad y ausencia de reconocimiento o prosa normativa duplicados en consumidores. |
+| PG-H.10.02 | Cumplido | `TOOL.SERVICE.CATALOG` C6; `API.MODEL` C14; `TOOL.LSP.CAPABILITIES` C7 | Casos de idioma de interfaz distinto del perfil. Los negativos de copia local se cubren con la violación deliberada de la prueba de auditoría; no son casos del corpus. |
+| PG-H.10.03 | Cumplido | `pseudolearn_service/tests/help_single_source.rs`; `pseudolearn_api/tests/help_parity.rs` | Auditoría con violación deliberada y equivalencia de respuesta de API y LSP en tres documentos (Unicode no básico y CRLF). La app se compara por el sujeto `app`, no por esta prueba. |
+| PG-H.10.04 | Cumplido | Auditoría de `apps/` y `packages/` | No había descripciones locales de palabras del lenguaje que sustituir fuera de `keyword_help.rs`, retirado en `.05`. La narrativa curricular propia no se modificó y no se enlazaron fichas desde el currículo (SCOPE-YAGNI). |
+| PG-H.10.05 | Cumplido | README de `pseudolearn_service` y de `pseudolearn_app` §4.53 | Frontera entre currículo, interfaz y catálogo documentada. |
+| PG-H.10.06 | Cumplido | Sonda de propagación; `cargo xtask verify` de engine y de spec en verde | Un cambio temporal del título inglés de una ficha llegó a la API tras regenerar, sin tocar código; se revirtió y se comprobó que no quedó rastro. La verificación de engine falló una vez en Clippy por una resta en una prueba y se repitió tras corregirla. |
 | PG-H.11.01 | | | Pendiente de ejecución |
 | PG-H.11.02 | | | Pendiente de ejecución |
 | PG-H.11.03 | | | Pendiente de ejecución |

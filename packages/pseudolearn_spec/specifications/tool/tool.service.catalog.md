@@ -323,6 +323,21 @@
 }
 ```
 
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Ningún consumidor del servicio conserva prosa normativa del lenguaje ni reconoce lexemas: el título, el resumen, la descripción y las secciones que muestra un cliente son los de la ficha que devuelve la consulta común en el idioma de interfaz, independiente del perfil. Para una misma identidad, posición y idioma, la API, el servidor LSP y la aplicación coinciden en identidad, papel, ficha, ejemplos, certeza y rango, convertido a una unidad común; la interfaz de cada cliente solo aporta sus propias etiquetas.",
+  "justificacion": "Una sola fuente editorial solo es única si ningún cliente la copia; la paridad entre transportes comprueba que comparten el mismo núcleo, no que el resultado sea correcto, que lo decide el corpus.",
+  "verificacion": [
+    "C2",
+    "C3",
+    "C6"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -464,6 +479,36 @@
       "column": 5
     },
     "proyeccion": "descripcion"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "descripcion": "Closes the body of a while loop."
+    }
+  },
+  "servicio": {
+    "suboperacion": "hover",
+    "documento": "Algoritmo Principal\n  Mientras 1 = 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 3,
+      "column": 5
+    },
+    "proyeccion": "descripcion",
+    "idioma": "en"
   }
 }
 ```
