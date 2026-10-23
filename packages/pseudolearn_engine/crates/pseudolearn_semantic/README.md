@@ -84,8 +84,12 @@ identidades dentro de columnas de expresiones multiplicaría los puntos de fallo
 Problema: importar, reexportar y alias deben conservar una sola identidad. Elección: `module_symbols` extrae
 declaraciones y directivas; `module_exports` calcula la tabla de exportación de cada módulo (símbolos públicos
 más reexportaciones encadenadas, memoizada y con guarda contra recursión, de modo que un ciclo termina sin
-colgarse; su rechazo diagnosticado pertenece al punto de ciclos); `module_imports` crea los enlaces locales y
-detecta colisiones. Un alias solo cambia el nombre local. El orden de registro es el orden de rutas del
+colgarse); `module_imports` crea los enlaces locales y detecta colisiones. `module_cycles` recoge una arista por
+cada `Importar` o `Exportar` cuya ruta nombra un módulo (exista o no el símbolo), la entrega al algoritmo de
+`pseudolearn_project` y emite `importCycle` en la primera arista que sale del módulo menor, con la cadena en el
+argumento y un tramo relacionado por cada arista siguiente, cada uno con la identidad de su propio archivo. Con un
+ciclo, `analyze_project` termina tras reportar los diagnósticos de enlace: no registra firmas ni analiza cuerpos, y
+no devuelve HIR. Un alias solo cambia el nombre local. El orden de registro es el orden de rutas del
 catálogo; una clase importada comparte `ClassId` con su origen, por lo que la desvirtualización por jerarquía
 conserva su mundo cerrado. Un alias de módulo solo resuelve llamadas a subprogramas (`alias.Nombre(...)`); las
 clases se importan por símbolo. El nombre de enlace de una función o clase de proyecto lleva el calificador

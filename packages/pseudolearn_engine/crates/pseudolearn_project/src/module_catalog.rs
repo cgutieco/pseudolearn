@@ -49,6 +49,7 @@ impl ProjectCatalog {
         }
         let mut errors = Vec::new();
         let packages = crate::module_catalog::packages(input, &mut errors);
+        crate::package_cycles::check(&packages, &mut errors);
         let placed = place_files(input, &packages, &mut errors);
         let catalog = assemble(input, packages, placed);
         crate::entry_selection::validate_declared(&catalog, &mut errors);

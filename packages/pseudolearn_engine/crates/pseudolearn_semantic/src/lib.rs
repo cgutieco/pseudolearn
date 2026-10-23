@@ -21,6 +21,7 @@ mod hir_finalization;
 pub mod identities;
 mod local_registry;
 mod module_calls;
+mod module_cycles;
 mod module_exports;
 mod module_imports;
 mod module_structure;

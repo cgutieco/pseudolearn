@@ -115,6 +115,28 @@
 }
 ```
 
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El grafo de importaciones tiene una arista desde el módulo que declara un Importar o un Exportar hacia el módulo que su ruta nombra: el módulo completo o el módulo que contiene el símbolo nombrado, exista o no ese símbolo. Varias declaraciones hacia el mismo módulo forman una sola arista, ubicada en la primera por orden de fuente; un módulo que se nombra a sí mismo es un ciclo. El grafo debe ser acíclico: cada componente cíclico produce un diagnóstico importCycle ubicado en la ruta de la primera arista que sale del módulo menor por orden de segmentos de ruta lógica, con el argumento lexeme igual a la cadena de nombres calificados unidos por ' -> ' y cerrada con ese módulo menor, y con un tramo relacionado por cada arista siguiente de la cadena. La cadena es el ciclo más corto desde el módulo menor hasta él mismo, desempatado por la menor secuencia de rutas lógicas, y no depende del orden de los archivos ni de las declaraciones. Los diagnósticos de ciclo se emiten ordenados por módulo menor. Con un ciclo solo se informan diagnósticos de enlace: no se analiza ningún cuerpo ni se produce programa. La recursión mutua de subprogramas dentro de un módulo no forma aristas y sigue siendo válida.",
+  "verificacion": [
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29",
+    "C30"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -1737,3 +1759,1165 @@
 }
 ```
 
+```caso
+{
+  "id": "C20",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar app.main;\nAlgoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "app.main -> app.main"
+                },
+                "related": []
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Importar geo.b;\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Importar geo.a;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.a"
+                },
+                "related": [
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Importar geo.b;\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Importar geo.c;\n"
+              },
+              {
+                "path": "geo/c",
+                "source_id": 4,
+                "text": "Importar geo.a;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.c -> geo.a"
+                },
+                "related": [
+                  {},
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Importar geo.c;\nImportar geo.b;\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Importar geo.d;\n"
+              },
+              {
+                "path": "geo/c",
+                "source_id": 4,
+                "text": "Importar geo.d;\n"
+              },
+              {
+                "path": "geo/d",
+                "source_id": 5,
+                "text": "Importar geo.a;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.d -> geo.a"
+                },
+                "related": [
+                  {},
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Importar geo.b;\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Importar geo.a;\n"
+              },
+              {
+                "path": "geo/m",
+                "source_id": 4,
+                "text": "Importar geo.n;\n"
+              },
+              {
+                "path": "geo/n",
+                "source_id": 5,
+                "text": "Importar geo.m;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.a"
+                },
+                "related": [
+                  {}
+                ]
+              },
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.m -> geo.n -> geo.m"
+                },
+                "related": [
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.izquierda Como I;\nImportar geo.derecha Como D;\nAlgoritmo P\nEscribir I.F() + D.F();\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/izquierda",
+                "source_id": 2,
+                "text": "Importar geo.base Como B;\nPublico SubProceso F() Como Entero\nRetornar B.F();\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/derecha",
+                "source_id": 3,
+                "text": "Importar geo.base Como B;\nPublico SubProceso F() Como Entero\nRetornar B.F();\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/base",
+                "source_id": 4,
+                "text": "Publico SubProceso F() Como Entero\nRetornar 1;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "2\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Importar geo.b.F;\nImportar geo.b.G;\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Importar geo.a;\nPublico SubProceso F() Como Entero\nRetornar 1;\nFinSubProceso\nPublico SubProceso G() Como Entero\nRetornar 1;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.a"
+                },
+                "related": [
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": "Exportar geo.b.B1;\nPublico SubProceso A1() Como Entero\nRetornar 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/b",
+                "source_id": 3,
+                "text": "Exportar geo.a.A1;\nPublico SubProceso B1() Como Entero\nRetornar 2;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.a -> geo.b -> geo.a"
+                },
+                "related": [
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.paridad Como P;\nAlgoritmo Q\nEscribir P.EsPar(10);\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/paridad",
+                "source_id": 2,
+                "text": "Publico SubProceso EsPar(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar 1;\nFinSi\nRetornar EsImpar(n - 1);\nFinSubProceso\nSubProceso EsImpar(n Como Entero) Como Entero\nSi n = 0 Entonces\nRetornar 0;\nFinSi\nRetornar EsPar(n - 1);\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "1\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar geo.m0 Como S;\nAlgoritmo P\nEscribir S.F();\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/m0",
+                "source_id": 2,
+                "text": "Importar geo.m1 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m1",
+                "source_id": 3,
+                "text": "Importar geo.m2 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m2",
+                "source_id": 4,
+                "text": "Importar geo.m3 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m3",
+                "source_id": 5,
+                "text": "Importar geo.m4 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m4",
+                "source_id": 6,
+                "text": "Importar geo.m5 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m5",
+                "source_id": 7,
+                "text": "Importar geo.m6 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m6",
+                "source_id": 8,
+                "text": "Importar geo.m7 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m7",
+                "source_id": 9,
+                "text": "Importar geo.m8 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m8",
+                "source_id": 10,
+                "text": "Importar geo.m9 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m9",
+                "source_id": 11,
+                "text": "Importar geo.m10 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m10",
+                "source_id": 12,
+                "text": "Importar geo.m11 Como S;\nPublico SubProceso F() Como Entero\nRetornar S.F() + 1;\nFinSubProceso\n"
+              },
+              {
+                "path": "geo/m11",
+                "source_id": 13,
+                "text": "Publico SubProceso F() Como Entero\nRetornar 0;\nFinSubProceso\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "11\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/m0",
+                "source_id": 2,
+                "text": "Importar geo.m1;\n"
+              },
+              {
+                "path": "geo/m1",
+                "source_id": 3,
+                "text": "Importar geo.m2;\n"
+              },
+              {
+                "path": "geo/m2",
+                "source_id": 4,
+                "text": "Importar geo.m3;\n"
+              },
+              {
+                "path": "geo/m3",
+                "source_id": 5,
+                "text": "Importar geo.m4;\n"
+              },
+              {
+                "path": "geo/m4",
+                "source_id": 6,
+                "text": "Importar geo.m5;\n"
+              },
+              {
+                "path": "geo/m5",
+                "source_id": 7,
+                "text": "Importar geo.m6;\n"
+              },
+              {
+                "path": "geo/m6",
+                "source_id": 8,
+                "text": "Importar geo.m7;\n"
+              },
+              {
+                "path": "geo/m7",
+                "source_id": 9,
+                "text": "Importar geo.m8;\n"
+              },
+              {
+                "path": "geo/m8",
+                "source_id": 10,
+                "text": "Importar geo.m9;\n"
+              },
+              {
+                "path": "geo/m9",
+                "source_id": 11,
+                "text": "Importar geo.m10;\n"
+              },
+              {
+                "path": "geo/m10",
+                "source_id": 12,
+                "text": "Importar geo.m11;\n"
+              },
+              {
+                "path": "geo/m11",
+                "source_id": 13,
+                "text": "Importar geo.m0;\n"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "importCycle",
+                "arguments": {
+                  "lexeme": "geo.m0 -> geo.m1 -> geo.m2 -> geo.m3 -> geo.m4 -> geo.m5 -> geo.m6 -> geo.m7 -> geo.m8 -> geo.m9 -> geo.m10 -> geo.m11 -> geo.m0"
+                },
+                "related": [
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```

@@ -2438,3 +2438,19 @@
   "sin_ri": "Importar no genera instrucciones: la RI no contiene código de inicialización de módulo."
 }
 ```
+
+```cobertura
+{
+  "id": "V96",
+  "regla": "LANG.MODULE.IMPORT#R6",
+  "sin_ri": "Los ciclos de importación se rechazan antes de la RI: un grafo cíclico no produce programa."
+}
+```
+
+```cobertura
+{
+  "id": "V97",
+  "regla": "LANG.MODULE.MODEL#R4",
+  "sin_ri": "Los ciclos de paquetes se rechazan al construir el proyecto, antes de cualquier análisis y de la RI."
+}
+```

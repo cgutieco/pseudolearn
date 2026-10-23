@@ -8,6 +8,7 @@ pub enum ProjectErrorCode {
     ModuleInMultipleRoots,
     ModuleOutsideRoots,
     NoEntryInLibrary,
+    PackageCycle,
 }
 
 impl ProjectErrorCode {
@@ -21,6 +22,7 @@ impl ProjectErrorCode {
             Self::ModuleInMultipleRoots => "moduleInMultipleRoots",
             Self::ModuleOutsideRoots => "moduleOutsideRoots",
             Self::NoEntryInLibrary => "noEntryInLibrary",
+            Self::PackageCycle => "packageCycle",
         }
     }
 }
@@ -29,6 +31,7 @@ impl ProjectErrorCode {
 pub struct ProjectError {
     pub code: ProjectErrorCode,
     pub path: Option<String>,
+    pub chain: Vec<String>,
 }
 
 impl ProjectError {
@@ -36,7 +39,13 @@ impl ProjectError {
         Self {
             code,
             path: path.map(str::to_owned),
+            chain: Vec::new(),
         }
+    }
+
+    pub fn with_chain(mut self, chain: Vec<String>) -> Self {
+        self.chain = chain;
+        self
     }
 
     pub(crate) fn sort(errors: &mut [Self]) {

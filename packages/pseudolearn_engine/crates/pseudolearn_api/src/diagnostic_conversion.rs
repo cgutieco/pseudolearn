@@ -45,7 +45,7 @@ pub fn render_diagnostic(diagnostic: &ApiDiagnostic, locale: &str) -> String {
     render(&model, locale)
 }
 
-fn span(original: Span, source: &SourceText) -> ApiSpan {
+pub(crate) fn span(original: Span, source: &SourceText) -> ApiSpan {
     if !pseudolearn_source::is_valid_span(source, original) {
         return ApiSpan::new(
             ApiPosition { line: 1, column: 1 },

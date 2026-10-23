@@ -141,6 +141,21 @@ suelto. Una petición mal formada es un fallo de uso; un proyecto bien formado p
 modo que lleva la identidad de su propio archivo. No se añaden recursos de proyecto a la sesión ni se concatenan
 textos. La ejecución nativa y la CLI de proyectos quedan fuera.
 
+Los errores de paquetes en ciclo llevan además `chain`. Los diagnósticos de ciclo de importación relacionan tramos
+de otros archivos: cada tramo relacionado se convierte con la fuente que su propia identidad señala (`project_diagnostics`),
+nunca con la del diagnóstico principal.
+
+Problema: el manifiesto de un paquete es una entrada declarativa cuya autoridad concede el anfitrión. Elección:
+`resolve_manifest` (texto, ubicación y concesiones opcionales) devuelve la configuración con la procedencia de cada
+campo o los errores con línea y columna, y `analyze_project`/`execute_project` aceptan `manifests` en lugar de
+`packages` (exactamente uno de los dos; lo contrario es un fallo de uso) y un argumento `grants` con los techos de
+`limits` (`depth`, `statements`, `cells`, `micro_steps`). Los errores de manifiesto se devuelven en
+`manifest_errors` con su ubicación y bloquean el análisis; `execute_project` aplica a la ejecución solo los límites
+efectivos, que nunca superan la solicitud ni la concesión, del paquete que contiene la entrada. El presupuesto de
+bytes del manifiesto es una constante candidata del transporte (`manifest_wire`), pendiente de calibrar. Abrir,
+analizar o ejecutar un proyecto no ejecuta scripts ni concede permisos por su contenido, y el idioma de interfaz no
+interviene. La lectura de manifiestos desde disco y la fuente de las concesiones son de la CLI.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

@@ -1,6 +1,8 @@
+use crate::project_authority::{execution_limits, with_manifest_status};
+use crate::project_diagnostics::convert;
 use crate::project_resource::{ProjectRequest, error_values, usage};
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
-use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity, sort_diagnostics};
+use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity};
 use pseudolearn_ir::Module;
 use pseudolearn_project::{BuildFailure, ModuleId, ProjectCatalog, ProjectError, select_entry};
 use pseudolearn_semantic::{HirModule, ProjectUnit, SemanticOptions, analyze_project};
@@ -27,11 +29,14 @@ pub(crate) fn analyze(arguments: &Value) -> Result<Value, ApiError> {
     };
     let analysis = run_analysis(&catalog, &request, entry);
     let diagnostics = convert(&catalog, &request, analysis.diagnostics);
-    Ok(json!({
-        "diagnostics": diagnostics,
-        "project_errors": [],
-        "modules": modules(&catalog),
-    }))
+    Ok(with_manifest_status(
+        &request,
+        json!({
+            "diagnostics": diagnostics,
+            "project_errors": [],
+            "modules": modules(&catalog),
+        }),
+    ))
 }
 
 pub(crate) fn execute(arguments: &Value) -> Result<Value, ApiError> {
@@ -48,7 +53,8 @@ pub(crate) fn execute(arguments: &Value) -> Result<Value, ApiError> {
     let failed = analysis.hir.is_none() || has_errors(&analysis.diagnostics);
     let Some(hir) = analysis.hir.filter(|_| !failed) else {
         let diagnostics = convert(&catalog, &request, analysis.diagnostics);
-        return Ok(json!({"diagnostics": diagnostics, "project_errors": []}));
+        let failure = json!({"diagnostics": diagnostics, "project_errors": []});
+        return Ok(with_manifest_status(&request, failure));
     };
     let warnings = convert(&catalog, &request, analysis.diagnostics);
     run(
@@ -60,6 +66,9 @@ pub(crate) fn execute(arguments: &Value) -> Result<Value, ApiError> {
 }
 
 fn build(request: &ProjectRequest) -> Result<ProjectCatalog, Result<Value, ApiError>> {
+    if !request.manifest_errors.is_empty() {
+        return Err(Ok(crate::project_authority::manifest_failure(request)));
+    }
     ProjectCatalog::build(&request.input).map_err(|failure| match failure {
         BuildFailure::Malformed(reason) => Err(usage(&reason.0)),
         BuildFailure::Project(errors) => Ok(project_failure(&errors)),
@@ -148,37 +157,6 @@ fn has_errors(diagnostics: &[Diagnostic]) -> bool {
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error)
 }
 
-fn convert(
-    catalog: &ProjectCatalog,
-    request: &ProjectRequest,
-    mut diagnostics: Vec<Diagnostic>,
-) -> Vec<ApiDiagnostic> {
-    sort_diagnostics(&mut diagnostics);
-    diagnostics
-        .iter()
-        .filter_map(|diagnostic| {
-            let source = source_of(catalog, diagnostic)?;
-            Some(crate::diagnostic_conversion::convert(
-                diagnostic,
-                source,
-                request.profile.as_str(),
-            ))
-        })
-        .collect()
-}
-
-fn source_of<'catalog>(
-    catalog: &'catalog ProjectCatalog,
-    diagnostic: &Diagnostic,
-) -> Option<&'catalog SourceText> {
-    let module = catalog
-        .modules()
-        .iter()
-        .find(|module| module.source_id == diagnostic.span.source_id)
-        .or_else(|| catalog.modules().first())?;
-    catalog.source(module.id)
-}
-
 fn run(
     catalog: &ProjectCatalog,
     request: &ProjectRequest,
@@ -193,6 +171,7 @@ fn run(
     let execution = ExecuteRequest {
         profile: request.profile.as_str().to_owned(),
         strictness: if request.strict { "strict" } else { "flexible" }.to_owned(),
+        limits: execution_limits(catalog, request, entry),
         ..ExecuteRequest::default()
     };
     let response = crate::execution::execute_prepared(&prepared, &execution);
@@ -200,7 +179,7 @@ fn run(
     if let Some(object) = value.as_object_mut() {
         object.insert("project_errors".to_owned(), json!([]));
     }
-    Ok(value)
+    Ok(with_manifest_status(request, value))
 }
 
 fn lower(

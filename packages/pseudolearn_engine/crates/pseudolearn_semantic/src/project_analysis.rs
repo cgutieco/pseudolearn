@@ -45,6 +45,9 @@ pub fn analyze_project(
     let declarations = declarations(&mut session);
     let mut resolver = ExportResolver::new(catalog, declarations);
     let bindings = resolve_links(&mut session, &mut resolver);
+    if crate::module_cycles::report(&mut session, catalog, units, &resolver) {
+        return (None, session.diagnostics);
+    }
     register(&mut session, &mut resolver, &bindings);
     crate::module_structure::check(&mut session, catalog, units);
     select_entry(&mut session, units, entry);

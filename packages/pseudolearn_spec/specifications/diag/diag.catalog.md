@@ -1685,6 +1685,24 @@
         "lexeme": "lexema"
       }
     },
+    "importCycle": {
+      "mensajes": {
+        "es": "Las importaciones forman un ciclo: {lexeme}",
+        "en": "The imports form a cycle: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "importNameCollision": {
       "mensajes": {
         "es": "El nombre {lexeme} ya está en uso en este módulo",

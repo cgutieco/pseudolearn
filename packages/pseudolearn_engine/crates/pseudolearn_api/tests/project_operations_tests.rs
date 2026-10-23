@@ -167,3 +167,46 @@ fn flexible_strictness_accepts_missing_terminators() -> Result<(), String> {
     assert_eq!(value(&outcome)?.get("output"), Some(&json!("7\n")));
     Ok(())
 }
+
+#[test]
+fn import_cycle_relates_a_span_in_the_other_file() -> Result<(), String> {
+    let files = json!([
+        {"path": "app/main", "source_id": 1, "text": "Algoritmo P\nFinAlgoritmo\n"},
+        {"path": "geo/a", "source_id": 2, "text": "Importar geo.b;\n"},
+        {"path": "geo/b", "source_id": 3, "text": "\n\nImportar geo.a;\n"}
+    ]);
+    let outcome = call("analyze_project", json!({"project": project(files)}));
+    let diagnostics = value(&outcome)?
+        .get("diagnostics")
+        .and_then(Value::as_array)
+        .ok_or("no diagnostics")?;
+    let cycle = diagnostics.first().ok_or("no cycle")?;
+    assert_eq!(cycle.get("code"), Some(&json!("importCycle")));
+    assert_eq!(cycle.pointer("/span/source/source_id"), Some(&json!(2)));
+    assert_eq!(
+        cycle.pointer("/related/0/source/source_id"),
+        Some(&json!(3))
+    );
+    assert_eq!(cycle.pointer("/related/0/start/line"), Some(&json!(3)));
+    Ok(())
+}
+
+#[test]
+fn package_cycle_is_reported_with_its_chain() -> Result<(), String> {
+    let mut cyclic = project(default_files());
+    if let Some(package) = cyclic
+        .pointer_mut("/packages/1")
+        .and_then(Value::as_object_mut)
+    {
+        package.insert("dependencies".to_owned(), json!({"app": "app"}));
+    }
+    let outcome = call("analyze_project", json!({"project": cyclic}));
+    let errors = value(&outcome)?.get("project_errors");
+    assert_eq!(
+        errors,
+        Some(&json!([
+            {"code": "packageCycle", "path": "app", "chain": ["app", "geo", "app"]}
+        ]))
+    );
+    Ok(())
+}

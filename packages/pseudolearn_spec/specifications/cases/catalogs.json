@@ -1372,6 +1372,24 @@
         "lexeme": "lexema"
       }
     },
+    "importCycle": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The imports form a cycle: {lexeme}",
+        "es": "Las importaciones forman un ciclo: {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "importNameCollision": {
       "argumentos": [
         "lexeme"

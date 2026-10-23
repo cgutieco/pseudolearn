@@ -58,6 +58,7 @@ impl ApiSession {
             "create_analysis" => self.create_analysis(arguments),
             "analyze_project" => crate::project_operations::analyze(arguments),
             "execute_project" => crate::project_operations::execute(arguments),
+            "resolve_manifest" => crate::manifest_operations::resolve(arguments),
             "document" => self.document(arguments),
             "analysis" => self.analysis(arguments),
             "start" | "start_execution" => self.start(arguments),

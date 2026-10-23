@@ -278,8 +278,8 @@ Puntos a cumplir:
   algoritmo obligatorio.
 - [x] `PG-1.03` Import nominal, alias, público/privado (privado por defecto en la edición 2026), export y reexport
   explícitos; sin comodines; sin efectos al importar.
-- [ ] `PG-1.04` Ciclos entre módulos y paquetes rechazados con la cadena completa en el diagnóstico.
-- [ ] `PG-1.05` Manifiesto declarativo, no ejecutable y con esquema versionado; permisos efectivos = intersección de lo
+- [x] `PG-1.04` Ciclos entre módulos y paquetes rechazados con la cadena completa en el diagnóstico.
+- [x] `PG-1.05` Manifiesto declarativo, no ejecutable y con esquema versionado; permisos efectivos = intersección de lo
   solicitado y lo concedido externamente.
 - [ ] `PG-1.06` Lock reproducible: orden canónico, identidad de origen y contenido, hash verificado antes de compilar,
   funcionamiento sin red con lock y caché completos, sin scripts de terceros.
@@ -297,9 +297,9 @@ Puntos a cumplir:
 Fuera de alcance: registro público, rangos de versiones, compilación separada y carga dinámica.
 
 Plan detallado: [fase-pg-1-plan-ejecucion.md](fase-pg-1-plan-ejecucion.md), preparado el 2026-10-23
-por solicitud de la persona. Las autorizaciones del 2026-10-23 cubrieron PG-1.01, PG-1.02 y PG-1.03,
+por solicitud de la persona. Las autorizaciones del 2026-10-23 cubrieron PG-1.01 a PG-1.05,
 ya implementados. No equivalen a revisión integral ni a autorización de la fase completa; PG-1.C01/C02
-y los puntos PG-1.04–.13 siguen pendientes.
+y los puntos PG-1.06–.13 siguen pendientes.
 
 Cierre común (definiciones en §4.0):
 
@@ -931,7 +931,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 |---|---|---|---|---|
 | PG-0 | Cerrada · PG-0.01–.12 | Sí, C02 revisado | 2026-10-22 | Diferimientos autorizados registrados en §4.1 del plan de PG-0; licencia abierta diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
-| PG-1 | PG-1.01–.03 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.04–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
+| PG-1 | PG-1.01–.05 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.06–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Sin iniciar | No | | |
 | PG-3 | Sin iniciar | No | | |
 | PG-4 | Sin iniciar | No | | |

@@ -1494,6 +1494,7 @@
                       "create_analysis",
                       "analyze_project",
                       "execute_project",
+                      "resolve_manifest",
                       "analysis",
                       "encode_events",
                       "decode_events",

@@ -911,6 +911,18 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-1.12"
+    },
+    {
+      "regla": "LANG.MODULE.IMPORT@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-1.12"
+    },
+    {
+      "regla": "LANG.MODULE.MODEL@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "pendiente",
+      "resuelve_en": "PG-1.12"
     }
   ]
 }

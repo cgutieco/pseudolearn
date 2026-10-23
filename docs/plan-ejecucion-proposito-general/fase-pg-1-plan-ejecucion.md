@@ -16,7 +16,9 @@
   autorizó alinear el estado global de PG-0 con su registro de cierre. El mensaje «implementa
   `PG-1.02 · Modelo de módulo, paquete, workspace y entrada` y `PG-1.03 · Imports, aliases,
   visibilidad y reexportación` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
-  puntos. PG-1.04 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes
+  puntos. El mensaje «implementa `PG-1.04 · Rechazo determinista de ciclos` y `PG-1.05 · Manifiesto
+  declarativo y autoridad externa` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
+  puntos. PG-1.06 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes
   permanecen sin autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
@@ -161,21 +163,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.04 · Rechazo determinista de ciclos
 
-- [ ] `PG-1.04.01` Especificar qué aristas forman ciclos y cómo se elige/muestra una cadena completa reproducible con sus ubicaciones; preservar recursión mutua dentro del módulo.
-- [ ] `PG-1.04.02` Derivar autociclo, dos módulos, ciclo de paquetes, varios ciclos, diamante válido, arista repetida y cadena profunda; esperado calculado desde el grafo.
-- [ ] `PG-1.04.03` Probar recorrido iterativo, cadena completa y equivalencia ante permutación de vértices/aristas, con grafos pequeños exhaustivos y generados sembrados.
-- [ ] `PG-1.04.04` Implementar validación del grafo en project y diagnósticos relacionados; impedir enlace parcial de grafo inválido.
-- [ ] `PG-1.04.05` Documentar coste, orden de recorrido y propiedad de aristas en README project; sin habilitar SCC como excepción semántica.
-- [ ] `PG-1.04.06` Verificar rechazo antes de compilar y que grafos acíclicos profundos no desbordan la pila; separar estrés de la suite corta.
+- [x] `PG-1.04.01` Especificar qué aristas forman ciclos y cómo se elige/muestra una cadena completa reproducible con sus ubicaciones; preservar recursión mutua dentro del módulo.
+- [x] `PG-1.04.02` Derivar autociclo, dos módulos, ciclo de paquetes, varios ciclos, diamante válido, arista repetida y cadena profunda; esperado calculado desde el grafo.
+- [x] `PG-1.04.03` Probar recorrido iterativo, cadena completa y equivalencia ante permutación de vértices/aristas, con grafos pequeños exhaustivos y generados sembrados.
+- [x] `PG-1.04.04` Implementar validación del grafo en project y diagnósticos relacionados; impedir enlace parcial de grafo inválido.
+- [x] `PG-1.04.05` Documentar coste, orden de recorrido y propiedad de aristas en README project; sin habilitar SCC como excepción semántica.
+- [x] `PG-1.04.06` Verificar rechazo antes de compilar y que grafos acíclicos profundos no desbordan la pila; separar estrés de la suite corta.
 
 ### PG-1.05 · Manifiesto declarativo y autoridad externa
 
-- [ ] `PG-1.05.01` Especificar esquema versionado, nombre/raíz, perfiles por defecto/excepciones, entradas, dependencias fijadas, solicitudes de límites/permisos y procedencia de cada campo. Sin selector de otra edición ni idioma personal de interfaz.
-- [ ] `PG-1.05.02` Derivar datos válidos, archivo vacío/malformado, duplicados, campos/versión desconocidos, ruta inválida, solicitudes sin concesión y concesión más amplia que solicitud.
-- [ ] `PG-1.05.03` Probar parser y configuración resuelta como valores; prueba de intersección/no amplificación y negativos de esquema con ubicación de campo.
-- [ ] `PG-1.05.04` Implementar lectura declarativa pura y cálculo de autoridad; host aporta concesiones explícitas. Solo modelar permisos necesarios, sin implementar efectos de PG-3/5.
-- [ ] `PG-1.05.05` Registrar formato, parser elegido, precedencia y valores heredados en README project/CLI y sus reglas/dependencias.
-- [ ] `PG-1.05.06` Verificar que abrir/check/build no ejecutan scripts ni conceden permisos por el contenido del proyecto; comprobar idioma de interfaz independiente.
+- [x] `PG-1.05.01` Especificar esquema versionado, nombre/raíz, perfiles por defecto/excepciones, entradas, dependencias fijadas, solicitudes de límites/permisos y procedencia de cada campo. Sin selector de otra edición ni idioma personal de interfaz.
+- [x] `PG-1.05.02` Derivar datos válidos, archivo vacío/malformado, duplicados, campos/versión desconocidos, ruta inválida, solicitudes sin concesión y concesión más amplia que solicitud.
+- [x] `PG-1.05.03` Probar parser y configuración resuelta como valores; prueba de intersección/no amplificación y negativos de esquema con ubicación de campo.
+- [x] `PG-1.05.04` Implementar lectura declarativa pura y cálculo de autoridad; host aporta concesiones explícitas. Solo modelar permisos necesarios, sin implementar efectos de PG-3/5.
+- [x] `PG-1.05.05` Registrar formato, parser elegido, precedencia y valores heredados en README project/CLI y sus reglas/dependencias.
+- [x] `PG-1.05.06` Verificar que abrir/check/build no ejecutan scripts ni conceden permisos por el contenido del proyecto; comprobar idioma de interfaz independiente.
 
 ### PG-1.06 · Lock canónico y contenido verificado
 
@@ -432,7 +434,7 @@ instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia
 | Momento | Dependencia | Efecto |
 |---|---|---|
 | PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
-| Antes de PG-1.04 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
+| Antes de PG-1.06 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
 | Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
@@ -448,7 +450,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01, PG-1.02 y PG-1.03; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.03`; revisar el plan y recibir nueva autorización antes de `.04` |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.05; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.05`; revisar el plan y recibir nueva autorización antes de `.06` |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -505,7 +507,7 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 ### 11.1 Registro por tarea
 
 Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
-anterior; la iteración del 2026-10-23 posterior completa las seis tareas de PG-1.02 y las seis de PG-1.03;
+anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02, PG-1.03, PG-1.04 y PG-1.05;
 las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
 plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
@@ -529,6 +531,18 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.03.04 | Cumplido | Vocabulario, gramática y diagnósticos generados; resolución en semantic; fichas de ayuda es/en | Sin vistas de PG-A |
 | PG-1.03.05 | Cumplido | README de semantic y lowering: dueño de símbolos, orden de registro, identidad compartida de clases importadas | Ciclos entre módulos terminan sin colgarse; su rechazo es `PG-1.04` |
 | PG-1.03.06 | Cumplido con salvedad | Conformidad del motor: todos los casos nuevos cumplen; sin ejecución al importar | Conformidad `app` y pruebas Wasm no ejecutadas; el sujeto `aot` figura pendiente hasta `PG-1.12` |
+| PG-1.04.01 | Cumplido | `LANG.MODULE.IMPORT` R6, `LANG.MODULE.MODEL` R4 y `chain` en `API.PROJECT` R1 | Aristas por `Importar`/`Exportar` hacia el módulo nombrado aunque falte el símbolo; cadena más corta con desempate por menor secuencia |
+| PG-1.04.02 | Cumplido | 11 casos de importación (C20–C30) y 5 de paquetes (C15–C19) | Esperados derivados de la regla; cadena de 12 módulos |
+| PG-1.04.03 | Cumplido | Oráculo de fuerza bruta sobre todos los grafos de hasta 4 vértices, 200 semillas con permutación, cadenas de 10 000, 7 pruebas de paquetes, 5 de módulos, 8 semánticas, 2 de API | El exhaustivo de 4 vértices tarda unos 3 s |
+| PG-1.04.04 | Cumplido | `dependency_graph`, `package_cycles`, `module_cycles` en project; `module_cycles` en semantic; `importCycle`; tramos relacionados con su propia fuente | Con ciclo no hay HIR ni análisis de cuerpos |
+| PG-1.04.05 | Cumplido | README de project, semantic y API | Coste, orden de recorrido y propiedad de aristas; sin SCC como excepción |
+| PG-1.04.06 | Cumplido | Rechazo antes de compilar probado; estrés de un millón de vértices con `--ignored` en release (0,25 s) | Suite corta con cadenas de 10 000 |
+| PG-1.05.01 | Cumplido | `API.PROJECT.MANIFEST` R1–R5 | Contrato nuevo en estable 1.0.0 con `revisado_por` vacío; sin edición ni idioma de interfaz |
+| PG-1.05.02 | Cumplido | 22 casos (C1–C22) | Esperados derivados de la regla |
+| PG-1.05.03 | Cumplido | 17 pruebas de resolución con posición exacta, 6 de autoridad (propiedad sembrada de no amplificación), 4 de varios manifiestos | Presupuesto probado debajo, en y sobre el límite |
+| PG-1.05.04 | Cumplido | Analizador del subconjunto TOML, esquema, autoridad, `resolve_manifest`, `manifests` y `grants` en proyecto | Solo límites; permisos como vocabulario cerrado vacío |
+| PG-1.05.05 | Cumplido | README de project, API y CLI | Parser propio frente a `toml` y JSON; precedencia y valores heredados |
+| PG-1.05.06 | Cumplido | 8 pruebas de API: contenido tipo script rechazado como campo desconocido, límites no concedidos no se aplican, idioma de interfaz sin efecto | Presupuesto de bytes del transporte es un valor candidato |
 
 ### 11.2 Cierre común de PG-1
 
@@ -568,6 +582,17 @@ conformidad `app`, pruebas Wasm en Chrome y medición de tamaños. Para obtener 
 marcador transitorio de revisor, revertido tras cada ejecución; ninguna revisión fue atribuida.
 Pendientes justificados: PG-1.04–.13, revisión integral del plan, cierre común C01–C13 y la revisión
 independiente de `LANG.MODULE.MODEL`, `LANG.MODULE.IMPORT` y `API.PROJECT`.
+
+Revisión Git de la iteración PG-1.04/PG-1.05: sin cierre de fase, commit ni push. Verificadores ejecutados en
+`packages/pseudolearn_engine`: `cargo xtask verify` en verde (formato, Clippy estricto, tests, `rust-checks`,
+toolchain y `cargo deny`) y el estrés de un millón de vértices; en `apps/pseudolearn_cli`, Clippy y tests;
+en `packages/pseudolearn_spec`, `validate`, `lock --check` y `export --check`, y conformidad `engine` (1656
+observaciones, 0 divergencias, 38 casos nuevos). Reanclados con `lock --refresh` solo `API.PROJECT`,
+`LANG.MODULE.MODEL`, `LANG.MODULE.IMPORT`, `DIAG.CATALOG` e `IR.INSTRUCTIONS`; el contrato nuevo se registró con
+`lock`. Se usó un marcador transitorio de revisor, revertido tras cada ejecución; ninguna revisión fue atribuida.
+Se añadió `resolve_manifest` a la lista de operaciones de `schemas/see-1.schema.json`. No ejecutados: pruebas Wasm,
+puente nativo y app. Pendientes justificados: PG-1.06–.13, cierre común C01–C13 y la revisión independiente de
+`LANG.MODULE.MODEL`, `LANG.MODULE.IMPORT`, `API.PROJECT` y `API.PROJECT.MANIFEST`.
 
 Al cerrar se consignarán comandos/resultados, hashes de campañas y artefactos, pendientes aprobados,
 decisiones de la persona y revisión remota de la rama. La fase siguiente requiere autorización nueva.

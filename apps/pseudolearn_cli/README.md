@@ -7,7 +7,7 @@ Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración e
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Ninguno declarado | | |
+| Leer `pseudolearn.toml` de cada paquete desde la raíz concedida y aportar las concesiones de límites del anfitrión | Operaciones `analyze_project`, `execute_project` y `resolve_manifest` de la API pública | `PG-1.12` |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -39,6 +39,7 @@ El idioma de interfaz sigue --idioma/--language > PSEUDO_IDIOMA/PSEUDO_LANGUAGE 
 Preferencias: pseudo preferencias idioma en, alias pseudo preferences language en; archivo de datos idioma = "en" en configuración de usuario de la plataforma.
 La grafía de la orden, el archivo y su vocabulario nunca deciden el idioma de interfaz.
 Alternativas descartadas: comentarios mágicos, configuración ejecutable y manifiesto de proyecto para una preferencia personal.
+El manifiesto de paquete (datos, sin idioma de interfaz ni edición) lo define la API pública; la CLI solo le entregará sus textos y las concesiones del anfitrión, que nunca provienen del contenido del proyecto.
 Los alias ingleses siempre se aceptan y conservan idénticos efectos y salida.
 Opciones: --rigor/--strictness, --traza/--trace, --json. La ayuda muestra forma del idioma de interfaz y la otra como alias.
 

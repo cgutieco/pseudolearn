@@ -139,6 +139,15 @@ impl<'catalog> ExportResolver<'catalog> {
         self.symbol_of(module, last)
     }
 
+    pub(crate) fn named_module(&self, from: usize, segments: &[String]) -> Option<usize> {
+        let package = self.target_package(from, segments.first())?;
+        let rest = segments.get(1..)?;
+        self.find_module(package, rest).or_else(|| {
+            let (_, prefix) = rest.split_last()?;
+            self.find_module(package, prefix)
+        })
+    }
+
     fn symbol_of(&mut self, module: usize, name: &str) -> PathResolution {
         if let Some(origin) = self.exports(module).get(name) {
             return PathResolution::Symbol(origin.clone());

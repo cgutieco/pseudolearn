@@ -83,6 +83,22 @@
 }
 ```
 
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El grafo de dependencias entre paquetes tiene una arista por dependencia declarada, desde el paquete que la declara hacia el paquete nombrado, y debe ser acíclico; una dependencia de un paquete sobre sí mismo es un ciclo. Cada componente cíclico produce un error de proyecto packageCycle cuya ruta es el nombre del paquete menor por orden de bytes y que lleva chain, la lista de nombres del ciclo más corto desde ese paquete hasta él mismo, desempatado por la menor secuencia de nombres, con el primer y el último nombre iguales. Los errores de ciclo no dependen del orden de paquetes ni de dependencias y se informan con los demás errores de proyecto.",
+  "verificacion": [
+    "C15",
+    "C16",
+    "C17",
+    "C18",
+    "C19"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -1033,3 +1049,537 @@
 }
 ```
 
+```caso
+{
+  "id": "C15",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "app": "app"
+                }
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": ""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": [
+              {
+                "code": "packageCycle",
+                "path": "app",
+                "chain": [
+                  "app",
+                  "geo",
+                  "app"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "geo": "geo"
+                }
+              },
+              {
+                "name": "geo",
+                "root": "geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "yo": "geo"
+                }
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "geo/a",
+                "source_id": 2,
+                "text": ""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": [
+              {
+                "code": "packageCycle",
+                "path": "geo",
+                "chain": [
+                  "geo",
+                  "geo"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "a",
+                "root": "a",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "c",
+                  "y": "b"
+                }
+              },
+              {
+                "name": "b",
+                "root": "b",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "d"
+                }
+              },
+              {
+                "name": "c",
+                "root": "c",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "d"
+                }
+              },
+              {
+                "name": "d",
+                "root": "d",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "a"
+                }
+              }
+            ],
+            "files": [
+              {
+                "path": "a/m",
+                "source_id": 1,
+                "text": ""
+              },
+              {
+                "path": "b/m",
+                "source_id": 2,
+                "text": ""
+              },
+              {
+                "path": "c/m",
+                "source_id": 3,
+                "text": ""
+              },
+              {
+                "path": "d/m",
+                "source_id": 4,
+                "text": ""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": [
+              {
+                "code": "packageCycle",
+                "path": "a",
+                "chain": [
+                  "a",
+                  "b",
+                  "d",
+                  "a"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "a",
+                "root": "a",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "b"
+                }
+              },
+              {
+                "name": "b",
+                "root": "b",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "a"
+                }
+              },
+              {
+                "name": "m",
+                "root": "m",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "n"
+                }
+              },
+              {
+                "name": "n",
+                "root": "n",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "x": "m"
+                }
+              }
+            ],
+            "files": [
+              {
+                "path": "a/f",
+                "source_id": 1,
+                "text": ""
+              },
+              {
+                "path": "b/f",
+                "source_id": 2,
+                "text": ""
+              },
+              {
+                "path": "m/f",
+                "source_id": 3,
+                "text": ""
+              },
+              {
+                "path": "n/f",
+                "source_id": 4,
+                "text": ""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": [
+              {
+                "code": "packageCycle",
+                "path": "a",
+                "chain": [
+                  "a",
+                  "b",
+                  "a"
+                ]
+              },
+              {
+                "code": "packageCycle",
+                "path": "m",
+                "chain": [
+                  "m",
+                  "n",
+                  "m"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "l": "izq",
+                  "r": "der"
+                }
+              },
+              {
+                "name": "izq",
+                "root": "izq",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "b": "base"
+                }
+              },
+              {
+                "name": "der",
+                "root": "der",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {
+                  "b": "base"
+                }
+              },
+              {
+                "name": "base",
+                "root": "base",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+              },
+              {
+                "path": "izq/f",
+                "source_id": 2,
+                "text": ""
+              },
+              {
+                "path": "der/f",
+                "source_id": 3,
+                "text": ""
+              },
+              {
+                "path": "base/f",
+                "source_id": 4,
+                "text": ""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto fija un único perfil; la forma en inglés de Importar y Exportar se verifica en los casos de texto suelto y en la ficha bilingüe de ayuda."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "project_errors": [],
+            "diagnostics": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
