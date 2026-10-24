@@ -35,8 +35,7 @@ común en una iteración. PG-H quedó cerrada el 2026-10-23 por decisión de la 
 2026-10-23 «Implementa en una iteración `PG-1.01 · Identidad de fuente de extremo a extremo`» autoriza
 ese punto de PG-1, sin iniciar ni cerrar la fase completa; los puntos `.02` en adelante requieren
 autorización explícita propia. Los mensajes del 2026-10-23 y 2026-10-24 autorizaron en iteraciones
-separadas PG-1.02–PG-1.11, con cierre limitado a los puntos pedidos; no autorizan PG-1.12, PG-1.13 ni
-el cierre común C01–C13.
+separadas PG-1.02–PG-1.13, con cierre limitado a los puntos pedidos; no autorizan el cierre común C01–C13.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -300,9 +299,9 @@ Puntos a cumplir:
 - [x] `PG-1.09` Rutas portables: colisiones por caja/NFC rechazadas y sin escape de la raíz mediante enlaces simbólicos.
 - [x] `PG-1.10` Alfabeto español en identificadores del perfil estricto de 2026, conservando NFC.
 - [x] `PG-1.11` Programas sueltos 2026 intactos: corpus 2026 sin cambios de esperados.
-- [ ] `PG-1.12` CLI comprueba, ejecuta y compila un proyecto de tres módulos, dos perfiles y una biblioteca local desde
+- [x] `PG-1.12` CLI comprueba, ejecuta y compila un proyecto de tres módulos, dos perfiles y una biblioteca local desde
   otro directorio, con el mismo resultado observable en VM y AOT.
-- [ ] `PG-1.13` E-PG-01 y la parte de proyecto de E-PG-02 ejecutados; métricas candidatas de perfiles, proyecto y
+- [x] `PG-1.13` E-PG-01 y la parte de proyecto de E-PG-02 ejecutados; métricas candidatas de perfiles, proyecto y
   resolución medidas.
 
 Fuera de alcance: registro público, rangos de versiones, compilación separada y carga dinámica.
@@ -310,8 +309,8 @@ Fuera de alcance: registro público, rangos de versiones, compilación separada 
 Plan detallado: [fase-pg-1-plan-ejecucion.md](fase-pg-1-plan-ejecucion.md), preparado el 2026-10-23
 por solicitud de la persona. Las autorizaciones del 2026-10-23 cubrieron PG-1.01 a PG-1.07. Las
 autorizaciones del 2026-10-24 cubrieron PG-1.08 a PG-1.11 en iteraciones separadas; la revisión de
-cuatro contratos estables resolvió las salvedades de .08/.09. PG-1.08–.11 están cumplidos. PG-1.12,
-PG-1.13 y el cierre común C01–C13 siguen pendientes.
+cuatro contratos estables resolvió las salvedades de .08/.09. PG-1.08–.13 están cumplidos (.12 y .13 con
+salvedades registradas en el plan detallado). El cierre común C01–C13 sigue pendiente.
 
 Cierre común (definiciones en §4.0):
 
@@ -337,8 +336,8 @@ Cierre común (definiciones en §4.0):
 
 Revisión Git del alcance autorizado `.08`–`.11`: commit de implementación `d751f63` publicado por push ordinario
 en `feature/agregar-ruta-de-especificacion`; el registro de cierre de esta iteración se publica en el commit documental
-siguiente. Verificadores, cobertura dirigida y omisiones están registrados en el plan detallado. PG-1.12/.13 y el cierre
-común C01–C13 permanecen abiertos.
+siguiente. Verificadores, cobertura dirigida y omisiones están registrados en el plan detallado. El cierre
+común C01–C13 permanece abierto.
 
 ### 4.4 PG-2 · Tipos y abstracción
 

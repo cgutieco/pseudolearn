@@ -26,8 +26,11 @@
   y `PG-1.11 · Compatibilidad de archivo suelto 2026`» del 2026-10-24 autoriza únicamente esos dos
   puntos, incluida la revisión normativa independiente y el cierre condicionado a evidencia verde.
   La respuesta de la persona autoriza conservar `Importar`, `Exportar`, `import` y `export` como
-  identificadores en archivo suelto y reconocer las directivas de manera contextual. El cierre común
-  de PG-1 y las fases siguientes permanecen sin autorizar.
+  identificadores en archivo suelto y reconocer las directivas de manera contextual. El mensaje «implementa
+  `PG-1.12 · Integración pública y CLI` y `PG-1.13 · Experimentos y presupuesto observado` en una sola
+  iteración» del 2026-10-24 autoriza únicamente esos dos puntos; la persona eligió `--proyecto`/`--entrada`
+  como gramática y medir solo el análisis en frío para E-PG-02. El cierre común de PG-1 y las fases
+  siguientes permanecen sin autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
@@ -243,21 +246,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.12 · Integración pública y CLI
 
-- [ ] `PG-1.12.01` Especificar selección explícita de proyecto/entrada en check/run/build, alias es/en, respuesta JSON, códigos de salida, errores operativos y política de salida AOT; gramática CLI definitiva desde corpus.
-- [ ] `PG-1.12.02` Derivar caso integrador de tres módulos, dos perfiles y biblioteca local, invocado desde otro directorio; incluir error en biblioteca, lock alterado, permiso denegado, entrada inválida y enlazador fallido.
-- [ ] `PG-1.12.03` Escribir tests de procesos reales para check/run/build y ejecutable autónomo; proteger archivo de salida previo y comprobar limpieza temporal en éxito/fallo.
-- [ ] `PG-1.12.04` Conectar adaptadores host a operaciones públicas de proyecto; compilar RI común y presentar diagnósticos de su fuente real. Mantener CLI sin imports de internos del motor.
-- [ ] `PG-1.12.05` Actualizar README CLI/API, mensajes generados y datos de conformidad; documentar invocaciones finales reproducibles, incluida generación explícita del lock.
-- [ ] `PG-1.12.06` Verificar resultado derivado igual en VM y binario AOT real, con proyecto reubicado/cwd ajeno y entorno controlado; probar fallo dentro de módulo importado y formato lógico de origen.
+- [x] `PG-1.12.01` Especificar selección explícita de proyecto/entrada en check/run/build, alias es/en, respuesta JSON, códigos de salida, errores operativos y política de salida AOT; gramática CLI definitiva desde corpus.
+- [x] `PG-1.12.02` Derivar caso integrador de tres módulos, dos perfiles y biblioteca local, invocado desde otro directorio; incluir error en biblioteca, lock alterado, permiso denegado, entrada inválida y enlazador fallido.
+- [x] `PG-1.12.03` Escribir tests de procesos reales para check/run/build y ejecutable autónomo; proteger archivo de salida previo y comprobar limpieza temporal en éxito/fallo.
+- [x] `PG-1.12.04` Conectar adaptadores host a operaciones públicas de proyecto; compilar RI común y presentar diagnósticos de su fuente real. Mantener CLI sin imports de internos del motor.
+- [x] `PG-1.12.05` Actualizar README CLI/API, mensajes generados y datos de conformidad; documentar invocaciones finales reproducibles, incluida generación explícita del lock.
+- [x] `PG-1.12.06` Verificar resultado derivado igual en VM y binario AOT real, con proyecto reubicado/cwd ajeno y entorno controlado; probar fallo dentro de módulo importado y formato lógico de origen.
 
 ### PG-1.13 · Experimentos y presupuesto observado
 
-- [ ] `PG-1.13.01` Fijar protocolo, cargas, controles y criterios E-PG-01/E-PG-02 de proyecto; separar presupuestos candidatos de contratos PERF vigentes antes de medir.
-- [ ] `PG-1.13.02` Preparar datasets canónicos sembrados, grafos cadena/estrella/diamante y controles semánticamente equivalentes, con resultados derivados del corpus.
-- [ ] `PG-1.13.03` Probar arnés/resumen con salida incorrecta, proceso/muestra ausente, datos alterados y mezcla de máquinas/protocolos; ninguna campaña inválida produce verde.
-- [ ] `PG-1.13.04` Ampliar tooling existente con trabajadores de perfiles/proyecto/resolución y campaña reproducible; recoger datos crudos y perfil diagnóstico separado.
-- [ ] `PG-1.13.05` Documentar comandos reales y definiciones de intervalo en README del trabajador; registrar resultados, limitaciones y decisiones de la persona en este resumen.
-- [ ] `PG-1.13.06` Ejecutar campañas, recalcular resúmenes, medir tamaño de artefactos y regresión pura; reportar umbrales no alcanzados sin reducir tamaños del programa ni alterar controles.
+- [x] `PG-1.13.01` Fijar protocolo, cargas, controles y criterios E-PG-01/E-PG-02 de proyecto; separar presupuestos candidatos de contratos PERF vigentes antes de medir.
+- [x] `PG-1.13.02` Preparar datasets canónicos sembrados, grafos cadena/estrella/diamante y controles semánticamente equivalentes, con resultados derivados del corpus.
+- [x] `PG-1.13.03` Probar arnés/resumen con salida incorrecta, proceso/muestra ausente, datos alterados y mezcla de máquinas/protocolos; ninguna campaña inválida produce verde.
+- [x] `PG-1.13.04` Ampliar tooling existente con trabajadores de perfiles/proyecto/resolución y campaña reproducible; recoger datos crudos y perfil diagnóstico separado.
+- [x] `PG-1.13.05` Documentar comandos reales y definiciones de intervalo en README del trabajador; registrar resultados, limitaciones y decisiones de la persona en este resumen.
+- [x] `PG-1.13.06` Ejecutar campañas, recalcular resúmenes, medir tamaño de artefactos y regresión pura; reportar umbrales no alcanzados sin reducir tamaños del programa ni alterar controles.
 
 ## 5. Capas y archivos
 
@@ -459,7 +462,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; los del 2026-10-24 autorizan PG-1.08 a PG-1.11; PG-0 quedó sincronizada | Esta iteración completa `.10` y `.11`; no cierra el conjunto común C01–C13 ni autoriza PG-1.12 |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; los del 2026-10-24 autorizan PG-1.08 a PG-1.13; PG-0 quedó sincronizada | La última iteración completa `.12` y `.13`; no cierra el conjunto común C01–C13 |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -471,7 +474,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 Los pasos son puntos de control internos de una fase, no fases nuevas. La autorización recibida cubre
 PG-1.10 y PG-1.11 y su cierre condicionado a evidencia verde; no da por satisfecho el cierre común
-C01–C13 ni autoriza PG-1.12. Se detiene al terminar esta iteración (`PHASE-STOP`).
+C01–C13. Se detiene al terminar cada iteración autorizada (`PHASE-STOP`).
 
 ### 10.1 Verificaciones ejecutables al implementar
 
@@ -517,8 +520,8 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 
 Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
 anterior; las iteraciones posteriores completaron PG-1.02 a PG-1.07. Esta iteración autorizada revisó
-los contratos que mantenían las salvedades de PG-1.08/.09 y completó PG-1.10/.11. PG-1.12/.13 y el
-cierre común C01–C13 no se consideran iniciados. Se usan exclusivamente los estados del plan general:
+los contratos que mantenían las salvedades de PG-1.08/.09 y completó PG-1.10/.11. La iteración
+siguiente completó PG-1.12/.13. El cierre común C01–C13 no se considera iniciado. Se usan exclusivamente los estados del plan general:
 Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
@@ -589,6 +592,40 @@ Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.11.04 | Cumplido | Se mantiene la entrada de documento único y sus observables | Sin esquema público de petición nuevo ni administración de proyectos en la app |
 | PG-1.11.05 | Cumplido | README de engine, API, CLI, app y puente nativo actualizados; impacto contextual documentado | Revisión autorizada de cuatro contratos estables; texto y versión conservados |
 | PG-1.11.06 | Cumplido | Conformidad service 126, CLI 67 y app 252 observaciones sin divergencias; puente nativo y Wasm verificados | Propiedades: AOT 13 aprobadas y 3 pendientes por capacidades ausentes; no se anuncia `observe` para AOT |
+
+| PG-1.12.01 | Cumplido | `TOOL.CLI.CONVENTIONS` R8–R10, `CHECK` R3, `RUN` R5 y `BUILD` R5: `--proyecto`/`--project`, `--entrada`/`--entry`, `bloquear`/`lock`, códigos 0/1/2/3, política de salida | Reglas añadidas en sitio sin `cambio`, versión `1.0.0`; reanclados solo `TOOL.CLI.{CHECK,RUN,BUILD,CONVENTIONS,MESSAGES}`. La ayuda no lista las opciones nuevas porque su caso fija el texto exacto |
+| PG-1.12.02 | Cumplido | 19 casos CLI: tres módulos, dos perfiles y biblioteca local desde otro directorio; error en biblioteca, fallo de ejecución en módulo importado, lock alterado, manifiesto inválido, entrada ausente e inexistente, enlazador ausente | Esperados derivados de las reglas; el permiso denegado se prueba con procesos reales porque un caso de corpus no fija permisos |
+| PG-1.12.03 | Cumplido | `tests/project_tests.rs`: 7 pruebas de procesos reales con entorno vacío y directorio ajeno | Salida previa protegida, lock previo conservado ante escritura denegada y sin temporales |
+| PG-1.12.04 | Cumplido | `project_compile` común (VM y nativo), `build_native_project_object` y módulos `project_*` del CLI; la CLI solo importa `pseudolearn_api` | El fallo de ejecución en un módulo importado nombra su archivo en VM y binario (`source_id` 0 como «cualquier archivo del proyecto» y tabla de nombres en metadatos `PLM5`) |
+| PG-1.12.05 | Cumplido | README de CLI, API, runtime AOT y trabajador; mensajes generados (6 nuevos); vínculos en `conformance.yaml` | Invocaciones reproducibles y generación explícita del lock documentadas |
+| PG-1.12.06 | Cumplido con salvedad | Salida igual en VM y binario AOT con proyecto reubicado, cwd ajeno y entorno vacío; fallo importado con la misma línea de diagnóstico | El adaptador de conformidad `aot` sigue sin aceptar proyectos; el código de salida de un fallo del binario es 3 y el de la VM 1, como en archivo suelto |
+| PG-1.13.01 | Cumplido | Protocolo `e-pg-13/1` en el README del trabajador: series, casos, intervalos, rechazos | Presupuestos candidatos sin valores: solo se publican observados |
+| PG-1.13.02 | Cumplido | 35 conjuntos sembrados (cadena, estrella, diamante, biblioteca; 100 módulos; 20 pares con 5 colisiones; controles; ediciones) | Oráculo por fórmula cerrada; funcional sin fallos |
+| PG-1.13.03 | Cumplido | 8 pruebas negativas de verificación y 6 de conjuntos | Salida incorrecta, proceso o muestra ausente, crudo alterado, máquina o protocolo mezclado, reloj nulo, conjunto vacío o con fallos |
+| PG-1.13.04 | Cumplido | `service project` y `tool/e_pg_13.sh` | Sin API nueva; proyecto y resolución por operaciones públicas existentes |
+| PG-1.13.05 | Cumplido | README del trabajador con comandos reales e intervalos | Las asignaciones de memoria no se miden (límite declarado) |
+| PG-1.13.06 | Cumplido con salvedad | Campaña `results/pg-1-13-campaign-2026-10-24` (ignorada por Git): 10 procesos × 30 muestras por serie, `verify` en verde | Latencia incremental de E-PG-02 «no medible» por decisión de la persona; no se midieron tamaños de artefactos ni regresión pura de ejecución preparada |
+
+Resultados observados de la campaña (macOS, un solo equipo; p50/p95 en ms, intervalo bootstrap del p95 entre corchetes): reanálisis completo
+de 1000 archivos con unas 10 000 líneas en total, 41–44 / 42–45 (p. ej. estrella 41,64 / 42,73 [42,45, 42,88]); 100 archivos, 9,6–9,9 / 9,8–10,2; 10 archivos
+de 1000 líneas, 8,0–8,1 / 8,2–8,3. La misma revisión, la edición de cuerpo y la de firma no se distinguen del frío
+(no hay caché). Volumen creciente (estrella, 100 líneas por archivo): 10, 100 y 1000 archivos en 0,78, 9,67 y 214 ms (p50).
+E-PG-01: razón mixto/control de la media por proceso 1,031 [1,026, 1,037] (análisis) y 1,018 [1,014, 1,022] (ejecución) con 100 módulos,
+y 1,020 [1,017, 1,023] y 1,019 [1,015, 1,023] con los 20 pares; ninguna identidad cambió. Resolución: `build_lock`
+local de 1000 paquetes 2,14 ms (p50) y `resolve_lock` 4,95 ms; con 1000 paquetes fijados de tres archivos, 10,1 y 15,7 ms.
+El criterio conceptual de E-PG-02 (p95 ≤ 100 ms incremental) no es evaluable; el reanálisis completo de 10 000 líneas queda en
+42–45 ms de p95 y el de 100 904 líneas en 220 ms. Sin umbrales fijados por la persona, ninguno se declara incumplido.
+
+Revisión Git de la iteración PG-1.12/PG-1.13: sin cierre de fase. Verificadores: en `packages/pseudolearn_spec`, `validate` (164),
+`lock --check`, `export --check` y conformidad `cli` (86 observaciones, 0 divergencias), `aot` y `engine` (ver abajo); en
+`packages/pseudolearn_engine`, `cargo fmt --check`, Clippy estricto del workspace y `rust-checks all`, más las pruebas dirigidas
+de `pseudolearn_api` (con `native`), `pseudolearn_aot_rt` y `pseudolearn_bench_worker`; en `apps/pseudolearn_cli`, `cargo xtask verify`.
+No ejecutados: `cargo test --workspace` del motor, conformidad `service` y `app`, puente nativo, Wasm y Flutter (sin cambios de su código),
+y las pruebas de `pseudolearn_codegen` y `pseudolearn_native_probe`, que solo recibieron el campo nuevo del constructor y compilan bajo Clippy.
+Para reanclar la evidencia local se apartaron `results/{cli,matrix-cli,properties-cli,properties-aot,properties-engine}.json`
+(archivos ignorados) y se regeneraron. Pendientes justificados: cierre común C01–C13; ayuda del CLI con las opciones nuevas
+(requiere decisión sobre el esperado del caso de ayuda); adaptador `aot` de conformidad para proyectos; latencia incremental;
+tamaños de artefactos; plataformas distintas de macOS.
 
 Revisión de esta iteración: el usuario autorizó revisar `LANG.MODULE.IMPORT`, `API.PROJECT`,
 `API.PROJECT.MANIFEST` y `API.PROJECT.LOCK`. Se contrastaron sus reglas con sus casos y vínculos,
