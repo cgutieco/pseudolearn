@@ -30,7 +30,9 @@ pub fn execute_build(options: &CliOptions) -> Result<i32, CliError> {
             render_diagnostics(options, path, &diagnostics);
             return Ok(1);
         }
-        Err(NativeBuildFailure::Backend(_)) => return Err(linker_failure(locale)),
+        Err(NativeBuildFailure::Backend(_) | NativeBuildFailure::ProjectRejected(_)) => {
+            return Err(linker_failure(locale));
+        }
     };
     render_diagnostics(options, path, &object.warnings);
     link_executable(&object.bytes, Path::new(&output)).map_err(|_| linker_failure(locale))?;

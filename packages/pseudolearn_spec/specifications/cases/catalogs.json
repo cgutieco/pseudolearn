@@ -138,11 +138,63 @@
       },
       "tipos_argumentos": {}
     },
+    "lockMismatch": {
+      "argumentos": [
+        "code"
+      ],
+      "mensajes": {
+        "en": "pseudo: the lock does not match the project [{code}]",
+        "es": "pseudo: el lock no coincide con el proyecto [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema"
+      }
+    },
+    "lockWritten": {
+      "argumentos": [
+        "path"
+      ],
+      "mensajes": {
+        "en": "pseudo: lock written: {path}",
+        "es": "pseudo: lock escrito: {path}"
+      },
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "manifestError": {
+      "argumentos": [
+        "path",
+        "line",
+        "column",
+        "field",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}:{line}:{column}: manifest error: {field} [{code}]",
+        "es": "{path}:{line}:{column}: error de manifiesto: {field} [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "column": "numero",
+        "field": "lexema",
+        "line": "numero",
+        "path": "lexema"
+      }
+    },
     "missingCommand": {
       "argumentos": [],
       "mensajes": {
         "en": "pseudo: missing command; use pseudo --help",
         "es": "pseudo: falta la orden; use pseudo --ayuda"
+      },
+      "tipos_argumentos": {}
+    },
+    "missingEntry": {
+      "argumentos": [],
+      "mensajes": {
+        "en": "pseudo: missing project entry (--entry)",
+        "es": "pseudo: falta la entrada del proyecto (--entrada)"
       },
       "tipos_argumentos": {}
     },
@@ -164,6 +216,20 @@
       },
       "tipos_argumentos": {
         "language": "lexema"
+      }
+    },
+    "projectError": {
+      "argumentos": [
+        "path",
+        "code"
+      ],
+      "mensajes": {
+        "en": "{path}: project error [{code}]",
+        "es": "{path}: error de proyecto [{code}]"
+      },
+      "tipos_argumentos": {
+        "code": "lexema",
+        "path": "lexema"
       }
     },
     "traceCall": {
@@ -395,6 +461,18 @@
       "mensajes": {
         "en": "pseudo: cannot read {path}",
         "es": "pseudo: no se puede leer {path}"
+      },
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "unwritableOutput": {
+      "argumentos": [
+        "path"
+      ],
+      "mensajes": {
+        "en": "pseudo: cannot write {path}",
+        "es": "pseudo: no se puede escribir {path}"
       },
       "tipos_argumentos": {
         "path": "lexema"

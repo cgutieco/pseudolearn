@@ -4,7 +4,7 @@ use crate::fault::{FaultSite, SourceRange};
 use crate::metadata::{ExecutableMetadata, ExecutableSettings};
 use pseudolearn_diagnostics::DiagnosticCode;
 
-const MAGIC: &[u8; 4] = b"PLM4";
+const MAGIC: &[u8; 4] = b"PLM5";
 
 #[derive(Default)]
 struct Writer {
@@ -70,6 +70,11 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.text(&settings.warning_template);
     writer.text(&settings.information_template);
     writer.text(&settings.exhausted_template);
+    writer.count(settings.source_names.len());
+    for (identifier, name) in &settings.source_names {
+        writer.unsigned32(*identifier);
+        writer.text(name);
+    }
 }
 
 fn write_site(writer: &mut Writer, site: &FaultSite) {
@@ -176,7 +181,16 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
         warning_template: reader.text()?,
         information_template: reader.text()?,
         exhausted_template: reader.text()?,
+        source_names: read_source_names(reader)?,
     })
+}
+
+fn read_source_names(reader: &mut Reader<'_>) -> Option<Vec<(u32, String)>> {
+    let mut names = Vec::new();
+    for _ in 0..reader.count()? {
+        names.push((reader.unsigned32()?, reader.text()?));
+    }
+    Some(names)
 }
 
 fn read_words(reader: &mut Reader<'_>) -> Option<BooleanWords> {

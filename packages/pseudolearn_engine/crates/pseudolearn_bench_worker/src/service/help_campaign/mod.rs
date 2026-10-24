@@ -1,13 +1,13 @@
-mod bootstrap;
-mod digest;
-mod documents;
+pub(super) mod bootstrap;
+pub(super) mod digest;
+pub(super) mod documents;
 mod expectation;
 mod functional;
 mod judging;
-mod latency;
+pub(super) mod latency;
 mod oracle;
 mod scanner;
-mod summary;
+pub(super) mod summary;
 mod transports;
 mod verification;
 

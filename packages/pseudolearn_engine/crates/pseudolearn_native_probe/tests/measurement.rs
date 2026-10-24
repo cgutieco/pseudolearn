@@ -22,6 +22,7 @@ fn configuration() -> Configuration {
         warning_template: String::new(),
         information_template: String::new(),
         exhausted_template: String::new(),
+        source_names: Vec::new(),
     };
     Configuration {
         workload: "unknown".to_owned(),

@@ -33,6 +33,9 @@ pub fn missing_command(locale: &str) -> &'static str {
 pub fn missing_input(locale: &str) -> &'static str {
     template("missingInput", locale)
 }
+pub fn missing_entry(locale: &str) -> &'static str {
+    template("missingEntry", locale)
+}
 pub fn unknown_command(locale: &str, command: &str) -> String {
     render("unknownCommand", locale, &[("command", command)])
 }

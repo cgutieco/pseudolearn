@@ -51,7 +51,7 @@ pub fn resolution_of(process: &Value) -> f64 {
         .unwrap_or(0.0)
 }
 
-fn metric_summary(groups: &[Vec<f64>], resolution_ns: f64) -> Value {
+pub fn metric_summary(groups: &[Vec<f64>], resolution_ns: f64) -> Value {
     let pooled: Vec<f64> = groups.iter().flatten().copied().collect();
     let below = pooled
         .iter()

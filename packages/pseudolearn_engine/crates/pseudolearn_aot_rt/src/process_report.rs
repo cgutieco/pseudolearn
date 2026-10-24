@@ -88,10 +88,11 @@ pub(crate) fn diagnostic_report(record: &FaultRecord, settings: &ExecutableSetti
     let end_line = record.range.end_line.to_string();
     let end_column = record.range.end_column.to_string();
     let arguments = arguments_json(record, code, settings);
+    let path = path_of(record, settings);
     fill_template(
         template_for(code, settings),
         &[
-            ("path", &settings.source_name),
+            ("path", path),
             ("source_id", &source_id),
             ("line", &line),
             ("column", &column),
@@ -102,6 +103,17 @@ pub(crate) fn diagnostic_report(record: &FaultRecord, settings: &ExecutableSetti
             ("arguments", &arguments),
         ],
     )
+}
+
+fn path_of<'settings>(
+    record: &FaultRecord,
+    settings: &'settings ExecutableSettings,
+) -> &'settings str {
+    settings
+        .source_names
+        .iter()
+        .find(|(identifier, _)| *identifier == record.range.source_id)
+        .map_or(settings.source_name.as_str(), |(_, name)| name.as_str())
 }
 
 fn argument_json(code: DiagnosticCode, name: &str, value: &str) -> String {

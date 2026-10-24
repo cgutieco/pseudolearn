@@ -5,10 +5,7 @@
 Binario pseudo para comprobar, ejecutar, compilar, formatear, traducir e inspeccionar programas, e interactuar mediante un servidor de lenguaje (LSP). Análisis, preferencias, ejecución, compilación nativa, formateo, traducción e inspección de RI implementados sobre la API pública.
 Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración ejecutable.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Resolver manifiestos desde disco, obtener concesiones y construir el snapshot del proyecto | Operaciones `analyze_project`, `execute_project` y `resolve_manifest` de la API pública | Integración del adaptador |
-| Leer y verificar el lock desde una raíz concedida y escribirlo solo por orden explícita, de forma atómica | Operaciones `build_lock` y `resolve_lock` de la API pública; el lock del lenguaje es distinto de los `Cargo.lock` | Integración del adaptador |
+Declarado fuera de esta entrega: la ayuda (`--ayuda`) todavía no lista `bloquear`, `--proyecto` ni `--entrada`, porque el caso de ayuda vigente fija su texto exacto; se actualizará con una decisión de la persona sobre ese esperado. Las dependencias `locked` (con digest) no se leen desde disco: el lock que escribe `bloquear` registra solo paquetes locales.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -29,8 +26,8 @@ ciclos, colisiones de ruta portable, nombres no UTF-8 y errores de recorrido abo
 resultados. Cada ruta externa requiere su propia raíz indicada en los argumentos. `cap-std` aporta
 operaciones relativas al descriptor y confinamiento seguro del anfitrión; se descartan comprobaciones
 de prefijo sobre rutas absolutas, que no cierran carreras entre validación y apertura. El comando
-`check` entrega los bytes conservados a la API de análisis y presenta resultados por fuente; todavía
-no carga proyectos completos. El recorrido confinado se verificó en macOS; no se certifican otras
+`check` entrega los bytes conservados a la API de análisis y presenta resultados por fuente; un
+proyecto se carga con `--proyecto` (sección 4). El recorrido confinado se verificó en macOS; no se certifican otras
 plataformas por analogía.
 
 `cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Compilar un programa requiere además el driver `cc` del sistema en el `PATH`.
@@ -98,8 +95,38 @@ verifican ambos idiomas, opciones equivalentes, códigos de salida y errores ope
 manifiesto ni imports para abrir un programa; las directivas de módulo siguen reservadas a la forma
 contextual de unidad superior y sus grafías se pueden usar como nombres dentro de un programa suelto.
 
-Perfil por archivo: `--vocabulario` equivale al argumento `profile` de un archivo; al integrar el
-análisis de proyectos, el manifiesto aportará las excepciones y el idioma de interfaz no cambiará el programa ni el lock.
+Perfil por archivo: `--vocabulario` equivale al argumento `profile` de la petición de proyecto; las excepciones por archivo
+las aporta el manifiesto y el idioma de interfaz no cambia el programa ni el lock.
+
+### Proyectos
+
+Invocaciones reproducibles (el directorio actual no interviene; el proyecto puede estar en cualquier ruta):
+
+```bash
+pseudo bloquear --proyecto ruta/proyecto
+pseudo comprobar --proyecto ruta/proyecto
+pseudo ejecutar --proyecto ruta/proyecto --entrada app/main
+pseudo compilar --proyecto ruta/proyecto --entrada app/main -o salida
+```
+
+Alias: `lock`, `check`, `run`, `build`, `--project`, `--entry`. El directorio contiene un `pseudolearn.toml` por paquete
+(en el subdirectorio raíz de cada paquete) y un `pseudolearn.lock` opcional en su raíz.
+
+Decisiones:
+
+- La lectura confinada (`project_files.rs`) recorre el directorio una sola vez con `cap-std`, asigna `source_id` consecutivos
+  por clave portable de ruta y entrega a la API los mismos bytes que se verifican y compilan. Un manifiesto en la raíz del
+  directorio se rechaza porque su ubicación lógica sería vacía. Se descartó descubrir el proyecto subiendo por directorios
+  padre, porque haría el resultado dependiente del directorio actual.
+- `bloquear` es el único escritor del lock: compone `.pseudolearn.lock.partial` en el mismo directorio y lo renombra; ante
+  un fallo lo elimina y conserva el lock anterior. `comprobar`, `ejecutar` y `compilar` solo lo verifican (`resolve_lock`
+  antes de analizar) y una discrepancia es error operativo sin salida parcial.
+- `ejecutar` usa `execute_project`: no admite entrada estándar ni `--traza`, `--semilla` o límites propios; los límites
+  proceden del manifiesto. Las órdenes de proyecto presentan cada diagnóstico con la ruta del archivo real obtenida por su
+  `source_id`, también los fallos de ejecución (VM y binario nativo).
+- `compilar` genera un único objeto del grafo cerrado (`build_native_project_object`) con la tabla de nombres de fuente
+  incrustada en el ejecutable; el código de salida de un fallo de ejecución del binario sigue siendo 3, como en archivo suelto.
+- `--json` de `comprobar` imprime la respuesta de `analyze_project`; en `ejecutar`, la de `execute_project`.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -125,7 +152,7 @@ Las reglas del miembro se declaran antes de escribir código.
 
 La salida del programa y los valores siguen su vocabulario. Narración de traza, diagnósticos, ayuda y progreso siguen idioma de interfaz.
 Códigos, claves JSON y formato de intercambio son independientes del idioma.
-Contratos TOOL.CLI.CONVENTIONS, MESSAGES, CHECK, RUN e IR; límites por defecto según ENG.LIMITS.
+Contratos TOOL.CLI.CONVENTIONS, MESSAGES, CHECK, RUN, BUILD e IR; límites por defecto según ENG.LIMITS.
 
 ## 7. Verificación, testing y aseguramiento de calidad
 
@@ -135,6 +162,7 @@ y posición), el programa inválido sin salida, entrada ausente e ilegible, `-o`
 salida ni temporales propios (`pseudo_link_*`; `TMPDIR` se redirige y se ignora la caché del toolchain `xcrun_db`) y una salida previa que un fallo no sustituye.
 `tests/aot_adapter_tests.rs` cubre el adaptador `aot` con procesos reales: identidad y capacidades, ejecución con entradas, fallo con salida previa y tramo, entrada agotada, presupuesto de sentencias, programa rechazado, petición no admitida, reutilización de un ejecutable y ausencia de temporales propios (`pseudo_aot_*` y `pseudo_link_*`) con y sin `shutdown`. La caché temporal `xcrun_db` pertenece al toolchain del sistema.
 `tests/service_cli_tests.rs` cubre las órdenes formatear/format, traducir/translate y el loop LSP en modo stdio, incluyendo opciones de verificación, escritura in-place, reporte de colisiones, argumentos obligatorios e inicialización y apagado JSON-RPC.
+`tests/project_tests.rs` cubre con procesos reales desde otro directorio y con entorno vacío: proyecto reubicado, igualdad de salida entre VM y binario nativo, fallo en un módulo importado con la misma línea en ambos, lock escrito y verificado, lock alterado que bloquea las tres órdenes, escritura denegada que conserva el lock previo sin temporal, compilación fallida que conserva la salida previa sin temporales y códigos de salida de entrada ausente, inexistente y directorio ilegible.
 Tests de precedencia de cada fuente de idioma, alias equivalentes, aperturas bilingües, BOM, trivia, texto vacío, argumentos inválidos y error operativo.
 Conformidad contra casos cli del corpus en ambos idiomas; --json estable al cambiar idioma.
 Verificadores, formato, Clippy, dependencias y tests mediante cargo xtask verify al implementar.

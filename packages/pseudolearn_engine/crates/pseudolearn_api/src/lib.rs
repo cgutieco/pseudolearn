@@ -44,6 +44,7 @@ mod manifest_operations;
 mod manifest_wire;
 mod probes;
 mod project_authority;
+mod project_compile;
 mod project_diagnostics;
 mod project_operations;
 mod project_packages;
@@ -90,6 +91,11 @@ mod event_codec;
 mod native_build;
 #[cfg(feature = "native")]
 pub use native_build::{NativeBuildFailure, NativeBuildRequest, NativeObject, build_native_object};
+
+#[cfg(feature = "native")]
+mod native_project_build;
+#[cfg(feature = "native")]
+pub use native_project_build::build_native_project_object;
 
 #[cfg(feature = "native")]
 mod native_benchmark;

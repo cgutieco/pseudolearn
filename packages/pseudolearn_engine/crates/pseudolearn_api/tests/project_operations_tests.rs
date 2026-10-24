@@ -243,3 +243,27 @@ fn package_cycle_is_reported_with_its_chain() -> Result<(), String> {
     );
     Ok(())
 }
+
+#[test]
+fn a_fault_inside_an_imported_module_names_that_module_source() -> Result<(), String> {
+    let faulty =
+        "Publico SubProceso Doble(n Como Entero) Como Real\nRetornar n / 0;\nFinSubProceso\n";
+    let files = json!([
+        {"path": "app/main", "source_id": 1, "text": MAIN},
+        {"path": "geo/vectores", "source_id": 2, "text": faulty}
+    ]);
+    let outcome = call(
+        "execute_project",
+        json!({"project": project(files), "entry": "app/main"}),
+    );
+    let result = value(&outcome)?;
+    assert_eq!(
+        result.pointer("/diagnostics/0/code"),
+        Some(&json!("divisionByZero"))
+    );
+    assert_eq!(
+        result.pointer("/diagnostics/0/span/source/source_id"),
+        Some(&json!(2))
+    );
+    Ok(())
+}

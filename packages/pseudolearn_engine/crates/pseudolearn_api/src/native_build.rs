@@ -30,6 +30,7 @@ pub struct NativeObject {
 pub enum NativeBuildFailure {
     Rejected(Vec<ApiDiagnostic>),
     Backend(String),
+    ProjectRejected(serde_json::Value),
 }
 
 pub fn build_native_object(
@@ -93,6 +94,7 @@ pub(crate) fn settings_of(
         warning_template: request.warning_template.clone(),
         information_template: request.information_template.clone(),
         exhausted_template: request.exhausted_template.clone(),
+        source_names: Vec::new(),
     }
 }
 

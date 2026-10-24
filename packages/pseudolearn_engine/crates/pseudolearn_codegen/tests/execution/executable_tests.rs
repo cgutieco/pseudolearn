@@ -77,6 +77,7 @@ fn settings() -> ExecutableSettings {
         warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
         information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
         exhausted_template: "{path}: input ended\n".to_owned(),
+        source_names: Vec::new(),
     }
 }
 

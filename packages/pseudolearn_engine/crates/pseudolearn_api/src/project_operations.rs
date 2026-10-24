@@ -1,23 +1,23 @@
-use crate::project_authority::{execution_limits, with_manifest_status};
+use crate::project_authority::with_manifest_status;
+use crate::project_compile::{Compiled, Outcome, compile};
 use crate::project_diagnostics::convert;
 use crate::project_profiles::resolve_units;
 use crate::project_resource::{ProjectRequest, error_values, usage};
-use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
+use crate::{ApiError, ExecuteRequest};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity};
-use pseudolearn_ir::{Module, SourceProfile};
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{BuildFailure, ModuleId, ProjectCatalog, ProjectError, select_entry};
 use pseudolearn_semantic::{HirModule, ProjectUnit, SemanticOptions, analyze_project};
-use pseudolearn_source::{SourceId, SourceText, Span};
-use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind, parse_module_source};
+use pseudolearn_source::{SourceId, Span};
+use pseudolearn_syntax::{SyntaxTree, parse_module_source};
 use serde_json::{Value, json};
 
-struct Analysis {
-    trees: Vec<SyntaxTree>,
-    hir: Option<HirModule>,
-    diagnostics: Vec<Diagnostic>,
-    entry: Option<ModuleId>,
-    profiles: Vec<Profile>,
+pub(crate) struct Analysis {
+    pub trees: Vec<SyntaxTree>,
+    pub hir: Option<HirModule>,
+    pub diagnostics: Vec<Diagnostic>,
+    pub entry: Option<ModuleId>,
+    pub profiles: Vec<Profile>,
 }
 
 pub(crate) fn analyze(arguments: &Value) -> Result<Value, ApiError> {
@@ -43,32 +43,13 @@ pub(crate) fn analyze(arguments: &Value) -> Result<Value, ApiError> {
 }
 
 pub(crate) fn execute(arguments: &Value) -> Result<Value, ApiError> {
-    let request = ProjectRequest::parse(arguments)?;
-    let catalog = match build(&request) {
-        Ok(catalog) => catalog,
-        Err(early) => return early,
-    };
-    let entry = match select(&catalog, &request, true) {
-        Ok(entry) => entry,
-        Err(error) => return Ok(project_failure(&[error])),
-    };
-    let analysis = run_analysis(&catalog, &request, entry);
-    let failed = analysis.hir.is_none() || has_errors(&analysis.diagnostics);
-    let Some(hir) = analysis.hir.filter(|_| !failed) else {
-        let diagnostics = convert(&catalog, &request, analysis.diagnostics);
-        let failure = json!({"diagnostics": diagnostics, "project_errors": []});
-        return Ok(with_manifest_status(&request, failure));
-    };
-    let warnings = convert(&catalog, &request, analysis.diagnostics);
-    run(
-        &catalog,
-        &request,
-        (&hir, &analysis.trees, analysis.entry),
-        (&analysis.profiles, warnings),
-    )
+    match compile(arguments)? {
+        Outcome::Failed(failure) => Ok(failure),
+        Outcome::Compiled(compiled) => run(*compiled),
+    }
 }
 
-fn build(request: &ProjectRequest) -> Result<ProjectCatalog, Result<Value, ApiError>> {
+pub(crate) fn build(request: &ProjectRequest) -> Result<ProjectCatalog, Result<Value, ApiError>> {
     if !request.manifest_errors.is_empty() {
         return Err(Ok(crate::project_authority::manifest_failure(request)));
     }
@@ -78,11 +59,11 @@ fn build(request: &ProjectRequest) -> Result<ProjectCatalog, Result<Value, ApiEr
     })
 }
 
-fn project_failure(errors: &[ProjectError]) -> Value {
+pub(crate) fn project_failure(errors: &[ProjectError]) -> Value {
     json!({"diagnostics": [], "project_errors": error_values(errors)})
 }
 
-fn select(
+pub(crate) fn select(
     catalog: &ProjectCatalog,
     request: &ProjectRequest,
     required: bool,
@@ -103,7 +84,7 @@ fn modules(catalog: &ProjectCatalog) -> Value {
     )
 }
 
-fn run_analysis(
+pub(crate) fn run_analysis(
     catalog: &ProjectCatalog,
     request: &ProjectRequest,
     entry: Option<ModuleId>,
@@ -182,28 +163,31 @@ fn project_units<'catalog>(
         .collect()
 }
 
-fn has_errors(diagnostics: &[Diagnostic]) -> bool {
+pub(crate) fn has_errors(diagnostics: &[Diagnostic]) -> bool {
     diagnostics
         .iter()
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error)
 }
 
-fn run(
-    catalog: &ProjectCatalog,
-    request: &ProjectRequest,
-    compiled: (&HirModule, &[SyntaxTree], Option<ModuleId>),
-    reported: (&[Profile], Vec<ApiDiagnostic>),
-) -> Result<Value, ApiError> {
-    let (hir, trees, entry) = compiled;
-    let (profiles, warnings) = reported;
-    let module = lower(catalog, hir, (trees, entry), profiles).ok_or_else(internal)?;
-    let bytecode = pseudolearn_bytecode::compile_module(&module).map_err(|_| internal())?;
+fn run(compiled: Compiled) -> Result<Value, ApiError> {
+    let bytecode =
+        pseudolearn_bytecode::compile_module(&compiled.module).map_err(|_| internal())?;
     let program = pseudolearn_vm::load(&bytecode).map_err(|_| internal())?;
-    let prepared = crate::execution::PreparedProgram::new(program, warnings);
+    let prepared = crate::execution::PreparedProgram::new(program, compiled.warnings);
     let execution = ExecuteRequest {
-        profile: request.profile.as_str().to_owned(),
-        strictness: if request.strict { "strict" } else { "flexible" }.to_owned(),
-        limits: execution_limits(catalog, request, entry),
+        profile: compiled.request.profile.as_str().to_owned(),
+        strictness: if compiled.request.strict {
+            "strict"
+        } else {
+            "flexible"
+        }
+        .to_owned(),
+        limits: compiled.limits,
+        source: Some(crate::ApiSourceIdentity {
+            project_id: compiled.request.input.project_id,
+            revision_id: compiled.request.input.revision_id,
+            source_id: 0,
+        }),
         ..ExecuteRequest::default()
     };
     let response = crate::execution::execute_prepared(&prepared, &execution);
@@ -211,67 +195,9 @@ fn run(
     if let Some(object) = value.as_object_mut() {
         object.insert("project_errors".to_owned(), json!([]));
     }
-    Ok(with_manifest_status(request, value))
+    Ok(with_manifest_status(&compiled.request, value))
 }
 
-fn lower(
-    catalog: &ProjectCatalog,
-    hir: &HirModule,
-    selection: (&[SyntaxTree], Option<ModuleId>),
-    profiles: &[Profile],
-) -> Option<Module> {
-    let sources: Vec<&SourceText> = catalog
-        .modules()
-        .iter()
-        .filter_map(|module| catalog.source(module.id))
-        .collect();
-    let mut module = pseudolearn_lowering::lower_project(hir, &sources).ok()?;
-    module.vocabulary = entry_vocabulary(selection.1, profiles);
-    module.profiles = source_profiles(catalog, profiles);
-    if let Some(name) = entry_name(catalog, selection.0, selection.1) {
-        module.name = name;
-    }
-    pseudolearn_ir::verify_module(&module).ok()?;
-    Some(module)
-}
-
-fn entry_vocabulary(entry: Option<ModuleId>, profiles: &[Profile]) -> String {
-    let index = entry.and_then(|module| usize::try_from(module.0).ok());
-    let profile = index
-        .and_then(|position| profiles.get(position))
-        .or_else(|| profiles.first())
-        .copied()
-        .unwrap_or(Profile::Spanish);
-    profile.as_str().to_owned()
-}
-
-fn source_profiles(catalog: &ProjectCatalog, profiles: &[Profile]) -> Vec<SourceProfile> {
-    catalog
-        .modules()
-        .iter()
-        .zip(profiles)
-        .map(|(module, profile)| SourceProfile {
-            source_id: module.source_id,
-            vocabulary: profile.as_str().to_owned(),
-        })
-        .collect()
-}
-
-fn entry_name(
-    catalog: &ProjectCatalog,
-    trees: &[SyntaxTree],
-    entry: Option<ModuleId>,
-) -> Option<String> {
-    let index = usize::try_from(entry?.0).ok()?;
-    let tree = trees.get(index)?;
-    let source = catalog.source(entry?)?;
-    ModuleSchema::extract(tree, source)
-        .units
-        .into_iter()
-        .find(|unit| unit.kind == UnitKind::Program)
-        .map(|unit| unit.name)
-}
-
-fn internal() -> ApiError {
+pub(crate) fn internal() -> ApiError {
     ApiError::InternalFault("internalFault".to_owned())
 }

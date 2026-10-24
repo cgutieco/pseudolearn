@@ -15,6 +15,7 @@ pub struct ExecutableSettings {
     pub warning_template: String,
     pub information_template: String,
     pub exhausted_template: String,
+    pub source_names: Vec<(u32, String)>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

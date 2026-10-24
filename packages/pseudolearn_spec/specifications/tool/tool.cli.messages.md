@@ -150,6 +150,84 @@
         "path": "lexema"
       }
     },
+    "missingEntry": {
+      "mensajes": {
+        "es": "pseudo: falta la entrada del proyecto (--entrada)",
+        "en": "pseudo: missing project entry (--entry)"
+      },
+      "argumentos": [],
+      "tipos_argumentos": {}
+    },
+    "projectError": {
+      "mensajes": {
+        "es": "{path}: error de proyecto [{code}]",
+        "en": "{path}: project error [{code}]"
+      },
+      "argumentos": [
+        "path",
+        "code"
+      ],
+      "tipos_argumentos": {
+        "path": "lexema",
+        "code": "lexema"
+      }
+    },
+    "manifestError": {
+      "mensajes": {
+        "es": "{path}:{line}:{column}: error de manifiesto: {field} [{code}]",
+        "en": "{path}:{line}:{column}: manifest error: {field} [{code}]"
+      },
+      "argumentos": [
+        "path",
+        "line",
+        "column",
+        "field",
+        "code"
+      ],
+      "tipos_argumentos": {
+        "path": "lexema",
+        "line": "numero",
+        "column": "numero",
+        "field": "lexema",
+        "code": "lexema"
+      }
+    },
+    "lockMismatch": {
+      "mensajes": {
+        "es": "pseudo: el lock no coincide con el proyecto [{code}]",
+        "en": "pseudo: the lock does not match the project [{code}]"
+      },
+      "argumentos": [
+        "code"
+      ],
+      "tipos_argumentos": {
+        "code": "lexema"
+      }
+    },
+    "lockWritten": {
+      "mensajes": {
+        "es": "pseudo: lock escrito: {path}",
+        "en": "pseudo: lock written: {path}"
+      },
+      "argumentos": [
+        "path"
+      ],
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
+    "unwritableOutput": {
+      "mensajes": {
+        "es": "pseudo: no se puede escribir {path}",
+        "en": "pseudo: cannot write {path}"
+      },
+      "argumentos": [
+        "path"
+      ],
+      "tipos_argumentos": {
+        "path": "lexema"
+      }
+    },
     "diagnosticError": {
       "mensajes": {
         "es": "{path}:{line}:{column}: error: {message} [{code}]",

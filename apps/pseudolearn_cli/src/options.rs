@@ -25,6 +25,7 @@ pub struct CliOptions {
     pub execution: crate::execution_options::ExecutionArguments,
     pub format_action: FormatAction,
     pub target_profile: Option<String>,
+    pub project: crate::project_options::ProjectArguments,
 }
 
 #[derive(Default)]
@@ -39,6 +40,7 @@ struct ParsedArguments {
     execution: crate::execution_options::ExecutionArguments,
     format_action: FormatAction,
     target_profile: Option<String>,
+    project: crate::project_options::ProjectArguments,
 }
 
 pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliError> {
@@ -66,6 +68,7 @@ pub fn parse_cli_options(raw_arguments: &[String]) -> Result<CliOptions, CliErro
         execution: parsed.execution,
         format_action: parsed.format_action,
         target_profile: parsed.target_profile,
+        project: parsed.project,
     })
 }
 
@@ -137,8 +140,25 @@ fn handle_valued_option(
             locale,
             &mut parsed.execution,
         ),
+        "--proyecto" | "--project" | "--entrada" | "--entry" => {
+            handle_project_option(raw_arguments, current_index, locale, parsed)
+        }
         _ => handle_positional_or_unknown(current, current_index, locale, parsed),
     }
+}
+
+fn handle_project_option(
+    raw_arguments: &[String],
+    current_index: &mut usize,
+    locale: &str,
+    parsed: &mut ParsedArguments,
+) -> Result<(), CliError> {
+    crate::project_options::parse_project_option(
+        raw_arguments,
+        current_index,
+        locale,
+        &mut parsed.project,
+    )
 }
 
 fn handle_language_option(

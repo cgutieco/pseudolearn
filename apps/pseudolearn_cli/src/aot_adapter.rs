@@ -60,7 +60,9 @@ fn execute_natively(request: &ExecuteRequest, cache: &mut ExecutableCache) -> Ex
         Err(NativeBuildFailure::Rejected(diagnostics)) => {
             return rejected_native_response(diagnostics);
         }
-        Err(NativeBuildFailure::Backend(_)) => return internal_fault(request),
+        Err(NativeBuildFailure::Backend(_) | NativeBuildFailure::ProjectRejected(_)) => {
+            return internal_fault(request);
+        }
     };
     let Ok(executable) = cache.executable_for(&object.bytes) else {
         return internal_fault(request);

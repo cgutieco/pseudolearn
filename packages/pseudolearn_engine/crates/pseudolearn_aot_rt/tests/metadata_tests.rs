@@ -22,6 +22,7 @@ fn sample() -> ExecutableMetadata {
             warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
             information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
             exhausted_template: "{path}\n".to_owned(),
+            source_names: Vec::new(),
         },
         sites: vec![FaultSite {
             lexeme: "sourceName".to_owned(),
@@ -134,7 +135,18 @@ fn per_site_boolean_words_survive_the_round_trip() -> Result<(), String> {
 #[test]
 fn metadata_of_the_previous_magic_is_rejected() -> Result<(), String> {
     let mut bytes = encode_metadata(&sample());
-    bytes.splice(0..4, *b"PLM3");
+    bytes.splice(0..4, *b"PLM4");
     assert_eq!(decode_metadata(&bytes), None);
+    Ok(())
+}
+
+#[test]
+fn source_names_survive_a_roundtrip() -> Result<(), String> {
+    let mut metadata = sample();
+    metadata.settings.source_names = vec![
+        (1, "p/app/main.pseudo".to_owned()),
+        (2, "p/geo/lib.pseudo".to_owned()),
+    ];
+    assert_eq!(decode_metadata(&encode_metadata(&metadata)), Some(metadata));
     Ok(())
 }

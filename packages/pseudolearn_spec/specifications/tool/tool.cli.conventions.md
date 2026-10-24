@@ -15,6 +15,21 @@
   "resumen": "Órdenes y opciones bilingües, vocabulario autodeclarado, idioma de interfaz y códigos de salida.",
   "depende_de": [
     {
+      "id": "API.PROJECT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.PROJECT.MANIFEST",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.PROJECT.LOCK",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
       "id": "API.WIRE-FORMAT",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
@@ -857,3 +872,322 @@
 ## Entorno de los casos
 
 Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactamente esas variables, en un directorio temporal que contiene los archivos declarados. Por eso un caso sin variables de idioma observa el español por omisión.
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Con --proyecto <directorio> (alias --project) las órdenes comprobar, ejecutar, compilar y bloquear operan sobre un proyecto en lugar de un archivo. Cada subdirectorio que contiene un archivo pseudolearn.toml es la raíz de un paquete y su manifiesto se resuelve según API.PROJECT.MANIFEST con la ruta del subdirectorio como ubicación. Cada archivo .pseudo es un módulo cuya ruta lógica es su ruta relativa al directorio sin la extensión, y recibe un source_id consecutivo desde 1 en el orden de su clave portable de ruta. El directorio se lee una sola vez por un descriptor confinado y el resultado no depende del directorio actual. Un manifiesto en la raíz del directorio, un nombre que no es UTF-8, rutas que colisionan por caja o NFC, un enlace simbólico que escapa del directorio o un ciclo son errores operativos (código 3) sin resultados parciales. --entrada (alias --entry) nombra por ruta lógica la entrada que ejecutan ejecutar y compilar.",
+  "verificacion": [
+    "C25",
+    "C26"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 3,
+    "salida": "",
+    "salida_error": "pseudo: no se puede leer proyecto/pseudolearn.toml\n"
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
+      "proyecto/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo bloquear --proyecto <directorio> (alias lock) escribe pseudolearn.lock en la raíz del directorio con el texto canónico de API.PROJECT.LOCK, registrando cada paquete como local con su origen y sus dependencias, e informa la ruta escrita. La escritura es explícita y atómica: se compone en un archivo temporal del mismo directorio y se renombra, de modo que un fallo (código 3) no deja temporales ni altera un lock previo. Las órdenes comprobar, ejecutar y compilar nunca crean ni modifican el lock; si pseudolearn.lock existe, lo verifican contra los paquetes leídos antes de analizar, y una discrepancia es un error operativo (código 3) sin análisis ni salida. Los errores de manifiesto al bloquear se informan como en comprobar con código 1.",
+  "verificacion": [
+    "C27",
+    "C28",
+    "C29",
+    "C30"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "pseudo: lock escrito: proyecto/pseudolearn.lock\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "bloquear",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
+      "proyecto/pseudolearn.lock": "schema = 1\n\n[packages.\"app\"]\norigin = \"app\"\nkind = \"local\"\ndependencies = [\"geo\"]\n\n[packages.\"geo\"]\norigin = \"geo\"\nkind = \"local\"\ndependencies = []\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 3,
+    "salida": "",
+    "salida_error": "pseudo: el lock no coincide con el proyecto [originMismatch]\n"
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
+      "proyecto/pseudolearn.lock": "schema = 1\n\n[packages.\"app\"]\norigin = \"app\"\nkind = \"local\"\ndependencies = [\"geo\"]\n\n[packages.\"geo\"]\norigin = \"gex\"\nkind = \"local\"\ndependencies = []\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "proyecto/geo/pseudolearn.toml:1:1: error de manifiesto: package [missingField]\nproyecto/geo/pseudolearn.toml:1:10: error de manifiesto: schema [unsupportedSchema]\n"
+  },
+  "cli": {
+    "argumentos": [
+      "bloquear",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 2\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las órdenes de proyecto aceptan los alias en inglés lock, --project y --entry con cualquier idioma de interfaz y producen el mismo resultado que la forma canónica; --proyecto o --entrada sin valor, o con un valor que empieza por --, son un uso incorrecto.",
+  "verificacion": [
+    "C31",
+    "C32"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "pseudo: lock written: proyecto/pseudolearn.lock\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "lock",
+      "--project",
+      "proyecto",
+      "--language",
+      "en"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: valor no válido «» para --proyecto\n"
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto"
+    ],
+    "entorno": {},
+    "archivos": {}
+  }
+}
+```

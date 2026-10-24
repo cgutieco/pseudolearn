@@ -142,6 +142,36 @@
       "regla": "TOOL.CLI.TRANSLATE@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.BUILD@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CHECK@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.RUN@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
     }
   ]
 }

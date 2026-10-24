@@ -43,6 +43,18 @@ pub(crate) fn termination(exit: &RunExit) -> Value {
     }
 }
 
+fn scoped_identity(
+    source: Option<crate::ApiSourceIdentity>,
+    source_id: u32,
+) -> Option<crate::ApiSourceIdentity> {
+    source
+        .filter(|identity| identity.source_id == 0 || identity.source_id == source_id)
+        .map(|identity| crate::ApiSourceIdentity {
+            source_id,
+            ..identity
+        })
+}
+
 pub(crate) fn diagnostic(
     trap: &VmTrap,
     locale: &str,
@@ -54,7 +66,7 @@ pub(crate) fn diagnostic(
         ApiSpan::in_source(
             position(original.start_line, original.start_column),
             position(original.end_line, original.end_column),
-            source.filter(|identity| identity.source_id == original.source_id.value()),
+            scoped_identity(source, original.source_id.value()),
         )
     };
     let mut diagnostic = ApiDiagnostic {

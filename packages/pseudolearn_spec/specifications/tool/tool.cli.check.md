@@ -15,6 +15,11 @@
   "resumen": "pseudo comprobar sobre archivos y directorios.",
   "depende_de": [
     {
+      "id": "API.PROJECT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
       "id": "TOOL.CLI.MESSAGES",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
@@ -393,6 +398,126 @@
     "entorno": {},
     "archivos": {
       "p.pseudo": "Algoritmo P\nEscribir total;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo comprobar --proyecto <directorio> analiza el proyecto completo con analyze_project: los diagnósticos, los errores de proyecto y los errores de manifiesto salen por la salida estándar, uno por línea, con la ruta del archivo real (<directorio>/<ruta relativa>.pseudo) obtenida por su source_id. El código es 1 si hay algún error de cualquier clase y 0 si no. Con --json se imprime la respuesta de analyze_project.",
+  "verificacion": [
+    "C12",
+    "C13",
+    "C14"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "proyecto/geo/vectores.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar total;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "proyecto/geo/pseudolearn.toml:1:1: error de manifiesto: package [missingField]\nproyecto/geo/pseudolearn.toml:1:10: error de manifiesto: schema [unsupportedSchema]\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 2\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "{\"diagnostics\":[],\"manifest_errors\":[],\"modules\":[{\"module\":\"informe\",\"package\":\"app\",\"path\":\"app/informe\"},{\"module\":\"main\",\"package\":\"app\",\"path\":\"app/main\"},{\"module\":\"vectores\",\"package\":\"geo\",\"path\":\"geo/vectores\"}],\"project_errors\":[]}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "comprobar",
+      "--proyecto",
+      "proyecto",
+      "--json"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
     }
   }
 }

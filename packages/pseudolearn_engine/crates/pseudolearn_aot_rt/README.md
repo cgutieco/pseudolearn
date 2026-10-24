@@ -126,12 +126,12 @@ argumentos del diagnóstico, y con `limit` numérico para `cellLimitExceeded`, `
 `statementBudgetExhausted`). `run_executable` es la misma lógica con flujos
 inyectados, que es lo que prueban los tests sin lanzar procesos.
 
-Metadatos (`ExecutableMetadata`, magia `PLM3`): nombre de la fuente, idioma, semilla, límites (marcos, unidades opcionales,
+Metadatos (`ExecutableMetadata`, magia `PLM5`): nombre de la fuente, idioma, semilla, límites (marcos, unidades opcionales,
 celdas, capacidad de raíces), recolección forzada, palabras lógicas, las cuatro plantillas (error, aviso, información y
 entrada agotada), la tabla de sitios (código por nombre, ID de fuente y rango) y los
 diseños de clase. Codificación little-endian con prefijos de longitud; el decodificador rechaza prefijos truncados, bytes
-sobrantes, magia ajena y nombres de diagnóstico desconocidos. La magia `PLM3` incorpora el ID de fuente de cada sitio sin
-alterar los offsets de línea y columna. Codegen codifica con `encode_metadata`, de modo que el
+sobrantes, magia ajena y nombres de diagnóstico desconocidos. El ID de fuente de cada sitio se incorporó sin
+alterar los offsets de línea y columna. La magia `PLM5` añade la tabla opcional de nombres de fuente (ID y nombre) que sustituye a `{path}` en el diagnóstico de un sitio cuyo ID figura en ella; sin tabla, todos usan el nombre único de la fuente. Codegen codifica con `encode_metadata`, de modo que el
 formato vive en un solo lugar (`GEN-NO-HAND-COPY`).
 
 Fallos: el primer fallo queda en `AotEngine::fault()` con sitio, código y rango fuente; los siguientes solo actualizan

@@ -15,6 +15,11 @@
   "resumen": "pseudo ejecutar con entrada estándar, semilla, límites y traza.",
   "depende_de": [
     {
+      "id": "API.PROJECT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
       "id": "TOOL.CLI.MESSAGES",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
@@ -448,6 +453,207 @@
     "entorno": {},
     "archivos": {
       "p.pseudo": "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar --proyecto <directorio> --entrada <ruta lógica> ejecuta la entrada con execute_project: la salida del programa va a la salida estándar y los diagnósticos a la salida de error con la ruta del archivo donde ocurren, incluidos los fallos de ejecución dentro de un módulo importado. Sin --entrada es un uso incorrecto (código 2); una entrada inexistente es el error de proyecto entryNotFound (código 1); el código es 0 solo si la ejecución termina con completed. Las opciones de ejecución no se aplican a un proyecto: sus límites proceden del manifiesto.",
+  "verificacion": [
+    "C13",
+    "C14",
+    "C15",
+    "C16",
+    "C17"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "42\n7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/main"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "proyecto/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/main"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Real\nRetornar n / 0;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: falta la entrada del proyecto (--entrada)\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "proyecto/app/nada: error de proyecto [entryNotFound]\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/nada"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "42\n7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--project",
+      "proyecto",
+      "--entry",
+      "app/main",
+      "--language",
+      "en"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
     }
   }
 }

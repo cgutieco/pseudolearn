@@ -11,6 +11,7 @@ mod execution_options;
 mod format_command;
 mod ir_command;
 mod locale_resolution;
+mod lock_command;
 mod lsp_command;
 mod messages;
 mod native_cache;
@@ -18,6 +19,12 @@ mod native_linker;
 mod native_run;
 mod options;
 mod preferences_command;
+mod project_build;
+mod project_command;
+mod project_files;
+mod project_options;
+mod project_report;
+mod project_session;
 mod run_command;
 mod runtime_archive;
 mod trace_output;
@@ -74,12 +81,16 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         }
     };
     match command_name {
+        "comprobar" | "check" if is_project(&options) => project_command::execute_check(&options),
         "comprobar" | "check" => execute_check(&options, &options.positional_arguments),
         "preferencias" | "preferences" => {
             execute_preferences(&options, &options.positional_arguments)
         }
         "ri" | "ir" => execute_ir(&options, &options.positional_arguments),
+        "bloquear" | "lock" => lock_command::execute_lock(&options),
+        "ejecutar" | "run" if is_project(&options) => project_command::execute_run(&options),
         "ejecutar" | "run" => run_command::execute_run(&options),
+        "compilar" | "build" if is_project(&options) => project_build::execute_build(&options),
         "compilar" | "build" => build_command::execute_build(&options),
         "formatear" | "format" => format_command::execute_format(&options),
         "traducir" | "translate" => translate_command::execute_translate(&options),
@@ -89,4 +100,8 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
             other,
         ))),
     }
+}
+
+fn is_project(options: &options::CliOptions) -> bool {
+    options.project.directory.is_some()
 }

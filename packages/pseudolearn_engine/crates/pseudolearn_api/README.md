@@ -142,7 +142,13 @@ proyecto, enlazan un único HIR y, al ejecutar, un único RI que va a la VM por 
 suelto. Una petición mal formada es un fallo de uso; un proyecto bien formado pero inconsistente devuelve
 `project_errors` y ninguna ejecución. Cada diagnóstico se convierte con la fuente que su tramo identifica, de
 modo que lleva la identidad de su propio archivo. No se añaden recursos de proyecto a la sesión ni se concatenan
-textos. La ejecución nativa y la CLI de proyectos quedan fuera.
+textos. `project_compile` es el paso común de análisis, enlace y bajada a un RI verificado: lo consumen `execute_project`
+(VM) y `build_native_project_object` (feature `native`), de modo que ambos ejecutan el mismo módulo. Un rechazo del
+proyecto (errores de proyecto, de manifiesto o diagnósticos) se devuelve como `NativeBuildFailure::ProjectRejected` con el
+mismo JSON que `execute_project`, sin objeto. Los límites del manifiesto se aplican salvo que la petición nativa los fije.
+`execute_project` marca su identidad de fuente con `source_id` 0, que significa «cualquier archivo del proyecto»: cada
+diagnóstico de ejecución toma el `source_id` del tramo del fallo, de modo que un fallo dentro de un módulo importado
+nombra su archivo (el cero sigue reservado al documento suelto en las peticiones de documento).
 
 Los errores de paquetes en ciclo llevan además `chain`. Los diagnósticos de ciclo de importación relacionan tramos
 de otros archivos: cada tramo relacionado se convierte con la fuente que su propia identidad señala (`project_diagnostics`),
@@ -182,7 +188,7 @@ de un diagnóstico (fichas y tipos) usan el perfil del archivo que lo contiene (
 añade al archivo contradictorio y bloquea la ejecución. Al bajar a RI, el vocabulario del módulo es el de la entrada y se
 registra la tabla `source_id → perfil` de todos los archivos; la ejecución y la compilación nativa formatean los lógicos
 con el perfil del archivo que contiene cada operación. `native_build` rellena `site_boolean_words` solo si el módulo tiene
-tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT aún no acepta proyectos.
+tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT de conformance aún no acepta proyectos; la construcción nativa de proyectos se prueba con `tests/native_project_build.rs` y desde la CLI.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
