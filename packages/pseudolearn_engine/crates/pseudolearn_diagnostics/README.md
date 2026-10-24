@@ -24,14 +24,20 @@ Prohibido importar capas superiores, paquetes de UI o internos de otros miembros
 
 Estructuras y algoritmos: `Diagnostic { code, class, severity, span, related, arguments }`; `enum DiagnosticCode` generado; plantillas bilingües generadas; ordenación de `DIAG.ORDERING`.
 
-Invariantes: Ningún texto de idioma dentro del modelo: se renderiza en el borde.
+Invariantes: Ningún texto de idioma dentro del modelo: se renderiza en el borde. `sort_diagnostics_with`
+recibe claves canónicas de fuente desde el consumidor y ordena por nombre de paquete en NFC/minúsculas Unicode,
+segmentos de módulo en NFC conservando caja, fase,
+tramo inicial y final, código, severidad, argumentos tipados y secuencia ordenada de ubicaciones relacionadas.
+Las fuentes ausentes quedan al final; los diagnósticos sin fuente no reciben una fuente inventada. El orden
+no usa IDs opacos, prosa localizada ni orden de descubrimiento. La entrada `sort_diagnostics` conserva el
+orden local de documentos individuales.
 
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: representa diagnósticos mediante códigos con argumentos tipados respetando los observables del corpus.
-Elección: `Diagnostic { code, class, severity, span, related, arguments }`; `enum DiagnosticCode` generado; plantillas bilingües generadas; ordenación de `DIAG.ORDERING`.
+Problema: representa y ordena diagnósticos mediante códigos con argumentos tipados respetando los observables del corpus.
+Elección: `Diagnostic { code, class, severity, span, related, arguments }`; `enum DiagnosticCode` generado; plantillas bilingües generadas; ordenación de `DIAG.ORDERING` con claves de fuentes suministradas por la API. La identidad opaca se conserva en el resultado, pero nunca participa en la comparación. Los relacionados conservan multiplicidad y orden significativo; los errores de documento individual mantienen la ordenación local por ubicación.
 Alternativas descartadas y fundamento: El corpus DIAG aporta el catálogo y las plantillas. Se rechaza traducir lexemas del usuario o mezclar idioma de interfaz con vocabulario.
 
 Problema: clase y severidad deben coincidir con la ficha del corpus. Elección: el generador valida

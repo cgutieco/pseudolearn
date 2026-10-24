@@ -2,8 +2,10 @@ use crate::ApiError;
 use crate::manifest_wire::MANIFEST_BYTE_BUDGET;
 use crate::project_resource::usage;
 use pseudolearn_project::{
-    Configuration, HostGrants, LocatedError, LocatedManifest, PackageInput, resolve_all,
+    Configuration, HostGrants, LocatedError, LocatedManifest, PackageInput, logical_path_key,
+    resolve_all,
 };
+use std::collections::BTreeSet;
 
 pub(crate) struct PackageSource {
     pub packages: Vec<PackageInput>,
@@ -24,9 +26,25 @@ pub(crate) fn choose(
             manifest_errors: Vec::new(),
             manifests_used: false,
         }),
-        (None, Some(manifests)) => Ok(from_manifests(&manifests, grants)),
+        (None, Some(manifests)) => {
+            validate_manifest_locations(&manifests)?;
+            Ok(from_manifests(&manifests, grants))
+        }
         _ => Err(usage("exactly one of packages and manifests is required")),
     }
+}
+
+fn validate_manifest_locations(manifests: &[LocatedManifest]) -> Result<(), ApiError> {
+    let mut keys = BTreeSet::new();
+    for manifest in manifests {
+        let Some(key) = logical_path_key(&manifest.location) else {
+            return Err(usage("manifest location must be a logical path"));
+        };
+        if !keys.insert(key) {
+            return Err(usage("manifest locations must have unique portable paths"));
+        }
+    }
+    Ok(())
 }
 
 fn from_manifests(manifests: &[LocatedManifest], grants: &HostGrants) -> PackageSource {

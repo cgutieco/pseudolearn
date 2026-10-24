@@ -37,13 +37,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un lock es un texto en el subconjunto declarativo del manifiesto con schema = 1 (otro valor produce unsupportedLockSchema) y una tabla packages indexada por nombre de paquete. Cada paquete declara origin (ruta lógica relativa a la raíz concedida, nunca absoluta ni con ..; si no, invalidLockPath), kind (local o locked), dependencies (nombres de paquetes del propio lock, ordenados y sin repetir; una arista a un paquete ausente produce danglingEdge) y, si es locked, digest y la tabla files de ruta lógica a digest. Un mismo nombre con dos orígenes produce ambiguousOrigin. Un campo desconocido, incluido cualquiera con apariencia de script, produce unknownLockField; el lock nunca ejecuta nada.",
+  "texto": "Un lock es un texto en el subconjunto declarativo del manifiesto con schema = 1 (otro valor produce unsupportedLockSchema) y una tabla packages indexada por nombre de paquete. Cada paquete declara origin (ruta lógica relativa a la raíz concedida, nunca absoluta ni con ..; si no, invalidLockPath), kind (local o locked), dependencies (nombres de paquetes del propio lock, ordenados y sin repetir; una arista a un paquete ausente produce danglingEdge) y, si es locked, digest y la tabla files de ruta lógica a digest. Las rutas siguen la política portable de API.PROJECT.MANIFEST: segmentos NFC, clave NFC en minúsculas Unicode, sin rutas absolutas ni componentes inválidos; orígenes de paquete o claves de archivos que colisionan producen invalidLockPath. La serialización conserva la grafía NFC y ordena por clave portable. Un mismo nombre con dos orígenes produce ambiguousOrigin. Los lock_errors conservan field, line y column del documento y se ordenan por línea, columna, código y field. Un campo desconocido, incluido cualquiera con apariencia de script, produce unknownLockField; el lock nunca ejecuta nada.",
   "verificacion": [
     "C7",
     "C8",
     "C9",
     "C10",
-    "C14"
+    "C14",
+    "C18"
   ]
 }
 ```
@@ -53,9 +54,10 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El digest de un archivo es SHA-256, en minúsculas y con prefijo sha256:, del dominio pseudolearn.lock.file.v1 seguido de un salto de línea y de los bytes del archivo tal como se leyeron. El digest de un paquete es SHA-256 del dominio pseudolearn.lock.package.v1 y un salto de línea, seguido por cada archivo en orden bytewise de ruta como ruta, byte cero, digest del archivo y salto de línea. Los digests verifican integridad, no autenticidad del origen. Entran en el hash solo los archivos que el anfitrión entrega; el propio lock y los directorios de control del repositorio no son archivos de paquete.",
+  "texto": "El digest de un archivo es SHA-256, en minúsculas y con prefijo sha256:, del dominio pseudolearn.lock.file.v1 seguido de un salto de línea y de los bytes del archivo tal como se leyeron. El digest de un paquete es SHA-256 del dominio pseudolearn.lock.package.v1 y un salto de línea, seguido por cada archivo en orden de su clave portable de ruta como ruta normalizada a NFC, byte cero, digest del archivo y salto de línea. El anfitrión normaliza la ruta antes de calcular el digest del paquete y calcula el digest de contenido sobre los bytes leídos, sin reabrir por nombre. Los digests verifican integridad, no autenticidad del origen. Entran en el hash solo los archivos que el anfitrión entrega; el propio lock y los directorios de control del repositorio no son archivos de paquete.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C16"
   ]
 }
 ```
@@ -65,10 +67,127 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La operación build_lock recibe packages (name, origin, kind, dependencies y, para locked, files con path y text) y devuelve lock, el texto canónico, y lock_errors. El texto canónico lista los paquetes por nombre, las dependencias ordenadas y los archivos por ruta, con claves entre comillas, de modo que cualquier permutación de la entrada produce los mismos bytes. build_lock no escribe ni actualiza ningún archivo: la escritura del lock es una acción explícita del anfitrión.",
+  "texto": "La operación build_lock recibe packages (name, origin, kind, dependencies y, para locked, files con path y text) y devuelve lock, el texto canónico, y lock_errors. El texto canónico lista los paquetes por nombre, las dependencias ordenadas y los archivos por clave portable de ruta; imprime rutas en NFC con claves entre comillas y rechaza colisiones antes de serializar, de modo que cualquier permutación de la entrada produce los mismos bytes. build_lock no escribe ni actualiza ningún archivo: la escritura del lock es una acción explícita del anfitrión.",
   "verificacion": [
     "C2",
-    "C15"
+    "C15",
+    "C17"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "build_lock",
+        "arguments": {
+          "packages": [
+            {
+              "name": "geo",
+              "origin": "libs/geo",
+              "kind": "locked",
+              "dependencies": [],
+              "files": [
+                {
+                  "path": "A.pseudo",
+                  "text": "Escribir 1\n"
+                },
+                {
+                  "path": "a.pseudo",
+                  "text": "Escribir 2\n"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La colisión se verifica mediante el error tipado; el digest no se observa en este caso."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "lock_errors": [
+              {
+                "code": "invalidLockPath"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "build_lock",
+        "arguments": {
+          "packages": [
+            {
+              "name": "geo",
+              "origin": "libs/geo",
+              "kind": "locked",
+              "dependencies": [],
+              "files": [
+                {
+                  "path": "café.pseudo",
+                  "text": "Escribir 1\n"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "lock_errors": [],
+          "lock": "schema = 1\n\n[packages.\"geo\"]\norigin = \"libs/geo\"\nkind = \"locked\"\ndependencies = []\ndigest = \"sha256:de3b9019b11a9be7f9ae06149c392e4a9ce986c64b3afa3773fe4c1bbaf2b20b\"\n\n[packages.\"geo\".files]\n\"café.pseudo\" = \"sha256:7f2f1f2f1aabe5d2f03d55faacd58ff52337892609119e4f31253b39decd2efe\"\n"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
   ]
 }
 ```
@@ -1009,6 +1128,71 @@
           "value": {
             "lock": "schema = 1\n\n[packages.\"app\"]\norigin = \"apps/app\"\nkind = \"local\"\ndependencies = [\"geo\"]\n\n[packages.\"geo\"]\norigin = \"libs/geo\"\nkind = \"locked\"\ndependencies = []\ndigest = \"sha256:9d4df7e3b6ea8ea6e45ad25cc7167db3989697d988508489432901a5ac16772d\"\n\n[packages.\"geo\".files]\n\"a.pseudo\" = \"sha256:7f2f1f2f1aabe5d2f03d55faacd58ff52337892609119e4f31253b39decd2efe\"\n",
             "lock_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "build_lock",
+        "arguments": {
+          "packages": [
+            {
+              "name": "geo",
+              "origin": "libs/Geo",
+              "kind": "local",
+              "dependencies": []
+            },
+            {
+              "name": "geography",
+              "origin": "libs/geo",
+              "kind": "local",
+              "dependencies": []
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "lock_errors": [
+              {
+                "code": "invalidLockPath",
+                "field": "packages.geo.origin",
+                "line": 1,
+                "column": 1
+              },
+              {
+                "code": "invalidLockPath",
+                "field": "packages.geography.origin",
+                "line": 1,
+                "column": 1
+              }
+            ]
           }
         }
       ]

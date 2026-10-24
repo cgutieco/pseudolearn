@@ -1,7 +1,9 @@
 use crate::ApiError;
 use crate::manifest_wire::{MANIFEST_BYTE_BUDGET, configuration, error_value, parse_grants};
 use crate::project_resource::usage;
-use pseudolearn_project::{Configuration, ManifestRequest, is_logical_path};
+use pseudolearn_project::{
+    Configuration, ManifestRequest, is_logical_path, normalize_logical_path,
+};
 use serde_json::{Value, json};
 
 pub(crate) fn resolve(arguments: &Value) -> Result<Value, ApiError> {
@@ -10,6 +12,8 @@ pub(crate) fn resolve(arguments: &Value) -> Result<Value, ApiError> {
     if !is_logical_path(location) {
         return Err(usage("location must be a logical path"));
     }
+    let canonical_location =
+        normalize_logical_path(location).unwrap_or_else(|| location.to_owned());
     let grants = parse_grants(arguments)?;
     let request = ManifestRequest {
         text,
@@ -22,7 +26,7 @@ pub(crate) fn resolve(arguments: &Value) -> Result<Value, ApiError> {
         Err(errors) => {
             let listed: Vec<Value> = errors
                 .iter()
-                .map(|error| error_value(error, location))
+                .map(|error| error_value(error, &canonical_location))
                 .collect();
             json!({"configuration": Value::Null, "manifest_errors": listed})
         }

@@ -21,6 +21,7 @@ pub use model::{
     IrRequest, IrResponse,
 };
 pub use probes::probe;
+pub use pseudolearn_project::{logical_path_key, normalize_logical_path};
 pub use versioning::{
     ENGINE_VERSION, PROTOCOL_VERSION, SUBJECT_NAME, supported_capabilities, supported_profiles,
     supported_strictness,

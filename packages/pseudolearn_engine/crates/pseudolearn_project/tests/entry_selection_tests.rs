@@ -84,15 +84,13 @@ fn undeclared_or_unknown_entry_is_not_found() -> Result<(), String> {
 
 #[test]
 fn duplicated_entry_is_reported_once() -> Result<(), String> {
-    let codes = error_codes(&input(
-        vec![package(
-            "app",
-            PackageKind::Application,
-            &["app/main", "app/main"],
-        )],
-        &["app/main"],
-    ))?;
-    assert_eq!(codes, [ProjectErrorCode::EntryDuplicated]);
+    for entries in [["app/main", "app/main"], ["app/main", "APP/MAIN"]] {
+        let codes = error_codes(&input(
+            vec![package("app", PackageKind::Application, &entries)],
+            &["app/main"],
+        ))?;
+        assert_eq!(codes, [ProjectErrorCode::EntryDuplicated]);
+    }
     Ok(())
 }
 

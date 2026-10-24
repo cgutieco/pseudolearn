@@ -4,6 +4,7 @@ use crate::manifest_model::{Field, Manifest, ProfileChoice, Provenance};
 use crate::manifest_sections;
 use crate::manifest_value::{Scalar, Table};
 use crate::project_model::PackageKind;
+use std::collections::BTreeSet;
 
 struct PackageFields {
     name: Field<String>,
@@ -147,10 +148,20 @@ fn entries(checker: &mut Checker, table: &Table) -> Option<Field<Vec<String>>> {
     let items = checker.list(entry, "package.entries")?;
     let position = crate::manifest_sections::value_location(entry);
     let mut paths = Vec::new();
+    let mut path_keys = BTreeSet::new();
     for (position, text) in checker.text_items(items, "package.entries") {
         let field = format!("package.entries[{position}]");
-        if checker.path_under_root(&text, &field) {
-            paths.push(text.value);
+        let Some(normalized) = checker.normalized_path_under_root(&text, &field) else {
+            continue;
+        };
+        let Some(key) = crate::logical_path::key(&normalized) else {
+            checker.report(ManifestErrorCode::InvalidPath, &field, text.position);
+            continue;
+        };
+        if path_keys.insert(key) {
+            paths.push(normalized);
+        } else {
+            checker.report(ManifestErrorCode::InvalidPath, &field, text.position);
         }
     }
     Some(Field {

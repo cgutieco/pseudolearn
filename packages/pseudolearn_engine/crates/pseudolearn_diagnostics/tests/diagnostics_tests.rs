@@ -27,7 +27,7 @@ fn sorts_diagnostics_by_span_and_code() {
     sort_diagnostics(&mut collection);
     assert_eq!(
         collection.first().map(|d| d.code),
-        Some(DiagnosticCode::DuplicateVariableDeclaration)
+        Some(DiagnosticCode::UnexpectedBlockEnd)
     );
     assert_eq!(
         collection.last().map(|d| d.code),

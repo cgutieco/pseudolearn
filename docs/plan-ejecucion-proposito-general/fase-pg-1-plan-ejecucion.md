@@ -20,8 +20,10 @@
   declarativo y autoridad externa` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
   puntos. El mensaje «implementa en una iteración `PG-1.06 · Lock canónico y contenido verificado` y
   `PG-1.07 · Perfiles por archivo e imports bilingües` en una sola iteración» del 2026-10-23 autoriza
-  únicamente esos dos puntos. PG-1.08 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases
-  siguientes permanecen sin autorizar.
+  únicamente esos dos puntos. El mensaje «Implementa en una sola iteración `PG-1.08 · Orden público de
+  diagnósticos` y `PG-1.09 · Rutas portables y confinamiento`» del 2026-10-24 autoriza únicamente esos
+  dos puntos. PG-1.10 en adelante, el cierre común de PG-1 y las fases siguientes permanecen sin
+  autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
@@ -201,21 +203,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.08 · Orden público de diagnósticos
 
-- [ ] `PG-1.08.01` Ampliar `DIAG.ORDERING`: clave de paquete/módulo canónico y orden local vigente, empates, diagnósticos sin fuente y ubicación de campos del manifiesto/lock.
-- [ ] `PG-1.08.02` Derivar varios errores en archivos con offsets iguales, principales/relacionados, causas independientes y múltiples órdenes de descubrimiento.
-- [ ] `PG-1.08.03` Probar permutaciones de carga e igualdad exacta de diagnósticos, sin comparar el valor literal de IDs opacos entre sesiones; preservar alias e identidades mediante correspondencia biyectiva.
-- [ ] `PG-1.08.04` Centralizar comparación y presentación de resultados en sus dueños; no ordenar de nuevo con reglas propias en CLI o cliente.
-- [ ] `PG-1.08.05` Documentar clave portable y separación entre identidad y orden en README diagnostics/project/API.
-- [ ] `PG-1.08.06` Verificar mismo orden en API y CLI, mismo conjunto de causas y relacionados al variar inserción e idioma de interfaz; comprobar orden documental existente.
+- [x] `PG-1.08.01` Ampliar `DIAG.ORDERING`: clave de paquete/módulo canónico y orden local vigente, empates, diagnósticos sin fuente y ubicación de campos del manifiesto/lock.
+- [x] `PG-1.08.02` Derivar varios errores en archivos con offsets iguales, principales/relacionados, causas independientes y múltiples órdenes de descubrimiento.
+- [x] `PG-1.08.03` Probar permutaciones de carga e igualdad exacta de diagnósticos, sin comparar el valor literal de IDs opacos entre sesiones; preservar alias e identidades mediante correspondencia biyectiva.
+- [x] `PG-1.08.04` Centralizar comparación y presentación de resultados en sus dueños; no ordenar de nuevo con reglas propias en CLI o cliente.
+- [x] `PG-1.08.05` Documentar clave portable y separación entre identidad y orden en README diagnostics/project/API.
+- [x] `PG-1.08.06` Verificar mismo orden en API y CLI, mismo conjunto de causas y relacionados al variar inserción e idioma de interfaz; comprobar orden documental existente.
 
 ### PG-1.09 · Rutas portables y confinamiento
 
-- [ ] `PG-1.09.01` Especificar rutas lógicas relativas, política de caja/NFC, separadores, componentes prohibidos, raíces externas concedidas y tratamiento de symlinks; no confundir canonicalización con autorización.
-- [ ] `PG-1.09.02` Derivar colisiones de caja/NFC, `..`, ruta absoluta, prefijos parecidos, symlink en componente intermedio/final, ciclo de enlaces y dependencia fuera de raíz sin/con concesión independiente.
-- [ ] `PG-1.09.03` Probar normalización con fuentes virtuales y confinamiento con directorios efímeros reales; sustitución coordinada de enlace entre validación/apertura, sin esperar que el azar reproduzca una carrera.
-- [ ] `PG-1.09.04` Implementar claves portables en project y apertura confinada en el adaptador CLI; mantener descriptor/bytes verificados hasta construir snapshot. Rechazar rutas no representables sin conversión silenciosa con pérdida.
-- [ ] `PG-1.09.05` Documentar garantías y plataformas realmente comprobadas; declarar dependencia segura del host antes de usarla, sin extender `unsafe` propio al resolver.
-- [ ] `PG-1.09.06` Verificar que ningún rechazo lee contenido externo ni deja salida parcial; simular colisiones en memoria donde el filesystem local no permita crearlas. No declarar soporte de otro SO por analogía.
+- [x] `PG-1.09.01` Especificar rutas lógicas relativas, política de caja/NFC, separadores, componentes prohibidos, raíces externas concedidas y tratamiento de symlinks; no confundir canonicalización con autorización.
+- [x] `PG-1.09.02` Derivar colisiones de caja/NFC, `..`, ruta absoluta, prefijos parecidos, symlink en componente intermedio/final, ciclo de enlaces y dependencia fuera de raíz sin/con concesión independiente.
+- [x] `PG-1.09.03` Probar normalización con fuentes virtuales y confinamiento con directorios efímeros reales; sustitución coordinada de enlace entre validación/apertura, sin esperar que el azar reproduzca una carrera.
+- [x] `PG-1.09.04` Implementar claves portables en project y apertura confinada en el adaptador CLI; mantener descriptor/bytes verificados hasta construir snapshot. Rechazar rutas no representables sin conversión silenciosa con pérdida.
+- [x] `PG-1.09.05` Documentar garantías y plataformas realmente comprobadas; declarar dependencia segura del host antes de usarla, sin extender `unsafe` propio al resolver.
+- [x] `PG-1.09.06` Verificar que ningún rechazo lee contenido externo ni deja salida parcial; simular colisiones en memoria donde el filesystem local no permita crearlas. No declarar soporte de otro SO por analogía.
 
 ### PG-1.10 · Alfabeto español en rigor estricto
 
@@ -436,7 +438,7 @@ instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia
 | Momento | Dependencia | Efecto |
 |---|---|---|
 | PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
-| Antes de PG-1.08 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
+| PG-1.08 y PG-1.09 | Mensaje explícito de implementación conjunta y revisión del plan, 2026-10-24 | Autoriza solo esos dos puntos; PG-1.10 en adelante y el cierre de PG-1 requieren autorización propia |
 | Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
@@ -452,7 +454,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.07`; revisar el plan y recibir nueva autorización antes de `.08` |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; el del 2026-10-24 autoriza PG-1.08 y PG-1.09; PG-0 quedó sincronizada | Implementar solamente `.08` y `.09` en esta iteración; PG-1.10 en adelante y el cierre común siguen pendientes |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -463,8 +465,8 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 | 8 Cierre | C03–C13; completar resúmenes por tarea y del plan general | Puertas verdes, decisiones pendientes resueltas, commit/push ordinario comprobado y parada |
 
 Los pasos son puntos de control internos de una fase, no fases nuevas. La autorización recibida cubre
-solo PG-1.01 y permite completar ese punto sin dar por satisfechas C01/C02 de la fase completa. Se
-detiene al terminar la iteración; los demás puntos requieren autorización propia (`PHASE-STOP`).
+solo PG-1.08 y PG-1.09 y no da por satisfecho el cierre común C01–C13. Se detiene al terminar esta
+iteración; los demás puntos requieren autorización propia (`PHASE-STOP`).
 
 ### 10.1 Verificaciones ejecutables al implementar
 
@@ -509,8 +511,8 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 ### 11.1 Registro por tarea
 
 Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
-anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02 a PG-1.07;
-las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
+anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02 a PG-1.07; esta iteración aborda
+PG-1.08 y PG-1.09. PG-1.10 en adelante no se consideran iniciadas. Se usan exclusivamente los estados del
 plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
@@ -557,6 +559,28 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.07.04 | Cumplido | Perfil por unidad en semantic; tabla `source_id → perfil` en RI, bytecode, VM y AOT; índice de perfil en el descriptor | El adaptador AOT no acepta proyectos (`PG-1.12`); el caso cruzado se prueba por RI armada a mano |
 | PG-1.07.05 | Cumplido | README de lexicon, syntax, semantic, project, API, ir, bytecode, vm, lowering, codegen, aot_rt y CLI | Fichas de ayuda sin cambios: ninguna forma sintáctica nueva |
 | PG-1.07.06 | Cumplido con salvedad | Conformidad `engine` con los casos nuevos y sin divergencias | E-PG-01 no medido en esta iteración; paridad de firmas entre perfiles por el corpus existente |
+| PG-1.08.01 | Cumplido con salvedad | `DIAG.ORDERING`, `API.PROJECT`, `API.PROJECT.MANIFEST` y `API.PROJECT.LOCK` editadas conservando identidad, estado y versión; casos C15–C16, C25–C27 y C18 ampliado | Reanclaje pendiente de revisión independiente real; `revisado_por` permanece vacío en los tres contratos nuevos |
+| PG-1.08.02 | Cumplido | Casos normativos de offsets empatados entre fuentes, relacionados ordenados con multiplicidad, errores de manifiestos y empates por campo | Casos del corpus parsean como JSON; la validación normativa completa está bloqueada por revisión independiente |
+| PG-1.08.03 | Cumplido con salvedad | Tests de permutación API, orden por idioma de interfaz, ubicaciones relacionadas y conservación de identidades | `project_ordering_tests`, `diagnostics_tests`, `ordering_tests` pasan; igualdad biyectiva se cubre mediante identidades propias de cada sesión |
+| PG-1.08.04 | Cumplido | Comparador común en diagnostics; índice único de fuentes en API; no hay fallback al primer módulo ni reordenación local en CLI | Identidad de fuente desconocida produce fallo interno controlado |
+| PG-1.08.05 | Cumplido | README de diagnostics, project, API y CLI actualizados | Decisiones de arquitectura y confinamiento documentadas en sus dueños; sin referencias al documento transitorio |
+| PG-1.08.06 | Cumplido con salvedad | API/CLI coinciden en orden de ruta; pruebas de permutación/idioma; reglas locales de manifiesto/lock ordenan por documento y posición | Tests dirigidos pasan; el orden documental no pudo validarse mediante export SEE por la puerta de revisión |
+| PG-1.09.01 | Cumplido con salvedad | `API.PROJECT`, `API.PROJECT.MANIFEST`, `API.PROJECT.LOCK` y `TOOL.CLI.CHECK` especifican NFC, clave NFC/minúsculas Unicode, rutas relativas portables, concesiones y symlinks confinados | Sin reanclaje hasta revisión independiente; versiones congeladas sin `cambio` |
+| PG-1.09.02 | Cumplido | Casos de colisiones de caja/NFC, componentes prohibidos, escapes, ciclos, prefijos parecidos y raíces independientes con/sin concesión | Casos virtuales y de filesystem efímero; los negativos no leen contenido exterior |
+| PG-1.09.03 | Cumplido con salvedad | Sustituciones de enlace coordinadas antes de abrir y después de obtener descriptor, enlace interno, ciclo y escape externo | Suite CLI verde en macOS. El filesystem del entorno rechazó crear un nombre no UTF-8 (`EPERM`); su conversión sin pérdida se cubre con prueba unitaria del `OsStr` |
+| PG-1.09.04 | Cumplido | Validación/claves canónicas en `pseudolearn_project`; lector `cap-std` en CLI conserva bytes del descriptor autorizado y aborta antes de presentar resultados parciales | No se añadió la carga pública de proyectos de PG-1.12 |
+| PG-1.09.05 | Cumplido con salvedad | `cap-std = 4.0.3` declarada en Cargo, reglas y README; soporte documentado solo para la plataforma probada | Tests de confinamiento ejecutados en macOS; no se certifican Linux ni Windows |
+| PG-1.09.06 | Cumplido | Pruebas API/CLI confirman rechazo de symlink externo sin salida parcial; sustitución tras apertura lee descriptor ya autorizado; colisiones probadas en memoria | CLI `cargo test --locked`, `rust-checks all .` y `cargo clippy --locked --all-targets -- -D warnings` en verde |
+
+La implementación de PG-1.08 y PG-1.09 está preparada en la rama autorizada, pero ambas tareas quedan
+con salvedad de cierre: la revisión normativa independiente y el reanclaje correspondiente no se
+realizaron. `cargo xtask verify` en spec, engine y CLI falla en la exportación con
+`SEE-STATE: independent review required`; el validador prohíbe suplir esa evidencia mediante un
+`revisado_por` inventado. Los comandos dirigidos de API/CLI, las suites Rust del motor afectadas,
+`cargo fmt --all --check`, Clippy, `rust-checks all .`, `rust-checks toolchain ../..`, cargo-deny y
+`git diff --check` sí pasan en los miembros aplicables. No se declara `PHASE-GREEN`, no se marca el
+cierre común C01–C13 y no se inicia PG-1.10. Plataforma comprobada: macOS; creación de un nombre
+filesystem no UTF-8 no estuvo permitida por el entorno (`EPERM`).
 
 ### 11.2 Cierre común de PG-1
 

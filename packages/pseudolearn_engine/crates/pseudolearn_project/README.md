@@ -13,15 +13,13 @@ configuración resuelta con procedencia y la autoridad efectiva de los límites 
 Además modela el lock del lenguaje (`Lock`): paquetes con origen lógico, aristas y digests que el anfitrión entrega, su
 serialización canónica y la comparación contra el contenido observado.
 
-Fuera de alcance: leer o escribir disco, calcular hashes,
-colisiones de caja y NFC en rutas (`PG-1.09`), resolver imports o visibilidad (son de `pseudolearn_semantic`) y
+Fuera de alcance: leer o escribir disco, resolver imports o visibilidad (son de `pseudolearn_semantic`) y
 ejecutar nada.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Escritura atómica del lock y comandos que lo actualizan | Raíz concedida y comando de proyecto | `PG-1.12` |
-| Rutas portables y confinamiento | Adaptador del anfitrión | `PG-1.09` |
-| Lectura del manifiesto desde disco y concesiones del anfitrión | CLI | `PG-1.12` |
+| Escritura atómica del lock y comandos que lo actualizan | Raíz concedida y comando de proyecto | Integración del adaptador |
+| Lectura del manifiesto desde disco y concesiones del anfitrión | CLI | Integración del adaptador |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -41,15 +39,21 @@ No hay E/S ambiental: el anfitrión entrega los bytes de cada archivo ya leídos
 Nivel 1. Dependencias internas permitidas: `pseudolearn_source`. Externas: ninguna.
 Prohibido importar syntax, semantic, API o consumidores.
 
-Estructuras: `ProjectInput` (paquetes y archivos como datos), `ProjectCatalog` (módulos ordenados por ruta,
+Estructuras: `ProjectInput` (paquetes y archivos como datos), `ProjectCatalog` (módulos ordenados por clave portátil,
 índices tipados `PackageId` y `ModuleId`, un `SourceText` con identidad por módulo) y `ProjectError`
 (código estable y ruta afectada). `ProjectCatalog::build` valida la forma de la entrada, asigna cada archivo
 al paquete cuya raíz es prefijo de segmentos de su ruta y valida las entradas declaradas.
 `select_entry` elige la entrada de una petición.
 
-Invariantes: un módulo pertenece exactamente a un paquete; los módulos están ordenados por ruta lógica;
-los errores de proyecto salen ordenados por código y ruta, sin depender del orden de los archivos; la
-identidad de fuente de cada módulo es la del `source_id` de entrada y no se reutiliza.
+Invariantes: toda ruta lógica usa `/`, es relativa, no vacía y consta de segmentos portables; los segmentos
+se normalizan a NFC conservando caja, y la clave de colisión es NFC en minúsculas Unicode. Se rechazan
+segmentos vacíos, `.` y `..`, controles, caracteres reservados, nombres de dispositivo y terminaciones en
+punto o espacio. Las colisiones de archivos y directorios implícitos se rechazan aunque el sistema anfitrión
+distinga esas grafías. Un módulo pertenece exactamente a un paquete; los módulos se ordenan por clave
+portable; los errores de proyecto salen ordenados por código y ruta, sin depender del orden de entrada; la
+identidad de fuente de cada módulo es la del `source_id` de entrada y no se reutiliza. Los nombres de paquete
+son únicos por NFC y minúsculas Unicode; esa clave inicia el orden público antes de los segmentos del módulo.
+La ruta conservada para presentación es NFC y conserva caja; la clave de orden no reemplaza la identidad.
 
 Grafos: `find_cycles` recibe las claves de orden de los vértices y las aristas y devuelve, por cada componente
 cíclico, una cadena cerrada de índices. `ProjectCatalog::build` aplica `find_cycles` a las dependencias de paquetes
@@ -61,7 +65,9 @@ Manifiesto: `Configuration::resolve` es una función pura de texto, ubicación, 
 Encadena el analizador sintáctico del subconjunto TOML (`manifest_cursor`, `manifest_scalars`, `manifest_values`,
 `manifest_parser`), la validación del esquema (`manifest_schema`, `manifest_sections`, con `manifest_checker`
 como utilidad de comprobación) y la autoridad (`authority`). `resolve_all` resuelve varios manifiestos y ordena los
-fallos por ubicación; `Configuration::package_input` convierte la configuración en un paquete del proyecto.
+fallos por clave portable de ubicación, posición, código y campo; la ubicación pública se conserva en NFC.
+`Configuration::package_input` convierte la configuración en un paquete del proyecto. Las excepciones de perfil
+se serializan por clave portable de ruta, no por el orden crudo de las claves TOML.
 
 Lock: `Lock::from_packages` normaliza (dependencias ordenadas y sin repetir), valida origen lógico, digests y aristas y
 rechaza un mismo nombre con dos orígenes. `Lock::parse` reutiliza el analizador del manifiesto (`lock_parser`),
@@ -74,6 +80,13 @@ Problema: el modelo de proyecto no puede depender del sistema de archivos ni de 
 Elección: el catálogo recibe rutas lógicas y textos ya leídos; la resolución de nombres vive en semantic,
 que consume el catálogo. Se rechaza un crate que parsee, porque cada petición de proyecto necesita el
 mismo perfil y rigor que el resto del análisis y esa política pertenece a la API.
+
+Problema: una ruta debe conservar significado al moverse entre sistemas de archivos. Elección: `logical_path`
+valida y normaliza segmentos portables, y su clave NFC en minúsculas Unicode decide equivalencia, colisiones,
+prefijos, orden y resolución de referencias. La misma clave se aplica a archivos, raíces, entradas, perfiles y
+rutas de lock. Las rutas equivalentes por caja o NFC señalan una sola ruta canónica; dos archivos distintos con
+una clave coincidente son inválidos, incluidos los directorios implícitos.
+No se consulta ni canonicaliza el disco en este crate.
 
 Problema: un módulo debe tener una sola raíz. Elección: la pertenencia se calcula por prefijo de segmentos
 y un archivo bajo dos raíces o bajo ninguna es un error de proyecto, nunca una elección silenciosa.
@@ -120,7 +133,7 @@ módulos, después de resolver los enlaces y antes de analizar cuerpos, y con el
 Problema: el contenido de un proyecto no puede conceder nada a sí mismo ni ejecutar nada al abrirse. Elección: el
 manifiesto `pseudolearn.toml` es solo datos; el anfitrión entrega las concesiones y la configuración efectiva es
 `min(solicitud, concesión)` por límite. Una solicitud sin concesión es un error y no se aplica; una concesión sin
-solicitud no se aplica. El vocabulario de permisos está cerrado y vacío: ningún efecto de PG-3 ni PG-5 existe todavía.
+solicitud no se aplica. El vocabulario de permisos está cerrado y vacío: no se ejecutan efectos externos.
 
 Formato: subconjunto estricto de TOML con comentarios, tablas `[a.b]`, claves desnudas o entre comillas, cadenas con
 escapes `\"`, `\\`, `\n`, `\t` y `\uXXXX`, enteros decimales sin signo, arreglos y tablas en línea de valores
@@ -155,14 +168,16 @@ Problema: un proyecto con dependencias fijadas debe reproducirse sin red y sin q
 Elección: el lock es un texto del mismo subconjunto declarativo del manifiesto (`schema = 1`, tabla `packages` por
 nombre). Cada paquete registra `origin` (ruta lógica relativa a la raíz concedida, nunca absoluta, por lo que un
 checkout reubicado produce los mismos bytes), `kind`, `dependencies` y, si es `locked`, `digest` y los digests de sus
-archivos. Un paquete `local` es editable y no registra contenido: sus cambios no invalidan el lock. La serialización
-usa claves entre comillas, paquetes por nombre, dependencias y archivos ordenados, de modo que cualquier permutación de
-la entrada produce los mismos bytes. El crate no calcula hashes: recibe los digests ya calculados por la API
+archivos. Los orígenes y las rutas de archivo comparten la clave portable; dos orígenes de paquetes o archivos que
+colisionan por NFC y minúsculas Unicode se rechazan antes de serializar. Un paquete `local` es editable y no registra
+contenido: sus cambios no invalidan el lock. La serialización usa claves entre comillas, paquetes por nombre,
+dependencias y archivos ordenados, de modo que cualquier permutación de la entrada produce los mismos bytes. El crate
+no calcula hashes: recibe los digests ya calculados por la API
 (`sha2` ya es dependencia permitida allí) y así no añade dependencias a un crate de nivel 1 que entra en Wasm y móvil.
 
 Qué entra en el hash: el digest de un archivo es SHA-256 del dominio `pseudolearn.lock.file.v1`, un salto de línea y
-los bytes leídos; el del paquete, SHA-256 del dominio `pseudolearn.lock.package.v1` y, por archivo en orden bytewise de
-ruta, ruta, byte cero, digest del archivo y salto de línea. Los dominios impiden que un digest de archivo se confunda
+los bytes leídos; el del paquete, SHA-256 del dominio `pseudolearn.lock.package.v1` y, por archivo en orden de clave
+portable, ruta normalizada a NFC, byte cero, digest del archivo y salto de línea. Los dominios impiden que un digest de archivo se confunda
 con uno de paquete. Se compila exactamente el texto que se verificó: la API hashea los mismos bytes que entrega al
 análisis. Un hash verifica integridad, no autenticidad del origen, y no hay firmas. El lock del lenguaje no tiene
 relación con los `Cargo.lock` del repositorio.
@@ -170,7 +185,7 @@ relación con los `Cargo.lock` del repositorio.
 Actualización: el lock solo cambia por una acción explícita del anfitrión; ni abrir, ni comprobar, ni compilar lo
 reescriben. Las operaciones `build_lock` y `resolve_lock` de la API no escriben nada. La publicación atómica del
 archivo (temporal en el mismo directorio y renombrado) y sus permisos de escritura pertenecen al comando de proyecto
-del CLI (`PG-1.12`): no se escribe antes un escritor sin consumidor. Descartado: rutas absolutas (rompen el
+del CLI: no se escribe antes un escritor sin consumidor. Descartado: rutas absolutas (rompen el
 checkout reubicado), un campo de versión por rango (la resolución es exacta) y actualizar al comprobar.
 
 Errores: sintaxis, duplicados, vacío, tamaño, versión y campos del lock reutilizan el analizador del manifiesto con

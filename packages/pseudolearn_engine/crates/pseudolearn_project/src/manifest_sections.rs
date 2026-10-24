@@ -1,3 +1,4 @@
+use crate::logical_path::key;
 use crate::manifest_checker::{Checker, join};
 use crate::manifest_error::{Location, ManifestErrorCode};
 use crate::manifest_model::{
@@ -21,27 +22,74 @@ pub(crate) fn profiles(checker: &mut Checker, root: &Table) -> Vec<ProfileExcept
         return Vec::new();
     };
     let mut exceptions = Vec::new();
+    let route_index = ProfileRouteIndex {
+        key_counts: profile_key_counts(table),
+    };
     for (path, element) in &table.entries {
-        let field = join("profiles", path);
-        let key = Located {
-            position: element.key_at,
-            value: path.clone(),
-        };
-        let valid = checker.path_under_root(&key, &field);
-        let Some(text) = checker.text(element, &field) else {
-            continue;
-        };
-        match ProfileChoice::from_name(&text.value) {
-            Some(profile) if valid => exceptions.push(ProfileException {
-                path: path.clone(),
-                profile,
-                position: text.position,
-            }),
-            Some(_) => {}
-            None => checker.report(ManifestErrorCode::InvalidValue, &field, text.position),
+        if let Some(exception) = route_index.exception(checker, path, element) {
+            exceptions.push(exception);
         }
     }
+    exceptions.sort_by(|left, right| {
+        key(&left.path)
+            .cmp(&key(&right.path))
+            .then_with(|| left.path.cmp(&right.path))
+    });
     exceptions
+}
+
+fn profile_key_counts(table: &Table) -> BTreeMap<String, usize> {
+    let mut counts = BTreeMap::new();
+    for path in table.entries.keys() {
+        if let Some(path_key) = key(path) {
+            counts
+                .entry(path_key.join("/"))
+                .and_modify(|count: &mut usize| *count = (*count).saturating_add(1))
+                .or_insert(1);
+        }
+    }
+    counts
+}
+
+struct ProfileRouteIndex {
+    key_counts: BTreeMap<String, usize>,
+}
+
+impl ProfileRouteIndex {
+    fn exception(
+        &self,
+        checker: &mut Checker,
+        path: &str,
+        element: &Entry,
+    ) -> Option<ProfileException> {
+        let field = join("profiles", path);
+        let located_path = Located {
+            position: element.key_at,
+            value: path.to_owned(),
+        };
+        let normalized = checker.normalized_path_under_root(&located_path, &field);
+        let text = checker.text(element, &field);
+        let normalized = normalized?;
+        let text = text?;
+        let Some(profile) = ProfileChoice::from_name(&text.value) else {
+            checker.report(ManifestErrorCode::InvalidValue, &field, text.position);
+            return None;
+        };
+        let canonical_key = key(&normalized)?.join("/");
+        if self.key_counts.get(&canonical_key).copied().unwrap_or(0) > 1 {
+            checker.report(
+                ManifestErrorCode::InvalidPath,
+                &field,
+                located_path.position,
+            );
+            return None;
+        }
+        Some(ProfileException {
+            path: normalized,
+            profile,
+            position: text.position,
+        })
+    }
 }
 
 pub(crate) fn dependencies(checker: &mut Checker, root: &Table) -> Vec<ManifestDependency> {

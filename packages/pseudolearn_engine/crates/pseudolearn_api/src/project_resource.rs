@@ -95,7 +95,11 @@ fn file_profiles(wire: &WireProject) -> Result<BTreeMap<String, Profile>, ApiErr
     for file in &wire.files {
         if let Some(name) = &file.profile {
             let profile = Profile::from_name(name).ok_or_else(|| usage("unknown file profile"))?;
-            found.insert(file.path.clone(), profile);
+            let path = pseudolearn_project::logical_path_key(&file.path)
+                .ok_or_else(|| usage("file profile path is not a logical path"))?;
+            if found.insert(path, profile).is_some() {
+                return Err(usage("file profiles must have unique portable paths"));
+            }
         }
     }
     Ok(found)
@@ -147,7 +151,7 @@ fn package(wire: WirePackage) -> Result<PackageInput, ApiError> {
 
 fn file(wire: WireFile) -> FileInput {
     FileInput {
-        path: wire.path,
+        path: pseudolearn_project::normalize_logical_path(&wire.path).unwrap_or(wire.path),
         source_id: wire.source_id,
         text: wire.text,
     }

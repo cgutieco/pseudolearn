@@ -35,7 +35,13 @@ fn write_content(text: &mut String, package: &LockPackage, name: &str) {
         return;
     }
     text.push_str(&format!("\n[packages.{name}.files]\n"));
-    for (path, digest) in &package.files {
+    let mut files: Vec<(&String, &String)> = package.files.iter().collect();
+    files.sort_by(|left, right| {
+        crate::logical_path::key(left.0)
+            .cmp(&crate::logical_path::key(right.0))
+            .then_with(|| left.0.cmp(right.0))
+    });
+    for (path, digest) in files {
         text.push_str(&format!("{} = {}\n", quote(path), quote(digest)));
     }
 }

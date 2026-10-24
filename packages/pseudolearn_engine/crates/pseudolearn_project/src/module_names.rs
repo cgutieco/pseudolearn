@@ -1,3 +1,4 @@
+use crate::logical_path::key;
 use crate::module_catalog::ProjectCatalog;
 use crate::project_model::{ModuleId, PackageKind};
 
@@ -18,6 +19,10 @@ pub fn is_declared_entry(catalog: &ProjectCatalog, id: ModuleId) -> bool {
         return false;
     };
     catalog.package(module.package).is_some_and(|package| {
-        package.kind == PackageKind::Application && package.entries.contains(&module.path)
+        package.kind == PackageKind::Application
+            && package
+                .entries
+                .iter()
+                .any(|entry| key(entry) == key(&module.path))
     })
 }

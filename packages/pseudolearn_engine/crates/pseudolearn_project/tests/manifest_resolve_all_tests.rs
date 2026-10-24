@@ -56,14 +56,54 @@ fn no_manifests_resolve_to_no_configurations() -> Result<(), String> {
 
 #[test]
 fn failures_are_ordered_by_location() {
-    let broken = "schema 1\n";
-    let manifests = [located("zeta", broken), located("alfa", broken)];
+    let broken = "schema = 1\n[package]\n";
+    let manifests = [located("Zeta", broken), located("café", broken)];
     let failures = resolve_all(&manifests, &HostGrants::default(), 4096)
         .err()
         .unwrap_or_default();
     let order: Vec<_> = failures
         .iter()
-        .map(|failure| failure.location.as_str())
+        .map(|failure| {
+            (
+                failure.location.as_str(),
+                failure.error.code,
+                failure.error.field.as_str(),
+                failure.error.position.line,
+                failure.error.position.column,
+            )
+        })
         .collect();
-    assert_eq!(order, ["alfa", "zeta"]);
+    assert_eq!(
+        order,
+        [
+            (
+                "café",
+                ManifestErrorCode::MissingField,
+                "package.kind",
+                2,
+                1
+            ),
+            (
+                "café",
+                ManifestErrorCode::MissingField,
+                "package.name",
+                2,
+                1
+            ),
+            (
+                "Zeta",
+                ManifestErrorCode::MissingField,
+                "package.kind",
+                2,
+                1
+            ),
+            (
+                "Zeta",
+                ManifestErrorCode::MissingField,
+                "package.name",
+                2,
+                1
+            ),
+        ]
+    );
 }

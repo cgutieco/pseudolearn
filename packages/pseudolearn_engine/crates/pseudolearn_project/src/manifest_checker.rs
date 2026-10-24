@@ -1,4 +1,4 @@
-use crate::logical_path::{is_prefix, segments};
+use crate::logical_path::{is_prefix, normalize, segments};
 use crate::manifest_error::{Location, ManifestError, ManifestErrorCode};
 use crate::manifest_value::{Entry, Located, Node, Scalar, Table, Value};
 
@@ -151,11 +151,20 @@ impl Checker {
         texts
     }
 
-    pub(crate) fn path_under_root(&mut self, path: &Located<String>, field: &str) -> bool {
-        let valid = segments(&path.value).is_some_and(|parts| is_prefix(&self.root, &parts));
+    pub(crate) fn normalized_path_under_root(
+        &mut self,
+        path: &Located<String>,
+        field: &str,
+    ) -> Option<String> {
+        let Some(normalized) = normalize(&path.value) else {
+            self.report(ManifestErrorCode::InvalidPath, field, path.position);
+            return None;
+        };
+        let valid = segments(&normalized).is_some_and(|parts| is_prefix(&self.root, &parts));
         if !valid {
             self.report(ManifestErrorCode::InvalidPath, field, path.position);
+            return None;
         }
-        valid
+        Some(normalized)
     }
 }

@@ -38,6 +38,7 @@ pub use dependency_graph::find_cycles;
 pub use entry_selection::select_entry;
 pub use lock_error::{LockError, LockErrorCode};
 pub use lock_model::{DIGEST_PREFIX, Lock, LockKind, LockPackage, is_digest};
+pub use logical_path::{logical_path_key, normalize_logical_path};
 pub use manifest_error::{Location, ManifestError, ManifestErrorCode};
 pub use manifest_model::{
     Field, LimitName, LimitRequest, Manifest, ManifestDependency, ProfileChoice, ProfileException,
@@ -46,7 +47,7 @@ pub use manifest_model::{
 pub use manifest_resolution::{
     Configuration, LocatedError, LocatedManifest, ManifestRequest, is_logical_path, resolve_all,
 };
-pub use module_catalog::{BuildFailure, Module, Package, ProjectCatalog};
+pub use module_catalog::{BuildFailure, Module, Package, ProjectCatalog, source_order_keys};
 pub use module_cycles::{ImportEdge, ModuleCycle, module_cycles};
 pub use module_names::{is_declared_entry, qualifier};
 pub use profile_resolution::{

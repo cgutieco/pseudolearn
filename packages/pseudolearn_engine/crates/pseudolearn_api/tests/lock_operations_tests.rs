@@ -141,6 +141,29 @@ fn same_name_with_two_origins_is_rejected_before_hashing_anything() -> Result<()
 }
 
 #[test]
+fn case_and_nfc_colliding_origins_are_rejected_before_serializing() -> Result<(), String> {
+    for (first_origin, second_origin) in
+        [("libs/Geo", "libs/geo"), ("libs/café", "libs/cafe\u{301}")]
+    {
+        let first =
+            json!({"name": "geo", "origin": first_origin, "kind": "local", "dependencies": []});
+        let second = json!({"name": "geography", "origin": second_origin, "kind": "local", "dependencies": []});
+        let outcome = call("build_lock", json!({"packages": [first, second]}));
+        let errors = value(&outcome)?["lock_errors"]
+            .as_array()
+            .ok_or("no lock_errors")?;
+        let fields: Vec<&str> = errors
+            .iter()
+            .filter(|error| error.get("code").and_then(Value::as_str) == Some("invalidLockPath"))
+            .filter_map(|error| error.get("field").and_then(Value::as_str))
+            .collect();
+        assert_eq!(fields, ["packages.geo.origin", "packages.geography.origin"]);
+        assert_eq!(value(&outcome)?.get("lock"), Some(&Value::Null));
+    }
+    Ok(())
+}
+
+#[test]
 fn unsupported_version_and_malformed_lock_are_reported() -> Result<(), String> {
     let lock = built_lock(json!([one_file()]))?.replace("schema = 1", "schema = 2");
     let outcome = call(

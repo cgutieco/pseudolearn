@@ -37,13 +37,14 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un manifiesto es un texto en un subconjunto estricto de TOML: comentarios con #, tablas [a] y [a.b], claves desnudas (letras ASCII, dígitos, guion y guion bajo) o entre comillas, cadenas entre comillas dobles con los escapes \\\" \\\\ \\n \\t y \\uXXXX, enteros decimales sin signo, arreglos y tablas en línea. No admite booleanos, flotantes, fechas, arreglos de tablas ni claves con punto. Una clave repetida en una tabla o una tabla definida dos veces produce duplicateKey; una forma fuera del subconjunto produce manifestSyntax; un texto sin clave ni tabla alguna (vacío o solo espacios y comentarios) produce manifestEmpty; un texto mayor que el presupuesto de bytes del anfitrión produce manifestTooLarge. Cada error lleva code, field (los nombres de la ruta unidos por punto, con [n] para el elemento n de un arreglo), line y column, desde 1 y contadas en caracteres, del punto donde empieza el elemento afectado, y se ordenan por línea, columna y código. Los errores de esta regla se informan solos: sin un manifiesto bien formado no se valida el esquema.",
+  "texto": "Un manifiesto es un texto en un subconjunto estricto de TOML: comentarios con #, tablas [a] y [a.b], claves desnudas (letras ASCII, dígitos, guion y guion bajo) o entre comillas, cadenas entre comillas dobles con los escapes \\\" \\\\ \\n \\t y \\uXXXX, enteros decimales sin signo, arreglos y tablas en línea. No admite booleanos, flotantes, fechas, arreglos de tablas ni claves con punto. Una clave repetida en una tabla o una tabla definida dos veces produce duplicateKey; una forma fuera del subconjunto produce manifestSyntax; un texto sin clave ni tabla alguna (vacío o solo espacios y comentarios) produce manifestEmpty; un texto mayor que el presupuesto de bytes del anfitrión produce manifestTooLarge. Cada error lleva code, field (los nombres de la ruta unidos por punto, con [n] para el elemento n de un arreglo), line y column, desde 1 y contadas en caracteres, del punto donde empieza el elemento afectado, y se ordenan por línea, columna, código y field. Los errores de esta regla se informan solos: sin un manifiesto bien formado no se valida el esquema.",
   "verificacion": [
     "C3",
     "C4",
     "C5",
     "C6",
-    "C7"
+    "C7",
+    "C27"
   ]
 }
 ```
@@ -53,14 +54,112 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El esquema versión 1 admite: schema, entero obligatorio igual a 1 (otro valor produce unsupportedSchema); la tabla package con name (cadena no vacía, obligatoria), kind (application o library, obligatorio), profile (es o en; por defecto es) y entries (arreglo de rutas lógicas; por defecto vacío); la tabla profiles, de ruta lógica del paquete a es o en; la tabla dependencies, de alias a una tabla en línea con package (cadena no vacía); y la tabla requests con limits (depth, statements, cells y micro_steps, enteros positivos) y permissions (arreglo de cadenas). Cualquier otra clave, incluidas edition, language y ui, produce unknownField: el manifiesto no elige edición ni idioma de interfaz. Un valor de tipo o contenido inválido produce invalidValue; una ruta de entrada o de perfil que no es una ruta lógica o no está bajo la raíz del paquete, invalidPath; un campo obligatorio ausente, missingField, ubicado en la cabecera de su tabla o en la línea 1 columna 1 si es de la raíz. La raíz del paquete es la ubicación de su manifiesto y no se escribe en él.",
+  "texto": "El esquema versión 1 admite: schema, entero obligatorio igual a 1 (otro valor produce unsupportedSchema); la tabla package con name (cadena no vacía, obligatoria), kind (application o library, obligatorio), profile (es o en; por defecto es) y entries (arreglo de rutas lógicas; por defecto vacío); la tabla profiles, de ruta lógica del paquete a es o en; la tabla dependencies, de alias a una tabla en línea con package (cadena no vacía); y la tabla requests con limits (depth, statements, cells y micro_steps, enteros positivos) y permissions (arreglo de cadenas). Toda ruta lógica es relativa, no vacía y usa /; rechaza componentes vacíos, . y .., barras inversas, raíces o unidades absolutas, controles, caracteres reservados portables, nombres de dispositivo y componentes terminados en punto o espacio. Sus segmentos se normalizan a NFC conservando caja. La clave de comparación aplica minúsculas Unicode a NFC; dos rutas distintas que colisionan, incluidos directorios implícitos y las entradas repetidas por clave, producen invalidPath. Una referencia con otra caja o forma Unicode equivalente resuelve la ruta canónica. Cualquier otra clave, incluidas edition, language y ui, produce unknownField: el manifiesto no elige edición ni idioma de interfaz. Un valor de tipo o contenido inválido produce invalidValue; una ruta de entrada o de perfil que no es una ruta lógica, colisiona o no está bajo la raíz del paquete, invalidPath; un campo obligatorio ausente, missingField, ubicado en la cabecera de su tabla o en la línea 1 columna 1 si es de la raíz. La raíz del paquete es la ubicación del manifiesto y no se escribe en él.",
   "verificacion": [
     "C8",
     "C9",
     "C10",
     "C11",
     "C12",
-    "C13"
+    "C13",
+    "C23",
+    "C24"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "resolve_manifest",
+        "arguments": {
+          "manifest": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\", \"APP/MAIN\"]\n",
+          "location": "app"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "configuration": null,
+            "manifest_errors": [
+              {
+                "code": "invalidPath",
+                "field": "package.entries[1]"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "resolve_manifest",
+        "arguments": {
+          "manifest": "schema = 1\n[package]\nname = \"app\"\nkind = \"library\"\n[profiles]\n\"app/file\" = \"es\"\n\"APP/FILE\" = \"en\"\n",
+          "location": "app"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "configuration": null,
+            "manifest_errors": [
+              {
+                "code": "invalidPath",
+                "field": "profiles.app/file"
+              },
+              {
+                "code": "invalidPath",
+                "field": "profiles.APP/FILE"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
   ]
 }
 ```
@@ -98,13 +197,15 @@
   "id": "R5",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La operación resolve_manifest recibe manifest, location y, opcionalmente, grants, y devuelve configuration y manifest_errors; configuration es nulo si hay errores. Una location que no es una ruta lógica es un fallo de uso. Las operaciones analyze_project y execute_project aceptan en el proyecto manifests (lista de location y text) en lugar de packages, y opcionalmente grants; recibir ambos o ninguno es un fallo de uso. Los paquetes se derivan de los manifiestos con la raíz igual a su ubicación; los errores de manifiesto se devuelven en manifest_errors con su location y bloquean el análisis y la ejecución. execute_project aplica a la ejecución los límites efectivos del paquete que contiene la entrada. Abrir, analizar o ejecutar un proyecto no ejecuta scripts ni concede permisos por su contenido, y el resultado no depende del idioma de interfaz.",
+  "texto": "La operación resolve_manifest recibe manifest, location y, opcionalmente, grants, y devuelve configuration y manifest_errors; configuration es nulo si hay errores. Una location que no es una ruta lógica es un fallo de uso. Las operaciones analyze_project y execute_project aceptan en el proyecto manifests (lista de location y text) en lugar de packages, y opcionalmente grants; recibir ambos o ninguno es un fallo de uso. Las ubicaciones de manifiesto que colisionan por la clave portable son un fallo de uso. Los paquetes se derivan de los manifiestos con la raíz igual a su ubicación normalizada a NFC; los errores de manifiesto se devuelven en manifest_errors con la ubicación documental canónica en NFC y bloquean el análisis y la ejecución. La lista se ordena por clave portable de ubicación y, dentro de cada documento, por línea, columna, código y field. execute_project aplica a la ejecución los límites efectivos del paquete que contiene la entrada. Abrir, analizar o ejecutar un proyecto no ejecuta scripts ni concede permisos por su contenido, y el resultado no depende del idioma de interfaz.",
   "verificacion": [
     "C18",
     "C19",
     "C20",
     "C21",
-    "C22"
+    "C22",
+    "C25",
+    "C26"
   ]
 }
 ```
@@ -1551,5 +1652,135 @@
   "sujetos": [
     "engine"
   ]
+}
+```
+
+
+
+```caso
+{
+  "id": "C25",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "manifests": [
+              {"location": "Zeta", "text": "schema = 1\n[package]\n"},
+              {"location": "café", "text": "schema = 1\n[package]\n"}
+            ],
+            "files": []
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [],
+            "project_errors": [],
+            "manifest_errors": [
+              {"location": "café", "code": "missingField", "field": "package.kind", "line": 2, "column": 1},
+              {"location": "café", "code": "missingField", "field": "package.name", "line": 2, "column": 1},
+              {"location": "Zeta", "code": "missingField", "field": "package.kind", "line": 2, "column": 1},
+              {"location": "Zeta", "code": "missingField", "field": "package.name", "line": 2, "column": 1}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R5",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "manifests": [
+              {"location": "Café", "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"},
+              {"location": "café", "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"}
+            ],
+            "files": []
+          }
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {"failure": {"family": "usage"}}
+      ]
+    }
+  },
+  "sujetos": ["engine"]
+}
+```
+
+
+```caso
+{
+  "id": "C27",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "resolve_manifest",
+        "arguments": {
+          "manifest": "schema = 1\n[package]\n",
+          "location": "app"
+        }
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "configuration": null,
+            "manifest_errors": [
+              {"code": "missingField", "field": "package.kind", "line": 2, "column": 1, "location": "app"},
+              {"code": "missingField", "field": "package.name", "line": 2, "column": 1, "location": "app"}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": ["engine"]
 }
 ```

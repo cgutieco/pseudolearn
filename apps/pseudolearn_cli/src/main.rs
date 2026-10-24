@@ -5,6 +5,7 @@ mod adapter_ir;
 mod aot_adapter;
 mod build_command;
 mod check_command;
+mod confined_sources;
 mod error;
 mod execution_options;
 mod format_command;
@@ -21,6 +22,9 @@ mod run_command;
 mod runtime_archive;
 mod trace_output;
 mod translate_command;
+
+#[cfg(test)]
+mod confined_sources_tests;
 
 use check_command::execute_check;
 use error::CliError;

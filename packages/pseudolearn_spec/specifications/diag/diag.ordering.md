@@ -37,7 +37,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El orden de análisis es determinista: fases léxica, sintáctica y semántica; dentro de cada fase, posición original y desempate estable por código. No se elimina multiplicidad para ocultar una cascada: cada diagnóstico permitido aparece una vez por situación. La comparación puede ser por multiconjunto cuando el caso no observa orden.",
+  "texto": "El orden público es independiente del orden de descubrimiento y del idioma de interfaz. En un proyecto, cada diagnóstico con fuente se ordena por nombre de paquete normalizado a NFC y minúsculas Unicode, segmentos de módulo normalizados en NFC conservando caja, fase léxica, sintáctica y semántica, posición original, extensión y código. Las demás clases siguen en orden de clase después de esas fases y usan posición, extensión y código. La severidad, los argumentos tipados y la secuencia de ubicaciones relacionadas desempatan sin usar prosa ni identificadores opacos; relacionados conserva su orden significativo. Los diagnósticos sin fuente van después de los que tienen fuente y usan las mismas claves locales. En una fuente sin proyecto se conserva la misma clave local. No se elimina multiplicidad para ocultar una cascada: cada diagnóstico permitido aparece una vez por situación. La comparación puede ser por multiconjunto cuando el caso no observa orden.",
   "verificacion": [
     "C1",
     "C2",

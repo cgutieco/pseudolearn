@@ -7,8 +7,8 @@ Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración e
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Leer `pseudolearn.toml` de cada paquete desde la raíz concedida y aportar las concesiones de límites del anfitrión | Operaciones `analyze_project`, `execute_project` y `resolve_manifest` de la API pública | `PG-1.12` |
-| Leer el lock, hashear los bytes leídos, verificarlo antes de compilar y escribirlo solo por orden explícita, de forma atómica (temporal en el mismo directorio y renombrado) y con los permisos del anfitrión | Operaciones `build_lock` y `resolve_lock` de la API pública; el lock del lenguaje es distinto de los `Cargo.lock` | `PG-1.12` |
+| Resolver manifiestos desde disco, obtener concesiones y construir el snapshot del proyecto | Operaciones `analyze_project`, `execute_project` y `resolve_manifest` de la API pública | Integración del adaptador |
+| Leer y verificar el lock desde una raíz concedida y escribirlo solo por orden explícita, de forma atómica | Operaciones `build_lock` y `resolve_lock` de la API pública; el lock del lenguaje es distinto de los `Cargo.lock` | Integración del adaptador |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -21,6 +21,17 @@ Comandos de compilación y verificación:
 - Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject cli --operation cli`.
 - Adaptador del protocolo SEE para pruebas automatizadas: `pseudo --see-adapter`; con `pseudo --see-adapter aot` el mismo binario responde como el sujeto `aot` (conformidad: `see conform --subject aot` desde `packages/pseudolearn_spec`).
 Distribución nativa en macOS, Linux y Windows. Sin secretos.
+
+`comprobar/check` abre cada raíz solicitada con una capacidad de directorio de `cap-std` y lee sus
+archivos relativos a ese descriptor. Un archivo fuente se abre una vez; los bytes de ese descriptor
+se conservan hasta el análisis. Los symlinks se siguen solo dentro de la raíz concedida; escapes,
+ciclos, colisiones de ruta portable, nombres no UTF-8 y errores de recorrido abortan antes de imprimir
+resultados. Cada ruta externa requiere su propia raíz indicada en los argumentos. `cap-std` aporta
+operaciones relativas al descriptor y confinamiento seguro del anfitrión; se descartan comprobaciones
+de prefijo sobre rutas absolutas, que no cierran carreras entre validación y apertura. El comando
+`check` entrega los bytes conservados a la API de análisis y presenta resultados por fuente; todavía
+no carga proyectos completos. El recorrido confinado se verificó en macOS; no se certifican otras
+plataformas por analogía.
 
 `cargo build` construye antes, desde `build.rs`, la biblioteca estática del runtime (`cargo rustc --release --crate-type staticlib -p pseudolearn_aot_rt` sobre el motor, con su propio directorio de destino bajo `OUT_DIR`) y la depura con `strip`. Requiere `cargo` y `strip`. Compilar un programa requiere además el driver `cc` del sistema en el `PATH`.
 
@@ -83,8 +94,8 @@ la salida del programa se conserva literalmente. ri/ir imprime la RI canónica d
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
 
-Perfil por archivo: el CLI aún no lee proyectos (`PG-1.12`). Cuando lo haga, `--vocabulario` equivaldrá al argumento `profile` de
-un archivo, el manifiesto aportará las excepciones y el idioma de la interfaz no cambiará el programa ni el lock.
+Perfil por archivo: `--vocabulario` equivale al argumento `profile` de un archivo; al integrar el
+análisis de proyectos, el manifiesto aportará las excepciones y el idioma de interfaz no cambiará el programa ni el lock.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -97,6 +108,10 @@ Problema: `build.rs` necesita compilar el runtime para la plataforma anfitriona 
 destino del `cargo build` en curso. Elección: un directorio de destino propio bajo `OUT_DIR` y `--locked`, de modo que
 el motor no cambia su `Cargo.lock`. Descartado: añadir `staticlib` a los tipos de crate de `pseudolearn_aot_rt`, que
 generaría la biblioteca en cada compilación del motor.
+
+Problema: el recorrido debe confinar aperturas aunque cambie un enlace simbólico. Elección: directorios `cap-std` abiertos
+una vez y operaciones relativas a esa capacidad; se toma su API segura de directorio ([`cap_std::fs::Dir`](https://docs.rs/cap-std/latest/cap_std/fs/struct.Dir.html)) y se descarta resolver nombres con `std::fs` después de comprobar su prefijo. No se añade `unsafe` propio.
+La dependencia introduce versiones paralelas de `io-lifetimes` y enlaces de Windows en su grafo de host; la regla de dependencias omite solo esas versiones exactas, dejando activo el rechazo general de versiones múltiples.
 
 Código inglés sin comentarios. Mensajes desde TOOL.CLI.MESSAGES y DIAG.MESSAGES generados; sin copias ni prosa en la lógica.
 Errores como valores y códigos de salida de TOOL.CLI.CONVENTIONS; ningún pánico cruza la frontera.

@@ -136,13 +136,46 @@ fn malformed_requests_are_usage_failures() {
         "packages": [{"name": "app", "root": "app", "kind": "binary"}],
         "files": []
     });
+    let colliding_package_names = json!({
+        "project_id": "1", "revision_id": "1",
+        "packages": [
+            {"name": "Geo", "root": "libs/geo", "kind": "library"},
+            {"name": "geo", "root": "vendor/geo", "kind": "library"}
+        ],
+        "files": []
+    });
     let bad_identifier = json!({
         "project_id": "01", "revision_id": "1", "packages": [], "files": []
+    });
+    let colliding_roots = json!({
+        "project_id": "1", "revision_id": "1",
+        "packages": [
+            {"name": "geo", "root": "Libs/Geo", "kind": "library"},
+            {"name": "geography", "root": "libs/geo", "kind": "library"}
+        ],
+        "files": []
+    });
+    let colliding_manifest_locations = json!({
+        "project_id": "1", "revision_id": "1",
+        "manifests": [
+            {"location": "Libs/Geo", "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"},
+            {"location": "libs/geo", "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"}
+        ],
+        "files": []
+    });
+    let invalid_manifest_location = json!({
+        "project_id": "1", "revision_id": "1",
+        "manifests": [{"location": "../geo", "text": "schema = 1\n"}],
+        "files": []
     });
     for arguments in [
         json!({"project": project(duplicate)}),
         json!({"project": invalid_kind}),
+        json!({"project": colliding_package_names}),
         json!({"project": bad_identifier}),
+        json!({"project": colliding_roots}),
+        json!({"project": colliding_manifest_locations}),
+        json!({"project": invalid_manifest_location}),
         json!({}),
     ] {
         let outcome = call("analyze_project", arguments);

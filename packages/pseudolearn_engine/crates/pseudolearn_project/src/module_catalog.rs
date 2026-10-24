@@ -1,7 +1,10 @@
 use crate::input_validation;
-use crate::logical_path::{is_prefix, segments};
+use crate::logical_path::{is_prefix, key, key_parts, segments};
 use crate::project_error::{MalformedProject, ProjectError, ProjectErrorCode};
-use crate::project_model::{ModuleId, PackageId, PackageKind, ProjectInput};
+use crate::project_model::{
+    FileInput, ModuleId, PackageId, PackageInput, PackageKind, ProjectInput,
+};
+use pseudolearn_source::IdentifierNormalizer;
 use pseudolearn_source::{
     ProjectId, RevisionId, SourceId, SourceIdentity, SourceText, source_text_with_identity,
 };
@@ -82,11 +85,35 @@ impl ProjectCatalog {
     }
 
     pub fn module_by_path(&self, path: &str) -> Option<ModuleId> {
+        let target = key(path)?;
         self.modules
             .iter()
-            .find(|module| module.path == path)
+            .find(|module| key(&module.path).as_ref() == Some(&target))
             .map(|module| module.id)
     }
+}
+
+pub fn source_order_keys(catalog: &ProjectCatalog) -> BTreeMap<SourceId, Vec<String>> {
+    catalog
+        .modules()
+        .iter()
+        .filter_map(|module| {
+            let package = catalog.package(module.package)?;
+            let normalized_name = IdentifierNormalizer::normalize(&package.name);
+            let name: String = normalized_name
+                .chars()
+                .flat_map(char::to_lowercase)
+                .collect();
+            let mut key = vec![IdentifierNormalizer::normalize(&name)];
+            key.extend(
+                module
+                    .segments
+                    .iter()
+                    .map(|segment| IdentifierNormalizer::normalize(segment)),
+            );
+            Some((module.source_id, key))
+        })
+        .collect()
 }
 
 fn packages(input: &ProjectInput, errors: &mut Vec<ProjectError>) -> Vec<Package> {
@@ -104,28 +131,38 @@ fn packages(input: &ProjectInput, errors: &mut Vec<ProjectError>) -> Vec<Package
     input
         .packages
         .iter()
-        .map(|package| {
-            let mut dependencies = BTreeMap::new();
-            for (alias, target) in &package.dependencies {
-                match identifiers.get(target.as_str()) {
-                    Some(identifier) => {
-                        dependencies.insert(alias.clone(), *identifier);
-                    }
-                    None => errors.push(ProjectError::new(
-                        ProjectErrorCode::DependencyNotFound,
-                        Some(&package.name),
-                    )),
-                }
-            }
-            Package {
-                name: package.name.clone(),
-                root: segments(&package.root).unwrap_or_default(),
-                kind: package.kind,
-                entries: package.entries.clone(),
-                dependencies,
-            }
-        })
+        .map(|package| build_package(package, &identifiers, errors))
         .collect()
+}
+
+fn build_package(
+    package: &PackageInput,
+    identifiers: &BTreeMap<&str, PackageId>,
+    errors: &mut Vec<ProjectError>,
+) -> Package {
+    let mut dependencies = BTreeMap::new();
+    for (alias, target) in &package.dependencies {
+        match identifiers.get(target.as_str()) {
+            Some(identifier) => {
+                dependencies.insert(alias.clone(), *identifier);
+            }
+            None => errors.push(ProjectError::new(
+                ProjectErrorCode::DependencyNotFound,
+                Some(&package.name),
+            )),
+        }
+    }
+    Package {
+        name: package.name.clone(),
+        root: segments(&package.root).unwrap_or_default(),
+        kind: package.kind,
+        entries: package
+            .entries
+            .iter()
+            .filter_map(|entry| segments(entry).map(|parts| parts.join("/")))
+            .collect(),
+        dependencies,
+    }
 }
 
 struct PlacedFile {
@@ -142,26 +179,43 @@ fn place_files(
 ) -> Vec<PlacedFile> {
     let mut placed = Vec::new();
     for (file, entry) in input.files.iter().enumerate() {
-        let path = segments(&entry.path).unwrap_or_default();
-        let owners: Vec<usize> = packages
-            .iter()
-            .enumerate()
-            .filter(|(_, package)| is_prefix(&package.root, &path))
-            .map(|(index, _)| index)
-            .collect();
-        match owners.as_slice() {
-            [owner] => placed.push(place(file, *owner, packages, path)),
-            [] => errors.push(ProjectError::new(
-                ProjectErrorCode::ModuleOutsideRoots,
-                Some(&entry.path),
-            )),
-            _ => errors.push(ProjectError::new(
-                ProjectErrorCode::ModuleInMultipleRoots,
-                Some(&entry.path),
-            )),
+        if let Some(file) = place_file(file, entry, packages, errors) {
+            placed.push(file);
         }
     }
     placed
+}
+
+fn place_file(
+    file: usize,
+    entry: &FileInput,
+    packages: &[Package],
+    errors: &mut Vec<ProjectError>,
+) -> Option<PlacedFile> {
+    let path = segments(&entry.path).unwrap_or_default();
+    let owners: Vec<usize> = packages
+        .iter()
+        .enumerate()
+        .filter(|(_, package)| is_prefix(&package.root, &path))
+        .map(|(index, _)| index)
+        .collect();
+    match owners.as_slice() {
+        [owner] => Some(place(file, *owner, packages, path)),
+        [] => {
+            errors.push(ProjectError::new(
+                ProjectErrorCode::ModuleOutsideRoots,
+                Some(&entry.path),
+            ));
+            None
+        }
+        _ => {
+            errors.push(ProjectError::new(
+                ProjectErrorCode::ModuleInMultipleRoots,
+                Some(&entry.path),
+            ));
+            None
+        }
+    }
 }
 
 fn place(file: usize, owner: usize, packages: &[Package], path: Vec<String>) -> PlacedFile {
@@ -179,7 +233,11 @@ fn assemble(
     packages: Vec<Package>,
     mut placed: Vec<PlacedFile>,
 ) -> ProjectCatalog {
-    placed.sort_by(|left, right| left.segments.cmp(&right.segments));
+    placed.sort_by(|left, right| {
+        key_parts(&left.segments)
+            .cmp(&key_parts(&right.segments))
+            .then_with(|| left.segments.cmp(&right.segments))
+    });
     let mut modules = Vec::new();
     let mut sources = Vec::new();
     for (index, entry) in placed.into_iter().enumerate() {
@@ -190,7 +248,7 @@ fn assemble(
         modules.push(Module {
             id: ModuleId(u32::try_from(index).unwrap_or(u32::MAX)),
             package: entry.package,
-            path: file.path.clone(),
+            path: entry.segments.join("/"),
             segments: entry.relative,
             source_id,
         });

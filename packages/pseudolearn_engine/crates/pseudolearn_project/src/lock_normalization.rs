@@ -1,16 +1,25 @@
 use crate::lock_error::{LockError, LockErrorCode};
 use crate::lock_model::{Lock, LockKind, LockPackage, is_digest};
-use crate::logical_path::segments;
-use std::collections::BTreeMap;
+use crate::logical_path::{key, normalize, segments};
+use std::collections::{BTreeMap, BTreeSet};
 
 impl Lock {
     pub fn from_packages(packages: Vec<LockPackage>) -> Result<Self, Vec<LockError>> {
         let mut errors = Vec::new();
         let mut by_name: BTreeMap<String, LockPackage> = BTreeMap::new();
+        let colliding_origins = colliding_origins(&packages);
         for mut package in packages {
             package.dependencies.sort();
             package.dependencies.dedup();
+            normalize_package_paths(&mut package, &mut errors);
             check_package(&package, &mut errors);
+            if key(&package.origin).is_some_and(|origin| colliding_origins.contains(&origin)) {
+                errors.push(LockError::new(
+                    LockErrorCode::InvalidLockPath,
+                    &format!("{}.origin", field(&package.name)),
+                    package.position,
+                ));
+            }
             if by_name.contains_key(&package.name) {
                 errors.push(LockError::new(
                     LockErrorCode::AmbiguousOrigin,
@@ -28,6 +37,59 @@ impl Lock {
         LockError::sort(&mut errors);
         Err(errors)
     }
+}
+
+fn colliding_origins(packages: &[LockPackage]) -> BTreeSet<Vec<String>> {
+    let mut names_by_origin: BTreeMap<Vec<String>, BTreeSet<&str>> = BTreeMap::new();
+    for package in packages {
+        if let Some(origin) = key(&package.origin) {
+            names_by_origin
+                .entry(origin)
+                .or_default()
+                .insert(&package.name);
+        }
+    }
+    names_by_origin
+        .into_iter()
+        .filter_map(|(origin, names)| (names.len() > 1).then_some(origin))
+        .collect()
+}
+
+fn normalize_package_paths(package: &mut LockPackage, errors: &mut Vec<LockError>) {
+    if let Some(origin) = normalize(&package.origin) {
+        package.origin = origin;
+    }
+    let mut files = BTreeMap::new();
+    let mut keys = BTreeSet::new();
+    for (path, digest) in std::mem::take(&mut package.files) {
+        let here = format!("{}.files.{path}", field(&package.name));
+        let Some(normalized) = normalize(&path) else {
+            errors.push(LockError::new(
+                LockErrorCode::InvalidLockPath,
+                &here,
+                package.position,
+            ));
+            continue;
+        };
+        let Some(path_key) = key(&normalized) else {
+            errors.push(LockError::new(
+                LockErrorCode::InvalidLockPath,
+                &here,
+                package.position,
+            ));
+            continue;
+        };
+        if !keys.insert(path_key) {
+            errors.push(LockError::new(
+                LockErrorCode::InvalidLockPath,
+                &here,
+                package.position,
+            ));
+            continue;
+        }
+        files.insert(normalized, digest);
+    }
+    package.files = files;
 }
 
 pub(crate) fn field(name: &str) -> String {

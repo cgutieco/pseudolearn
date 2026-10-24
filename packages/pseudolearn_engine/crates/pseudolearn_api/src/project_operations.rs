@@ -139,7 +139,8 @@ fn parse_modules(catalog: &ProjectCatalog, request: &ProjectRequest) -> Parsed {
         let Some(source) = catalog.source(module.id) else {
             continue;
         };
-        let unit = resolved.get(&module.path);
+        let unit = pseudolearn_project::logical_path_key(&module.path)
+            .and_then(|path| resolved.get(&path));
         let profile = unit.map_or(request.profile, |found| found.profile);
         let (tree, mut parsed) = parse_module_source(source, profile, terminator);
         diagnostics.append(&mut parsed);

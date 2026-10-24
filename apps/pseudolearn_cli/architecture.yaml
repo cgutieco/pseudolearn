@@ -5,7 +5,7 @@ layers:
     path: .
     may_import: []
     permitted_path_dependencies: [pseudolearn_api]
-    external_dependencies: [serde, serde_json, pseudolearn_api]
+    external_dependencies: [serde, serde_json, cap-std, pseudolearn_api]
     unsafe_allowed: false
   - name: xtask
     path: xtask

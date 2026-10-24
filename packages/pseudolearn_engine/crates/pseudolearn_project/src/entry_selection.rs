@@ -33,7 +33,7 @@ pub(crate) fn validate_declared(catalog: &ProjectCatalog, errors: &mut Vec<Proje
                 ));
                 continue;
             }
-            if !seen.insert(entry.as_str()) {
+            if !seen.insert(crate::logical_path::key(entry).unwrap_or_default()) {
                 errors.push(ProjectError::new(
                     ProjectErrorCode::EntryDuplicated,
                     Some(entry),

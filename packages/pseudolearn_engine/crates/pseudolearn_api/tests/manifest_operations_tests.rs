@@ -49,6 +49,40 @@ fn resolve_manifest_reports_errors_and_no_configuration() -> Result<(), String> 
 }
 
 #[test]
+fn resolve_manifest_reports_its_canonical_nfc_location() -> Result<(), String> {
+    let outcome = call(
+        "resolve_manifest",
+        json!({"manifest": "schema 1\n", "location": "cafe\u{0301}"}),
+    );
+    assert_eq!(
+        value(&outcome)?.pointer("/manifest_errors/0/location"),
+        Some(&json!("café"))
+    );
+    Ok(())
+}
+
+#[test]
+fn resolve_manifest_orders_profile_routes_by_portable_key() -> Result<(), String> {
+    let manifest = "schema = 1\n[package]\nname = \"app\"\nkind = \"library\"\n[profiles]\n\"app/Zeta\" = \"en\"\n\"app/alfa\" = \"es\"\n";
+    let outcome = call(
+        "resolve_manifest",
+        json!({"manifest": manifest, "location": "app"}),
+    );
+    let profiles = value(&outcome)?
+        .pointer("/configuration/profiles")
+        .and_then(Value::as_array)
+        .ok_or("profiles are absent")?;
+    assert_eq!(
+        profiles
+            .iter()
+            .filter_map(|profile| profile.get("path").and_then(Value::as_str))
+            .collect::<Vec<_>>(),
+        ["app/alfa", "app/Zeta"]
+    );
+    Ok(())
+}
+
+#[test]
 fn resolve_manifest_ignores_the_interface_language() -> Result<(), String> {
     let arguments = |profile: &str| json!({"manifest": APP, "location": "app", "profile": profile, "grants": {"limits": {"statements": 9}}});
     let spanish = call("resolve_manifest", arguments("es"));

@@ -113,7 +113,9 @@ fn canonical_text_parses_back_to_the_same_lock() -> Result<(), String> {
 
 #[test]
 fn names_needing_escapes_survive_the_round_trip() -> Result<(), String> {
-    let lock = build(vec![locked("a\"b\\c", &[], &[])])?;
+    let mut package = locked("a\"b\\c", &[], &[]);
+    package.origin = "libs/geo".to_owned();
+    let lock = build(vec![package])?;
     let parsed =
         Lock::parse(&lock.canonical_text(), 65536).map_err(|errors| format!("{errors:?}"))?;
     assert!(parsed.packages.contains_key("a\"b\\c"));

@@ -132,14 +132,19 @@ impl Manifest {
         self.profiles
             .iter()
             .filter(|exception| covers(&exception.path, path))
-            .max_by_key(|exception| exception.path.len())
+            .max_by_key(|exception| {
+                crate::logical_path::key(&exception.path).map_or(0, |segments| segments.len())
+            })
             .map(|exception| (exception.profile, exception.position))
     }
 }
 
 fn covers(exception_path: &str, path: &str) -> bool {
-    path == exception_path
-        || path
-            .strip_prefix(exception_path)
-            .is_some_and(|rest| rest.starts_with('/'))
+    let Some(exception) = crate::logical_path::key(exception_path) else {
+        return false;
+    };
+    let Some(path) = crate::logical_path::key(path) else {
+        return false;
+    };
+    path.len() >= exception.len() && path.starts_with(&exception)
 }

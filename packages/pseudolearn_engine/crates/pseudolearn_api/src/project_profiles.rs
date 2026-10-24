@@ -16,8 +16,10 @@ pub(crate) fn resolve_units(request: &ProjectRequest) -> BTreeMap<String, UnitPr
         .files
         .iter()
         .map(|file| {
-            let resolved = resolve_profile(&sources(request, &file.path, &file.text));
-            (file.path.clone(), unit_profile(&resolved))
+            let path = pseudolearn_project::logical_path_key(&file.path)
+                .unwrap_or_else(|| file.path.clone());
+            let resolved = resolve_profile(&sources(request, &path, &file.text));
+            (path, unit_profile(&resolved))
         })
         .collect()
 }
@@ -32,7 +34,10 @@ fn unit_profile(resolved: &ResolvedProfile) -> UnitProfile {
 fn sources(request: &ProjectRequest, path: &str, text: &str) -> ProfileSources {
     let configuration = owner(&request.configurations, path);
     ProfileSources {
-        argument: request.file_profiles.get(path).copied().map(to_choice),
+        argument: pseudolearn_project::logical_path_key(path)
+            .and_then(|key| request.file_profiles.get(&key))
+            .copied()
+            .map(to_choice),
         exception: configuration.and_then(|found| found.manifest.profile_exception_for(path)),
         package: configuration.and_then(|found| found.manifest.declared_profile()),
         opening: crate::analyze::detect_vocabulary_profile(text).and_then(choice_named),
@@ -44,13 +49,19 @@ fn owner<'configurations>(
     configurations: &'configurations [Configuration],
     path: &str,
 ) -> Option<&'configurations Configuration> {
+    let path_key = pseudolearn_project::logical_path_key(path)?;
     configurations
         .iter()
         .filter(|configuration| {
-            path.strip_prefix(configuration.root.as_str())
-                .is_some_and(|rest| rest.starts_with('/'))
+            pseudolearn_project::logical_path_key(&configuration.root).is_some_and(|root| {
+                path_key
+                    .strip_prefix(&root)
+                    .is_some_and(|rest| rest.starts_with('/'))
+            })
         })
-        .max_by_key(|configuration| configuration.root.len())
+        .max_by_key(|configuration| {
+            pseudolearn_project::logical_path_key(&configuration.root).map_or(0, |root| root.len())
+        })
 }
 
 fn choice_named(name: &str) -> Option<ProfileChoice> {

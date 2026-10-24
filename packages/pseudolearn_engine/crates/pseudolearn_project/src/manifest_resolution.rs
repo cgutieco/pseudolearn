@@ -54,7 +54,7 @@ impl Configuration {
             return Err(errors);
         }
         Ok(Self {
-            root: request.location.to_owned(),
+            root: root.join("/"),
             manifest,
             limits,
         })
@@ -92,15 +92,30 @@ pub fn resolve_all(
         };
         match Configuration::resolve(&request) {
             Ok(configuration) => configurations.push(configuration),
-            Err(errors) => failures.extend(errors.into_iter().map(|error| LocatedError {
-                location: manifest.location.clone(),
-                error,
+            Err(errors) => failures.extend(errors.into_iter().map(|error| {
+                LocatedError {
+                    location: crate::logical_path::normalize(&manifest.location)
+                        .unwrap_or_else(|| manifest.location.clone()),
+                    error,
+                }
             })),
         }
     }
     if failures.is_empty() {
         return Ok(configurations);
     }
-    failures.sort_by(|left, right| left.location.cmp(&right.location));
+    failures.sort_by(|left, right| {
+        location_key(&left.location)
+            .cmp(&location_key(&right.location))
+            .then_with(|| left.error.position.cmp(&right.error.position))
+            .then_with(|| left.error.code.cmp(&right.error.code))
+            .then_with(|| left.error.field.cmp(&right.error.field))
+    });
     Err(failures)
+}
+
+fn location_key(location: &str) -> String {
+    crate::logical_path::key(location)
+        .map(|segments| segments.join("/"))
+        .unwrap_or_else(|| location.to_owned())
 }

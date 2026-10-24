@@ -143,7 +143,15 @@ textos. La ejecución nativa y la CLI de proyectos quedan fuera.
 
 Los errores de paquetes en ciclo llevan además `chain`. Los diagnósticos de ciclo de importación relacionan tramos
 de otros archivos: cada tramo relacionado se convierte con la fuente que su propia identidad señala (`project_diagnostics`),
-nunca con la del diagnóstico principal.
+nunca con la del diagnóstico principal. La proyección construye una sola vez el índice de fuentes, conserva los
+relacionados en su secuencia original y usa las claves canónicas del catálogo para ordenar todos los diagnósticos.
+Una fuente ausente queda después de las fuentes conocidas y no se sustituye por el primer módulo. Una identidad
+desconocida es un fallo interno controlado. La clave de orden no cambia los IDs opacos que devuelve el contrato,
+y el idioma de interfaz no modifica el orden.
+
+Los errores de manifiestos múltiples conservan la ubicación documental en NFC y se ordenan por su clave portable;
+dentro de cada documento usan línea, columna, código y campo. Los errores de un lock conservan la posición y el
+campo del propio documento.
 
 Problema: el contenido fijado de las dependencias debe verificarse antes de compilar, sin red. Elección: `build_lock`
 recibe los paquetes (nombre, origen lógico, tipo, dependencias y, para los fijados, archivos con ruta y texto), calcula
@@ -171,7 +179,7 @@ de un diagnóstico (fichas y tipos) usan el perfil del archivo que lo contiene (
 añade al archivo contradictorio y bloquea la ejecución. Al bajar a RI, el vocabulario del módulo es el de la entrada y se
 registra la tabla `source_id → perfil` de todos los archivos; la ejecución y la compilación nativa formatean los lógicos
 con el perfil del archivo que contiene cada operación. `native_build` rellena `site_boolean_words` solo si el módulo tiene
-tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT sigue sin aceptar proyectos (`PG-1.12`).
+tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT aún no acepta proyectos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

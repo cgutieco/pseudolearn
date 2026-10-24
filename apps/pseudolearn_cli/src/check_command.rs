@@ -1,13 +1,13 @@
 #![forbid(unsafe_code)]
 
+use crate::confined_sources;
 use crate::error::CliError;
-use crate::messages::{format_diagnostic_line, missing_input, unreadable_input};
+use crate::messages::{format_diagnostic_line, missing_input};
 use crate::options::CliOptions;
 use pseudolearn_api::{
     AnalyzeRequest, AnalyzeResponse, ApiDiagnostic, detect_vocabulary_profile, execute_analyze,
 };
 use serde_json::json;
-use std::path::Path;
 
 pub fn execute_check(options: &CliOptions, paths: &[String]) -> Result<i32, CliError> {
     if paths.is_empty() {
@@ -16,12 +16,13 @@ pub fn execute_check(options: &CliOptions, paths: &[String]) -> Result<i32, CliE
         ));
     }
 
-    let files_to_check = collect_files(paths, &options.interface_language)?;
+    let sources = confined_sources::collect(paths, &options.interface_language)?;
     let mut json_files = Vec::new();
     let mut has_error = false;
 
-    for file_path in &files_to_check {
-        let (file_has_error, json_representation) = check_target_file(options, file_path)?;
+    for source in &sources {
+        let (file_has_error, json_representation) =
+            check_source(options, &source.path, &source.text);
         if file_has_error {
             has_error = true;
         }
@@ -38,18 +39,16 @@ pub fn execute_check(options: &CliOptions, paths: &[String]) -> Result<i32, CliE
     if has_error { Ok(1) } else { Ok(0) }
 }
 
-fn check_target_file(
+fn check_source(
     options: &CliOptions,
     file_path: &str,
-) -> Result<(bool, Option<serde_json::Value>), CliError> {
-    let content = std::fs::read_to_string(file_path).map_err(|_| {
-        CliError::Operational(unreadable_input(&options.interface_language, file_path))
-    })?;
-    let vocabulary = determine_vocabulary(options, &content);
+    content: &str,
+) -> (bool, Option<serde_json::Value>) {
+    let vocabulary = determine_vocabulary(options, content);
     let strictness = options.strictness.as_deref().unwrap_or("strict");
     let request = AnalyzeRequest {
         source: None,
-        program: content.clone(),
+        program: content.to_owned(),
         profile: vocabulary,
         strictness: strictness.to_owned(),
     };
@@ -61,10 +60,10 @@ fn check_target_file(
 
     if options.json_output {
         let json_representation = build_json_file(file_path, &response.diagnostics);
-        Ok((has_error, Some(json_representation)))
+        (has_error, Some(json_representation))
     } else {
         render_diagnostics(file_path, &response, &options.interface_language);
-        Ok((has_error, None))
+        (has_error, None)
     }
 }
 
@@ -110,44 +109,4 @@ fn build_json_file(file_path: &str, diagnostics: &[ApiDiagnostic]) -> serde_json
         "path": file_path,
         "diagnostics": converted
     })
-}
-
-fn collect_files(paths: &[String], locale: &str) -> Result<Vec<String>, CliError> {
-    let mut collected = Vec::new();
-    for target in paths {
-        let path = Path::new(target);
-        if path.is_file() {
-            collected.push(target.clone());
-        } else if path.is_dir() {
-            let mut directory_files = Vec::new();
-            discover_pseudo_files(path, target, &mut directory_files);
-            directory_files.sort();
-            collected.extend(directory_files);
-        } else {
-            return Err(CliError::Operational(unreadable_input(locale, target)));
-        }
-    }
-    Ok(collected)
-}
-
-fn discover_pseudo_files(base_path: &Path, prefix: &str, output: &mut Vec<String>) {
-    let Ok(entries) = std::fs::read_dir(base_path) else {
-        return;
-    };
-    for entry_result in entries {
-        let Ok(entry) = entry_result else {
-            continue;
-        };
-        let Ok(file_type) = entry.file_type() else {
-            continue;
-        };
-        let file_name = entry.file_name();
-        let name_str = file_name.to_string_lossy();
-        let child_prefix = format!("{prefix}/{name_str}");
-        if file_type.is_dir() {
-            discover_pseudo_files(&entry.path(), &child_prefix, output);
-        } else if file_type.is_file() && name_str.ends_with(".pseudo") {
-            output.push(child_prefix);
-        }
-    }
 }
