@@ -335,8 +335,10 @@ Cierre común (definiciones en §4.0):
 |---|---|---|---|
 | PG-1.08–.11 | Cumplido | Orden/portabilidad revisados; alfabeto español estricto y archivo suelto compatibles | Contratos estables 1.0.0 revisados y reanclados solo cuando cambió el contenido; corpus sin cambiar esperados previos |
 
-Revisión Git del alcance autorizado `.08`–`.11`: pendiente del commit/push de esta iteración. Verificadores, cobertura
-dirigida y omisiones están registrados en el plan detallado. PG-1.12/.13 y el cierre común C01–C13 permanecen abiertos.
+Revisión Git del alcance autorizado `.08`–`.11`: commit de implementación `d751f63` publicado por push ordinario
+en `feature/agregar-ruta-de-especificacion`; el registro de cierre de esta iteración se publica en el commit documental
+siguiente. Verificadores, cobertura dirigida y omisiones están registrados en el plan detallado. PG-1.12/.13 y el cierre
+común C01–C13 permanecen abiertos.
 
 ### 4.4 PG-2 · Tipos y abstracción
 

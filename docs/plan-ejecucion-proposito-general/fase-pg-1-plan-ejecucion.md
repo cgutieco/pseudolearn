@@ -613,7 +613,8 @@ siguen aplicando. Rendimiento léxico Unicode: 960 muestras (30 por workload); m
 flexible 42.31/54.17, inglés estricto 50.25/147.25, español flexible 48.56/58.83, español estricto
 48.33/58.71. No se cierra PG-1 completo: PG-1.12/.13 y C01–C13 permanecen fuera de esta autorización.
 Plataforma comprobada: macOS; `EPERM` impidió crear un nombre de archivo no UTF-8, y no se certifican
-Linux ni Windows.
+Linux ni Windows. El commit de implementación `d751f63` se publicó por push ordinario en
+`feature/agregar-ruta-de-especificacion`; este registro documental deja constancia del cierre autorizado.
 
 ### 11.2 Cierre común de PG-1
 
