@@ -10,10 +10,15 @@ pub(crate) fn handle_of(word: u64) -> Result<Handle, Trap> {
         .map_err(|_| Trap::named("internalFault"))
 }
 
-pub(crate) fn format_word(engine: &AotEngine, word: u64, kind: ValueKind) -> Result<String, Trap> {
+pub(crate) fn format_word(
+    engine: &AotEngine,
+    word: u64,
+    (kind, profile_index): (ValueKind, usize),
+) -> Result<String, Trap> {
+    let words = engine.boolean_words_for(profile_index);
     let lexemes = BooleanLexemes {
-        truth: &engine.boolean_words.truth,
-        falsity: &engine.boolean_words.falsity,
+        truth: &words.truth,
+        falsity: &words.falsity,
     };
     let primitive = match kind {
         ValueKind::Integer => PrimitiveValue::Integer(i64::from_ne_bytes(word.to_ne_bytes())),

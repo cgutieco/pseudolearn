@@ -4,6 +4,14 @@ use pseudolearn_source::{SourceText, Span};
 use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind};
 
 pub(crate) fn convert(diagnostic: &Diagnostic, source: &SourceText, locale: &str) -> ApiDiagnostic {
+    convert_in_profile(diagnostic, source, (locale, locale))
+}
+
+pub(crate) fn convert_in_profile(
+    diagnostic: &Diagnostic,
+    source: &SourceText,
+    (locale, profile): (&str, &str),
+) -> ApiDiagnostic {
     let checked = if pseudolearn_diagnostics::validate_arguments(diagnostic) {
         std::borrow::Cow::Borrowed(diagnostic)
     } else {
@@ -12,7 +20,7 @@ pub(crate) fn convert(diagnostic: &Diagnostic, source: &SourceText, locale: &str
             diagnostic.span,
         ))
     };
-    let diagnostic = crate::argument_conversion::resolve(&checked, locale);
+    let diagnostic = crate::argument_conversion::resolve(&checked, profile);
     let severity = match diagnostic.severity {
         DiagnosticSeverity::Error => "error",
         DiagnosticSeverity::Warning => "warning",

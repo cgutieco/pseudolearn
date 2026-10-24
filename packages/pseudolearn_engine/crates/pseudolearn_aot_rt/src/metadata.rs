@@ -10,6 +10,7 @@ pub struct ExecutableSettings {
     pub forced_collection: bool,
     pub limits: AotLimits,
     pub boolean_words: BooleanWords,
+    pub site_boolean_words: Vec<BooleanWords>,
     pub error_template: String,
     pub warning_template: String,
     pub information_template: String,

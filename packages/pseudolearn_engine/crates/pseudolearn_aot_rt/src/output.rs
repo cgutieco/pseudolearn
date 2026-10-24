@@ -1,7 +1,7 @@
 use crate::context::AotRuntimeContext;
 use crate::format::format_word;
 use crate::guard::{Entry, run_entry};
-use crate::kinds::{NEWLINE_FLAG, kind_code, kind_from_code};
+use crate::kinds::{NEWLINE_FLAG, kind_code, kind_from_code, profile_index};
 use crate::trap::Trap;
 use std::io::Write;
 
@@ -17,7 +17,7 @@ pub extern "C" fn rt_aot_write(
 
 fn write_value(entry: &mut Entry<'_>, word: u64, descriptor: u32) -> Result<u64, Trap> {
     let kind = kind_from_code(kind_code(descriptor))?;
-    let mut text = format_word(entry.engine, word, kind)?;
+    let mut text = format_word(entry.engine, word, (kind, profile_index(descriptor)))?;
     if descriptor & NEWLINE_FLAG != 0 {
         text.push('\n');
     }

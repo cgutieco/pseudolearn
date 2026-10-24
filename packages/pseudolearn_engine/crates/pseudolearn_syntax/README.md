@@ -64,6 +64,14 @@ prefijo, de forma que semantic lee la visibilidad del primer token sin recorrer 
 Se rechaza un segundo analizador de módulos, porque duplicaría la recuperación de errores, y los comodines:
 tras un punto de la ruta se exige un nombre (`expectedModuleName`).
 
+### Segmentos de ruta de importación
+
+Problema: un símbolo declarado con el vocabulario de otro perfil puede coincidir con una palabra reservada del perfil del
+archivo que lo importa (`while` en inglés, `Mientras` en español). Elección: los segmentos de la ruta de `Importar` y
+`Exportar` aceptan cualquier palabra reservada, salvo el conector de alias, porque nombran símbolos y no introducen nombres;
+el alias de `Como` sigue exigiendo un nombre legal. La obligación de alias para el nombre local reservado se comprueba al
+enlazar (`pseudolearn_semantic`), no al analizar la sintaxis.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

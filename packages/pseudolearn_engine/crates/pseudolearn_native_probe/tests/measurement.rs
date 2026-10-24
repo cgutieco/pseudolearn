@@ -17,6 +17,7 @@ fn configuration() -> Configuration {
             truth: "true".to_owned(),
             falsity: "false".to_owned(),
         },
+        site_boolean_words: Vec::new(),
         error_template: String::new(),
         warning_template: String::new(),
         information_template: String::new(),

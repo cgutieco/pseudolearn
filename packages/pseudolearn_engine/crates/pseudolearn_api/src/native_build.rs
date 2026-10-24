@@ -51,16 +51,22 @@ fn build(request: &NativeBuildRequest) -> Result<NativeObject, NativeBuildFailur
         request.source,
     )
     .map_err(NativeBuildFailure::Rejected)?;
-    let compiled =
-        compile_module_to_executable_object(&module, &TargetConfig::host(), &settings_of(request))
-            .map_err(|error| NativeBuildFailure::Backend(error.to_string()))?;
+    let compiled = compile_module_to_executable_object(
+        &module,
+        &TargetConfig::host(),
+        &settings_of(request, &module),
+    )
+    .map_err(|error| NativeBuildFailure::Backend(error.to_string()))?;
     Ok(NativeObject {
         bytes: compiled.bytes,
         warnings,
     })
 }
 
-pub(crate) fn settings_of(request: &NativeBuildRequest) -> ExecutableSettings {
+pub(crate) fn settings_of(
+    request: &NativeBuildRequest,
+    module: &pseudolearn_ir::Module,
+) -> ExecutableSettings {
     let defaults = AotLimits::default();
     let (truth, falsity) = pseudolearn_vm::boolean_words(&request.profile);
     ExecutableSettings {
@@ -82,9 +88,27 @@ pub(crate) fn settings_of(request: &NativeBuildRequest) -> ExecutableSettings {
             truth: truth.to_owned(),
             falsity: falsity.to_owned(),
         },
+        site_boolean_words: site_boolean_words(module),
         error_template: request.error_template.clone(),
         warning_template: request.warning_template.clone(),
         information_template: request.information_template.clone(),
         exhausted_template: request.exhausted_template.clone(),
     }
+}
+
+fn site_boolean_words(module: &pseudolearn_ir::Module) -> Vec<BooleanWords> {
+    if module.profiles.is_empty() {
+        return Vec::new();
+    }
+    module
+        .vocabularies()
+        .into_iter()
+        .map(|vocabulary| {
+            let (truth, falsity) = pseudolearn_vm::boolean_words(vocabulary);
+            BooleanWords {
+                truth: truth.to_owned(),
+                falsity: falsity.to_owned(),
+            }
+        })
+        .collect()
 }

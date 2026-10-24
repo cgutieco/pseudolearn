@@ -17,6 +17,7 @@ fn sample() -> ExecutableMetadata {
                 truth: "Verdadero".to_owned(),
                 falsity: "Falso".to_owned(),
             },
+            site_boolean_words: Vec::new(),
             error_template: "{path}:{line}:{column}\n".to_owned(),
             warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
             information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
@@ -110,5 +111,30 @@ fn the_exported_main_rejects_missing_metadata() -> Result<(), String> {
         pseudolearn_aot_main(nothing, garbage.as_ptr(), garbage.len()),
         EXIT_INTERNAL
     );
+    Ok(())
+}
+
+#[test]
+fn per_site_boolean_words_survive_the_round_trip() -> Result<(), String> {
+    let mut metadata = sample();
+    metadata.settings.site_boolean_words = vec![
+        BooleanWords {
+            truth: "true".to_owned(),
+            falsity: "false".to_owned(),
+        },
+        BooleanWords {
+            truth: "Verdadero".to_owned(),
+            falsity: "Falso".to_owned(),
+        },
+    ];
+    assert_eq!(decode_metadata(&encode_metadata(&metadata)), Some(metadata));
+    Ok(())
+}
+
+#[test]
+fn metadata_of_the_previous_magic_is_rejected() -> Result<(), String> {
+    let mut bytes = encode_metadata(&sample());
+    bytes.splice(0..4, *b"PLM3");
+    assert_eq!(decode_metadata(&bytes), None);
     Ok(())
 }

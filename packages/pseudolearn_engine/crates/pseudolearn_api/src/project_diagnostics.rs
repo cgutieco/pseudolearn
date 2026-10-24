@@ -1,7 +1,8 @@
 use crate::ApiDiagnostic;
+use crate::project_profiles::resolve_units;
 use crate::project_resource::ProjectRequest;
 use pseudolearn_diagnostics::{Diagnostic, sort_diagnostics};
-use pseudolearn_project::ProjectCatalog;
+use pseudolearn_project::{Module, ProjectCatalog};
 use pseudolearn_source::{SourceId, SourceText};
 
 pub(crate) fn convert(
@@ -10,12 +11,20 @@ pub(crate) fn convert(
     mut diagnostics: Vec<Diagnostic>,
 ) -> Vec<ApiDiagnostic> {
     sort_diagnostics(&mut diagnostics);
+    let units = resolve_units(request);
     diagnostics
         .iter()
         .filter_map(|diagnostic| {
-            let source = source_of(catalog, diagnostic.span.source_id)?;
-            let mut converted =
-                crate::diagnostic_conversion::convert(diagnostic, source, request.profile.as_str());
+            let module = module_of(catalog, diagnostic.span.source_id)?;
+            let source = catalog.source(module.id)?;
+            let profile = units
+                .get(&module.path)
+                .map_or(request.profile, |unit| unit.profile);
+            let mut converted = crate::diagnostic_conversion::convert_in_profile(
+                diagnostic,
+                source,
+                (request.profile.as_str(), profile.as_str()),
+            );
             converted.related = diagnostic
                 .related
                 .iter()
@@ -29,11 +38,14 @@ pub(crate) fn convert(
         .collect()
 }
 
-fn source_of(catalog: &ProjectCatalog, source_id: SourceId) -> Option<&SourceText> {
-    let module = catalog
+fn module_of(catalog: &ProjectCatalog, source_id: SourceId) -> Option<&Module> {
+    catalog
         .modules()
         .iter()
         .find(|module| module.source_id == source_id)
-        .or_else(|| catalog.modules().first())?;
-    catalog.source(module.id)
+        .or_else(|| catalog.modules().first())
+}
+
+fn source_of(catalog: &ProjectCatalog, source_id: SourceId) -> Option<&SourceText> {
+    catalog.source(module_of(catalog, source_id)?.id)
 }

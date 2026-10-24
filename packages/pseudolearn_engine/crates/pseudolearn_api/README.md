@@ -145,6 +145,14 @@ Los errores de paquetes en ciclo llevan además `chain`. Los diagnósticos de ci
 de otros archivos: cada tramo relacionado se convierte con la fuente que su propia identidad señala (`project_diagnostics`),
 nunca con la del diagnóstico principal.
 
+Problema: el contenido fijado de las dependencias debe verificarse antes de compilar, sin red. Elección: `build_lock`
+recibe los paquetes (nombre, origen lógico, tipo, dependencias y, para los fijados, archivos con ruta y texto), calcula
+los digests SHA-256 con `lock_digest` (dominios y orden descritos en el README de project) y devuelve el texto canónico
+del lock; `resolve_lock` compara un lock con los paquetes entregados y devuelve `verified` y `lock_errors` con línea y
+columna. Ambas son puras: no leen ni escriben disco, no usan red y no ejecutan nada. Los bytes que se hashean son los
+que el anfitrión pasa después al análisis, de modo que lo verificado es lo compilado. El presupuesto de bytes del lock es
+una constante candidata (`lock_wire`). Un hash verifica integridad, no autenticidad del origen.
+
 Problema: el manifiesto de un paquete es una entrada declarativa cuya autoridad concede el anfitrión. Elección:
 `resolve_manifest` (texto, ubicación y concesiones opcionales) devuelve la configuración con la procedencia de cada
 campo o los errores con línea y columna, y `analyze_project`/`execute_project` aceptan `manifests` en lugar de
@@ -155,6 +163,15 @@ efectivos, que nunca superan la solicitud ni la concesión, del paquete que cont
 bytes del manifiesto es una constante candidata del transporte (`manifest_wire`), pendiente de calibrar. Abrir,
 analizar o ejecutar un proyecto no ejecuta scripts ni concede permisos por su contenido, y el idioma de interfaz no
 interviene. La lectura de manifiestos desde disco y la fuente de las concesiones son de la CLI.
+
+Perfil por archivo: cada archivo de una petición de proyecto admite `profile` (`es` o `en`; otro valor es un fallo de uso). La
+resolución sigue el README de project y usa la apertura que detecta `detect_vocabulary_profile`. El argumento `profile` de la
+petición es solo el respaldo de los archivos sin otra procedencia y el idioma de los mensajes; los lexemas de los argumentos
+de un diagnóstico (fichas y tipos) usan el perfil del archivo que lo contiene (`convert_in_profile`). `profileMismatch` se
+añade al archivo contradictorio y bloquea la ejecución. Al bajar a RI, el vocabulario del módulo es el de la entrada y se
+registra la tabla `source_id → perfil` de todos los archivos; la ejecución y la compilación nativa formatean los lógicos
+con el perfil del archivo que contiene cada operación. `native_build` rellena `site_boolean_words` solo si el módulo tiene
+tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT sigue sin aceptar proyectos (`PG-1.12`).
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

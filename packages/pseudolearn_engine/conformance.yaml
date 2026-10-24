@@ -6,6 +6,7 @@
     "LANG.MODULE.IMPORT",
     "API.PROJECT",
     "API.PROJECT.MANIFEST",
+    "API.PROJECT.LOCK",
     "API.ANALYZE",
     "API.ERRORS",
     "API.EXECUTE",
@@ -1297,6 +1298,41 @@
     },
     {
       "regla": "API.PROJECT.MANIFEST@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.MODULE.IMPORT@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.PROFILE.MODEL@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROJECT.LOCK@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROJECT.LOCK@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROJECT.LOCK@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROJECT.LOCK@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.PROJECT.LOCK@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

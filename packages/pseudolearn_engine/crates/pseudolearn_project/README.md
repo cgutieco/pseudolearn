@@ -10,14 +10,16 @@ Además valida que las dependencias entre paquetes y las importaciones entre mó
 (rechazo determinista con la cadena completa) y lee el manifiesto declarativo de cada paquete, del que calcula la
 configuración resuelta con procedencia y la autoridad efectiva de los límites que concede el anfitrión.
 
-Fuera de alcance: leer disco, locks (`PG-1.06`), perfiles por archivo aplicados al análisis (`PG-1.07`),
+Además modela el lock del lenguaje (`Lock`): paquetes con origen lógico, aristas y digests que el anfitrión entrega, su
+serialización canónica y la comparación contra el contenido observado.
+
+Fuera de alcance: leer o escribir disco, calcular hashes,
 colisiones de caja y NFC en rutas (`PG-1.09`), resolver imports o visibilidad (son de `pseudolearn_semantic`) y
 ejecutar nada.
 
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
-| Lock canónico como origen de dependencias fijadas | Esquema versionado | `PG-1.06` |
-| Aplicar las excepciones de perfil del manifiesto al análisis por archivo | Perfil por unidad | `PG-1.07` |
+| Escritura atómica del lock y comandos que lo actualizan | Raíz concedida y comando de proyecto | `PG-1.12` |
 | Rutas portables y confinamiento | Adaptador del anfitrión | `PG-1.09` |
 | Lectura del manifiesto desde disco y concesiones del anfitrión | CLI | `PG-1.12` |
 
@@ -60,6 +62,11 @@ Encadena el analizador sintáctico del subconjunto TOML (`manifest_cursor`, `man
 `manifest_parser`), la validación del esquema (`manifest_schema`, `manifest_sections`, con `manifest_checker`
 como utilidad de comprobación) y la autoridad (`authority`). `resolve_all` resuelve varios manifiestos y ordena los
 fallos por ubicación; `Configuration::package_input` convierte la configuración en un paquete del proyecto.
+
+Lock: `Lock::from_packages` normaliza (dependencias ordenadas y sin repetir), valida origen lógico, digests y aristas y
+rechaza un mismo nombre con dos orígenes. `Lock::parse` reutiliza el analizador del manifiesto (`lock_parser`),
+`Lock::canonical_text` (`lock_canonical`) escribe los bytes estables y `Lock::verify` (`lock_verification`) compara el
+lock registrado con el observado y devuelve `LockError` ordenados. Los códigos de error están en `lock_error`.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -139,8 +146,50 @@ Precedencia y valores heredados: manifiesto, luego valor por defecto (`profile =
 paquete es siempre la ubicación del manifiesto. El presupuesto de bytes del manifiesto se inyecta como parámetro; el
 valor del transporte público es candidato y se calibrará con cargas representativas.
 
-Perfiles: las excepciones por archivo se resuelven y se conservan como datos con su procedencia; aplicarlas al análisis
-de cada unidad es `PG-1.07`.
+Perfiles: las excepciones por archivo se resuelven y se conservan como datos con su procedencia; su aplicación al análisis
+de cada unidad usa `resolve_profile` (ver «Perfil por archivo»).
+
+### Lock canónico
+
+Problema: un proyecto con dependencias fijadas debe reproducirse sin red y sin que el contenido cambie en silencio.
+Elección: el lock es un texto del mismo subconjunto declarativo del manifiesto (`schema = 1`, tabla `packages` por
+nombre). Cada paquete registra `origin` (ruta lógica relativa a la raíz concedida, nunca absoluta, por lo que un
+checkout reubicado produce los mismos bytes), `kind`, `dependencies` y, si es `locked`, `digest` y los digests de sus
+archivos. Un paquete `local` es editable y no registra contenido: sus cambios no invalidan el lock. La serialización
+usa claves entre comillas, paquetes por nombre, dependencias y archivos ordenados, de modo que cualquier permutación de
+la entrada produce los mismos bytes. El crate no calcula hashes: recibe los digests ya calculados por la API
+(`sha2` ya es dependencia permitida allí) y así no añade dependencias a un crate de nivel 1 que entra en Wasm y móvil.
+
+Qué entra en el hash: el digest de un archivo es SHA-256 del dominio `pseudolearn.lock.file.v1`, un salto de línea y
+los bytes leídos; el del paquete, SHA-256 del dominio `pseudolearn.lock.package.v1` y, por archivo en orden bytewise de
+ruta, ruta, byte cero, digest del archivo y salto de línea. Los dominios impiden que un digest de archivo se confunda
+con uno de paquete. Se compila exactamente el texto que se verificó: la API hashea los mismos bytes que entrega al
+análisis. Un hash verifica integridad, no autenticidad del origen, y no hay firmas. El lock del lenguaje no tiene
+relación con los `Cargo.lock` del repositorio.
+
+Actualización: el lock solo cambia por una acción explícita del anfitrión; ni abrir, ni comprobar, ni compilar lo
+reescriben. Las operaciones `build_lock` y `resolve_lock` de la API no escriben nada. La publicación atómica del
+archivo (temporal en el mismo directorio y renombrado) y sus permisos de escritura pertenecen al comando de proyecto
+del CLI (`PG-1.12`): no se escribe antes un escritor sin consumidor. Descartado: rutas absolutas (rompen el
+checkout reubicado), un campo de versión por rango (la resolución es exacta) y actualizar al comprobar.
+
+Errores: sintaxis, duplicados, vacío, tamaño, versión y campos del lock reutilizan el analizador del manifiesto con
+códigos propios (`lockSyntax`, `unsupportedLockSchema`, `unknownLockField`, ...); la comparación informa
+`lockedPackageAbsent`, `packageNotLocked`, `originMismatch`, `kindMismatch`, `dependencyEdgeMismatch`, `fileMissing`,
+`fileNotLocked` y `digestMismatch`. Una arista a un paquete ausente es `danglingEdge`.
+
+### Perfil por archivo
+
+Problema: un proyecto mezcla archivos en español y en inglés y el perfil debe ser explícito y reproducible. Elección:
+`resolve_profile` es una función pura sobre las procedencias. De mayor a menor precedencia: el campo `profile` del archivo
+en la petición; la excepción de `[profiles]` para su ruta o su directorio más cercano (gana la ruta más larga); el `profile`
+declarado en el manifiesto del paquete; la apertura inequívoca del archivo (`Algoritmo`, `Clase`, `SubProceso` y
+equivalentes); el argumento de la petición como respaldo; y `es`. Si lo configurado por los tres primeros niveles contradice
+la apertura, el archivo se analiza con el perfil de su apertura y se informa `profileMismatch` con ambas procedencias en
+el texto `lexeme` (`en (manifest exception 4:1) <> es (opening)`). Un archivo sin apertura, como una biblioteca que empieza
+por `Importar`, usa el perfil configurado. El valor por defecto del manifiesto (`profile` ausente) no es una configuración:
+no contradice la apertura. El idioma de la interfaz no interviene. Descartado: que el argumento de la petición venza al
+manifiesto, porque impediría las excepciones por archivo.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

@@ -200,7 +200,11 @@ fn lower_format(
     let value = operand_value(lowering, instruction, 0)?;
     let word = to_word(lowering, value, &value_type)?;
     let kind = kind_code(&value_type).ok_or(CodegenError::InvalidModule("format of unit"))?;
-    let descriptor = lowering.builder.ins().iconst(types::I32, i64::from(kind));
+    let profile = crate::lower_io::profile_bits(lowering, instruction);
+    let descriptor = lowering
+        .builder
+        .ins()
+        .iconst(types::I32, i64::from(kind | profile));
     allocating_call(
         lowering,
         instruction,

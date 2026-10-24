@@ -48,11 +48,26 @@ pub(crate) fn directive(state: &mut ParserState<'_>) -> Result<usize, ()> {
 fn module_path(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
-    name(state, DiagnosticCode::ExpectedModuleName)?;
+    path_segment(state)?;
     while state.eat(TokenKind::Dot) {
-        name(state, DiagnosticCode::ExpectedModuleName)?;
+        path_segment(state)?;
     }
     Ok(state.finish(NodeKind::ModulePath, start, marker))
+}
+
+fn path_segment(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let reserved = match state.kind() {
+        TokenKind::Keyword(KeywordKind::TypeConnector) => false,
+        TokenKind::Keyword(_) | TokenKind::BooleanLiteral(_) => true,
+        _ => false,
+    };
+    if !reserved {
+        return name(state, DiagnosticCode::ExpectedModuleName);
+    }
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.advance();
+    Ok(state.finish(NodeKind::Identifier, start, marker))
 }
 
 pub(crate) fn visibility_prefix(state: &mut ParserState<'_>) -> Result<Option<u32>, ()> {

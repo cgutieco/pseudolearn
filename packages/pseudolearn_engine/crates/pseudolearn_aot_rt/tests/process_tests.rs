@@ -29,6 +29,7 @@ fn metadata(code: DiagnosticCode) -> ExecutableMetadata {
                 truth: "true".to_owned(),
                 falsity: "false".to_owned(),
             },
+            site_boolean_words: Vec::new(),
             error_template: "{path}:{line}:{column}: error: {message} [{code}]\n".to_owned(),
             warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
             information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),

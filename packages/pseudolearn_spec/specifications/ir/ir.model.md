@@ -40,7 +40,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un módulo tiene nombre, vocabulario del programa, una tabla de clases y funciones. Hay una función por algoritmo principal, subprograma, método y constructor declarado, con espacios de nombres separados por prefijo: @main, @sub.<nombre>, @method.<Clase>.<método> y @ctor.<Clase>. Cada clase declara su superclase opcional y sus campos propios con tipo.",
+  "texto": "Un módulo tiene nombre, vocabulario del programa, una tabla opcional de perfiles por fuente (una entrada por identidad de fuente), una tabla de clases y funciones. Hay una función por algoritmo principal, subprograma, método y constructor declarado, con espacios de nombres separados por prefijo: @main, @sub.<nombre>, @method.<Clase>.<método> y @ctor.<Clase>. Cada clase declara su superclase opcional y sus campos propios con tipo. El vocabulario de una operación es el de su fuente si esta tiene perfil y, si no, el del módulo.",
   "verificacion": [
     "C1"
   ]

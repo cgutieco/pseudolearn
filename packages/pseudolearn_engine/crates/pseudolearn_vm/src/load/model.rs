@@ -150,6 +150,7 @@ pub(crate) struct LoadedProgramInner {
     pub(crate) literals: Vec<String>,
     pub(crate) classes: Vec<pseudolearn_bytecode::BytecodeClass>,
     pub(crate) vocabulary: String,
+    pub(crate) profiles: Vec<pseudolearn_bytecode::SourceProfile>,
     pub(crate) layouts: Vec<std::sync::Arc<pseudolearn_runtime::ObjectLayout>>,
 }
 

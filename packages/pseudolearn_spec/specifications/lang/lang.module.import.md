@@ -137,6 +137,21 @@
 }
 ```
 
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El nombre local que introduce un Importar no puede ser una palabra reservada del perfil del archivo que importa. Si el último segmento de la ruta, sin Como, o el alias de Como lo es, se produce reservedImportNeedsAlias en esa declaración; un alias legal lo resuelve y el símbolo conserva su identidad. Los segmentos de una ruta de Importar o Exportar pueden coincidir con palabras reservadas de cualquiera de los perfiles, porque nombran símbolos declarados con otro perfil. Una palabra que es reservada solo en otro perfil es un nombre legal en este y se importa sin alias.",
+  "verificacion": [
+    "C31",
+    "C32",
+    "C33",
+    "C34"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C1",
@@ -2908,6 +2923,354 @@
                   {},
                   {}
                 ]
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "en",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "lib": "lib"
+                }
+              },
+              {
+                "name": "lib",
+                "root": "lib",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "import lib.util.while as w;\nalgorithm P\nw();\nendAlgorithm\n",
+                "profile": "en"
+              },
+              {
+                "path": "lib/util",
+                "source_id": 2,
+                "text": "Publico SubProceso while()\nEscribir 1;\nFinSubProceso\n",
+                "profile": "es"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto declara el perfil de cada archivo con datos; el mismo comportamiento en inglés se ejerce en las direcciones es→en y en→es de este mismo contrato."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "1\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "en",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "lib": "lib"
+                }
+              },
+              {
+                "name": "lib",
+                "root": "lib",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "import lib.util.while;\nalgorithm P\nendAlgorithm\n",
+                "profile": "en"
+              },
+              {
+                "path": "lib/util",
+                "source_id": 2,
+                "text": "Publico SubProceso while()\nEscribir 1;\nFinSubProceso\n",
+                "profile": "es"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto declara el perfil de cada archivo con datos; el mismo comportamiento en inglés se ejerce en las direcciones es→en y en→es de este mismo contrato."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "reservedImportNeedsAlias",
+                "arguments": {
+                  "lexeme": "while"
+                }
+              }
+            ],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "execute_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "lib": "lib"
+                }
+              },
+              {
+                "name": "lib",
+                "root": "lib",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar lib.util.while;\nAlgoritmo P\nwhile();\nFinAlgoritmo\n",
+                "profile": "es"
+              },
+              {
+                "path": "lib/util",
+                "source_id": 2,
+                "text": "Publico SubProceso while()\nEscribir 1;\nFinSubProceso\n",
+                "profile": "es"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto declara el perfil de cada archivo con datos; el mismo comportamiento en inglés se ejerce en las direcciones es→en y en→es de este mismo contrato."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "output": "1\n",
+            "diagnostics": [],
+            "project_errors": []
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "analyze_project",
+        "arguments": {
+          "profile": "es",
+          "strictness": "strict",
+          "project": {
+            "project_id": "1",
+            "revision_id": "1",
+            "packages": [
+              {
+                "name": "app",
+                "root": "app",
+                "kind": "application",
+                "entries": [
+                  "app/main"
+                ],
+                "dependencies": {
+                  "lib": "lib"
+                }
+              },
+              {
+                "name": "lib",
+                "root": "lib",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
+            ],
+            "files": [
+              {
+                "path": "app/main",
+                "source_id": 1,
+                "text": "Importar lib.util.Mientras;\nAlgoritmo P\nFinAlgoritmo\n",
+                "profile": "es"
+              },
+              {
+                "path": "lib/util",
+                "source_id": 2,
+                "text": "public subroutine Mientras()\nwrite 2;\nendSubroutine\n",
+                "profile": "en"
+              }
+            ]
+          },
+          "entry": "app/main"
+        }
+      }
+    ]
+  },
+  "exclusiones": {
+    "en": "La petición de proyecto declara el perfil de cada archivo con datos; el mismo comportamiento en inglés se ejerce en las direcciones es→en y en→es de este mismo contrato."
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "code": "reservedImportNeedsAlias",
+                "arguments": {
+                  "lexeme": "Mientras"
+                }
               }
             ],
             "project_errors": []

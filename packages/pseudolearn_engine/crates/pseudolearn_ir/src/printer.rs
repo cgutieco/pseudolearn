@@ -13,6 +13,7 @@ pub fn print_canonical(module: &Module) -> String {
     buffer.push(' ');
     buffer.push_str(&module.vocabulary);
     buffer.push('\n');
+    print_profiles(&mut buffer, module);
 
     for class_declaration in &module.classes {
         print_class(&mut buffer, class_declaration);
@@ -21,6 +22,18 @@ pub fn print_canonical(module: &Module) -> String {
         print_function(&mut buffer, function);
     }
     buffer
+}
+
+fn print_profiles(buffer: &mut String, module: &Module) {
+    let mut profiles: Vec<_> = module.profiles.iter().collect();
+    profiles.sort_by_key(|profile| profile.source_id);
+    for profile in profiles {
+        buffer.push_str(&format!(
+            "profile {} {}\n",
+            profile.source_id.value(),
+            profile.vocabulary
+        ));
+    }
 }
 
 fn print_class(buffer: &mut String, class_declaration: &ClassDeclaration) {

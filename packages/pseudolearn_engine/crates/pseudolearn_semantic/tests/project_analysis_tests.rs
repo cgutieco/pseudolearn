@@ -67,6 +67,7 @@ fn run(files: &[(&str, &str)]) -> Result<Outcome, String> {
             module: module.id,
             tree,
             source,
+            profile: Profile::Spanish,
         });
     }
     let entry =

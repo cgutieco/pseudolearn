@@ -1,7 +1,7 @@
 use crate::context::AotRuntimeContext;
 use crate::format::{character_of, format_word, handle_of};
 use crate::guard::{Entry, borrow_slice, run_entry};
-use crate::kinds::{CHARACTER_OPERAND_FLAG, kind_code, kind_from_code};
+use crate::kinds::{CHARACTER_OPERAND_FLAG, kind_code, kind_from_code, profile_index};
 use crate::trap::Trap;
 use pseudolearn_library::{parse_integer, parse_real};
 use pseudolearn_runtime::{
@@ -132,7 +132,7 @@ fn text_concat(entry: &mut Entry<'_>, left: u64, right: u64) -> Result<u64, Trap
 
 fn text_format(entry: &mut Entry<'_>, word: u64, descriptor: u32) -> Result<u64, Trap> {
     let kind = kind_from_code(kind_code(descriptor))?;
-    let text = format_word(entry.engine, word, kind)?;
+    let text = format_word(entry.engine, word, (kind, profile_index(descriptor)))?;
     let roots = entry.roots()?;
     let handle = new_text(&mut entry.engine.heap, &text, false, &roots)?;
     Ok(u64::from(handle.0))

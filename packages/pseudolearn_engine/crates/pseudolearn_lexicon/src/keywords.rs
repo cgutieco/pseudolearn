@@ -10,6 +10,10 @@ pub fn find_keyword(word: &str, profile: Profile) -> Option<KeywordKind> {
     find_keyword_by_profile(&folded_word, profile.as_str())
 }
 
+pub fn is_reserved(word: &str, profile: Profile) -> bool {
+    find_keyword(word, profile).is_some()
+}
+
 pub fn find_builtin(word: &str, profile: Profile) -> Option<BuiltinKind> {
     if word.is_ascii() {
         return find_builtin_by_profile(word, profile.as_str());

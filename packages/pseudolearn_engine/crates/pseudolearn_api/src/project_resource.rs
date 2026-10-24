@@ -24,6 +24,8 @@ struct WireFile {
     path: String,
     source_id: u32,
     text: String,
+    #[serde(default)]
+    profile: Option<String>,
 }
 
 #[derive(Clone, Deserialize)]
@@ -43,6 +45,8 @@ struct WireProject {
 
 pub(crate) struct ProjectRequest {
     pub profile: Profile,
+    pub requested_profile: Option<Profile>,
+    pub file_profiles: BTreeMap<String, Profile>,
     pub strict: bool,
     pub input: ProjectInput,
     pub entry: Option<String>,
@@ -60,11 +64,11 @@ impl ProjectRequest {
             .and_then(|value| {
                 serde_json::from_value(value).map_err(|error| usage(&error.to_string()))
             })?;
-        let profile = arguments
-            .get("profile")
-            .and_then(Value::as_str)
-            .map_or(Some(Profile::Spanish), Profile::from_name)
-            .ok_or_else(|| usage("unknown profile"))?;
+        let requested_profile = match arguments.get("profile").and_then(Value::as_str) {
+            Some(name) => Some(Profile::from_name(name).ok_or_else(|| usage("unknown profile"))?),
+            None => None,
+        };
+        let profile = requested_profile.unwrap_or(Profile::Spanish);
         let strict = arguments.get("strictness").and_then(Value::as_str) != Some("flexible");
         let entry = arguments
             .get("entry")
@@ -74,6 +78,8 @@ impl ProjectRequest {
         let source = package_source(&wire, &grants)?;
         Ok(Self {
             profile,
+            requested_profile,
+            file_profiles: file_profiles(&wire)?,
             strict,
             input: input(&wire, source.packages)?,
             entry,
@@ -82,6 +88,17 @@ impl ProjectRequest {
             manifests_used: source.manifests_used,
         })
     }
+}
+
+fn file_profiles(wire: &WireProject) -> Result<BTreeMap<String, Profile>, ApiError> {
+    let mut found = BTreeMap::new();
+    for file in &wire.files {
+        if let Some(name) = &file.profile {
+            let profile = Profile::from_name(name).ok_or_else(|| usage("unknown file profile"))?;
+            found.insert(file.path.clone(), profile);
+        }
+    }
+    Ok(found)
 }
 
 fn package_source(

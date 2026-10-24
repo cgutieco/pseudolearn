@@ -17,19 +17,19 @@ pub fn parse_module(source: &str) -> Result<Module, String> {
     parser.parse_module()
 }
 
-struct Parser {
+pub(crate) struct Parser {
     tokens: Vec<Token>,
     cursor: usize,
 }
 
 impl Parser {
-    fn peek(&self) -> &TokenKind {
+    pub(crate) fn peek(&self) -> &TokenKind {
         self.tokens
             .get(self.cursor)
             .map_or(&TokenKind::Eof, |token| &token.kind)
     }
 
-    fn advance(&mut self) -> TokenKind {
+    pub(crate) fn advance(&mut self) -> TokenKind {
         if let Some(token) = self.tokens.get(self.cursor) {
             self.cursor = self.cursor.saturating_add(1);
             token.kind.clone()
@@ -38,7 +38,7 @@ impl Parser {
         }
     }
 
-    fn expect_word(&mut self, expected: &str) -> Result<String, String> {
+    pub(crate) fn expect_word(&mut self, expected: &str) -> Result<String, String> {
         match self.advance() {
             TokenKind::Word(word) if expected.is_empty() || word == expected => Ok(word),
             other => Err(format!("Expected word '{expected}', found {other:?}")),
@@ -49,6 +49,7 @@ impl Parser {
         let _ = self.expect_word("module")?;
         let name = self.expect_word("")?;
         let vocabulary = self.expect_word("")?;
+        let profiles = crate::profile_parser::parse_profiles(self)?;
         let mut classes = Vec::new();
         while self.peek() == &TokenKind::Word("class".to_owned()) {
             classes.push(self.parse_class()?);
@@ -60,6 +61,7 @@ impl Parser {
         Ok(Module {
             name,
             vocabulary,
+            profiles,
             classes,
             functions,
             origins: Default::default(),

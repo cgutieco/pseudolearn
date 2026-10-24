@@ -148,8 +148,22 @@ impl Machine<'_> {
         };
         Ok(library::format_value(
             primitive,
-            crate::dispatch::boolean_lexemes(&self.program.inner.vocabulary),
+            crate::dispatch::boolean_lexemes(self.site_vocabulary()),
         ))
+    }
+
+    fn site_vocabulary(&self) -> &str {
+        let inner = &self.program.inner;
+        self.current_span()
+            .and_then(|span| {
+                inner
+                    .profiles
+                    .iter()
+                    .find(|profile| profile.source_id == span.source_id)
+            })
+            .map_or(inner.vocabulary.as_str(), |profile| {
+                profile.vocabulary.as_str()
+            })
     }
 
     fn write_values(&mut self, sources: &[TypedSource], newline: bool) -> Result<Flow, Fault> {

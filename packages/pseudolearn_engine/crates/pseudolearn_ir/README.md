@@ -35,6 +35,16 @@ de datos. Las técnicas que requieren medición se aceptan solo tras conservar r
 
 Problema: dos rangos locales iguales pueden pertenecer a archivos distintos. Elección: `IrSpan` conserva `SourceId` junto con línea y columna; el formato canónico escribe `@f<ID>:` para IDs no nulos y mantiene la forma anterior `@` para el documento suelto. El verificador rechaza coordenadas vacías o invertidas. Se rechaza inferir el archivo por nombre o por orden de carga. Medición del registro en el host: 20 bytes por tramo frente a los 16 bytes del diseño previo, un incremento fijo de 4 bytes (25 %) por tramo; el ID evita almacenar rutas o identidades compuestas repetidas en cada entrada.
 
+### Perfiles por fuente
+
+Problema: el vocabulario de un módulo es único, pero un proyecto mezcla perfiles y un lógico debe imprimirse con el
+vocabulario del archivo que contiene la operación. Elección: la cabecera conserva el vocabulario del módulo y, a
+continuación, líneas `profile <identidad de fuente> <vocabulario>` ordenadas por identidad (`SourceProfile`).
+`Module::vocabulary_for(fuente)` devuelve el de la fuente o el del módulo; `vocabularies()` los lista ordenados y sin
+repetir, y `vocabulary_index_of(tramo)` da el índice que usa el AOT. El verificador rechaza dos entradas para una fuente
+(`IR.MODEL#R1`). Un módulo sin tabla se imprime igual que antes. Descartado: un operando de vocabulario en cada `text.format`
+y `out.write`, que cambiaría instrucciones calientes y la gramática de cada operación.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

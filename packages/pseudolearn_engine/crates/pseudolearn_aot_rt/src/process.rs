@@ -41,6 +41,9 @@ pub fn run_executable(
         output: streams.output,
     };
     let mut session = AotSession::new(config, sites, program_streams);
+    session
+        .engine_mut()
+        .use_site_boolean_words(settings.site_boolean_words.clone());
     if settings.forced_collection {
         session.engine_mut().force_collection();
     }

@@ -881,7 +881,7 @@
   "clases_de_valor": [
     "referencia"
   ],
-  "semantica": "Crea la representación de un primitivo según LANG.IO.VALUE-FORMAT con el vocabulario del módulo.",
+  "semantica": "Crea la representación de un primitivo según LANG.IO.VALUE-FORMAT con el vocabulario de la fuente del sitio o, si esta no tiene perfil, el del módulo.",
   "trampas": [
     "cellLimitExceeded"
   ],
@@ -1220,7 +1220,7 @@
     "escalar",
     "referencia"
   ],
-  "semantica": "Escribe la concatenación de las representaciones de los valores y, si se indica, un salto de línea, como un único efecto; no crea valores del programa.",
+  "semantica": "Escribe la concatenación de las representaciones de los valores, con el vocabulario de la fuente del sitio como text.format, y, si se indica, un salto de línea, como un único efecto; no crea valores del programa.",
   "trampas": [],
   "efectos": [
     "salida"
@@ -2452,5 +2452,21 @@
   "id": "V97",
   "regla": "LANG.MODULE.MODEL#R4",
   "sin_ri": "Los ciclos de paquetes se rechazan al construir el proyecto, antes de cualquier análisis y de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V98",
+  "regla": "LANG.MODULE.IMPORT#R7",
+  "sin_ri": "El alias obligatorio de un nombre reservado se exige al enlazar, antes de la RI: un símbolo importado se referencia por identidad y no por su lexema."
+}
+```
+
+```cobertura
+{
+  "id": "V99",
+  "regla": "LANG.PROFILE.MODEL#R2",
+  "sin_ri": "El perfil de cada archivo se resuelve antes de la RI; la tabla de perfiles por fuente solo fija la representación lógica de text.format y out.write."
 }
 ```

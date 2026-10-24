@@ -8,6 +8,7 @@ Fuera de alcance: semántica propia del lenguaje, UI gráfica y configuración e
 | Pendiente | Dependencia | Hito técnico |
 |---|---|---|
 | Leer `pseudolearn.toml` de cada paquete desde la raíz concedida y aportar las concesiones de límites del anfitrión | Operaciones `analyze_project`, `execute_project` y `resolve_manifest` de la API pública | `PG-1.12` |
+| Leer el lock, hashear los bytes leídos, verificarlo antes de compilar y escribirlo solo por orden explícita, de forma atómica (temporal en el mismo directorio y renombrado) y con los permisos del anfitrión | Operaciones `build_lock` y `resolve_lock` de la API pública; el lock del lenguaje es distinto de los `Cargo.lock` | `PG-1.12` |
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -81,6 +82,9 @@ de profundidad, sentencias y celdas. La traza se narra con las plantillas trace*
 la salida del programa se conserva literalmente. ri/ir imprime la RI canónica de la API o el diagnóstico
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
+
+Perfil por archivo: el CLI aún no lee proyectos (`PG-1.12`). Cuando lo haga, `--vocabulario` equivaldrá al argumento `profile` de
+un archivo, el manifiesto aportará las excepciones y el idioma de la interfaz no cambiará el programa ni el lock.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

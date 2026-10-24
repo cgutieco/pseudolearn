@@ -230,6 +230,9 @@ Problema: `PERF.AOT.LEVEL#R4` pedía un nivel optimizado (≤ 1,30 frente a V1F-
 Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información dependiente del anfitrión más allá del
 `Triple`; dos compilaciones del mismo módulo producen los mismos bytes.
 
+Perfil por sitio: si el módulo tiene tabla de perfiles, el descriptor de `out.write` y `text.format` lleva en los bits 16 a 23 el
+índice del vocabulario del sitio (`Module::vocabulary_index_of`); sin tabla vale 0 y el código generado no cambia.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios ni atributos de supresión; límites de `architecture.yaml`. Una familia de instrucciones por

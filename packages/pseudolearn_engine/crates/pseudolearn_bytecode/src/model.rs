@@ -135,6 +135,7 @@ impl BytecodeFunction {
 pub struct BytecodeModule {
     pub name: String,
     pub vocabulary: String,
+    pub profiles: Vec<pseudolearn_ir::SourceProfile>,
     pub classes: Vec<BytecodeClass>,
     pub functions: Vec<BytecodeFunction>,
 }

@@ -1,5 +1,6 @@
 use crate::module_symbols::{Origin, SymbolKind, UnitDeclarations};
 use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{ModuleId, PackageId, ProjectCatalog};
 use pseudolearn_source::IdentifierNormalizer;
 use std::collections::BTreeMap;
@@ -25,6 +26,7 @@ pub(crate) struct ExportResolver<'catalog> {
     declarations: Vec<UnitDeclarations>,
     memo: Vec<Option<BTreeMap<String, Origin>>>,
     active: Vec<bool>,
+    profiles: Vec<Profile>,
     pub reports: Vec<Report>,
 }
 
@@ -32,6 +34,7 @@ impl<'catalog> ExportResolver<'catalog> {
     pub(crate) fn new(
         catalog: &'catalog ProjectCatalog,
         declarations: Vec<UnitDeclarations>,
+        profiles: Vec<Profile>,
     ) -> Self {
         let count = declarations.len();
         Self {
@@ -39,8 +42,13 @@ impl<'catalog> ExportResolver<'catalog> {
             declarations,
             memo: vec![None; count],
             active: vec![false; count],
+            profiles,
             reports: Vec::new(),
         }
+    }
+
+    pub(crate) fn profile(&self, unit: usize) -> Profile {
+        self.profiles.get(unit).copied().unwrap_or(Profile::Spanish)
     }
 
     pub(crate) fn declarations(&self, unit: usize) -> Option<&UnitDeclarations> {

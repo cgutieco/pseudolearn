@@ -33,7 +33,7 @@
 {
   "id": "D1",
   "termino": "gramática textual",
-  "texto": "module = 'module' nombre vocabulario NL {clase} {función}. clase = 'class' nombre [':' nombre] '{' [campo {',' campo}] '}' NL; campo = nombre ':' tipo. función = 'func' @nombre '(' [valor ':' tipo {',' valor ':' tipo}] ')' '->' tipo '{' NL bloque {bloque} '}' NL. bloque = b<n> '(' [valor ':' tipo {',' ...}] ')' 'mass' entero ':' NL {instrucción NL}. instrucción = [valor '='] operación [operando {',' operando}] ['@' línea ':' columna '-' línea ':' columna]. valor = %<n>. Un operando es un valor, un destino b<n>(valores), una función @nombre(valores), un literal, un tipo, un predicado o un nombre de campo, clase o método. Los literales de cadena usan comillas dobles con los escapes \\n, \\t, \\r, \\\\ y \\\"."
+  "texto": "module = 'module' nombre vocabulario NL {perfil} {clase} {función}. perfil = 'profile' entero vocabulario NL. clase = 'class' nombre [':' nombre] '{' [campo {',' campo}] '}' NL; campo = nombre ':' tipo. función = 'func' @nombre '(' [valor ':' tipo {',' valor ':' tipo}] ')' '->' tipo '{' NL bloque {bloque} '}' NL. bloque = b<n> '(' [valor ':' tipo {',' ...}] ')' 'mass' entero ':' NL {instrucción NL}. instrucción = [valor '='] operación [operando {',' operando}] ['@' línea ':' columna '-' línea ':' columna]. valor = %<n>. Un operando es un valor, un destino b<n>(valores), una función @nombre(valores), un literal, un tipo, un predicado o un nombre de campo, clase o método. Los literales de cadena usan comillas dobles con los escapes \\n, \\t, \\r, \\\\ y \\\"."
 }
 ```
 
@@ -75,9 +75,10 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La forma canónica separa los símbolos con un espacio, sangra las instrucciones con dos espacios, no tiene líneas en blanco ni espacios finales, numera los valores desde %0 por orden de definición dentro de cada función, empezando por los parámetros, y los bloques desde b0 por orden de aparición.",
+  "texto": "La forma canónica separa los símbolos con un espacio, sangra las instrucciones con dos espacios, no tiene líneas en blanco ni espacios finales, numera los valores desde %0 por orden de definición dentro de cada función, empezando por los parámetros, y los bloques desde b0 por orden de aparición. Las líneas de perfil siguen a la cabecera, ordenadas por identidad de fuente.",
   "verificacion": [
-    "C2"
+    "C2",
+    "C5"
   ]
 }
 ```
@@ -155,5 +156,26 @@
     }
   },
   "programa_ri": "module P es\nfunc @main() -> unit {\nb0() mass 0:\n  %0 = const.i64 0\n  jump b1(%0)\nb1(%1: i64) mass 1:\n  stmt.enter @4:1-6:12\n  %2 = const.i64 3\n  %3 = int.cmp lt, %1, %2\n  decide.bool %3 @4:10-4:15\n  branch %3, b2(), b3()\nb2() mass 0:\n  %4 = const.i64 1\n  %5 = int.add %1, %4 @5:6-5:11\n  jump b1(%5)\nb3() mass 0:\n  stmt.exit @4:1-6:12\n  return\n}\n"
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
+  "origen": "derivado",
+  "operacion": "ir",
+  "espera": {
+    "ri": {
+      "reimpresion": "module P es\nprofile 2 es\nprofile 7 en\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:12\n  %0 = const.bool true\n  out.write %0, newline @2:1-2:12\n  stmt.exit @2:1-2:12\n  return\n}\n"
+    }
+  },
+  "programa_ri": "module P es\nprofile 7 en\nprofile 2 es\nfunc @main() -> unit {\nb0() mass 1:\n  stmt.enter @2:1-2:12\n  %0 = const.bool true\n  out.write %0, newline @2:1-2:12\n  stmt.exit @2:1-2:12\n  return\n}\n"
 }
 ```

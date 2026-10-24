@@ -71,6 +71,7 @@ pub fn compile_module_with_superinstructions(
     let bytecode = BytecodeModule {
         name: module.name.clone(),
         vocabulary: module.vocabulary.clone(),
+        profiles: module.profiles.clone(),
         classes: crate::classes::compile(module, &function_names)?,
         functions,
     };

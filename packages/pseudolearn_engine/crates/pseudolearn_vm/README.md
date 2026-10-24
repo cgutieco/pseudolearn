@@ -149,6 +149,10 @@ primer registro modificado desde el punto anterior para que `MachineDelta` omita
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
+Vocabulario por sitio: el cargador conserva la tabla de perfiles por fuente y `Machine::formatted` resuelve el vocabulario
+con la fuente del tramo de la instrucción en curso (`text.format` y `out.write`), con el del módulo como respaldo. Así una
+llamada entre archivos de perfiles distintos imprime cada lógico con el perfil del archivo que contiene la operación.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

@@ -47,6 +47,7 @@ pub fn load(program: &VerifiedBytecode) -> Result<LoadedProgram, VmTrap> {
         literals,
         classes: module.classes.clone(),
         vocabulary: module.vocabulary.clone(),
+        profiles: module.profiles.clone(),
         layouts: metadata::layouts(module)?,
     }))
 }

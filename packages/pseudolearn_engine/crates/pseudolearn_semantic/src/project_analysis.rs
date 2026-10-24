@@ -5,6 +5,7 @@ use crate::module_imports::{UnitBindings, bind};
 use crate::module_symbols::{SymbolKind, UnitDeclarations, collect};
 use crate::session::{AnalysisSession, SemanticOptions, UnitView};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticSeverity};
+use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{ModuleId, ProjectCatalog};
 use pseudolearn_source::SourceText;
 use pseudolearn_syntax::{NodeKind, SyntaxTree};
@@ -14,6 +15,7 @@ pub struct ProjectUnit<'syntax> {
     pub module: ModuleId,
     pub tree: &'syntax SyntaxTree,
     pub source: &'syntax SourceText,
+    pub profile: Profile,
 }
 
 type ClassTable = BTreeMap<(usize, String), ClassId>;
@@ -33,6 +35,7 @@ pub fn analyze_project(
         .map(|unit| UnitView {
             tree: unit.tree,
             source: unit.source,
+            profile: unit.profile,
         })
         .collect();
     let Some(mut session) = AnalysisSession::for_units(views, options) else {
@@ -43,7 +46,7 @@ pub fn analyze_project(
         .map(|unit| pseudolearn_project::qualifier(catalog, unit.module))
         .collect();
     let declarations = declarations(&mut session);
-    let mut resolver = ExportResolver::new(catalog, declarations);
+    let mut resolver = ExportResolver::new(catalog, declarations, unit_profiles(units));
     let bindings = resolve_links(&mut session, &mut resolver);
     if crate::module_cycles::report(&mut session, catalog, units, &resolver) {
         return (None, session.diagnostics);
@@ -57,6 +60,10 @@ pub fn analyze_project(
         .iter()
         .any(|diagnostic| diagnostic.severity == DiagnosticSeverity::Error);
     (valid.then_some(session.module), session.diagnostics)
+}
+
+fn unit_profiles(units: &[ProjectUnit<'_>]) -> Vec<Profile> {
+    units.iter().map(|unit| unit.profile).collect()
 }
 
 fn check_bodies(session: &mut AnalysisSession<'_>) {

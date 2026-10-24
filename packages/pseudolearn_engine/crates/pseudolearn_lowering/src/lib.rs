@@ -90,6 +90,7 @@ fn lower_with<'sources>(
     Ok(Module {
         name: "P".to_owned(),
         vocabulary: "es".to_owned(),
+        profiles: Vec::new(),
         classes,
         functions,
         origins: OriginTable { entries: origins },

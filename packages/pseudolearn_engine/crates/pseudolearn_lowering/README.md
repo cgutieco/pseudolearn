@@ -49,6 +49,9 @@ calificador de módulo en su nombre de RI y solo la entrada seleccionada se llam
 unidades con algoritmo se nombran `@calificador.main`. Se rechaza una tabla global de fuentes dentro de cada
 expresión, porque ninguna instrucción cruza unidades.
 
+`lower_project` emite el módulo sin tabla de perfiles; quien conoce el perfil de cada archivo (la API) completa
+`profiles` y el vocabulario de entrada antes de verificar. El bajado no decide perfiles.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

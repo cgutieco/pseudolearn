@@ -19,6 +19,7 @@ pub struct SemanticOptions {
 pub(crate) struct UnitView<'syntax> {
     pub tree: &'syntax SyntaxTree,
     pub source: &'syntax SourceText,
+    pub profile: Profile,
 }
 
 #[derive(Clone, Default)]
@@ -80,7 +81,11 @@ impl<'syntax> AnalysisSession<'syntax> {
             controls: Vec::new(),
             returned: false,
             signature_changed: false,
-            units: vec![UnitView { tree, source }],
+            units: vec![UnitView {
+                tree,
+                source,
+                profile: options.profile,
+            }],
             unit: 0,
             scopes: vec![UnitScope::default()],
             modules: BTreeMap::new(),

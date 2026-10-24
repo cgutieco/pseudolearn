@@ -4,7 +4,7 @@ use crate::fault::{FaultSite, SourceRange};
 use crate::metadata::{ExecutableMetadata, ExecutableSettings};
 use pseudolearn_diagnostics::DiagnosticCode;
 
-const MAGIC: &[u8; 4] = b"PLM3";
+const MAGIC: &[u8; 4] = b"PLM4";
 
 #[derive(Default)]
 struct Writer {
@@ -61,6 +61,11 @@ fn write_settings(writer: &mut Writer, settings: &ExecutableSettings) {
     writer.unsigned32(settings.limits.root_capacity);
     writer.text(&settings.boolean_words.truth);
     writer.text(&settings.boolean_words.falsity);
+    writer.count(settings.site_boolean_words.len());
+    for words in &settings.site_boolean_words {
+        writer.text(&words.truth);
+        writer.text(&words.falsity);
+    }
     writer.text(&settings.error_template);
     writer.text(&settings.warning_template);
     writer.text(&settings.information_template);
@@ -149,6 +154,11 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
     let has_units = reader.unsigned32()? != 0;
     let cells = reader.unsigned64()?;
     let root_capacity = reader.unsigned32()?;
+    let boolean_words = read_words(reader)?;
+    let mut site_boolean_words = Vec::new();
+    for _ in 0..reader.count()? {
+        site_boolean_words.push(read_words(reader)?);
+    }
     Some(ExecutableSettings {
         source_name,
         locale,
@@ -160,14 +170,19 @@ fn read_settings(reader: &mut Reader<'_>) -> Option<ExecutableSettings> {
             cells,
             root_capacity,
         },
-        boolean_words: BooleanWords {
-            truth: reader.text()?,
-            falsity: reader.text()?,
-        },
+        boolean_words,
+        site_boolean_words,
         error_template: reader.text()?,
         warning_template: reader.text()?,
         information_template: reader.text()?,
         exhausted_template: reader.text()?,
+    })
+}
+
+fn read_words(reader: &mut Reader<'_>) -> Option<BooleanWords> {
+    Some(BooleanWords {
+        truth: reader.text()?,
+        falsity: reader.text()?,
     })
 }
 

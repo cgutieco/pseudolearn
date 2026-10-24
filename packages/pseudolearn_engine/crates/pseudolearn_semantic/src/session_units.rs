@@ -7,6 +7,10 @@ impl<'syntax> AnalysisSession<'syntax> {
         options: SemanticOptions,
     ) -> Option<Self> {
         let first = *units.first()?;
+        let options = SemanticOptions {
+            profile: first.profile,
+            ..options
+        };
         let mut session = Self::new(first.tree, first.source, options);
         session.scopes = vec![UnitScope::default(); units.len()];
         session.units = units;
@@ -39,6 +43,7 @@ impl<'syntax> AnalysisSession<'syntax> {
         self.unit = unit;
         self.tree = view.tree;
         self.source = view.source;
+        self.options.profile = view.profile;
     }
 
     pub(crate) fn enter_function(&mut self, index: usize) {

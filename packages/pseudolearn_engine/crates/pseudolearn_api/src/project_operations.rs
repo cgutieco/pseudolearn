@@ -1,12 +1,14 @@
 use crate::project_authority::{execution_limits, with_manifest_status};
 use crate::project_diagnostics::convert;
+use crate::project_profiles::resolve_units;
 use crate::project_resource::{ProjectRequest, error_values, usage};
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode, DiagnosticSeverity};
-use pseudolearn_ir::Module;
+use pseudolearn_ir::{Module, SourceProfile};
+use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{BuildFailure, ModuleId, ProjectCatalog, ProjectError, select_entry};
 use pseudolearn_semantic::{HirModule, ProjectUnit, SemanticOptions, analyze_project};
-use pseudolearn_source::SourceText;
+use pseudolearn_source::{SourceId, SourceText, Span};
 use pseudolearn_syntax::{ModuleSchema, SyntaxTree, UnitKind, parse_module_source};
 use serde_json::{Value, json};
 
@@ -15,6 +17,7 @@ struct Analysis {
     hir: Option<HirModule>,
     diagnostics: Vec<Diagnostic>,
     entry: Option<ModuleId>,
+    profiles: Vec<Profile>,
 }
 
 pub(crate) fn analyze(arguments: &Value) -> Result<Value, ApiError> {
@@ -61,7 +64,7 @@ pub(crate) fn execute(arguments: &Value) -> Result<Value, ApiError> {
         &catalog,
         &request,
         (&hir, &analysis.trees, analysis.entry),
-        warnings,
+        (&analysis.profiles, warnings),
     )
 }
 
@@ -105,20 +108,8 @@ fn run_analysis(
     request: &ProjectRequest,
     entry: Option<ModuleId>,
 ) -> Analysis {
-    let terminator = request
-        .strict
-        .then_some(DiagnosticCode::MissingStatementTerminator);
-    let mut trees = Vec::new();
-    let mut diagnostics = Vec::new();
-    for module in catalog.modules() {
-        let Some(source) = catalog.source(module.id) else {
-            continue;
-        };
-        let (tree, mut parsed) = parse_module_source(source, request.profile, terminator);
-        diagnostics.append(&mut parsed);
-        trees.push(tree);
-    }
-    let units = project_units(catalog, &trees);
+    let (trees, profiles, mut diagnostics) = parse_modules(catalog, request);
+    let units = project_units(catalog, &trees, &profiles);
     let options = SemanticOptions {
         profile: request.profile,
         strict: request.strict,
@@ -130,22 +121,61 @@ fn run_analysis(
         hir,
         diagnostics,
         entry,
+        profiles,
     }
+}
+
+type Parsed = (Vec<SyntaxTree>, Vec<Profile>, Vec<Diagnostic>);
+
+fn parse_modules(catalog: &ProjectCatalog, request: &ProjectRequest) -> Parsed {
+    let terminator = request
+        .strict
+        .then_some(DiagnosticCode::MissingStatementTerminator);
+    let mut trees = Vec::new();
+    let mut profiles = Vec::new();
+    let mut diagnostics = Vec::new();
+    let resolved = resolve_units(request);
+    for module in catalog.modules() {
+        let Some(source) = catalog.source(module.id) else {
+            continue;
+        };
+        let unit = resolved.get(&module.path);
+        let profile = unit.map_or(request.profile, |found| found.profile);
+        let (tree, mut parsed) = parse_module_source(source, profile, terminator);
+        diagnostics.append(&mut parsed);
+        if let Some(lexeme) = unit.and_then(|found| found.mismatch.as_deref()) {
+            diagnostics.push(mismatch(module.source_id, lexeme));
+        }
+        trees.push(tree);
+        profiles.push(profile);
+    }
+    (trees, profiles, diagnostics)
+}
+
+fn mismatch(source_id: SourceId, lexeme: &str) -> Diagnostic {
+    Diagnostic::new(
+        DiagnosticCode::ProfileMismatch,
+        Span::in_source(source_id, 0, 0),
+    )
+    .with_argument("lexeme", lexeme)
 }
 
 fn project_units<'catalog>(
     catalog: &'catalog ProjectCatalog,
     trees: &'catalog [SyntaxTree],
+    profiles: &[Profile],
 ) -> Vec<ProjectUnit<'catalog>> {
     catalog
         .modules()
         .iter()
         .zip(trees)
-        .filter_map(|(module, tree)| {
+        .zip(profiles)
+        .filter_map(|((module, tree), profile)| {
             catalog.source(module.id).map(|source| ProjectUnit {
                 module: module.id,
                 tree,
                 source,
+                profile: *profile,
             })
         })
         .collect()
@@ -161,10 +191,11 @@ fn run(
     catalog: &ProjectCatalog,
     request: &ProjectRequest,
     compiled: (&HirModule, &[SyntaxTree], Option<ModuleId>),
-    warnings: Vec<ApiDiagnostic>,
+    reported: (&[Profile], Vec<ApiDiagnostic>),
 ) -> Result<Value, ApiError> {
     let (hir, trees, entry) = compiled;
-    let module = lower(catalog, request, hir, (trees, entry)).ok_or_else(internal)?;
+    let (profiles, warnings) = reported;
+    let module = lower(catalog, hir, (trees, entry), profiles).ok_or_else(internal)?;
     let bytecode = pseudolearn_bytecode::compile_module(&module).map_err(|_| internal())?;
     let program = pseudolearn_vm::load(&bytecode).map_err(|_| internal())?;
     let prepared = crate::execution::PreparedProgram::new(program, warnings);
@@ -184,9 +215,9 @@ fn run(
 
 fn lower(
     catalog: &ProjectCatalog,
-    request: &ProjectRequest,
     hir: &HirModule,
     selection: (&[SyntaxTree], Option<ModuleId>),
+    profiles: &[Profile],
 ) -> Option<Module> {
     let sources: Vec<&SourceText> = catalog
         .modules()
@@ -194,12 +225,35 @@ fn lower(
         .filter_map(|module| catalog.source(module.id))
         .collect();
     let mut module = pseudolearn_lowering::lower_project(hir, &sources).ok()?;
-    module.vocabulary = request.profile.as_str().to_owned();
+    module.vocabulary = entry_vocabulary(selection.1, profiles);
+    module.profiles = source_profiles(catalog, profiles);
     if let Some(name) = entry_name(catalog, selection.0, selection.1) {
         module.name = name;
     }
     pseudolearn_ir::verify_module(&module).ok()?;
     Some(module)
+}
+
+fn entry_vocabulary(entry: Option<ModuleId>, profiles: &[Profile]) -> String {
+    let index = entry.and_then(|module| usize::try_from(module.0).ok());
+    let profile = index
+        .and_then(|position| profiles.get(position))
+        .or_else(|| profiles.first())
+        .copied()
+        .unwrap_or(Profile::Spanish);
+    profile.as_str().to_owned()
+}
+
+fn source_profiles(catalog: &ProjectCatalog, profiles: &[Profile]) -> Vec<SourceProfile> {
+    catalog
+        .modules()
+        .iter()
+        .zip(profiles)
+        .map(|(module, profile)| SourceProfile {
+            source_id: module.source_id,
+            vocabulary: profile.as_str().to_owned(),
+        })
+        .collect()
 }
 
 fn entry_name(

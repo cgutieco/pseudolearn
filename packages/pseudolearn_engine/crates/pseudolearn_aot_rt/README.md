@@ -214,6 +214,11 @@ de fallo sin escribir nada.
 Las trampas son inmediatas: el código generado comprueba en registros y salta a un bloque frío por sitio que invoca
 `rt_aot_fault`. Se descarta el indicador de trampa diferida en memoria, que penaliza el código nativo.
 
+Perfil por sitio: `ExecutableSettings::site_boolean_words` lista las palabras lógicas por vocabulario en el orden de
+`Module::vocabularies()` y el descriptor de formato indica cuál usar (`profile_index`). Con la lista vacía rige
+`boolean_words`. La magia de los metadatos pasa a `PLM4` y los de `PLM3` se rechazan sin reinterpretarse, porque el
+significado del bloque de configuración cambió.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios ni atributos de supresión. Los puntos de entrada de un mismo dominio comparten

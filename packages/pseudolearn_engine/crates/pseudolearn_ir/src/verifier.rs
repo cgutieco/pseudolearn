@@ -16,8 +16,19 @@ use std::collections::{HashMap, HashSet};
 
 pub fn verify_module(module: &Module) -> Result<(), &'static str> {
     check_declarations_uniqueness(module)?;
+    check_profile_uniqueness(module)?;
     for function in &module.functions {
         verify_function(function, module)?;
+    }
+    Ok(())
+}
+
+fn check_profile_uniqueness(module: &Module) -> Result<(), &'static str> {
+    let mut sources = HashSet::new();
+    for profile in &module.profiles {
+        if !sources.insert(profile.source_id) {
+            return Err("IR.MODEL#R1");
+        }
     }
     Ok(())
 }

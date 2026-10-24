@@ -72,6 +72,7 @@ fn settings() -> ExecutableSettings {
             truth: "true".to_owned(),
             falsity: "false".to_owned(),
         },
+        site_boolean_words: Vec::new(),
         error_template: "{path}:{line}:{column}: error: {message} [{code}]\n".to_owned(),
         warning_template: "{path}:{line}:{column}: warning: {message} [{code}]\n".to_owned(),
         information_template: "{path}:{line}:{column}: info: {message} [{code}]\n".to_owned(),
@@ -247,6 +248,52 @@ fn a_statement_budget_that_covers_the_program_lets_it_complete() -> Result<(), F
     let executable = link_with_settings(THREE_STATEMENTS, &with_statement_budget(3))?;
     let run = run_isolated(&executable, "")?;
     if run.code == Some(0) && run.output == "1\n2\n3\n" && run.errors.is_empty() {
+        Ok(())
+    } else {
+        Err(format!(
+            "unexpected run: {:?} {:?} {:?}",
+            run.code, run.output, run.errors
+        ))
+    }
+}
+
+const CROSS_PROFILE: &str = "module P es
+profile 1 es
+profile 2 en
+func @main() -> unit {
+b0() mass 0:
+  %0 = const.bool true @f1:1:1-1:9
+  out.write %0, newline @f1:1:1-1:9
+  call @shout() @f1:2:1-2:9
+  %1 = const.bool false @f1:3:1-3:9
+  out.write %1, newline @f1:3:1-3:9
+  return
+}
+func @shout() -> unit {
+b0() mass 0:
+  %0 = const.bool true @f2:1:1-1:9
+  out.write %0, newline @f2:1:1-1:9
+  return
+}
+";
+
+fn cross_profile_settings() -> ExecutableSettings {
+    let words = |truth: &str, falsity: &str| BooleanWords {
+        truth: truth.to_owned(),
+        falsity: falsity.to_owned(),
+    };
+    ExecutableSettings {
+        boolean_words: words("Verdadero", "Falso"),
+        site_boolean_words: vec![words("true", "false"), words("Verdadero", "Falso")],
+        ..settings()
+    }
+}
+
+#[test]
+fn logical_values_use_the_profile_of_the_file_that_holds_the_write() -> Result<(), Failure> {
+    let executable = link_with_settings(CROSS_PROFILE, &cross_profile_settings())?;
+    let run = run_isolated(&executable, "")?;
+    if run.code == Some(0) && run.output == "Verdadero\ntrue\nFalso\n" {
         Ok(())
     } else {
         Err(format!(

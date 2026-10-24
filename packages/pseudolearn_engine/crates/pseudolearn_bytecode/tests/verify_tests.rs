@@ -24,6 +24,7 @@ fn panic_free_fallback() -> pseudolearn_bytecode::BytecodeModule {
     pseudolearn_bytecode::BytecodeModule {
         name: String::new(),
         vocabulary: String::new(),
+        profiles: Vec::new(),
         classes: Vec::new(),
         functions: Vec::new(),
     }

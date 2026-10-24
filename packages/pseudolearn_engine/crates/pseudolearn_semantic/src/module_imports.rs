@@ -1,6 +1,7 @@
 use crate::module_exports::{ExportResolver, PathResolution, Report};
 use crate::module_symbols::{Directive, Origin};
 use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_lexicon::is_reserved;
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default)]
@@ -56,7 +57,11 @@ impl Binder<'_, '_> {
             None => (last, directive.path_node),
         };
         let path_node = directive.path_node;
+        let reserved = is_reserved(&local, self.resolver.profile(self.unit));
         match self.resolver.resolve_path(self.unit, &directive.segments) {
+            PathResolution::Module(_) | PathResolution::Symbol(_) if reserved => {
+                Some((DiagnosticCode::ReservedImportNeedsAlias, local, node))
+            }
             PathResolution::Module(module) => self.add_module(&local, node, module),
             PathResolution::Symbol(origin) => self.add_symbol(&local, node, origin),
             PathResolution::Private(name) => Some((DiagnosticCode::PrivateImport, name, path_node)),

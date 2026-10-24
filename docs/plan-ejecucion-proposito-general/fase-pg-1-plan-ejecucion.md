@@ -18,8 +18,10 @@
   visibilidad y reexportación` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
   puntos. El mensaje «implementa `PG-1.04 · Rechazo determinista de ciclos` y `PG-1.05 · Manifiesto
   declarativo y autoridad externa` en una sola iteración» del 2026-10-23 autoriza únicamente esos dos
-  puntos. PG-1.06 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases siguientes
-  permanecen sin autorizar.
+  puntos. El mensaje «implementa en una iteración `PG-1.06 · Lock canónico y contenido verificado` y
+  `PG-1.07 · Perfiles por archivo e imports bilingües` en una sola iteración» del 2026-10-23 autoriza
+  únicamente esos dos puntos. PG-1.08 en adelante, `PG-1.C01`/`C02`, el cierre de la fase y las fases
+  siguientes permanecen sin autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
@@ -181,21 +183,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.06 · Lock canónico y contenido verificado
 
-- [ ] `PG-1.06.01` Especificar identidad de origen/contenido, versión de esquema, aristas, orden canónico, algoritmo/dominio de hash, exclusiones del árbol y actualización explícita; distinguir dependencia local editable de contenido bloqueado.
-- [ ] `PG-1.06.02` Derivar lock idéntico tras reordenar entradas, checkout reubicado, contenido alterado, entrada/arista ausente, hash falso, caché incompleta/corrupta, mismo nombre con dos orígenes y versión no soportada.
-- [ ] `PG-1.06.03` Probar serialización canónica, hashing de bytes leídos y publicación atómica; usar fixture con digest derivado independientemente y negativo de resumen/manifiesto alterado.
-- [ ] `PG-1.06.04` Implementar resolución exacta local/caché, verificación previa a compilar y escritura explícita del lock; compilar los mismos bytes que se verificaron. Sin red, scripts ni actualización implícita.
-- [ ] `PG-1.06.05` Documentar qué se incluye en hash, política de cambios locales y permisos de escritura en README project/CLI; lock del lenguaje distinto de los `Cargo.lock` del repositorio.
-- [ ] `PG-1.06.06` Verificar reproducción offline con lock/caché completos, rechazo con datos incompletos y estabilidad de bytes al permutar orden; un hash verifica integridad, no autenticidad del origen.
+- [x] `PG-1.06.01` Especificar identidad de origen/contenido, versión de esquema, aristas, orden canónico, algoritmo/dominio de hash, exclusiones del árbol y actualización explícita; distinguir dependencia local editable de contenido bloqueado.
+- [x] `PG-1.06.02` Derivar lock idéntico tras reordenar entradas, checkout reubicado, contenido alterado, entrada/arista ausente, hash falso, caché incompleta/corrupta, mismo nombre con dos orígenes y versión no soportada.
+- [x] `PG-1.06.03` Probar serialización canónica, hashing de bytes leídos y publicación atómica; usar fixture con digest derivado independientemente y negativo de resumen/manifiesto alterado.
+- [x] `PG-1.06.04` Implementar resolución exacta local/caché, verificación previa a compilar y escritura explícita del lock; compilar los mismos bytes que se verificaron. Sin red, scripts ni actualización implícita.
+- [x] `PG-1.06.05` Documentar qué se incluye en hash, política de cambios locales y permisos de escritura en README project/CLI; lock del lenguaje distinto de los `Cargo.lock` del repositorio.
+- [x] `PG-1.06.06` Verificar reproducción offline con lock/caché completos, rechazo con datos incompletos y estabilidad de bytes al permutar orden; un hash verifica integridad, no autenticidad del origen.
 
 ### PG-1.07 · Perfiles por archivo e imports bilingües
 
-- [ ] `PG-1.07.01` Ampliar `LANG.PROFILE.MODEL` y contratos de proyecto: perfil por archivo, precedencia explícita, discrepancia con ambas procedencias y alias obligatorio si el nombre es reservado en destino. Fijar formato lógico y conversiones según archivo de la operación.
-- [ ] `PG-1.07.02` Derivar imports es→en/en→es, biblioteca sin apertura, configuración contradictoria, nombre reservado con/sin alias, palabra extranjera como nombre legal y salida lógica desde módulos de ambos perfiles.
-- [ ] `PG-1.07.03` Probar selección de tablas por unidad, identidad semántica independiente de lexema, traducción sin renombrar símbolos y perfil de formateo en llamada cruzada VM/AOT.
-- [ ] `PG-1.07.04` Propagar perfil por unidad y sitio de operación hasta lowering/ejecución; resolver alias por identidad. No depender del único perfil global de la petición AOT actual.
-- [ ] `PG-1.07.05` Documentar precedencia y formato de valores en README lexicon/syntax/semantic/API/CLI; generar formas y ayuda desde el corpus.
-- [ ] `PG-1.07.06` Verificar paridad de firmas/códigos/argumentos entre perfiles, salida lógica correcta y E-PG-01; idioma de interfaz no altera programa ni lock.
+- [x] `PG-1.07.01` Ampliar `LANG.PROFILE.MODEL` y contratos de proyecto: perfil por archivo, precedencia explícita, discrepancia con ambas procedencias y alias obligatorio si el nombre es reservado en destino. Fijar formato lógico y conversiones según archivo de la operación.
+- [x] `PG-1.07.02` Derivar imports es→en/en→es, biblioteca sin apertura, configuración contradictoria, nombre reservado con/sin alias, palabra extranjera como nombre legal y salida lógica desde módulos de ambos perfiles.
+- [x] `PG-1.07.03` Probar selección de tablas por unidad, identidad semántica independiente de lexema, traducción sin renombrar símbolos y perfil de formateo en llamada cruzada VM/AOT.
+- [x] `PG-1.07.04` Propagar perfil por unidad y sitio de operación hasta lowering/ejecución; resolver alias por identidad. No depender del único perfil global de la petición AOT actual.
+- [x] `PG-1.07.05` Documentar precedencia y formato de valores en README lexicon/syntax/semantic/API/CLI; generar formas y ayuda desde el corpus.
+- [x] `PG-1.07.06` Verificar paridad de firmas/códigos/argumentos entre perfiles, salida lógica correcta y E-PG-01; idioma de interfaz no altera programa ni lock.
 
 ### PG-1.08 · Orden público de diagnósticos
 
@@ -434,7 +436,7 @@ instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia
 | Momento | Dependencia | Efecto |
 |---|---|---|
 | PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
-| Antes de PG-1.06 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
+| Antes de PG-1.08 o puntos posteriores | Autorización explícita de la persona en mensaje nuevo y revisión del plan | No iniciar los puntos restantes por inferencia de esta iteración |
 | Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
@@ -450,7 +452,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.05; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.05`; revisar el plan y recibir nueva autorización antes de `.06` |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; PG-0 quedó sincronizada; C01/C02 de la fase completa siguen pendientes | Implementar solamente `.01`–`.07`; revisar el plan y recibir nueva autorización antes de `.08` |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -507,7 +509,7 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 ### 11.1 Registro por tarea
 
 Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
-anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02, PG-1.03, PG-1.04 y PG-1.05;
+anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02 a PG-1.07;
 las restantes no se consideran iniciadas. Se usan exclusivamente los estados del
 plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
@@ -543,6 +545,18 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.05.04 | Cumplido | Analizador del subconjunto TOML, esquema, autoridad, `resolve_manifest`, `manifests` y `grants` en proyecto | Solo límites; permisos como vocabulario cerrado vacío |
 | PG-1.05.05 | Cumplido | README de project, API y CLI | Parser propio frente a `toml` y JSON; precedencia y valores heredados |
 | PG-1.05.06 | Cumplido | 8 pruebas de API: contenido tipo script rechazado como campo desconocido, límites no concedidos no se aplican, idioma de interfaz sin efecto | Presupuesto de bytes del transporte es un valor candidato |
+| PG-1.06.01 | Cumplido | `API.PROJECT.LOCK` R1–R5 | Contrato nuevo en estable 1.0.0 con `revisado_por` vacío; origen lógico relativo, aristas, orden canónico, dominios de hash y distinción local/fijado |
+| PG-1.06.02 | Cumplido | 15 casos (C1–C15): permutación de entradas, contenido alterado, archivo ausente, hash falso, mismo nombre con dos orígenes, versión no soportada, origen absoluto, arista ausente, local editable | Esperados derivados de la regla; digests calculados con `shasum` fuera del motor |
+| PG-1.06.03 | Cumplido | 29 pruebas del crate project (serialización canónica, permutaciones, normalización, parser, verificación) y 11 de API con digests independientes | Publicación atómica no probada: ver `.04` |
+| PG-1.06.04 | Cumplido con salvedad | Operaciones `build_lock` y `resolve_lock`; `Lock` en `pseudolearn_project`; SHA-256 en la API sobre los mismos bytes que se analizan | La escritura atómica del archivo y los permisos quedan para el comando de proyecto del CLI (`PG-1.12`): no se añadió un escritor sin consumidor |
+| PG-1.06.05 | Cumplido | README de project, API y CLI | Qué entra en el hash, política de cambios locales y lock distinto de `Cargo.lock` |
+| PG-1.06.06 | Cumplido | Verificación sin red ni disco con lock y contenido completos; rechazo de datos incompletos; mismos bytes al permutar | Un hash verifica integridad, no autenticidad |
+| PG-1.07.01 | Cumplido | `LANG.PROFILE.MODEL` R2, `LANG.MODULE.IMPORT` R7, `API.PROJECT` (campo `profile` de archivo), `IR.MODEL`, `IR.TEXT-FORMAT`, `IR.INSTRUCTIONS`, `DIAG.CATALOG` | Texto oficial editado sin `cambio`; reanclados solo esos identificadores |
+| PG-1.07.02 | Cumplido | 6 casos de perfil (es→en, en→es, manifiesto, discrepancia, apertura, respaldo), 4 de import reservado/alias/palabra extranjera, 1 de uso y 1 de reimpresión de RI | Esperados derivados de las reglas; salida lógica desde módulos de ambos perfiles |
+| PG-1.07.03 | Cumplido | Pruebas de resolución de perfil (9), de unidad semántica (6), de API (9), de RI (5) y de AOT (ejecución real con llamada cruzada y metadatos) | Identidad semántica independiente del lexema; la VM y el AOT imprimen cada lógico con el perfil del archivo |
+| PG-1.07.04 | Cumplido | Perfil por unidad en semantic; tabla `source_id → perfil` en RI, bytecode, VM y AOT; índice de perfil en el descriptor | El adaptador AOT no acepta proyectos (`PG-1.12`); el caso cruzado se prueba por RI armada a mano |
+| PG-1.07.05 | Cumplido | README de lexicon, syntax, semantic, project, API, ir, bytecode, vm, lowering, codegen, aot_rt y CLI | Fichas de ayuda sin cambios: ninguna forma sintáctica nueva |
+| PG-1.07.06 | Cumplido con salvedad | Conformidad `engine` con los casos nuevos y sin divergencias | E-PG-01 no medido en esta iteración; paridad de firmas entre perfiles por el corpus existente |
 
 ### 11.2 Cierre común de PG-1
 
@@ -593,6 +607,17 @@ observaciones, 0 divergencias, 38 casos nuevos). Reanclados con `lock --refresh`
 Se añadió `resolve_manifest` a la lista de operaciones de `schemas/see-1.schema.json`. No ejecutados: pruebas Wasm,
 puente nativo y app. Pendientes justificados: PG-1.06–.13, cierre común C01–C13 y la revisión independiente de
 `LANG.MODULE.MODEL`, `LANG.MODULE.IMPORT`, `API.PROJECT` y `API.PROJECT.MANIFEST`.
+
+Revisión Git de la iteración PG-1.06/PG-1.07: sin cierre de fase, commit ni push. Verificadores ejecutados en
+`packages/pseudolearn_engine`: `cargo xtask verify` en verde (formato, Clippy estricto, tests, `rust-checks`, toolchain y
+`cargo deny`); en `apps/pseudolearn_cli`: Clippy, tests y `rust-checks all`; `cargo check` del puente nativo; en
+`packages/pseudolearn_spec`: `validate`, `lock --check`, `export --check` y conformidad `engine` (1683 observaciones),
+`service` (126), `cli` (64) y `aot` (1233) sin divergencias, con las propiedades de cada sujeto regeneradas. Reanclados con
+`lock --refresh` solo `API.PROJECT`, `LANG.PROFILE.MODEL`, `LANG.MODULE.IMPORT`, `DIAG.CATALOG`, `IR.MODEL`, `IR.TEXT-FORMAT`
+e `IR.INSTRUCTIONS`; `API.PROJECT.LOCK` se registró como identidad nueva. Se usó un marcador transitorio de revisor,
+revertido tras cada ejecución; ninguna revisión fue atribuida. No ejecutados: pruebas Wasm en Chrome, conformidad `app`,
+medición de tamaños y E-PG-01. Pendientes justificados: la escritura atómica del lock (`PG-1.12`), PG-1.08–.13, la
+revisión integral del plan, el cierre común C01–C13 y la revisión independiente de `API.PROJECT.LOCK`.
 
 Al cerrar se consignarán comandos/resultados, hashes de campañas y artefactos, pendientes aprobados,
 decisiones de la persona y revisión remota de la rama. La fase siguiente requiere autorización nueva.

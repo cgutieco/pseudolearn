@@ -9,7 +9,7 @@ use crate::shadow_stack::{pop_roots, push_roots};
 use crate::type_mapping::kind_code;
 use crate::word_conversion::{from_word, to_word};
 use cranelift_codegen::ir::{InstBuilder, MemFlagsData, Value, types};
-use pseudolearn_aot_rt::NEWLINE_FLAG;
+use pseudolearn_aot_rt::{NEWLINE_FLAG, PROFILE_SHIFT};
 use pseudolearn_ir::{Operand, Operation};
 
 pub(crate) const OPERATIONS: &[Operation] = &[
@@ -62,13 +62,23 @@ fn lower_write(
         let kind = kind_code(&value_type).ok_or(CodegenError::InvalidModule("write of unit"))?;
         let last = position.saturating_add(1) == count;
         let flags = if newline && last { NEWLINE_FLAG } else { 0 };
+        let profile = profile_bits(lowering, instruction);
         let descriptor = lowering
             .builder
             .ins()
-            .iconst(types::I32, i64::from(kind | flags));
+            .iconst(types::I32, i64::from(kind | flags | profile));
         call_io(lowering, instruction, (Entry::Write, &[word, descriptor]))?;
     }
     Ok(())
+}
+
+pub(crate) fn profile_bits(lowering: &Lowering<'_, '_>, instruction: &Instruction<'_>) -> u32 {
+    let module = lowering.environment.module;
+    if module.profiles.is_empty() {
+        return 0;
+    }
+    let index = u32::try_from(module.vocabulary_index_of(instruction.span)).unwrap_or(0);
+    index << PROFILE_SHIFT
 }
 
 fn lower_read(

@@ -19,6 +19,7 @@ pub struct AotEngine {
     pub(crate) cells: Vec<CellSlot>,
     pub(crate) pending: Vec<u64>,
     pub(crate) boolean_words: BooleanWords,
+    pub(crate) site_boolean_words: Vec<BooleanWords>,
     pub(crate) streams: AotStreams,
     fault: Option<FaultRecord>,
     notices: Vec<FaultRecord>,
@@ -46,10 +47,21 @@ impl AotEngine {
                     .saturating_mul(crate::inline_allocation::INLINE_RECORD_WORDS)
             ],
             boolean_words: config.boolean_words,
+            site_boolean_words: Vec::new(),
             streams,
             fault: None,
             notices: Vec::new(),
         }
+    }
+
+    pub fn use_site_boolean_words(&mut self, words: Vec<BooleanWords>) {
+        self.site_boolean_words = words;
+    }
+
+    pub(crate) fn boolean_words_for(&self, profile_index: usize) -> &BooleanWords {
+        self.site_boolean_words
+            .get(profile_index)
+            .unwrap_or(&self.boolean_words)
     }
 
     pub fn register_layout(&mut self, layout: ObjectLayout) -> Result<(), MemoryError> {

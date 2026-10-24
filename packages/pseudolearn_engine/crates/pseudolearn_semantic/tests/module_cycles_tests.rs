@@ -65,6 +65,7 @@ fn analyze(files: &[(&str, &str)]) -> Result<(Option<HirModule>, Vec<Diagnostic>
             module: module.id,
             tree,
             source,
+            profile: Profile::Spanish,
         });
     }
     let entry =

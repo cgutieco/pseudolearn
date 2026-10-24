@@ -44,6 +44,13 @@ presentar argumentos tipados de diagnóstico; no se mantiene un segundo dicciona
 `BuiltinKind::all` enumeran el vocabulario generado para herramientas de edición (autocompletado, formateo y
 traducción), que de este modo no copian listas de palabras.
 
+### Palabras reservadas por perfil
+
+Problema: la resolución de imports necesita saber si un nombre importado choca con el vocabulario del archivo que
+importa. Elección: `is_reserved(palabra, perfil)` consulta `find_keyword` con el plegado del perfil. Una palabra
+reservada solo en otro perfil no lo es aquí y es un nombre legal; el vocabulario de cada perfil se consulta con su propia
+tabla generada, sin tablas cruzadas. Descartado: una lista aparte de palabras prohibidas, que podría divergir del corpus.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

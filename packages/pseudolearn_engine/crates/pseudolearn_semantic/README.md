@@ -96,6 +96,14 @@ clases se importan por símbolo. El nombre de enlace de una función o clase de 
 del módulo para que dos símbolos homónimos de paquetes distintos no colisionen en la RI. Las funciones públicas
 no se avisan como no usadas, porque su uso puede estar fuera del proyecto.
 
+### Perfil por unidad y alias obligatorio
+
+Cada `ProjectUnit` lleva el perfil de su archivo; `switch_unit` lo instala en las opciones, de modo que la búsqueda de
+funciones estándar y el resto del análisis usan el vocabulario de la unidad en curso, también cuando una llamada cruza a
+otra unidad. Al enlazar un `Importar`, el nombre local (alias o último segmento) que es palabra reservada del perfil de la
+unidad que importa produce `reservedImportNeedsAlias`; un alias legal lo resuelve y el símbolo conserva su identidad, que
+es independiente del lexema. Descartado: renombrar el símbolo en el módulo exportador o inventar un escape de nombres.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

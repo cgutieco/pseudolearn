@@ -1703,6 +1703,42 @@
         "lexeme": "lexema"
       }
     },
+    "profileMismatch": {
+      "mensajes": {
+        "es": "El perfil configurado no coincide con el que declara el archivo: {lexeme}",
+        "en": "The configured profile does not match the one the file declares: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "reservedImportNeedsAlias": {
+      "mensajes": {
+        "es": "El nombre importado {lexeme} es una palabra reservada de este perfil y necesita un alias",
+        "en": "The imported name {lexeme} is a reserved word of this profile and needs an alias"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "importNameCollision": {
       "mensajes": {
         "es": "El nombre {lexeme} ya está en uso en este módulo",

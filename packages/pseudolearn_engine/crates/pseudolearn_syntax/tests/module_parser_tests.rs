@@ -122,3 +122,38 @@ fn module_mode_still_rejects_two_algorithms() {
     let (_, codes) = module("Algoritmo P\nFinAlgoritmo\nAlgoritmo Q\nFinAlgoritmo\n");
     assert!(codes.contains(&DiagnosticCode::MultipleAlgorithms));
 }
+
+fn english_module(text: &str) -> Vec<DiagnosticCode> {
+    let source = SourceText::new(text.to_owned());
+    let (_, diagnostics) = parse_module_source(&source, Profile::English, None);
+    diagnostics
+        .iter()
+        .map(|diagnostic| diagnostic.code)
+        .collect()
+}
+
+#[test]
+fn import_path_segments_may_be_reserved_words_of_the_active_profile() {
+    let (tree, codes) = module("Importar geo.Mientras Como m;\n");
+    assert!(codes.is_empty(), "{codes:?}");
+    assert_eq!(count(&tree, NodeKind::ImportDeclaration), 1);
+    assert!(english_module("import geo.while as w;\n").is_empty());
+}
+
+#[test]
+fn import_alias_still_rejects_reserved_words() {
+    let (_, codes) = module("Importar geo.f Como Mientras;\n");
+    assert_eq!(codes, vec![DiagnosticCode::ReservedLexemeUsedAsName]);
+}
+
+#[test]
+fn import_path_still_requires_a_segment_after_the_dot() {
+    let (_, codes) = module("Importar geo.;\n");
+    assert_eq!(codes, vec![DiagnosticCode::ExpectedModuleName]);
+}
+
+#[test]
+fn alias_connector_cannot_be_a_path_segment() {
+    let (_, codes) = module("Importar geo.Como;\n");
+    assert_eq!(codes, vec![DiagnosticCode::ExpectedModuleName]);
+}

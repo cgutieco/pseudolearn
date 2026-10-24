@@ -12,6 +12,7 @@ pub mod operand_parser;
 pub mod operation;
 pub mod parser;
 pub mod printer;
+mod profile_parser;
 pub mod span;
 pub mod tokens;
 pub mod type_checker;
@@ -32,6 +33,7 @@ pub use dominance::DominatorTree;
 pub use identities::{BlockId, ClassId, FunctionId, InstructionId, ValueId, VariableId};
 pub use model::{
     Block, ClassDeclaration, FieldDeclaration, Function, Module, OriginEntry, OriginTable,
+    SourceProfile,
 };
 pub use operand::{Operand, PredicateKind};
 pub use operation::Operation;

@@ -59,7 +59,7 @@ fn emit(
     target: &TargetConfig,
 ) -> Result<BenchmarkObject, NativeBuildFailure> {
     let module = &prepared.module;
-    let settings = settings_of(&prepared.request);
+    let settings = settings_of(&prepared.request, module);
     let compiled = compile_module_to_benchmark_object(module, target, &settings)
         .map_err(|error| NativeBuildFailure::Backend(error.to_string()))?;
     let entry_symbol = compiled

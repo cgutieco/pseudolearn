@@ -1495,6 +1495,8 @@
                       "analyze_project",
                       "execute_project",
                       "resolve_manifest",
+                      "build_lock",
+                      "resolve_lock",
                       "analysis",
                       "encode_events",
                       "decode_events",

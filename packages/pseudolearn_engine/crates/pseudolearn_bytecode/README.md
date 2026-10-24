@@ -57,6 +57,9 @@ comparten identidad y mantienen sus contadores de programa por gemelo.
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
+`BytecodeModule` conserva la tabla de perfiles por fuente del módulo RI (`profiles`) y reexporta `SourceProfile`; el
+bytecode no la interpreta, la entrega al cargador de la VM.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
