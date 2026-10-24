@@ -94,6 +94,10 @@ la salida del programa se conserva literalmente. ri/ir imprime la RI canónica d
 de la primera violación. No se introduce semántica propia ni se accede a capas internas. Los casos cli
 verifican ambos idiomas, opciones equivalentes, códigos de salida y errores operativos.
 
+`ejecutar`/`run` conserva la entrada pública de archivo suelto con perfil y rigor existentes. No exige
+manifiesto ni imports para abrir un programa; las directivas de módulo siguen reservadas a la forma
+contextual de unidad superior y sus grafías se pueden usar como nombres dentro de un programa suelto.
+
 Perfil por archivo: `--vocabulario` equivale al argumento `profile` de un archivo; al integrar el
 análisis de proyectos, el manifiesto aportará las excepciones y el idioma de interfaz no cambiará el programa ni el lock.
 

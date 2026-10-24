@@ -113,7 +113,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Andamiaje de la plataforma web                                 | Creación de `web/` y de un adaptador de `TextEntryModality` para navegador; hasta entonces la barra de teclas no se verifica ahí (ver §4.33) | Abierto                                                                                                |
 | Campaña E-NR2 | Medición con muestras independientes en dispositivo, escritorio y navegador, con procedencia y resumen recalculable | Pendiente; falta el ejecutor de medición y la prueba física, que la persona repetirá después |
 | Tamaños de artefactos R8 | Biblioteca ios-arm64 Release y módulo Wasm con Brotli Q11/lgwin22 | Medición registrada: 2.85 MiB y 518.16 KiB, dentro de sus presupuestos de 3 MiB y 600 KiB |
-| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 230 observaciones y dos propiedades API por el puente real pasan sin divergencias |
+| Adaptador SEE del sujeto `app` | Lanzador, escenarios APP y propiedades API sobre el transporte FRB generado | Implementado; 252 observaciones y tres propiedades API por el puente real pasan sin divergencias |
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 
@@ -258,7 +258,10 @@ ese servicio.
 escenarios de app llaman el puente FRB generado para consultar el motor. `see conform --subject app`
 escribe observaciones y matriz bajo `packages/pseudolearn_spec/results/`, un directorio local ignorado.
 `see conform --subject app --operation properties` ejecuta las propiedades API por el mismo transporte
-y guarda su evidencia en ese directorio. El manifiesto conserva sus reglas como pendientes hasta que
+y guarda su evidencia en ese directorio. Las llamadas API pueden enviarse en secuencia y reutilizar un
+recurso devuelto por una llamada anterior mediante `resource_from`; así se contrastan por el puente
+real los contratos que necesitan negociar versiones, conservar identidad o consultar una sesión.
+El manifiesto conserva sus reglas como pendientes hasta que
 todas las divergencias se resuelvan y la campaña de medición de B8 esté completa.
 
 ### 2.6 Despliegue y distribución
@@ -2172,13 +2175,16 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 - **Elección:** `tool/see_app_adapter.dart` negocia una sesión SEE por JSONL, inicializa FRB y abre
   `openNativeTransport()`. Sus escenarios llaman las API de análisis, ejecución, estado y completado usadas por los
   adaptadores de `lib/engine/rust/`; las respuestas se forman a partir de valores recibidos en esa sesión.
+  Las peticiones API aceptan una llamada o una secuencia; `resource_from` resuelve los recursos desde las respuestas
+  anteriores para que los casos de negociación y ciclo de vida recorran el puente real.
   `conformance.yaml` mantiene los vínculos pendientes hasta que una verificación ejecutada respalde cada vínculo.
 - **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
   `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el
   contrato no declara.
-- **Verificación actual:** `see conform --subject app` ejecuta 221 observaciones sin divergencias, incluida la
-  continuación de asignación del editor. `see conform --subject app --operation properties` comprueba dos propiedades
-  API mediante el transporte real, con 1105 muestras por propiedad y semilla 42. Esa evidencia no sustituye las
+- **Verificación actual:** `see conform --subject app` ejecuta 252 observaciones sin divergencias, incluidas las
+  llamadas de documento único con Unicode y los formatos de intercambio por el puente real. `see conform --subject app
+  --operation properties` comprueba tres propiedades API mediante el transporte real, con 1117 muestras por propiedad y
+  semilla 42. Esa evidencia no sustituye las
   mediciones Release de E-NR2.
 - **Alternativas descartadas:** duplicar el motor Rust dentro del ejecutor, responder con valores constantes o
   simular las llamadas de transporte ocultaría fallos de recursos, conversión de posiciones y proyección.

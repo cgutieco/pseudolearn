@@ -22,7 +22,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 Nivel 2. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
-Estructuras y algoritmos: Lexer con avance UTF-8 y reconocimiento ASCII; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`.
+Estructuras y algoritmos: Lexer con avance UTF-8; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`. El lexer consume el identificador Unicode completo y delega a `pseudolearn_source` la validación del alfabeto tras NFC.
 
 Invariantes: Reimprimir los tokens da el texto exacto; todo texto produce árbol; recursión del parser acotada por la profundidad de anidación, con diagnóstico, sin agotar la pila.
 
@@ -58,11 +58,13 @@ El reconocimiento estructural de construcciones excluidas se aplica también fue
 Problema: un archivo de proyecto es un módulo y no exige un algoritmo, mientras que el texto suelto conserva
 su contrato. Elección: el analizador tiene un modo de proyecto (`parse_module_source`) que acepta cero
 algoritmos, `Importar` y `Exportar` antes de las unidades y los prefijos `Publico`/`Privado` en subprogramas
-y clases; en el modo suelto esas formas se analizan igual pero producen `moduleSyntaxOutsideProject`, de modo
-que ningún programa válido existente cambia de resultado. El nodo de una unidad con prefijo empieza en el
-prefijo, de forma que semantic lee la visibilidad del primer token sin recorrer los miembros de la clase.
-Se rechaza un segundo analizador de módulos, porque duplicaría la recuperación de errores, y los comodines:
-tras un punto de la ruta se exige un nombre (`expectedModuleName`).
+y clases. En texto suelto, las grafías de directiva del perfil activo se reconocen contextualmente en
+posición de unidad superior y producen `moduleSyntaxOutsideProject`; dentro de un programa, los cuatro
+lexemas `Importar`, `Exportar`, `import` y `export` permanecen disponibles como nombres. El texto vacío
+conserva `expectedAlgorithmStart`, y los prefijos de visibilidad mantienen su diagnóstico. El nodo de una
+unidad con prefijo empieza en el prefijo, de forma que semantic lee la visibilidad del primer token sin
+recorrer los miembros de la clase. Se rechaza un segundo analizador de módulos, porque duplicaría la
+recuperación de errores, y los comodines: tras un punto de la ruta se exige un nombre (`expectedModuleName`).
 
 ### Segmentos de ruta de importación
 

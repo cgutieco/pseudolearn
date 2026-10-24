@@ -18,7 +18,9 @@ El comando `service help` mide la consulta de ayuda: `functional <directorio>` r
 ## 2. Guía operativa y ciclo de vida
 
 Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras
-por configuración como JSONL. `cargo run --release -p pseudolearn_bench_worker -- aot <directorio-nuevo> <techo-raw.json> <resumen-vm.json>` recoge el experimento del código nativo; requiere `rustc` y un enlazador del sistema, y compila un lanzador por carga contra la biblioteca `pseudolearn_aot_rt` del mismo perfil. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
+por configuración como JSONL, incluidas cargas independientes `unicode-identifiers-{es,en}-{strict,flexible}`
+con alfabeto español y usos NFC compuestos y descompuestos. Miden el análisis completo del API sobre el
+caso Unicode; sus tiempos incluyen escaneo, parser y análisis semántico. `cargo run --release -p pseudolearn_bench_worker -- aot <directorio-nuevo> <techo-raw.json> <resumen-vm.json>` recoge el experimento del código nativo; requiere `rustc` y un enlazador del sistema, y compila un lanzador por carga contra la biblioteca `pseudolearn_aot_rt` del mismo perfil. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
 
 La orden `bridge` lee por stdin una configuración de escenarios de API y treinta iteraciones. Cada
 iteración crea una sesión nueva; `setup` y `verify` quedan fuera del reloj y `timed` publica una latencia

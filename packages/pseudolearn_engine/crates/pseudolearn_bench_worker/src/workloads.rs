@@ -10,6 +10,27 @@ pub struct Workload {
     pub corpus: bool,
 }
 
+const SPANISH_UNICODE_IDENTIFIERS: [&str; 18] = [
+    "ñ",
+    "Ñ",
+    "áx",
+    "Áx",
+    "éx",
+    "Éx",
+    "íx",
+    "Íx",
+    "óx",
+    "Óx",
+    "úx",
+    "Úx",
+    "üx",
+    "Üx",
+    "año",
+    "pingüino",
+    "ax",
+    "Ax",
+];
+
 pub fn load() -> Result<Vec<Workload>, String> {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../../pseudolearn_spec/specifications/export.json");
@@ -30,6 +51,7 @@ pub fn load() -> Result<Vec<Workload>, String> {
                 workloads.push(generated(&corpus, profile, strictness, configuration)?);
             }
             workloads.push(corpus_workload(&corpus, profile, strictness)?);
+            workloads.push(unicode_identifier_workload(&corpus, profile, strictness)?);
         }
     }
     Ok(workloads)
@@ -121,6 +143,59 @@ fn corpus_workload(corpus: &Value, profile: &str, strictness: &str) -> Result<Wo
         incomplete: false,
         corpus: true,
     })
+}
+
+fn unicode_identifier_workload(
+    corpus: &Value,
+    profile: &str,
+    strictness: &str,
+) -> Result<Workload, String> {
+    let program = unicode_identifier_program(corpus, profile)?;
+    let lines = u32::try_from(program.lines().count()).map_err(|error| error.to_string())?;
+    let bytes = program.len();
+    Ok(Workload {
+        requests: vec![AnalyzeRequest {
+            program,
+            profile: profile.to_owned(),
+            strictness: strictness.to_owned(),
+            source: None,
+        }],
+        name: format!("unicode-identifiers-{profile}-{strictness}"),
+        lines,
+        bytes,
+        incomplete: false,
+        corpus: false,
+    })
+}
+
+fn unicode_identifier_program(corpus: &Value, profile: &str) -> Result<String, String> {
+    let names = SPANISH_UNICODE_IDENTIFIERS;
+    let mut program = format!(
+        "{} Unicode\n{} {} {} {};\n",
+        keyword(corpus, profile, "algorithm")?,
+        keyword(corpus, profile, "declare")?,
+        names.join(", "),
+        keyword(corpus, profile, "typeConnector")?,
+        keyword(corpus, profile, "integerType")?
+    );
+    for (index, name) in names.iter().enumerate() {
+        let assignment_name = match *name {
+            "año" => "an\u{0303}o",
+            "pingüino" => "pingu\u{0308}ino",
+            _ => *name,
+        };
+        program.push_str(&format!(
+            "{assignment_name} <- {};\n",
+            index.saturating_add(1)
+        ));
+    }
+    program.push_str(&format!(
+        "{} {};\n{}\n",
+        keyword(corpus, profile, "write")?,
+        names.join(", "),
+        keyword(corpus, profile, "endAlgorithm")?
+    ));
+    Ok(program)
 }
 
 fn append_case(requests: &mut Vec<AnalyzeRequest>, block: &Value, profile: &str, strictness: &str) {

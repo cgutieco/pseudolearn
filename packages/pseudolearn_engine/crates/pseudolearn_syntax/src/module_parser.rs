@@ -3,7 +3,19 @@ use crate::parser_state::ParserState;
 use crate::tokens::TokenKind;
 use crate::tree::NodeKind;
 use pseudolearn_diagnostics::DiagnosticCode;
-use pseudolearn_lexicon::KeywordKind;
+use pseudolearn_lexicon::{KeywordKind, Profile, find_keyword};
+
+pub(crate) fn is_standalone_directive(state: &mut ParserState<'_>, profile: Profile) -> bool {
+    if state.project_mode || state.kind() != TokenKind::Identifier {
+        return false;
+    }
+    let token = state.token();
+    let lexeme = state.text(token);
+    matches!(
+        find_keyword(lexeme, profile),
+        Some(KeywordKind::ImportKeyword | KeywordKind::ExportKeyword)
+    )
+}
 
 pub(crate) fn is_directive(kind: TokenKind) -> bool {
     matches!(

@@ -137,8 +137,13 @@ Alternativas descartadas: El hash perfecto generado reconoce palabras sin búsqu
 
 ### syntax
 
-Problema: construye un árbol sintáctico sin pérdida para cualquier texto. Elección: Lexer por tabla de 256 clases de byte; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`.
+Problema: construye un árbol sintáctico sin pérdida para cualquier texto. Elección: Lexer por tabla de 256 clases de byte y escaneo Unicode de identificadores completos; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`. `pseudolearn_source` valida el alfabeto español exacto sobre NFC, igual para ambos rigores y perfiles, mientras conserva bytes y rangos originales.
 Alternativas descartadas: Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde/rojo rowan por asignaciones e indirecciones. El descenso recursivo facilita recuperación explícita; se descartan LALR y PEG para mantener sus decisiones visibles.
+
+En el modo de archivo suelto, `Importar`/`Exportar` y `import`/`export` son identificadores dentro
+del programa. Las grafías del perfil activo solo se reconocen como directivas de módulo en posición
+de unidad superior y conservan allí `moduleSyntaxOutsideProject`; el modo de proyecto conserva su
+reconocimiento de directivas. No se reserva contexto para otras palabras.
 
 ### semantic
 

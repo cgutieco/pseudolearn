@@ -38,11 +38,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Los lexemas de tokens del vocabulario oficial, incluidos alias, son reservados bajo las políticas del perfil. Español ignora caja y acentos del vocabulario; inglés ignora caja y conserva acentos. Y/O y and/or son operadores reservados. No hay palabras contextuales ni escape de nombres en la edición vigente. Las funciones incorporadas no son reservadas. Un lexema reservado en una posición de nombre inequívoca produce reservedLexemeUsedAsName; en una expresión incompleta se informa el error de expresión.",
+  "texto": "Los lexemas de tokens del vocabulario oficial, incluidos alias, son reservados bajo las políticas del perfil. Español ignora caja y acentos del vocabulario; inglés ignora caja y conserva acentos. Y/O y and/or son operadores reservados. Las grafías de Importar y Exportar del perfil activo son contextuales únicamente en un texto suelto: en posición de unidad superior introducen sintaxis de módulo y producen moduleSyntaxOutsideProject, y dentro de un programa suelto pueden ser nombres. En un proyecto siguen siendo palabras reservadas. No hay otras palabras contextuales ni escape general de nombres en la edición vigente. Las funciones incorporadas no son reservadas. Un lexema reservado en una posición de nombre inequívoca produce reservedLexemeUsedAsName; en una expresión incompleta se informa el error de expresión.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -124,5 +125,24 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Importar, Exportar Como Entero;\nImportar <- 1;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine import, export as integer;\nimport <- 1;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  }
 }
 ```

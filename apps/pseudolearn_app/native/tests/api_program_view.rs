@@ -122,6 +122,17 @@ fn document_view_and_node_queries_cross_the_bridge() {
         json!({"resource":document,"node_id":identifier}),
     );
     assert!(node.pointer("/value/node/kind").is_some());
+    let other_document = resource(&send(
+        session,
+        "create_document",
+        json!({"program":"Algoritmo Q\nEscribir 2;\nFinAlgoritmo\n"}),
+    ));
+    let foreign = send(
+        session,
+        "query_node",
+        json!({"resource":other_document,"node_id":identifier}),
+    );
+    assert_eq!(foreign.pointer("/failure/family"), Some(&json!("usage")));
     let stale = send(
         session,
         "query_node",

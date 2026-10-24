@@ -18,7 +18,10 @@ Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esque
 
 La validación del catálogo compara los operadores declarados con las producciones de asignación y
 expresión, deriva las palabras reservadas del vocabulario y las incorporadas de la biblioteca, y
-comprueba cada rol declarado contra una producción de gramática vigente. La matriz identidad/rol
+comprueba cada rol declarado contra una producción de gramática vigente. La ficha de identificadores
+ancla `LANG.LEXICAL.IDENTIFIER#R1` para describir el alfabeto español en ambos rigores y la
+normalización NFC; mantiene explícitas la distinción de caja y acentos, sin atribuir equivalencia
+general a los homógrafos. La matriz identidad/rol
 requiere una ficha o exclusión con disponibilidad completa en 2026, ambos perfiles y ambos rigores;
 cada token cubierto debe tener una parte editorial es/en propia. La función `coverage_matrix` expone
 las filas ordenadas que justifican el 100 % y los negativos ejercitan identidad duplicada, rol sin

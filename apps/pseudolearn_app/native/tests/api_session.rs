@@ -7,6 +7,48 @@ fn session_identifier() -> u64 {
     created.unwrap_or_default()
 }
 
+fn single_file_analysis(session: u64, program: &str) -> Result<(Value, u64), String> {
+    let created = send(
+        session,
+        "create_analysis",
+        json!({"program":program,"profile":"es","strictness":"strict"}),
+    );
+    let resource = created
+        .pointer("/value/resource")
+        .and_then(Value::as_u64)
+        .ok_or("missing analysis resource")?;
+    let document = created
+        .pointer("/value/document")
+        .and_then(Value::as_u64)
+        .ok_or("missing document resource")?;
+    Ok((
+        send(session, "analysis", json!({"resource":resource})),
+        document,
+    ))
+}
+
+fn has_original_identifier_span(analysis: &Value) -> bool {
+    analysis
+        .pointer("/value/tokens")
+        .and_then(Value::as_array)
+        .is_some_and(|tokens| {
+            tokens.iter().any(|token| {
+                token.get("kind") == Some(&json!("identifier"))
+                    && token.pointer("/span/start/line") == Some(&json!(3))
+                    && token.pointer("/span/start/column") == Some(&json!(1))
+                    && token.pointer("/span/end/column") == Some(&json!(5))
+            })
+        })
+}
+
+fn stored_program(session: u64, document: u64) -> Result<String, String> {
+    send(session, "document", json!({"resource":document}))
+        .pointer("/value/program")
+        .and_then(Value::as_str)
+        .map(str::to_owned)
+        .ok_or_else(|| "missing stored program".to_owned())
+}
+
 fn send(session: u64, operation: &str, arguments: Value) -> Value {
     let request = json!({"operation":operation,"arguments":arguments}).to_string();
     let response = call_session(session, request);
@@ -83,6 +125,18 @@ fn source_identity_crosses_the_native_json_boundary_exactly() {
         }))
     );
     assert!(close_session(session).is_ok());
+}
+
+#[test]
+fn loose_unicode_source_round_trips_through_native_json_analysis() -> Result<(), String> {
+    let session = session_identifier();
+    let program = "Algoritmo P\nDefinir año, Importar, Exportar, import, export Como Entero;\nan\u{0303}o <- 5;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir año, Importar, Exportar, import, export;\nFinAlgoritmo\n";
+    let (analysis, document) = single_file_analysis(session, program)?;
+    assert_eq!(analysis.pointer("/value/diagnostics"), Some(&json!([])));
+    assert_eq!(stored_program(session, document)?, program);
+    assert!(has_original_identifier_span(&analysis));
+    assert!(close_session(session).is_ok());
+    Ok(())
 }
 
 #[test]

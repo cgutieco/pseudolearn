@@ -118,6 +118,25 @@ fn standalone_text_without_module_syntax_is_unchanged() {
 }
 
 #[test]
+fn module_directives_remain_identifiers_inside_standalone_programs() {
+    for (profile, source_text) in [
+        (
+            Profile::Spanish,
+            "Algoritmo P\nDefinir Importar, Exportar Como Entero;\nImportar <- 2;\nExportar <- Importar + 3;\nEscribir Exportar;\nFinAlgoritmo\n",
+        ),
+        (
+            Profile::English,
+            "algorithm P\ndefine import, export as integer;\nimport <- 2;\nexport <- import + 3;\nwrite export;\nendAlgorithm\n",
+        ),
+    ] {
+        let source = SourceText::new(source_text.to_owned());
+        let (tree, diagnostics) = parse_source(&source, profile);
+        assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        assert!(!tree.has_errors);
+    }
+}
+
+#[test]
 fn module_mode_still_rejects_two_algorithms() {
     let (_, codes) = module("Algoritmo P\nFinAlgoritmo\nAlgoritmo Q\nFinAlgoritmo\n");
     assert!(codes.contains(&DiagnosticCode::MultipleAlgorithms));

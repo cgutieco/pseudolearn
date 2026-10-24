@@ -27,7 +27,8 @@
   ],
   "titulo_en": "Run command",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -44,7 +45,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C12"
   ]
 }
 ```
@@ -423,6 +425,29 @@
     "entorno": {},
     "archivos": {
       "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1234\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": ["ejecutar", "p.pseudo"],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n"
     }
   }
 }

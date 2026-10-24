@@ -30,7 +30,9 @@
       "tipo": "requiere"
     }
   ],
-  "revisado_por": []
+  "revisado_por": [
+    "Cesar Antonio Gutierrez Contreras"
+  ]
 }
 ---
 
@@ -75,10 +77,12 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Un texto suelto, sin proyecto, conserva el contrato de estructura de programa: Importar, Exportar y el prefijo de visibilidad de una unidad de nivel superior producen moduleSyntaxOutsideProject y no cambian el resultado de ningún programa válido que no los use.",
+  "texto": "Un texto suelto, sin proyecto, conserva el contrato de estructura de programa y no exige manifiesto ni migración al abrir. Las grafías de Importar y Exportar del perfil activo se reconocen como directivas de módulo solo en posición de unidad superior, donde producen moduleSyntaxOutsideProject; dentro de un programa suelto son identificadores válidos aunque también sean palabras reservadas del perfil. El prefijo de visibilidad de una unidad de nivel superior produce moduleSyntaxOutsideProject. El archivo vacío conserva expectedAlgorithmStart. Estas reglas no cambian los resultados previos de programas válidos.",
   "verificacion": [
     "C12",
-    "C13"
+    "C13",
+    "C20",
+    "C21"
   ]
 }
 ```
@@ -1046,6 +1050,46 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R3",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine Importar, Exportar, import, export as integer;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1234\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R3",
+  "perfiles": ["es", "en"],
+  "rigor": ["estricto", "flexible"],
+  "programas": {
+    "es": "",
+    "en": ""
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {"codigo": "expectedAlgorithmStart", "severidad": "error"}
+    ]
+  }
 }
 ```
 

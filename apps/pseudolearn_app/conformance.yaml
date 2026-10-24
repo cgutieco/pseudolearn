@@ -7,6 +7,7 @@ activadas:
   - APP.EDITOR.COMPLETION
   - API.PROGRAM.VIEW
   - API.WIRE-FORMAT
+  - API.ANALYZE
   - PERF.ARTIFACT.SIZE
   - PERF.PROTOCOL
   - LANG.SOURCE.POSITION
@@ -116,6 +117,12 @@ vinculos:
     verificacion: ejecutor
     estado: cumple
   - regla: API.WIRE-FORMAT@1.0.0#R5
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.ANALYZE@1.0.0#R1
+    verificacion: ejecutor
+    estado: cumple
+  - regla: API.ANALYZE@1.0.0#R2
     verificacion: ejecutor
     estado: cumple
   - regla: LANG.SOURCE.POSITION@1.0.0#R1

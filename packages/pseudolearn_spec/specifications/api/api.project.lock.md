@@ -26,7 +26,9 @@
       "tipo": "requiere"
     }
   ],
-  "revisado_por": []
+  "revisado_por": [
+    "revision-independiente-automatizada-codex-2026-10-24"
+  ]
 }
 ---
 

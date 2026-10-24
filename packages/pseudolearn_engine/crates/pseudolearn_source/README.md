@@ -22,7 +22,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 Nivel 0. Dependencias internas permitidas: ninguna capa interna. Externas: unicode-normalization, unicode-ident.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
-Estructuras y algoritmos: `SourceText` con los bytes originales e índice de inicios de línea; funciones del módulo convierten desplazamientos UTF-8 a puntos de código Unicode o unidades UTF-16 y validan tramos. La identidad se consulta con funciones separadas para mantener pequeña la interfaz del texto. BOM; NFC solo para comparar nombres, con camino rápido ASCII. `SourceIdentity` combina proyecto, revisión y archivo; `SourceTable` ordena fuentes por ID y valida nodos y tramos antes de resolver una localización.
+Estructuras y algoritmos: `SourceText` con los bytes originales e índice de inicios de línea; funciones del módulo convierten desplazamientos UTF-8 a puntos de código Unicode o unidades UTF-16 y validan tramos. La identidad se consulta con funciones separadas para mantener pequeña la interfaz del texto. BOM; NFC solo para comparar nombres y validar identificadores, con camino rápido ASCII. El alfabeto de identificadores es ASCII latino, ñ/Ñ, á/Á, é/É, í/Í, ó/Ó, ú/Ú, ü/Ü y guion bajo; los continuadores también admiten dígitos ASCII. `SourceIdentity` combina proyecto, revisión y archivo; `SourceTable` ordena fuentes por ID y valida nodos y tramos antes de resolver una localización.
 
 Invariantes: Los desplazamientos son siempre límites de carácter UTF-8; el texto original nunca se modifica. La identidad de fuente es distinta del nombre visible; el ID cero se reserva al documento suelto. Una tabla representa una revisión inmutable: una localización de otro proyecto o revisión no se resuelve y un ID no se reutiliza dentro de la tabla.
 
@@ -40,8 +40,11 @@ Problema: los consumidores usan unidades de coordenadas distintas. Elección: el
 
 Problema: NFC debe aplicarse después de consumir el nombre completo. Elección: el scanner consulta
 `IdentifierNormalizer::is_continuation` para conservar las marcas combinantes dentro del mismo token.
-La admisibilidad del alfabeto por rigor se comprueba sobre el nombre normalizado. Se rechaza cortar
-el token ante una marca combinante, porque produciría un falso carácter inválido.
+La admisibilidad del alfabeto es idéntica en ambos rigores y perfiles, y se comprueba sobre el nombre
+normalizado. Una marca combinante se conserva dentro del token; solo se acepta si NFC produce un
+nombre compuesto por el alfabeto permitido. El texto fuente y los offsets originales nunca se
+normalizan. Se rechaza cortar el token ante una marca combinante, porque produciría un falso carácter
+inválido.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

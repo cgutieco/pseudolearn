@@ -253,7 +253,7 @@
     ]
   },
   "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine"]
+  "sujetos": ["engine", "app"]
 }
 ```
 
@@ -524,7 +524,7 @@
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": ["engine", "app"]
 }
 ```
 
@@ -542,7 +542,7 @@
     ]
   },
   "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine"]
+  "sujetos": ["engine", "app"]
 }
 ```
 
@@ -560,7 +560,7 @@
     ]
   },
   "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine"]
+  "sujetos": ["engine", "app"]
 }
 ```
 
@@ -582,6 +582,6 @@
     {"failure": {"family": "usage"}},
     {"failure": {"family": "usage"}}
   ]}},
-  "sujetos": ["engine"]
+  "sujetos": ["engine", "app"]
 }
 ```

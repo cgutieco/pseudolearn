@@ -10,7 +10,8 @@
     "responsable-motor"
   ],
   "sujetos": [
-    "engine"
+    "engine",
+    "app"
   ],
   "resumen": "Texto, vocabulario y rigor producen tokens, diagnósticos ordenados y un esquema.",
   "depende_de": [
@@ -32,7 +33,8 @@
   ],
   "titulo_en": "Analysis",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "revision-independiente-automatizada-r9",
+    "Cesar Antonio Gutierrez Contreras"
   ]
 }
 ---
@@ -49,7 +51,10 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -156,6 +161,69 @@
   },
   "programa": "Algoritmo P\n// ñ\nFinAlgoritmo\n@\n",
   "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [],
+    "tokens_include": [
+      {"kind": "identifier", "span": {"start": {"line": 2, "column": 9}, "end": {"line": 2, "column": 12}}},
+      {"kind": "identifier", "span": {"start": {"line": 3, "column": 1}, "end": {"line": 3, "column": 5}}}
+    ]
+  },
+  "programa": "Algoritmo P\nDefinir año Como Entero;\nan\u0303o <- 5;\nEscribir año;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "sujetos": ["engine", "app"]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {"codigo": "expectedAlgorithmStart", "severidad": "error"}
+    ]
+  },
+  "programa": "",
+  "perfil_base": "es",
+  "sujetos": ["engine", "app"]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "rigor": ["estricto", "flexible"],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {"codigo": "moduleSyntaxOutsideProject", "severidad": "error"},
+      {"codigo": "expectedAlgorithmStart", "severidad": "error"}
+    ]
+  },
+  "programa": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
+  "perfil_base": "es",
+  "sujetos": ["engine", "app"]
 }
 ```
 

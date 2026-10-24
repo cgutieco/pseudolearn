@@ -2,17 +2,24 @@ use crate::parser_state::ParserState;
 use crate::tokens::{TokenKind, Tokens};
 use crate::tree::{NodeKind, SyntaxTree};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
-use pseudolearn_lexicon::KeywordKind;
+use pseudolearn_lexicon::{KeywordKind, Profile};
 
 pub struct Parser<'tokens> {
     state: ParserState<'tokens>,
+    profile: Profile,
 }
 
 impl<'tokens> Parser<'tokens> {
     pub fn new(tokens: &'tokens Tokens, source: &'tokens str) -> Self {
         Self {
             state: ParserState::new(tokens, source),
+            profile: Profile::Spanish,
         }
+    }
+
+    pub(crate) fn with_profile(mut self, profile: Profile) -> Self {
+        self.profile = profile;
+        self
     }
 
     pub fn with_terminator(mut self, diagnostic: Option<DiagnosticCode>) -> Self {
@@ -54,6 +61,12 @@ impl<'tokens> Parser<'tokens> {
         self.state.into_tree()
     }
     fn parse_unit(&mut self, algorithms: &mut u32, units: u32) -> Result<usize, ()> {
+        if crate::module_parser::is_standalone_directive(&mut self.state, self.profile) {
+            let span = self.state.span();
+            self.state
+                .report(DiagnosticCode::ModuleSyntaxOutsideProject, span);
+            return Err(());
+        }
         if crate::unsupported::reject(&mut self.state) {
             return Err(());
         }

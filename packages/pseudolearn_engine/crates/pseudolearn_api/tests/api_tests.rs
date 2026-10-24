@@ -1,4 +1,4 @@
-use pseudolearn_api::{AnalyzeRequest, execute_analyze};
+use pseudolearn_api::{AnalyzeRequest, ExecuteRequest, execute_analyze, execute_program};
 
 #[test]
 fn analyzes_valid_program() {
@@ -14,6 +14,95 @@ fn analyzes_valid_program() {
     assert_eq!(response.kind, "analyze");
     assert!(response.tree);
     assert_eq!(response.diagnostics, Vec::new());
+}
+
+#[test]
+fn analyzes_original_unicode_identifiers_in_every_profile_and_strictness() -> Result<(), String> {
+    for (profile, program, declaration_column) in [
+        (
+            "es",
+            "Algoritmo P\nDefinir año Como Entero;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n",
+            9,
+        ),
+        (
+            "en",
+            "algorithm P\ndefine año as integer;\nan\u{0303}o <- 5;\nwrite año;\nendAlgorithm\n",
+            8,
+        ),
+    ] {
+        for strictness in ["strict", "flexible"] {
+            let response = execute_analyze(&AnalyzeRequest {
+                program: program.to_owned(),
+                profile: profile.to_owned(),
+                strictness: strictness.to_owned(),
+                source: None,
+            });
+            assert!(
+                response.diagnostics.is_empty(),
+                "{profile}/{strictness}: {:?}",
+                response.diagnostics
+            );
+            let identifier_spans: Vec<_> = response
+                .tokens
+                .iter()
+                .filter(|token| token.kind == "identifier")
+                .map(|token| (&token.span.start, &token.span.end))
+                .collect();
+            assert!(identifier_spans.iter().any(|(start, end)| {
+                start.line == 2
+                    && start.column == declaration_column
+                    && end.line == 2
+                    && end.column == declaration_column + 3
+            }));
+            assert!(identifier_spans.iter().any(|(start, end)| {
+                start.line == 3 && start.column == 1 && end.line == 3 && end.column == 5
+            }));
+        }
+    }
+    Ok(())
+}
+
+#[test]
+fn empty_single_file_analysis_keeps_the_algorithm_start_diagnostic() {
+    let response = execute_analyze(&AnalyzeRequest {
+        program: String::new(),
+        profile: "es".to_owned(),
+        strictness: "strict".to_owned(),
+        source: None,
+    });
+    assert_eq!(
+        response
+            .diagnostics
+            .iter()
+            .map(|diagnostic| diagnostic.code.as_str())
+            .collect::<Vec<_>>(),
+        ["expectedAlgorithmStart"]
+    );
+}
+
+#[test]
+fn loose_module_directive_names_execute_as_identifiers() {
+    for (profile, program) in [
+        (
+            "es",
+            "Algoritmo P\nDefinir Importar, Exportar, import, export Como Entero;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n",
+        ),
+        (
+            "en",
+            "algorithm P\ndefine Importar, Exportar, import, export as integer;\nImportar <- 1;\nExportar <- 2;\nimport <- 3;\nexport <- 4;\nwrite Importar, Exportar, import, export;\nendAlgorithm\n",
+        ),
+    ] {
+        for strictness in ["strict", "flexible"] {
+            let response = execute_program(&ExecuteRequest {
+                program: program.to_owned(),
+                profile: profile.to_owned(),
+                strictness: strictness.to_owned(),
+                ..ExecuteRequest::default()
+            });
+            assert_eq!(response.output, "1234\n");
+            assert!(response.diagnostics.is_empty());
+        }
+    }
 }
 
 #[test]

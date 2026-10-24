@@ -5,7 +5,14 @@ use pseudolearn_api::execute_analyze;
 fn generates_all_configurations_and_validates_completed_and_incomplete_programs()
 -> Result<(), String> {
     let workloads = workloads::load()?;
-    assert_eq!(workloads.len(), 28);
+    assert_eq!(workloads.len(), 32);
+    assert_eq!(
+        workloads
+            .iter()
+            .filter(|workload| workload.name.starts_with("unicode-identifiers-"))
+            .count(),
+        4
+    );
     for workload in workloads {
         for request in &workload.requests {
             let result = execute_analyze(request);

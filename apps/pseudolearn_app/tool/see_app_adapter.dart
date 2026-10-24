@@ -5,6 +5,7 @@ import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
 import 'see_app_protocol.dart';
+import 'see_app_api.dart';
 import 'see_app_execute.dart';
 import 'see_app_scenarios.dart';
 
@@ -34,7 +35,7 @@ Future<Map<String, Object?>> _responseFor(
       'analyze' => _analyze(transport, request),
       'execute' => executeThroughTransport(transport, request),
       'app' => await handleAppScenario(transport, request),
-      'api' => _api(transport, request),
+      'api' => executeApiRequest(transport, request),
       'shutdown' => _shutdown(transport),
       _ => {'kind': 'error', 'message': 'Unsupported operation'},
     };
@@ -77,44 +78,6 @@ Map<String, Object?> _hello() => {
   'profiles': ['es', 'en'],
   'strictness': ['strict', 'flexible'],
 };
-
-Map<String, Object?> _api(
-  RustTransport transport,
-  Map<String, Object?> request,
-) {
-  final operation = request['operation'];
-  final arguments = request['arguments'];
-  if (operation is! String || arguments is! Map) {
-    return {
-      'kind': 'api',
-      'result': {
-        'failure': {'family': 'usage', 'detail': 'invalid request'},
-      },
-    };
-  }
-  try {
-    return {
-      'kind': 'api',
-      'result': {
-        'value': transport.call(operation, arguments.cast<String, Object?>()),
-      },
-    };
-  } on RustBridgeFailure catch (failure) {
-    return {
-      'kind': 'api',
-      'result': {
-        'failure': {'family': failure.family, 'detail': failure.detail},
-      },
-    };
-  } catch (failure) {
-    return {
-      'kind': 'api',
-      'result': {
-        'failure': {'family': 'internal', 'detail': '$failure'},
-      },
-    };
-  }
-}
 
 Map<String, Object?> _analyze(
   RustTransport transport,

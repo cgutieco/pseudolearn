@@ -5,11 +5,12 @@ use crate::operator_scanner::scan_operator_or_punctuation;
 use crate::tokens::{TokenKind, Tokens};
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
 use pseudolearn_lexicon::{KeywordKind, Profile, find_keyword};
-use pseudolearn_source::{SourceText, Span, source_id};
+use pseudolearn_source::{IdentifierNormalizer, SourceText, Span, source_id};
 
 pub struct Lexer<'source> {
     source: &'source SourceText,
     pub(crate) profile: Profile,
+    project_mode: bool,
     cursor: usize,
     pub(crate) tokens: Tokens,
     diagnostics: Vec<Diagnostic>,
@@ -21,9 +22,17 @@ impl<'source> Lexer<'source> {
         Self {
             source,
             profile,
+            project_mode: false,
             cursor: initial_cursor,
             tokens: Tokens::for_source(source_id(source)),
             diagnostics: Vec::new(),
+        }
+    }
+
+    pub(crate) fn new_for_project(source: &'source SourceText, profile: Profile) -> Self {
+        Self {
+            project_mode: true,
+            ..Self::new(source, profile)
         }
     }
 
@@ -217,21 +226,38 @@ impl<'source> Lexer<'source> {
             }
         }
         let ending_offset = self.current_u32();
+        self.classify_identifier(start_offset, ending_offset);
+    }
+
+    fn classify_identifier(&mut self, start_offset: u32, ending_offset: u32) {
         let word = self.slice_from(start_offset, ending_offset);
+        if !IdentifierNormalizer::is_valid_identifier(word) {
+            self.push_invalid_identifier(start_offset, ending_offset, word);
+            return;
+        }
         if self.match_compound_keyword(word, start_offset) {
             return;
         }
-        if let Some(keyword) = find_keyword(word, self.profile) {
-            let kind = match keyword {
-                KeywordKind::BooleanTrue => TokenKind::BooleanLiteral(true),
-                KeywordKind::BooleanFalse => TokenKind::BooleanLiteral(false),
-                _ => TokenKind::Keyword(keyword),
-            };
-            self.tokens.push(kind, start_offset, ending_offset);
-            return;
-        }
+        let kind = match find_keyword(word, self.profile) {
+            Some(KeywordKind::ImportKeyword | KeywordKind::ExportKeyword) if !self.project_mode => {
+                TokenKind::Identifier
+            }
+            Some(KeywordKind::BooleanTrue) => TokenKind::BooleanLiteral(true),
+            Some(KeywordKind::BooleanFalse) => TokenKind::BooleanLiteral(false),
+            Some(keyword) => TokenKind::Keyword(keyword),
+            None => TokenKind::Identifier,
+        };
+        self.tokens.push(kind, start_offset, ending_offset);
+    }
+
+    fn push_invalid_identifier(&mut self, start_offset: u32, ending_offset: u32, word: &str) {
+        let span = self.source_span(start_offset, ending_offset);
+        self.diagnostics.push(
+            Diagnostic::new(DiagnosticCode::UnrecognizedCharacter, span)
+                .with_argument("lexeme", word),
+        );
         self.tokens
-            .push(TokenKind::Identifier, start_offset, ending_offset);
+            .push(TokenKind::InvalidCharacter, start_offset, ending_offset);
     }
 
     pub(crate) fn current_slice(&self) -> &'source str {

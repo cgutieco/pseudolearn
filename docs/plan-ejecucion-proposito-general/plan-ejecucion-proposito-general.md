@@ -1,6 +1,6 @@
 # Plan de ejecución de PseudoLearn hacia un lenguaje de propósito general
 
-## Decisiones posteriores de la persona · 2026-10-22
+## Decisiones posteriores de la persona · 2026-10-22–2026-10-24
 
 Este registro actualiza las recomendaciones y puertas previas que lo contradigan; las opciones anteriores
 se conservan como rastro de análisis, no como instrucciones vigentes.
@@ -17,6 +17,13 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
 - Las pruebas con dispositivos físicos y los estudios con participantes de E-PG-08/10/12 son
   complementarios y no bloquean cierres. Se registrará su ausencia sin afirmar cobertura física
   ni eficacia pedagógica. Las comprobaciones automatizables de calidad y rendimiento siguen obligatorias.
+- El 2026-10-24 la persona fijó el alcance de verificación por fase: ejecutar las pruebas de corpus,
+  espejo y consumidor que prueban el comportamiento modificado, no todas las suites del miembro por
+  defecto. Ampliar la campaña solo cuando el cambio cruce esas fronteras, una prueba dirigida falle o
+  la evidencia disponible no cubra el riesgo; registrar la selección y lo omitido sin presentar una
+  suite parcial como suite completa. Las especificaciones nuevas se escriben directamente en estado
+  `estable` `1.0.0`; una vez fijados texto normativo y casos derivados se implementan contra esa regla,
+  sin una fase intermedia de promoción de estado.
 - D-xx y TS-3 sin origen verificable se reconstruyen como propuestas nuevas; no se presume aprobación histórica.
 - Se permiten referencias internas entre documentos de docs/; ningún archivo externo dependerá de ellos.
 
@@ -27,8 +34,9 @@ sandbox de las campañas de app y rendimiento. La autorización del 2026-10-22 c
 común en una iteración. PG-H quedó cerrada el 2026-10-23 por decisión de la persona. El mensaje del
 2026-10-23 «Implementa en una iteración `PG-1.01 · Identidad de fuente de extremo a extremo`» autoriza
 ese punto de PG-1, sin iniciar ni cerrar la fase completa; los puntos `.02` en adelante requieren
-autorización explícita propia. El mensaje del 2026-10-23 que pide `PG-1.06` y `PG-1.07` en una iteración autoriza únicamente
-esos dos puntos.
+autorización explícita propia. Los mensajes del 2026-10-23 y 2026-10-24 autorizaron en iteraciones
+separadas PG-1.02–PG-1.11, con cierre limitado a los puntos pedidos; no autorizan PG-1.12, PG-1.13 ni
+el cierre común C01–C13.
 
 
 Documento transitorio de la carpeta documental de la raíz. Convierte las fases de la
@@ -113,12 +121,13 @@ Cada fase repite estos puntos como casillas propias `<fase>.Cnn`, que se marcan 
 
 - `C01` Autorización explícita de la persona para iniciar la fase, en un mensaje nuevo, registrada en el resumen.
 - `C02` Plan detallado `fase-<id>-plan-ejecucion.md` creado según §5, revisado por la persona antes de escribir código.
-- `C03` Orden `SPEC-FIRST` respetado en cada punto: especificación → casos → tests → código, sin esperados capturados del
-  motor (`SPEC-INDEPENDENT-ORACLE`) y respetando el congelamiento (`SPEC-VERSION-FREEZE`, decisión de CF-19).
+- `C03` Orden `SPEC-FIRST` respetado en cada punto: especificación estable `1.0.0` → casos derivados → tests → código,
+  sin etapa previa de promoción de estado, sin esperados capturados del motor (`SPEC-INDEPENDENT-ORACLE`) y respetando
+  el congelamiento (`SPEC-VERSION-FREEZE`, decisión de CF-19).
 - `C04` Cada regla nueva tiene casos o propiedades (`SPEC-NO-ORPHAN-RULE`) y sus vínculos viven en archivos de
   conformidad (`SPEC-BINDING-AS-DATA`).
-- `C05` Tests de camino feliz, infeliz y casos límite para cada pieza, en carpetas espejo (`TEST-BOTH-PATHS`,
-  `TEST-MIRROR`).
+- `C05` Pruebas dirigidas de camino feliz, infeliz y límites para cada pieza modificada, en carpetas espejo
+  (`TEST-BOTH-PATHS`, `TEST-MIRROR`); no exige ejecutar todas las suites del miembro.
 - `C06` Capas nuevas declaradas en el archivo de reglas antes de su código; ningún import fuera de la matriz
   (`LAYER-DECLARED`, `LAYER-DIRECTION`) y límites `SIZE-*` respetados.
 - `C07` Cero comentarios y cero `TODO` en código; código e identificadores en inglés; documentos en español
@@ -129,7 +138,8 @@ Cada fase repite estos puntos como casillas propias `<fase>.Cnn`, que se marcan 
   fase no añade sintaxis (C-16, R-19).
 - `C10` Riesgos K-xx asociados revisados con su señal temprana, y experimentos E-PG-xx asociados ejecutados con
   procedencia (plataforma, hashes, semilla, muestras crudas) o diferidos por la persona.
-- `C11` Todos los tests y verificadores de los miembros afectados en verde, con la salida registrada (`PHASE-GREEN`).
+- `C11` Pruebas necesarias para demostrar el comportamiento modificado y verificadores directamente afectados en verde,
+  con selección, salida y suites omitidas registradas (`PHASE-GREEN`).
 - `C12` Commit con el formato de la skill `commit-message`, sin atribución de autoría de IA, en
   `feature/agregar-ruta-de-especificacion`, y push ordinario comprobado (`GIT-SINGLE-BRANCH`).
 - `C13` Resumen de la fase completo, informe a la persona y parada hasta nueva autorización (`PHASE-STOP`).
@@ -286,10 +296,10 @@ Puntos a cumplir:
   funcionamiento sin red con lock y caché completos, sin scripts de terceros.
 - [x] `PG-1.07` Perfil por archivo bajo la única edición 2026, imports cruzados es↔en, alias obligatorio ante nombre reservado
   en destino y discrepancia de perfil diagnosticada con ambas procedencias.
-- [ ] `PG-1.08` Orden de diagnósticos de proyecto especificado, independiente del sistema de archivos y del cliente.
-- [ ] `PG-1.09` Rutas portables: colisiones por caja/NFC rechazadas y sin escape de la raíz mediante enlaces simbólicos.
-- [ ] `PG-1.10` Alfabeto español en identificadores del perfil estricto de 2026, conservando NFC.
-- [ ] `PG-1.11` Programas sueltos 2026 intactos: corpus 2026 sin cambios de esperados.
+- [x] `PG-1.08` Orden de diagnósticos de proyecto especificado, independiente del sistema de archivos y del cliente.
+- [x] `PG-1.09` Rutas portables: colisiones por caja/NFC rechazadas y sin escape de la raíz mediante enlaces simbólicos.
+- [x] `PG-1.10` Alfabeto español en identificadores del perfil estricto de 2026, conservando NFC.
+- [x] `PG-1.11` Programas sueltos 2026 intactos: corpus 2026 sin cambios de esperados.
 - [ ] `PG-1.12` CLI comprueba, ejecuta y compila un proyecto de tres módulos, dos perfiles y una biblioteca local desde
   otro directorio, con el mismo resultado observable en VM y AOT.
 - [ ] `PG-1.13` E-PG-01 y la parte de proyecto de E-PG-02 ejecutados; métricas candidatas de perfiles, proyecto y
@@ -298,9 +308,10 @@ Puntos a cumplir:
 Fuera de alcance: registro público, rangos de versiones, compilación separada y carga dinámica.
 
 Plan detallado: [fase-pg-1-plan-ejecucion.md](fase-pg-1-plan-ejecucion.md), preparado el 2026-10-23
-por solicitud de la persona. Las autorizaciones del 2026-10-23 cubrieron PG-1.01 a PG-1.07,
-ya implementados. No equivalen a revisión integral ni a autorización de la fase completa; PG-1.C01/C02
-y los puntos PG-1.08–.13 siguen pendientes.
+por solicitud de la persona. Las autorizaciones del 2026-10-23 cubrieron PG-1.01 a PG-1.07. Las
+autorizaciones del 2026-10-24 cubrieron PG-1.08 a PG-1.11 en iteraciones separadas; la revisión de
+cuatro contratos estables resolvió las salvedades de .08/.09. PG-1.08–.11 están cumplidos. PG-1.12,
+PG-1.13 y el cierre común C01–C13 siguen pendientes.
 
 Cierre común (definiciones en §4.0):
 
@@ -308,13 +319,13 @@ Cierre común (definiciones en §4.0):
 - [ ] `PG-1.C02` Plan detallado creado según §5 y revisado por la persona.
 - [ ] `PG-1.C03` SPEC-FIRST y congelamiento respetados.
 - [ ] `PG-1.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-1.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-1.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
 - [ ] `PG-1.C06` Capas declaradas, imports permitidos y límites de tamaño.
 - [ ] `PG-1.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
 - [ ] `PG-1.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
 - [ ] `PG-1.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [ ] `PG-1.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-1.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-1.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
 - [ ] `PG-1.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-1.C13` Resumen completo, informe a la persona y parada.
 
@@ -322,9 +333,10 @@ Cierre común (definiciones en §4.0):
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| | | | |
+| PG-1.08–.11 | Cumplido | Orden/portabilidad revisados; alfabeto español estricto y archivo suelto compatibles | Contratos estables 1.0.0 revisados y reanclados solo cuando cambió el contenido; corpus sin cambiar esperados previos |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git del alcance autorizado `.08`–`.11`: pendiente del commit/push de esta iteración. Verificadores, cobertura
+dirigida y omisiones están registrados en el plan detallado. PG-1.12/.13 y el cierre común C01–C13 permanecen abiertos.
 
 ### 4.4 PG-2 · Tipos y abstracción
 
@@ -821,14 +833,17 @@ El plan registra qué se leyó y en qué revisión Git, y responde por cada arch
    queda sin tareas y ninguna tarea queda sin punto de origen.
 5. **Capas y archivos**: archivos nuevos y modificados por capa, con las respuestas de §5.2.
 6. **Presupuestos**: rendimiento y seguridad que la fase debe respetar o medir (§5.4), con el control de cada medición.
-7. **Pruebas y experimentos**: casos felices, infelices y límite; negativos de cada verificador nuevo; protocolo de los
-   experimentos E-PG-xx de la fase.
+7. **Pruebas y experimentos**: casos felices, infelices y límite de los comportamientos modificados; negativos de cada
+   verificador nuevo; protocolo de los experimentos E-PG-xx de la fase. La matriz distingue corpus, tests espejo,
+   consumidores y verificadores directamente afectados; una suite completa solo se añade cuando el riesgo o una falla
+   dirigida lo requiera.
 8. **Riesgos**: K-xx de la fase y riesgos nuevos, con su señal temprana.
 9. **Dependencias de la persona**: decisiones, dispositivos, participantes, cuentas o permisos necesarios y en qué
    momento.
 10. **Orden de ejecución y puntos de control**: en qué momentos se detiene a verificar antes de seguir.
-11. **Resumen de ejecución**: misma tabla y estados de §2.2, por tarea, más la revisión Git de cierre, los verificadores
-    ejecutados con su resultado, los pendientes justificados y qué puntos de §4 quedaron cumplidos.
+11. **Resumen de ejecución**: misma tabla y estados de §2.2, por tarea, más la revisión Git de cierre, las pruebas y
+    verificadores ejecutados, la razón de las suites omitidas, los pendientes justificados y qué puntos de §4 quedaron
+    cumplidos.
 
 Al cerrar la fase, el resumen de §4 de este plan se completa a partir del resumen del plan detallado.
 

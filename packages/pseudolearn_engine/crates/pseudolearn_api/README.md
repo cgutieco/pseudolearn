@@ -50,7 +50,7 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 La creación de un documento admite `previous_document` cuando representa una revisión sucesora. Valida la fuente y el recurso previo antes de crear el nuevo; solo después libera la revisión anterior y sus recursos dependientes. Un destino previo inválido conserva todos los documentos. El identificador nuevo cambia las identidades de nodos aunque el texto sea idéntico; las vistas retenidas del anterior no se pueden consultar. Los documentos ajenos permanecen vivos.
 
-Las peticiones de análisis, RI, ejecución y construcción nativa admiten `source` opcional con `project_id` y `revision_id` como cadenas decimales u64 y `source_id` como u32 positivo. El ID cero permanece reservado al documento suelto. Diagnósticos, tokens y vistas devuelven esa identidad en cada tramo; una petición de documento suelto conserva las formas anteriores sin el campo.
+Las peticiones de análisis, RI, ejecución y construcción nativa admiten `source` opcional con `project_id` y `revision_id` como cadenas decimales u64 y `source_id` como u32 positivo. El ID cero permanece reservado al documento suelto. Diagnósticos, tokens y vistas devuelven esa identidad en cada tramo; una petición de documento suelto conserva las formas anteriores sin el campo. `AnalyzeRequest` de texto único sigue siendo la entrada pública: conserva su perfil, rigor, diagnóstico, tokens y tramos, sin requerir manifiesto, imports ni conversión a un proyecto.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
@@ -96,6 +96,9 @@ La respuesta de análisis incluye todos los tokens léxicos en orden de fuente, 
 caracteres inválidos y fin de archivo. Cada token conserva su identidad pública y tramo en
 línea/columna; el consumidor obtiene resaltado sin volver a analizar el texto y puede mantenerlo
 cuando el árbol incluye errores recuperables.
+
+Los nombres del alfabeto latino español se aceptan en ambos rigores y perfiles. La comparación usa NFC
+sin alterar el texto ni los rangos que reciben y devuelven las peticiones de documento único.
 
 La vista pública del programa (`program_view`) se proyecta desde el árbol sintáctico del documento: unidades en
 orden, nodos de declaración, sentencia y expresión con identificadores opacos por revisión, tramos con

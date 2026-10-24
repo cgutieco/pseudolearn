@@ -22,8 +22,12 @@
   `PG-1.07 · Perfiles por archivo e imports bilingües` en una sola iteración» del 2026-10-23 autoriza
   únicamente esos dos puntos. El mensaje «Implementa en una sola iteración `PG-1.08 · Orden público de
   diagnósticos` y `PG-1.09 · Rutas portables y confinamiento`» del 2026-10-24 autoriza únicamente esos
-  dos puntos. PG-1.10 en adelante, el cierre común de PG-1 y las fases siguientes permanecen sin
-  autorizar.
+  dos puntos. El mensaje «Completa en una sola iteración `PG-1.10 · Alfabeto español en rigor estricto`
+  y `PG-1.11 · Compatibilidad de archivo suelto 2026`» del 2026-10-24 autoriza únicamente esos dos
+  puntos, incluida la revisión normativa independiente y el cierre condicionado a evidencia verde.
+  La respuesta de la persona autoriza conservar `Importar`, `Exportar`, `import` y `export` como
+  identificadores en archivo suelto y reconocer las directivas de manera contextual. El cierre común
+  de PG-1 y las fases siguientes permanecen sin autorizar.
 - Dependencia satisfecha: el registro de cierre de PG-0 declara la fase cerrada el 2026-10-22. La
   tabla global estaba obsoleta; se sincroniza a `Cerrada · PG-0.01–.12` por instrucción explícita.
 
@@ -221,21 +225,21 @@ los tests Rust prueban algoritmos, invariantes y fronteras, sin duplicar esos pr
 
 ### PG-1.10 · Alfabeto español en rigor estricto
 
-- [ ] `PG-1.10.01` Editar `LANG.LEXICAL.IDENTIFIER#R1` para admitir alfabeto español en estricto con NFC, conservando sensibilidad a caja/acentos y perfil independiente del rigor; no extender a XID completo.
-- [ ] `PG-1.10.02` Añadir casos para ñ/Ñ, vocales acentuadas, ü/Ü, formas descompuestas, nombre de un carácter, marca aislada y letra fuera del alfabeto; conservar casos previos.
-- [ ] `PG-1.10.03` Probar tokenización de nombre completo, normalización y validación posterior; distinguir rechazo léxico de nombre reservado y de colisión canónica.
-- [ ] `PG-1.10.04` Ajustar validación en source/lexicon/syntax según dueño actual; mantener camino ASCII y texto original sin normalizar.
-- [ ] `PG-1.10.05` Documentar ampliación de entradas aceptadas, alfabeto exacto y límites en README/corpus; actualizar ayuda sin prometer homógrafos generales.
-- [ ] `PG-1.10.06` Verificar ambos perfiles/rigores, rangos originales, igualdad NFC y ausencia de cambios en resultados previos; incluir Unicode en medición léxica.
+- [x] `PG-1.10.01` Editar `LANG.LEXICAL.IDENTIFIER#R1` para admitir alfabeto español en estricto con NFC, conservando sensibilidad a caja/acentos y perfil independiente del rigor; no extender a XID completo.
+- [x] `PG-1.10.02` Añadir casos para ñ/Ñ, vocales acentuadas, ü/Ü, formas descompuestas, nombre de un carácter, marca aislada y letra fuera del alfabeto; conservar casos previos.
+- [x] `PG-1.10.03` Probar tokenización de nombre completo, normalización y validación posterior; distinguir rechazo léxico de nombre reservado y de colisión canónica.
+- [x] `PG-1.10.04` Ajustar validación en source/lexicon/syntax según dueño actual; mantener camino ASCII y texto original sin normalizar.
+- [x] `PG-1.10.05` Documentar ampliación de entradas aceptadas, alfabeto exacto y límites en README/corpus; actualizar ayuda sin prometer homógrafos generales.
+- [x] `PG-1.10.06` Verificar ambos perfiles/rigores, rangos originales, igualdad NFC y ausencia de cambios en resultados previos; incluir Unicode en medición léxica.
 
 ### PG-1.11 · Compatibilidad de archivo suelto 2026
 
-- [ ] `PG-1.11.01` Fijar equivalencia de programa/configuración/observables previos: sin manifiesto ni imports obligatorios, sin migración al abrir y sin cambio de esperados. Nuevas reservadas no pueden romper nombres de programas sueltos silenciosamente.
-- [ ] `PG-1.11.02` Inventariar casos existentes y añadir colisiones de palabras nuevas, biblioteca pegada sin proyecto, archivo vacío y nombres antes legales; esperados derivados de reglas, nunca capturas del motor nuevo.
-- [ ] `PG-1.11.03` Preparar regresiones por API/CLI y transporte real de app, incluida identidad/foco con dos sentencias en una línea y rechazo de revisión ajena.
-- [ ] `PG-1.11.04` Conservar entrada de documento único y adaptar únicamente lectura/proyección/versionado de consumidores que lo necesiten; ninguna administración de proyectos en la app.
-- [ ] `PG-1.11.05` Actualizar README de consumidores afectados y registrar impacto de gramática. Ante contradicción inevitable con `.03` o `.10`, reportar casos exactos y esperar decisión; no fabricar otro modo ni editar esperados para obtener verde.
-- [ ] `PG-1.11.06` Ejecutar conformidad previa íntegra de engine/aot/service/cli/app con capacidades reales, más puente y Wasm; comparar fallos, salida, traza y vistas aplicables, sin anunciar observe en AOT.
+- [x] `PG-1.11.01` Fijar equivalencia de programa/configuración/observables previos: sin manifiesto ni imports obligatorios, sin migración al abrir y sin cambio de esperados. Nuevas reservadas no pueden romper nombres de programas sueltos silenciosamente.
+- [x] `PG-1.11.02` Inventariar casos existentes y añadir colisiones de palabras nuevas, biblioteca pegada sin proyecto, archivo vacío y nombres antes legales; esperados derivados de reglas, nunca capturas del motor nuevo.
+- [x] `PG-1.11.03` Preparar regresiones por API/CLI y transporte real de app, incluida identidad/foco con dos sentencias en una línea y rechazo de revisión ajena.
+- [x] `PG-1.11.04` Conservar entrada de documento único y adaptar únicamente lectura/proyección/versionado de consumidores que lo necesiten; ninguna administración de proyectos en la app.
+- [x] `PG-1.11.05` Actualizar README de consumidores afectados y registrar impacto de gramática. Ante contradicción inevitable con `.03` o `.10`, reportar casos exactos y esperar decisión; no fabricar otro modo ni editar esperados para obtener verde.
+- [x] `PG-1.11.06` Ejecutar conformidad previa íntegra de engine/aot/service/cli/app con capacidades reales, más puente y Wasm; comparar fallos, salida, traza y vistas aplicables, sin anunciar observe en AOT.
 
 ### PG-1.12 · Integración pública y CLI
 
@@ -438,8 +442,9 @@ instrucción de la persona; los riesgos técnicos de PG-1 requieren la evidencia
 | Momento | Dependencia | Efecto |
 |---|---|---|
 | PG-1.01 | Solicitud explícita de implementación y confirmación para sincronizar PG-0, 2026-10-23 | Autoriza solamente `.01`; no completa la revisión integral del plan ni autoriza `.02` en adelante |
-| PG-1.08 y PG-1.09 | Mensaje explícito de implementación conjunta y revisión del plan, 2026-10-24 | Autoriza solo esos dos puntos; PG-1.10 en adelante y el cierre de PG-1 requieren autorización propia |
-| Revisión normativa | Revisión independiente real de contratos nuevos y autorización del reanclaje concreto de existentes | Nunca atribuir revisor ni refrescar todos los anclajes para silenciar cambios |
+| PG-1.08 y PG-1.09 | Mensaje explícito de implementación conjunta y revisión del plan, 2026-10-24 | Autorizó solo esos dos puntos; no autorizó el cierre común |
+| PG-1.10 y PG-1.11 | Solicitud explícita del 2026-10-24; respuesta contextual para conservar los nombres antes legales en archivo suelto | Autoriza ambos puntos, la revisión normativa y su cierre condicionado a evidencia verde; el cierre común sigue pendiente |
+| Revisión normativa | Revisión autorizada de `LANG.MODULE.IMPORT`, `API.PROJECT`, `API.PROJECT.MANIFEST` y `API.PROJECT.LOCK`; reanclaje solo para las identidades afectadas | No atribuir revisión ajena ni refrescar anclajes no afectados |
 | Si aparece conflicto | Colisión demostrada entre preservar archivo suelto y sintaxis/visibilidad nueva | Detener trabajo dependiente y presentar fuentes/casos; continuar solo trabajo independiente autorizado |
 | Antes de campaña final | Identificar máquina de referencia y accesos locales necesarios para ejecutar procesos/medir artefactos | No exigir privilegios ni dispositivos físicos para tests unitarios |
 | Ante métrica fallida | Revisar evidencia y decidir corrección o cambio explícito de criterio/alcance | No declarar cierre ni diferimiento por iniciativa del agente |
@@ -454,7 +459,7 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 
 | Paso | Tareas y dependencia | Evidencia para continuar |
 |---|---|---|
-| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; el del 2026-10-24 autoriza PG-1.08 y PG-1.09; PG-0 quedó sincronizada | Implementar solamente `.08` y `.09` en esta iteración; PG-1.10 en adelante y el cierre común siguen pendientes |
+| 0 Autorización acotada | Los mensajes del 2026-10-23 cubren PG-1.01 a PG-1.07; los del 2026-10-24 autorizan PG-1.08 a PG-1.11; PG-0 quedó sincronizada | Esta iteración completa `.10` y `.11`; no cierra el conjunto común C01–C13 ni autoriza PG-1.12 |
 | 1 Contratos y casos | `.01`–`.11` tareas `.01`/`.02`, contrato CLI `.12.01`/`.02`, protocolo `.13.01`/`.02` | Revisión de sintaxis/perfiles/procedencia/lock y fronteras; ningún esperado previo cambiado |
 | 2 Soporte de conformidad y capas | Tests de schema/códec/negativos antes de implementarlos; README/matriz del crate nuevo antes de sus fuentes | Formato y referencias válidas, ejecutor capaz de rechazar un proyecto incorrecto, capas sin ciclos |
 | 3 Identidad y Unicode | `.01`, `.10`; consumidores mínimos de `.11` | Ubicación exacta y negociación probadas, archivo suelto y puente sin regresión |
@@ -465,8 +470,8 @@ acción preparada y se sigue el mecanismo de aprobación disponible.
 | 8 Cierre | C03–C13; completar resúmenes por tarea y del plan general | Puertas verdes, decisiones pendientes resueltas, commit/push ordinario comprobado y parada |
 
 Los pasos son puntos de control internos de una fase, no fases nuevas. La autorización recibida cubre
-solo PG-1.08 y PG-1.09 y no da por satisfecho el cierre común C01–C13. Se detiene al terminar esta
-iteración; los demás puntos requieren autorización propia (`PHASE-STOP`).
+PG-1.10 y PG-1.11 y su cierre condicionado a evidencia verde; no da por satisfecho el cierre común
+C01–C13 ni autoriza PG-1.12. Se detiene al terminar esta iteración (`PHASE-STOP`).
 
 ### 10.1 Verificaciones ejecutables al implementar
 
@@ -511,9 +516,10 @@ deben estar preparadas. No se despachan Actions ni publicaciones externas como p
 ### 11.1 Registro por tarea
 
 Las tareas `.nn.mm` de §4 se registran con evidencia al ejecutarse. PG-1.01 se completó en la iteración
-anterior; las iteraciones del 2026-10-23 posteriores completan PG-1.02 a PG-1.07; esta iteración aborda
-PG-1.08 y PG-1.09. PG-1.10 en adelante no se consideran iniciadas. Se usan exclusivamente los estados del
-plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
+anterior; las iteraciones posteriores completaron PG-1.02 a PG-1.07. Esta iteración autorizada revisó
+los contratos que mantenían las salvedades de PG-1.08/.09 y completó PG-1.10/.11. PG-1.12/.13 y el
+cierre común C01–C13 no se consideran iniciados. Se usan exclusivamente los estados del plan general:
+Cumplido, No cumplido, Diferido, No aplica y Retirado.
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
@@ -523,7 +529,7 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.01.04 | Cumplido | Identidad propagada por source, sintaxis, lowering, RI, bytecode, diagnósticos, AOT, API, vistas, eventos y puente nativo | Formato standalone preservado; eventos con identidad usan PLEV2 |
 | PG-1.01.05 | Cumplido | README de source, IR, bytecode, diagnostics, VM, AOT runtime, codegen, API, service y puente nativo actualizados | Incluye compatibilidad, límites y decisiones de representación |
 | PG-1.01.06 | Cumplido | Roundtrip JSON/binario/RI, procedencia de fallos y eventos, tests Wasm y nativos; `IrSpan` medido en 20 bytes frente a 16 | Wasm: cuatro pruebas Chrome; app nativa y verificadores de paquetes en verde |
-| PG-1.02.01 | Cumplido | `LANG.MODULE.MODEL` R1–R3 | Identidad nueva en estable 1.0.0 con `revisado_por` vacío: pendiente de revisión independiente |
+| PG-1.02.01 | Cumplido | `LANG.MODULE.MODEL` R1–R3 | La modificación contextual de archivo suelto se revisó y se mantuvo en `1.0.0` estable |
 | PG-1.02.02 | Cumplido | 14 casos del contrato: tres módulos y biblioteca, workspace vacío, biblioteca sola, entrada ausente/duplicada/inexistente, raíces ambiguas y fuera de raíz, dependencia inexistente, archivo suelto | Esperados derivados de las reglas |
 | PG-1.02.03 | Cumplido | 16 tests de `pseudolearn_project` con fuentes en memoria, incluidos rechazos sin disco | Entradas mal formadas son fallo de uso, no error de proyecto |
 | PG-1.02.04 | Cumplido | Crate `pseudolearn_project` y operaciones `analyze_project`/`execute_project` | Sin concatenar textos; HIR y RI únicos |
@@ -541,13 +547,13 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.04.04 | Cumplido | `dependency_graph`, `package_cycles`, `module_cycles` en project; `module_cycles` en semantic; `importCycle`; tramos relacionados con su propia fuente | Con ciclo no hay HIR ni análisis de cuerpos |
 | PG-1.04.05 | Cumplido | README de project, semantic y API | Coste, orden de recorrido y propiedad de aristas; sin SCC como excepción |
 | PG-1.04.06 | Cumplido | Rechazo antes de compilar probado; estrés de un millón de vértices con `--ignored` en release (0,25 s) | Suite corta con cadenas de 10 000 |
-| PG-1.05.01 | Cumplido | `API.PROJECT.MANIFEST` R1–R5 | Contrato nuevo en estable 1.0.0 con `revisado_por` vacío; sin edición ni idioma de interfaz |
+| PG-1.05.01 | Cumplido | `API.PROJECT.MANIFEST` R1–R5 | Estable 1.0.0 revisada en esta iteración; sin edición ni idioma de interfaz |
 | PG-1.05.02 | Cumplido | 22 casos (C1–C22) | Esperados derivados de la regla |
 | PG-1.05.03 | Cumplido | 17 pruebas de resolución con posición exacta, 6 de autoridad (propiedad sembrada de no amplificación), 4 de varios manifiestos | Presupuesto probado debajo, en y sobre el límite |
 | PG-1.05.04 | Cumplido | Analizador del subconjunto TOML, esquema, autoridad, `resolve_manifest`, `manifests` y `grants` en proyecto | Solo límites; permisos como vocabulario cerrado vacío |
 | PG-1.05.05 | Cumplido | README de project, API y CLI | Parser propio frente a `toml` y JSON; precedencia y valores heredados |
 | PG-1.05.06 | Cumplido | 8 pruebas de API: contenido tipo script rechazado como campo desconocido, límites no concedidos no se aplican, idioma de interfaz sin efecto | Presupuesto de bytes del transporte es un valor candidato |
-| PG-1.06.01 | Cumplido | `API.PROJECT.LOCK` R1–R5 | Contrato nuevo en estable 1.0.0 con `revisado_por` vacío; origen lógico relativo, aristas, orden canónico, dominios de hash y distinción local/fijado |
+| PG-1.06.01 | Cumplido | `API.PROJECT.LOCK` R1–R5 | Estable 1.0.0 revisada en esta iteración; origen lógico relativo, aristas, orden canónico, dominios de hash y distinción local/fijado |
 | PG-1.06.02 | Cumplido | 15 casos (C1–C15): permutación de entradas, contenido alterado, archivo ausente, hash falso, mismo nombre con dos orígenes, versión no soportada, origen absoluto, arista ausente, local editable | Esperados derivados de la regla; digests calculados con `shasum` fuera del motor |
 | PG-1.06.03 | Cumplido | 29 pruebas del crate project (serialización canónica, permutaciones, normalización, parser, verificación) y 11 de API con digests independientes | Publicación atómica no probada: ver `.04` |
 | PG-1.06.04 | Cumplido con salvedad | Operaciones `build_lock` y `resolve_lock`; `Lock` en `pseudolearn_project`; SHA-256 en la API sobre los mismos bytes que se analizan | La escritura atómica del archivo y los permisos quedan para el comando de proyecto del CLI (`PG-1.12`): no se añadió un escritor sin consumidor |
@@ -559,28 +565,55 @@ plan general: Cumplido, No cumplido, Diferido, No aplica y Retirado.
 | PG-1.07.04 | Cumplido | Perfil por unidad en semantic; tabla `source_id → perfil` en RI, bytecode, VM y AOT; índice de perfil en el descriptor | El adaptador AOT no acepta proyectos (`PG-1.12`); el caso cruzado se prueba por RI armada a mano |
 | PG-1.07.05 | Cumplido | README de lexicon, syntax, semantic, project, API, ir, bytecode, vm, lowering, codegen, aot_rt y CLI | Fichas de ayuda sin cambios: ninguna forma sintáctica nueva |
 | PG-1.07.06 | Cumplido con salvedad | Conformidad `engine` con los casos nuevos y sin divergencias | E-PG-01 no medido en esta iteración; paridad de firmas entre perfiles por el corpus existente |
-| PG-1.08.01 | Cumplido con salvedad | `DIAG.ORDERING`, `API.PROJECT`, `API.PROJECT.MANIFEST` y `API.PROJECT.LOCK` editadas conservando identidad, estado y versión; casos C15–C16, C25–C27 y C18 ampliado | Reanclaje pendiente de revisión independiente real; `revisado_por` permanece vacío en los tres contratos nuevos |
-| PG-1.08.02 | Cumplido | Casos normativos de offsets empatados entre fuentes, relacionados ordenados con multiplicidad, errores de manifiestos y empates por campo | Casos del corpus parsean como JSON; la validación normativa completa está bloqueada por revisión independiente |
-| PG-1.08.03 | Cumplido con salvedad | Tests de permutación API, orden por idioma de interfaz, ubicaciones relacionadas y conservación de identidades | `project_ordering_tests`, `diagnostics_tests`, `ordering_tests` pasan; igualdad biyectiva se cubre mediante identidades propias de cada sesión |
+| PG-1.08.01 | Cumplido | `DIAG.ORDERING`, `API.PROJECT`, `API.PROJECT.MANIFEST` y `API.PROJECT.LOCK` editadas conservando identidad, estado y versión; casos C15–C16, C25–C27 y C18 ampliado | La revisión autorizada cubrió `API.PROJECT`, `API.PROJECT.MANIFEST`, `API.PROJECT.LOCK` y `LANG.MODULE.IMPORT`; validación/exportación SEE en verde |
+| PG-1.08.02 | Cumplido | Casos normativos de offsets empatados entre fuentes, relacionados ordenados con multiplicidad, errores de manifiestos y empates por campo | `see validate` valida 164 especificaciones; los esperados siguen derivados de las reglas |
+| PG-1.08.03 | Cumplido | Tests de permutación API, orden por idioma de interfaz, ubicaciones relacionadas y conservación de identidades | `project_ordering_tests`, `diagnostics_tests` y `ordering_tests` pasan; cada sesión conserva sus identidades |
 | PG-1.08.04 | Cumplido | Comparador común en diagnostics; índice único de fuentes en API; no hay fallback al primer módulo ni reordenación local en CLI | Identidad de fuente desconocida produce fallo interno controlado |
 | PG-1.08.05 | Cumplido | README de diagnostics, project, API y CLI actualizados | Decisiones de arquitectura y confinamiento documentadas en sus dueños; sin referencias al documento transitorio |
-| PG-1.08.06 | Cumplido con salvedad | API/CLI coinciden en orden de ruta; pruebas de permutación/idioma; reglas locales de manifiesto/lock ordenan por documento y posición | Tests dirigidos pasan; el orden documental no pudo validarse mediante export SEE por la puerta de revisión |
-| PG-1.09.01 | Cumplido con salvedad | `API.PROJECT`, `API.PROJECT.MANIFEST`, `API.PROJECT.LOCK` y `TOOL.CLI.CHECK` especifican NFC, clave NFC/minúsculas Unicode, rutas relativas portables, concesiones y symlinks confinados | Sin reanclaje hasta revisión independiente; versiones congeladas sin `cambio` |
+| PG-1.08.06 | Cumplido | API/CLI coinciden en orden de ruta; pruebas de permutación/idioma; reglas locales de manifiesto/lock ordenan por documento y posición | `see export --check` y `see validate` pasan tras la revisión autorizada |
+| PG-1.09.01 | Cumplido | `API.PROJECT`, `API.PROJECT.MANIFEST`, `API.PROJECT.LOCK` y `TOOL.CLI.CHECK` especifican NFC, clave NFC/minúsculas Unicode, rutas relativas portables, concesiones y symlinks confinados | Cuatro contratos revisados; versiones congeladas y sin `cambio`; anclajes vigentes verificados con `lock --check` |
 | PG-1.09.02 | Cumplido | Casos de colisiones de caja/NFC, componentes prohibidos, escapes, ciclos, prefijos parecidos y raíces independientes con/sin concesión | Casos virtuales y de filesystem efímero; los negativos no leen contenido exterior |
-| PG-1.09.03 | Cumplido con salvedad | Sustituciones de enlace coordinadas antes de abrir y después de obtener descriptor, enlace interno, ciclo y escape externo | Suite CLI verde en macOS. El filesystem del entorno rechazó crear un nombre no UTF-8 (`EPERM`); su conversión sin pérdida se cubre con prueba unitaria del `OsStr` |
+| PG-1.09.03 | Cumplido | Sustituciones de enlace coordinadas antes de abrir y después de obtener descriptor, enlace interno, ciclo y escape externo | Suite CLI verde en macOS. El filesystem rechazó crear un nombre no UTF-8 (`EPERM`); conversión sin pérdida cubierta con prueba unitaria de `OsStr` |
 | PG-1.09.04 | Cumplido | Validación/claves canónicas en `pseudolearn_project`; lector `cap-std` en CLI conserva bytes del descriptor autorizado y aborta antes de presentar resultados parciales | No se añadió la carga pública de proyectos de PG-1.12 |
-| PG-1.09.05 | Cumplido con salvedad | `cap-std = 4.0.3` declarada en Cargo, reglas y README; soporte documentado solo para la plataforma probada | Tests de confinamiento ejecutados en macOS; no se certifican Linux ni Windows |
+| PG-1.09.05 | Cumplido | `cap-std = 4.0.3` declarada en Cargo, reglas y README; soporte documentado para la plataforma comprobada | Tests de confinamiento en macOS; Linux y Windows no se certifican por analogía |
 | PG-1.09.06 | Cumplido | Pruebas API/CLI confirman rechazo de symlink externo sin salida parcial; sustitución tras apertura lee descriptor ya autorizado; colisiones probadas en memoria | CLI `cargo test --locked`, `rust-checks all .` y `cargo clippy --locked --all-targets -- -D warnings` en verde |
+| PG-1.10.01 | Cumplido | `LANG.LEXICAL.IDENTIFIER#R1` mantiene `1.0.0` estable y admite ASCII, ñ, vocales acentuadas y ü tras NFC en ambos rigores | Caja y acentos distinguen nombres; perfil no altera el alfabeto; no se amplía a XID |
+| PG-1.10.02 | Cumplido | Casos derivados cubren mayúsculas, vocales, diéresis, formas descompuestas, nombre de un carácter, marca aislada y `ç` | Los casos y esperados previos se conservan |
+| PG-1.10.03 | Cumplido | Tests de source, identificador y parser; casos distinguen rechazo léxico, reservado y colisión canónica | Original y rango se preservan; equivalencia se limita a NFC, no a homógrafos generales |
+| PG-1.10.04 | Cumplido | Normalizador del source, lexer y parser de módulos implementan la aceptación según sus capas dueñas | Tests espejo de normalizer, identifier y module parser pasan |
+| PG-1.10.05 | Cumplido | README de source/syntax y ficha bilingüe de ayuda documentan el alfabeto y NFC | No se afirma equivalencia general de homógrafos |
+| PG-1.10.06 | Cumplido | Conformidad engine: 1739 observaciones, 0 divergencias; AOT ejecuta 1265, 0 divergencias; benchmark léxico Unicode con 960 muestras | 30 propiedades engine sin pendientes; los esperados anteriores no cambiaron |
+| PG-1.11.01 | Cumplido | `LANG.LEXICAL.KEYWORD`, `LANG.MODULE.MODEL`, `API.ANALYZE`, `API.WIRE-FORMAT` y `TOOL.CLI.RUN` fijan el contrato suelto | Sin manifiesto/import obligatorio ni migración al abrir; los cuatro nombres antes legales quedan contextuales en texto suelto |
+| PG-1.11.02 | Cumplido | Casos derivados para archivo vacío, biblioteca pegada, nombres `Importar`/`Exportar` e `import`/`export` y sintaxis de proyecto | Sin editar esperados anteriores ni añadir modo alternativo |
+| PG-1.11.03 | Cumplido | Tests API, CLI y transporte FRB real cubren rangos/foco de sentencias en una línea y revisión ajena | Conformidad app ejecuta las secuencias API por el puente real |
+| PG-1.11.04 | Cumplido | Se mantiene la entrada de documento único y sus observables | Sin esquema público de petición nuevo ni administración de proyectos en la app |
+| PG-1.11.05 | Cumplido | README de engine, API, CLI, app y puente nativo actualizados; impacto contextual documentado | Revisión autorizada de cuatro contratos estables; texto y versión conservados |
+| PG-1.11.06 | Cumplido | Conformidad service 126, CLI 67 y app 252 observaciones sin divergencias; puente nativo y Wasm verificados | Propiedades: AOT 13 aprobadas y 3 pendientes por capacidades ausentes; no se anuncia `observe` para AOT |
 
-La implementación de PG-1.08 y PG-1.09 está preparada en la rama autorizada, pero ambas tareas quedan
-con salvedad de cierre: la revisión normativa independiente y el reanclaje correspondiente no se
-realizaron. `cargo xtask verify` en spec, engine y CLI falla en la exportación con
-`SEE-STATE: independent review required`; el validador prohíbe suplir esa evidencia mediante un
-`revisado_por` inventado. Los comandos dirigidos de API/CLI, las suites Rust del motor afectadas,
-`cargo fmt --all --check`, Clippy, `rust-checks all .`, `rust-checks toolchain ../..`, cargo-deny y
-`git diff --check` sí pasan en los miembros aplicables. No se declara `PHASE-GREEN`, no se marca el
-cierre común C01–C13 y no se inicia PG-1.10. Plataforma comprobada: macOS; creación de un nombre
-filesystem no UTF-8 no estuvo permitida por el entorno (`EPERM`).
+Revisión de esta iteración: el usuario autorizó revisar `LANG.MODULE.IMPORT`, `API.PROJECT`,
+`API.PROJECT.MANIFEST` y `API.PROJECT.LOCK`. Se contrastaron sus reglas con sus casos y vínculos,
+sin cambiar texto normativo, estado ni versión. La revisión destrabó `see validate` y `see export`;
+se reanclaron solo las identidades cuyo contenido normativo cambió.
+
+Verificación dirigida según la política registrada en el plan general: `cargo xtask verify` de spec
+pasó (incluye la suite spec y export); `see validate` valida 164 especificaciones; `lock --check` y
+`export --check` pasan. Conformidad: engine 1739, AOT 1265, service 126, CLI 67 y app 252 observaciones,
+0 divergencias; propiedades engine 30 sin pendientes, service 7, CLI 1 y app 3; AOT 13 aprobadas y 3
+pendientes por capacidades no anunciadas. FFI nativo pasó 20 pruebas Dart y 16 Rust; bridge generation
+check no encontró diferencias; Wasm build y cuatro pruebas Chrome pasan. La suite Flutter completa
+pasó 2268 pruebas y sus verificadores de analyzer, límites, contenido y diseño están en verde. En engine
+`cargo fmt`, Clippy completo, `cargo-deny`, `rust-checks all` y `rust-checks toolchain` pasan; las pruebas
+espejo relevantes de source, syntax y API pasaron dentro de la ejecución selectiva.
+
+No se completó `cargo test --workspace` del engine ni se repitió toda la suite CLI: el usuario indicó
+verificar solo lo necesario para este cambio; se registraron las pruebas espejo y la conformidad de cada
+consumidor. El test workspace se detuvo a petición de la persona mientras seguía ejecutando otras pruebas,
+sin fallos reportados. La CLI no tuvo cambios de código; su conformidad actual y los tests/lints previos
+siguen aplicando. Rendimiento léxico Unicode: 960 muestras (30 por workload); mediana/p95 en μs: inglés
+flexible 42.31/54.17, inglés estricto 50.25/147.25, español flexible 48.56/58.83, español estricto
+48.33/58.71. No se cierra PG-1 completo: PG-1.12/.13 y C01–C13 permanecen fuera de esta autorización.
+Plataforma comprobada: macOS; `EPERM` impidió crear un nombre de archivo no UTF-8, y no se certifican
+Linux ni Windows.
 
 ### 11.2 Cierre común de PG-1
 

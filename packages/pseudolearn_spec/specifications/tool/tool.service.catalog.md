@@ -123,6 +123,11 @@
       "tipo": "usa"
     },
     {
+      "id": "LANG.LEXICAL.IDENTIFIER",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
       "id": "LANG.OPS.ARITHMETIC",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
@@ -743,6 +748,11 @@
             "specification": "LANG.DECL.VARIABLE",
             "version": "1.0.0",
             "element": "R1"
+          },
+          {
+            "specification": "LANG.LEXICAL.IDENTIFIER",
+            "version": "1.0.0",
+            "element": "R1"
           }
         ],
         "content": {
@@ -780,7 +790,10 @@
                 "text": "Representa una secuencia de caracteres."
               }
             ],
-            "constraints": [],
+            "constraints": [
+              "En ambos rigores se admiten letras ASCII, ñ, vocales españolas acentuadas y ü, con ambas cajas.",
+              "Los nombres se comparan tras NFC; caja y acentos siguen siendo significativos."
+            ],
             "common_errors": [],
             "examples": [
               {
@@ -837,7 +850,10 @@
                 "text": "Represents a sequence of characters."
               }
             ],
-            "constraints": [],
+            "constraints": [
+              "Both strictness modes accept ASCII letters, ñ, accented Spanish vowels, and ü in either case.",
+              "Names compare after NFC; letter case and accents remain significant."
+            ],
             "common_errors": [],
             "examples": [
               {
