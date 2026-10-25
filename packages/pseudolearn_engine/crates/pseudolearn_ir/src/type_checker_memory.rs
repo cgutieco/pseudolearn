@@ -19,7 +19,9 @@ pub(crate) fn check_memory_instruction(
         Operation::CellLoad | Operation::CellLoadRaw => check_cell_load(operands, get_type),
         Operation::CellStore => check_cell_store(operands, get_type, module),
         Operation::CellField => check_cell_field(operands, get_type, module),
-        Operation::ObjectLoad => check_object_load(operands, get_type, module),
+        Operation::ObjectLoad | Operation::ObjectLoadRaw => {
+            check_object_load(operands, get_type, module)
+        }
         Operation::ObjectStore => check_object_store(operands, get_type, module),
         Operation::ObjectNew => check_object_new(operands, module),
         _ => Ok(None),

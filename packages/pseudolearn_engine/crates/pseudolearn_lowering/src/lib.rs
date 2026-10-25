@@ -82,14 +82,17 @@ fn lower_with<'sources>(
         let source_text = source_for(index).ok_or_else(|| LoweringError {
             description: "function has no source".to_owned(),
         })?;
+        let start = origins.len();
         functions.push(lower_function(
             function,
             semantic_module,
             source_text,
             &mut origins,
         ));
+        crate::lexical_origins::annotate(&mut origins, start, semantic_module, source_text);
     }
 
+    crate::function_prototypes::append(semantic_module, &mut functions);
     Ok(Module {
         name: "P".to_owned(),
         vocabulary: "es".to_owned(),
@@ -104,5 +107,10 @@ mod statements_variant_match;
 mod variant_propagation;
 mod variant_values;
 
+mod lexical_origins;
 mod switch_dispatch;
 mod switch_join;
+
+mod closure_values;
+mod function_prototypes;
+mod indirect_calls;

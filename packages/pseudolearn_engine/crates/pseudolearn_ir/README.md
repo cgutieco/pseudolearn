@@ -66,3 +66,8 @@ con violación deliberada. No se cierran pendientes hasta tener cargo xtask veri
 ## 8. Fuentes consultadas y genealogía conceptual
 
 SSA con parámetros de bloque permite compartir semántica con futuros consumidores nativos. El verificador concentra las obligaciones antes de ejecutar.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+Los orígenes de valores pueden conservar un intervalo léxico adicional sin cambiar la representación textual de instrucciones. `call.indirect` referencia un prototipo verificable y recibe una identidad escalar de código; la identidad nunca es una dirección. `object.load_raw` exige receptor y campo tipados y permite leer palabras cero de un entorno, incluidas referencias inactivas de agregados. La lectura ordinaria conserva su comprobación de inicialización.

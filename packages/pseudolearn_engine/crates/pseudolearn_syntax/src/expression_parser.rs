@@ -66,6 +66,9 @@ fn primary(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     let kind = state.kind();
+    if kind == TokenKind::Keyword(KeywordKind::Subroutine) {
+        return crate::function_parser::literal(state);
+    }
     if crate::variant_parser::starts(kind) {
         return crate::variant_parser::construction(state);
     }

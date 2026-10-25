@@ -6,8 +6,10 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
+    crate::generic_registry::collect(session);
     register_classes(session);
     crate::type_declarations::register(session);
+    crate::generic_discard::check_records(session);
     register_functions(session);
     register_members(session);
     crate::constant_registry::evaluate_all(session);
@@ -35,6 +37,7 @@ pub(crate) fn register_functions(session: &mut AnalysisSession<'_>) {
         .enumerate()
         .filter(|(_, node)| matches!(node.kind, NodeKind::AlgorithmUnit | NodeKind::Subprogram))
         .map(|(index, _)| index)
+        .filter(|node| !crate::generic_registry::is_generic(session, *node))
         .collect();
     for node in nodes {
         register_function(session, node, None);
@@ -138,7 +141,7 @@ fn register_name(
     node: usize,
     identifier: FunctionId,
 ) {
-    if session.functions.contains_key(name) {
+    if session.functions.contains_key(name) || session.generics.functions.contains_key(name) {
         session.named_report(DiagnosticCode::DuplicateSubroutine, node, name);
         return;
     }

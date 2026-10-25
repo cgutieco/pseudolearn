@@ -12,6 +12,7 @@ type Types = HashMap<ValueId, IrType>;
 pub(crate) const SAFE_POINTS: &[Operation] = &[
     Operation::Call,
     Operation::CallVirtual,
+    Operation::CallIndirect,
     Operation::ArrayNew,
     Operation::ObjectNew,
     Operation::ObjectCopy,
@@ -30,6 +31,7 @@ pub(crate) fn live_roots(
     function: &Function,
     types: &Types,
     policy: crate::target::ParameterRoots,
+    origins: &[pseudolearn_ir::OriginEntry],
 ) -> HashMap<InstructionId, Vec<ValueId>> {
     let analysis = Analysis { function, types };
     let live_in = fixpoint(&analysis);
@@ -38,6 +40,7 @@ pub(crate) fn live_roots(
         let outgoing = outgoing(&analysis, block, &live_in);
         scan(&analysis, block, outgoing, Some(&mut recorded));
     }
+    crate::lexical_roots::augment(function, types, origins, &mut recorded);
     if policy == crate::target::ParameterRoots::Borrowed {
         let borrowed = crate::borrowed_roots::collect(function, types);
         for roots in recorded.values_mut() {

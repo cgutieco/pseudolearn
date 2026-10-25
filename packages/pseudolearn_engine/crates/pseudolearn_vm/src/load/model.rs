@@ -45,6 +45,7 @@ pub(crate) struct Edge {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct CallSite {
+    pub indirect: Option<u16>,
     pub function: usize,
     pub destination: Option<Register>,
     pub return_point: usize,
@@ -79,6 +80,7 @@ pub(crate) struct ObservationSite {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct LoadedFunction {
+    pub visibility: std::collections::BTreeMap<Register, SourceSpan>,
     pub name: String,
     pub declaration_span: Option<SourceSpan>,
     pub names: std::collections::BTreeMap<Register, String>,

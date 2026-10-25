@@ -6,6 +6,9 @@ use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::TokenKind;
 
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
+    if session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::Subroutine)) {
+        return crate::function_types::resolve(session, node);
+    }
     if matches!(
         session.token_kind(node),
         Some(TokenKind::Keyword(
@@ -27,6 +30,9 @@ pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId 
 
 fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     let name = session.name(node);
+    if let Some(kind) = crate::generic_names::resolve(session, node, &name) {
+        return kind;
+    }
     if let Some(class) = session.classes.get(&name) {
         return Type::Object(*class);
     }

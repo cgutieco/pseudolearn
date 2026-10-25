@@ -12,6 +12,11 @@ pub(crate) fn local(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     let name = session.name(node);
+    if session.local(&name).is_none() && purpose != ExpressionPurpose::Destination {
+        if let Some(function) = session.functions.get(&name).copied() {
+            return crate::function_values::reference(session, function, node);
+        }
+    }
     if session.local(&name).is_none()
         && let Some(index) =
             crate::constant_registry::find_in(session, Some(session.current), &name)
@@ -21,6 +26,7 @@ pub(crate) fn local(
     let local = session
         .local(&name)
         .unwrap_or_else(|| implicit(session, node, &name, purpose));
+    let local = crate::capture_analysis::resolve(session, local, node);
     let index = usize::try_from(local.0).unwrap_or(usize::MAX);
     let Some(declaration) = session.module.locals.get(index).cloned() else {
         return crate::expression_checker::invalid(session, node);

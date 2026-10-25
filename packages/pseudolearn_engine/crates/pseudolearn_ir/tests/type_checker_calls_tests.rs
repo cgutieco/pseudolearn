@@ -19,3 +19,32 @@ fn rejects_call_result_used_as_the_wrong_type() {
         assert_eq!(verify_module(&module), Err("IR.WELL-FORMEDNESS#R3"));
     }
 }
+
+#[test]
+fn verifies_indirect_call_code_and_prototype_types() -> Result<(), String> {
+    for (instruction, expected) in [
+        (
+            "%0 = const.i64 0\n  %1 = call.indirect %0, @predicate() @8:1-8:5",
+            true,
+        ),
+        (
+            "%0 = const.bool true\n  %1 = call.indirect %0, @predicate() @8:1-8:5",
+            false,
+        ),
+        (
+            "%0 = const.i64 0\n  %1 = call.indirect %0, @predicate(%0) @8:1-8:5",
+            false,
+        ),
+        (
+            "%0 = const.i64 0\n  %1 = call.indirect %0, @missing() @8:1-8:5",
+            false,
+        ),
+    ] {
+        let text = format!(
+            "module P es\nfunc @predicate() -> bool {{\nb0() mass 0:\n  %0 = const.bool true\n  return %0\n}}\nfunc @main() -> bool {{\nb0() mass 0:\n  {instruction}\n  return %1\n}}\n"
+        );
+        let module = parse_module(&text).map_err(|error| error.to_string())?;
+        assert_eq!(verify_module(&module).is_ok(), expected, "{instruction}");
+    }
+    Ok(())
+}

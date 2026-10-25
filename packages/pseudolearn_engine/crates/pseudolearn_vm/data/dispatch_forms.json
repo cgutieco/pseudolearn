@@ -63,7 +63,8 @@
         "trap.missing_return",
         "unreachable",
         "loop.check_step",
-        "switch"
+        "switch",
+        "call.indirect"
       ]
     }
   ],
@@ -879,6 +880,24 @@
         }
       ],
       "handler": "switch"
+    },
+    {
+      "form": "ObjectReadRaw",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "pseudolearn_bytecode::Register"
+        },
+        {
+          "name": "receiver",
+          "type": "u16"
+        },
+        {
+          "name": "offset",
+          "type": "usize"
+        }
+      ],
+      "handler": "read_object_field_raw"
     }
   ]
 }

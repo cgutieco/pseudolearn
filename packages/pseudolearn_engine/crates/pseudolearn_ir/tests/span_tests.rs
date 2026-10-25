@@ -2,6 +2,20 @@ use pseudolearn_ir::{IrPosition, IrSpan, parse_module, print_canonical, verify_m
 use pseudolearn_source::SourceId;
 
 #[test]
+fn lexical_visibility_respects_boundaries_and_source_identity() {
+    let scope = IrSpan::new(2, 3, 5, 9);
+    assert!(scope.contains_start(IrSpan::new(2, 3, 2, 8)));
+    assert!(scope.contains_start(IrSpan::new(5, 8, 5, 9)));
+    assert!(!scope.contains_start(IrSpan::new(5, 9, 5, 10)));
+    assert!(!scope.contains_start(IrSpan::new(1, 1, 2, 3)));
+    assert!(!scope.contains_start(IrSpan::in_source(
+        SourceId::new(1),
+        IrPosition::new(3, 1),
+        IrPosition::new(3, 2)
+    )));
+}
+
+#[test]
 fn source_qualified_spans_round_trip_canonically() -> Result<(), String> {
     let span = IrSpan::in_source(
         SourceId::new(4),

@@ -38,7 +38,9 @@ pub(super) fn decode(
         Opcode::Switch => {
             super::switch::decode(context, loaded, (program_counter, probed), instruction)
         }
-        Opcode::Call | Opcode::CallVirtual => decode_call(context, loaded, instruction),
+        Opcode::Call | Opcode::CallVirtual | Opcode::CallIndirect => {
+            decode_call(context, loaded, instruction)
+        }
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),
         Opcode::TrapMissingReturn => Ok(Op::MissingReturn),
@@ -116,6 +118,8 @@ fn call_site_definition(
     let function_index = usize::from(*function_index);
     let targets_by_class = if instruction.opcode == Opcode::CallVirtual {
         virtual_targets(context, function_index)?
+    } else if instruction.opcode == Opcode::CallIndirect {
+        crate::load::indirect_targets::collect(context.module, function_index)
     } else {
         Vec::new()
     };
@@ -156,6 +160,11 @@ fn register_call_site(
     loaded.virtual_targets.extend(definition.targets_by_class);
     let targets_end = loaded.virtual_targets.len();
     let site = CallSite {
+        indirect: if instruction.opcode == Opcode::CallIndirect {
+            Some(first_register(instruction)?.index)
+        } else {
+            None
+        },
         function: definition.function,
         destination: instruction.destination,
         return_point: definition.return_point,

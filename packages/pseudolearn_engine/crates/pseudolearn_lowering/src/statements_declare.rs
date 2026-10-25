@@ -61,6 +61,7 @@ fn lower_reference_declare(
         .ok()
         .and_then(|index| context.expression_context.module.locals.get(index));
     context.origins.push(OriginEntry {
+        visibility: None,
         function: context.builder.name.clone(),
         value: cell,
         variable: VariableId(local_id.0),
@@ -87,6 +88,7 @@ fn lower_value_declare(
         .map(|local| local.name.clone())
         .unwrap_or_else(|| format!("v{}", local_id.0));
     context.origins.push(OriginEntry {
+        visibility: None,
         function: context.builder.name.clone(),
         value: undefined_value,
         variable: VariableId(local_id.0),

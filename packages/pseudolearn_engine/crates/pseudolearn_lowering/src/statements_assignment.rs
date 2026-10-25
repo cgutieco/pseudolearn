@@ -196,6 +196,7 @@ pub(crate) fn record_origin_entry(
         .map(|local| local.name.clone())
         .unwrap_or_else(|| format!("v{}", local_id.0));
     context.origins.push(OriginEntry {
+        visibility: None,
         function: context.builder.name.clone(),
         value,
         variable: VariableId(local_id.0),

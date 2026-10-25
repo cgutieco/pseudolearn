@@ -103,6 +103,8 @@ pub struct ReturnPoint {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct BytecodeFunction {
+    pub result_type: IrType,
+    pub visibility: BTreeMap<Register, IrSpan>,
     pub name: String,
     pub declaration_span: Option<IrSpan>,
     pub names: BTreeMap<Register, String>,

@@ -22,6 +22,7 @@ pub(crate) fn check_for(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     match session.kind(node) {
+        NodeKind::FunctionLiteral => crate::closure_checker::check(session, node),
         NodeKind::VariantConstruction => crate::variant_checker::check(session, node, None),
         NodeKind::Propagation => crate::variant_checker::propagation(session, node),
         NodeKind::Identifier => crate::name_resolution::local(session, node, purpose),

@@ -87,7 +87,9 @@ resuelve semantic. Las palabras nuevas son reservadas y se registran como apertu
 
 Los vínculos locales usan un analizador distinto de los campos: `Definir [Mutable] nombre Como tipo <- expresión` exige un inicializador; los campos conservan listas y ausencia de inicializador. Se conserva `Declaration` en ambos árboles para no duplicar la extracción de campos.
 
-Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; no se reserva una sintaxis para genéricos de usuario. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.
+Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; los genéricos de usuario no reservan palabras nuevas. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.
+
+Los parámetros de tipo (`<T, U>`) solo se aceptan tras el nombre de un registro o de un subprograma, y los argumentos de tipo (`<Entero, T>`) tras un nombre de tipo. `generic_parser` produce los nodos `TypeParameters` y `TypeArguments`; un tipo con argumentos conserva el nodo `Type` de su nombre como padre. No hay ambigüedad con la comparación porque los tipos solo se leen en posición de tipo: tras `Como`, en parámetros, retornos y argumentos de otro tipo. Las listas vacías, sin cierre o con coma final recuperan sin pánico. Las clases siguen rechazando `<` tras su nombre.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -116,3 +118,8 @@ Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde
 El esquema de unidades se extrae de los hijos directos de la raíz y centraliza nombres, tipos de retorno,
 parámetros, modo de paso y tramos completos. La API convierte ese esquema sin repetir la extracción.
 El reconocimiento de palabras compuestas pertenece a `compound_scanner.rs`; nunca cruza una línea.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+`function_parser` distingue el tipo estructural `SubProceso(Entero) Como Entero` del literal con parámetros nombrados y cuerpo terminado en `FinSubProceso`. Ambos reutilizan el vocabulario bilingüe existente. Los nodos de firma y literal proceden de la gramática generada; no existe un segundo catálogo de sintaxis.

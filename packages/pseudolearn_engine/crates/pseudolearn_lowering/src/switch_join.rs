@@ -74,6 +74,7 @@ fn record_origin(
         .and_then(|index| context.expression_context.module.locals.get(index))
     {
         context.origins.push(OriginEntry {
+            visibility: None,
             function: context.builder.name.clone(),
             value: parameter,
             variable: VariableId(local.0),

@@ -107,6 +107,11 @@ fn leaves_of(
 }
 
 fn compute(session: &mut AnalysisSession<'_>, record: RecordId) {
+    if session.module.function_types.contains_key(&record)
+        || session.module.variants.contains_key(&record)
+    {
+        return;
+    }
     let Some(model) = session.module.records.get(slot(record)).cloned() else {
         return;
     };

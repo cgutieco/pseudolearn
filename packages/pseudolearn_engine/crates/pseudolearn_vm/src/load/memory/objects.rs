@@ -39,11 +39,19 @@ pub(super) fn object_read(
     instruction: &Instruction,
 ) -> Result<Op, VmTrap> {
     let (receiver, offset) = object_field(context, instruction)?;
-    Ok(Op::ObjectRead {
-        destination: destination(instruction)?,
-        receiver,
-        offset,
-    })
+    if instruction.opcode == pseudolearn_bytecode::Opcode::ObjectLoadRaw {
+        Ok(Op::ObjectReadRaw {
+            destination: destination(instruction)?,
+            receiver,
+            offset,
+        })
+    } else {
+        Ok(Op::ObjectRead {
+            destination: destination(instruction)?,
+            receiver,
+            offset,
+        })
+    }
 }
 
 pub(super) fn object_write(

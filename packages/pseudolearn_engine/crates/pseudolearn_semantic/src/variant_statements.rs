@@ -28,6 +28,9 @@ pub(crate) fn returned_value(
 
 pub(crate) fn output_error(session: &mut AnalysisSession<'_>, value: ExpressionId, node: usize) {
     let kind = session.expression_type(value);
+    if crate::function_types::get(session, &kind).is_some() {
+        return;
+    }
     let code = if crate::variant_types::get(session, &kind).is_some() {
         Some(DiagnosticCode::VariantRequiresPattern)
     } else {

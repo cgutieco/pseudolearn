@@ -3444,6 +3444,114 @@
       "tipos_argumentos": {
         "lexeme": "lexema"
       }
+    },
+    "mutableClosureCapture": {
+      "mensajes": {
+        "es": "No se puede capturar el vínculo mutable o prestado {lexeme} de tipo {type}",
+        "en": "Cannot capture mutable or borrowed binding {lexeme} of type {type}"
+      },
+      "argumentos": [
+        "lexeme",
+        "type"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "type": "tipo"
+      }
+    },
+    "invalidFunctionReference": {
+      "mensajes": {
+        "es": "La referencia de función no corresponde a una firma válida",
+        "en": "Function reference does not match a valid signature"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "runtime",
+      "tipos_argumentos": {}
+    },
+    "closureEnvironmentTooLarge": {
+      "mensajes": {
+        "es": "El entorno de la clausura excede el límite de representación",
+        "en": "Closure environment exceeds its representation limit"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "typeArgumentCountMismatch": {
+      "mensajes": {
+        "es": "El tipo {lexeme} espera {expected} argumentos de tipo pero recibió {found}",
+        "en": "Type {lexeme} expects {expected} type arguments but received {found}"
+      },
+      "argumentos": [
+        "lexeme",
+        "expected",
+        "found"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "expected": "numero",
+        "found": "numero"
+      }
+    },
+    "cannotInferTypeArgument": {
+      "mensajes": {
+        "es": "No se puede inferir de forma única el argumento de tipo {lexeme}",
+        "en": "Cannot infer a unique type argument {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "genericInstanceLimitExceeded": {
+      "mensajes": {
+        "es": "El genérico {lexeme} excede el límite de {limit} instancias",
+        "en": "Generic {lexeme} exceeds the limit of {limit} instances"
+      },
+      "argumentos": [
+        "lexeme",
+        "limit"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "limit": "numero"
+      }
     }
   }
 }

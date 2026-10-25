@@ -31,7 +31,7 @@ pub(crate) fn build_frame_view(
     inspection: &ActiveFrameInspection<'_>,
 ) -> FrameView {
     let mut variables = Vec::new();
-    for (register, variable_name) in inspection.names {
+    for (register, variable_name) in &inspection.names {
         let variable_view = read_variable(machine, inspection, *register, variable_name);
         variables.push(variable_view);
     }

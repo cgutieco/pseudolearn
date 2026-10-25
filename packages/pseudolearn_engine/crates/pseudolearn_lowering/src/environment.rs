@@ -167,6 +167,7 @@ fn create_join_parameter(
         .map(|local| local.name.clone())
         .unwrap_or_else(|| format!("v{}", local_id.0));
     context.origins.push(OriginEntry {
+        visibility: None,
         function: builder.name.clone(),
         value: parameter_value,
         variable: VariableId(local_id.0),

@@ -51,3 +51,8 @@ con violación deliberada. No se cierran pendientes hasta tener cargo xtask veri
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Young y Daly inspiran programar por coste, rechazando reloj como unidad. La comparación incremental de HPC inspira la sombra; se rechazan hashes con falsos negativos y protección de páginas del sistema. rr inspira grabar no determinismo, sin grabar el proceso completo.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+La inspección recibe el mapa de nombres que la VM filtra por intervalo léxico, incluido el punto de continuación de los marcos suspendidos. Un vínculo cerrado deja de mostrarse aunque su ranura física siga reservada; no se reutilizan ranuras entre bloques.

@@ -54,3 +54,15 @@ pub(crate) fn finish(session: &mut AnalysisSession<'_>) {
         }
     }
 }
+
+pub(crate) fn parameters(session: &mut AnalysisSession<'_>, parameters: &[LocalId]) {
+    for parameter in parameters {
+        if let Some(local) = usize::try_from(parameter.0)
+            .ok()
+            .and_then(|index| session.module.locals.get(index))
+            && is_result(session, &session.module.types.get(local.type_id))
+        {
+            session.pending_results.insert(*parameter);
+        }
+    }
+}

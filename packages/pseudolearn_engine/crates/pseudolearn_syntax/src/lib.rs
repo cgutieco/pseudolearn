@@ -6,6 +6,7 @@ pub(crate) mod control_statement_parser;
 pub(crate) mod declaration_parser;
 pub(crate) mod enum_parser;
 pub(crate) mod expression_parser;
+pub(crate) mod generic_parser;
 pub mod lexer;
 pub(crate) mod literal_scanner;
 mod module_parser;
@@ -74,3 +75,5 @@ pub fn parse_module_source(
 }
 
 mod variant_parser;
+
+mod function_parser;

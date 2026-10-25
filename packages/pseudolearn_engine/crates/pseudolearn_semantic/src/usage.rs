@@ -21,6 +21,9 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
             continue;
         };
         let identifier = LocalId(u32::try_from(index).unwrap_or(u32::MAX));
+        if local.name.starts_with('$') {
+            continue;
+        }
         if session
             .module
             .record_locals
@@ -49,6 +52,9 @@ fn unused_functions(session: &mut AnalysisSession<'_>) {
         let Some(function) = session.module.functions.get(index).cloned() else {
             continue;
         };
+        if session.module.closures.contains_key(&identifier) {
+            continue;
+        }
         if !matches!(
             function.kind,
             FunctionKind::Procedure | FunctionKind::Function

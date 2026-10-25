@@ -47,7 +47,7 @@ pub fn check_instruction_types(
     )? {
         return Ok(Some(result));
     }
-    if let Some(result) = check_call_result(operation, operands, module)? {
+    if let Some(result) = check_call_result(operation, operands, module, &get_type)? {
         return Ok(Some(result));
     }
     check_control_and_io(operation, operands, &get_type)

@@ -27,6 +27,9 @@ pub(crate) fn name(state: &mut ParserState<'_>, missing: DiagnosticCode) -> Resu
 pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
+    if state.kind() == TokenKind::Keyword(KeywordKind::Subroutine) {
+        return crate::function_parser::function_type(state);
+    }
     if matches!(
         state.kind(),
         TokenKind::Keyword(KeywordKind::OptionalType | KeywordKind::ResultType)
@@ -50,6 +53,9 @@ pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
             state.report(DiagnosticCode::ExpectedType, span);
             return Err(());
         }
+    }
+    if state.kind() == TokenKind::Less {
+        crate::generic_parser::type_arguments(state)?;
     }
     Ok(state.finish(NodeKind::Type, start, marker))
 }

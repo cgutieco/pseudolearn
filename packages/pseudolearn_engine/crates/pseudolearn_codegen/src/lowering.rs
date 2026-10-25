@@ -17,6 +17,8 @@ use pseudolearn_ir::{
 use std::collections::HashMap;
 
 pub(crate) struct FunctionEnvironment<'program> {
+    pub(crate) function_table: Option<GlobalValue>,
+    pub(crate) signature_tags: &'program [u32],
     pub(crate) module: &'program Module,
     pub(crate) layout: ContextLayout,
     pub(crate) runtime: RuntimeRefs,

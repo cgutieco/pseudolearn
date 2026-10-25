@@ -56,7 +56,7 @@ fn direct_operation(
     instruction: &Instruction,
 ) -> Result<Option<Op>, VmTrap> {
     match instruction.opcode {
-        Opcode::ObjectLoad => object_read(context, instruction).map(Some),
+        Opcode::ObjectLoad | Opcode::ObjectLoadRaw => object_read(context, instruction).map(Some),
         Opcode::ObjectStore => object_write(context, instruction).map(Some),
         Opcode::ArrayLoad | Opcode::ArrayStore => direct_array_access(context, instruction),
         _ => Ok(None),

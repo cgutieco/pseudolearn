@@ -10,6 +10,7 @@ pub(crate) fn name_taken(session: &AnalysisSession<'_>, name: &str) -> bool {
     session.classes.contains_key(name)
         || session.declared.enums.contains_key(name)
         || session.declared.records.contains_key(name)
+        || session.generics.records.contains_key(name)
 }
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {

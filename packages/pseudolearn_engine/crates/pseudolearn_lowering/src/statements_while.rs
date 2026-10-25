@@ -113,6 +113,7 @@ pub fn bind_loop_parameters(
             .map(|local| local.name.clone())
             .unwrap_or_else(|| format!("v{}", local_id.0));
         context.origins.push(OriginEntry {
+            visibility: None,
             function: context.builder.name.clone(),
             value: parameter_value,
             variable: VariableId(local_id.0),

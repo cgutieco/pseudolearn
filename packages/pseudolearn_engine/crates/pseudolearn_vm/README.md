@@ -194,3 +194,8 @@ Lua inspira ventanas de registros y operandos registro-constante; Ertl y Gregg, 
 operandos y las superinstrucciones por perfil; la JVM, la verificación previa; Self, el cambio de código.
 Se toma la especialización estática en carga y se rechaza la generación de código máquina en ejecución,
 que pertenece a R6. Se preserva Rust seguro y se mide el despacho antes de optimizar.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+La carga prepara una tabla de destinos compatibles por firma para cada llamada indirecta. La ejecución valida identidad y compatibilidad antes de abrir el marco y produce `invalidFunctionReference` para destinos inválidos. Los entornos son objetos ordinarios del montículo y siguen las raíces precisas. La inspección filtra nombres por el intervalo léxico actual, restaura el vínculo exterior tras un sombreado y usa la continuación para marcos suspendidos. La identidad de código se mantiene fuera del banco de referencias.

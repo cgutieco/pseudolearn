@@ -81,18 +81,28 @@ pub(crate) fn result_cells(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
-    let module = state.context.module;
-    let leaves = usize::try_from(function_index)
+    let kind = usize::try_from(function_index)
         .ok()
-        .and_then(|slot| module.functions.get(slot))
-        .and_then(|function| match module.types.get(function.result) {
-            pseudolearn_semantic::types::Type::Record(record) => Some(record),
-            _ => None,
-        })
-        .and_then(|record| usize::try_from(record.0).ok())
-        .and_then(|slot| module.records.get(slot))
-        .map(|model| model.leaf_types.clone())
-        .unwrap_or_default();
+        .and_then(|index| state.context.module.functions.get(index))
+        .map(|function| function.result);
+    kind.map(|kind| allocate_result_cells(kind, span, state))
+        .unwrap_or_default()
+}
+
+pub(crate) fn allocate_result_cells(
+    kind: pseudolearn_semantic::identities::TypeId,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    let module = state.context.module;
+    let leaves = match module.types.get(kind) {
+        pseudolearn_semantic::Type::Record(record) => usize::try_from(record.0)
+            .ok()
+            .and_then(|index| module.records.get(index))
+            .map(|record| record.leaf_types.clone())
+            .unwrap_or_default(),
+        _ => Vec::new(),
+    };
     let mut cells = Vec::new();
     for leaf in leaves {
         let cell = state.builder.next_value();

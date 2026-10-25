@@ -25,8 +25,18 @@ pub(crate) fn call(
     let children = session.children(node);
     let target = children.first().copied().unwrap_or(node);
     let name = session.name(target);
+    if session.kind(target) != NodeKind::Identifier || session.local(&name).is_some() {
+        let callee = crate::expression_checker::check(session, target);
+        return crate::function_calls::call(session, node, (callee, purpose));
+    }
     if let Some(record) = session.declared.records.get(&name).copied() {
         return crate::record_access::construct(session, node, record);
+    }
+    if let Some(template) = session.generics.records.get(&name).cloned() {
+        return crate::generic_calls::construct(session, node, template);
+    }
+    if let Some(template) = session.generics.functions.get(&name).cloned() {
+        return crate::generic_calls::call(session, node, (template, purpose));
     }
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);
     if let Some(function) = session.functions.get(&name).copied() {
@@ -206,7 +216,7 @@ fn emit_method(
     session.emit(kind, signature.result, session.span(invocation.node))
 }
 
-fn check_result(
+pub(crate) fn check_result(
     session: &mut AnalysisSession<'_>,
     result: crate::identities::TypeId,
     context: (usize, ExpressionPurpose),

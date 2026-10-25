@@ -15,6 +15,17 @@ pub(crate) fn construct(
         return invalid(session, node);
     };
     let arguments = constructor_arguments(session, node, &model.fields);
+    construct_with(session, node, (record, arguments))
+}
+
+pub(crate) fn construct_with(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    (record, arguments): (RecordId, Vec<ExpressionId>),
+) -> ExpressionId {
+    let Some(model) = session.module.records.get(slot(record)).cloned() else {
+        return invalid(session, node);
+    };
     if arguments.len() != model.fields.len() {
         crate::argument_checker::arity(session, (model.fields.len(), arguments.len()), node);
         return invalid(session, node);

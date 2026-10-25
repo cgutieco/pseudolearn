@@ -55,6 +55,18 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
+    pub(crate) fn read_object_field_raw(
+        &mut self,
+        destination: Register,
+        receiver: u16,
+        offset: usize,
+    ) -> Result<Flow, Fault> {
+        let handle = Handle(self.reference(receiver)?);
+        let word = runtime::read_field_raw(&self.heap, handle, offset).map_err(memory_fault)?;
+        self.write_result(destination, word)?;
+        Ok(Flow::Continue)
+    }
+
     pub(crate) fn write_object_field(
         &mut self,
         receiver: u16,

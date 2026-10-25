@@ -13,6 +13,7 @@ pub(crate) fn register(session: &mut AnalysisSession<'_>) {
         .enumerate()
         .filter(|(_, node)| node.kind == NodeKind::RecordUnit)
         .map(|(index, _)| index)
+        .filter(|node| !crate::generic_registry::is_generic(session, *node))
         .collect();
     let records: Vec<RecordId> = nodes
         .into_iter()
@@ -44,7 +45,7 @@ fn declare(session: &mut AnalysisSession<'_>, node: usize) -> Option<RecordId> {
     Some(identifier)
 }
 
-fn fields(session: &mut AnalysisSession<'_>, record: RecordId) {
+pub(crate) fn fields(session: &mut AnalysisSession<'_>, record: RecordId) {
     let Some(syntax) = record_syntax(session, record) else {
         return;
     };

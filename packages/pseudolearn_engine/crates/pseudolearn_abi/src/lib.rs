@@ -44,3 +44,6 @@ pub use word::Word;
 
 pub mod variant_layout;
 pub use variant_layout::{VariantLayout, VariantLayoutError};
+
+mod closure_layout;
+pub use closure_layout::ClosureLayout;

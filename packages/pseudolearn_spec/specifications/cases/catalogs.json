@@ -738,6 +738,24 @@
       },
       "tipos_argumentos": {}
     },
+    "cannotInferTypeArgument": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Cannot infer a unique type argument {lexeme}",
+        "es": "No se puede inferir de forma única el argumento de tipo {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "cellLimitExceeded": {
       "argumentos": [
         "limit"
@@ -844,6 +862,20 @@
       "mensajes": {
         "en": "Declaring a class inside a subroutine is not allowed",
         "es": "No se permite declarar una clase dentro de un subprograma"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "closureEnvironmentTooLarge": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Closure environment exceeds its representation limit",
+        "es": "El entorno de la clausura excede el límite de representación"
       },
       "politica": "A",
       "severidad": {
@@ -1738,6 +1770,26 @@
       },
       "tipos_argumentos": {}
     },
+    "genericInstanceLimitExceeded": {
+      "argumentos": [
+        "lexeme",
+        "limit"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Generic {lexeme} exceeds the limit of {limit} instances",
+        "es": "El genérico {lexeme} excede el límite de {limit} instancias"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "limit": "numero"
+      }
+    },
     "identifierMatchesFieldWithoutThis": {
       "argumentos": [
         "lexeme"
@@ -2112,6 +2164,20 @@
         "lexeme": "lexema"
       }
     },
+    "invalidFunctionReference": {
+      "argumentos": [],
+      "clase": "runtime",
+      "mensajes": {
+        "en": "Function reference does not match a valid signature",
+        "es": "La referencia de función no corresponde a una firma válida"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "invalidReadTarget": {
       "argumentos": [],
       "clase": "syntax",
@@ -2339,6 +2405,26 @@
         "flexible": "warning"
       },
       "tipos_argumentos": {}
+    },
+    "mutableClosureCapture": {
+      "argumentos": [
+        "lexeme",
+        "type"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Cannot capture mutable or borrowed binding {lexeme} of type {type}",
+        "es": "No se puede capturar el vínculo mutable o prestado {lexeme} de tipo {type}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema",
+        "type": "tipo"
+      }
     },
     "negativeArraySize": {
       "argumentos": [
@@ -3093,6 +3179,28 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "typeArgumentCountMismatch": {
+      "argumentos": [
+        "lexeme",
+        "expected",
+        "found"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Type {lexeme} expects {expected} type arguments but received {found}",
+        "es": "El tipo {lexeme} espera {expected} argumentos de tipo pero recibió {found}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "expected": "numero",
+        "found": "numero",
+        "lexeme": "lexema"
+      }
     },
     "typeConflictOnInferredVariable": {
       "argumentos": [
@@ -4187,6 +4295,9 @@
       "fieldBinding": "@declare, names, @typeConnector, type",
       "fieldDeclaration": "[ visibility ], ( fieldBinding | dimensionDeclaration ), terminator",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
+      "functionLiteral": "@subroutine, parameters, [ @typeConnector, type ], line, body, @endSubroutine",
+      "functionParameterType": "type, [ @byValue | @byReference ]",
+      "functionType": "@subroutine, @leftParenthesis, [ functionParameterType, { @comma, functionParameterType } ], @rightParenthesis, [ @typeConnector, type ]",
       "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
       "input": "@read, designator, { @comma, designator }",
       "instantiation": "@newInstance, identifier, arguments",
@@ -4206,20 +4317,22 @@
       "pattern": "literal | signedInteger | identifier, @dot, identifier | variantPattern",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "powerExpression": "unary, [ @power, powerExpression ]",
-      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction",
+      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction | functionLiteral",
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
       "propagation": "@propagateKeyword, unary",
       "recordField": "fieldBinding, terminator",
-      "recordUnit": "@recordKeyword, identifier, line, { recordField }, @endRecord, line",
+      "recordUnit": "@recordKeyword, identifier, [ typeParameters ], line, { recordField }, @endRecord, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
       "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement ), terminator",
-      "subprogram": "@subroutine, identifier, parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
+      "subprogram": "@subroutine, identifier, [ typeParameters ], parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "terminator": "@semicolon | endOfLine",
       "trivia": "whitespace | comment | endOfLine",
-      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan",
+      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier, [ typeArguments ] | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan | functionType",
+      "typeArguments": "@lessThan, type, { @comma, type }, @greaterThan",
+      "typeParameters": "@lessThan, identifier, { @comma, identifier }, @greaterThan",
       "unary": "( @plus | @minus | @not ), unary | postfix | propagation",
       "variantConstruction": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, expression, @rightParenthesis",
       "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",

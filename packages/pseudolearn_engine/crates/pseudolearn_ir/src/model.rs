@@ -30,6 +30,7 @@ pub struct Block {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct OriginEntry {
+    pub visibility: Option<crate::IrSpan>,
     pub function: String,
     pub value: ValueId,
     pub variable: VariableId,
@@ -48,6 +49,7 @@ impl OriginTable {
 
     pub fn record(&mut self, value: ValueId, variable: VariableId, name: String) {
         self.entries.push(OriginEntry {
+            visibility: None,
             function: String::new(),
             value,
             variable,

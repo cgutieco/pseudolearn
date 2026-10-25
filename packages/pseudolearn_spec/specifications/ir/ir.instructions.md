@@ -2698,3 +2698,65 @@
   ]
 }
 ```
+
+```instruccion
+{
+  "id": "O78",
+  "nombre": "call.indirect",
+  "firma": "call.indirect %code: i64, @prototype(%a...) -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Selecciona una función de la tabla de código por identidad u32 y llama con el entorno como primer argumento. La firma debe coincidir con la del prototipo; un destino ausente o incompatible es invalidFunctionReference. La identidad de código no es una dirección.",
+  "trampas": [
+    "recursionDepthExceeded",
+    "invalidFunctionReference"
+  ],
+  "efectos": [
+    "llamada"
+  ],
+  "observacion": [
+    "call",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V116",
+  "regla": "LANG.TYPES.FUNCTION#R1",
+  "instrucciones": [
+    "call.indirect"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V117",
+  "regla": "LANG.TYPES.GENERIC#R1",
+  "sin_ri": "Los parámetros de tipo, la inferencia y las instancias se resuelven antes de la RI, que recibe una función o un registro concreto por instancia."
+}
+```
+
+```instruccion
+{
+  "id": "O79",
+  "nombre": "object.load_raw",
+  "firma": "object.load_raw %o: obj<C>, field -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee los bits de un campo de un entorno tipado sin interpretar centinelas inactivos. El receptor y campo deben existir. El acceso ordinario a campos sigue usando object.load y conserva la comprobación de definición.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```

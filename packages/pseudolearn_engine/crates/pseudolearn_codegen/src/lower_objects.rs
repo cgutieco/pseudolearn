@@ -20,6 +20,7 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::ObjectNew,
     Operation::ObjectCopy,
     Operation::ObjectLoad,
+    Operation::ObjectLoadRaw,
     Operation::ObjectStore,
     Operation::RefCmp,
 ];
@@ -38,33 +39,10 @@ pub(crate) fn lower(
         Operation::ObjectNew => lower_new(lowering, instruction),
         Operation::ObjectCopy => lower_copy(lowering, instruction),
         Operation::ObjectLoad => lower_load(lowering, instruction),
+        Operation::ObjectLoadRaw => crate::lower_raw_object::lower(lowering, instruction),
         Operation::ObjectStore => lower_store(lowering, instruction),
         _ => lower_reference_comparison(lowering, instruction),
     }
-}
-
-pub(crate) fn field_target(
-    lowering: &Lowering<'_, '_>,
-    instruction: &Instruction<'_>,
-) -> Result<FieldTarget, CodegenError> {
-    let (Some(Operand::Value(object)), Some(Operand::Identifier(name))) =
-        (instruction.operands.first(), instruction.operands.get(1))
-    else {
-        return Err(CodegenError::InvalidModule("malformed field access"));
-    };
-    let Some(IrType::Object(class)) = lowering.types.get(object) else {
-        return Err(CodegenError::InvalidModule("field access on a non-object"));
-    };
-    let (index, field_type) = lowering
-        .environment
-        .classes
-        .field(class, name)
-        .ok_or(CodegenError::InvalidModule("unknown field"))?;
-    Ok(FieldTarget {
-        index: u32::try_from(index).map_err(|_| CodegenError::InvalidModule("field index"))?,
-        field_type: field_type.clone(),
-        payload: lowering.environment.classes.static_payload(class),
-    })
 }
 
 fn lower_new(
@@ -127,7 +105,7 @@ pub(crate) fn allocate_handle(
     Ok(lowering.builder.ins().ireduce(types::I32, word))
 }
 
-fn payload_slot(
+pub(crate) fn payload_slot(
     lowering: &mut Lowering<'_, '_>,
     base: Value,
     target: &FieldTarget,
@@ -271,4 +249,28 @@ fn lower_reference_comparison(
         .icmp(unsigned_condition(predicate), left, right);
     bind_result(lowering, instruction, result);
     Ok(())
+}
+
+pub(crate) fn field_target(
+    lowering: &Lowering<'_, '_>,
+    instruction: &Instruction<'_>,
+) -> Result<FieldTarget, CodegenError> {
+    let (Some(Operand::Value(object)), Some(Operand::Identifier(name))) =
+        (instruction.operands.first(), instruction.operands.get(1))
+    else {
+        return Err(CodegenError::InvalidModule("malformed field access"));
+    };
+    let Some(IrType::Object(class)) = lowering.types.get(object) else {
+        return Err(CodegenError::InvalidModule("field access on a non-object"));
+    };
+    let (index, field_type) = lowering
+        .environment
+        .classes
+        .field(class, name)
+        .ok_or(CodegenError::InvalidModule("unknown field"))?;
+    Ok(FieldTarget {
+        index: u32::try_from(index).map_err(|_| CodegenError::InvalidModule("field index"))?,
+        field_type: field_type.clone(),
+        payload: lowering.environment.classes.static_payload(class),
+    })
 }

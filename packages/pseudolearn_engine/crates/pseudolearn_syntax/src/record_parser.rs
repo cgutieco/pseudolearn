@@ -11,6 +11,7 @@ pub(crate) fn record(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let marker = state.nodes.len();
     state.advance();
     name(state, DiagnosticCode::ExpectedRecordName)?;
+    crate::generic_parser::optional_parameters(state)?;
     loop {
         state.separators();
         if matches!(

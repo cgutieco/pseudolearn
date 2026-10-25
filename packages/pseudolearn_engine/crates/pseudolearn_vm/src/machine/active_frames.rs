@@ -8,7 +8,7 @@ use super::Machine;
 #[derive(Clone, Debug)]
 pub struct ActiveFrameInspection<'program> {
     pub function_name: &'program str,
-    pub names: &'program BTreeMap<Register, String>,
+    pub names: BTreeMap<Register, String>,
     pub scalar_base: usize,
     pub reference_base: usize,
     pub receiver_handle: Option<Handle>,
@@ -37,7 +37,7 @@ impl<'program> Machine<'program> {
                 } else {
                     &frame.function.name
                 },
-                names: &frame.function.names,
+                names: crate::machine::lexical_names::suspended(self, frame),
                 scalar_base: frame.scalar_base,
                 reference_base: frame.reference_base,
                 receiver_handle: frame_receiver(self, frame.reference_base),
@@ -51,7 +51,7 @@ impl<'program> Machine<'program> {
                 } else {
                     &self.current.name
                 },
-                names: &self.current.names,
+                names: crate::machine::lexical_names::current(self),
                 scalar_base: self.cursor.scalar_base,
                 reference_base: self.cursor.reference_base,
                 receiver_handle: frame_receiver(self, self.cursor.reference_base),

@@ -30,6 +30,7 @@ pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
     state.unit_context = NodeKind::Subprogram;
     state.advance();
     name(state, DiagnosticCode::ExpectedSubroutineName)?;
+    crate::generic_parser::optional_parameters(state)?;
     parameters(state)?;
     if state.keyword(KeywordKind::TypeConnector) {
         parse_type(state)?;

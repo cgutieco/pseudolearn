@@ -125,6 +125,11 @@ pub struct HirRecord {
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct HirModule {
+    pub source_profiles: BTreeMap<pseudolearn_source::SourceId, pseudolearn_lexicon::Profile>,
+    pub function_types:
+        BTreeMap<crate::identities::RecordId, crate::function_model::FunctionSignature>,
+    pub closures: BTreeMap<FunctionId, crate::function_model::HirClosure>,
+    pub function_values: BTreeMap<FunctionId, FunctionId>,
     pub units: UnitTable,
     pub functions: Vec<HirFunction>,
     pub classes: Vec<HirClass>,

@@ -52,6 +52,12 @@ impl IrSpan {
             && (self.start_line, self.start_column) <= (self.end_line, self.end_column)
     }
 
+    pub fn contains_start(self, other: Self) -> bool {
+        self.source_id == other.source_id
+            && (self.start_line, self.start_column) <= (other.start_line, other.start_column)
+            && (other.start_line, other.start_column) < (self.end_line, self.end_column)
+    }
+
     pub fn format_span(&self) -> String {
         let coordinates = format!(
             "{}:{}-{}:{}",

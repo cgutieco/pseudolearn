@@ -82,6 +82,7 @@ fn init_loaded_function(function: &BytecodeFunction) -> Result<LoadedFunction, V
         block_mappings(&function.fast.blocks, &function.probed.blocks);
     let (fast_to_probed_returns, probed_to_fast_returns) = return_mappings(&function.return_points);
     Ok(LoadedFunction {
+        visibility: function.visibility.clone(),
         name: function.name.clone(),
         declaration_span: function.declaration_span,
         names: function.names.clone(),
@@ -241,3 +242,5 @@ fn continuations(function: &BytecodeFunction) -> Result<Vec<usize>, VmTrap> {
     }
     Ok(table)
 }
+
+mod indirect_targets;

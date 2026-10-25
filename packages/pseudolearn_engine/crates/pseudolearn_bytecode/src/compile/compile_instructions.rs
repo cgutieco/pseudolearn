@@ -177,7 +177,10 @@ fn add_return_point(
     position: InstructionPosition,
     plan: &mut FunctionPlan<'_>,
 ) -> Result<Option<u32>, BytecodeError> {
-    if !matches!(operation, Operation::Call | Operation::CallVirtual) {
+    if !matches!(
+        operation,
+        Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+    ) {
         return Ok(None);
     }
     let identifier = plan
@@ -209,7 +212,10 @@ pub(super) fn return_point_ids(
                 .columns
                 .operation(*instruction_id)
                 .ok_or(BytecodeError::UnsupportedOperation)?;
-            if matches!(operation, Operation::Call | Operation::CallVirtual) {
+            if matches!(
+                operation,
+                Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+            ) {
                 identifiers.insert(*instruction_id, next_identifier);
                 next_identifier = next_identifier
                     .checked_add(1)

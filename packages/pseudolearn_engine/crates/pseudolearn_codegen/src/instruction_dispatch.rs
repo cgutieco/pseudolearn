@@ -30,10 +30,12 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
 
 #[cfg(test)]
 pub(crate) fn is_supported(operation: Operation) -> bool {
-    matches!(operation, Operation::Call | Operation::CallVirtual)
-        || FAMILIES
-            .iter()
-            .any(|(operations, _)| operations.contains(&operation))
+    matches!(
+        operation,
+        Operation::Call | Operation::CallVirtual | Operation::CallIndirect
+    ) || FAMILIES
+        .iter()
+        .any(|(operations, _)| operations.contains(&operation))
 }
 
 pub(crate) fn lower_instruction(
@@ -42,6 +44,7 @@ pub(crate) fn lower_instruction(
 ) -> Result<(), CodegenError> {
     let operation = instruction.operation;
     match operation {
+        Operation::CallIndirect => crate::lower_indirect::lower(lowering, instruction),
         Operation::Call => lower_calls::lower_call(lowering, instruction),
         Operation::CallVirtual => lower_virtual::lower_virtual_call(lowering, instruction),
         _ => match FAMILIES

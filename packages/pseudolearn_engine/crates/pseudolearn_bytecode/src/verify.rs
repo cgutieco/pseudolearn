@@ -250,7 +250,10 @@ fn verify_return_point(
     program_counter: u32,
     instruction: &Instruction,
 ) -> Result<(), BytecodeError> {
-    let is_call = matches!(instruction.opcode.as_name(), "call" | "call.virtual");
+    let is_call = matches!(
+        instruction.opcode.as_name(),
+        "call" | "call.virtual" | "call.indirect"
+    );
     if !is_call {
         return Ok(());
     }

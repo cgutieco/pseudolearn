@@ -61,3 +61,8 @@ con violación deliberada. No se cierran pendientes hasta tener cargo xtask veri
 ## 8. Fuentes consultadas y genealogía conceptual
 
 V8 y JVM inspiran referencias comprimidas; SableVM inspira separar clases de valor. Se rechaza disposición bidireccional por impedir recorrido lineal del montón.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+La disposición de un valor función contiene una palabra escalar de identidad de código y una referencia de entorno. `ClosureLayout` compone únicamente las capturas efectivas, ordenadas por banco; una función sin capturas usa el centinela cero. El entorno no conserva marcos ni referencias prestadas. La representación conserva los límites de 65 535 palabras del registro.

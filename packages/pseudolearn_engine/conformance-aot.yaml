@@ -25,7 +25,9 @@
     "RT.ABI",
     "RT.FAULT.REPORTING",
     "RT.HOST.INTERFACE",
-    "RT.PROCESS"
+    "RT.PROCESS",
+    "LANG.TYPES.FUNCTION",
+    "LANG.TYPES.GENERIC"
   ],
   "fases_cerradas": [
     "R6"
@@ -1028,6 +1030,18 @@
     },
     {
       "regla": "LANG.TYPES.RELATIONS@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.FUNCTION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.GENERIC@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "exento",
       "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."

@@ -62,17 +62,14 @@ pub fn lower_expression_with_state(
         .copied()
         .and_then(|raw_span| resolve_span(raw_span, state.context.source));
 
-    if let HirExpression::VariantTag(value) = &kind {
-        return crate::variant_values::tag(*value, state);
+    if let Some(value) = lower_projection(&kind, span, state) {
+        return value;
     }
     if let Some(values) = crate::variant_values::lower(expression_id, state) {
         return values
             .first()
             .copied()
             .unwrap_or_else(|| state.builder.next_value());
-    }
-    if let HirExpression::RecordField { record, offset } = &kind {
-        return crate::record_values::lower_field(*record, *offset, state);
     }
     if let Some(primitive_value) = lower_primitive_expression(&kind, span, state) {
         primitive_value
@@ -179,4 +176,27 @@ fn lower_binary(
         (left_type, span),
         (state.context.module, state.builder),
     )
+}
+
+fn lower_projection(
+    kind: &HirExpression,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Option<ValueId> {
+    match kind {
+        HirExpression::IndirectCall { callee, arguments } => {
+            Some(crate::indirect_calls::lower(*callee, arguments, span, state).0)
+        }
+        HirExpression::Captured { function, capture } => Some(
+            crate::closure_values::captured(*function, *capture, span, state)
+                .first()
+                .copied()
+                .unwrap_or_else(|| state.builder.next_value()),
+        ),
+        HirExpression::VariantTag(value) => Some(crate::variant_values::tag(*value, state)),
+        HirExpression::RecordField { record, offset } => {
+            Some(crate::record_values::lower_field(*record, *offset, state))
+        }
+        _ => None,
+    }
 }

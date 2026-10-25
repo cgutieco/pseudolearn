@@ -13,6 +13,9 @@ pub(crate) fn lower_value(
     environment: &mut VariableEnvironment,
     builder: &mut FunctionBuilder,
 ) -> ValueId {
+    if let Some(value) = function_value(expression, context, environment, builder) {
+        return value;
+    }
     let value = lower_expression(expression, context, environment, builder);
     let enumeration = usize::try_from(expression.0)
         .ok()
@@ -119,4 +122,53 @@ fn jump_with_name(name: &str, merge_block: pseudolearn_ir::BlockId, builder: &mu
         }],
         None,
     );
+}
+
+fn function_value(
+    expression: ExpressionId,
+    context: &ExpressionContext<'_>,
+    environment: &mut VariableEnvironment,
+    builder: &mut FunctionBuilder,
+) -> Option<ValueId> {
+    if !is_function(expression, context.module) {
+        return None;
+    }
+    let mut state = crate::expressions::ExpressionState {
+        context,
+        environment,
+        builder,
+    };
+    crate::record_values::lower_range(expression, (0, 2), &mut state);
+    let span = usize::try_from(expression.0)
+        .ok()
+        .and_then(|index| context.module.expressions.spans.get(index))
+        .copied();
+    let english = span
+        .and_then(|span| context.module.source_profiles.get(&span.source_id))
+        .is_some_and(|profile| *profile == pseudolearn_semantic::Profile::English);
+    let marker = if english {
+        "<subroutine>"
+    } else {
+        "<subprograma>"
+    };
+    let value = state.builder.next_value();
+    state.builder.emit_with_target(
+        Operation::ConstStr,
+        vec![Operand::LiteralStr(marker.to_owned())],
+        (Some(value), None),
+    );
+    Some(value)
+}
+
+fn is_function(expression: ExpressionId, module: &pseudolearn_semantic::HirModule) -> bool {
+    usize::try_from(expression.0)
+        .ok()
+        .and_then(|index| module.expressions.types.get(index))
+        .is_some_and(|kind| {
+            if let Type::Record(record) = module.types.get(*kind) {
+                module.function_types.contains_key(&record)
+            } else {
+                false
+            }
+        })
 }

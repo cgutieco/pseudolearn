@@ -93,7 +93,12 @@ fn member(
     let name_node = children.get(1).copied().unwrap_or(node);
     match session.expression_type(receiver) {
         Type::Record(record) => {
-            crate::record_access::field(session, node, (receiver, record, name_node))
+            let field = crate::record_access::field(session, node, (receiver, record, name_node));
+            if session.child(node, NodeKind::Arguments).is_some() {
+                crate::function_calls::call(session, node, (field, purpose))
+            } else {
+                field
+            }
         }
         Type::Object(class) => object_member(
             session,

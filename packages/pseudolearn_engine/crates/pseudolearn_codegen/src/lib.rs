@@ -22,6 +22,9 @@ mod fault_table;
 mod function_compiler;
 mod inline_memory;
 mod instruction_dispatch;
+mod lexical_roots;
+#[cfg(test)]
+mod lexical_roots_tests;
 mod literals;
 mod liveness;
 mod lower_arithmetic;
@@ -93,3 +96,8 @@ pub fn compile_module_to_benchmark_object(
 mod lower_variant_values;
 
 mod lower_switch;
+
+mod function_table;
+mod lower_indirect;
+
+mod lower_raw_object;

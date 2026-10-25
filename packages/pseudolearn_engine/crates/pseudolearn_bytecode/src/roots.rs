@@ -43,6 +43,7 @@ pub(crate) fn safe_point(instruction: &Instruction) -> bool {
         instruction.opcode.as_name(),
         "call"
             | "call.virtual"
+            | "call.indirect"
             | "array.new"
             | "object.new"
             | "object.copy"
@@ -112,6 +113,29 @@ fn verify_definitions(
                 return Err(BytecodeError::Verification(VerificationRule::RootMap));
             }
         }
+    }
+    Ok(())
+}
+
+pub(crate) fn expire(
+    variant: &mut CodeVariant,
+    visibility: &std::collections::BTreeMap<Register, pseudolearn_ir::IrSpan>,
+) -> Result<(), BytecodeError> {
+    let live = crate::root_liveness::analyze(variant)?;
+    for (position, roots) in &mut variant.roots {
+        let position = usize::try_from(*position).map_err(|_| BytecodeError::InvalidModule)?;
+        let span = variant
+            .instructions
+            .get(position)
+            .and_then(|instruction| instruction.span);
+        roots.retain(|register| {
+            visibility.get(register).is_none_or(|scope| {
+                span.is_some_and(|span| scope.contains_start(span))
+                    || live
+                        .get(position)
+                        .is_some_and(|live| live.contains(&register.index))
+            })
+        });
     }
     Ok(())
 }

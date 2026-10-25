@@ -218,3 +218,8 @@ formato, Clippy, auditoría de dependencias y pruebas diferenciales según los c
 ## 8. Fuentes consultadas y genealogía conceptual
 
 El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+La prueba `function_execution` consume los programas normativos del corpus de funciones, sin mantener copias locales. Contrasta ambos perfiles y gemelos, recolección ordinaria y forzada, salida, terminación, diagnósticos y eventos. Con `native`, enlaza y ejecuta los objetos emitidos y los contrasta con la VM. Las bibliotecas del arnés se localizan en el directorio de dependencias del ejecutable de prueba.

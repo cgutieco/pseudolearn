@@ -19,13 +19,14 @@ pub(crate) fn bodies(session: &mut AnalysisSession<'_>) {
         for index in 0..session.module.functions.len() {
             function(session, index);
         }
+        crate::generic_discard::check_functions(session);
         if !session.signature_changed {
             break;
         }
     }
 }
 
-fn function(session: &mut AnalysisSession<'_>, index: usize) {
+pub(crate) fn function(session: &mut AnalysisSession<'_>, index: usize) {
     session.enter_function(index);
     let Some(function) = session.module.functions.get(index).cloned() else {
         return;
@@ -71,16 +72,5 @@ fn prepare_function(session: &mut AnalysisSession<'_>, function: &crate::hir::Hi
     }
     session.returned = false;
     session.pending_results.clear();
-    for parameter in &function.parameters {
-        if let Some(local) = usize::try_from(parameter.0)
-            .ok()
-            .and_then(|index| session.module.locals.get(index))
-            && crate::result_obligations::is_result(
-                session,
-                &session.module.types.get(local.type_id),
-            )
-        {
-            session.pending_results.insert(*parameter);
-        }
-    }
+    crate::result_obligations::parameters(session, &function.parameters);
 }

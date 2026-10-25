@@ -46,24 +46,7 @@ fn start_function<'func, 'program>(
     let context = *entry_values
         .first()
         .ok_or(CodegenError::InvalidModule("function without context"))?;
-    let mut lowering = Lowering {
-        builder,
-        environment,
-        function,
-        faults,
-        context,
-        cell_frame: None,
-        fault_lexemes: crate::fault_lexeme::collect(function, environment.module),
-        values: HashMap::new(),
-        blocks: HashMap::new(),
-        cold_blocks: Vec::new(),
-        propagate_block: None,
-        types: types.clone(),
-        defined_values: crate::defined_producers::collect(function),
-        definitions: HashMap::new(),
-        live_roots: live_roots(function, &types, environment.parameter_roots),
-        scope: crate::dominated_facts::Scope::for_function(function),
-    };
+    let mut lowering = initial_state(builder, function, environment, (faults, context, types));
     bind_parameters(&mut lowering, entry_values.get(1..).unwrap_or(&[]));
     declare_blocks(&mut lowering);
     enter_frame(&mut lowering);
@@ -156,4 +139,39 @@ fn entry_block(lowering: &Lowering<'_, '_>) -> Result<cranelift_codegen::ir::Blo
         .first()
         .and_then(|block| lowering.blocks.get(&block.identifier).copied())
         .ok_or(CodegenError::InvalidModule("function without blocks"))
+}
+
+fn initial_state<'func, 'program>(
+    builder: FunctionBuilder<'func>,
+    function: &'program Function,
+    environment: &'program FunctionEnvironment<'program>,
+    (faults, context, types): (
+        &'program mut FaultTable,
+        cranelift_codegen::ir::Value,
+        HashMap<pseudolearn_ir::ValueId, IrType>,
+    ),
+) -> Lowering<'func, 'program> {
+    Lowering {
+        builder,
+        environment,
+        function,
+        faults,
+        context,
+        cell_frame: None,
+        fault_lexemes: crate::fault_lexeme::collect(function, environment.module),
+        values: HashMap::new(),
+        blocks: HashMap::new(),
+        cold_blocks: Vec::new(),
+        propagate_block: None,
+        types: types.clone(),
+        defined_values: crate::defined_producers::collect(function),
+        definitions: HashMap::new(),
+        live_roots: live_roots(
+            function,
+            &types,
+            environment.parameter_roots,
+            &environment.module.origins.entries,
+        ),
+        scope: crate::dominated_facts::Scope::for_function(function),
+    }
 }

@@ -92,7 +92,7 @@ pub(crate) fn callee_reference(
         .ok_or(CodegenError::InvalidModule("call to unknown function"))
 }
 
-fn require_frame_available(
+pub(crate) fn require_frame_available(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
 ) -> Result<(), CodegenError> {
@@ -122,7 +122,7 @@ fn require_frame_available(
     )
 }
 
-fn require_arguments_defined(
+pub(crate) fn require_arguments_defined(
     lowering: &mut Lowering<'_, '_>,
     instruction: &Instruction<'_>,
     arguments: &[ValueId],
@@ -147,7 +147,7 @@ fn require_arguments_defined(
     Ok(())
 }
 
-fn call_arguments(lowering: &Lowering<'_, '_>, arguments: &[ValueId]) -> Vec<Value> {
+pub(crate) fn call_arguments(lowering: &Lowering<'_, '_>, arguments: &[ValueId]) -> Vec<Value> {
     let mut values = vec![lowering.context];
     values.extend(
         arguments

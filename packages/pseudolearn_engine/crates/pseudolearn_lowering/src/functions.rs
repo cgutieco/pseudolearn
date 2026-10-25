@@ -162,6 +162,7 @@ fn initialize_single_parameter(local_id: LocalId, context: &mut StatementContext
         .unwrap_or_else(|| format!("v{}", local_id.0));
     let origin_value = promote_parameter(local_id, (parameter_value, is_reference), context);
     context.origins.push(OriginEntry {
+        visibility: None,
         function: context.builder.name.clone(),
         value: origin_value,
         variable: VariableId(local_id.0),
@@ -200,6 +201,7 @@ fn compute_blocks_mass(builder: &mut FunctionBuilder) {
 fn record_receiver(builder: &FunctionBuilder, origins: &mut Vec<OriginEntry>) {
     if let Some(receiver) = builder.receiver {
         origins.push(OriginEntry {
+            visibility: None,
             function: builder.name.clone(),
             value: receiver,
             variable: VariableId(u32::MAX),

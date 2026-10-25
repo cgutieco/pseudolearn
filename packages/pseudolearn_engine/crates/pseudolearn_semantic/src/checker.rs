@@ -18,6 +18,9 @@ pub fn analyze(
     crate::flow::bodies(&mut session);
     crate::constructor_rules::check(&mut session);
     crate::usage::unused(&mut session);
+    if session.generic.instantiated {
+        crate::generic_discard::dedupe(&mut session.diagnostics, 0);
+    }
     crate::hir_finalization::finalize(&mut session.module);
     let valid = !session
         .diagnostics

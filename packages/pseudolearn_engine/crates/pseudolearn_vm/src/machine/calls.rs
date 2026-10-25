@@ -11,6 +11,7 @@ use crate::machine::{ControlFrame, Cursor, Flow, Machine};
 use crate::{Fault, RuntimeValue};
 
 mod arguments;
+mod resolve;
 
 const RESOURCE_LIMIT: Fault = "resourceLimit";
 
@@ -97,45 +98,6 @@ impl<'program> Machine<'program> {
             span: self.current_span(),
             payload: Some(EventPayload::Call { nombre: name }),
         });
-    }
-
-    fn resolve_callee(&self, site: &CallSite) -> Result<(Arc<LoadedFunction>, usize), Fault> {
-        let Some(receiver) = site.receiver else {
-            let function = self
-                .program
-                .inner
-                .functions
-                .get(site.function)
-                .cloned()
-                .ok_or(INVALID_BYTECODE);
-            return function.map(|function| (function, site.function));
-        };
-        let receiver = pseudolearn_runtime::Handle(self.reference(receiver)?);
-        let class = pseudolearn_runtime::object_class(&self.heap, receiver)
-            .map_err(super::memory::memory_fault)?;
-        let target_index = site
-            .targets_start
-            .checked_add(usize::try_from(class).map_err(|_| INVALID_BYTECODE)?)
-            .ok_or(INVALID_BYTECODE)?;
-        if target_index >= site.targets_end {
-            return Err(INVALID_BYTECODE);
-        }
-        let target = self
-            .current
-            .virtual_targets
-            .get(target_index)
-            .copied()
-            .flatten()
-            .ok_or(INVALID_BYTECODE)?;
-        let function_index = usize::from(target);
-        let function = self
-            .program
-            .inner
-            .functions
-            .get(function_index)
-            .cloned()
-            .ok_or(INVALID_BYTECODE)?;
-        Ok((function, function_index))
     }
 
     fn callee_cursor(&mut self, callee: &LoadedFunction) -> Result<Cursor, Fault> {

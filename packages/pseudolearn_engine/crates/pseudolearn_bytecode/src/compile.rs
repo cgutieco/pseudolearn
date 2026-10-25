@@ -22,6 +22,7 @@ use crate::verify_bytecode;
 use compile_constants::ConstantPlan;
 
 struct FunctionPlan<'module> {
+    visibility: BTreeMap<Register, pseudolearn_ir::IrSpan>,
     source: &'module Function,
     function_index: u16,
     function_names: &'module BTreeMap<String, u16>,
@@ -125,18 +126,15 @@ fn compile_function(
 ) -> Result<BytecodeFunction, BytecodeError> {
     let value_types = collect_value_types(module, source)?;
     let mut constant_plan = compile_constants::analyze(source);
-    let origins = module
-        .origins
-        .entries
-        .iter()
-        .filter(|origin| origin.function == source.name)
-        .collect::<Vec<_>>();
+    let origins = function_origins(module, source);
     constant_plan
         .register_values
         .extend(origins.iter().map(|origin| origin.value));
     let assignment = assign_registers(&value_types, &constant_plan, &origins)?;
     let (origin_registers, names) = source_names(&origins, &assignment);
+    let visibility = source_visibility(&origins, &assignment);
     let mut plan = FunctionPlan {
+        visibility,
         source,
         function_index,
         function_names: options.function_names,
@@ -165,6 +163,8 @@ fn finish_function(
     (plan, return_points): (FunctionPlan<'_>, Vec<crate::ReturnPoint>),
 ) -> Result<BytecodeFunction, BytecodeError> {
     Ok(BytecodeFunction {
+        result_type: source.return_type.clone(),
+        visibility: plan.visibility,
         declaration_span: source.declaration_span,
         names,
         name: source.name.clone(),
@@ -239,5 +239,29 @@ fn compile_twins(
     let mut probed = compile_variant(plan, false, &[])?;
     crate::roots::generate(&mut fast, origins)?;
     crate::roots::generate(&mut probed, origins)?;
+    crate::roots::expire(&mut fast, &plan.visibility)?;
+    crate::roots::expire(&mut probed, &plan.visibility)?;
     Ok((fast, probed))
+}
+
+fn source_visibility(
+    origins: &[&pseudolearn_ir::OriginEntry],
+    assignment: &RegisterAssignment,
+) -> BTreeMap<Register, pseudolearn_ir::IrSpan> {
+    origins
+        .iter()
+        .filter_map(|origin| Some((*assignment.by_value.get(&origin.value)?, origin.visibility?)))
+        .collect()
+}
+
+fn function_origins<'module>(
+    module: &'module Module,
+    function: &Function,
+) -> Vec<&'module pseudolearn_ir::OriginEntry> {
+    module
+        .origins
+        .entries
+        .iter()
+        .filter(|origin| origin.function == function.name)
+        .collect()
 }

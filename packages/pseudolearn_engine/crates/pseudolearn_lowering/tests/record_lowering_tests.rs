@@ -358,7 +358,7 @@ fn record_function_flattens_parameters_and_returns_through_cells() {
         Some(2)
     );
     assert_eq!(
-        main.map(|function| count(function, Operation::CellLoad)),
+        main.map(|function| count(function, Operation::CellLoadRaw)),
         Some(2)
     );
 }

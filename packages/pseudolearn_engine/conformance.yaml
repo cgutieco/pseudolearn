@@ -124,7 +124,9 @@
     "RT.HOST.INTERFACE",
     "TOOL.SERVICE.LOSSLESS-TREE",
     "API.PROGRAM.VIEW",
-    "PERF.ARTIFACT.SIZE"
+    "PERF.ARTIFACT.SIZE",
+    "LANG.TYPES.FUNCTION",
+    "LANG.TYPES.GENERIC"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -1416,6 +1418,16 @@
     },
     {
       "regla": "LANG.TYPES.RELATIONS@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.FUNCTION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.GENERIC@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     }

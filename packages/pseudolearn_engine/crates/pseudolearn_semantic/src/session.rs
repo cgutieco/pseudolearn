@@ -30,6 +30,7 @@ pub(crate) struct UnitScope {
     pub classes: BTreeMap<String, ClassId>,
     pub modules: BTreeMap<String, BTreeMap<String, FunctionId>>,
     pub declared: TypeScope,
+    pub generics: crate::generic_state::GenericScope,
 }
 
 pub(crate) struct AnalysisSession<'syntax> {
@@ -41,6 +42,8 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub functions: BTreeMap<String, FunctionId>,
     pub classes: BTreeMap<String, ClassId>,
     pub declared: TypeScope,
+    pub generics: crate::generic_state::GenericScope,
+    pub generic: crate::generic_state::GenericState,
     pub constants: Vec<ConstantEntry>,
     pub constant_limits: ConstantLimits,
     pub bindings: crate::block_scopes::BlockScopes,
@@ -54,12 +57,23 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub called: BTreeSet<FunctionId>,
     pub current: FunctionId,
     pub controls: Vec<LocalId>,
+    pub closure_stack: Vec<crate::function_model::ClosureFrame>,
     pub returned: bool,
     pub signature_changed: bool,
     pub units: Vec<UnitView<'syntax>>,
     pub unit: usize,
     pub scopes: Vec<UnitScope>,
     pub modules: BTreeMap<String, BTreeMap<String, FunctionId>>,
+}
+
+impl<'syntax> UnitView<'syntax> {
+    fn root(tree: &'syntax SyntaxTree, source: &'syntax SourceText, profile: Profile) -> Self {
+        Self {
+            tree,
+            source,
+            profile,
+        }
+    }
 }
 
 impl<'syntax> AnalysisSession<'syntax> {
@@ -77,6 +91,8 @@ impl<'syntax> AnalysisSession<'syntax> {
             functions: BTreeMap::new(),
             classes: BTreeMap::new(),
             declared: TypeScope::default(),
+            generics: crate::generic_state::GenericScope::default(),
+            generic: crate::generic_state::GenericState::default(),
             constants: Vec::new(),
             constant_limits: ConstantLimits::default(),
             bindings: crate::block_scopes::BlockScopes::default(),
@@ -90,13 +106,10 @@ impl<'syntax> AnalysisSession<'syntax> {
             called: BTreeSet::new(),
             current: FunctionId(0),
             controls: Vec::new(),
+            closure_stack: Vec::new(),
             returned: false,
             signature_changed: false,
-            units: vec![UnitView {
-                tree,
-                source,
-                profile: options.profile,
-            }],
+            units: vec![UnitView::root(tree, source, options.profile)],
             unit: 0,
             scopes: vec![UnitScope::default()],
             modules: BTreeMap::new(),
@@ -177,6 +190,9 @@ impl AnalysisSession<'_> {
     ) -> ExpressionId {
         let identifier =
             ExpressionId(u32::try_from(self.module.expressions.kinds.len()).unwrap_or(u32::MAX));
+        self.module
+            .source_profiles
+            .insert(span.source_id, self.options.profile);
         self.module.expressions.kinds.push(kind);
         self.module.expressions.types.push(type_id);
         self.module

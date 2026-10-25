@@ -58,9 +58,14 @@ pub(crate) fn emit_module(
     let pointer = object.isa().pointer_type();
     let imports = RuntimeImports::declare(&mut object, pointer)?;
     let identifiers = declare_functions(&mut object, module)?;
+    let signature_tags = crate::function_table::tags(module);
+    let function_table =
+        crate::function_table::define(&mut object, module, &identifiers, &signature_tags)?;
     let classes = ClassTable::build(module)?;
     let literals = crate::literals::define_literals(&mut object, module)?;
     let declarations = Declarations {
+        function_table,
+        signature_tags: &signature_tags,
         imports: &imports,
         identifiers: &identifiers,
         literals: &literals,
@@ -80,6 +85,14 @@ pub(crate) fn emit_module(
         };
         attach_entry_point(&mut object, module, &identifiers, &metadata)?;
     }
+    finish_object(object, module, (fault_sites, inspection, descriptors))
+}
+
+fn finish_object(
+    object: ObjectModule,
+    module: &Module,
+    (fault_sites, inspection, descriptors): (Vec<FaultSite>, Vec<String>, Vec<ClassDescriptor>),
+) -> Result<CompiledObject, CodegenError> {
     let bytes = object.finish().emit().map_err(CodegenError::backend)?;
     Ok(CompiledObject {
         bytes,
@@ -163,6 +176,8 @@ struct FunctionUnit<'program> {
 }
 
 struct Declarations<'program> {
+    function_table: Option<DataId>,
+    signature_tags: &'program [u32],
     imports: &'program RuntimeImports,
     identifiers: &'program [FuncId],
     literals: &'program [(String, DataId)],
@@ -249,6 +264,10 @@ fn function_environment<'program>(
     clif: &mut ClifFunction,
 ) -> Result<FunctionEnvironment<'program>, CodegenError> {
     Ok(FunctionEnvironment {
+        function_table: declarations
+            .function_table
+            .map(|table| object.declare_data_in_func(table, clif)),
+        signature_tags: declarations.signature_tags,
         module: unit.module,
         parameter_roots: declarations.parameter_roots,
         frontend: object.isa().frontend_config(),

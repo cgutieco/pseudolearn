@@ -25,6 +25,16 @@ mod enum_registry;
 mod expression_checker;
 pub mod expression_model;
 mod flow;
+mod generic_calls;
+mod generic_discard;
+mod generic_functions;
+mod generic_inference;
+mod generic_labels;
+mod generic_names;
+mod generic_opaque;
+mod generic_records;
+mod generic_registry;
+mod generic_state;
 mod flow_bindings;
 mod for_checker;
 mod hierarchy;
@@ -117,3 +127,18 @@ mod variant_types;
 mod variant_statements;
 
 mod variant_patterns;
+
+pub mod function_model;
+mod function_types;
+
+mod capture_analysis;
+mod closure_locals;
+mod function_values;
+
+mod capture_environment;
+mod closure_checker;
+mod function_calls;
+
+pub use pseudolearn_lexicon::Profile;
+
+mod function_containment;

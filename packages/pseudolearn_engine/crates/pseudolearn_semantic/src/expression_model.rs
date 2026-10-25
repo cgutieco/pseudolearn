@@ -40,6 +40,15 @@ pub enum UnaryOperator {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirExpression {
+    FunctionValue(FunctionId),
+    Captured {
+        function: FunctionId,
+        capture: u32,
+    },
+    IndirectCall {
+        callee: ExpressionId,
+        arguments: Vec<ExpressionId>,
+    },
     Literal(Literal),
     Local(LocalId),
     Uninitialized(LocalId),

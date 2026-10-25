@@ -82,3 +82,8 @@ con violación deliberada. No se cierran pendientes hasta tener cargo xtask veri
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Lua inspira registros, JVM verificación y Self cambio de código. Ertl y Gregg inspiran superinstrucciones por perfil; se rechaza elegirlas por intuición o solo por entrenamiento.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+Cada función conserva el tipo de retorno y los intervalos léxicos de sus registros nombrados. La firma de una llamada indirecta incluye tipos de parámetros y retorno; el registro de identidad ocupa el banco escalar. La generación de raíces elimina vínculos cerrados que tampoco siguen vivos por flujo. Ambos gemelos conservan las mismas disposiciones, puntos de retorno y tamaño fijo de instrucción.

@@ -152,9 +152,28 @@ completado excluye declaraciones posteriores, ámbitos terminados y archivos dis
 exteriores tras el sombreado. La repetición de inferencia restaura también las constantes y elimina declaraciones
 y tramos producidos por la pasada anterior.
 
-Pendientes declarados: transportar los límites de ámbito a los mapas de estado y raíces de ejecución;
-implementar tipos función, captura de clausuras y monomorfización de genéricos de usuario. El registro léxico
-no acredita esas capacidades ni la liberación de raíces al salir de un bloque.
+Pendientes declarados: transportar los límites de ámbito a los mapas de estado y raíces de ejecución. El registro léxico
+no acredita esa capacidad ni la liberación de raíces al salir de un bloque.
+
+### Genéricos de primer orden y monomorfización acotada
+
+Problema: reutilizar un registro o un subprograma para varios tipos sin que cada valor lleve etiqueta de tipo ni la VM despache por tabla. Elección: monomorfización acotada. Cada combinación canónica de genérico y argumentos de tipo produce un registro o una función ordinarios, de modo que lowering, bytecode, VM y Cranelift no conocen los genéricos y las llamadas siguen siendo directas. Se descarta el borrado de tipos porque obligaría a una representación uniforme por valor (banco escalar frente a referencia, ancho de las hojas de un registro) y a etiquetas o diccionarios en ejecución, que contradicen que ningún valor lleve etiqueta de tipo. Se descarta el diccionario de operaciones por el mismo motivo y porque las restricciones llegan con las interfaces.
+
+Declaración. `generic_registry` recoge, antes de registrar clases, tipos y funciones, los registros y subprogramas con `typeParameters`; ni `record_registry` ni `register_functions` los tratan como declaraciones ordinarias. Las plantillas son privadas de la unidad y viajan con `UnitScope`, igual que `declared`. Un nombre repetido entre plantillas, o entre plantilla y declaración ordinaria, se rechaza con los diagnósticos de duplicado existentes.
+
+Tipos. `type_resolution::class_type` consulta primero `generic_names`: un nombre del entorno de tipos (`GenericState.environment`) resuelve a su argumento; `nombre<args>` instancia el registro con los argumentos ya resueltos; la cantidad errónea de argumentos, incluida la ausencia, produce `typeArgumentCountMismatch`. El entorno se sustituye, nunca se fusiona, al entrar en una instancia, de modo que un genérico no ve los parámetros de quien lo llama.
+
+Inferencia. `generic_inference` unifica estructuralmente el nodo de tipo de cada parámetro con el tipo del argumento: parámetro directo, registro genérico (comparando contra el origen canónico de la instancia), arreglo y tipo función con su retorno. Un parámetro de tipo sin determinar o con dos valores distintos produce `cannotInferTypeArgument`. Los argumentos se comprueban una sola vez, antes de inferir, y la conversión y las comprobaciones de asignación las hace después `argument_checker` contra la instancia. No hay instanciación explícita en llamadas: `f<T>(x)` es ambiguo con una comparación y la inferencia por argumentos cubre el alcance de la edición. Un retorno o un parámetro que no aparece en los argumentos no se infiere.
+
+Instancias. La clave de caché es `(unidad, nodo de la plantilla, argumentos canónicos)`; las instancias de función se registran, con su cuerpo, durante la comprobación del llamador y se descartan en cada repetición de inferencia junto con las demás funciones creadas en la pasada; las instancias de registro persisten porque sus identidades alimentan tipos internados. La entrada de la caché se inserta antes de comprobar el cuerpo, de modo que la recursión con los mismos argumentos reutiliza su instancia y la contención recursiva de un registro genérico se detecta con el mismo recorrido de disposición que los registros ordinarios. `generic_labels` nombra cada instancia `nombre<tipos>` con nombres de tipo independientes del perfil, estables para mapas de fuente y fallos AOT. El conjunto es cerrado: solo existen las instancias alcanzables desde código real, y un genérico sin usar no genera ninguna.
+
+Comprobación única del cuerpo (D-PG2-06). Cada plantilla se comprueba una vez por pasada con cada parámetro opaco (`generic_opaque`): un registro sintético sin campos, marcado en `opaque_records`, que `function_containment` trata como no comparable. Un valor opaco solo puede copiarse, pasarse, retornarse y guardarse en campos; operarlo, compararlo o escribirlo es un error en la definición, aunque no haya instancias. Esa instancia de definición se descarta por completo (`generic_discard`: funciones, locales, columnas de expresiones y sentencias, y los conjuntos de uso) y solo conserva sus diagnósticos. Las instancias reales se comprueban con los argumentos concretos y sus diagnósticos repetidos se deduplican por código y tramo. Sin restricciones esto es conservador a propósito: las restricciones llegan con las interfaces y ampliarán lo que un parámetro opaco permite.
+
+Límite. El programa admite como máximo 64 instancias (`INSTANCE_LIMIT`); superarlo, incluida la recursión polimórfica expansiva, produce `genericInstanceLimitExceeded` con el genérico y el límite. Las instancias creadas durante una comprobación de definición se cuentan aparte para que no consuman el presupuesto del código real. La profundidad del tipo queda acotada por el mismo límite, porque cada nivel nuevo es una instancia nueva.
+
+Límites asumidos y pendientes declarados: los genéricos de clases y de variantes definidas por el usuario no forman parte de esta edición (el parser rechaza `<` tras el nombre de una clase); los genéricos no cruzan módulos, porque las plantillas son privadas de la unidad; la plantilla sin instanciar no se comprueba con tipos concretos; el servicio de lenguaje ve una instancia por cada uso, sin símbolo propio para la plantilla; la medición de tamaño y tiempo frente a un control no genérico (E-PG-03) queda para la campaña de PG-2.17.
+
+Condición de reversión: si E-PG-03 muestra que los bytes de RI, bytecode u objeto crecen más que proporcionalmente al número de instancias, se evalúa compartir el código de instancias de igual disposición de hojas, comprobando su equivalencia, sin cambiar la semántica de la edición.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -179,3 +198,8 @@ formato, Clippy, auditoría de dependencias y pruebas diferenciales según los c
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+Las firmas función se internan estructuralmente mediante registros sintéticos de dos hojas; `function_types` conserva tipos, orden, modos de paso y retorno exactos. `closure_checker` registra cada literal y mantiene la pila de ámbitos exteriores. `capture_analysis` registra solo capturas inmutables utilizadas, propaga las transitivas y rechaza mutabilidad o préstamo con origen relacionado. `capture_environment` crea proxies locales y una clase interna tipada cuyo tamaño se comprueba antes del lowering. Las funciones nombradas usadas como valor reciben un envoltorio con parámetro de entorno; sus llamadas conocidas conservan el camino directo. Las repeticiones de inferencia descartan funciones y entornos creados en la pasada anterior. El análisis de contención rechaza comparación de funciones incluso dentro de registros; no compara sus dos palabras como datos ordinarios.

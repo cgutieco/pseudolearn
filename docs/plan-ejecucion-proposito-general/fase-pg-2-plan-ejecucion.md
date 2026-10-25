@@ -221,7 +221,7 @@ D-PG2-01 resuelta con la opción A (§3.1); la edición de esperados estables es
 D-PG2-01 resuelta con la opción A (§3.1). La persona autorizó sustituir las restricciones y actualizar la edición
 oficial sin migradores ni compatibilidad. El cierre se registra por subpunto comprobado; el bloque completo sigue abierto.
 
-- [ ] `PG-2.06.01` Editar `LANG.SUBPROGRAM.SCOPE` como texto oficial: bloque de `Si`, `Mientras`, `Para`, `Repetir`, `Segun` y `Para Cada` como ámbito; sombreado (rechazado o advertido, a fijar en corpus); vida de vínculos y relación con clausuras.
+- [x] `PG-2.06.01` Editar `LANG.SUBPROGRAM.SCOPE` como texto oficial: bloque de `Si`, `Mientras`, `Para`, `Repetir`, `Segun` y `Para Cada` como ámbito; sombreado (rechazado o advertido, a fijar en corpus); vida de vínculos y relación con clausuras. Cumplido: el texto oficial cubre los bloques de `Si`, `Segun`, `Mientras`, `Para` y `Repetir`, el sombreado advertido y la relación con clausuras; `Para Cada` pasa a PG-2.11.
 - [x] `PG-2.06.02` Casos: uso fuera del bloque, sombreado de parámetro, mismo nombre en bloques hermanos, bloque vacío, anidación de tres niveles, variable de `Para` tras el bucle.
 - [x] `PG-2.06.03` Tests de la pila de ámbitos (tabla contigua con marcas de nivel, sin mapas por bloque).
 - [x] `PG-2.06.04` Resolución en semantic; reutilización de ranuras de marco por bloques disjuntos solo si no cambia observables de la vista de estado.
@@ -236,20 +236,20 @@ sigue pendiente y, por tanto, no se cierra `PG-2.06` como capacidad completa.
 
 ### PG-2.07 · Funciones como valores y clausuras
 
-- [ ] `PG-2.07.01` Especificar tipo función, referencia a subprograma como valor, literal de función candidato, captura por valor de inmutables, rechazo de captura mutable (D-PG2-09), igualdad (no comparables), formato de salida y escape del ámbito.
-- [ ] `PG-2.07.02` Casos: clausura que sobrevive al marco, captura de registro y de objeto, clausura sin captura, recursión mediante valor, captura mutable rechazada, clausura guardada en `Vector`, recolección forzada con la clausura como única raíz.
-- [ ] `PG-2.07.03` Tests de `ClosureLayout`, del cálculo del conjunto capturado (solo lo usado) y del mapa de raíces del entorno.
-- [ ] `PG-2.07.04` Captura en semantic; entorno y llamada indirecta en lowering/RI/bytecode; tabla de funciones en VM y `call_indirect` en Cranelift; raíces del entorno en VM y pila sombra.
-- [ ] `PG-2.07.05` README abi/semantic/lowering/vm/codegen; diagnóstico «captura mutable compartida» con cadena de tipos y lugar.
+- [x] `PG-2.07.01` Especificar tipo función, referencia a subprograma como valor, literal de función candidato, captura por valor de inmutables, rechazo de captura mutable (D-PG2-09), igualdad (no comparables), formato de salida y escape del ámbito.
+- [x] `PG-2.07.02` Casos: clausura que sobrevive al marco, captura de registro y de objeto, clausura sin captura, recursión mediante valor, captura mutable rechazada, clausura guardada en `Vector`, recolección forzada con la clausura como única raíz.
+- [x] `PG-2.07.03` Tests de `ClosureLayout`, del cálculo del conjunto capturado (solo lo usado) y del mapa de raíces del entorno.
+- [x] `PG-2.07.04` Captura en semantic; entorno y llamada indirecta en lowering/RI/bytecode; tabla de funciones en VM y `call_indirect` en Cranelift; raíces del entorno en VM y pila sombra.
+- [x] `PG-2.07.05` README abi/semantic/lowering/vm/codegen; diagnóstico «captura mutable compartida» con cadena de tipos y lugar.
 - [ ] `PG-2.07.06` Verificación acotada VM/AOT, propiedades con recolección forzada y señal temprana de E-PG-04.
 
 ### PG-2.08 · Genéricos de primer orden
 
-- [ ] `PG-2.08.01` Editar `LANG.CLASS.OUT-OF-SCOPE` como texto oficial para retirar genéricos de lo rechazado; especificar parámetros de tipo en registros, variantes, funciones y clases, inferencia local de argumentos, comprobación única del cuerpo y límites de instancias/profundidad.
-- [ ] `PG-2.08.02` Casos: instancia única, 10 instancias, recursión polimórfica expansiva, argumento de tipo que viola restricción, inferencia ambigua, genérico no instanciado (sin coste), límite justo/encima.
-- [ ] `PG-2.08.03` Tests del recolector de instancias (lista de trabajo iterativa, caché canónica, independencia del orden de descubrimiento) y del límite con cadena.
-- [ ] `PG-2.08.04` Parámetros de tipo en semantic; recolección cerrada de instancias; una función RI por instancia en lowering; nombres de instancia estables para mapas de fuente y fallos AOT.
-- [ ] `PG-2.08.05` README semantic/lowering: monomorfización acotada, por qué no borrado ni diccionarios, y condición de reversión.
+- [x] `PG-2.08.01` Editar `LANG.CLASS.OUT-OF-SCOPE` como texto oficial para retirar genéricos de lo rechazado; especificar parámetros de tipo en registros, variantes, funciones y clases, inferencia local de argumentos, comprobación única del cuerpo y límites de instancias/profundidad. Alcance cumplido: registros y subprogramas; los genéricos de clases y de variantes definidas por el usuario quedan fuera de la edición y declarados en el README.
+- [x] `PG-2.08.02` Casos: instancia única, 10 instancias, recursión polimórfica expansiva, argumento de tipo que viola restricción, inferencia ambigua, genérico no instanciado (sin coste), límite justo/encima. El caso «argumento de tipo que viola restricción» depende de las interfaces y pasa a PG-2.09; «sin restricciones» se cubre con el rechazo de operar un parámetro opaco en la definición.
+- [x] `PG-2.08.03` Tests del recolector de instancias (lista de trabajo iterativa, caché canónica, independencia del orden de descubrimiento) y del límite con cadena. El recolector es una recursión por demanda con caché canónica y límite de 64 instancias, no una lista de trabajo iterativa: la profundidad de pila queda acotada por ese límite.
+- [x] `PG-2.08.04` Parámetros de tipo en semantic; recolección cerrada de instancias; una función RI por instancia en lowering; nombres de instancia estables para mapas de fuente y fallos AOT.
+- [x] `PG-2.08.05` README semantic/lowering: monomorfización acotada, por qué no borrado ni diccionarios, y condición de reversión.
 - [ ] `PG-2.08.06` Verificación acotada y medición de instancias, bytes de RI/bytecode/objeto y tiempo de compilación frente a control no genérico.
 
 ### PG-2.09 · Interfaces nominales mínimas
@@ -721,6 +721,16 @@ En esta iteración se cierran únicamente PG-2.06.02, PG-2.06.03, PG-2.06.04 y P
 PG-2.06, PG-2.07, PG-2.08 y el cierre común de PG-2 permanecen abiertos por los pendientes concretos
 ya enumerados. Esta sincronización documental no acredita implementación ni pruebas adicionales.
 Verificación de la edición documental: `git diff --check`, sin errores; no se repiten pruebas de código.
+
+#### Continuación de la iteración PG-2.06–PG-2.08
+
+Se completó lo que la entrega anterior dejaba abierto, sin declarar cerrada la fase ni autorizar la siguiente.
+
+- PG-2.07: la especificación `LANG.TYPES.FUNCTION` (16 casos) conforma sin divergencias en engine (60 observaciones) y en aot (60, con el análisis estático exento por no anunciarlo el adaptador). Los tests de disposición, captura, raíces léxicas y ejecución con recolección forzada en ambos gemelos pasan. El transporte de ámbitos a raíces VM/AOT queda cubierto por `lexical_roots`.
+- PG-2.08: nueva especificación `LANG.TYPES.GENERIC` (19 casos, es/en) con parámetros de tipo en registros y subprogramas, inferencia local, comprobación única del cuerpo con parámetros opacos y límite de 64 instancias. Conforma sin divergencias en engine y aot (76 observaciones cada uno). Gramática, catálogo de diagnósticos (`typeArgumentCountMismatch`, `cannotInferTypeArgument`, `genericInstanceLimitExceeded`) y cobertura de RI sin instrucción nueva actualizados, con reanclaje de las identidades editadas y exportación regenerada.
+- Decisiones: la recolección de instancias es una recursión por demanda con caché canónica en lugar de una lista de trabajo iterativa; los genéricos de clases y de variantes de usuario, y los genéricos entre módulos, quedan fuera; las restricciones y su caso negativo pertenecen a PG-2.09. Se corrigió un test de lowering de registros que esperaba `cell.load` donde el diseño ya emite `cell.load_raw`.
+
+Pendientes que mantienen abiertos PG-2.06.06, PG-2.07.06 y PG-2.08.06: el conjunto centinela de §7.1, las propiedades GC y la señal temprana de E-PG-04, y la medición de instancias y bytes frente a un control no genérico (E-PG-03). El test nativo de genéricos tarda unos 14 minutos en depuración por los casos de 64 y 65 instancias.
 
 ### 11.2 Cierre común de PG-2
 

@@ -74,6 +74,8 @@ Las variantes conservan la disposición de abi como agregado SSA de palabras ent
 
 Los parámetros SSA de un bucle incluyen solo vínculos existentes antes de entrar; los vínculos del cuerpo se inicializan en cada ejecución. Repetir conserva su entorno al salir porque ejecuta el cuerpo al menos una vez.
 
+Los genéricos no llegan a lowering: semantic ya emitió una función o un registro concretos por instancia, con nombre `nombre<tipos>`, y la RI recibe una función por instancia sin instrucción nueva. Esto es lo que mantiene directa cada llamada y evita borrado o diccionarios; el coste es un cuerpo de RI por instancia, acotado por el límite de 64 instancias de semantic y medido por E-PG-03. Los registros opacos de la comprobación de definición no tienen hojas ni uso en funciones emitidas.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
@@ -93,3 +95,8 @@ con violación deliberada. No se cierran pendientes hasta tener cargo xtask veri
 ## 8. Fuentes consultadas y genealogía conceptual
 
 La RI tipada conserva el orden normativo; se rechaza optimizar antes de conservar efectos, tramos y variables observables.
+
+
+### Funciones como valores y ámbitos de ejecución
+
+Los valores función se bajan como identidad numérica de código y asa de entorno, con clases internas que copian solo las capturas. `closure_values` separa construcción y lectura de capturas; la lectura cruda conserva las referencias cero inactivas que forman parte de valores agregados. `indirect_calls` aplana argumentos y resultados según la firma estructural. Los prototipos internos fijan la firma verificable de la llamada sin ejecutar el cuerpo del prototipo. Las llamadas a nombres conocidos permanecen directas. Los orígenes conservan el intervalo léxico de cada variable desde su declaración para observación y raíces.
