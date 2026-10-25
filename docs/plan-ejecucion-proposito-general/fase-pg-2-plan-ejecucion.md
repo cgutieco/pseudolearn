@@ -183,9 +183,9 @@ programas. La tarea `.06` de cada bloque es **verificación acotada** según §7
 - [x] `PG-2.02.01` Especificar declaración de registro, construcción completa, acceso y actualización de campo, igualdad estructural, asignación y paso como copia, retorno por valor, campos permitidos (sin arreglos por valor) y rechazo de contención por valor recursiva.
 - [x] `PG-2.02.02` Casos: registro de un campo, vacío si el corpus lo admite, anidado, autocontenido directo e indirecto, copia independiente tras mutación, campo referencia compartido tras copia, igualdad con campo real `-0`/NaN según `LANG.OPS.COMPARISON`.
 - [x] `PG-2.02.03` Tests de `RecordLayout` (desplazamientos, áreas por banco, alineación, registro anidado aplanado) y del detector de ciclos de contención con grafos sembrados.
-- [ ] `PG-2.02.04` Disposición en abi; registro y ciclos en semantic; tupla SSA y copia en lowering; incrustación en marco/objeto/vector; mapas de raíces de campos referencia en VM y pila sombra AOT.
+- [x] `PG-2.02.04` Disposición en abi; registro y ciclos en semantic; tupla SSA y copia en lowering; incrustación en marco/objeto/vector; mapas de raíces de campos referencia en VM y pila sombra AOT.
 - [x] `PG-2.02.05` README abi/runtime/semantic/lowering/codegen; `RT.ABI`/`MEM.VALUE.COPY` editados como texto oficial si cambia su alcance.
-- [ ] `PG-2.02.06` Verificación acotada con recolección forzada (`--operation properties` del contrato) y medición de bytes de objeto/bytecode frente a control.
+- [x] `PG-2.02.06` Verificación acotada con recolección forzada (`--operation properties` del contrato) y medición de bytes de objeto/bytecode frente a control.
 
 ### PG-2.03 · `Opcional<T>` y `Resultado<T,E>`
 
@@ -603,7 +603,12 @@ contratos nuevos estables con su nombre como revisor (pendiente de su revisión 
 - No cumplido en esta iteración: incrustación de registros en objetos y vectores y registros como parámetro o resultado
   de métodos (diagnosticados; llegan con clausuras y colecciones), consumo de `RecordLayout` por VM y AOT, recolección
   forzada y medición de bytes frente a control de `.02.06`, y edición de `RT.ABI`/`MEM.VALUE.COPY` (su alcance no cambió).
-- Pendiente de la persona: revisión independiente real de los tres contratos nuevos (constan con su nombre como
+- Cierre (2026-10-25): la persona aprobó la iteración completa («apruebo todo, cierra las fases») y con ello los
+  contratos nuevos, las formas de sintaxis y los pendientes anteriores como pendientes justificados. `PG-2.01` y
+  `PG-2.02` quedan cerrados; `.02.04` y `.02.06` se cierran con la incrustación en objetos y vectores, el consumo de
+  `RecordLayout` y la medición frente a control trasladados a las iteraciones de clausuras y colecciones. No se cierra
+  PG-2 ni su cierre común (`PG-2.C01`–`PG-2.C13`). Confirmado en remoto: el commit de la iteración ya estaba publicado.
+- (Histórico) Pendiente de la persona: revisión independiente real de los tres contratos nuevos (constan con su nombre como
   revisor), revisión de las formas candidatas de sintaxis y decisión sobre la palabra reservada nueva.
 
 ### 11.2 Cierre común de PG-2
