@@ -370,7 +370,10 @@ Puntos a cumplir:
 
 Fuera de alcance: metaprogramación, tipos de orden superior, especialización por el usuario y sobrecarga compleja.
 
-Plan detallado: `fase-pg-2-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-2-plan-ejecucion.md](fase-pg-2-plan-ejecucion.md), preparado el 2026-10-24 por solicitud
+de la persona y pendiente de su revisión. Deja constancia de que ninguna iteración ejecuta las pruebas de todo el
+monorepo: solo las acotadas a lo desarrollado, porque hay ejecuciones de más de 10 minutos que alargan una fase más
+de hora y media.
 
 Cierre común (definiciones en §4.0):
 
@@ -378,13 +381,13 @@ Cierre común (definiciones en §4.0):
 - [ ] `PG-2.C02` Plan detallado creado según §5 y revisado por la persona.
 - [ ] `PG-2.C03` SPEC-FIRST y congelamiento respetados.
 - [ ] `PG-2.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-2.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-2.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
 - [ ] `PG-2.C06` Capas declaradas, imports permitidos y límites de tamaño.
 - [ ] `PG-2.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
 - [ ] `PG-2.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
 - [ ] `PG-2.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [ ] `PG-2.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-2.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-2.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
 - [ ] `PG-2.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-2.C13` Resumen completo, informe a la persona y parada.
 
@@ -949,7 +952,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-0 | Cerrada · PG-0.01–.12 | Sí, C02 revisado | 2026-10-22 | Diferimientos autorizados registrados en §4.1 del plan de PG-0; licencia abierta diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
-| PG-2 | Sin iniciar | No | | |
+| PG-2 | Sin iniciar | Sí, pendiente de revisión (C02) | | D-PG2-01 resuelta el 2026-10-24: opción A, reemplazo en 2026 con migración asistida; lista de esperados por autorizar |
 | PG-3 | Sin iniciar | No | | |
 | PG-4 | Sin iniciar | No | | |
 | PG-5 | Sin iniciar | No | | |
