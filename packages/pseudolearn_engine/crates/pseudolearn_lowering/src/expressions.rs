@@ -62,6 +62,9 @@ pub fn lower_expression_with_state(
         .copied()
         .and_then(|raw_span| resolve_span(raw_span, state.context.source));
 
+    if let HirExpression::RecordField { record, offset } = &kind {
+        return crate::record_values::lower_field(*record, *offset, state);
+    }
     if let Some(primitive_value) = lower_primitive_expression(&kind, span, state) {
         primitive_value
     } else {
@@ -123,6 +126,23 @@ fn lower_complex_expression(
     }
 }
 
+fn lower_logical(
+    operator: BinaryOperator,
+    operands: (ExpressionId, ExpressionId),
+    state: &mut ExpressionState<'_, '_>,
+) -> Option<ValueId> {
+    let mut logical_state = LogicalExpressionState {
+        context: state.context,
+        environment: state.environment,
+        builder: state.builder,
+    };
+    match operator {
+        BinaryOperator::LogicalAnd => Some(lower_short_circuit_and(operands, &mut logical_state)),
+        BinaryOperator::LogicalOr => Some(lower_short_circuit_or(operands, &mut logical_state)),
+        _ => None,
+    }
+}
+
 fn lower_binary(
     operator: BinaryOperator,
     operands: (ExpressionId, ExpressionId),
@@ -130,21 +150,11 @@ fn lower_binary(
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
     let (left, right) = operands;
-    if operator == BinaryOperator::LogicalAnd {
-        let mut logical_state = LogicalExpressionState {
-            context: state.context,
-            environment: state.environment,
-            builder: state.builder,
-        };
-        return lower_short_circuit_and((left, right), &mut logical_state);
+    if let Some(value) = lower_logical(operator, operands, state) {
+        return value;
     }
-    if operator == BinaryOperator::LogicalOr {
-        let mut logical_state = LogicalExpressionState {
-            context: state.context,
-            environment: state.environment,
-            builder: state.builder,
-        };
-        return lower_short_circuit_or((left, right), &mut logical_state);
+    if crate::records::expression_width(left, state.context.module).is_some() {
+        return crate::records::lower_equality(operator, (left, right), operator_span, state);
     }
     let left_value = lower_expression_with_state(left, state);
     let right_value = lower_expression_with_state(right, state);

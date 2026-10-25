@@ -54,7 +54,8 @@ fn labels_for(
         let expression = crate::expression_checker::check(session, label);
         let kind = session.expression_type(expression);
         if kind == Type::Real
-            || session.options.strict && kind != Type::Integer && kind != Type::Error
+            || session.options.strict
+                && !matches!(kind, Type::Integer | Type::Enum(_) | Type::Error)
             || !crate::type_resolution::assignable(session, expected, &kind)
         {
             session.report(DiagnosticCode::IncompatibleSwitchCaseType, label);

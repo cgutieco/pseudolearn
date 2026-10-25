@@ -1,8 +1,10 @@
 #![forbid(unsafe_code)]
 
 mod compound_scanner;
+pub(crate) mod constant_parser;
 pub(crate) mod control_statement_parser;
 pub(crate) mod declaration_parser;
+pub(crate) mod enum_parser;
 pub(crate) mod expression_parser;
 pub mod lexer;
 pub(crate) mod literal_scanner;
@@ -12,6 +14,7 @@ pub(crate) mod parameter_parser;
 pub mod parser;
 pub(crate) mod parser_state;
 pub(crate) mod postfix_parser;
+pub(crate) mod record_parser;
 pub mod reprint;
 pub mod schema;
 pub(crate) mod statement_parser;

@@ -12,6 +12,20 @@ pub fn type_display(analysis: &ServiceAnalysis, type_id: TypeId, profile: Profil
         Type::Character => keyword_spelling(KeywordKind::CharacterType, profile),
         Type::String => keyword_spelling(KeywordKind::StringType, profile),
         Type::Object(class_id) => class_name(analysis, class_id.0),
+        Type::Enum(enumeration) => declared_name(
+            analysis
+                .module
+                .enums
+                .get(slot(enumeration.0))
+                .map(|model| &model.name),
+        ),
+        Type::Record(record) => declared_name(
+            analysis
+                .module
+                .records
+                .get(slot(record.0))
+                .map(|model| &model.name),
+        ),
         Type::Array { element, rank } => {
             let commas = ",".repeat(usize::try_from(rank.saturating_sub(1)).unwrap_or(0));
             format!("{}[{commas}]", type_display(analysis, element, profile))
@@ -54,4 +68,12 @@ fn class_name(analysis: &ServiceAnalysis, identifier: u32) -> String {
         .and_then(|index| analysis.module.classes.get(index))
         .map(|class| class.name.clone())
         .unwrap_or_default()
+}
+
+fn slot(identifier: u32) -> usize {
+    usize::try_from(identifier).unwrap_or(usize::MAX)
+}
+
+fn declared_name(name: Option<&String>) -> String {
+    name.cloned().unwrap_or_default()
 }

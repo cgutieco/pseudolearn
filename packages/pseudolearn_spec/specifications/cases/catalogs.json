@@ -706,6 +706,24 @@
       },
       "tipos_argumentos": {}
     },
+    "circularConstantDefinition": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Constant {lexeme} depends on itself",
+        "es": "La constante {lexeme} depende de sí misma"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "circularInheritance": {
       "argumentos": [
         "lexeme"
@@ -769,6 +787,96 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "constantArithmeticOverflow": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Computing constant {lexeme} overflows the allowed range",
+        "es": "El cálculo de la constante {lexeme} desborda el rango permitido"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantBudgetExceeded": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Computing constant {lexeme} exceeds the allowed budget",
+        "es": "El cálculo de la constante {lexeme} supera el presupuesto permitido"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantDivisionByZero": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Computing constant {lexeme} divides by zero",
+        "es": "El cálculo de la constante {lexeme} divide entre cero"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantNotEvaluable": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The value of constant {lexeme} cannot be computed when the program is analyzed",
+        "es": "El valor de la constante {lexeme} no se puede calcular al analizar el programa"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantReassigned": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Constant {lexeme} cannot be assigned",
+        "es": "La constante {lexeme} no admite asignación"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     },
     "constructorOutsideClass": {
       "argumentos": [],
@@ -936,6 +1044,24 @@
       },
       "tipos_argumentos": {}
     },
+    "duplicateEnumMember": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Member {lexeme} is repeated in the enumeration",
+        "es": "El miembro {lexeme} está repetido en el enumerado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "duplicateMember": {
       "argumentos": [
         "lexeme"
@@ -1026,6 +1152,24 @@
       "mensajes": {
         "en": "Duplicate label in switch statement: {lexeme}",
         "es": "Etiqueta duplicada en el selector múltiple: {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateTypeDeclaration": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Type {lexeme} is already declared",
+        "es": "El tipo {lexeme} ya está declarado"
       },
       "politica": "A",
       "severidad": {
@@ -1208,12 +1352,68 @@
       },
       "tipos_argumentos": {}
     },
+    "expectedConstantInitializer": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "A constant needs an initial value",
+        "es": "La constante necesita un valor inicial"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "expectedConstantName": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected constant name",
+        "es": "Se esperaba el nombre de la constante"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "expectedDoKeyword": {
       "argumentos": [],
       "clase": "syntax",
       "mensajes": {
         "en": "Expected do keyword",
         "es": "Se esperaba la palabra intermedia de acción"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "expectedEnumMember": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected an enumeration member",
+        "es": "Se esperaba un miembro del enumerado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "expectedEnumName": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected enumeration name",
+        "es": "Se esperaba el nombre del enumerado"
       },
       "politica": "A",
       "severidad": {
@@ -1340,6 +1540,34 @@
       "mensajes": {
         "en": "Read statement requires at least one variable",
         "es": "La sentencia de lectura requiere al menos una variable"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "expectedRecordField": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "A record only contains field declarations",
+        "es": "Un registro solo contiene declaraciones de campo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "expectedRecordName": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Expected record name",
+        "es": "Se esperaba el nombre del registro"
       },
       "politica": "A",
       "severidad": {
@@ -2234,6 +2462,120 @@
       },
       "tipos_argumentos": {}
     },
+    "recordArrayElementNotSupported": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "An array cannot have records as elements",
+        "es": "Un arreglo no puede tener registros como elementos"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "recordCannotBeWritten": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A record cannot be written directly",
+        "es": "Un registro no se puede escribir directamente"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "recordClassFieldNotSupported": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Field {lexeme} of a class cannot be a record",
+        "es": "El campo {lexeme} de una clase no puede ser un registro"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordMemberSignatureNotSupported": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A method or constructor cannot receive or return records",
+        "es": "Un método o constructor no puede recibir ni devolver registros"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "recordNotInferable": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Variable {lexeme} must be declared with its type to hold a record",
+        "es": "La variable {lexeme} debe declararse con su tipo para guardar un registro"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordPassedByReference": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Record {lexeme} cannot be passed by reference",
+        "es": "El registro {lexeme} no se puede pasar por referencia"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordWithoutFields": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Record {lexeme} must have at least one field",
+        "es": "El registro {lexeme} debe tener al menos un campo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "recursionDepthExceeded": {
       "argumentos": [
         "limit"
@@ -2250,6 +2592,24 @@
       },
       "tipos_argumentos": {
         "limit": "numero"
+      }
+    },
+    "recursiveRecordContainment": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Record {lexeme} contains itself by value",
+        "es": "El registro {lexeme} se contiene a sí mismo por valor"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
       }
     },
     "reservedImportNeedsAlias": {
@@ -2614,6 +2974,20 @@
       },
       "tipos_argumentos": {}
     },
+    "unclosedEnum": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Unclosed enumeration at end of file",
+        "es": "Enumerado sin cerrar al final del archivo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "unclosedForStatement": {
       "argumentos": [],
       "clase": "syntax",
@@ -2662,6 +3036,20 @@
       "mensajes": {
         "en": "Unclosed opening parenthesis",
         "es": "Paréntesis de apertura sin cerrar"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "unclosedRecord": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Unclosed record at end of file",
+        "es": "Registro sin cerrar al final del archivo"
       },
       "politica": "A",
       "severidad": {
@@ -2793,6 +3181,24 @@
       "severidad": {
         "estricto": "error",
         "flexible": "warning"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undefinedEnumMember": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The enumeration has no member {lexeme}",
+        "es": "El enumerado no tiene el miembro {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
       },
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3542,12 +3948,15 @@
       "classUnit": "@classKeyword, identifier, [ @inheritsFrom, identifier ], line, { fieldDeclaration | methodMember | constructorMember }, @endClass, line",
       "conditional": "@ifKeyword, expression, @then, line, body, [ @elseKeyword, line, body ], @endIf, line",
       "conjunction": "equality, { @and, equality }",
+      "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
       "constructorMember": "@method, @constructor, parameters, line, body, @endMethod, line",
       "declaration": "@declare, names, @typeConnector, type",
       "designator": "identifier, { @leftBracket, expressions, @rightBracket | @dot, identifier }",
       "dimensionDeclaration": "@dimension, dimensioned, { @comma, dimensioned }, @typeConnector, type",
       "dimensioned": "identifier, @leftBracket, expressions, @rightBracket",
       "disjunction": "conjunction, { @or, conjunction }",
+      "enumMembers": "identifier, { @comma, identifier }",
+      "enumUnit": "@enumKeyword, identifier, line, [ enumMembers, line ], @endEnum, line",
       "equality": "ordering, { ( @equal | @notEqual ), ordering }",
       "exportDeclaration": "@exportKeyword, modulePath, terminator",
       "expression": "disjunction",
@@ -3563,7 +3972,7 @@
       "methodMember": "[ visibility ], @method, identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
       "moduleDirective": "importDeclaration | exportDeclaration",
       "modulePath": "identifier, { @dot, identifier }",
-      "moduleUnit": "[ visibility ], ( subprogram | classUnit )",
+      "moduleUnit": "[ visibility ], ( subprogram | classUnit | enumUnit | recordUnit | constantDeclaration, terminator )",
       "multiplication": "powerExpression, { ( @multiply | @divide | @integerDivide | @modulo ), powerExpression }",
       "names": "identifier, { @comma, identifier }",
       "ordering": "addition, { ( @lessThan | @lessThanOrEqual | @greaterThan | @greaterThanOrEqual ), addition }",
@@ -3574,10 +3983,12 @@
       "powerExpression": "unary, [ @power, powerExpression ]",
       "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments",
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
+      "recordField": "declaration, terminator",
+      "recordUnit": "@recordKeyword, identifier, line, { recordField }, @endRecord, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
-      "statement": "( declaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement ), terminator",
+      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement ), terminator",
       "subprogram": "@subroutine, identifier, parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "terminator": "@semicolon | endOfLine",
@@ -3602,6 +4013,7 @@
       "classKeyword",
       "comma",
       "comment",
+      "constantKeyword",
       "constructor",
       "declare",
       "defaultCase",
@@ -3612,14 +4024,17 @@
       "elseKeyword",
       "endAlgorithm",
       "endClass",
+      "endEnum",
       "endFor",
       "endIf",
       "endMethod",
       "endOfFile",
       "endOfLine",
+      "endRecord",
       "endSubroutine",
       "endSwitch",
       "endWhile",
+      "enumKeyword",
       "equal",
       "exportKeyword",
       "forKeyword",
@@ -3652,6 +4067,7 @@
       "read",
       "realLiteral",
       "realType",
+      "recordKeyword",
       "repeat",
       "returnKeyword",
       "rightBracket",
@@ -5731,6 +6147,356 @@
           },
           {
             "identity": "endClass",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.DECL.CONSTANT",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Constant declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C4",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Constant declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "constantKeyword",
+                "text": "Starts a constant declaration."
+              }
+            ],
+            "purpose": "The initial value is required and the constant is never reassigned.",
+            "summary": "Fixes a value computed when the program is analyzed.",
+            "title": "Constant declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de constante",
+                "profile": "es",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C4",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de constante",
+                "profile": "es",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "constantKeyword",
+                "text": "Inicia la declaración de una constante."
+              }
+            ],
+            "purpose": "El valor inicial es obligatorio y la constante no se reasigna.",
+            "summary": "Fija un valor calculado al analizar el programa.",
+            "title": "Declaración de constante"
+          }
+        },
+        "id": "help.constant",
+        "identity": {
+          "id": "constantDeclaration",
+          "kind": "construction",
+          "role": "constant_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "constantKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TYPES.ENUM",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Enumeration declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Enumeration declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "enumKeyword",
+                "text": "Starts an enumeration declaration."
+              },
+              {
+                "identity": "endEnum",
+                "text": "Closes an enumeration declaration."
+              }
+            ],
+            "purpose": "Members are used as name.member and compared for equality.",
+            "summary": "Defines a type with a closed set of members.",
+            "title": "Enumeration declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de enumerado",
+                "profile": "es",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de enumerado",
+                "profile": "es",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "enumKeyword",
+                "text": "Inicia la declaración de un enumerado."
+              },
+              {
+                "identity": "endEnum",
+                "text": "Cierra la declaración de un enumerado."
+              }
+            ],
+            "purpose": "Los miembros se usan como nombre.miembro y se comparan por igualdad.",
+            "summary": "Define un tipo con un conjunto cerrado de miembros.",
+            "title": "Declaración de enumerado"
+          }
+        },
+        "id": "help.enum",
+        "identity": {
+          "id": "enumUnit",
+          "kind": "construction",
+          "role": "enum_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "enumKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endEnum",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R1",
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Record declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Record declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "recordKeyword",
+                "text": "Starts a record declaration."
+              },
+              {
+                "identity": "endRecord",
+                "text": "Closes a record declaration."
+              }
+            ],
+            "purpose": "Assigning, passing or returning a record copies all its fields.",
+            "summary": "Groups fields into a type that is copied by value.",
+            "title": "Record declaration"
+          },
+          "es": {
+            "common_errors": [],
+            "constraints": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de registro",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de registro",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "recordKeyword",
+                "text": "Inicia la declaración de un registro."
+              },
+              {
+                "identity": "endRecord",
+                "text": "Cierra la declaración de un registro."
+              }
+            ],
+            "purpose": "Asignar, pasar o devolver un registro copia todos sus campos.",
+            "summary": "Agrupa campos en un tipo que se copia por valor.",
+            "title": "Declaración de registro"
+          }
+        },
+        "id": "help.record",
+        "identity": {
+          "id": "recordUnit",
+          "kind": "construction",
+          "role": "record_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "recordKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "endRecord",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -9226,6 +9992,49 @@
         },
         {
           "identity": {
+            "id": "constantDeclaration",
+            "kind": "construction",
+            "role": "constant_declaration"
+          },
+          "productions": [
+            "constantDeclaration"
+          ],
+          "tokens": [
+            "constantKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "id": "enumUnit",
+            "kind": "construction",
+            "role": "enum_declaration"
+          },
+          "productions": [
+            "enumUnit",
+            "enumMembers"
+          ],
+          "tokens": [
+            "enumKeyword",
+            "endEnum"
+          ]
+        },
+        {
+          "identity": {
+            "id": "recordUnit",
+            "kind": "construction",
+            "role": "record_declaration"
+          },
+          "productions": [
+            "recordUnit",
+            "recordField"
+          ],
+          "tokens": [
+            "recordKeyword",
+            "endRecord"
+          ]
+        },
+        {
+          "identity": {
             "id": "importDeclaration",
             "kind": "construction",
             "role": "module_import"
@@ -9865,6 +10674,16 @@
         "es": ","
       }
     },
+    "constantKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "constant",
+        "es": "Constante"
+      }
+    },
     "constructor": {
       "alias": {
         "en": [],
@@ -9984,6 +10803,20 @@
         "es": "FinClase"
       }
     },
+    "endEnum": {
+      "alias": {
+        "en": [
+          "end enum"
+        ],
+        "es": [
+          "Fin Enumerado"
+        ]
+      },
+      "lexemas": {
+        "en": "endEnum",
+        "es": "FinEnumerado"
+      }
+    },
     "endFor": {
       "alias": {
         "en": [
@@ -10024,6 +10857,20 @@
       "lexemas": {
         "en": "endMethod",
         "es": "FinMetodo"
+      }
+    },
+    "endRecord": {
+      "alias": {
+        "en": [
+          "end record"
+        ],
+        "es": [
+          "Fin Registro"
+        ]
+      },
+      "lexemas": {
+        "en": "endRecord",
+        "es": "FinRegistro"
       }
     },
     "endSubroutine": {
@@ -10074,6 +10921,16 @@
       "lexemas": {
         "en": "endWhile",
         "es": "FinMientras"
+      }
+    },
+    "enumKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "enum",
+        "es": "Enumerado"
       }
     },
     "equal": {
@@ -10393,6 +11250,16 @@
       "lexemas": {
         "en": "real",
         "es": "Real"
+      }
+    },
+    "recordKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "record",
+        "es": "Registro"
       }
     },
     "repeat": {

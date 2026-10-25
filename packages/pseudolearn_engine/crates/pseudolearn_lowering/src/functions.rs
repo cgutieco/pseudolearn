@@ -35,6 +35,7 @@ pub fn lower_function(
         origins,
     };
     initialize_parameters(&function.parameters, &mut statement_context);
+    initialize_result_cells(function, &mut statement_context);
     crate::constructor_flow::implicit_super(function, &mut statement_context);
     lower_statement_list(&function.body, &mut statement_context);
 
@@ -107,7 +108,27 @@ fn initialize_receiver(function: &HirFunction, module: &HirModule, builder: &mut
 
 fn initialize_parameters(parameters: &[LocalId], context: &mut StatementContext<'_, '_>) {
     for &local_id in parameters {
-        initialize_single_parameter(local_id, context);
+        for target in crate::records::targets(local_id, context.expression_context.module) {
+            initialize_single_parameter(target, context);
+        }
+    }
+}
+
+fn initialize_result_cells(function: &HirFunction, context: &mut StatementContext<'_, '_>) {
+    let module = context.expression_context.module;
+    let leaves = match module.types.get(function.result) {
+        pseudolearn_semantic::types::Type::Record(record) => usize::try_from(record.0)
+            .ok()
+            .and_then(|slot| module.records.get(slot))
+            .map(|model| model.leaf_types.clone())
+            .unwrap_or_default(),
+        _ => Vec::new(),
+    };
+    for leaf in leaves {
+        let cell = context.builder.next_value();
+        let cell_type = IrType::Cell(Box::new(lower_type(leaf, module)));
+        context.builder.parameters.push((cell, cell_type));
+        context.builder.result_cells.push(cell);
     }
 }
 
@@ -156,7 +177,7 @@ fn terminate_function_blocks(
 ) {
     if !is_current_block_terminated(builder) {
         let closing_span = resolve_span(function.closing_span, source);
-        if return_type == &IrType::Unit {
+        if return_type == &IrType::Unit && builder.result_cells.is_empty() {
             builder.emit_void(Operation::Return, vec![], closing_span);
         } else {
             builder.emit_void(Operation::TrapMissingReturn, vec![], closing_span);

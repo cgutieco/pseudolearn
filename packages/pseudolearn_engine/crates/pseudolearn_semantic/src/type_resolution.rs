@@ -22,6 +22,12 @@ fn class_type(session: &mut AnalysisSession<'_>, node: usize) -> Type {
     if let Some(class) = session.classes.get(&name) {
         return Type::Object(*class);
     }
+    if let Some(enumeration) = session.declared.enums.get(&name) {
+        return Type::Enum(*enumeration);
+    }
+    if let Some(record) = session.declared.records.get(&name) {
+        return Type::Record(*record);
+    }
     session.named_report(DiagnosticCode::UndeclaredClass, node, &name);
     Type::Error
 }

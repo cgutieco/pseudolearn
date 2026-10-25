@@ -347,7 +347,7 @@ ADR-07.
 
 Puntos a cumplir:
 
-- [ ] `PG-2.01` Constantes evaluadas con pureza y presupuesto, y enumerados con comprobación estática.
+- [x] `PG-2.01` Constantes evaluadas con pureza y presupuesto, y enumerados con comprobación estática.
 - [ ] `PG-2.02` Registros por valor con disposición común, rechazo de tamaño infinito y raíces de campos.
 - [ ] `PG-2.03` `Opcional<T>` y `Resultado<T,E>`, con descarte de Resultado rechazado y propagación visible.
 - [ ] `PG-2.04` `Segun` exhaustivo con patrones básicos sobre literales, enumerados y variantes.

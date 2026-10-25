@@ -602,6 +602,64 @@
         "en": []
       }
     },
+    "constantKeyword": {
+      "lexemas": {
+        "es": "Constante",
+        "en": "constant"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "enumKeyword": {
+      "lexemas": {
+        "es": "Enumerado",
+        "en": "enum"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "endEnum": {
+      "lexemas": {
+        "es": "FinEnumerado",
+        "en": "endEnum"
+      },
+      "alias": {
+        "es": [
+          "Fin Enumerado"
+        ],
+        "en": [
+          "end enum"
+        ]
+      }
+    },
+    "recordKeyword": {
+      "lexemas": {
+        "es": "Registro",
+        "en": "record"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "endRecord": {
+      "lexemas": {
+        "es": "FinRegistro",
+        "en": "endRecord"
+      },
+      "alias": {
+        "es": [
+          "Fin Registro"
+        ],
+        "en": [
+          "end record"
+        ]
+      }
+    },
     "newInstance": {
       "lexemas": {
         "es": "Nuevo",

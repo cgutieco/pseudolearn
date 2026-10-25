@@ -126,3 +126,127 @@
   ]
 }
 ```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Si el selector es un enumerado, las etiquetas son miembros nombre.miembro de ese mismo enumerado, no se repiten y se separan con comas; De Otro Modo es opcional. No se exige cubrir todos los miembros. Una etiqueta de otro tipo es incompatibleSwitchCaseType.",
+  "verificacion": [
+    "C4",
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Verde;\nSegun c Hacer\nColor.Rojo: Escribir 1;\nColor.Verde: Escribir 2;\nFinSegun\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Verde;\nswitch c do\nColor.Rojo: write 1;\nColor.Verde: write 2;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Rojo;\nSegun c Hacer\nColor.Verde: Escribir 2;\nDe Otro Modo: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Rojo;\nswitch c do\nColor.Verde: write 2;\notherwise: write 0;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Rojo;\nSegun c Hacer\nColor.Rojo: Escribir 1;\nColor.Rojo: Escribir 2;\nFinSegun\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Rojo;\nswitch c do\nColor.Rojo: write 1;\nColor.Rojo: write 2;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "duplicateSwitchCaseLabel",
+        "severidad": "error"
+      }
+    ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Rojo;\nSegun c Hacer\n1: Escribir 1;\nFinSegun\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Rojo;\nswitch c do\n1: write 1;\nendSwitch\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleSwitchCaseType",
+        "severidad": "error"
+      }
+    ]
+  },
+  "rigor": [
+    "estricto"
+  ]
+}
+```

@@ -106,7 +106,7 @@ fn lower_evaluation_branch(
     );
 }
 
-fn lower_constant_boolean_branch(
+pub(crate) fn lower_constant_boolean_branch(
     value: bool,
     constant_block: BlockId,
     merge_block: BlockId,

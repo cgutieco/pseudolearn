@@ -9,13 +9,7 @@ use std::collections::BTreeSet;
 
 pub(crate) fn dense(class: usize, module: &HirModule) -> bool {
     let chain = ancestors(class, module);
-    let required = chain
-        .iter()
-        .filter_map(|index| module.classes.get(*index))
-        .flat_map(|class| &class.fields)
-        .filter(|field| module.types.get(field.type_id) == Type::Integer)
-        .map(|field| field.id)
-        .collect::<BTreeSet<_>>();
+    let required = required_fields(&chain, module);
     if required.is_empty() {
         return true;
     }
@@ -42,6 +36,21 @@ pub(crate) fn dense(class: usize, module: &HirModule) -> bool {
         }
     }
     false
+}
+
+fn required_fields(chain: &[usize], module: &HirModule) -> BTreeSet<FieldId> {
+    chain
+        .iter()
+        .filter_map(|index| module.classes.get(*index))
+        .flat_map(|class| &class.fields)
+        .filter(|field| {
+            matches!(
+                module.types.get(field.type_id),
+                Type::Integer | Type::Enum(_)
+            )
+        })
+        .map(|field| field.id)
+        .collect::<BTreeSet<_>>()
 }
 
 fn ancestors(class: usize, module: &HirModule) -> Vec<usize> {

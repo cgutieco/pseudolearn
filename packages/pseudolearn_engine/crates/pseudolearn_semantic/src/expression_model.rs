@@ -1,4 +1,4 @@
-use crate::identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, TypeId};
+use crate::identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, TypeId};
 use crate::types::ValueClass;
 pub use pseudolearn_lexicon::BuiltinKind;
 use pseudolearn_source::Span;
@@ -80,6 +80,14 @@ pub enum HirExpression {
         operator_span: Span,
     },
     Widen(ExpressionId),
+    RecordNew {
+        record: RecordId,
+        fields: Vec<ExpressionId>,
+    },
+    RecordField {
+        record: ExpressionId,
+        offset: u32,
+    },
     This(ClassId),
     SuperCall {
         receiver: ClassId,
@@ -109,4 +117,9 @@ pub enum HirPlace {
         indices: Vec<ExpressionId>,
     },
     WholeArray(LocalId),
+    RecordField {
+        local: LocalId,
+        offset: u32,
+        type_id: TypeId,
+    },
 }

@@ -10,6 +10,20 @@ pub(crate) fn type_argument(session: &AnalysisSession<'_>, kind: &Type) -> Diagn
         Type::Boolean => TypeName::Token(KeywordKind::BooleanType.as_str().to_owned()),
         Type::Character => TypeName::Token(KeywordKind::CharacterType.as_str().to_owned()),
         Type::String => TypeName::Token(KeywordKind::StringType.as_str().to_owned()),
+        Type::Enum(enumeration) => TypeName::Named(
+            usize::try_from(enumeration.0)
+                .ok()
+                .and_then(|slot| session.module.enums.get(slot))
+                .map(|model| model.name.clone())
+                .unwrap_or_default(),
+        ),
+        Type::Record(record) => TypeName::Named(
+            usize::try_from(record.0)
+                .ok()
+                .and_then(|slot| session.module.records.get(slot))
+                .map(|model| model.name.clone())
+                .unwrap_or_default(),
+        ),
         Type::Object(class) => TypeName::Named(
             crate::hierarchy::class_model(session, *class)
                 .map(|class| class.name.clone())

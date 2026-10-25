@@ -78,20 +78,20 @@ impl<'tokens> Parser<'tokens> {
             return self.parse_visible_unit();
         }
         match kind {
-            TokenKind::Keyword(KeywordKind::Algorithm) => {
-                *algorithms = algorithms.saturating_add(1);
-                if *algorithms > 1 {
-                    let span = self.state.span();
-                    self.state.report(DiagnosticCode::MultipleAlgorithms, span);
-                }
-                crate::unit_parser::algorithm(&mut self.state)
-            }
+            TokenKind::Keyword(KeywordKind::Algorithm) => self.parse_algorithm(algorithms),
             TokenKind::Keyword(KeywordKind::Subroutine) => {
                 crate::unit_parser::subprogram(&mut self.state)
             }
             TokenKind::Keyword(KeywordKind::ClassKeyword) => {
                 crate::unit_parser::class(&mut self.state)
             }
+            TokenKind::Keyword(KeywordKind::EnumKeyword) => {
+                crate::enum_parser::enumeration(&mut self.state)
+            }
+            TokenKind::Keyword(KeywordKind::RecordKeyword) => {
+                crate::record_parser::record(&mut self.state)
+            }
+            TokenKind::Keyword(KeywordKind::ConstantKeyword) => self.parse_constant_unit(),
             _ => {
                 let span = self.state.span();
                 self.state
@@ -101,13 +101,37 @@ impl<'tokens> Parser<'tokens> {
         }
     }
 
+    fn parse_algorithm(&mut self, algorithms: &mut u32) -> Result<usize, ()> {
+        *algorithms = algorithms.saturating_add(1);
+        if *algorithms > 1 {
+            let span = self.state.span();
+            self.state.report(DiagnosticCode::MultipleAlgorithms, span);
+        }
+        crate::unit_parser::algorithm(&mut self.state)
+    }
+
+    fn parse_constant_unit(&mut self) -> Result<usize, ()> {
+        let unit = crate::constant_parser::constant(&mut self.state)?;
+        crate::statement_parser::terminator(&mut self.state)?;
+        Ok(unit)
+    }
+
     fn parse_visible_unit(&mut self) -> Result<usize, ()> {
         let prefix = crate::module_parser::visibility_prefix(&mut self.state)?;
         let opening = self.state.kind();
-        let unit = if opening == TokenKind::Keyword(KeywordKind::ClassKeyword) {
-            crate::unit_parser::class(&mut self.state)
-        } else {
-            crate::unit_parser::subprogram(&mut self.state)
+        let unit = match opening {
+            TokenKind::Keyword(KeywordKind::ClassKeyword) => {
+                crate::unit_parser::class(&mut self.state)
+            }
+            TokenKind::Keyword(KeywordKind::Subroutine) => {
+                crate::unit_parser::subprogram(&mut self.state)
+            }
+            _ => {
+                let span = self.state.span();
+                self.state
+                    .report(DiagnosticCode::UnexpectedTokenOutsideProgramUnit, span);
+                Err(())
+            }
         }?;
         if let (Some(token), Some(node)) = (prefix, self.state.nodes.get_mut(unit)) {
             node.first_token = token;
@@ -120,6 +144,8 @@ pub(crate) fn recover_unit(state: &mut ParserState<'_>, opening: TokenKind) {
     let closing = match opening {
         TokenKind::Keyword(KeywordKind::Algorithm) => KeywordKind::EndAlgorithm,
         TokenKind::Keyword(KeywordKind::ClassKeyword) => KeywordKind::EndClass,
+        TokenKind::Keyword(KeywordKind::EnumKeyword) => KeywordKind::EndEnum,
+        TokenKind::Keyword(KeywordKind::RecordKeyword) => KeywordKind::EndRecord,
         TokenKind::Keyword(KeywordKind::Subroutine) => KeywordKind::EndSubroutine,
         TokenKind::Keyword(KeywordKind::IfKeyword) => KeywordKind::EndIf,
         TokenKind::Keyword(KeywordKind::WhileKeyword) => KeywordKind::EndWhile,
@@ -135,7 +161,12 @@ pub(crate) fn recover_unit(state: &mut ParserState<'_>, opening: TokenKind) {
         if matches!(
             state.kind(),
             TokenKind::Keyword(
-                KeywordKind::Algorithm | KeywordKind::Subroutine | KeywordKind::ClassKeyword
+                KeywordKind::Algorithm
+                    | KeywordKind::Subroutine
+                    | KeywordKind::ClassKeyword
+                    | KeywordKind::EnumKeyword
+                    | KeywordKind::RecordKeyword
+                    | KeywordKind::ConstantKeyword
             )
         ) {
             break;

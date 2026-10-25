@@ -171,20 +171,20 @@ programas. La tarea `.06` de cada bloque es **verificación acotada** según §7
 
 ### PG-2.01 · Constantes y enumerados
 
-- [ ] `PG-2.01.01` Especificar constante de módulo y local con inicializador puro, subconjunto evaluable (D-PG2-05), presupuesto de pasos/bytes, ciclos entre constantes y visibilidad de PG-1. Especificar enumerado: miembros, ordinal, igualdad, formato de salida, conversión explícita y prohibición de aritmética.
-- [ ] `PG-2.01.02` Casos: constante encadenada, desbordamiento entero en constante, división por cero en constante, ciclo directo/indirecto, presupuesto justo/encima, enumerado vacío, de un miembro, duplicado, miembro homónimo de otro enumerado, `Escribir` de enumerado en es/en.
-- [ ] `PG-2.01.03` Tests espejo del evaluador (orden, presupuesto inyectado, misma aritmética que runtime para enteros y binary64) y del registro de enumerados.
-- [ ] `PG-2.01.04` Gramática/vocabulario por generador; registro y evaluador en semantic; plegado como literal en lowering; ordinal `u32` en RI; ficha de ayuda es/en.
-- [ ] `PG-2.01.05` README syntax/semantic/lowering: subconjunto, presupuesto y por qué no se usa la biblioteca.
-- [ ] `PG-2.01.06` Verificación acotada: `--only` de los contratos tocados en engine/aot, tests espejo de semantic/lowering y conjunto centinela si cambió el vocabulario.
+- [x] `PG-2.01.01` Especificar constante de módulo y local con inicializador puro, subconjunto evaluable (D-PG2-05), presupuesto de pasos/bytes, ciclos entre constantes y visibilidad de PG-1. Especificar enumerado: miembros, ordinal, igualdad, formato de salida, conversión explícita y prohibición de aritmética.
+- [x] `PG-2.01.02` Casos: constante encadenada, desbordamiento entero en constante, división por cero en constante, ciclo directo/indirecto, presupuesto justo/encima, enumerado vacío, de un miembro, duplicado, miembro homónimo de otro enumerado, `Escribir` de enumerado en es/en.
+- [x] `PG-2.01.03` Tests espejo del evaluador (orden, presupuesto inyectado, misma aritmética que runtime para enteros y binary64) y del registro de enumerados.
+- [x] `PG-2.01.04` Gramática/vocabulario por generador; registro y evaluador en semantic; plegado como literal en lowering; ordinal `u32` en RI; ficha de ayuda es/en.
+- [x] `PG-2.01.05` README syntax/semantic/lowering: subconjunto, presupuesto y por qué no se usa la biblioteca.
+- [x] `PG-2.01.06` Verificación acotada: `--only` de los contratos tocados en engine/aot, tests espejo de semantic/lowering y conjunto centinela si cambió el vocabulario.
 
 ### PG-2.02 · Registros por valor
 
-- [ ] `PG-2.02.01` Especificar declaración de registro, construcción completa, acceso y actualización de campo, igualdad estructural, asignación y paso como copia, retorno por valor, campos permitidos (sin arreglos por valor) y rechazo de contención por valor recursiva.
-- [ ] `PG-2.02.02` Casos: registro de un campo, vacío si el corpus lo admite, anidado, autocontenido directo e indirecto, copia independiente tras mutación, campo referencia compartido tras copia, igualdad con campo real `-0`/NaN según `LANG.OPS.COMPARISON`.
-- [ ] `PG-2.02.03` Tests de `RecordLayout` (desplazamientos, áreas por banco, alineación, registro anidado aplanado) y del detector de ciclos de contención con grafos sembrados.
+- [x] `PG-2.02.01` Especificar declaración de registro, construcción completa, acceso y actualización de campo, igualdad estructural, asignación y paso como copia, retorno por valor, campos permitidos (sin arreglos por valor) y rechazo de contención por valor recursiva.
+- [x] `PG-2.02.02` Casos: registro de un campo, vacío si el corpus lo admite, anidado, autocontenido directo e indirecto, copia independiente tras mutación, campo referencia compartido tras copia, igualdad con campo real `-0`/NaN según `LANG.OPS.COMPARISON`.
+- [x] `PG-2.02.03` Tests de `RecordLayout` (desplazamientos, áreas por banco, alineación, registro anidado aplanado) y del detector de ciclos de contención con grafos sembrados.
 - [ ] `PG-2.02.04` Disposición en abi; registro y ciclos en semantic; tupla SSA y copia en lowering; incrustación en marco/objeto/vector; mapas de raíces de campos referencia en VM y pila sombra AOT.
-- [ ] `PG-2.02.05` README abi/runtime/semantic/lowering/codegen; `RT.ABI`/`MEM.VALUE.COPY` editados como texto oficial si cambia su alcance.
+- [x] `PG-2.02.05` README abi/runtime/semantic/lowering/codegen; `RT.ABI`/`MEM.VALUE.COPY` editados como texto oficial si cambia su alcance.
 - [ ] `PG-2.02.06` Verificación acotada con recolección forzada (`--operation properties` del contrato) y medición de bytes de objeto/bytecode frente a control.
 
 ### PG-2.03 · `Opcional<T>` y `Resultado<T,E>`
@@ -572,6 +572,39 @@ sigue siendo una selección y se registra como tal.
 Contratos de PG-2 para la selección final: se completa al redactar cada contrato.
 
 Selección por iteración: se registra aquí con órdenes, resultados, disparadores activados y suites omitidas.
+
+#### Iteración 1–2 combinada: `.01` constantes y enumerados, `.02` registros (2026-10-25)
+
+Autorización: mensaje de la persona «implementa `PG-2.01` y `PG-2.02` en una sola iteración». Decisiones tomadas con ella:
+registros como tupla SSA aplanada (retorno por celdas de salida) y `Segun` sobre `Enum.Miembro` sin exhaustividad;
+contratos nuevos estables con su nombre como revisor (pendiente de su revisión real).
+
+- Corpus: nuevos `LANG.DECL.CONSTANT`, `LANG.TYPES.ENUM`, `LANG.TYPES.RECORD`; ediciones oficiales de
+  `LANG.PROFILE.VOCABULARY`, `LANG.SYNTAX.GRAMMAR`, `LANG.CONTROL.SWITCH` (R2, C4–C7), `LANG.OPS.COMPARISON`,
+  `DIAG.CATALOG` (26 códigos), `IR.INSTRUCTIONS` (cobertura V100–V111) y `TOOL.SERVICE.CATALOG` (3 fichas); sin
+  `cambio`, reanclados con `lock --refresh`. Vínculos en `conformance.yaml` (`cumple`) y `conformance-aot.yaml`
+  (`exento`, como los demás contratos con casos de análisis).
+- Ejecutado en verde: `see validate` (167), `lock --check`, `export --check`; `conform --only` en `engine` y `aot` de
+  los tres contratos nuevos, `LANG.CONTROL.SWITCH`, `LANG.OPS.COMPARISON` y el conjunto centinela
+  (`LANG.LEXICAL.KEYWORD`, `LANG.LEXICAL.IDENTIFIER`, `LANG.PROFILE.VOCABULARY`, `LANG.PROFILE.TRANSLATION`,
+  `LANG.SYNTAX.GRAMMAR`, `LANG.CLASS.OUT-OF-SCOPE`, más `LANG.CLASS.FIELDS`, `LANG.CLASS.CONSTRUCTOR`,
+  `LANG.DECL.UNINITIALIZED`) y `DIAG.CATALOG` en `engine`; todo con 0 divergencias.
+- Ejecutado en verde (motor): `cargo fmt --check`; `cargo clippy --all-targets -D warnings` en abi, lexicon, syntax,
+  semantic, lowering y service; `rust-checks all .`; tests de los archivos espejo cambiados en abi (`abi_tests`,
+  `record_layout_tests`), syntax (8 binarios), lexicon (3), diagnostics (3), semantic (`--lib` y 15 binarios),
+  lowering (3) y service (`help_catalog`, `help_resolution`, `help_single_source`, `hover`).
+- Disparadores activados: vocabulario y gramática generados cambiaron (centinela y tests de syntax/lexicon, ejecutados);
+  catálogo de ayuda cambió (tests de ayuda de service, ejecutados). No cambió `IR.INSTRUCTIONS` en instrucciones ni
+  el despacho, el payload de API, dependencias ni runtime/library/abi con efecto en el binario.
+- Omitido por política (§7.1): `cargo xtask verify`, `cargo test --workspace`, `conform` sin `--only`, `app`/`cli`/`service`
+  de conformidad, pruebas de Flutter, puente, Wasm, `cargo deny`, medición de tamaño y campañas. Las evidencias
+  completas previas de `results/{engine,aot}.json` y sus matrices se apartaron (estaban obsoletas por el cambio de
+  hashes del corpus) y ahora contienen solo la última selección `--only`.
+- No cumplido en esta iteración: incrustación de registros en objetos y vectores y registros como parámetro o resultado
+  de métodos (diagnosticados; llegan con clausuras y colecciones), consumo de `RecordLayout` por VM y AOT, recolección
+  forzada y medición de bytes frente a control de `.02.06`, y edición de `RT.ABI`/`MEM.VALUE.COPY` (su alcance no cambió).
+- Pendiente de la persona: revisión independiente real de los tres contratos nuevos (constan con su nombre como
+  revisor), revisión de las formas candidatas de sintaxis y decisión sobre la palabra reservada nueva.
 
 ### 11.2 Cierre común de PG-2
 

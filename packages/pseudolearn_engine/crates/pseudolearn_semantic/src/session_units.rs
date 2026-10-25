@@ -28,6 +28,7 @@ impl<'syntax> AnalysisSession<'syntax> {
             functions: std::mem::take(&mut self.functions),
             classes: std::mem::take(&mut self.classes),
             modules: std::mem::take(&mut self.modules),
+            declared: std::mem::take(&mut self.declared),
         };
         if let Some(slot) = self.scopes.get_mut(self.unit) {
             *slot = saved;
@@ -40,6 +41,7 @@ impl<'syntax> AnalysisSession<'syntax> {
         self.functions = loaded.functions;
         self.classes = loaded.classes;
         self.modules = loaded.modules;
+        self.declared = loaded.declared;
         self.unit = unit;
         self.tree = view.tree;
         self.source = view.source;

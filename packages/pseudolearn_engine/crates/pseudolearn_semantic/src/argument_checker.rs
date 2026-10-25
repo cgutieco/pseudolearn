@@ -40,6 +40,10 @@ fn check_argument(
     };
     let actual = session.expression_type(*argument);
     let expected = session.module.types.get(local.type_id);
+    if expected == Type::Unknown && matches!(actual, Type::Record(_)) {
+        session.named_report(DiagnosticCode::RecordNotInferable, node, &local.name);
+        return;
+    }
     if expected == Type::Unknown && actual != Type::Error {
         infer_parameter(session, parameter, actual);
         return;

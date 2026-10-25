@@ -171,7 +171,14 @@ fn collect_openers(
 ) -> (Vec<String>, Vec<String>) {
     let mut spanish = Vec::new();
     let mut english = Vec::new();
-    for opener in ["algorithm", "classKeyword", "subroutine"] {
+    for opener in [
+        "algorithm",
+        "classKeyword",
+        "constantKeyword",
+        "enumKeyword",
+        "recordKeyword",
+        "subroutine",
+    ] {
         if let Some(keyword_definition) = vocabulary.get(opener) {
             for form in collect_forms(keyword_definition, "es") {
                 spanish.push(form);

@@ -199,7 +199,7 @@ fn lower_write(
     }
     let mut operands = Vec::new();
     for &expression_id in values {
-        let value = lower_expression(
+        let value = crate::enum_output::lower_value(
             expression_id,
             context.expression_context,
             context.environment,
@@ -245,6 +245,11 @@ fn lower_return(
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
     if let Some(expression_id) = expression_option {
+        if crate::records::lower_return(expression_id, context) {
+            context.builder.emit_void(Operation::StmtExit, vec![], span);
+            context.builder.emit_void(Operation::Return, vec![], span);
+            return;
+        }
         let return_value = lower_expression(
             expression_id,
             context.expression_context,

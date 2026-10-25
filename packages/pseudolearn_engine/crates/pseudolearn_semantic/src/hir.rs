@@ -3,6 +3,7 @@ use crate::identities::{ClassId, FieldId, FunctionId, LocalId, StatementId, Type
 use crate::statement_model::StatementColumns;
 use crate::types::TypeInterner;
 use pseudolearn_source::Span;
+use std::collections::BTreeMap;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FunctionKind {
@@ -96,11 +97,39 @@ impl UnitTable {
     }
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct HirEnum {
+    pub name: String,
+    pub members: Vec<String>,
+    pub span: Span,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct HirRecordField {
+    pub name: String,
+    pub type_id: TypeId,
+    pub offset: u32,
+    pub width: u32,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct HirRecord {
+    pub name: String,
+    pub fields: Vec<HirRecordField>,
+    pub leaf_types: Vec<TypeId>,
+    pub leaf_names: Vec<String>,
+    pub span: Span,
+    pub syntax: usize,
+}
+
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct HirModule {
     pub units: UnitTable,
     pub functions: Vec<HirFunction>,
     pub classes: Vec<HirClass>,
+    pub enums: Vec<HirEnum>,
+    pub records: Vec<HirRecord>,
+    pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,
     pub locals: Vec<HirLocal>,
     pub expressions: ExpressionColumns,
     pub statements: StatementColumns,

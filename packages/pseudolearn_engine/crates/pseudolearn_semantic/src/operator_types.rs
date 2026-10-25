@@ -20,7 +20,7 @@ pub(crate) fn result_type(operator: BinaryOperator, left: &Type, right: &Type) -
         operator,
         Equal | NotEqual | Less | LessEqual | Greater | GreaterEqual
     ) {
-        return relation_type(left, right);
+        return relation_type(operator, left, right);
     }
     if operator == Add
         && matches!(left, Type::String | Type::Character)
@@ -55,7 +55,13 @@ fn logical_type(left: &Type, right: &Type) -> Type {
     }
 }
 
-fn relation_type(left: &Type, right: &Type) -> Type {
+fn relation_type(operator: BinaryOperator, left: &Type, right: &Type) -> Type {
+    if left == right
+        && matches!(left, Type::Enum(_) | Type::Record(_))
+        && !matches!(operator, BinaryOperator::Equal | BinaryOperator::NotEqual)
+    {
+        return Type::Error;
+    }
     if left == right
         || numeric(left) && numeric(right)
         || matches!((left, right), (Type::Object(_), Type::Object(_)))

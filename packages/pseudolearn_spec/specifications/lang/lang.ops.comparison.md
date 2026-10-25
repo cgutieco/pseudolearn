@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Orden e igualdad numéricos amplían entero a real si hace falta. Textos y caracteres admiten comparación compatible; lógicos solo igualdad. Objetos admiten igualdad por identidad. Los arreglos no se comparan. Igualdad entre reales produce advertencia realEqualityComparison en ambos rigores, sin cambiar el valor.",
+  "texto": "Orden e igualdad numéricos amplían entero a real si hace falta. Textos y caracteres admiten comparación compatible; lógicos solo igualdad. Objetos admiten igualdad por identidad. Los arreglos no se comparan. Los valores de un mismo enumerado y los registros de un mismo tipo admiten igualdad y desigualdad, sin orden. Igualdad entre reales produce advertencia realEqualityComparison en ambos rigores, sin cambiar el valor.",
   "verificacion": [
     "C1",
     "C2",

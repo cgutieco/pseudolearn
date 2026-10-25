@@ -14,28 +14,30 @@ pub fn lower_call(
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,
 ) -> ValueId {
+    emit_function_call(arguments, function_index, span, state).0
+}
+
+pub(crate) fn emit_function_call(
+    arguments: &[ExpressionId],
+    function_index: u32,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> (ValueId, Vec<ValueId>) {
     let target_function = usize::try_from(function_index)
         .ok()
         .and_then(|index| state.context.module.functions.get(index));
     let function_name = resolve_target_function_name(target_function);
     let mut lowered_arguments = Vec::new();
     for (parameter_index, &argument_id) in arguments.iter().enumerate() {
-        let is_reference = target_function
-            .and_then(|function| function.parameters.get(parameter_index))
-            .and_then(|local_id| {
-                usize::try_from(local_id.0)
-                    .ok()
-                    .and_then(|local_index| state.context.module.locals.get(local_index))
-            })
-            .is_some_and(|local| {
-                crate::parameter_passing::requires_cell(local, state.context.module)
-            });
-        if is_reference {
-            lowered_arguments.push(lower_cell_argument(argument_id, span, state));
-        } else {
-            lowered_arguments.push(lower_expression_with_state(argument_id, state));
-        }
+        let is_reference = is_reference_parameter(target_function, parameter_index, state);
+        lowered_arguments.extend(lower_call_argument(
+            argument_id,
+            (is_reference, span),
+            state,
+        ));
     }
+    let cells = result_cells(function_index, span, state);
+    lowered_arguments.extend(cells.iter().copied());
     let result = state.builder.next_value();
     let operand = Operand::FunctionTarget {
         function_name,
@@ -44,7 +46,64 @@ pub fn lower_call(
     state
         .builder
         .emit_with_target(Operation::Call, vec![operand], (Some(result), span));
-    result
+    (result, cells)
+}
+
+fn is_reference_parameter(
+    function: Option<&HirFunction>,
+    position: usize,
+    state: &ExpressionState<'_, '_>,
+) -> bool {
+    function
+        .and_then(|function| function.parameters.get(position))
+        .and_then(|local_id| usize::try_from(local_id.0).ok())
+        .and_then(|local_index| state.context.module.locals.get(local_index))
+        .is_some_and(|local| crate::parameter_passing::requires_cell(local, state.context.module))
+}
+
+fn lower_call_argument(
+    argument: ExpressionId,
+    passing: (bool, Option<IrSpan>),
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    let (is_reference, span) = passing;
+    if is_reference {
+        return vec![lower_cell_argument(argument, span, state)];
+    }
+    match crate::records::expression_width(argument, state.context.module) {
+        Some(width) => crate::record_values::lower_range(argument, (0, width), state),
+        None => vec![lower_expression_with_state(argument, state)],
+    }
+}
+
+fn result_cells(
+    function_index: u32,
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    let module = state.context.module;
+    let leaves = usize::try_from(function_index)
+        .ok()
+        .and_then(|slot| module.functions.get(slot))
+        .and_then(|function| match module.types.get(function.result) {
+            pseudolearn_semantic::types::Type::Record(record) => Some(record),
+            _ => None,
+        })
+        .and_then(|record| usize::try_from(record.0).ok())
+        .and_then(|slot| module.records.get(slot))
+        .map(|model| model.leaf_types.clone())
+        .unwrap_or_default();
+    let mut cells = Vec::new();
+    for leaf in leaves {
+        let cell = state.builder.next_value();
+        state.builder.emit_with_target(
+            Operation::CellLocal,
+            vec![Operand::Type(crate::types::lower_type(leaf, module))],
+            (Some(cell), span),
+        );
+        cells.push(cell);
+    }
+    cells
 }
 
 fn resolve_target_function_name(target_function: Option<&HirFunction>) -> String {

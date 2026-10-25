@@ -20,13 +20,29 @@ pub fn lower_assign(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
+    if crate::records::expression_width(value_expression, context.expression_context.module)
+        .is_some()
+    {
+        crate::records::lower_record_assignment(destination, value_expression, span, context);
+        context.builder.emit_void(Operation::StmtExit, vec![], span);
+        return;
+    }
     let value = lower_expression(
         value_expression,
         context.expression_context,
         context.environment,
         context.builder,
     );
+    store_value(destination, (value, span), context);
+    context.builder.emit_void(Operation::StmtExit, vec![], span);
+}
 
+fn store_value(
+    destination: &HirPlace,
+    target: (ValueId, Option<IrSpan>),
+    context: &mut StatementContext<'_, '_>,
+) {
+    let (value, span) = target;
     match destination {
         HirPlace::Local(local_id) => lower_assign_local(*local_id, value, span, context),
         HirPlace::Field { receiver, field } => {
@@ -36,11 +52,16 @@ pub fn lower_assign(
             lower_assign_element(*array, indices, (value, span), context);
         }
         HirPlace::WholeArray(local_id) => lower_assign_whole_array(*local_id, value, context),
+        HirPlace::RecordField { .. } => {
+            let module = context.expression_context.module;
+            for local_id in crate::records::destination_targets(destination, module) {
+                lower_assign_local(local_id, value, span, context);
+            }
+        }
     }
-    context.builder.emit_void(Operation::StmtExit, vec![], span);
 }
 
-fn lower_assign_local(
+pub(crate) fn lower_assign_local(
     local_id: LocalId,
     value: ValueId,
     span: Option<IrSpan>,

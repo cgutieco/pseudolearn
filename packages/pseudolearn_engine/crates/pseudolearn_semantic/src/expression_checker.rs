@@ -109,6 +109,7 @@ pub(crate) fn place(session: &AnalysisSession<'_>, expression: ExpressionId) -> 
             array: *array,
             indices: indices.clone(),
         }),
+        HirExpression::RecordField { .. } => crate::record_access::place(session, expression),
         _ => None,
     }
 }

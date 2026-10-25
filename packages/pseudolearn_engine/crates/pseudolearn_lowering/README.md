@@ -52,6 +52,23 @@ expresión, porque ninguna instrucción cruza unidades.
 `lower_project` emite el módulo sin tabla de perfiles; quien conoce el perfil de cada archivo (la API) completa
 `profiles` y el vocabulario de entrada antes de verificar. El bajado no decide perfiles.
 
+### Registros aplanados, retorno por celdas y nombre de enumerado
+
+Un registro nunca es un valor de la RI: `record_values::lower_range` entrega los valores de sus hojas y cada consumidor
+(asignación, argumento, retorno, igualdad) trabaja sobre esa lista. Leer `p.x` solo lee (y exige definida) la hoja
+tocada, no el registro entero. Las variables de tipo registro se declaran, acarrean en bucles y se unen en ramas como
+sus hojas, porque semantic ya las expuso como locales. Los argumentos se expanden a un argumento por hoja y el
+resultado de una función registro se devuelve por celdas: la función recibe, tras sus parámetros, una `cell<hoja>`
+por hoja (`FunctionBuilder.result_cells`), escribe con `cell.store` y retorna sin operando; el llamador crea un
+`cell.local` por hoja, pasa las celdas y las lee con `cell.load` después de `call`. Esto no añade instrucciones ni
+toca bytecode, VM, runtime ni Cranelift, pero cuesta una celda por hoja en cada llamada; es el coste medible que un
+retorno multivalor de la RI eliminaría (decisión reversible: se revisa si una medición con cargas de registros muestra que la celda domina el coste). La igualdad compara hoja a
+hoja con la instrucción de su tipo y combina los resultados con una cadena de ramas que termina en el primer falso;
+las comparaciones previas son puras. `<>` niega el resultado. `Escribir` de un valor enumerado selecciona el nombre del
+miembro con una cadena de comparaciones de ordinal y bloques que unen un texto (`enum_output`), sin instrucción nueva;
+la tabla de saltos del terminador `switch` llega con la exhaustividad de `Segun`. Un enumerado es un entero de RI, por lo que
+`class_density` lo trata como entero para no omitir la máscara de definidos de un campo sin asignar.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

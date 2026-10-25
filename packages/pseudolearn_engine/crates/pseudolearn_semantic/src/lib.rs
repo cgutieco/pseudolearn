@@ -6,10 +6,22 @@ mod builtin_checker;
 mod call_checker;
 mod checker;
 mod class_registry;
+mod constant_arithmetic;
+mod constant_evaluator;
+#[cfg(test)]
+mod constant_evaluator_tests;
+mod constant_nodes;
+mod constant_real;
+#[cfg(test)]
+mod constant_real_tests;
+mod constant_registry;
+mod constant_use;
 pub mod constructor_rules;
 mod control_checker;
 mod diagnostic_arguments;
 mod dimension_checker;
+mod enum_access;
+mod enum_registry;
 mod expression_checker;
 pub mod expression_model;
 mod flow;
@@ -33,6 +45,10 @@ mod operator_types;
 mod operators;
 mod postfix_checker;
 pub mod project_analysis;
+mod record_access;
+mod record_cycles;
+mod record_locals;
+mod record_registry;
 pub mod service_analysis;
 pub mod service_collection;
 pub mod service_model;
@@ -41,7 +57,9 @@ mod session_units;
 mod statement_checker;
 pub mod statement_model;
 mod switch_checker;
+mod type_declarations;
 mod type_resolution;
+mod type_scope;
 pub mod types;
 mod unit_resolver;
 mod usage;
@@ -51,10 +69,12 @@ pub use expression_model::{
     BinaryOperator, BuiltinKind, ExpressionColumns, HirExpression, HirPlace, Literal, UnaryOperator,
 };
 pub use hir::{
-    FunctionKind, HirClass, HirField, HirFunction, HirLocal, HirModule, Passing, SemanticModel,
-    UnitTable,
+    FunctionKind, HirClass, HirEnum, HirField, HirFunction, HirLocal, HirModule, HirRecord,
+    HirRecordField, Passing, SemanticModel, UnitTable,
 };
-pub use identities::{ClassId, ExpressionId, FieldId, FunctionId, LocalId, StatementId, TypeId};
+pub use identities::{
+    ClassId, EnumId, ExpressionId, FieldId, FunctionId, LocalId, RecordId, StatementId, TypeId,
+};
 pub use project_analysis::{ProjectUnit, analyze_project};
 pub use service_analysis::{
     ServiceAnalysis, ServiceReference, ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget,

@@ -210,14 +210,11 @@ fn collect_statement_locals(
     modified: &mut HashSet<LocalId>,
 ) {
     match statement {
-        pseudolearn_semantic::statement_model::HirStatement::Assign {
-            destination: pseudolearn_semantic::expression_model::HirPlace::Local(local_id),
-            ..
-        } => {
-            modified.insert(*local_id);
+        pseudolearn_semantic::statement_model::HirStatement::Assign { destination, .. } => {
+            modified.extend(crate::records::destination_targets(destination, module));
         }
         pseudolearn_semantic::statement_model::HirStatement::Read(places) => {
-            collect_from_read_places(places, modified);
+            collect_from_read_places(places, module, modified);
         }
         pseudolearn_semantic::statement_model::HirStatement::Conditional {
             affirmative,
@@ -266,11 +263,18 @@ fn collect_nested_statements(
 
 fn collect_from_read_places(
     places: &[pseudolearn_semantic::expression_model::HirPlace],
+    module: &pseudolearn_semantic::hir::HirModule,
     modified: &mut HashSet<LocalId>,
 ) {
     for place in places {
-        if let pseudolearn_semantic::expression_model::HirPlace::Local(local_id) = place {
-            modified.insert(*local_id);
+        match place {
+            pseudolearn_semantic::expression_model::HirPlace::Local(local_id) => {
+                modified.insert(*local_id);
+            }
+            pseudolearn_semantic::expression_model::HirPlace::RecordField { .. } => {
+                modified.extend(crate::records::destination_targets(place, module));
+            }
+            _ => {}
         }
     }
 }

@@ -2470,3 +2470,128 @@
   "sin_ri": "El perfil de cada archivo se resuelve antes de la RI; la tabla de perfiles por fuente solo fija la representación lógica de text.format y out.write."
 }
 ```
+
+```cobertura
+{
+  "id": "V100",
+  "regla": "LANG.CONTROL.SWITCH#R2",
+  "instrucciones": [
+    "int.cmp",
+    "branch",
+    "decide.case",
+    "decide.default",
+    "decide.none"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V101",
+  "regla": "LANG.DECL.CONSTANT#R1",
+  "sin_ri": "El valor de la constante se calcula al analizar y se emite como constante de la RI; no existe variable en ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V102",
+  "regla": "LANG.DECL.CONSTANT#R2",
+  "sin_ri": "El subconjunto evaluable se resuelve antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V103",
+  "regla": "LANG.DECL.CONSTANT#R3",
+  "sin_ri": "Los ciclos y el presupuesto se comprueban antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V104",
+  "regla": "LANG.DECL.CONSTANT#R4",
+  "sin_ri": "La forma y el tipo del inicializador se comprueban antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V105",
+  "regla": "LANG.TYPES.ENUM#R1",
+  "sin_ri": "El enumerado define ordinales enteros que la RI trata como enteros; la declaración es estática."
+}
+```
+
+```cobertura
+{
+  "id": "V106",
+  "regla": "LANG.TYPES.ENUM#R2",
+  "instrucciones": [
+    "int.cmp",
+    "const.str",
+    "out.write",
+    "branch",
+    "value.undefined",
+    "value.require"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V107",
+  "regla": "LANG.TYPES.ENUM#R3",
+  "sin_ri": "Los miembros y nombres de tipo se resuelven antes de la RI."
+}
+```
+
+```cobertura
+{
+  "id": "V108",
+  "regla": "LANG.TYPES.RECORD#R1",
+  "sin_ri": "La declaración, la contención y los límites del registro se comprueban antes de la RI, que lo aplana en valores."
+}
+```
+
+```cobertura
+{
+  "id": "V109",
+  "regla": "LANG.TYPES.RECORD#R2",
+  "sin_ri": "La construcción y el acceso a campos se resuelven antes de la RI, que opera sobre un valor por campo."
+}
+```
+
+```cobertura
+{
+  "id": "V110",
+  "regla": "LANG.TYPES.RECORD#R3",
+  "instrucciones": [
+    "call",
+    "return",
+    "cell.local",
+    "cell.store",
+    "cell.load",
+    "value.undefined",
+    "value.require"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V111",
+  "regla": "LANG.TYPES.RECORD#R4",
+  "instrucciones": [
+    "int.cmp",
+    "real.cmp",
+    "bool.cmp",
+    "char.cmp",
+    "text.cmp",
+    "ref.cmp",
+    "branch"
+  ]
+}
+```

@@ -58,6 +58,9 @@ fn output(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
         if matches!(session.expression_type(*value), Type::Object(_)) {
             session.report(DiagnosticCode::ObjectCannotBeWritten, node);
         }
+        if matches!(session.expression_type(*value), Type::Record(_)) {
+            session.report(DiagnosticCode::RecordCannotBeWritten, node);
+        }
     }
     let newline = !session.has_token(node, TokenKind::Keyword(KeywordKind::WithoutNewline));
     HirStatement::Write { values, newline }

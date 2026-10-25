@@ -43,6 +43,10 @@ fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
         return;
     };
     let type_id = crate::type_resolution::resolve(session, kind);
+    let record_field = matches!(
+        session.module.types.get(type_id),
+        crate::types::Type::Record(_)
+    );
     let private =
         session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::PrivateVisibility));
     for name_node in session.children(declaration) {
@@ -50,27 +54,46 @@ fn fields(session: &mut AnalysisSession<'_>, class: ClassId, node: usize) {
             continue;
         }
         let name = session.name(name_node);
-        let index = usize::try_from(class.0).unwrap_or(usize::MAX);
-        let duplicate = session
-            .module
-            .classes
-            .get(index)
-            .is_some_and(|model| model.fields.iter().any(|field| field.name == name));
-        if duplicate {
-            session.named_report(DiagnosticCode::DuplicateMember, name_node, &name);
+        if record_field {
+            session.named_report(
+                DiagnosticCode::RecordClassFieldNotSupported,
+                name_node,
+                &name,
+            );
             continue;
         }
-        let field = HirField {
-            id: next_field_id(session),
-            name,
-            type_id,
-            owner: class,
-            private,
-            span: session.span(name_node),
-        };
-        if let Some(model) = session.module.classes.get_mut(index) {
-            model.fields.push(field);
-        }
+        add_field(session, class, (name_node, name), (type_id, private));
+    }
+}
+
+fn add_field(
+    session: &mut AnalysisSession<'_>,
+    class: ClassId,
+    naming: (usize, String),
+    attributes: (crate::identities::TypeId, bool),
+) {
+    let (name_node, name) = naming;
+    let (type_id, private) = attributes;
+    let index = usize::try_from(class.0).unwrap_or(usize::MAX);
+    let duplicate = session
+        .module
+        .classes
+        .get(index)
+        .is_some_and(|model| model.fields.iter().any(|field| field.name == name));
+    if duplicate {
+        session.named_report(DiagnosticCode::DuplicateMember, name_node, &name);
+        return;
+    }
+    let field = HirField {
+        id: next_field_id(session),
+        name,
+        type_id,
+        owner: class,
+        private,
+        span: session.span(name_node),
+    };
+    if let Some(model) = session.module.classes.get_mut(index) {
+        model.fields.push(field);
     }
 }
 

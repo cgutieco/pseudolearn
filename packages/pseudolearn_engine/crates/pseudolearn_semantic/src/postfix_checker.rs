@@ -22,10 +22,23 @@ pub(crate) fn check(
     match operator {
         Some(TokenKind::LeftParenthesis) => crate::call_checker::call(session, node, purpose),
         Some(TokenKind::LeftBracket) => element(session, node),
-        Some(TokenKind::Dot) => crate::module_calls::call(session, node, purpose)
-            .unwrap_or_else(|| member(session, node, purpose)),
+        Some(TokenKind::Dot) => dotted(session, node, purpose),
         _ => crate::expression_checker::invalid(session, node),
     }
+}
+
+fn dotted(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    purpose: ExpressionPurpose,
+) -> ExpressionId {
+    if let Some(member) = crate::enum_access::expression(session, node) {
+        return member;
+    }
+    if let Some(call) = crate::module_calls::call(session, node, purpose) {
+        return call;
+    }
+    member(session, node, purpose)
 }
 
 fn element(session: &mut AnalysisSession<'_>, node: usize) -> ExpressionId {
@@ -78,10 +91,29 @@ fn member(
     let target = children.first().copied().unwrap_or(node);
     let receiver = crate::expression_checker::check(session, target);
     let name_node = children.get(1).copied().unwrap_or(node);
+    match session.expression_type(receiver) {
+        Type::Record(record) => {
+            crate::record_access::field(session, node, (receiver, record, name_node))
+        }
+        Type::Object(class) => object_member(
+            session,
+            node,
+            (target, receiver, class),
+            (name_node, purpose),
+        ),
+        _ => crate::expression_checker::invalid(session, node),
+    }
+}
+
+fn object_member(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    parts: (usize, ExpressionId, crate::identities::ClassId),
+    member: (usize, ExpressionPurpose),
+) -> ExpressionId {
+    let (target, receiver, class) = parts;
+    let (name_node, purpose) = member;
     let name = session.name(name_node);
-    let Type::Object(class) = session.expression_type(receiver) else {
-        return crate::expression_checker::invalid(session, node);
-    };
     if let Some(arguments) = session.child(node, NodeKind::Arguments) {
         return crate::call_checker::method(
             session,

@@ -17,7 +17,9 @@ pub fn lower_declare(
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
     for &local_id in locals {
-        lower_single_declare(local_id, span, context);
+        for target in crate::records::targets(local_id, context.expression_context.module) {
+            lower_single_declare(target, span, context);
+        }
     }
     context.builder.emit_void(Operation::StmtExit, vec![], span);
 }

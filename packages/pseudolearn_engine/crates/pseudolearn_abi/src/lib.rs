@@ -5,6 +5,7 @@ pub mod frame;
 pub mod handle;
 pub mod header;
 pub mod object_layout;
+pub mod record_layout;
 pub mod sentinel;
 pub mod string_layout;
 pub mod word;
@@ -26,6 +27,9 @@ pub use object_layout::{
     ClassReferenceOffsets, OBJECT_FIELDS_START_OFFSET_WITH_MASK,
     OBJECT_FIELDS_START_OFFSET_WITHOUT_MASK, OBJECT_HEADER_WORDS, OBJECT_INTEGER_MASK_WORD_OFFSET,
     object_fields_start_offset,
+};
+pub use record_layout::{
+    RECORD_MAXIMUM_LEAVES, RecordBank, RecordLayout, RecordLayoutError, RecordLeaf,
 };
 pub use sentinel::{
     BOOLEAN_ABSENT_BITS, CHARACTER_ABSENT_BITS, REAL_ABSENT_BITS, boolean_absent_word,

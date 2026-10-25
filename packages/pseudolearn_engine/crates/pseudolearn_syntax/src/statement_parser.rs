@@ -50,6 +50,7 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
             | KeywordKind::SwitchKeyword,
         ) => return crate::control_statement_parser::compound(state),
         TokenKind::Keyword(KeywordKind::Declare) => crate::declaration_parser::declaration(state),
+        TokenKind::Keyword(KeywordKind::ConstantKeyword) => crate::constant_parser::constant(state),
         TokenKind::Keyword(KeywordKind::Dimension) => crate::declaration_parser::dimension(state),
         TokenKind::Keyword(KeywordKind::Write) => output(state),
         TokenKind::Keyword(KeywordKind::Read) => input(state),

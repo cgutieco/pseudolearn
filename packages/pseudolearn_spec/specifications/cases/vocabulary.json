@@ -87,6 +87,10 @@
     "en": ",",
     "es": ","
   },
+  "constantKeyword": {
+    "en": "constant",
+    "es": "Constante"
+  },
   "constructor": {
     "en": "constructor",
     "es": "Constructor"
@@ -171,6 +175,18 @@
     "en": "endClass",
     "es": "Fin Clase"
   },
+  "endEnum": {
+    "en": "endEnum",
+    "es": "FinEnumerado"
+  },
+  "endEnum.alias.en.0": {
+    "en": "end enum",
+    "es": "FinEnumerado"
+  },
+  "endEnum.alias.es.0": {
+    "en": "endEnum",
+    "es": "Fin Enumerado"
+  },
   "endFor": {
     "en": "endFor",
     "es": "FinPara"
@@ -206,6 +222,18 @@
   "endMethod.alias.es.0": {
     "en": "endMethod",
     "es": "Fin Metodo"
+  },
+  "endRecord": {
+    "en": "endRecord",
+    "es": "FinRegistro"
+  },
+  "endRecord.alias.en.0": {
+    "en": "end record",
+    "es": "FinRegistro"
+  },
+  "endRecord.alias.es.0": {
+    "en": "endRecord",
+    "es": "Fin Registro"
   },
   "endSubroutine": {
     "en": "endSubroutine",
@@ -274,6 +302,10 @@
   "endWhile.alias.es.0": {
     "en": "endWhile",
     "es": "Fin Mientras"
+  },
+  "enumKeyword": {
+    "en": "enum",
+    "es": "Enumerado"
   },
   "equal": {
     "en": "=",
@@ -554,6 +586,10 @@
   "realType": {
     "en": "real",
     "es": "Real"
+  },
+  "recordKeyword": {
+    "en": "record",
+    "es": "Registro"
   },
   "repeat": {
     "en": "repeat",

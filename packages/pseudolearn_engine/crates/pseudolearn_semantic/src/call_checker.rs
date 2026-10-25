@@ -25,6 +25,9 @@ pub(crate) fn call(
     let children = session.children(node);
     let target = children.first().copied().unwrap_or(node);
     let name = session.name(target);
+    if let Some(record) = session.declared.records.get(&name).copied() {
+        return crate::record_access::construct(session, node, record);
+    }
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);
     let mut arguments = arguments_for(session, arguments);
     if let Some(function) = session.functions.get(&name).copied() {

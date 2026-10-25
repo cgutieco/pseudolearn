@@ -2803,6 +2803,412 @@
         "limit": "numero"
       }
     },
+    "constantNotEvaluable": {
+      "mensajes": {
+        "es": "El valor de la constante {lexeme} no se puede calcular al analizar el programa",
+        "en": "The value of constant {lexeme} cannot be computed when the program is analyzed"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantArithmeticOverflow": {
+      "mensajes": {
+        "es": "El cálculo de la constante {lexeme} desborda el rango permitido",
+        "en": "Computing constant {lexeme} overflows the allowed range"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantDivisionByZero": {
+      "mensajes": {
+        "es": "El cálculo de la constante {lexeme} divide entre cero",
+        "en": "Computing constant {lexeme} divides by zero"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "circularConstantDefinition": {
+      "mensajes": {
+        "es": "La constante {lexeme} depende de sí misma",
+        "en": "Constant {lexeme} depends on itself"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantBudgetExceeded": {
+      "mensajes": {
+        "es": "El cálculo de la constante {lexeme} supera el presupuesto permitido",
+        "en": "Computing constant {lexeme} exceeds the allowed budget"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "constantReassigned": {
+      "mensajes": {
+        "es": "La constante {lexeme} no admite asignación",
+        "en": "Constant {lexeme} cannot be assigned"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateTypeDeclaration": {
+      "mensajes": {
+        "es": "El tipo {lexeme} ya está declarado",
+        "en": "Type {lexeme} is already declared"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "duplicateEnumMember": {
+      "mensajes": {
+        "es": "El miembro {lexeme} está repetido en el enumerado",
+        "en": "Member {lexeme} is repeated in the enumeration"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "undefinedEnumMember": {
+      "mensajes": {
+        "es": "El enumerado no tiene el miembro {lexeme}",
+        "en": "The enumeration has no member {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recursiveRecordContainment": {
+      "mensajes": {
+        "es": "El registro {lexeme} se contiene a sí mismo por valor",
+        "en": "Record {lexeme} contains itself by value"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordCannotBeWritten": {
+      "mensajes": {
+        "es": "Un registro no se puede escribir directamente",
+        "en": "A record cannot be written directly"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "recordPassedByReference": {
+      "mensajes": {
+        "es": "El registro {lexeme} no se puede pasar por referencia",
+        "en": "Record {lexeme} cannot be passed by reference"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordArrayElementNotSupported": {
+      "mensajes": {
+        "es": "Un arreglo no puede tener registros como elementos",
+        "en": "An array cannot have records as elements"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "recordClassFieldNotSupported": {
+      "mensajes": {
+        "es": "El campo {lexeme} de una clase no puede ser un registro",
+        "en": "Field {lexeme} of a class cannot be a record"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "recordWithoutFields": {
+      "mensajes": {
+        "es": "El registro {lexeme} debe tener al menos un campo",
+        "en": "Record {lexeme} must have at least one field"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "expectedConstantName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre de la constante",
+        "en": "Expected constant name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedConstantInitializer": {
+      "mensajes": {
+        "es": "La constante necesita un valor inicial",
+        "en": "A constant needs an initial value"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedEnumName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del enumerado",
+        "en": "Expected enumeration name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedEnumMember": {
+      "mensajes": {
+        "es": "Se esperaba un miembro del enumerado",
+        "en": "Expected an enumeration member"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedEnum": {
+      "mensajes": {
+        "es": "Enumerado sin cerrar al final del archivo",
+        "en": "Unclosed enumeration at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedRecordName": {
+      "mensajes": {
+        "es": "Se esperaba el nombre del registro",
+        "en": "Expected record name"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "expectedRecordField": {
+      "mensajes": {
+        "es": "Un registro solo contiene declaraciones de campo",
+        "en": "A record only contains field declarations"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "unclosedRecord": {
+      "mensajes": {
+        "es": "Registro sin cerrar al final del archivo",
+        "en": "Unclosed record at end of file"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "recordMemberSignatureNotSupported": {
+      "mensajes": {
+        "es": "Un método o constructor no puede recibir ni devolver registros",
+        "en": "A method or constructor cannot receive or return records"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "recordNotInferable": {
+      "mensajes": {
+        "es": "La variable {lexeme} debe declararse con su tipo para guardar un registro",
+        "en": "Variable {lexeme} must be declared with its type to hold a record"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "internalFault": {
       "mensajes": {
         "es": "Fallo interno del motor",

@@ -33,6 +33,13 @@ El prefijo contiguo de referencias no compone con herencia sin mover campos here
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
 
+`RecordLayout` describe un registro como lista de hojas con su banco (escalar o de referencias) y su desplazamiento
+dentro de ese banco; las áreas escalar y de referencias son independientes, como el marco bicameral, de modo que el
+mapa de raíces de un registro es estático por tipo. Un registro anidado se aplana con `from_parts` y el máximo de
+hojas es el de un operando de 16 bits. Hoy lowering aplana los registros en valores y no consulta desplazamientos en
+memoria: esta disposición es el dato compartido que usarán la incrustación en objetos y vectores
+sin recalcular desplazamientos en cada motor; hasta entonces no tiene consumidor.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

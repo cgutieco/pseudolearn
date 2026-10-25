@@ -51,6 +51,12 @@ importa. Elección: `is_reserved(palabra, perfil)` consulta `find_keyword` con e
 reservada solo en otro perfil no lo es aquí y es un nombre legal; el vocabulario de cada perfil se consulta con su propia
 tabla generada, sin tablas cruzadas. Descartado: una lista aparte de palabras prohibidas, que podría divergir del corpus.
 
+### Aperturas de perfil
+
+La primera palabra de un archivo decide el perfil cuando es una apertura de unidad. Además de `Algoritmo`, `Clase` y
+`SubProceso`, lo son `Constante`, `Enumerado` y `Registro` (y sus equivalentes en inglés), de modo que un archivo que
+empieza por una declaración de tipo o de constante conserva la detección automática.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

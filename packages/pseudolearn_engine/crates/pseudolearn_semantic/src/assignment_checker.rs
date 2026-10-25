@@ -12,7 +12,15 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
     let destination = check_for(session, target, ExpressionPurpose::Destination);
     let value_node = children.get(1).copied()?;
     let mut value = crate::expression_checker::check(session, value_node);
-    let location = place(session, destination)?;
+    let Some(location) = place(session, destination) else {
+        if crate::record_access::is_field(session, destination) {
+            session.report(DiagnosticCode::InvalidAssignmentTarget, target);
+        }
+        return None;
+    };
+    if let HirPlace::RecordField { local, .. } = location {
+        session.writes.insert(local);
+    }
     if matches!(location, HirPlace::WholeArray(_)) {
         session.report(DiagnosticCode::ArrayCannotBeUsedAsValue, target);
         return None;
@@ -67,6 +75,10 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
             session.report(DiagnosticCode::InvalidReadTarget, target);
             continue;
         };
+        if matches!(session.expression_type(value), Type::Record(_)) {
+            session.report(DiagnosticCode::InvalidReadTarget, target);
+            continue;
+        }
         if let HirPlace::Local(local) = location {
             session.writes.insert(local);
             if let Some(initialized) = usize::try_from(local.0)
@@ -79,6 +91,30 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
         destinations.push(location);
     }
     HirStatement::Read(destinations)
+}
+
+fn reject_inferred_record(
+    session: &mut AnalysisSession<'_>,
+    local: LocalId,
+    naming: (usize, &str),
+) {
+    session.named_report(DiagnosticCode::RecordNotInferable, naming.0, naming.1);
+    session.invalid.insert(local);
+}
+
+fn inference_code(
+    session: &AnalysisSession<'_>,
+    expected: &Type,
+    actual: &Type,
+) -> Option<DiagnosticCode> {
+    match (expected, actual) {
+        (Type::Unknown, _) => Some(DiagnosticCode::InferredVariableType),
+        (Type::Integer, Type::Real) => Some(DiagnosticCode::WidenedVariableType),
+        _ if !crate::type_resolution::assignable(session, expected, actual) => {
+            Some(DiagnosticCode::TypeConflictOnInferredVariable)
+        }
+        _ => None,
+    }
 }
 
 fn infer_assignment(
@@ -96,16 +132,13 @@ fn infer_assignment(
     if matches!(actual, Type::Unknown | Type::Error) {
         return;
     }
+    if session.inferred.contains(&local) && matches!(actual, Type::Record(_)) {
+        reject_inferred_record(session, local, (node, &declaration.name));
+        return;
+    }
     if session.inferred.contains(&local) {
         let type_id = session.module.types.intern(actual.clone());
-        let code = match (&expected, &actual) {
-            (Type::Unknown, _) => Some(DiagnosticCode::InferredVariableType),
-            (Type::Integer, Type::Real) => Some(DiagnosticCode::WidenedVariableType),
-            _ if !crate::type_resolution::assignable(session, &expected, &actual) => {
-                Some(DiagnosticCode::TypeConflictOnInferredVariable)
-            }
-            _ => None,
-        };
+        let code = inference_code(session, &expected, &actual);
         if let Some(code) = code {
             session.named_report(code, node, &declaration.name);
             if code == DiagnosticCode::InferredVariableType {

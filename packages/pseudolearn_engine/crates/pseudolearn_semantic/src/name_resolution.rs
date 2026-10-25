@@ -12,6 +12,12 @@ pub(crate) fn local(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     let name = session.name(node);
+    if session.local(&name).is_none()
+        && let Some(index) =
+            crate::constant_registry::find_in(session, Some(session.current), &name)
+    {
+        return crate::constant_use::reference(session, index, node, purpose);
+    }
     let local = session
         .local(&name)
         .unwrap_or_else(|| implicit(session, node, &name, purpose));

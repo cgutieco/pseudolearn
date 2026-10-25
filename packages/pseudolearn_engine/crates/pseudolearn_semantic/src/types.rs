@@ -1,4 +1,4 @@
-use crate::identities::{ClassId, TypeId};
+use crate::identities::{ClassId, EnumId, RecordId, TypeId};
 use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -12,6 +12,8 @@ pub enum Type {
     Never,
     Array { element: TypeId, rank: u32 },
     Object(ClassId),
+    Enum(EnumId),
+    Record(RecordId),
     Unknown,
     Error,
 }

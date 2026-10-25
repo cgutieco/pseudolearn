@@ -53,6 +53,9 @@
     "LANG.CONTROL.IF",
     "LANG.CONTROL.REPEAT",
     "LANG.CONTROL.SWITCH",
+    "LANG.DECL.CONSTANT",
+    "LANG.TYPES.ENUM",
+    "LANG.TYPES.RECORD",
     "LANG.CONTROL.WHILE",
     "LANG.DECL.DESIGNATOR",
     "LANG.DECL.UNINITIALIZED",
@@ -277,6 +280,66 @@
     },
     {
       "regla": "LANG.CONTROL.REPEAT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.CONSTANT@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.CONSTANT@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.CONSTANT@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.DECL.CONSTANT@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.ENUM@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.ENUM@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.ENUM@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.TYPES.RECORD@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CONTROL.SWITCH@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },

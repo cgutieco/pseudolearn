@@ -12,7 +12,8 @@ pub fn lower_type(type_id: TypeId, module: &HirModule) -> IrType {
         Type::Boolean => IrType::Bool,
         Type::Character => IrType::Char,
         Type::String => IrType::Str,
-        Type::Unit | Type::Never => IrType::Unit,
+        Type::Enum(_) => IrType::I64,
+        Type::Unit | Type::Never | Type::Record(_) => IrType::Unit,
         Type::Array { element, rank } => IrType::Array {
             element: Box::new(lower_type(element, module)),
             dimension_rank: rank,

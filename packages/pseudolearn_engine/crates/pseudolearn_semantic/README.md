@@ -104,6 +104,48 @@ otra unidad. Al enlazar un `Importar`, el nombre local (alias o último segmento
 unidad que importa produce `reservedImportNeedsAlias`; un alias legal lo resuelve y el símbolo conserva su identidad, que
 es independiente del lexema. Descartado: renombrar el símbolo en el módulo exportador o inventar un escape de nombres.
 
+### Constantes, enumerados y registros por valor
+
+**Constantes.** `Constante nombre Como tipo <- expresión` se calcula durante el registro, no en ejecución. El evaluador
+(`constant_nodes`, `constant_evaluator`, `constant_arithmetic`) recorre el árbol sintáctico y no el HIR, porque el
+inicializador no debe pasar por la comprobación de variables ni dejar lecturas en el análisis de uso. Admite literales,
+otras constantes, miembros de enumerado, signos, `NO`, `+ - * / div mod`, comparaciones, `Y`/`O` con cortocircuito y
+concatenación de texto; la potencia, las variables y las llamadas dan `constantNotEvaluable`. Cada constante tiene
+estado (`Pendiente`, `Evaluando`, `Valor`, `Fallida`) en una tabla contigua con sus ámbitos de nombres (módulo y función);
+evaluar una constante evalúa antes las que referencia, con un ciclo reportado una sola vez y dependientes que fallan en
+silencio. El presupuesto por constante es de 10 000 pasos y 65 536 bytes por valor de texto (un valor de exactamente ese
+tamaño cabe) y la profundidad de dependencia se acota en 256; los límites se inyectan en la sesión para probar justo
+debajo, en el límite y encima sin construir programas enormes. El resultado se pliega como `Literal` en cada uso, por lo
+que lowering no conoce las constantes. La aritmética repite la del runtime (enteros comprobados de 64 bits, cociente
+truncado, `mod` con mínimo entre -1 igual a 0, real finito y todo divisor cero es error) porque semantic no importa
+runtime ni la biblioteca; la conversión de entero a real se copia del algoritmo de la biblioteca y un test la compara con
+la conversión exacta. Se rechaza evaluar con funciones de biblioteca para no duplicar ni desviar la matriz de
+operaciones. Una constante de módulo es privada del módulo y la local es visible en todo su cuerpo; una variable local
+puede ocultar una constante de módulo, pero no repetir el nombre de otra constante de su ámbito.
+
+**Enumerados.** `Type::Enum` es escalar. Cada miembro es un `Literal::Integer` con el ordinal (desde cero, en orden de
+declaración) y tipo enumerado, de modo que `Segun`, la igualdad y las constantes lo usan sin ramas nuevas; el nombre
+se conserva con su grafía de declaración en `HirEnum` para `Escribir`. Solo admiten `=` y `<>` entre valores del mismo
+enumerado; el orden y la aritmética son `incompatibleOperandTypes`. Un enumerado vacío es válido. El nombre comparte
+espacio con clases y registros del módulo (`duplicateTypeDeclaration`); los miembros pueden repetirse entre enumerados
+porque siempre se cualifican.
+
+**Registros.** `Type::Record` no es un valor de la RI. Semantic calcula las hojas de cada registro en orden de
+declaración (`HirRecord.leaf_types`, `leaf_names`, y por campo `offset` y `width`) y crea para cada variable de tipo
+registro un `HirLocal` sintético por hoja (`record_locals`, nombre `p.x`, no nombrable por el programa). Así el entorno
+SSA de lowering, los acarreos de bucle y las uniones de ramas, que ya operan por `LocalId`, sirven sin cambios. La
+contención por valor se detecta con un recorrido iterativo en profundidad que emite un solo diagnóstico por ciclo y
+reemplaza el campo ofensor por tipo de error para que el aplanado termine; las hojas se calculan en el orden de
+terminación, de modo que los registros anidados ya están listos. Se descarta representar el registro como objeto en el
+montón con copia: asignaría memoria en cada copia; su condición de reversión es una medición con cargas de registros que muestre
+presión de registros o copia dominante.
+
+Pendientes declarados de esta entrega: registros como elemento de arreglo, campo de clase, y parámetro o resultado de
+métodos y constructores (diagnosticados, `recordArrayElementNotSupported`, `recordClassFieldNotSupported`,
+`recordMemberSignatureNotSupported`); paso por referencia de registros (`recordPassedByReference`); inferencia de
+registros en flexible (`recordNotInferable`); visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y
+registros entre módulos de un proyecto, que hoy son privados del módulo; exhaustividad de `Segun` sobre enumerados.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

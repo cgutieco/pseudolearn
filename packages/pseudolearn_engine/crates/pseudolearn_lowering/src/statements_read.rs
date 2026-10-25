@@ -31,6 +31,12 @@ pub fn lower_read(
                 lower_read_element(*array, indices, span, context);
             }
             HirPlace::WholeArray(_) => {}
+            HirPlace::RecordField { .. } => {
+                let module = context.expression_context.module;
+                for local_id in crate::records::destination_targets(place, module) {
+                    lower_read_local(local_id, span, context);
+                }
+            }
         }
     }
     context.builder.emit_void(Operation::StmtExit, vec![], span);

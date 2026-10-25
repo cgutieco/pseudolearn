@@ -74,6 +74,17 @@ archivo que lo importa (`while` en inglés, `Mientras` en español). Elección: 
 el alias de `Como` sigue exigiendo un nombre legal. La obligación de alias para el nombre local reservado se comprueba al
 enlazar (`pseudolearn_semantic`), no al analizar la sintaxis.
 
+### Constantes, enumerados y registros
+
+`Constante nombre Como tipo <- expresión;`, `Enumerado nombre … FinEnumerado` y `Registro nombre … FinRegistro` son
+unidades superiores (la constante también es sentencia). Cada una tiene su analizador (`constant_parser`,
+`enum_parser`, `record_parser`) para no crecer `unit_parser`, y la recuperación reconoce sus cierres. Un enumerado lleva
+una sola línea de miembros; un registro solo admite declaraciones `Definir`, y cualquier otra forma, incluida
+`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` siguen limitados a subprogramas y clases. Una
+etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuerpo anterior igual que un literal. Las
+construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
+resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

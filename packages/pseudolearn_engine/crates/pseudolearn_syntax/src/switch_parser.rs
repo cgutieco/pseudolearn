@@ -64,7 +64,9 @@ fn default_case(state: &mut ParserState<'_>) -> Result<(), ()> {
 }
 
 pub(crate) fn starts_label(state: &mut ParserState<'_>) -> bool {
-    if !state.kind().is_literal() && state.kind() != TokenKind::Minus {
+    if !state.kind().is_literal()
+        && !matches!(state.kind(), TokenKind::Minus | TokenKind::Identifier)
+    {
         return false;
     }
     let mut token = state.cursor;

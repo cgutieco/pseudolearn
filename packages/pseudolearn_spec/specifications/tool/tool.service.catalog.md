@@ -2603,6 +2603,356 @@
         }
       },
       {
+        "id": "help.constant",
+        "identity": {
+          "kind": "construction",
+          "id": "constantDeclaration",
+          "role": "constant_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "constantKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.DECL.CONSTANT",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Declaración de constante",
+            "summary": "Fija un valor calculado al analizar el programa.",
+            "purpose": "El valor inicial es obligatorio y la constante no se reasigna.",
+            "parts": [
+              {
+                "identity": "constantKeyword",
+                "text": "Inicia la declaración de una constante."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de constante",
+                "profile": "es",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C4",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de constante",
+                "profile": "es",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Constant declaration",
+            "summary": "Fixes a value computed when the program is analyzed.",
+            "purpose": "The initial value is required and the constant is never reassigned.",
+            "parts": [
+              {
+                "identity": "constantKeyword",
+                "text": "Starts a constant declaration."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Constant declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C4",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Constant declaration",
+                "profile": "en",
+                "specification": "LANG.DECL.CONSTANT",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.enum",
+        "identity": {
+          "kind": "construction",
+          "id": "enumUnit",
+          "role": "enum_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "enumKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endEnum",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.ENUM",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Declaración de enumerado",
+            "summary": "Define un tipo con un conjunto cerrado de miembros.",
+            "purpose": "Los miembros se usan como nombre.miembro y se comparan por igualdad.",
+            "parts": [
+              {
+                "identity": "enumKeyword",
+                "text": "Inicia la declaración de un enumerado."
+              },
+              {
+                "identity": "endEnum",
+                "text": "Cierra la declaración de un enumerado."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de enumerado",
+                "profile": "es",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de enumerado",
+                "profile": "es",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Enumeration declaration",
+            "summary": "Defines a type with a closed set of members.",
+            "purpose": "Members are used as name.member and compared for equality.",
+            "parts": [
+              {
+                "identity": "enumKeyword",
+                "text": "Starts an enumeration declaration."
+              },
+              {
+                "identity": "endEnum",
+                "text": "Closes an enumeration declaration."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Enumeration declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C12",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Enumeration declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.ENUM",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "help.record",
+        "identity": {
+          "kind": "construction",
+          "id": "recordUnit",
+          "role": "record_declaration"
+        },
+        "tokens": [
+          {
+            "identity": "recordKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "endRecord",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.RECORD",
+            "version": "1.0.0",
+            "element": "R1"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Declaración de registro",
+            "summary": "Agrupa campos en un tipo que se copia por valor.",
+            "purpose": "Asignar, pasar o devolver un registro copia todos sus campos.",
+            "parts": [
+              {
+                "identity": "recordKeyword",
+                "text": "Inicia la declaración de un registro."
+              },
+              {
+                "identity": "endRecord",
+                "text": "Cierra la declaración de un registro."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Programa que se ejecuta: Declaración de registro",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Diagnóstico deliberado: Declaración de registro",
+                "profile": "es",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Record declaration",
+            "summary": "Groups fields into a type that is copied by value.",
+            "purpose": "Assigning, passing or returning a record copies all its fields.",
+            "parts": [
+              {
+                "identity": "recordKeyword",
+                "text": "Starts a record declaration."
+              },
+              {
+                "identity": "endRecord",
+                "text": "Closes a record declaration."
+              }
+            ],
+            "constraints": [],
+            "common_errors": [],
+            "examples": [
+              {
+                "case": "C1",
+                "kind": "executable",
+                "label": "Program that runs: Record declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C3",
+                "kind": "diagnostic",
+                "label": "Deliberate diagnostic: Record declaration",
+                "profile": "en",
+                "specification": "LANG.TYPES.RECORD",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      {
         "id": "help.module-import",
         "identity": {
           "kind": "construction",
@@ -6084,6 +6434,49 @@
           "tokens": [
             "classKeyword",
             "endClass"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "constantDeclaration",
+            "role": "constant_declaration"
+          },
+          "productions": [
+            "constantDeclaration"
+          ],
+          "tokens": [
+            "constantKeyword"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "enumUnit",
+            "role": "enum_declaration"
+          },
+          "productions": [
+            "enumUnit",
+            "enumMembers"
+          ],
+          "tokens": [
+            "enumKeyword",
+            "endEnum"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "recordUnit",
+            "role": "record_declaration"
+          },
+          "productions": [
+            "recordUnit",
+            "recordField"
+          ],
+          "tokens": [
+            "recordKeyword",
+            "endRecord"
           ]
         },
         {

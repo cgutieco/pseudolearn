@@ -68,6 +68,7 @@ fn unit_profiles(units: &[ProjectUnit<'_>]) -> Vec<Profile> {
 
 fn check_bodies(session: &mut AnalysisSession<'_>) {
     crate::unit_resolver::register_members(session);
+    crate::constant_registry::evaluate_all(session);
     crate::hierarchy::check(session);
     crate::flow::bodies(session);
     crate::constructor_rules::check(session);
@@ -125,6 +126,10 @@ fn register(
         }
     }
     link_classes(session, bindings, &classes);
+    for unit in 0..count {
+        session.switch_unit(unit);
+        crate::type_declarations::register(session);
+    }
     let mut functions = FunctionTable::new();
     for unit in 0..count {
         session.switch_unit(unit);

@@ -1,7 +1,9 @@
+use crate::constant_registry::{ConstantEntry, ConstantLimits};
 use crate::expression_model::HirExpression;
 use crate::hir::HirModule;
 use crate::identities::{ClassId, ExpressionId, FunctionId, LocalId, StatementId, TypeId};
 use crate::statement_model::HirStatement;
+use crate::type_scope::TypeScope;
 use crate::types::Type;
 use pseudolearn_diagnostics::{Diagnostic, DiagnosticCode};
 use pseudolearn_lexicon::Profile;
@@ -27,6 +29,7 @@ pub(crate) struct UnitScope {
     pub functions: BTreeMap<String, FunctionId>,
     pub classes: BTreeMap<String, ClassId>,
     pub modules: BTreeMap<String, BTreeMap<String, FunctionId>>,
+    pub declared: TypeScope,
 }
 
 pub(crate) struct AnalysisSession<'syntax> {
@@ -37,6 +40,10 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub diagnostics: Vec<Diagnostic>,
     pub functions: BTreeMap<String, FunctionId>,
     pub classes: BTreeMap<String, ClassId>,
+    pub declared: TypeScope,
+    pub constants: Vec<ConstantEntry>,
+    pub local_constants: Vec<BTreeMap<String, usize>>,
+    pub constant_limits: ConstantLimits,
     pub local_names: Vec<BTreeMap<String, LocalId>>,
     pub declarations: BTreeMap<usize, Vec<LocalId>>,
     pub initialized: Vec<bool>,
@@ -69,6 +76,10 @@ impl<'syntax> AnalysisSession<'syntax> {
             diagnostics: Vec::new(),
             functions: BTreeMap::new(),
             classes: BTreeMap::new(),
+            declared: TypeScope::default(),
+            constants: Vec::new(),
+            local_constants: Vec::new(),
+            constant_limits: ConstantLimits::default(),
             local_names: Vec::new(),
             declarations: BTreeMap::new(),
             initialized: Vec::new(),

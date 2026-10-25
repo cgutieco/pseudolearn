@@ -7,8 +7,10 @@ use pseudolearn_syntax::NodeKind;
 
 pub(crate) fn register(session: &mut AnalysisSession<'_>) {
     register_classes(session);
+    crate::type_declarations::register(session);
     register_functions(session);
     register_members(session);
+    crate::constant_registry::evaluate_all(session);
 }
 
 pub(crate) fn register_classes(session: &mut AnalysisSession<'_>) {
@@ -82,6 +84,7 @@ pub(crate) fn register_function(
         .child(node, NodeKind::Type)
         .map(|node| crate::type_resolution::resolve(session, node))
         .unwrap_or_else(|| session.module.types.intern(Type::Unit));
+    check_member_result(session, node, (owner, result));
     let kind = function_kind(session, node, result);
     let identifier = FunctionId(u32::try_from(session.module.functions.len()).unwrap_or(u32::MAX));
     let top_level = owner.is_none() && kind != FunctionKind::Main;
@@ -103,11 +106,29 @@ pub(crate) fn register_function(
         syntax: node,
         private: false,
     });
-    session.local_names.push(std::collections::BTreeMap::new());
+    open_scopes(session);
     session.current = identifier;
     crate::local_registry::parameters(session, node);
     crate::local_registry::declarations(session, node);
     identifier
+}
+
+fn check_member_result(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    signature: (Option<ClassId>, crate::identities::TypeId),
+) {
+    let (owner, result) = signature;
+    if owner.is_some() && matches!(session.module.types.get(result), Type::Record(_)) {
+        session.report(DiagnosticCode::RecordMemberSignatureNotSupported, node);
+    }
+}
+
+fn open_scopes(session: &mut AnalysisSession<'_>) {
+    session.local_names.push(std::collections::BTreeMap::new());
+    session
+        .local_constants
+        .push(std::collections::BTreeMap::new());
 }
 
 fn register_name(
