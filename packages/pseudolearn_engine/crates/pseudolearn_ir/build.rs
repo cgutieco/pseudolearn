@@ -85,7 +85,7 @@ fn parse_instruction_block(
     let has_result = signature.contains("->") && !signature.ends_with("-> unit");
     let is_terminator = matches!(
         name.as_str(),
-        "jump" | "branch" | "return" | "trap.missing_return" | "unreachable"
+        "jump" | "branch" | "switch" | "return" | "trap.missing_return" | "unreachable"
     );
     let can_trap = fields
         .get("trampas")

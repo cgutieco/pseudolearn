@@ -233,6 +233,8 @@ Problema: el objeto debe ser reproducible. Elección: `is_pic`, sin información
 Perfil por sitio: si el módulo tiene tabla de perfiles, el descriptor de `out.write` y `text.format` lleva en los bits 16 a 23 el
 índice del vocabulario del sitio (`Module::vocabulary_index_of`); sin tabla vale 0 y el código generado no cambia.
 
+Las variantes usan la misma disposición por banco del HIR y de la VM. La reinterpretación convierte a palabra y desde palabra con bitcast para binary64, extensión o reducción para tipos estrechos y copia de asa para referencias. La carga cruda de celdas locales permite el centinela inactivo; el camino administrado conserva la comprobación habitual. El terminador switch se entrega a Cranelift Switch, que emite tablas para ordinales densos; las aristas con argumentos pasan por bloques puente para conservar los parámetros y los indicadores de definición.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés, sin comentarios ni atributos de supresión; límites de `architecture.yaml`. Una familia de instrucciones por

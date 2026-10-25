@@ -56,8 +56,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase A\nFinClase\nClase B Hereda De A\nFinClase\nAlgoritmo P\nDefinir x Como A;\nx <- Nuevo B();\nFinAlgoritmo\n",
-    "en": "class A\nendClass\nclass B inherits from A\nendClass\nalgorithm P\ndefine x as A;\nx <- new B();\nendAlgorithm\n"
+    "es": "Clase A\nFinClase\nClase B Hereda De A\nFinClase\nAlgoritmo P\nDefinir x Como A <- Nuevo B();\nFinAlgoritmo\n",
+    "en": "class A\nendClass\nclass B inherits from A\nendClass\nalgorithm P\ndefine x as A <- new B();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

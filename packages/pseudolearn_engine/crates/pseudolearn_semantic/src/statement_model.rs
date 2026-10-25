@@ -11,6 +11,7 @@ pub struct HirCase {
 #[derive(Clone, Debug, PartialEq)]
 pub enum HirStatement {
     Declare(Vec<LocalId>),
+    VariantMatch(Box<crate::variant_model::HirVariantMatch>),
     Dimension(Vec<HirDimension>),
     Assign {
         destination: HirPlace,

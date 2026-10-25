@@ -35,6 +35,9 @@ pub(super) fn decode(
             Ok(Op::Jump { edge })
         }
         Opcode::Branch => decode_branch(context, loaded, (program_counter, probed), instruction),
+        Opcode::Switch => {
+            super::switch::decode(context, loaded, (program_counter, probed), instruction)
+        }
         Opcode::Call | Opcode::CallVirtual => decode_call(context, loaded, instruction),
         Opcode::Return => decode_return(instruction),
         Opcode::LoopCheckStep => decode_check_step(context, instruction),

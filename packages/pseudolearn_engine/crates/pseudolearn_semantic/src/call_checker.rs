@@ -29,11 +29,12 @@ pub(crate) fn call(
         return crate::record_access::construct(session, node, record);
     }
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);
-    let mut arguments = arguments_for(session, arguments);
     if let Some(function) = session.functions.get(&name).copied() {
+        let mut arguments = typed_arguments(session, arguments, function);
         crate::argument_checker::check(session, function, &mut arguments, node);
         return emit_call(session, function, arguments, (node, purpose));
     }
+    let arguments = arguments_for(session, arguments);
     if let Some(function) = find_builtin(&name, session.options.profile) {
         return crate::builtin_checker::check(session, function, arguments, node);
     }
@@ -78,13 +79,16 @@ pub(crate) fn instantiate(session: &mut AnalysisSession<'_>, node: usize) -> Exp
     let name_node = session.child(node, NodeKind::Identifier).unwrap_or(node);
     let name = session.name(name_node);
     let arguments = session.child(node, NodeKind::Arguments).unwrap_or(node);
-    let mut arguments = arguments_for(session, arguments);
     let Some(class) = session.classes.get(&name).copied() else {
         session.named_report(DiagnosticCode::UndeclaredClass, name_node, &name);
         return crate::expression_checker::invalid(session, node);
     };
     let constructor =
         crate::hierarchy::class_model(session, class).and_then(|class| class.constructor);
+    let mut arguments = match constructor {
+        Some(constructor) => typed_arguments(session, arguments, constructor),
+        None => arguments_for(session, arguments),
+    };
     if let Some(constructor) = constructor {
         crate::argument_checker::check(session, constructor, &mut arguments, node);
         session.called.insert(constructor);
@@ -100,23 +104,29 @@ pub(crate) fn instantiate(session: &mut AnalysisSession<'_>, node: usize) -> Exp
 }
 
 pub(crate) fn method(session: &mut AnalysisSession<'_>, invocation: MethodCall) -> ExpressionId {
-    let arguments = arguments_for(session, invocation.arguments);
     match method_target(session, &invocation) {
-        MethodTarget::Declared(function) => emit_method(session, invocation, function, arguments),
-        MethodTarget::Implicit if arguments.is_empty() => {
+        MethodTarget::Declared(function) => {
+            let arguments = typed_arguments(session, invocation.arguments, function);
+            emit_method(session, invocation, function, arguments)
+        }
+        MethodTarget::Implicit if session.children(invocation.arguments).is_empty() => {
             let kind = session.module.types.intern(Type::Unit);
             session.emit(
                 HirExpression::SuperCall {
                     receiver: invocation.class,
                     function: None,
-                    arguments,
+                    arguments: Vec::new(),
                 },
                 kind,
                 session.span(invocation.node),
             )
         }
         MethodTarget::Implicit => {
-            crate::argument_checker::arity(session, (0, arguments.len()), invocation.node);
+            crate::argument_checker::arity(
+                session,
+                (0, session.children(invocation.arguments).len()),
+                invocation.node,
+            );
             crate::expression_checker::invalid(session, invocation.node)
         }
         MethodTarget::Missing => crate::expression_checker::invalid(session, invocation.node),
@@ -206,6 +216,43 @@ fn check_result(
         session.report(DiagnosticCode::CallAsExpressionWithoutReturnType, node);
     }
     if purpose == ExpressionPurpose::Statement && session.module.types.get(result) != Type::Unit {
-        session.report(DiagnosticCode::DiscardedReturnValue, node);
+        let code =
+            if crate::result_obligations::is_result(session, &session.module.types.get(result)) {
+                DiagnosticCode::ResultNotHandled
+            } else {
+                DiagnosticCode::DiscardedReturnValue
+            };
+        session.report(code, node);
     }
+}
+
+fn typed_arguments(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    function: FunctionId,
+) -> Vec<ExpressionId> {
+    let parameters = crate::hierarchy::function(session, function)
+        .map(|function| function.parameters.clone())
+        .unwrap_or_default();
+    session
+        .children(node)
+        .into_iter()
+        .enumerate()
+        .map(|(index, child)| {
+            let expected = parameters
+                .get(index)
+                .and_then(|parameter| usize::try_from(parameter.0).ok())
+                .and_then(|index| session.module.locals.get(index))
+                .map(|local| local.type_id);
+            match expected {
+                Some(expected) => crate::expression_checker::check_expected_for(
+                    session,
+                    child,
+                    expected,
+                    ExpressionPurpose::Argument,
+                ),
+                None => check_for(session, child, ExpressionPurpose::Argument),
+            }
+        })
+        .collect()
 }

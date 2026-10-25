@@ -56,8 +56,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 3;\nx <- x + 1;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nx <- 3;\nx <- x + 1;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 3;\nx <- x + 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 3;\nx <- x + 1;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -111,8 +111,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- \"ab\";\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nx <- \"ab\";\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- \"ab\";\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- \"ab\";\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

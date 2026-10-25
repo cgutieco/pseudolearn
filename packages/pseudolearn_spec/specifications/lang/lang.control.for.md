@@ -134,8 +134,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter, bound Como Entero;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter, bound as integer;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Definir Mutable bound Como Entero <- 0;\n  bound <- 3;\n  Para counter <- 1 Hasta bound Con Paso 1 Hacer\n    bound <- 10;\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  define mutable bound as integer <- 0;\n  bound <- 3;\n  for counter <- 1 to bound step 1 do\n    bound <- 10;\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -162,8 +162,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 do\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 1 Hasta 3 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \"\";\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 1 to 3 do\n    write counter without newline;\n  endFor\n  write \"\";\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -191,8 +191,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 0 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 0 do\n    write counter;\n  endFor\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 1 Hasta 3 Con Paso 0 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 1 to 3 step 0 do\n    write counter;\n  endFor\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -230,8 +230,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \" / \", counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    write counter without newline;\n  endFor\n  write \" / \", counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter Sin Saltar;\n  FinPara\n  Escribir \" / \", counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 1 to 3 step 1 do\n    write counter without newline;\n  endFor\n  write \" / \", counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -262,8 +262,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 10 Hasta 0 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 10 to 0 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 10 Hasta 0 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 10 to 0 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -291,8 +291,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 10 Hasta 0 Con Paso -4 Hacer\n    Escribir counter, \" \" Sin Saltar;\n  FinPara\n  Escribir \"/\", counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 10 to 0 step -4 do\n    write counter, \" \" without newline;\n  endFor\n  write \"/\", counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 10 Hasta 0 Con Paso -4 Hacer\n    Escribir counter, \" \" Sin Saltar;\n  FinPara\n  Escribir \"/\", counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 10 to 0 step -4 do\n    write counter, \" \" without newline;\n  endFor\n  write \"/\", counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -320,8 +320,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 3 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 3 to 3 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 3 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 3 to 3 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -349,8 +349,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    counter <- counter + 1;\n  FinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    counter <- counter + 1;\n  endFor\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    counter <- counter + 1;\n  FinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 1 to 3 step 1 do\n    counter <- counter + 1;\n  endFor\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -384,8 +384,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir counter Como Entero;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define counter as integer;\n  for counter <- 1 to 3 step 1 do\n    write counter;\n  endFor\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir Mutable counter Como Entero <- 0;\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define mutable counter as integer <- 0;\n  for counter <- 1 to 3 step 1 do\n    write counter;\n  endFor\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -429,8 +429,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 0 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 0 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable counter Como Entero <- 0;\nPara counter <- 1 Hasta 0 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable counter as integer <- 0;\nfor counter <- 1 to 0 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -453,8 +453,8 @@
     "estricto"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 2 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 2 do\nendFor\nwrite counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable counter Como Entero <- 0;\nPara counter <- 1 Hasta 2 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable counter as integer <- 0;\nfor counter <- 1 to 2 do\nendFor\nwrite counter;\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -482,8 +482,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 1 Hasta 2.5 Con Paso 1 Hacer\nEscribir counter;\nFinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 1 to 2.5 step 1 do\nwrite counter;\nendFor\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable counter Como Entero <- 0;\nPara counter <- 1 Hasta 2.5 Con Paso 1 Hacer\nEscribir counter;\nFinPara\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable counter as integer <- 0;\nfor counter <- 1 to 2.5 step 1 do\nwrite counter;\nendFor\nendAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -511,8 +511,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir counter Como Entero;\nPara counter <- 9223372036854775807 Hasta 9223372036854775807 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine counter as integer;\nfor counter <- 9223372036854775807 to 9223372036854775807 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable counter Como Entero <- 0;\nPara counter <- 9223372036854775807 Hasta 9223372036854775807 Con Paso 1 Hacer\nFinPara\nEscribir counter;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable counter as integer <- 0;\nfor counter <- 9223372036854775807 to 9223372036854775807 step 1 do\nendFor\nwrite counter;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {

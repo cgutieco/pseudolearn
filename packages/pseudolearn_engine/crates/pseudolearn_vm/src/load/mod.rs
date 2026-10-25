@@ -101,6 +101,7 @@ fn init_loaded_function(function: &BytecodeFunction) -> Result<LoadedFunction, V
         fast_to_probed_returns,
         probed_to_fast_returns,
         edges: Vec::new(),
+        switches: Vec::new(),
         moves: Vec::new(),
         calls: Vec::new(),
         virtual_targets: Vec::new(),

@@ -22,6 +22,7 @@ pub struct HirLocal {
     pub span: Span,
     pub scope: FunctionId,
     pub parameter: bool,
+    pub mutable: bool,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -129,6 +130,7 @@ pub struct HirModule {
     pub classes: Vec<HirClass>,
     pub enums: Vec<HirEnum>,
     pub records: Vec<HirRecord>,
+    pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,
     pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,
     pub locals: Vec<HirLocal>,
     pub expressions: ExpressionColumns,

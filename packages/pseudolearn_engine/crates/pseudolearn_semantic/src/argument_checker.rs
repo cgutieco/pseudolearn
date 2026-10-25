@@ -56,6 +56,7 @@ fn check_argument(
         session.named_report(DiagnosticCode::IncompatibleArgumentType, node, &local.name);
         return;
     }
+    crate::result_obligations::consume(session, *argument);
     *argument = crate::expression_checker::widen(session, *argument, &expected);
 }
 
@@ -79,6 +80,12 @@ fn check_reference(
     if crate::expression_checker::place(session, argument).is_none() {
         session.report(DiagnosticCode::ByReferenceArgumentRequiresDesignator, node);
         return;
+    }
+    if let Some(place) = crate::expression_checker::place(session, argument) {
+        crate::binding_checker::check_destination(session, &place, node);
+        if let crate::expression_model::HirPlace::Local(identifier) = place {
+            session.writes.insert(identifier);
+        }
     }
     let actual = session.expression_type(argument);
     if session.module.types.get(local.type_id) != actual && actual != Type::Error {

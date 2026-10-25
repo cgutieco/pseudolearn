@@ -56,8 +56,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nx <- 1;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 1;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

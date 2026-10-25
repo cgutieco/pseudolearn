@@ -60,8 +60,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase A\nMetodo get() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nClase B Hereda De A\nMetodo get() Como Entero\nRetornar 2;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir x Como A;\nx <- Nuevo B();\nEscribir x.get();\nFinAlgoritmo\n",
-    "en": "class A\nmethod get() as integer\nreturn 1;\nendMethod\nendClass\nclass B inherits from A\nmethod get() as integer\nreturn 2;\nendMethod\nendClass\nalgorithm P\ndefine x as A;\nx <- new B();\nwrite x.get();\nendAlgorithm\n"
+    "es": "Clase A\nMetodo get() Como Entero\nRetornar 1;\nFinMetodo\nFinClase\nClase B Hereda De A\nMetodo get() Como Entero\nRetornar 2;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir x Como A <- Nuevo B();\nEscribir x.get();\nFinAlgoritmo\n",
+    "en": "class A\nmethod get() as integer\nreturn 1;\nendMethod\nendClass\nclass B inherits from A\nmethod get() as integer\nreturn 2;\nendMethod\nendClass\nalgorithm P\ndefine x as A <- new B();\nwrite x.get();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

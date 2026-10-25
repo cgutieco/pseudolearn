@@ -17,13 +17,7 @@ pub(crate) fn type_argument(session: &AnalysisSession<'_>, kind: &Type) -> Diagn
                 .map(|model| model.name.clone())
                 .unwrap_or_default(),
         ),
-        Type::Record(record) => TypeName::Named(
-            usize::try_from(record.0)
-                .ok()
-                .and_then(|slot| session.module.records.get(slot))
-                .map(|model| model.name.clone())
-                .unwrap_or_default(),
-        ),
+        Type::Record(record) => TypeName::Named(record_name(session, *record)),
         Type::Object(class) => TypeName::Named(
             crate::hierarchy::class_model(session, *class)
                 .map(|class| class.name.clone())
@@ -97,5 +91,62 @@ pub(crate) fn inferred_type(session: &mut AnalysisSession<'_>, kind: &Type) {
     let argument = type_argument(session, kind);
     if let Some(diagnostic) = session.diagnostics.last_mut() {
         diagnostic.arguments.insert("type".to_owned(), argument);
+    }
+}
+
+fn variant_name(session: &AnalysisSession<'_>, record: crate::identities::RecordId) -> String {
+    let Some(variant) = session.module.variants.get(&record) else {
+        return String::new();
+    };
+    let keyword = match variant.family {
+        crate::variant_model::VariantFamily::Optional => KeywordKind::OptionalType,
+        crate::variant_model::VariantFamily::Result => KeywordKind::ResultType,
+    };
+    let arguments: Vec<_> = variant
+        .payloads
+        .iter()
+        .flatten()
+        .map(|kind| argument_display(session, *kind))
+        .collect();
+    format!(
+        "{}<{}>",
+        keyword.lexeme(session.options.profile).unwrap_or(""),
+        arguments.join(", ")
+    )
+}
+
+fn record_name(session: &AnalysisSession<'_>, record: crate::identities::RecordId) -> String {
+    if session.module.variants.contains_key(&record) {
+        return variant_name(session, record);
+    }
+    usize::try_from(record.0)
+        .ok()
+        .and_then(|index| session.module.records.get(index))
+        .map(|model| model.name.clone())
+        .unwrap_or_default()
+}
+
+fn argument_display(session: &AnalysisSession<'_>, kind: crate::identities::TypeId) -> String {
+    let DiagnosticArgument::Type(argument) =
+        type_argument(session, &session.module.types.get(kind))
+    else {
+        return String::new();
+    };
+    let name = match argument.name {
+        TypeName::Named(name) => name,
+        TypeName::Token(token) => KeywordKind::all()
+            .iter()
+            .find(|keyword| keyword.as_str() == token)
+            .and_then(|keyword| keyword.lexeme(session.options.profile))
+            .unwrap_or("")
+            .to_owned(),
+    };
+    if argument.rank == 0 {
+        name
+    } else {
+        format!(
+            "{name}[{}]",
+            ",".repeat(usize::try_from(argument.rank.saturating_sub(1)).unwrap_or(0))
+        )
     }
 }

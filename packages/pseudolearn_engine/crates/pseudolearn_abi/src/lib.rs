@@ -41,3 +41,6 @@ pub use string_layout::{
     STRING_BREADCRUMBS_HANDLE_WORD_OFFSET, STRING_FIXED_WORDS_COUNT, STRING_HEADER_WORDS,
 };
 pub use word::Word;
+
+pub mod variant_layout;
+pub use variant_layout::{VariantLayout, VariantLayoutError};

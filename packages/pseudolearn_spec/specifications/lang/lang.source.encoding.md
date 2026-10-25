@@ -164,8 +164,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir año Como Entero;\naño <- 2;\nEscribir año;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine año as integer;\naño <- 2;\nwrite año;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir año Como Entero <- 2;\nEscribir año;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine año as integer <- 2;\nwrite año;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

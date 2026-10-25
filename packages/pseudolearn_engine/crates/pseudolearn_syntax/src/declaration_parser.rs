@@ -27,6 +27,15 @@ pub(crate) fn name(state: &mut ParserState<'_>, missing: DiagnosticCode) -> Resu
 pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
+    if matches!(
+        state.kind(),
+        TokenKind::Keyword(KeywordKind::OptionalType | KeywordKind::ResultType)
+    ) {
+        let result = state.kind() == TokenKind::Keyword(KeywordKind::ResultType);
+        state.advance();
+        crate::variant_parser::type_arguments(state, result)?;
+        return Ok(state.finish(NodeKind::Type, start, marker));
+    }
     match state.kind() {
         TokenKind::Identifier
         | TokenKind::Keyword(
@@ -46,6 +55,27 @@ pub(crate) fn parse_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
 }
 
 pub(crate) fn declaration(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.advance();
+    state.keyword(KeywordKind::MutableKeyword);
+    name(state, DiagnosticCode::ExpectedIdentifierInDeclaration)?;
+    state.require(
+        TokenKind::Keyword(KeywordKind::TypeConnector),
+        DiagnosticCode::ExpectedTypeConnector,
+    )?;
+    parse_type(state)?;
+    if state.eat(TokenKind::Assignment) {
+        crate::expression_parser::parse_expression(state, 0)?;
+    } else {
+        let span = state.span();
+        state.report(DiagnosticCode::MissingBindingInitializer, span);
+        return Err(());
+    }
+    Ok(state.finish(NodeKind::Declaration, start, marker))
+}
+
+pub(crate) fn field(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     state.advance();

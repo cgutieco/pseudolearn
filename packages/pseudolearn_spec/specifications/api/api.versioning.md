@@ -75,27 +75,86 @@
 {
   "id": "C3",
   "regla": "R2",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "version", "arguments": {}},
-      {"operation": "operations", "arguments": {}},
-      {"operation": "negotiate", "arguments": {"capabilities": "service_help"}}
+      {
+        "operation": "version",
+        "arguments": {}
+      },
+      {
+        "operation": "operations",
+        "arguments": {}
+      },
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "capabilities": "service_help"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"capabilities": ["analyze", "interface_language", "ir", "execute", "observe", "seek", "gc_stress", "api", "program_view", "state_pages", "service_completion", "service_help", "generated_vocabulary", "source_identity", "event_binary"]}},
-        {"value": ["analysis", "document", "advance", "input", "cancel", "complete", "completion_templates", "open_edit_session", "apply_edit", "edit_complete", "edit_accept", "edit_insert_template", "edit_on_type", "edit_navigate_stop", "help_query", "query_state", "release"]},
-        {"value": null}
+        {
+          "value": {
+            "capabilities": [
+              "analyze",
+              "interface_language",
+              "ir",
+              "execute",
+              "observe",
+              "seek",
+              "gc_stress",
+              "api",
+              "program_view",
+              "state_pages",
+              "service_completion",
+              "service_help",
+              "generated_vocabulary",
+              "source_identity",
+              "event_binary"
+            ]
+          }
+        },
+        {
+          "value": [
+            "analysis",
+            "document",
+            "advance",
+            "input",
+            "cancel",
+            "complete",
+            "completion_templates",
+            "open_edit_session",
+            "apply_edit",
+            "edit_complete",
+            "edit_accept",
+            "edit_insert_template",
+            "edit_on_type",
+            "edit_navigate_stop",
+            "help_query",
+            "query_state",
+            "release"
+          ]
+        },
+        {
+          "value": null
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -103,23 +162,38 @@
 {
   "id": "C4",
   "regla": "R2",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "negotiate", "arguments": {"capabilities": "unknown_help"}}
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "capabilities": "unknown_help"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"failure": {"family": "version"}}
+        {
+          "failure": {
+            "family": "version"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 

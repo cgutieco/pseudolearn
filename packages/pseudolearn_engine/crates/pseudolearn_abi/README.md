@@ -38,7 +38,9 @@ dentro de ese banco; las áreas escalar y de referencias son independientes, com
 mapa de raíces de un registro es estático por tipo. Un registro anidado se aplana con `from_parts` y el máximo de
 hojas es el de un operando de 16 bits. Hoy lowering aplana los registros en valores y no consulta desplazamientos en
 memoria: esta disposición es el dato compartido que usarán la incrustación en objetos y vectores
-sin recalcular desplazamientos en cada motor; hasta entonces no tiene consumidor.
+sin recalcular desplazamientos en cada motor. Semantic ya consume estas hojas para construir la unión por banco de las variantes.
+
+`VariantLayout` superpone las cargas útiles dentro de cada banco y reserva un discriminante escalar. El máximo incluye discriminante y ambos bancos. `optional` elimina el discriminante solo para una referencia con nicho disponible: un opcional anidado cuyo interior usa el centinela debe construirse como variante etiquetada para distinguir Nada de Algo(Nada). Las ranuras de referencia inactivas se limpian a cero, manteniendo raíces estáticas. La validación de variante y capacidad precede cualquier escritura.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

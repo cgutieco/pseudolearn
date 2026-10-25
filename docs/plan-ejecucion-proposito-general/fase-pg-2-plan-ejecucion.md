@@ -189,32 +189,32 @@ programas. La tarea `.06` de cada bloque es **verificación acotada** según §7
 
 ### PG-2.03 · `Opcional<T>` y `Resultado<T,E>`
 
-- [ ] `PG-2.03.01` Especificar ambos como variantes genéricas incorporadas, construcción, consulta, propagación visible (D-PG2-14), descarte rechazado y su forma explícita de descarte; relación con la trampa de lectura sin inicializar.
-- [ ] `PG-2.03.02` Casos: propagación en cadena de tres llamadas, propagación desde `Para Cada` con limpieza, `Resultado` ignorado en sentencia, descartado explícito, `Opcional` de objeto con centinela, `Opcional<Opcional<T>>`, tipo de error distinto en propagación.
-- [ ] `PG-2.03.03` Tests de disposición de variante (unión por banco, centinela en ranuras inactivas, nicho para referencia) y del análisis de descarte.
-- [ ] `PG-2.03.04` Variantes en abi/semantic; propagación en lowering con aristas de limpieza; instrucciones de discriminante/carga útil en RI, bytecode y Cranelift.
-- [ ] `PG-2.03.05` README abi/semantic/lowering/ir/codegen; diagnóstico «resultado sin tratar» con caminos manejar/propagar en `DIAG.CATALOG`.
-- [ ] `PG-2.03.06` Verificación acotada VM/AOT y recolección forzada con ranuras de referencia inactivas.
+- [x] `PG-2.03.01` Especificar ambos como variantes genéricas incorporadas, construcción, consulta, propagación visible (D-PG2-14), descarte rechazado y su forma explícita de descarte; relación con la trampa de lectura sin inicializar.
+- [x] `PG-2.03.02` Casos: propagación en cadena de tres llamadas, propagación desde `Para Cada` con limpieza diferida explícitamente a PG-2.11, `Resultado` ignorado en sentencia, descartado explícito, `Opcional` de objeto con centinela, `Opcional<Opcional<T>>`, tipo de error distinto en propagación.
+- [x] `PG-2.03.03` Tests de disposición de variante (unión por banco, centinela en ranuras inactivas, nicho para referencia) y del análisis de descarte.
+- [x] `PG-2.03.04` Variantes en abi/semantic; propagación en lowering con aristas de retorno; limpieza de Para Cada diferida a PG-2.11; instrucciones de discriminante/carga útil en RI, bytecode y Cranelift.
+- [x] `PG-2.03.05` README abi/semantic/lowering/ir/codegen; diagnóstico «resultado sin tratar» con caminos manejar/propagar en `DIAG.CATALOG`.
+- [x] `PG-2.03.06` Verificación acotada VM/AOT y recolección forzada con ranuras de referencia inactivas.
 
 ### PG-2.04 · `Segun` exhaustivo y patrones básicos
 
-- [ ] `PG-2.04.01` Ampliar `LANG.CONTROL.SWITCH` como texto oficial: selector enumerado/variante, patrón literal, miembro, variante con vínculos de carga útil y comodín; exhaustividad y patrón inalcanzable; conservar sin cambios el `Segun` actual sobre literales.
-- [ ] `PG-2.04.02` Casos: variante omitida (con la lista de faltantes), duplicada, inalcanzable tras comodín, enumerado de un miembro, cero ramas sobre enumerado vacío, vínculo de carga útil sin usar, todos los casos previos de `Segun` intactos.
-- [ ] `PG-2.04.03` Tests del análisis de exhaustividad (matriz de patrones), del orden de diagnósticos y de la selección tabla/cadena por cardinalidad.
-- [ ] `PG-2.04.04` Análisis en `switch_checker`/semantic; terminador `switch` en RI y verificador; tabla en bytecode y `br_table` en Cranelift.
-- [ ] `PG-2.04.05` README semantic/ir/codegen; ficha de ayuda de «rama faltante».
-- [ ] `PG-2.04.06` Verificación acotada: `--only LANG.CONTROL.SWITCH` en engine/aot más el contrato nuevo de patrones.
+- [x] `PG-2.04.01` Ampliar `LANG.CONTROL.SWITCH` como texto oficial: selector enumerado/variante, patrón literal, miembro, variante con vínculos de carga útil y comodín; exhaustividad y patrón inalcanzable; conservar sin cambios el `Segun` actual sobre literales.
+- [x] `PG-2.04.02` Casos: variante omitida (con la lista de faltantes), duplicada, inalcanzable tras comodín, enumerado de un miembro, cero ramas sobre enumerado vacío, vínculo de carga útil sin usar, todos los casos previos de `Segun` intactos.
+- [x] `PG-2.04.03` Tests del análisis de exhaustividad (matriz de patrones), del orden de diagnósticos y de la selección tabla/cadena por cardinalidad.
+- [x] `PG-2.04.04` Análisis en `switch_checker`/semantic; terminador `switch` en RI y verificador; tabla en bytecode y `br_table` en Cranelift.
+- [x] `PG-2.04.05` README semantic/ir/codegen; ficha de ayuda de «rama faltante».
+- [x] `PG-2.04.06` Verificación acotada: `--only LANG.CONTROL.SWITCH` en engine/aot y LANG.TYPES.RELATIONS para patrones.
 
 ### PG-2.05 · Vínculos inmutables e inicialización en la declaración
 
 D-PG2-01 resuelta con la opción A (§3.1); la edición de esperados estables espera la autorización de su lista.
 
-- [ ] `PG-2.05.01` Con la opción A, especificar vínculo inmutable por defecto, forma de mutación explícita e inicialización obligatoria; distinguir inmutabilidad del vínculo de la del objeto; `Definir` sin inicializador y la inferencia flexible por primera asignación como error con migración; destino de la trampa de lectura sin valor.
-- [ ] `PG-2.05.02` Casos: reasignación de inmutable, mutable sin mutar (advertencia), inicializador que lee el propio vínculo, objeto mutado a través de vínculo inmutable, nombre de un carácter, `Definir` sin inicializador rechazado con migración propuesta; casos previos editados solo tras autorizar su lista exacta.
-- [ ] `PG-2.05.03` Tests de `flow`/`flow_bindings` y del registro de locales con el nuevo atributo de mutabilidad.
-- [ ] `PG-2.05.04` Atributo de mutabilidad en semantic; lowering conserva los inmutables como valores SSA sin celda.
-- [ ] `PG-2.05.05` README semantic/lowering; registro de la incompatibilidad de 2026 y de su migración.
-- [ ] `PG-2.05.06` Verificación acotada más conjunto centinela de archivo suelto (§7.1), porque toca declaraciones de todos los programas.
+- [x] `PG-2.05.01` Con la opción A, especificar vínculo inmutable por defecto, forma de mutación explícita e inicialización obligatoria; distinguir inmutabilidad del vínculo de la del objeto; `Definir` sin inicializador y la inferencia flexible por primera asignación como error sin migrador, por autorización posterior; destino de la trampa de lectura sin valor.
+- [x] `PG-2.05.02` Casos: reasignación de inmutable, mutable sin mutar (advertencia), inicializador que lee el propio vínculo, objeto mutado a través de vínculo inmutable, nombre de un carácter, `Definir` sin inicializador rechazado sin migrador; casos previos editados solo tras autorizar su lista exacta.
+- [x] `PG-2.05.03` Tests de `flow`/`flow_bindings` y del registro de locales con el nuevo atributo de mutabilidad.
+- [x] `PG-2.05.04` Atributo de mutabilidad en semantic; lowering conserva los inmutables como valores SSA sin celda.
+- [x] `PG-2.05.05` README semantic/lowering; registro de la sintaxis oficial de 2026 sin compatibilidad ni migrador.
+- [x] `PG-2.05.06` Verificación acotada más conjunto centinela de archivo suelto (§7.1), porque toca declaraciones de todos los programas.
 
 ### PG-2.06 · Ámbitos léxicos de bloque
 
@@ -610,6 +610,54 @@ contratos nuevos estables con su nombre como revisor (pendiente de su revisión 
   PG-2 ni su cierre común (`PG-2.C01`–`PG-2.C13`). Confirmado en remoto: el commit de la iteración ya estaba publicado.
 - (Histórico) Pendiente de la persona: revisión independiente real de los tres contratos nuevos (constan con su nombre como
   revisor), revisión de las formas candidatas de sintaxis y decisión sobre la palabra reservada nueva.
+
+#### Iteración combinada `.03`–`.05` (2026-10-25)
+
+Autorización: implementar PG-2.03, PG-2.04 y PG-2.05 en una sola iteración. La persona aprobó las formas
+Definir/Definir Mutable, Algo/Nada, Exito/Error, Propagar y Descartar, con tipos incorporados concretos,
+sin adelantar genéricos de usuario, interfaces ni Para Cada. Aprobó los nueve esperados enumerados en
+`pg-2-03-05-esperados-propuestos.md`. Posteriormente indicó que la versión nueva es la oficial, sin
+migraciones ni necesidad de retrocompatibilidad: esta decisión sustituye la obligación de migración
+asistida y permite actualizar fixtures y ejemplos. No cambia el congelamiento de versiones.
+
+Estado: **implementación y verificación local cerradas**. La publicación corresponde al commit de esta iteración en `feature/agregar-ruta-de-especificacion`; se comprueba el hash remoto tras el push ordinario. No se inicia ninguna fase siguiente.
+
+Implementación: variantes concretas anidadas, constructores contextuales, propagación de ausencia/error,
+descarte explícito y seguimiento de resultados sin tratar. La ABI superpone las cargas por banco, limpia
+referencias inactivas y usa nicho solo para opcionales de referencia no anulable. RI, bytecode, ambas VM
+y Cranelift comparten el transporte. Segun cubre enumerados y constructores, distingue duplicados y
+ramas inalcanzables y emite switch para tablas densas. Los vínculos locales son individuales, tipados,
+inicializados e inmutables salvo Mutable; se conservan en SSA y se comprueba la inicialización por caminos.
+Campos, parámetros y arreglos conservan sus contratos específicos. Los temporales internos no se proyectan
+como símbolos del programa. Catálogo de diagnósticos, ayuda bilingüe, traducción y vista pública actualizados.
+
+Evidencia normativa: 167 especificaciones válidas, mismas identidades/versiones/estados, sin campos cambio;
+exportación y anclajes regenerados y comprobados. Los nueve esperados aprobados se aplicaron. La autorización
+posterior permitió adaptar fixtures y el esperado adicional LANG.TYPES.RECORD#C21 a la prohibición de
+asignación implícita; el registro exacto está en pg-2-03-05-esperados-propuestos.md.
+
+Conformidad dirigida sin divergencias: en engine, LANG.TYPES.RELATIONS tuvo 84 observaciones,
+LANG.CONTROL.SWITCH 62, LANG.DECL.VARIABLE 32 y LANG.DECL.UNINITIALIZED 12. En AOT pasaron,
+respectivamente, 56, 28, 8 y 4 observaciones nativas; las otras 28, 34, 24 y 8 observaciones son de análisis
+y el adaptador las informa no aplicables. Su comprobación estática está cubierta en engine.
+En engine también pasaron registros (80), enumerados (50), inferencia (6), entrada (16), referencias (12)
+y los demás contratos de lenguaje/diagnósticos cuyos fixtures se adaptaron. La vista pública pasó sus casos
+y su propiedad de revisión. Los hashes de evidencia obsoletos se descartaron antes de regenerarla.
+
+Verificación local: tests espejo de disposición, obligaciones de resultado, patrones, SSA, lectura, asignación,
+verificadores RI/bytecode y centinelas de declaraciones/vocabulario/gramática; recolección forzada en ambas VM.
+La selección de proyección pública pasó nueve tests y los centinelas léxicos/sintácticos otros nueve.
+Formato y verificadores estáticos de engine/spec comprobados. No se ejecutaron suites completas ni campañas
+de rendimiento; la compilación y los verificadores requeridos se limitaron a los miembros afectados.
+Clippy de todos los targets de los diez crates afectados pasó con -D warnings y la feature native.
+La comparación de métodos con resultado variante entre VM/AOT y GC forzado pasó. Ayuda (17 tests) y traducción (11, incluidos anidamiento y descarte) pasaron; los fixtures de traducción usan declaraciones inicializadas. Se aplica commit convencional sin atribución de IA y push ordinario comprobado.
+
+Pendiente autorizado para PG-2.11: prueba de Propagar desde Para Cada con limpieza. No se adelantaron
+Para Cada, genéricos de usuario, interfaces ni fases siguientes. Las reglas mixtas conservan exención en la matriz aot porque su adaptador anuncia ejecución y no análisis: los casos ejecutables nativos pasan y los casos estáticos pasan en engine. No se ocultan divergencias ni se amplía el protocolo para cambiar la matriz. El cierre se limita a esta iteración y exige PHASE-STOP.
+
+Espacio: se eliminaron únicamente target/debug/incremental de engine y spec, identificados como
+artefactos regenerables (aproximadamente 5,1 GiB nominales). El volumen pasó de 3,3 a aproximadamente
+7 GiB disponibles; tras compilar y verificar quedan aproximadamente 5,4 GiB disponibles. Ambas cachés incrementales siguen vacías. No se borraron dependencias descargadas ni datos personales.
 
 ### 11.2 Cierre común de PG-2
 

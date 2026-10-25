@@ -154,13 +154,18 @@
 {
   "id": "C3",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
-    "es": "\uFEFFAlgoritmo P\r\nEscribir \"😀\" @;\r\nFinAlgoritmo\r\n",
-    "en": "\uFEFFalgorithm P\r\nwrite \"😀\" @;\r\nendAlgorithm\r\n"
+    "es": "﻿Algoritmo P\r\nEscribir \"😀\" @;\r\nFinAlgoritmo\r\n",
+    "en": "﻿algorithm P\r\nwrite \"😀\" @;\r\nendAlgorithm\r\n"
   },
   "espera": {
     "arbol": "presente",
@@ -169,8 +174,14 @@
         "codigo": "unrecognizedCharacter",
         "severidad": "error",
         "tramo": {
-          "start": {"line": 2, "column": 14},
-          "end": {"line": 2, "column": 15}
+          "start": {
+            "line": 2,
+            "column": 14
+          },
+          "end": {
+            "line": 2,
+            "column": 15
+          }
         }
       }
     ]
@@ -183,8 +194,14 @@
           "codigo": "unrecognizedCharacter",
           "severidad": "error",
           "tramo": {
-            "start": {"line": 2, "column": 11},
-            "end": {"line": 2, "column": 12}
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
           }
         }
       ]

@@ -36,9 +36,17 @@ fn attributes_for(
         return Vec::new();
     };
     match kind {
+        NodeKind::Declaration
+        | NodeKind::VariantConstruction
+        | NodeKind::VariantPattern
+        | NodeKind::Propagation
+        | NodeKind::DiscardStatement => {
+            crate::program_view_variants::attributes(node, context.tree)
+        }
         NodeKind::Postfix => postfix_attributes(node, context.tree, builtins),
         NodeKind::Literal => literal_attribute(node, context).unwrap_or_default(),
-        NodeKind::Type => primitive_attribute(node, context.tree).unwrap_or_default(),
+        NodeKind::Type => primitive_attribute(node, context.tree)
+            .unwrap_or_else(|| crate::program_view_variants::attributes(node, context.tree)),
         NodeKind::Output => without_newline_attribute(node, context.tree),
         NodeKind::Unary | NodeKind::Minus | NodeKind::Not => {
             unary_attribute(node, context.tree).unwrap_or_default()

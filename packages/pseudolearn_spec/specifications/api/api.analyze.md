@@ -126,21 +126,79 @@
 {
   "id": "C3",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "tokens_include": [
-      {"kind": "keyword", "keyword": "algorithm"},
-      {"kind": "comment", "span": {"start": {"line": 2, "column": 1}, "end": {"line": 2, "column": 5}}},
-      {"kind": "keyword", "keyword": "integerType"},
-      {"kind": "operator", "span": {"start": {"line": 4, "column": 3}, "end": {"line": 4, "column": 5}}},
-      {"kind": "integer_literal", "span": {"start": {"line": 4, "column": 6}, "end": {"line": 4, "column": 7}}},
-      {"kind": "punctuation", "span": {"start": {"line": 4, "column": 7}, "end": {"line": 4, "column": 8}}}
+      {
+        "kind": "keyword",
+        "keyword": "algorithm"
+      },
+      {
+        "kind": "comment",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 5
+          }
+        }
+      },
+      {
+        "kind": "keyword",
+        "keyword": "integerType"
+      },
+      {
+        "kind": "operator",
+        "span": {
+          "start": {
+            "line": 4,
+            "column": 3
+          },
+          "end": {
+            "line": 4,
+            "column": 5
+          }
+        }
+      },
+      {
+        "kind": "integer_literal",
+        "span": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 7
+          }
+        }
+      },
+      {
+        "kind": "punctuation",
+        "span": {
+          "start": {
+            "line": 4,
+            "column": 7
+          },
+          "end": {
+            "line": 4,
+            "column": 8
+          }
+        }
+      }
     ]
   },
-  "programa": "Algoritmo P\n// ñ\nDefinir n Como Entero;\nn <- 4;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\n// ñ\nDefinir n Como Entero <- 4;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -149,14 +207,42 @@
 {
   "id": "C4",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "tokens_include": [
-      {"kind": "comment", "span": {"start": {"line": 2, "column": 1}, "end": {"line": 2, "column": 5}}},
-      {"kind": "invalid_character", "span": {"start": {"line": 4, "column": 1}, "end": {"line": 4, "column": 2}}}
+      {
+        "kind": "comment",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 5
+          }
+        }
+      },
+      {
+        "kind": "invalid_character",
+        "span": {
+          "start": {
+            "line": 4,
+            "column": 1
+          },
+          "end": {
+            "line": 4,
+            "column": 2
+          }
+        }
+      }
     ]
   },
   "programa": "Algoritmo P\n// ñ\nFinAlgoritmo\n@\n",
@@ -168,21 +254,52 @@
 {
   "id": "C5",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "arbol": "presente",
     "diagnosticos": [],
     "tokens_include": [
-      {"kind": "identifier", "span": {"start": {"line": 2, "column": 9}, "end": {"line": 2, "column": 12}}},
-      {"kind": "identifier", "span": {"start": {"line": 3, "column": 1}, "end": {"line": 3, "column": 5}}}
+      {
+        "kind": "identifier",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 9
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "kind": "identifier",
+        "span": {
+          "start": {
+            "line": 3,
+            "column": 1
+          },
+          "end": {
+            "line": 3,
+            "column": 5
+          }
+        }
+      }
     ]
   },
-  "programa": "Algoritmo P\nDefinir año Como Entero;\nan\u0303o <- 5;\nEscribir año;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
   "perfil_base": "es",
-  "sujetos": ["engine", "app"]
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -190,19 +307,30 @@
 {
   "id": "C6",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "arbol": "presente",
     "diagnosticos": [
-      {"codigo": "expectedAlgorithmStart", "severidad": "error"}
+      {
+        "codigo": "expectedAlgorithmStart",
+        "severidad": "error"
+      }
     ]
   },
   "programa": "",
   "perfil_base": "es",
-  "sujetos": ["engine", "app"]
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -210,20 +338,34 @@
 {
   "id": "C7",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "origen": "derivado",
   "operacion": "analyze",
   "espera": {
     "arbol": "presente",
     "diagnosticos": [
-      {"codigo": "moduleSyntaxOutsideProject", "severidad": "error"},
-      {"codigo": "expectedAlgorithmStart", "severidad": "error"}
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedAlgorithmStart",
+        "severidad": "error"
+      }
     ]
   },
   "programa": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
   "perfil_base": "es",
-  "sujetos": ["engine", "app"]
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 

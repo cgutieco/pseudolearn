@@ -85,6 +85,10 @@ etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuer
 construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
 resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.
 
+Los vínculos locales usan un analizador distinto de los campos: `Definir [Mutable] nombre Como tipo <- expresión` exige un inicializador; los campos conservan listas y ausencia de inicializador. Se conserva `Declaration` en ambos árboles para no duplicar la extracción de campos.
+
+Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; no se reserva una sintaxis para genéricos de usuario. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

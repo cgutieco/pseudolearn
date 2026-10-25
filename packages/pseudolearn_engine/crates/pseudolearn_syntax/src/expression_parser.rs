@@ -55,6 +55,9 @@ fn prefix(state: &mut ParserState<'_>) -> Result<usize, ()> {
         }
         return Ok(node);
     }
+    if state.kind() == TokenKind::Keyword(KeywordKind::PropagateKeyword) {
+        return crate::variant_parser::propagation(state);
+    }
     let primary = primary(state)?;
     crate::postfix_parser::parse_postfix(state, primary)
 }
@@ -63,6 +66,9 @@ fn primary(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
     let kind = state.kind();
+    if crate::variant_parser::starts(kind) {
+        return crate::variant_parser::construction(state);
+    }
     if kind.is_literal() {
         state.advance();
         return Ok(state.finish(NodeKind::Literal, start, marker));

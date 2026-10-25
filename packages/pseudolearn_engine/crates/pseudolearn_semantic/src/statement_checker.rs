@@ -26,9 +26,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
             .and_then(|child| check(session, child));
     }
     let kind = match session.kind(node) {
-        NodeKind::Declaration => {
-            HirStatement::Declare(session.declarations.get(&node).cloned().unwrap_or_default())
-        }
+        NodeKind::Declaration => crate::binding_checker::initialize(session, node)?,
         NodeKind::DimensionDeclaration => return crate::dimension_checker::check(session, node),
         NodeKind::AssignmentStatement => crate::assignment_checker::assignment(session, node)?,
         NodeKind::Output => output(session, node),
@@ -38,6 +36,7 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
             HirStatement::Call(check_for(session, expression, ExpressionPurpose::Statement))
         }
         NodeKind::ReturnStatement => returned(session, node),
+        NodeKind::DiscardStatement => crate::variant_statements::discard(session, node)?,
         NodeKind::Conditional
         | NodeKind::WhileLoop
         | NodeKind::RepeatLoop
@@ -55,24 +54,14 @@ fn output(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
         .map(|expression| crate::expression_checker::check(session, expression))
         .collect();
     for value in &values {
-        if matches!(session.expression_type(*value), Type::Object(_)) {
-            session.report(DiagnosticCode::ObjectCannotBeWritten, node);
-        }
-        if matches!(session.expression_type(*value), Type::Record(_)) {
-            session.report(DiagnosticCode::RecordCannotBeWritten, node);
-        }
+        crate::variant_statements::output_error(session, *value, node);
     }
     let newline = !session.has_token(node, TokenKind::Keyword(KeywordKind::WithoutNewline));
     HirStatement::Write { values, newline }
 }
 
 fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
-    let mut value = session
-        .tree
-        .child_indices(node)
-        .first()
-        .copied()
-        .map(|value| crate::expression_checker::check(session, value));
+    let mut value = crate::variant_statements::returned_value(session, node);
     let Some(function) = crate::hierarchy::function(session, session.current).cloned() else {
         return HirStatement::Return(value);
     };
@@ -103,6 +92,8 @@ fn returned(session: &mut AnalysisSession<'_>, node: usize) -> HirStatement {
             session, expression, &expected,
         ));
     }
+    crate::result_obligations::finish(session);
+    session.pending_results.clear();
     session.returned = true;
     HirStatement::Return(value)
 }

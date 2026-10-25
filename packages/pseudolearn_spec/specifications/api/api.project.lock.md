@@ -182,7 +182,7 @@
         {
           "value": {
             "lock_errors": [],
-          "lock": "schema = 1\n\n[packages.\"geo\"]\norigin = \"libs/geo\"\nkind = \"locked\"\ndependencies = []\ndigest = \"sha256:de3b9019b11a9be7f9ae06149c392e4a9ce986c64b3afa3773fe4c1bbaf2b20b\"\n\n[packages.\"geo\".files]\n\"café.pseudo\" = \"sha256:7f2f1f2f1aabe5d2f03d55faacd58ff52337892609119e4f31253b39decd2efe\"\n"
+            "lock": "schema = 1\n\n[packages.\"geo\"]\norigin = \"libs/geo\"\nkind = \"locked\"\ndependencies = []\ndigest = \"sha256:de3b9019b11a9be7f9ae06149c392e4a9ce986c64b3afa3773fe4c1bbaf2b20b\"\n\n[packages.\"geo\".files]\n\"café.pseudo\" = \"sha256:7f2f1f2f1aabe5d2f03d55faacd58ff52337892609119e4f31253b39decd2efe\"\n"
           }
         }
       ]

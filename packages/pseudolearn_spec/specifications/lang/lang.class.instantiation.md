@@ -81,8 +81,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C;\nx <- Nuevo C;\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine x as C;\nx <- new C;\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C;\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine x as C <- new C;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -111,8 +111,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C;\nx <- Nuevo C(1);\nEscribir x = x;\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine x as C;\nx <- new C(1);\nwrite x = x;\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C(1);\nEscribir x = x;\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine x as C <- new C(1);\nwrite x = x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

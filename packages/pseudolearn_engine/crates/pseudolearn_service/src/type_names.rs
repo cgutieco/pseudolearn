@@ -19,13 +19,7 @@ pub fn type_display(analysis: &ServiceAnalysis, type_id: TypeId, profile: Profil
                 .get(slot(enumeration.0))
                 .map(|model| &model.name),
         ),
-        Type::Record(record) => declared_name(
-            analysis
-                .module
-                .records
-                .get(slot(record.0))
-                .map(|model| &model.name),
-        ),
+        Type::Record(record) => record_display(analysis, record, profile),
         Type::Array { element, rank } => {
             let commas = ",".repeat(usize::try_from(rank.saturating_sub(1)).unwrap_or(0));
             format!("{}[{commas}]", type_display(analysis, element, profile))
@@ -76,4 +70,35 @@ fn slot(identifier: u32) -> usize {
 
 fn declared_name(name: Option<&String>) -> String {
     name.cloned().unwrap_or_default()
+}
+
+fn record_display(
+    analysis: &ServiceAnalysis,
+    record: pseudolearn_semantic::identities::RecordId,
+    profile: Profile,
+) -> String {
+    let Some(variant) = analysis.module.variants.get(&record) else {
+        return declared_name(
+            analysis
+                .module
+                .records
+                .get(slot(record.0))
+                .map(|model| &model.name),
+        );
+    };
+    let keyword = match variant.family {
+        pseudolearn_semantic::variant_model::VariantFamily::Optional => KeywordKind::OptionalType,
+        pseudolearn_semantic::variant_model::VariantFamily::Result => KeywordKind::ResultType,
+    };
+    let arguments: Vec<_> = variant
+        .payloads
+        .iter()
+        .flatten()
+        .map(|kind| type_display(analysis, *kind, profile))
+        .collect();
+    format!(
+        "{}<{}>",
+        keyword_spelling(keyword, profile),
+        arguments.join(", ")
+    )
 }

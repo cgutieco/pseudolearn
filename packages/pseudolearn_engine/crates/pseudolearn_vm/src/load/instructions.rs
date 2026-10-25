@@ -13,6 +13,7 @@ use crate::VmTrap;
 use crate::dispatch::{DispatchKind, Op, dispatch_kind, select_fused, select_operation};
 
 mod control;
+mod switch;
 mod values;
 
 pub(super) struct DecodeContext<'module> {

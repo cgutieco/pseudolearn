@@ -99,3 +99,10 @@ fn lower_with<'sources>(
         origins: OriginTable { entries: origins },
     })
 }
+
+mod statements_variant_match;
+mod variant_propagation;
+mod variant_values;
+
+mod switch_dispatch;
+mod switch_join;

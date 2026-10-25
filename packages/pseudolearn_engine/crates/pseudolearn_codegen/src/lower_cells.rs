@@ -21,6 +21,7 @@ pub(crate) const OPERATIONS: &[Operation] = &[
     Operation::CellElement,
     Operation::CellField,
     Operation::CellLoad,
+    Operation::CellLoadRaw,
     Operation::CellStore,
 ];
 
@@ -32,7 +33,7 @@ pub(crate) fn lower(
         Operation::CellLocal => lower_local(lowering, instruction),
         Operation::CellElement => lower_element(lowering, instruction),
         Operation::CellField => lower_field(lowering, instruction),
-        Operation::CellLoad => lower_load(lowering, instruction),
+        Operation::CellLoad | Operation::CellLoadRaw => lower_load(lowering, instruction),
         _ => lower_store(lowering, instruction),
     }
 }
@@ -181,7 +182,11 @@ fn load_cell_word(
         .builder
         .ins()
         .load(types::I64, flags, slot, readable_offset);
-    lowering.builder.ins().brif(readable, fast, &[], slow, &[]);
+    if instruction.operation == Operation::CellLoadRaw {
+        lowering.builder.ins().jump(fast, &[]);
+    } else {
+        lowering.builder.ins().brif(readable, fast, &[], slow, &[]);
+    }
     lowering.builder.switch_to_block(fast);
     let direct = lowering
         .builder

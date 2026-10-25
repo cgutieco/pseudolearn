@@ -1,4 +1,4 @@
-use crate::declaration_parser::{declaration, name};
+use crate::declaration_parser::name;
 use crate::parser_state::ParserState;
 use crate::statement_parser::{recover, terminator};
 use crate::tokens::TokenKind;
@@ -43,7 +43,7 @@ fn field(state: &mut ParserState<'_>) -> Result<usize, ()> {
     }
     let start = state.token();
     let marker = state.nodes.len();
-    declaration(state)?;
+    crate::declaration_parser::field(state)?;
     terminator(state)?;
     Ok(state.finish(NodeKind::RecordField, start, marker))
 }

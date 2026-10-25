@@ -16,7 +16,7 @@ pub(crate) fn check_memory_instruction(
 ) -> Result<Option<IrType>, TypeError> {
     match operation {
         Operation::CellLocal => check_cell_local(operands),
-        Operation::CellLoad => check_cell_load(operands, get_type),
+        Operation::CellLoad | Operation::CellLoadRaw => check_cell_load(operands, get_type),
         Operation::CellStore => check_cell_store(operands, get_type, module),
         Operation::CellField => check_cell_field(operands, get_type, module),
         Operation::ObjectLoad => check_object_load(operands, get_type, module),

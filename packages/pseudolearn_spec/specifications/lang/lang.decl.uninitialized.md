@@ -38,11 +38,12 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una declaración no tiene valor por defecto. El análisis informa variableUsedUninitialized como error estricto o advertencia flexible cuando puede determinarlo. La ejecución siempre detiene una lectura sin valor con uninitializedVariableRead; no devuelve cero ni nulo.",
+  "texto": "Los vínculos locales necesitan inicializador: omitirlo es missingBindingInitializer, error en ambos rigores. El inicializador no puede leer su propio vínculo (bindingReadsOwnInitializer). No se inventan valores por defecto. Los campos y elementos de arreglo siguen pudiendo carecer de valor y su lectura conserva la trampa uninitializedVariableRead. No hay migrador ni modo de compatibilidad: la declaración inicializada es la forma oficial de la edición. Un vínculo declarado dentro de un camino que puede no ejecutarse no queda inicializado fuera de él; leerlo produce variableUsedUninitialized, error en ambos rigores.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -65,7 +66,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "variableUsedUninitialized",
+        "codigo": "missingBindingInitializer",
         "severidad": "error"
       }
     ]
@@ -89,11 +90,15 @@
     "en": "algorithm P\ndefine x as integer;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "execute",
+  "operacion": "analyze",
   "espera": {
-    "fallo": {
-      "codigo": "uninitializedVariableRead"
-    }
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "missingBindingInitializer",
+        "severidad": "error"
+      }
+    ]
   },
   "rigor": [
     "flexible"
@@ -110,8 +115,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nx <- 0;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -123,5 +128,35 @@
     "estricto",
     "flexible"
   ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "programas": {
+    "en": "algorithm Main\nwhile false do\ndefine x as integer <- 1;\nendWhile\nwrite x;\nendAlgorithm\n",
+    "es": "Algoritmo Main\nMientras Falso Hacer\nDefinir x Como Entero <- 1;\nFinMientras\nEscribir x;\nFinAlgoritmo\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableUsedUninitialized",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

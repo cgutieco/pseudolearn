@@ -1,4 +1,4 @@
-use crate::expression_checker::{ExpressionPurpose, check_for, invalid, widen};
+use crate::expression_checker::{invalid, widen};
 use crate::expression_model::{HirExpression, HirPlace};
 use crate::identities::{ExpressionId, RecordId};
 use crate::record_registry::slot;
@@ -11,19 +11,10 @@ pub(crate) fn construct(
     node: usize,
     record: RecordId,
 ) -> ExpressionId {
-    let arguments = session
-        .child(node, pseudolearn_syntax::NodeKind::Arguments)
-        .map(|list| {
-            session
-                .children(list)
-                .into_iter()
-                .map(|argument| check_for(session, argument, ExpressionPurpose::Argument))
-                .collect::<Vec<_>>()
-        })
-        .unwrap_or_default();
     let Some(model) = session.module.records.get(slot(record)).cloned() else {
         return invalid(session, node);
     };
+    let arguments = constructor_arguments(session, node, &model.fields);
     if arguments.len() != model.fields.len() {
         crate::argument_checker::arity(session, (model.fields.len(), arguments.len()), node);
         return invalid(session, node);
@@ -33,6 +24,7 @@ pub(crate) fn construct(
         let expected = session.module.types.get(field.type_id);
         let actual = session.expression_type(argument);
         if crate::type_resolution::assignable(session, &expected, &actual) {
+            crate::result_obligations::consume(session, argument);
             fields.push(widen(session, argument, &expected));
         } else {
             session.named_report(DiagnosticCode::IncompatibleArgumentType, node, &field.name);
@@ -53,6 +45,10 @@ pub(crate) fn field(
     access: (ExpressionId, RecordId, usize),
 ) -> ExpressionId {
     let (receiver, record, name_node) = access;
+    if session.module.variants.contains_key(&record) {
+        session.report(DiagnosticCode::VariantRequiresPattern, node);
+        return invalid(session, node);
+    }
     let name = session.name(name_node);
     let found = session
         .module
@@ -108,4 +104,25 @@ pub(crate) fn is_field(session: &AnalysisSession<'_>, expression: ExpressionId) 
         .ok()
         .and_then(|index| session.module.expressions.kinds.get(index))
         .is_some_and(|kind| matches!(kind, HirExpression::RecordField { .. }))
+}
+
+fn constructor_arguments(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    fields: &[crate::hir::HirRecordField],
+) -> Vec<ExpressionId> {
+    let Some(arguments) = session.child(node, pseudolearn_syntax::NodeKind::Arguments) else {
+        return Vec::new();
+    };
+    session
+        .children(arguments)
+        .into_iter()
+        .enumerate()
+        .map(|(index, argument)| match fields.get(index) {
+            Some(field) => {
+                crate::expression_checker::check_expected(session, argument, field.type_id)
+            }
+            None => crate::expression_checker::check(session, argument),
+        })
+        .collect()
 }

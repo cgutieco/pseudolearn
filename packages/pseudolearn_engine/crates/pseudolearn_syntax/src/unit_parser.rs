@@ -1,4 +1,4 @@
-use crate::declaration_parser::{declaration, dimension, name, parse_type};
+use crate::declaration_parser::{dimension, name, parse_type};
 use crate::parameter_parser::parameters;
 use crate::parser_state::ParserState;
 use crate::statement_parser::{parse_statement_block, recover};
@@ -93,7 +93,7 @@ fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> 
         || state.keyword(KeywordKind::PrivateVisibility);
     match state.kind() {
         TokenKind::Keyword(KeywordKind::Declare) => {
-            declaration(state)?;
+            crate::declaration_parser::field(state)?;
         }
         TokenKind::Keyword(KeywordKind::Dimension) => {
             dimension(state)?;

@@ -117,3 +117,5 @@ mod state_changes;
 
 #[cfg(test)]
 mod recording_digest_tests;
+
+mod program_view_variants;

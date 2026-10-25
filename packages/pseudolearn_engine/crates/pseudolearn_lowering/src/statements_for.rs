@@ -111,7 +111,10 @@ fn prepare_for_locals(
     if !loop_locals.contains(&control) {
         loop_locals.push(control);
     }
-    loop_locals.retain(|local_id| context.environment.get_cell(*local_id).is_none());
+    loop_locals.retain(|local_id| {
+        context.environment.get_cell(*local_id).is_none()
+            && context.environment.get_value(*local_id).is_some()
+    });
     loop_locals.sort_by_key(|local_id| local_id.0);
     loop_locals
 }

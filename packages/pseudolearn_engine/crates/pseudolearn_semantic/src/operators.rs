@@ -57,6 +57,9 @@ pub(crate) fn binary(session: &mut AnalysisSession<'_>, node: usize) -> Expressi
         .copied()
         .map(|child| crate::expression_checker::check(session, child))
         .unwrap_or_else(|| crate::expression_checker::invalid(session, node));
+    if crate::variant_checker::reject_operands(session, (left, right), node) {
+        return crate::expression_checker::invalid(session, node);
+    }
     let operator = crate::operator_tokens::operator(session.operator_kind(node));
     let result = crate::operator_types::result_type(
         operator,
@@ -64,14 +67,7 @@ pub(crate) fn binary(session: &mut AnalysisSession<'_>, node: usize) -> Expressi
         &session.expression_type(right),
     );
     crate::operator_diagnostics::diagnose(session, (operator, left, right), node, &result);
-    let (left, right) = if operator == crate::expression_model::BinaryOperator::Divide {
-        (
-            crate::expression_checker::widen(session, left, &Type::Real),
-            crate::expression_checker::widen(session, right, &Type::Real),
-        )
-    } else {
-        widen_operands(session, (left, right))
-    };
+    let (left, right) = binary_operands(session, operator, (left, right));
     let type_id = session.module.types.intern(result);
     let operator_span = session.operator_span(node);
     session.emit(
@@ -104,4 +100,20 @@ fn widen_operands(
         crate::expression_checker::widen(session, left, &Type::Real),
         crate::expression_checker::widen(session, right, &Type::Real),
     )
+}
+
+fn binary_operands(
+    session: &mut AnalysisSession<'_>,
+    operator: crate::expression_model::BinaryOperator,
+    operands: (ExpressionId, ExpressionId),
+) -> (ExpressionId, ExpressionId) {
+    let (left, right) = operands;
+    if operator == crate::expression_model::BinaryOperator::Divide {
+        (
+            crate::expression_checker::widen(session, left, &Type::Real),
+            crate::expression_checker::widen(session, right, &Type::Real),
+        )
+    } else {
+        widen_operands(session, (left, right))
+    }
 }

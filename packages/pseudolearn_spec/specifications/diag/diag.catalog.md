@@ -1485,10 +1485,10 @@
       "argumentos": [
         "lexeme"
       ],
-      "politica": "B",
+      "politica": "A",
       "severidad": {
         "estricto": "error",
-        "flexible": "warning"
+        "flexible": "error"
       },
       "clase": "semantic",
       "tipos_argumentos": {
@@ -2721,10 +2721,10 @@
       "argumentos": [
         "lexeme"
       ],
-      "politica": "B",
+      "politica": "A",
       "severidad": {
         "estricto": "error",
-        "flexible": "warning"
+        "flexible": "error"
       },
       "clase": "semantic",
       "tipos_argumentos": {
@@ -3221,6 +3221,192 @@
         "estricto": "error",
         "flexible": "error"
       },
+      "tipos_argumentos": {}
+    },
+    "missingBindingInitializer": {
+      "mensajes": {
+        "es": "El vínculo necesita un inicializador; añadí <- expresión",
+        "en": "Binding requires an initializer; add <- expression"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "syntax",
+      "tipos_argumentos": {}
+    },
+    "immutableBindingAssignment": {
+      "mensajes": {
+        "es": "El vínculo es inmutable; usá Definir Mutable para reasignarlo",
+        "en": "Binding is immutable; use define mutable to reassign it"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "mutableBindingNeverModified": {
+      "mensajes": {
+        "es": "El vínculo mutable nunca se modifica",
+        "en": "Mutable binding is never modified"
+      },
+      "argumentos": [],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "bindingReadsOwnInitializer": {
+      "mensajes": {
+        "es": "El inicializador lee el vínculo que está declarando",
+        "en": "Initializer reads its own binding"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "nonExhaustiveSwitch": {
+      "mensajes": {
+        "es": "Faltan ramas: {lexeme}",
+        "en": "Missing branches: {lexeme}"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "unreachableSwitchPattern": {
+      "mensajes": {
+        "es": "El patrón es inalcanzable",
+        "en": "Pattern is unreachable"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "ambiguousVariantType": {
+      "mensajes": {
+        "es": "La variante necesita un tipo Opcional o Resultado explícito en su contexto",
+        "en": "Variant requires an explicit optional or result type in its context"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "incompatibleVariantConstructor": {
+      "mensajes": {
+        "es": "El constructor no pertenece al tipo de variante esperado",
+        "en": "Constructor does not belong to the expected variant type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "incompatiblePropagationType": {
+      "mensajes": {
+        "es": "La propagación requiere un retorno compatible y el mismo tipo de error",
+        "en": "Propagation requires a compatible return and the same error type"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "resultNotHandled": {
+      "mensajes": {
+        "es": "Resultado sin tratar: manejalo con Segun, propagalo o descartalo explícitamente",
+        "en": "Unhandled result: handle it with switch, propagate it, or discard it explicitly"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "discardRequiresResult": {
+      "mensajes": {
+        "es": "Descartar requiere un Resultado",
+        "en": "Discard requires a result"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "variantRequiresPattern": {
+      "mensajes": {
+        "es": "La variante se consulta mediante patrones de Segun",
+        "en": "Variant must be inspected through switch patterns"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "variantLayoutLimit": {
+      "mensajes": {
+        "es": "La disposición de la variante supera el límite de operandos",
+        "en": "Variant layout exceeds the operand limit"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
       "tipos_argumentos": {}
     }
   }

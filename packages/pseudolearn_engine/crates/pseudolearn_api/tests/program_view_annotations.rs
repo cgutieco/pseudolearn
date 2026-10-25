@@ -26,7 +26,7 @@ fn with_syntax<'view>(nodes: &'view [Value], syntax_kind: &str) -> Vec<&'view Va
         .collect()
 }
 
-const ARITHMETIC: &str = "Proceso P\nDefinir x Como Real;\nx <- -(2 + 3) * 4 MOD 2 ^ 2;\nEscribir x, \"t\" Sin Saltar;\nFinProceso\n";
+const ARITHMETIC: &str = "Proceso P\nDefinir x Como Real <- -(2 + 3) * 4 MOD 2 ^ 2;\nEscribir x, \"t\" Sin Saltar;\nFinProceso\n";
 
 #[test]
 fn operators_follow_the_tokens_between_operands() -> Result<(), String> {
@@ -53,11 +53,8 @@ fn operators_follow_the_tokens_between_operands() -> Result<(), String> {
 
 #[test]
 fn literals_declare_type_and_value_independent_of_the_profile() -> Result<(), String> {
-    let program = "Algorithm P\nDefine flag As Boolean;\nflag <- True;\nEndAlgorithm\n";
-    let spanish = nodes_of(
-        "Proceso P\nDefinir a Como Entero;\na <- 7;\nFinProceso\n",
-        "es",
-    )?;
+    let program = "Algorithm P\nDefine flag As Boolean <- True;\nEndAlgorithm\n";
+    let spanish = nodes_of("Proceso P\nDefinir a Como Entero <- 7;\nFinProceso\n", "es")?;
     let english = nodes_of(program, "en")?;
     let integer = with_syntax(&spanish, "literal");
     assert_eq!(
@@ -90,8 +87,8 @@ fn output_marks_the_missing_line_break_and_types_name_their_primitive() -> Resul
 
 #[test]
 fn builtin_calls_are_resolved_and_shadowing_functions_are_not() -> Result<(), String> {
-    let builtin = "Proceso P\nDefinir x Como Real;\nx <- Raiz(4);\nFinProceso\n";
-    let shadowed = "Funcion Raiz(a Como Real) Como Real\nRetornar a;\nFinFuncion\nProceso P\nDefinir x Como Real;\nx <- Raiz(4);\nFinProceso\n";
+    let builtin = "Proceso P\nDefinir x Como Real <- Raiz(4);\nFinProceso\n";
+    let shadowed = "Funcion Raiz(a Como Real) Como Real\nRetornar a;\nFinFuncion\nProceso P\nDefinir x Como Real <- Raiz(4);\nFinProceso\n";
     let resolved = nodes_of(builtin, "es")?;
     let hidden = nodes_of(shadowed, "es")?;
     let names = |nodes: &[Value]| -> Vec<Value> {
@@ -161,5 +158,28 @@ fn subprograms_declare_signature_and_body_roles() -> Result<(), String> {
         .unwrap_or_default();
     assert!(roles.contains(&json!("body")));
     assert!(roles.contains(&json!("signature")));
+    Ok(())
+}
+
+#[test]
+fn variants_expose_context_and_binding_attributes() -> Result<(), String> {
+    let nodes = nodes_of(
+        "algorithm Main\ndefine outcome as result<integer, string> <- success(2);\ndiscard outcome;\nendAlgorithm\n",
+        "en",
+    )?;
+    for expected in [
+        json!({"type_constructor":"result"}),
+        json!({"variant":"success"}),
+        json!({"initialized":true,"mutable":false}),
+        json!({"discard":true}),
+    ] {
+        let object = expected.as_object().ok_or("expected attributes")?;
+        assert!(
+            nodes.iter().any(|node| object
+                .iter()
+                .all(|(key, value)| node.get(key) == Some(value))),
+            "missing {expected}"
+        );
+    }
     Ok(())
 }

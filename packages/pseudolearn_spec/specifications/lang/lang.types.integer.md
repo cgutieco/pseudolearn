@@ -108,8 +108,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- 0;\n  Escribir value;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define value as integer;\n  value <- 0;\n  write value;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir value Como Entero <- 0;\n  Escribir value;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define value as integer <- 0;\n  write value;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -140,8 +140,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- 9223372036854775807;\n  Escribir value;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define value as integer;\n  value <- 9223372036854775807;\n  write value;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir value Como Entero <- 9223372036854775807;\n  Escribir value;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define value as integer <- 9223372036854775807;\n  write value;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -172,8 +172,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir value Como Entero;\n  value <- -9223372036854775807 - 1;\n  Escribir value;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  define value as integer;\n  value <- -9223372036854775807 - 1;\n  write value;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir value Como Entero <- -9223372036854775807 - 1;\n  Escribir value;\nFinAlgoritmo\n",
+    "en": "algorithm P\n  define value as integer <- -9223372036854775807 - 1;\n  write value;\nendAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {

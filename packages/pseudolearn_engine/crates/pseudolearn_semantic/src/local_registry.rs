@@ -11,6 +11,7 @@ struct LocalDeclaration {
     type_id: TypeId,
     passing: Passing,
     parameter: bool,
+    mutable: bool,
 }
 
 pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
@@ -40,6 +41,7 @@ pub(crate) fn parameters(session: &mut AnalysisSession<'_>, function: usize) {
                 type_id,
                 passing,
                 parameter: true,
+                mutable: true,
             },
         );
         if let Some(function) = usize::try_from(session.current.0)
@@ -92,7 +94,7 @@ fn check_record_parameter(
                 FunctionKind::Method | FunctionKind::Constructor
             )
         });
-    if member {
+    if member && crate::variant_types::get(session, &session.module.types.get(type_id)).is_none() {
         session.report(DiagnosticCode::RecordMemberSignatureNotSupported, name_node);
     }
 }
@@ -128,27 +130,13 @@ fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
         .map(|kind| crate::type_resolution::resolve(session, kind))
         .unwrap_or_else(|| session.module.types.intern(Type::Error));
     let mut locals = Vec::new();
-    for child in session.children(node) {
-        let (name_node, type_id) = match session.kind(child) {
-            NodeKind::Identifier => (child, base),
-            NodeKind::Dimensioned => {
-                let Some(name) = session.child(child, NodeKind::Identifier) else {
-                    continue;
-                };
-                let rank = u32::try_from(session.tree.child_indices(child).len().saturating_sub(1))
-                    .unwrap_or(0);
-                if is_record(session, base) {
-                    session.report(DiagnosticCode::RecordArrayElementNotSupported, name);
-                }
-                (
-                    name,
-                    session.module.types.intern(Type::Array {
-                        element: base,
-                        rank,
-                    }),
-                )
-            }
-            _ => continue,
+    let names = session
+        .children(node)
+        .into_iter()
+        .take_while(|child| Some(*child) != kind_node);
+    for child in names {
+        let Some((name_node, type_id)) = declared_name(session, child, base) else {
+            continue;
         };
         locals.push(register(
             session,
@@ -157,6 +145,7 @@ fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
                 type_id,
                 passing: Passing::Value,
                 parameter: false,
+                mutable: mutable_declaration(session, node),
             },
         ));
     }
@@ -189,6 +178,7 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
         span: session.span(declaration.name_node),
         scope: session.current,
         parameter: declaration.parameter,
+        mutable: declaration.mutable,
     });
     session.initialized.push(declaration.parameter);
     if session.module.types.get(declaration.type_id) == Type::Error {
@@ -231,5 +221,36 @@ fn passing(session: &AnalysisSession<'_>, type_id: TypeId, explicit_reference: b
         Passing::Reference
     } else {
         Passing::Value
+    }
+}
+
+fn mutable_declaration(session: &AnalysisSession<'_>, node: usize) -> bool {
+    session.has_token(node, TokenKind::Keyword(KeywordKind::MutableKeyword))
+        || session.kind(node) == NodeKind::DimensionDeclaration
+}
+
+fn declared_name(
+    session: &mut AnalysisSession<'_>,
+    child: usize,
+    base: TypeId,
+) -> Option<(usize, TypeId)> {
+    match session.kind(child) {
+        NodeKind::Identifier => Some((child, base)),
+        NodeKind::Dimensioned => {
+            let name = session.child(child, NodeKind::Identifier)?;
+            let rank = u32::try_from(session.tree.child_indices(child).len().saturating_sub(1))
+                .unwrap_or(0);
+            if is_record(session, base) {
+                session.report(DiagnosticCode::RecordArrayElementNotSupported, name);
+            }
+            Some((
+                name,
+                session.module.types.intern(Type::Array {
+                    element: base,
+                    rank,
+                }),
+            ))
+        }
+        _ => None,
     }
 }

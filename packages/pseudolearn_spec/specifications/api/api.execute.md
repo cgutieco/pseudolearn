@@ -74,7 +74,7 @@
     "salida": "42\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "21"

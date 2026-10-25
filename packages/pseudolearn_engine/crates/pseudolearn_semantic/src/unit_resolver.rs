@@ -119,7 +119,10 @@ fn check_member_result(
     signature: (Option<ClassId>, crate::identities::TypeId),
 ) {
     let (owner, result) = signature;
-    if owner.is_some() && matches!(session.module.types.get(result), Type::Record(_)) {
+    if owner.is_some()
+        && matches!(session.module.types.get(result), Type::Record(_))
+        && crate::variant_types::get(session, &session.module.types.get(result)).is_none()
+    {
         session.report(DiagnosticCode::RecordMemberSignatureNotSupported, node);
     }
 }

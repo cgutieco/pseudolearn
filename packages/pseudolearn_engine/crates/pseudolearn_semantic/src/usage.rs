@@ -29,6 +29,7 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
         {
             continue;
         }
+        mutable_warning(session, identifier, &local);
         if session.invalid.contains(&identifier)
             || session.reads.contains(&identifier)
             || (local.parameter
@@ -37,21 +38,7 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
         {
             continue;
         }
-        let code = if local.parameter {
-            DiagnosticCode::UnusedParameter
-        } else if session.writes.contains(&identifier) {
-            DiagnosticCode::VariableAssignedNeverRead
-        } else {
-            DiagnosticCode::VariableDeclaredNeverUsed
-        };
-        let mut diagnostic = pseudolearn_diagnostics::Diagnostic::new(code, local.span)
-            .with_argument("lexeme", &local.name);
-        diagnostic.severity = code.severity(if session.options.strict {
-            "estricto"
-        } else {
-            "flexible"
-        });
-        session.diagnostics.push(diagnostic);
+        report_unused_local(session, identifier, &local);
     }
 }
 
@@ -76,4 +63,48 @@ fn unused_functions(session: &mut AnalysisSession<'_>) {
             &function.name,
         );
     }
+}
+
+fn mutable_warning(
+    session: &mut AnalysisSession<'_>,
+    identifier: LocalId,
+    local: &crate::hir::HirLocal,
+) {
+    if local.mutable
+        && !local.parameter
+        && !session.writes.contains(&identifier)
+        && !matches!(
+            session.module.types.get(local.type_id),
+            crate::types::Type::Array { .. }
+        )
+    {
+        session
+            .diagnostics
+            .push(pseudolearn_diagnostics::Diagnostic::new(
+                DiagnosticCode::MutableBindingNeverModified,
+                local.span,
+            ));
+    }
+}
+
+fn report_unused_local(
+    session: &mut AnalysisSession<'_>,
+    identifier: LocalId,
+    local: &crate::hir::HirLocal,
+) {
+    let code = if local.parameter {
+        DiagnosticCode::UnusedParameter
+    } else if session.writes.contains(&identifier) {
+        DiagnosticCode::VariableAssignedNeverRead
+    } else {
+        DiagnosticCode::VariableDeclaredNeverUsed
+    };
+    let mut diagnostic = pseudolearn_diagnostics::Diagnostic::new(code, local.span)
+        .with_argument("lexeme", &local.name);
+    diagnostic.severity = code.severity(if session.options.strict {
+        "estricto"
+    } else {
+        "flexible"
+    });
+    session.diagnostics.push(diagnostic);
 }

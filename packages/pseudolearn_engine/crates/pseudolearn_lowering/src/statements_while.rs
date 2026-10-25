@@ -22,7 +22,10 @@ pub fn lower_while(
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
     let mut loop_locals = collect_modified_locals(body, context.expression_context.module);
-    loop_locals.retain(|local_id| context.environment.get_cell(*local_id).is_none());
+    loop_locals.retain(|local_id| {
+        context.environment.get_cell(*local_id).is_none()
+            && context.environment.get_value(*local_id).is_some()
+    });
 
     let header_block = context.builder.create_block();
     jump_to_loop_header(header_block, &loop_locals, context);
@@ -231,6 +234,9 @@ fn collect_statement_locals(
         pseudolearn_semantic::statement_model::HirStatement::For { control, body, .. } => {
             modified.insert(*control);
             collect_nested_statements(body, module, modified);
+        }
+        pseudolearn_semantic::statement_model::HirStatement::VariantMatch(matching) => {
+            collect_switch_statements(&matching.cases, &matching.default, module, modified);
         }
         pseudolearn_semantic::statement_model::HirStatement::Switch { cases, default, .. } => {
             collect_switch_statements(cases, default, module, modified);

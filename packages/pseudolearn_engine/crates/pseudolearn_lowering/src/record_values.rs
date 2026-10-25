@@ -13,6 +13,9 @@ pub(crate) fn lower_range(
     range: (usize, usize),
     state: &mut ExpressionState<'_, '_>,
 ) -> Vec<ValueId> {
+    if let Some(values) = crate::variant_values::lower(expression, state) {
+        return slice(values, range);
+    }
     let (offset, count) = range;
     let module = state.context.module;
     let slot = usize::try_from(expression.0).unwrap_or(usize::MAX);
@@ -34,14 +37,7 @@ pub(crate) fn lower_range(
         Some(HirExpression::RecordNew { fields, .. }) => {
             slice(lower_construction(&fields, state), range)
         }
-        Some(HirExpression::Call {
-            function,
-            arguments,
-        }) => slice(
-            lower_record_call(function.0, &arguments, span, state),
-            range,
-        ),
-        _ => Vec::new(),
+        other => lower_invocation(other, range, span, state),
     }
 }
 
@@ -97,15 +93,62 @@ pub(crate) fn lower_record_call(
 ) -> Vec<ValueId> {
     let (_, cells) =
         crate::expressions_complex::emit_function_call(arguments, function, span, state);
+    load_cells(&cells, span, state)
+}
+
+pub(crate) fn load_cells(
+    cells: &[ValueId],
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
     let mut values = Vec::new();
     for cell in cells {
         let loaded = state.builder.next_value();
         state.builder.emit_with_target(
-            Operation::CellLoad,
-            vec![Operand::Value(cell)],
+            Operation::CellLoadRaw,
+            vec![Operand::Value(*cell)],
             (Some(loaded), span),
         );
         values.push(loaded);
     }
     values
+}
+
+fn lower_invocation(
+    kind: Option<HirExpression>,
+    range: (usize, usize),
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    match kind {
+        Some(HirExpression::VirtualCall {
+            receiver,
+            function,
+            arguments,
+        }) => slice(
+            crate::expressions_objects::method_values(
+                receiver,
+                function.0,
+                &arguments,
+                (span, state),
+            ),
+            range,
+        ),
+        Some(HirExpression::SuperCall {
+            function: Some(function),
+            arguments,
+            ..
+        }) => slice(
+            crate::expressions_objects::super_values(function.0, &arguments, span, state),
+            range,
+        ),
+        Some(HirExpression::Call {
+            function,
+            arguments,
+        }) => slice(
+            lower_record_call(function.0, &arguments, span, state),
+            range,
+        ),
+        _ => Vec::new(),
+    }
 }

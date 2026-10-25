@@ -24,7 +24,7 @@ pub(crate) fn switch(state: &mut ParserState<'_>) -> Result<usize, ()> {
         }
         if state.kind() == TokenKind::Keyword(KeywordKind::DefaultCase) {
             default_case(state)?;
-            break;
+            continue;
         }
         if boundary(state.kind()) {
             break;
@@ -42,9 +42,9 @@ pub(crate) fn switch(state: &mut ParserState<'_>) -> Result<usize, ()> {
 fn case(state: &mut ParserState<'_>) -> Result<(), ()> {
     let start = state.token();
     let marker = state.nodes.len();
-    parse_expression(state, 0)?;
+    pattern(state)?;
     while state.eat(TokenKind::Comma) {
-        parse_expression(state, 0)?;
+        pattern(state)?;
     }
     state.finish(NodeKind::Labels, start, marker);
     state.require(TokenKind::Colon, DiagnosticCode::ExpectedBranchSeparator)?;
@@ -64,7 +64,8 @@ fn default_case(state: &mut ParserState<'_>) -> Result<(), ()> {
 }
 
 pub(crate) fn starts_label(state: &mut ParserState<'_>) -> bool {
-    if !state.kind().is_literal()
+    if !crate::variant_parser::starts(state.kind())
+        && !state.kind().is_literal()
         && !matches!(state.kind(), TokenKind::Minus | TokenKind::Identifier)
     {
         return false;
@@ -78,5 +79,13 @@ pub(crate) fn starts_label(state: &mut ParserState<'_>) -> bool {
             }
             _ => token = token.saturating_add(1),
         }
+    }
+}
+
+fn pattern(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    if crate::variant_parser::starts(state.kind()) {
+        crate::variant_parser::pattern(state)
+    } else {
+        parse_expression(state, 0)
     }
 }

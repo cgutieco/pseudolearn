@@ -32,6 +32,19 @@ fn function(session: &mut AnalysisSession<'_>, index: usize) {
     };
     session.current = FunctionId(u32::try_from(index).unwrap_or(u32::MAX));
     session.returned = false;
+    session.pending_results.clear();
+    for parameter in &function.parameters {
+        if let Some(local) = usize::try_from(parameter.0)
+            .ok()
+            .and_then(|index| session.module.locals.get(index))
+            && crate::result_obligations::is_result(
+                session,
+                &session.module.types.get(local.type_id),
+            )
+        {
+            session.pending_results.insert(*parameter);
+        }
+    }
     let body = session
         .child(function.syntax, NodeKind::Body)
         .map(|body| crate::statement_checker::body(session, body))
@@ -43,6 +56,7 @@ fn function(session: &mut AnalysisSession<'_>, index: usize) {
             &function.name,
         );
     }
+    crate::result_obligations::finish(session);
     if let Some(function) = session.module.functions.get_mut(index) {
         function.body = body;
     }

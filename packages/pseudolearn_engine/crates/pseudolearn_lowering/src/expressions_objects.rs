@@ -55,7 +55,7 @@ fn lower_arguments(
     arguments
         .iter()
         .enumerate()
-        .map(|(position, argument)| {
+        .flat_map(|(position, argument)| {
             let parameter = function
                 .and_then(|function| usize::try_from(function).ok())
                 .and_then(|index| state.context.module.functions.get(index))
@@ -69,9 +69,11 @@ fn lower_arguments(
                     .ok()
                     .and_then(|index| state.context.module.expressions.spans.get(index))
                     .and_then(|span| crate::spans::resolve_span(*span, state.context.source));
-                crate::expressions_complex::lower_cell_argument(*argument, span, state)
+                vec![crate::expressions_complex::lower_cell_argument(
+                    *argument, span, state,
+                )]
             } else {
-                lower_expression_with_state(*argument, state)
+                crate::variant_values::values(*argument, state)
             }
         })
         .collect()
@@ -83,6 +85,15 @@ pub(crate) fn emit_call(
     arguments: Vec<ValueId>,
     (virtual_call, span, state): (bool, Option<IrSpan>, &mut ExpressionState<'_, '_>),
 ) -> ValueId {
+    emit_with_cells(function, receiver, arguments, (virtual_call, span, state)).0
+}
+
+fn emit_with_cells(
+    function: u32,
+    receiver: ValueId,
+    arguments: Vec<ValueId>,
+    (virtual_call, span, state): (bool, Option<IrSpan>, &mut ExpressionState<'_, '_>),
+) -> (ValueId, Vec<ValueId>) {
     let name = usize::try_from(function)
         .ok()
         .and_then(|index| state.context.module.functions.get(index))
@@ -90,6 +101,8 @@ pub(crate) fn emit_call(
         .unwrap_or_default();
     let mut passed = vec![receiver];
     passed.extend(arguments);
+    let cells = crate::expressions_complex::result_cells(function, span, state);
+    passed.extend(cells.iter().copied());
     let mut operands = Vec::new();
     if virtual_call {
         operands.push(Operand::Value(receiver));
@@ -107,7 +120,7 @@ pub(crate) fn emit_call(
     state
         .builder
         .emit_with_target(operation, operands, (Some(result), span));
-    result
+    (result, cells)
 }
 
 pub(crate) fn lower(
@@ -134,4 +147,32 @@ pub(crate) fn lower(
         } => super_call(function.map(|function| function.0), arguments, span, state),
         _ => state.builder.next_value(),
     }
+}
+
+pub(crate) fn method_values(
+    receiver: ExpressionId,
+    function: u32,
+    arguments: &[ExpressionId],
+    (span, state): (Option<IrSpan>, &mut ExpressionState<'_, '_>),
+) -> Vec<ValueId> {
+    let receiver = lower_expression_with_state(receiver, state);
+    let arguments = lower_arguments(Some(function), arguments, state);
+    let virtual_call = crate::dispatch_targets::polymorphic(function, state.context.module);
+    let (_, cells) = emit_with_cells(function, receiver, arguments, (virtual_call, span, state));
+    crate::record_values::load_cells(&cells, span, state)
+}
+
+pub(crate) fn super_values(
+    function: u32,
+    arguments: &[ExpressionId],
+    span: Option<IrSpan>,
+    state: &mut ExpressionState<'_, '_>,
+) -> Vec<ValueId> {
+    let arguments = lower_arguments(Some(function), arguments, state);
+    let receiver = state
+        .builder
+        .receiver
+        .unwrap_or_else(|| state.builder.next_value());
+    let (_, cells) = emit_with_cells(function, receiver, arguments, (false, span, state));
+    crate::record_values::load_cells(&cells, span, state)
 }

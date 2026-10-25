@@ -73,6 +73,7 @@ fn setup_locals(
             span: Span::new(0, 0),
             scope: pseudolearn_semantic::identities::FunctionId(0),
             parameter: false,
+            mutable: true,
         });
     }
 }

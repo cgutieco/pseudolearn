@@ -67,6 +67,7 @@ pub(crate) fn lower_assign_local(
     span: Option<IrSpan>,
     context: &mut StatementContext<'_, '_>,
 ) {
+    initialize_addressed_local(local_id, span, context);
     if let Some(cell) = context.environment.get_cell(local_id) {
         context.builder.emit_void(
             Operation::CellStore,
@@ -74,15 +75,9 @@ pub(crate) fn lower_assign_local(
             span,
         );
     } else {
-        let stored = context.builder.next_value();
-        context.builder.emit_with_target(
-            Operation::ValueRequire,
-            vec![Operand::Value(value)],
-            (Some(stored), span),
-        );
-        context.environment.bind_value(local_id, stored);
+        context.environment.bind_value(local_id, value);
         context.environment.mark_assigned(local_id);
-        record_origin_entry(local_id, stored, context);
+        record_origin_entry(local_id, value, context);
     }
 }
 
@@ -247,5 +242,18 @@ fn bind_dimension(
     } else {
         context.environment.bind_value(local, array_value);
         array_value
+    }
+}
+
+fn initialize_addressed_local(
+    local: LocalId,
+    span: Option<IrSpan>,
+    context: &mut StatementContext<'_, '_>,
+) {
+    if context.environment.get_cell(local).is_none()
+        && context.environment.get_value(local).is_none()
+        && crate::address_taken::contains(local, context.expression_context.module)
+    {
+        crate::statements_declare::lower_single_declare(local, span, context);
     }
 }

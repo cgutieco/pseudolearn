@@ -21,7 +21,10 @@ pub fn lower_repeat(
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
     let mut loop_locals = collect_modified_locals(body, context.expression_context.module);
-    loop_locals.retain(|local_id| context.environment.get_cell(*local_id).is_none());
+    loop_locals.retain(|local_id| {
+        context.environment.get_cell(*local_id).is_none()
+            && context.environment.get_value(*local_id).is_some()
+    });
 
     let body_header = context.builder.create_block();
     jump_to_loop_header(body_header, &loop_locals, context);

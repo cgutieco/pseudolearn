@@ -57,8 +57,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nPrivado Definir value Como Entero;\nMetodo Constructor(value Como Entero)\nEste.value <- value;\nFinMetodo\nMetodo get() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir x Como C;\nx <- Nuevo C(8);\nEscribir x.get();\nFinAlgoritmo\n",
-    "en": "class C\nprivate define value as integer;\nmethod constructor(value as integer)\nthis.value <- value;\nendMethod\nmethod get() as integer\nreturn this.value;\nendMethod\nendClass\nalgorithm P\ndefine x as C;\nx <- new C(8);\nwrite x.get();\nendAlgorithm\n"
+    "es": "Clase C\nPrivado Definir value Como Entero;\nMetodo Constructor(value Como Entero)\nEste.value <- value;\nFinMetodo\nMetodo get() Como Entero\nRetornar Este.value;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C(8);\nEscribir x.get();\nFinAlgoritmo\n",
+    "en": "class C\nprivate define value as integer;\nmethod constructor(value as integer)\nthis.value <- value;\nendMethod\nmethod get() as integer\nreturn this.value;\nendMethod\nendClass\nalgorithm P\ndefine x as C <- new C(8);\nwrite x.get();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -82,8 +82,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C;\nx <- Nuevo C();\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine x as C;\nx <- new C();\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C();\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine x as C <- new C();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

@@ -1,11 +1,9 @@
 #![forbid(unsafe_code)]
 
 use crate::builder::is_current_block_terminated;
-use crate::expressions::lower_expression;
-use crate::spans::resolve_span;
+use crate::environment::VariableEnvironment;
 use crate::statement_context::StatementContext;
-use crate::statements::lower_statement_list;
-use pseudolearn_ir::{BlockId, IrSpan, Operand, Operation, PredicateKind, ValueId};
+use pseudolearn_ir::{BlockId, Operand, Operation};
 use pseudolearn_semantic::identities::{ExpressionId, StatementId};
 use pseudolearn_semantic::statement_model::HirCase;
 use pseudolearn_source::Span;
@@ -21,239 +19,125 @@ pub fn lower_switch(
     descriptor: &SwitchStatementDescriptor<'_>,
     context: &mut StatementContext<'_, '_>,
 ) {
-    let span = resolve_span(descriptor.statement_span, context.expression_context.source);
+    let span =
+        crate::spans::resolve_span(descriptor.statement_span, context.expression_context.source);
     context
         .builder
-        .emit_void(Operation::StmtEnter, vec![], span);
-
-    let (exit_block, mut check_block, selector_value) = initialize_switch(descriptor, context);
-
-    for (ordinal, case) in descriptor.cases.iter().enumerate() {
-        check_block = lower_switch_case(
-            case,
-            (check_block, exit_block),
-            (selector_value, span, ordinal),
-            context,
-        );
-    }
-
-    lower_switch_default(
-        descriptor.default_body,
-        (check_block, exit_block),
-        span,
-        context,
-    );
-
-    context.builder.set_current_block(exit_block);
-    context.builder.emit_void(Operation::StmtExit, vec![], span);
+        .emit_void(Operation::StmtEnter, Vec::new(), span);
+    lower_after_entry(descriptor, context);
 }
 
-fn initialize_switch(
+pub(crate) fn lower_after_entry(
     descriptor: &SwitchStatementDescriptor<'_>,
     context: &mut StatementContext<'_, '_>,
-) -> (BlockId, BlockId, ValueId) {
-    let selector_value = lower_expression(
+) {
+    let (exit, default, blocks) = select_blocks(descriptor, context);
+    let mut exits = lower_cases(
+        descriptor.cases,
+        &blocks,
+        descriptor.statement_span,
+        context,
+    );
+    context.builder.set_current_block(default);
+    let span =
+        crate::spans::resolve_span(descriptor.statement_span, context.expression_context.source);
+    let decision = if descriptor.default_body.is_empty() {
+        Operation::DecideNone
+    } else {
+        Operation::DecideDefault
+    };
+    context.builder.emit_void(decision, Vec::new(), span);
+    if let Some(exit) = body(descriptor.default_body, context) {
+        exits.push(exit);
+    }
+    crate::switch_join::finish(&exits, exit, context);
+    let span =
+        crate::spans::resolve_span(descriptor.statement_span, context.expression_context.source);
+    context
+        .builder
+        .emit_void(Operation::StmtExit, Vec::new(), span);
+}
+
+fn decide(ordinal: Option<usize>, statement_span: Span, context: &mut StatementContext<'_, '_>) {
+    let span = crate::spans::resolve_span(statement_span, context.expression_context.source);
+    if let Some(ordinal) = ordinal {
+        let value = context.builder.next_value();
+        context.builder.emit_with_target(
+            Operation::ConstI64,
+            vec![Operand::LiteralI64(i64::try_from(ordinal).unwrap_or(0))],
+            (Some(value), None),
+        );
+        context
+            .builder
+            .emit_void(Operation::DecideCase, vec![Operand::Value(value)], span);
+    } else {
+        context
+            .builder
+            .emit_void(Operation::DecideDefault, Vec::new(), span);
+    }
+}
+
+fn body(
+    body: &[StatementId],
+    context: &mut StatementContext<'_, '_>,
+) -> Option<(BlockId, VariableEnvironment)> {
+    let mut environment = context.environment.clone();
+    let mut branch = StatementContext {
+        expression_context: context.expression_context,
+        environment: &mut environment,
+        builder: context.builder,
+        origins: context.origins,
+    };
+    crate::statements::lower_statement_list(body, &mut branch);
+    if is_current_block_terminated(context.builder) {
+        None
+    } else {
+        context
+            .builder
+            .current_block
+            .map(|block| (block, environment))
+    }
+}
+
+fn lower_cases(
+    cases: &[HirCase],
+    blocks: &[BlockId],
+    span: Span,
+    context: &mut StatementContext<'_, '_>,
+) -> Vec<(BlockId, VariableEnvironment)> {
+    let mut exits = Vec::new();
+    for (ordinal, (case, block)) in cases.iter().zip(blocks).enumerate() {
+        context.builder.set_current_block(*block);
+        decide(Some(ordinal), span, context);
+        if let Some(exit) = body(&case.body, context) {
+            exits.push(exit);
+        }
+    }
+    exits
+}
+
+fn select_blocks(
+    descriptor: &SwitchStatementDescriptor<'_>,
+    context: &mut StatementContext<'_, '_>,
+) -> (BlockId, BlockId, Vec<BlockId>) {
+    let selector = crate::expressions::lower_expression(
         descriptor.selector,
         context.expression_context,
         context.environment,
         context.builder,
     );
-
-    let exit_block = context.builder.create_block();
-    let check_block = context.builder.create_block();
-    context.builder.emit_void(
-        Operation::Jump,
-        vec![Operand::BlockTarget {
-            target_block: check_block,
-            arguments: vec![],
-        }],
-        None,
-    );
-    (exit_block, check_block, selector_value)
-}
-
-fn lower_switch_case(
-    case: &HirCase,
-    blocks: (BlockId, BlockId),
-    selector: (ValueId, Option<IrSpan>, usize),
-    context: &mut StatementContext<'_, '_>,
-) -> BlockId {
-    let (check_block, exit_block) = blocks;
-    let case_body_block = context.builder.create_block();
-    let following_check_block = context.builder.create_block();
-
-    lower_case_labels(
-        &case.labels,
-        (selector.0, selector.1),
-        (check_block, case_body_block, following_check_block),
+    let exit = context.builder.create_block();
+    let default = context.builder.create_block();
+    let blocks: Vec<_> = descriptor
+        .cases
+        .iter()
+        .map(|_| context.builder.create_block())
+        .collect();
+    crate::switch_dispatch::dispatch(
+        descriptor.cases,
+        (selector, descriptor.selector),
+        (&blocks, default),
         context,
     );
-
-    context.builder.set_current_block(case_body_block);
-    let ordinal = context.builder.next_value();
-    context.builder.emit_with_target(
-        Operation::ConstI64,
-        vec![Operand::LiteralI64(
-            i64::try_from(selector.2).unwrap_or(i64::MAX),
-        )],
-        (Some(ordinal), None),
-    );
-    context.builder.emit_void(
-        Operation::DecideCase,
-        vec![Operand::Value(ordinal)],
-        selector.1,
-    );
-    execute_case_body(&case.body, (case_body_block, exit_block), context);
-
-    following_check_block
-}
-
-fn execute_case_body(
-    body: &[StatementId],
-    blocks: (BlockId, BlockId),
-    context: &mut StatementContext<'_, '_>,
-) {
-    let (case_body_block, exit_block) = blocks;
-    context.builder.set_current_block(case_body_block);
-    let mut case_environment = context.environment.clone();
-    let mut case_context = StatementContext {
-        expression_context: context.expression_context,
-        environment: &mut case_environment,
-        builder: context.builder,
-        origins: context.origins,
-    };
-    lower_statement_list(body, &mut case_context);
-
-    if !is_current_block_terminated(context.builder) {
-        context.builder.emit_void(
-            Operation::Jump,
-            vec![Operand::BlockTarget {
-                target_block: exit_block,
-                arguments: vec![],
-            }],
-            None,
-        );
-    }
-}
-
-fn lower_case_labels(
-    labels: &[ExpressionId],
-    selector: (ValueId, Option<IrSpan>),
-    targets: (BlockId, BlockId, BlockId),
-    context: &mut StatementContext<'_, '_>,
-) {
-    let (initial_check, case_body, following_check) = targets;
-    if labels.is_empty() {
-        emit_no_case_match(initial_check, following_check, context);
-        return;
-    }
-    let mut check_block = initial_check;
-    for (index, label) in labels.iter().copied().enumerate() {
-        context.builder.set_current_block(check_block);
-        let next_check = if index.saturating_add(1) < labels.len() {
-            context.builder.create_block()
-        } else {
-            following_check
-        };
-        let condition = compare_case_label(label, selector, context);
-        emit_case_branch(condition, (case_body, next_check), context);
-        check_block = next_check;
-    }
-}
-
-fn compare_case_label(
-    label: ExpressionId,
-    selector: (ValueId, Option<IrSpan>),
-    context: &mut StatementContext<'_, '_>,
-) -> ValueId {
-    let (selector_value, span) = selector;
-    let label_value = lower_expression(
-        label,
-        context.expression_context,
-        context.environment,
-        context.builder,
-    );
-    let match_value = context.builder.next_value();
-    context.builder.emit_with_target(
-        Operation::IntCmp,
-        vec![
-            Operand::Predicate(PredicateKind::Equal),
-            Operand::Value(selector_value),
-            Operand::Value(label_value),
-        ],
-        (Some(match_value), span),
-    );
-    match_value
-}
-
-fn emit_no_case_match(
-    check_block: BlockId,
-    following_check: BlockId,
-    context: &mut StatementContext<'_, '_>,
-) {
-    context.builder.set_current_block(check_block);
-    let condition = context.builder.next_value();
-    context.builder.emit_with_target(
-        Operation::ConstBool,
-        vec![Operand::LiteralBool(false)],
-        (Some(condition), None),
-    );
-    emit_case_branch(condition, (following_check, following_check), context);
-}
-
-fn emit_case_branch(
-    condition: ValueId,
-    targets: (BlockId, BlockId),
-    context: &mut StatementContext<'_, '_>,
-) {
-    let (case_body_block, following_check_block) = targets;
-    context.builder.emit_void(
-        Operation::Branch,
-        vec![
-            Operand::Value(condition),
-            Operand::BlockTarget {
-                target_block: case_body_block,
-                arguments: vec![],
-            },
-            Operand::BlockTarget {
-                target_block: following_check_block,
-                arguments: vec![],
-            },
-        ],
-        None,
-    );
-}
-
-fn lower_switch_default(
-    default_body: &[StatementId],
-    blocks: (BlockId, BlockId),
-    span: Option<IrSpan>,
-    context: &mut StatementContext<'_, '_>,
-) {
-    let (check_block, exit_block) = blocks;
-    context.builder.set_current_block(check_block);
-    let decision = if default_body.is_empty() {
-        Operation::DecideNone
-    } else {
-        Operation::DecideDefault
-    };
-    context.builder.emit_void(decision, vec![], span);
-    let mut default_environment = context.environment.clone();
-    let mut default_context = StatementContext {
-        expression_context: context.expression_context,
-        environment: &mut default_environment,
-        builder: context.builder,
-        origins: context.origins,
-    };
-    lower_statement_list(default_body, &mut default_context);
-    if !is_current_block_terminated(context.builder) {
-        context.builder.emit_void(
-            Operation::Jump,
-            vec![Operand::BlockTarget {
-                target_block: exit_block,
-                arguments: vec![],
-            }],
-            None,
-        );
-    }
+    (exit, default, blocks)
 }

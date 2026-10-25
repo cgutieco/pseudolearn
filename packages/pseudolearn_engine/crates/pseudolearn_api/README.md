@@ -190,6 +190,8 @@ registra la tabla `source_id → perfil` de todos los archivos; la ejecución y 
 con el perfil del archivo que contiene cada operación. `native_build` rellena `site_boolean_words` solo si el módulo tiene
 tabla de perfiles, por lo que el archivo suelto no cambia. El adaptador AOT de conformance aún no acepta proyectos; la construcción nativa de proyectos se prueba con `tests/native_project_build.rs` y desde la CLI.
 
+La vista pública conserva nodos explícitos de construcción y patrón de variante, propagación y descarte. Expone identidades canónicas de alternativa y constructor de tipo, mutabilidad e inicialización del vínculo, y roles de carga útil, vínculo, tipo e inicializador. No expone los registros sintéticos ni sus ranuras de almacenamiento.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.

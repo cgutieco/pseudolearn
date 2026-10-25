@@ -45,6 +45,8 @@ repetir, y `vocabulary_index_of(tramo)` da el índice que usa el AOT. El verific
 (`IR.MODEL#R1`). Un módulo sin tabla se imprime igual que antes. Descartado: un operando de vocabulario en cada `text.format`
 y `out.write`, que cambiaría instrucciones calientes y la gramática de cada operación.
 
+`value.reinterpret` conserva bits dentro de un banco y exige un portador canónico i64 o str; no admite unit ni celdas. `cell.load_raw` transporta palabras de celdas locales de salida, incluidas referencias inactivas nulas, sin cambiar la lectura comprobada de celdas administradas. El terminador switch recibe selector i64, destino por defecto y pares ordinal/destino ordenados, distintos y acotados a 16 bits. El verificador comprueba forma, tipos y las aristas con el mismo contrato de argumentos de bloque.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

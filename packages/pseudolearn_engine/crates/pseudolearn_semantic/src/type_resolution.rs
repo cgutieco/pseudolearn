@@ -6,6 +6,14 @@ use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::TokenKind;
 
 pub(crate) fn resolve(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
+    if matches!(
+        session.token_kind(node),
+        Some(TokenKind::Keyword(
+            KeywordKind::OptionalType | KeywordKind::ResultType
+        ))
+    ) {
+        return variant_type(session, node);
+    }
     let kind = match session.token_kind(node) {
         Some(TokenKind::Keyword(KeywordKind::IntegerType)) => Type::Integer,
         Some(TokenKind::Keyword(KeywordKind::RealType)) => Type::Real,
@@ -63,4 +71,26 @@ fn subclass_of(session: &AnalysisSession<'_>, mut class: ClassId, superclass: Cl
         class = next;
     }
     false
+}
+
+fn variant_type(session: &mut AnalysisSession<'_>, node: usize) -> TypeId {
+    let family = if session.token_kind(node) == Some(TokenKind::Keyword(KeywordKind::OptionalType))
+    {
+        crate::variant_model::VariantFamily::Optional
+    } else {
+        crate::variant_model::VariantFamily::Result
+    };
+    let children: Vec<_> = session
+        .children(node)
+        .into_iter()
+        .filter(|child| session.kind(*child) == pseudolearn_syntax::NodeKind::Type)
+        .collect();
+    let mut payloads: Vec<_> = children
+        .into_iter()
+        .map(|child| Some(resolve(session, child)))
+        .collect();
+    if family == crate::variant_model::VariantFamily::Optional {
+        payloads.insert(0, None);
+    }
+    crate::variant_types::register(session, family, payloads, node)
 }

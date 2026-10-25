@@ -55,8 +55,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a, b Como C;\na <- Nuevo C();\nb <- a;\nEscribir a = b;\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine a, b as C;\na <- new C();\nb <- a;\nwrite a = b;\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nDefinir Mutable b Como C <- Nuevo C();\nb <- a;\nEscribir a = b;\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine a as C <- new C();\ndefine mutable b as C <- new C();\nb <- a;\nwrite a = b;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -80,8 +80,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a Como C;\na <- Nuevo C();\nEscribir a;\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine a as C;\na <- new C();\nwrite a;\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nEscribir a;\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine a as C <- new C();\nwrite a;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

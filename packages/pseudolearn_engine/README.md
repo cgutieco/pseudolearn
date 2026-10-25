@@ -35,6 +35,8 @@ Fuera de alcance técnico: motor durante la especificación, dependencias de UI,
 
 Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
 
+La edición oficial admite vínculos locales individuales con tipo e inicializador obligatorio: `Definir x Como Entero <- 1;` es inmutable y `Definir Mutable` permite reasignación. La mutación de un objeto no reasigna su vínculo. Los tipos incorporados `Opcional<T>` y `Resultado<T,E>` aceptan argumentos concretos anidados; `Segun` exige cubrir sus variantes y los miembros de enumerados. `Propagar` retorna la alternativa de ausencia o error, y `Descartar` consume explícitamente un resultado. No hay migrador ni selector de compatibilidad. Las variantes comparten unión por banco y raíces estáticas entre VM y AOT; el opcional de referencia usa el centinela solo cuando no pierde la distinción entre `Nada` y `Algo(Nada)`.
+
 ## 2. Guía operativa y ciclo de vida
 
 El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Los registros de medición histórica no forman parte del checkout y no certifican la revisión actual ni plataformas pendientes.

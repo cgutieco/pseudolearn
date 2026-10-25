@@ -55,6 +55,7 @@ fn parse_statement(state: &mut ParserState<'_>) -> Result<usize, ()> {
         TokenKind::Keyword(KeywordKind::Write) => output(state),
         TokenKind::Keyword(KeywordKind::Read) => input(state),
         TokenKind::Keyword(KeywordKind::ReturnKeyword) => returned(state),
+        TokenKind::Keyword(KeywordKind::DiscardKeyword) => crate::variant_parser::discard(state),
         TokenKind::Keyword(
             KeywordKind::ClassKeyword | KeywordKind::Subroutine | KeywordKind::Method,
         ) => return crate::unit_parser::reject_nested(state),

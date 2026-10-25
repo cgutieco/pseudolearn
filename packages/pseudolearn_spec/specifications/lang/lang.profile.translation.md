@@ -80,8 +80,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mientras Como Entero;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine while as integer;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mientras Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine while as integer <- 0;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

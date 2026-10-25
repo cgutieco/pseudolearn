@@ -25,13 +25,17 @@ pub(crate) fn verify(
         Opcode::ObjectLoad => references::verify_object_load(module, function, instruction),
         Opcode::ObjectStore => references::verify_object_store(module, function, instruction),
         Opcode::CellLocal => references::verify_cell_local(function, instruction),
-        Opcode::CellLoad => references::verify_cell_load(function, instruction),
+        Opcode::CellLoad | Opcode::CellLoadRaw => {
+            references::verify_cell_load(function, instruction)
+        }
         Opcode::CellStore => references::verify_cell_store(module, function, instruction),
         Opcode::ObjectNew => references::verify_object_new(module, function, instruction),
         Opcode::ObjectCopy => references::verify_object_copy(function, instruction),
         Opcode::RefCmp => references::verify_reference_compare(function, instruction),
         Opcode::HostRandom => references::verify_host_random(function, instruction),
         Opcode::InRead => verify_in_read(function, instruction),
+        Opcode::ValueReinterpret => verify_reinterpret(function, instruction),
+        Opcode::Switch => crate::verify_switch::check(function, instruction),
         _ => Ok(()),
     }
 }
@@ -106,4 +110,29 @@ fn require_assignable(
 fn is_reference_type(value_type: Option<&ValueType>) -> bool {
     value_type
         .is_some_and(|value_type| value_type.value_class() == pseudolearn_ir::ValueClass::Reference)
+}
+
+fn verify_reinterpret(
+    function: &BytecodeFunction,
+    instruction: &Instruction,
+) -> Result<(), BytecodeError> {
+    let [BytecodeOperand::Type(target), source] = instruction.operands.as_slice() else {
+        return Err(TYPE_ERROR);
+    };
+    let source = operand_type(function, source).ok_or(TYPE_ERROR)?;
+    let carrier = source == ValueType::I64
+        || *target == ValueType::I64
+        || source == ValueType::Str
+        || *target == ValueType::Str;
+    if destination_type(function, instruction) == Some(target)
+        && source.value_class() == target.value_class()
+        && *target != ValueType::Unit
+        && carrier
+        && !matches!(source, ValueType::Cell(_))
+        && !matches!(target, ValueType::Cell(_))
+    {
+        Ok(())
+    } else {
+        Err(TYPE_ERROR)
+    }
 }

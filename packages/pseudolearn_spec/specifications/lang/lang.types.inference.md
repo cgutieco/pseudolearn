@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una primera asignación sin declaración en flexible fija el tipo e informa inferredVariableType. Una posterior asignación entero a real amplía el tipo e informa widenedVariableType. Un tipo incompatible produce typeConflictOnInferredVariable; no se degrada a un tipo dinámico universal. Estricto exige declaración previa.",
+  "texto": "En ambos rigores cada vínculo local se declara con tipo e inicializador. La asignación a un nombre no declarado es undeclaredVariable, error, y no declara ni infiere un vínculo; un símbolo inválido evita diagnósticos derivados. No existe declaración implícita ni migrador: la forma oficial usa Definir con tipo e inicializador y Mutable cuando el vínculo se reasigna.",
   "verificacion": [
     "C1",
     "C2",
@@ -60,10 +60,15 @@
     "en": "algorithm P\nvalue <- 1;\nwrite value;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "execute",
+  "operacion": "analyze",
   "espera": {
-    "salida": "1\n",
-    "terminacion": "completed"
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "undeclaredVariable",
+        "severidad": "error"
+      }
+    ]
   },
   "rigor": [
     "flexible"
@@ -119,14 +124,6 @@
     "diagnosticos": [
       {
         "codigo": "undeclaredVariable",
-        "severidad": "warning"
-      },
-      {
-        "codigo": "inferredVariableType",
-        "severidad": "info"
-      },
-      {
-        "codigo": "typeConflictOnInferredVariable",
         "severidad": "error"
       }
     ]

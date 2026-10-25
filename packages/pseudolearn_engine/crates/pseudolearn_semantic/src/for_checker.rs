@@ -29,11 +29,9 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
         .get(2)
         .map(|bound| crate::expression_checker::check(session, *bound));
     validate_bounds(session, &[Some(initial), Some(ending), step], node);
+    check_mutability(session, control, control_node);
     activate_control(session, control);
-    session.controls.push(control);
-    let body_node = session.child(node, NodeKind::Body)?;
-    let body = crate::statement_checker::body(session, body_node);
-    session.controls.pop();
+    let body = check_body(session, node, control)?;
     Some(HirStatement::For {
         control,
         initial,
@@ -70,4 +68,35 @@ fn activate_control(session: &mut AnalysisSession<'_>, control: crate::identitie
     {
         *initialized = true;
     }
+}
+
+fn check_mutability(
+    session: &mut AnalysisSession<'_>,
+    control: crate::identities::LocalId,
+    node: usize,
+) {
+    crate::binding_checker::check_destination(
+        session,
+        &crate::expression_model::HirPlace::Local(control),
+        node,
+    );
+}
+
+fn check_body(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    control: crate::identities::LocalId,
+) -> Option<Vec<crate::identities::StatementId>> {
+    session.controls.push(control);
+    let body_node = session.child(node, NodeKind::Body)?;
+    let initialized_before = session.initialized.clone();
+    let pending_before = session.pending_results.clone();
+    let body = crate::statement_checker::body(session, body_node);
+    session.pending_results.extend(pending_before);
+    session.initialized = initialized_before;
+    session
+        .initialized
+        .resize(session.module.locals.len(), false);
+    session.controls.pop();
+    Some(body)
 }

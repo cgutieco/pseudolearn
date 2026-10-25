@@ -81,8 +81,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nMientras x < 2 Hacer\nx <- x + 1;\nFinMientras\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nx <- 0;\nwhile x < 2 do\nx <- x + 1;\nendWhile\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nMientras x < 2 Hacer\nx <- x + 1;\nFinMientras\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 0;\nwhile x < 2 do\nx <- x + 1;\nendWhile\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

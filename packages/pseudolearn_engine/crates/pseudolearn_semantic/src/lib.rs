@@ -98,3 +98,17 @@ pub fn analyze_semantics(
         },
     )
 }
+
+mod binding_checker;
+
+mod switch_coverage;
+
+mod result_obligations;
+mod variant_bindings;
+mod variant_checker;
+pub mod variant_model;
+mod variant_types;
+
+mod variant_statements;
+
+mod variant_patterns;

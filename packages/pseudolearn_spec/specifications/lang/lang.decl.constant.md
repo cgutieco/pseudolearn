@@ -248,8 +248,8 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nConstante A Como Entero <- 1;\nDefinir A Como Entero;\nEscribir A;\nFinAlgoritmo\n",
-    "en": "algorithm P\nconstant A as integer <- 1;\ndefine A as integer;\nwrite A;\nendAlgorithm\n"
+    "es": "Algoritmo P\nConstante A Como Entero <- 1;\nDefinir A Como Entero <- 0;\nEscribir A;\nFinAlgoritmo\n",
+    "en": "algorithm P\nconstant A as integer <- 1;\ndefine A as integer <- 0;\nwrite A;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

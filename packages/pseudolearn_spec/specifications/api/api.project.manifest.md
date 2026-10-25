@@ -1663,8 +1663,12 @@
 {
   "id": "C25",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1678,8 +1682,14 @@
             "project_id": "1",
             "revision_id": "1",
             "manifests": [
-              {"location": "Zeta", "text": "schema = 1\n[package]\n"},
-              {"location": "café", "text": "schema = 1\n[package]\n"}
+              {
+                "location": "Zeta",
+                "text": "schema = 1\n[package]\n"
+              },
+              {
+                "location": "café",
+                "text": "schema = 1\n[package]\n"
+              }
             ],
             "files": []
           }
@@ -1695,17 +1705,43 @@
             "diagnostics": [],
             "project_errors": [],
             "manifest_errors": [
-              {"location": "café", "code": "missingField", "field": "package.kind", "line": 2, "column": 1},
-              {"location": "café", "code": "missingField", "field": "package.name", "line": 2, "column": 1},
-              {"location": "Zeta", "code": "missingField", "field": "package.kind", "line": 2, "column": 1},
-              {"location": "Zeta", "code": "missingField", "field": "package.name", "line": 2, "column": 1}
+              {
+                "location": "café",
+                "code": "missingField",
+                "field": "package.kind",
+                "line": 2,
+                "column": 1
+              },
+              {
+                "location": "café",
+                "code": "missingField",
+                "field": "package.name",
+                "line": 2,
+                "column": 1
+              },
+              {
+                "location": "Zeta",
+                "code": "missingField",
+                "field": "package.kind",
+                "line": 2,
+                "column": 1
+              },
+              {
+                "location": "Zeta",
+                "code": "missingField",
+                "field": "package.name",
+                "line": 2,
+                "column": 1
+              }
             ]
           }
         }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -1713,8 +1749,12 @@
 {
   "id": "C26",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1728,8 +1768,14 @@
             "project_id": "1",
             "revision_id": "1",
             "manifests": [
-              {"location": "Café", "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"},
-              {"location": "café", "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"}
+              {
+                "location": "Café",
+                "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"
+              },
+              {
+                "location": "café",
+                "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"
+              }
             ],
             "files": []
           }
@@ -1740,11 +1786,17 @@
   "espera": {
     "api": {
       "results": [
-        {"failure": {"family": "usage"}}
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -1753,8 +1805,12 @@
 {
   "id": "C27",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1775,14 +1831,28 @@
           "value": {
             "configuration": null,
             "manifest_errors": [
-              {"code": "missingField", "field": "package.kind", "line": 2, "column": 1, "location": "app"},
-              {"code": "missingField", "field": "package.name", "line": 2, "column": 1, "location": "app"}
+              {
+                "code": "missingField",
+                "field": "package.kind",
+                "line": 2,
+                "column": 1,
+                "location": "app"
+              },
+              {
+                "code": "missingField",
+                "field": "package.name",
+                "line": 2,
+                "column": 1,
+                "location": "app"
+              }
             ]
           }
         }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```

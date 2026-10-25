@@ -2595,3 +2595,106 @@
   ]
 }
 ```
+
+```instruccion
+{
+  "id": "O75",
+  "nombre": "value.reinterpret",
+  "firma": "value.reinterpret <tipo>, %v -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Reinterpreta bits entre tipos del mismo banco sin conversión numérica; escalar hacia o desde i64, referencia hacia o desde str. No fabrica un valor del lenguaje y no cambia los bits. Se usa en la unión de variantes; las cargas activas se comprueban antes de empaquetarlas.",
+  "trampas": [],
+  "efectos": [],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O76",
+  "nombre": "cell.load_raw",
+  "firma": "cell.load_raw %cell -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Lee la palabra de una celda local de transporte sin rechazar un centinela de referencia inactiva. Una celda administrada conserva la comprobación normal. No es una extracción del lenguaje ni elude la comprobación de una carga activa.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "lee_memoria"
+  ],
+  "observacion": []
+}
+```
+
+```instruccion
+{
+  "id": "O77",
+  "nombre": "switch",
+  "firma": "switch %selector, <defecto>, { <ordinal>, <destino> }",
+  "clases_de_valor": [
+    "escalar"
+  ],
+  "semantica": "Termina el bloque seleccionando por entero una arista, o la arista de defecto. Los ordinales son distintos, crecientes, no negativos y menores de 65536. Cada destino conserva los argumentos de bloque. No ejecuta efectos de otra rama.",
+  "trampas": [],
+  "efectos": [
+    "control"
+  ],
+  "observacion": []
+}
+```
+
+```cobertura
+{
+  "id": "V112",
+  "regla": "LANG.TYPES.RELATIONS#R2",
+  "instrucciones": [
+    "value.reinterpret",
+    "cell.load_raw",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V113",
+  "regla": "LANG.TYPES.RELATIONS#R3",
+  "instrucciones": [
+    "value.reinterpret",
+    "cell.load_raw",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V114",
+  "regla": "LANG.TYPES.RELATIONS#R4",
+  "instrucciones": [
+    "value.reinterpret",
+    "cell.load_raw",
+    "branch",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V115",
+  "regla": "LANG.TYPES.RELATIONS#R5",
+  "instrucciones": [
+    "call",
+    "return"
+  ]
+}
+```

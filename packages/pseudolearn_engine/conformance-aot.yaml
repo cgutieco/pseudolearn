@@ -1007,6 +1007,30 @@
       "verificacion": "ejecutor",
       "estado": "pendiente",
       "resuelve_en": "PG-1.12"
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
+    },
+    {
+      "regla": "LANG.TYPES.RELATIONS@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "La regla combina análisis estático, no anunciado por el adaptador AOT, con ejecución nativa. Los casos ejecutables se contrastan en AOT y el análisis estático en engine."
     }
   ]
 }

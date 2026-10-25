@@ -72,3 +72,5 @@ pub fn parse_module_source(
     tree.has_errors = !diagnostics.is_empty();
     (tree, diagnostics)
 }
+
+mod variant_parser;

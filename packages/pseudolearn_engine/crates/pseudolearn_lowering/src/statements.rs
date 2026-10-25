@@ -153,6 +153,9 @@ fn dispatch_branch_statement(
     context: &mut StatementContext<'_, '_>,
 ) {
     match statement {
+        HirStatement::VariantMatch(matching) => {
+            crate::statements_variant_match::lower(matching, span, context)
+        }
         HirStatement::Conditional {
             condition,
             affirmative,
@@ -226,12 +229,12 @@ fn lower_statement_call(
     context
         .builder
         .emit_void(Operation::StmtEnter, vec![], span);
-    lower_expression(
-        expression_id,
-        context.expression_context,
-        context.environment,
-        context.builder,
-    );
+    let mut state = crate::expressions::ExpressionState {
+        context: context.expression_context,
+        environment: context.environment,
+        builder: context.builder,
+    };
+    crate::variant_values::values(expression_id, &mut state);
     context.builder.emit_void(Operation::StmtExit, vec![], span);
 }
 

@@ -60,6 +60,8 @@ de datos. Las técnicas que requieren medición se aceptan solo tras conservar r
 `BytecodeModule` conserva la tabla de perfiles por fuente del módulo RI (`profiles`) y reexporta `SourceProfile`; el
 bytecode no la interpreta, la entrega al cargador de la VM.
 
+El switch de RI conserva sus destinos como operandos verificados y se carga como tabla de aristas en cada gemelo. La verificación exige selector entero, ordinales crecientes dentro de 16 bits y tipos válidos para reinterpretación y transporte de celdas. Reinterpretar conserva el banco: los opcodes no permiten convertir una palabra escalar en raíz ni una celda en objeto.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

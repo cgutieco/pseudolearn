@@ -4,7 +4,8 @@ use pseudolearn_source::Span;
 
 #[test]
 fn translates_bilingual_round_trip() {
-    let source_spanish = "Algoritmo Principal\n  Definir x Como Real;\n  x <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n";
+    let source_spanish =
+        "Algoritmo Principal\n  Definir x Como Real <- rc(4.0);\n  Escribir x;\nFinAlgoritmo\n";
     let english = translate_source(source_spanish, Profile::English, true);
     assert!(english.is_ok());
     let Ok(english_text) = english else {
@@ -12,7 +13,7 @@ fn translates_bilingual_round_trip() {
     };
     assert_eq!(
         english_text,
-        "Algorithm Principal\n  Define x As Real;\n  x <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n"
+        "Algorithm Principal\n  Define x As Real <- sqrt(4.0);\n  Write x;\nEndAlgorithm\n"
     );
     let round_trip = translate_source(&english_text, Profile::Spanish, true);
     assert!(round_trip.is_ok());
@@ -24,18 +25,18 @@ fn translates_bilingual_round_trip() {
 
 #[test]
 fn preserves_user_declarations_and_shadowed_names() {
-    let source = "Algoritmo Sombras\n  Definir rc Como Real;\n  rc <- 5.0;\n  Definir total Como Entero;\n  total <- redon(rc);\nFinAlgoritmo\n";
+    let source = "Algoritmo Sombras\n  Definir rc Como Real <- 5.0;\n  Definir total Como Entero <- redon(rc);\nFinAlgoritmo\n";
     assert_eq!(
         translate_source(source, Profile::English, true),
         Ok(String::from(
-            "Algorithm Sombras\n  Define rc As Real;\n  rc <- 5.0;\n  Define total As Integer;\n  total <- round(rc);\nEndAlgorithm\n"
+            "Algorithm Sombras\n  Define rc As Real <- 5.0;\n  Define total As Integer <- round(rc);\nEndAlgorithm\n"
         ))
     );
 }
 
 #[test]
 fn detects_reserved_keyword_collisions() {
-    let source = "Algorithm Colision\n  Define fin As Integer;\nEndAlgorithm\n";
+    let source = "Algorithm Colision\n  Define fin As Integer <- 0;\nEndAlgorithm\n";
     let result = translate_source(source, Profile::Spanish, true);
     assert_eq!(
         result,
@@ -91,7 +92,7 @@ fn translates_every_block_construct() {
 
 #[test]
 fn reports_collision_with_the_exact_position_of_the_name() {
-    let source = "Algoritmo A\n  Definir to Como Entero;\nFinAlgoritmo\n";
+    let source = "Algoritmo A\n  Definir to Como Entero <- 0;\nFinAlgoritmo\n";
     let result = translate_source(source, Profile::English, true);
     assert_eq!(
         result,
@@ -105,7 +106,7 @@ fn reports_collision_with_the_exact_position_of_the_name() {
 
 #[test]
 fn reports_collision_between_user_name_and_translated_builtin() {
-    let source = "Algoritmo A\n  Definir sqrt Como Real;\n  sqrt <- rc(4.0);\nFinAlgoritmo\n";
+    let source = "Algoritmo A\n  Definir sqrt Como Real <- rc(4.0);\nFinAlgoritmo\n";
     assert!(matches!(
         translate_source(source, Profile::English, true),
         Err(TranslationError::Collision { .. })
@@ -124,11 +125,29 @@ fn rejects_programs_with_syntax_errors() {
 
 #[test]
 fn does_not_translate_member_names_after_a_dot() {
-    let source = "Clase Caja\n  Definir contenido Como Entero;\nFinClase\nAlgoritmo A\n  Definir c Como Caja;\n  c <- Nuevo Caja();\n  c.contenido <- 1;\nFinAlgoritmo\n";
+    let source = "Clase Caja\n  Definir contenido Como Entero;\nFinClase\nAlgoritmo A\n  Definir c Como Caja <- Nuevo Caja();\n  c.contenido <- 1;\nFinAlgoritmo\n";
     let english = translate_source(source, Profile::English, true);
     assert!(
         english
             .as_ref()
             .is_ok_and(|text| text.contains("c.contenido <- 1;"))
     );
+}
+
+#[test]
+fn translates_nested_variant_types_and_explicit_consumption() -> Result<(), String> {
+    let source = "Algoritmo Main\nDefinir outcome Como Resultado<Opcional<Entero>, Cadena> <- Exito(Algo(1));\nDescartar outcome;\nFinAlgoritmo\n";
+    let english =
+        translate_source(source, Profile::English, true).map_err(|error| format!("{error:?}"))?;
+    assert!(
+        english.contains("Result<Optional<Integer>, String>"),
+        "{english}"
+    );
+    assert!(english.contains("Success(Some(1))"), "{english}");
+    assert!(english.contains("Discard outcome"), "{english}");
+    assert_eq!(
+        translate_source(&english, Profile::Spanish, true),
+        Ok(source.to_owned())
+    );
+    Ok(())
 }

@@ -38,11 +38,16 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Definir declara una lista no vacía de nombres con un tipo común primitivo o clase. No admite inicializador. Declarar no asigna valor. Una declaración duplicada en el mismo ámbito es error; un nombre de un carácter es válido. Puede aparecer en cualquier punto del cuerpo y no crea ámbito de bloque.",
+  "texto": "Definir nombre Como tipo <- expresión declara un vínculo local individual, inmutable y con inicializador obligatorio en ambos rigores. Definir Mutable permite reasignarlo. La inicialización comprueba el tipo y no permite leer el vínculo que declara. Los campos, parámetros y arreglos conservan sus contratos específicos; las declaraciones locales no crean ámbitos de bloque. Un nombre de un carácter es válido y duplicar el nombre es error. Reasignar un vínculo inmutable, usarlo como destino de Leer o pasarlo por referencia para modificarlo es immutableBindingAssignment. La mutación de un objeto no reasigna su vínculo; escribir un campo de registro por valor sí modifica el vínculo. Un mutable sin modificación recibe mutableBindingNeverModified.",
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
   ]
 }
 ```
@@ -56,8 +61,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x, value Como Entero;\nx <- 1;\nvalue <- 2;\nEscribir x, value;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x, value as integer;\nx <- 1;\nvalue <- 2;\nwrite x, value;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nDefinir value Como Entero <- 2;\nEscribir x, value;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 1;\ndefine value as integer <- 2;\nwrite x, value;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -111,8 +116,33 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer <- 1;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 1;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nx <- 2;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 1;\nx <- 2;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -120,7 +150,122 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "initializationInDeclarationNotAllowed",
+        "codigo": "immutableBindingAssignment",
+        "severidad": "error"
+      }
+    ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 1;\nx <- 2;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 1;\nx <- 2;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed"
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- x;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "bindingReadsOwnInitializer",
+        "severidad": "error"
+      }
+    ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 1;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "mutableBindingNeverModified",
+        "severidad": "warning"
+      }
+    ]
+  },
+  "rigor": [
+    "estricto",
+    "flexible"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 1;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 1;\nread x;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "immutableBindingAssignment",
         "severidad": "error"
       }
     ]

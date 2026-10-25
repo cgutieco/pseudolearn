@@ -81,8 +81,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir whileCount Como Entero;\nwhileCount <- 1;\nEscribir whileCount;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine whileCount as integer;\nwhileCount <- 1;\nwrite whileCount;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir whileCount Como Entero <- 1;\nEscribir whileCount;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine whileCount as integer <- 1;\nwrite whileCount;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

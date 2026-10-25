@@ -24,7 +24,7 @@ pub fn lower_declare(
     context.builder.emit_void(Operation::StmtExit, vec![], span);
 }
 
-fn lower_single_declare(
+pub(crate) fn lower_single_declare(
     local_id: LocalId,
     span: Option<pseudolearn_ir::IrSpan>,
     context: &mut StatementContext<'_, '_>,

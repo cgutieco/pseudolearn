@@ -70,6 +70,7 @@ fn construction_card_identity(resolved: &str) -> Option<&'static str> {
         "switch" => Some("switch"),
         "repeat" => Some("repeatLoop"),
         "parameter" => Some("parameter"),
+        "variantConstruction" => Some("variantConstruction"),
         _ => None,
     }
 }

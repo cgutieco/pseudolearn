@@ -178,29 +178,115 @@
 {
   "id": "C4",
   "regla": "R1",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "create_analysis", "arguments": {"program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "11", "source_id": 2}}},
-      {"operation": "analysis", "resource_from": 0, "arguments": {}},
-      {"operation": "create_analysis", "arguments": {"program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "11", "source_id": 3}}},
-      {"operation": "analysis", "resource_from": 2, "arguments": {}}
+      {
+        "operation": "create_analysis",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict",
+          "source": {
+            "project_id": "7",
+            "revision_id": "11",
+            "source_id": 2
+          }
+        }
+      },
+      {
+        "operation": "analysis",
+        "resource_from": 0,
+        "arguments": {}
+      },
+      {
+        "operation": "create_analysis",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir @;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict",
+          "source": {
+            "project_id": "7",
+            "revision_id": "11",
+            "source_id": 3
+          }
+        }
+      },
+      {
+        "operation": "analysis",
+        "resource_from": 2,
+        "arguments": {}
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {}},
-        {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 2}}}]}},
-        {"value": {}},
-        {"value": {"diagnostics": [{"span": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 11}, "source": {"project_id": "7", "revision_id": "11", "source_id": 3}}}]}}
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "span": {
+                  "start": {
+                    "line": 2,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 11
+                  },
+                  "source": {
+                    "project_id": "7",
+                    "revision_id": "11",
+                    "source_id": 2
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "diagnostics": [
+              {
+                "span": {
+                  "start": {
+                    "line": 2,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 11
+                  },
+                  "source": {
+                    "project_id": "7",
+                    "revision_id": "11",
+                    "source_id": 3
+                  }
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -243,17 +329,46 @@
 {
   "id": "C5",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "create_analysis", "arguments": {"program": "", "profile": "es", "strictness": "strict", "source": {"project_id": "7", "revision_id": "0", "source_id": 2}}}
+      {
+        "operation": "create_analysis",
+        "arguments": {
+          "program": "",
+          "profile": "es",
+          "strictness": "strict",
+          "source": {
+            "project_id": "7",
+            "revision_id": "0",
+            "source_id": 2
+          }
+        }
+      }
     ]
   },
-  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine", "app"]
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -504,27 +619,78 @@
 {
   "id": "C6",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "negotiate", "arguments": {"event_binary_versions": [1, 2]}},
-      {"operation": "negotiate", "arguments": {"event_binary_versions": [1]}},
-      {"operation": "negotiate", "arguments": {"event_binary_versions": [3]}}
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "event_binary_versions": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "event_binary_versions": [
+            1
+          ]
+        }
+      },
+      {
+        "operation": "negotiate",
+        "arguments": {
+          "event_binary_versions": [
+            3
+          ]
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"event_binary_version": 2, "event_binary_write_version": 2, "event_binary_read_versions": [1, 2]}},
-        {"value": {"event_binary_version": 1, "event_binary_write_version": 1, "event_binary_read_versions": [1, 2]}},
-        {"failure": {"family": "version"}}
+        {
+          "value": {
+            "event_binary_version": 2,
+            "event_binary_write_version": 2,
+            "event_binary_read_versions": [
+              1,
+              2
+            ]
+          }
+        },
+        {
+          "value": {
+            "event_binary_version": 1,
+            "event_binary_write_version": 1,
+            "event_binary_read_versions": [
+              1,
+              2
+            ]
+          }
+        },
+        {
+          "failure": {
+            "family": "version"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine", "app"]
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -532,17 +698,66 @@
 {
   "id": "C7",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 1, "events": [{"class": "statement_entered", "line": 1, "depth": 1, "source": {"revision_id": "11", "node_id": "p7.r11.f2.n1", "identity": {"project_id": "7", "revision_id": "11", "source_id": 2}, "span": {"start": {"line": 1, "column": 1}, "end": {"line": 1, "column": 2}}}}]}}
+      {
+        "operation": "encode_events",
+        "arguments": {
+          "encoding": "binary",
+          "version": 1,
+          "events": [
+            {
+              "class": "statement_entered",
+              "line": 1,
+              "depth": 1,
+              "source": {
+                "revision_id": "11",
+                "node_id": "p7.r11.f2.n1",
+                "identity": {
+                  "project_id": "7",
+                  "revision_id": "11",
+                  "source_id": 2
+                },
+                "span": {
+                  "start": {
+                    "line": 1,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 2
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
     ]
   },
-  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine", "app"]
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -550,17 +765,46 @@
 {
   "id": "C8",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "decode_events", "arguments": {"encoding": "binary", "encoded": [80, 76, 69, 86, 2]}}
+      {
+        "operation": "decode_events",
+        "arguments": {
+          "encoding": "binary",
+          "encoded": [
+            80,
+            76,
+            69,
+            86,
+            2
+          ]
+        }
+      }
     ]
   },
-  "espera": {"api": {"results": [{"failure": {"family": "usage"}}]}},
-  "sujetos": ["engine", "app"]
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```
 
@@ -568,20 +812,53 @@
 {
   "id": "C9",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 3, "events": []}},
-      {"operation": "encode_events", "arguments": {"encoding": "binary", "version": 65536, "events": []}}
+      {
+        "operation": "encode_events",
+        "arguments": {
+          "encoding": "binary",
+          "version": 3,
+          "events": []
+        }
+      },
+      {
+        "operation": "encode_events",
+        "arguments": {
+          "encoding": "binary",
+          "version": 65536,
+          "events": []
+        }
+      }
     ]
   },
-  "espera": {"api": {"results": [
-    {"failure": {"family": "usage"}},
-    {"failure": {"family": "usage"}}
-  ]}},
-  "sujetos": ["engine", "app"]
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine",
+    "app"
+  ]
 }
 ```

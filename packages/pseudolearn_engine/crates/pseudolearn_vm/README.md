@@ -153,6 +153,8 @@ Vocabulario por sitio: el cargador conserva la tabla de perfiles por fuente y `M
 con la fuente del tramo de la instrucción en curso (`text.format` y `out.write`), con el del módulo como respaldo. Así una
 llamada entre archivos de perfiles distintos imprime cada lógico con el perfil del archivo que contiene la operación.
 
+El cargador convierte switch en una tabla densa de índices de arista, con límite de 65536 posiciones y destino por defecto para huecos y valores fuera del intervalo. Tomar una arista conserva copias paralelas, masa y sondeo en ambos gemelos. La reinterpretación es una copia de bits del mismo banco. La carga cruda de una celda local de transporte permite cero en las ranuras inactivas de variantes; las celdas administradas siguen comprobando presencia. Los mapas de raíces siguen siendo estáticos por banco y cero nunca retiene un objeto.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

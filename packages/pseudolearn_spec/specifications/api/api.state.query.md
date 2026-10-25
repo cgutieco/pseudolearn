@@ -147,7 +147,7 @@
       }
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 3;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -191,12 +191,38 @@
 {
   "id": "C4",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "trace",
-  "espera": {"estado_en": {"evento": 1, "estado": {"elements": [{"sin_valor": true}, {"sin_valor": true}], "truncated": true, "next_cursor": "opaque"}}},
-  "paginacion": {"query": "array_cells", "target": 1, "event": 1, "page_size": 2, "cursor": null},
+  "espera": {
+    "estado_en": {
+      "evento": 1,
+      "estado": {
+        "elements": [
+          {
+            "sin_valor": true
+          },
+          {
+            "sin_valor": true
+          }
+        ],
+        "truncated": true,
+        "next_cursor": "opaque"
+      }
+    }
+  },
+  "paginacion": {
+    "query": "array_cells",
+    "target": 1,
+    "event": 1,
+    "page_size": 2,
+    "cursor": null
+  },
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
@@ -206,18 +232,36 @@
 {
   "id": "C5",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
-    "fallo": {"codigo": "usage"},
+    "fallo": {
+      "codigo": "usage"
+    },
     "eventos": [
-      {"clase": "statement_entered", "linea": 2},
-      {"clase": "statement_exited", "linea": 2}
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      }
     ]
   },
-  "paginacion": {"query": "array_cells", "target": 1, "event": 1, "page_size": 2, "cursor": "cursor_from_event_2"},
+  "paginacion": {
+    "query": "array_cells",
+    "target": 1,
+    "event": 1,
+    "page_size": 2,
+    "cursor": "cursor_from_event_2"
+  },
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
@@ -227,12 +271,36 @@
 {
   "id": "C6",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "trace",
-  "espera": {"fallo": {"codigo": "usage"}, "eventos": [{"clase": "statement_entered", "linea": 2}, {"clase": "statement_exited", "linea": 2}]},
-  "paginacion": {"query": "array_cells", "target": 0, "event": 1, "page_size": 2, "cursor": null},
+  "espera": {
+    "fallo": {
+      "codigo": "usage"
+    },
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      }
+    ]
+  },
+  "paginacion": {
+    "query": "array_cells",
+    "target": 0,
+    "event": 1,
+    "page_size": 2,
+    "cursor": null
+  },
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
@@ -242,12 +310,36 @@
 {
   "id": "C7",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "trace",
-  "espera": {"fallo": {"codigo": "usage"}, "eventos": [{"clase": "statement_entered", "linea": 2}, {"clase": "statement_exited", "linea": 2}]},
-  "paginacion": {"query": "array_cells", "target": 1, "event": 3, "page_size": 2, "cursor": null},
+  "espera": {
+    "fallo": {
+      "codigo": "usage"
+    },
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      }
+    ]
+  },
+  "paginacion": {
+    "query": "array_cells",
+    "target": 1,
+    "event": 3,
+    "page_size": 2,
+    "cursor": null
+  },
   "programa": "Algoritmo P\nDimension a[5] Como Entero;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }

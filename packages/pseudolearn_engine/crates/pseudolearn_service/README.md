@@ -73,6 +73,8 @@ Problema: nombres de símbolos exactos para navegación. Elección: un índice p
 
 Problema: servidor LSP interoperable. Elección: sesión sin E/S con ciclo de vida completo (`initialize`, `shutdown`, `exit` con código 0 solo tras `shutdown`, errores estándar antes de inicializar, tras apagar o ante métodos desconocidos), sincronización incremental, diagnósticos sintácticos y semánticos localizados según el idioma negociado, perfil del documento detectado por su primera palabra clave y posiciones convertidas entre caracteres y UTF-16.
 
+Los nombres de tipos incorporados se reconstruyen desde sus argumentos semánticos y el vocabulario del perfil, sin mostrar nombres sintéticos de disposición. La ayuda de construcción, patrones, propagación y descarte comparte la ficha bilingüe anclada en el corpus.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código en inglés, cero comentarios, sin atributos `doc`, `allow` ni `expect` ni `unsafe`. Los errores son valores `Result`, `Option` o diagnósticos. Los límites físicos, nombres y dependencias se leen de `architecture.yaml` del miembro.

@@ -56,8 +56,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C;\nx <- Nuevo C();\nFinAlgoritmo\n",
-    "en": "class C\nendClass\nalgorithm P\ndefine x as C;\nx <- new C();\nendAlgorithm\n"
+    "es": "Clase C\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C();\nFinAlgoritmo\n",
+    "en": "class C\nendClass\nalgorithm P\ndefine x as C <- new C();\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

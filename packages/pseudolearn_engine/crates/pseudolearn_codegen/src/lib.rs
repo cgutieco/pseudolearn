@@ -89,3 +89,7 @@ pub fn compile_module_to_benchmark_object(
         object_emitter::EmissionMode::Benchmark(settings),
     )
 }
+
+mod lower_variant_values;
+
+mod lower_switch;

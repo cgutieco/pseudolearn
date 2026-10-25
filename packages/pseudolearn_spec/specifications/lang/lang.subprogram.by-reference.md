@@ -61,8 +61,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso f(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero;\nx <- 1;\nf(x);\nEscribir x;\nFinAlgoritmo\n",
-    "en": "subroutine f(value as integer by reference)\nvalue <- value + 1;\nendSubroutine\nalgorithm P\ndefine x as integer;\nx <- 1;\nf(x);\nwrite x;\nendAlgorithm\n"
+    "es": "SubProceso f(value Como Entero Por Referencia)\nvalue <- value + 1;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 1;\nf(x);\nEscribir x;\nFinAlgoritmo\n",
+    "en": "subroutine f(value as integer by reference)\nvalue <- value + 1;\nendSubroutine\nalgorithm P\ndefine mutable x as integer <- 1;\nf(x);\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

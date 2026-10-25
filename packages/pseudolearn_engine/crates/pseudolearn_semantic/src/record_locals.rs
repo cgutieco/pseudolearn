@@ -24,6 +24,7 @@ pub(crate) fn components(session: &mut AnalysisSession<'_>, local: LocalId, reco
             span: parent.span,
             scope: parent.scope,
             parameter: parent.parameter,
+            mutable: parent.mutable,
         });
         session.initialized.push(parent.parameter);
         identifiers.push(identifier);

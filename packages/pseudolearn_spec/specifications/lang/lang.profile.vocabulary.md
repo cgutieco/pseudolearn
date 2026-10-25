@@ -967,6 +967,96 @@
         "es": [],
         "en": []
       }
+    },
+    "mutableKeyword": {
+      "lexemas": {
+        "es": "Mutable",
+        "en": "mutable"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "optionalType": {
+      "lexemas": {
+        "es": "Opcional",
+        "en": "optional"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "resultType": {
+      "lexemas": {
+        "es": "Resultado",
+        "en": "result"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "someVariant": {
+      "lexemas": {
+        "es": "Algo",
+        "en": "some"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "noneVariant": {
+      "lexemas": {
+        "es": "Nada",
+        "en": "none"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "successVariant": {
+      "lexemas": {
+        "es": "Exito",
+        "en": "success"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "errorVariant": {
+      "lexemas": {
+        "es": "Error",
+        "en": "failure"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "propagateKeyword": {
+      "lexemas": {
+        "es": "Propagar",
+        "en": "propagate"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
+    },
+    "discardKeyword": {
+      "lexemas": {
+        "es": "Descartar",
+        "en": "discard"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      }
     }
   }
 }
@@ -1019,8 +1109,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mientras Como Entero;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine while as integer;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mientras Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine while as integer <- 0;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

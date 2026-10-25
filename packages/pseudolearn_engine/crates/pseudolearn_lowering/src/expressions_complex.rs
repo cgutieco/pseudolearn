@@ -76,7 +76,7 @@ fn lower_call_argument(
     }
 }
 
-fn result_cells(
+pub(crate) fn result_cells(
     function_index: u32,
     span: Option<IrSpan>,
     state: &mut ExpressionState<'_, '_>,

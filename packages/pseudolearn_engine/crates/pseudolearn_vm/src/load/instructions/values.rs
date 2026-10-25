@@ -51,6 +51,7 @@ pub(super) fn decode_value_state(
     match instruction.opcode {
         Opcode::ValueUndefined => decode_undefined(context.function, instruction),
         Opcode::ValueRequire => decode_require(context, instruction),
+        Opcode::ValueReinterpret => decode_reinterpret(instruction),
         _ => Err(invalid_bytecode()),
     }
 }
@@ -132,5 +133,25 @@ pub(super) fn decode_output(
         Some(Source::Register(source)) => Op::WriteIntegerRegister { source, newline },
         Some(Source::Immediate(word)) => Op::WriteIntegerImmediate { word, newline },
         None => Op::Unsupported,
+    })
+}
+
+fn decode_reinterpret(instruction: &Instruction) -> Result<Op, VmTrap> {
+    let Some(BytecodeOperand::Register(source)) = instruction.operands.get(1) else {
+        return Err(invalid_bytecode());
+    };
+    let destination = instruction.destination.ok_or_else(invalid_bytecode)?;
+    if source.class != destination.class {
+        return Err(invalid_bytecode());
+    }
+    Ok(match source.class {
+        RegisterClass::Scalar => Op::MoveScalar {
+            destination: destination.index,
+            source: source.index,
+        },
+        RegisterClass::Reference => Op::MoveReference {
+            destination: destination.index,
+            source: source.index,
+        },
     })
 }

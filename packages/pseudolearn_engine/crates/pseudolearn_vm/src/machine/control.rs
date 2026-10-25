@@ -18,6 +18,22 @@ impl Machine<'_> {
     }
 
     #[inline(always)]
+    pub(crate) fn switch(&mut self, source: u16, table: u32) -> Result<Flow, Fault> {
+        let ordinal = self.scalar(source)?;
+        let table = self
+            .current
+            .switches
+            .get(usize::try_from(table).map_err(|_| INVALID_BYTECODE)?)
+            .ok_or(INVALID_BYTECODE)?;
+        let edge = usize::try_from(ordinal)
+            .ok()
+            .and_then(|index| table.targets.get(index))
+            .copied()
+            .unwrap_or(table.default);
+        self.jump(edge)
+    }
+
+    #[inline(always)]
     pub(crate) fn branch(
         &mut self,
         condition: u16,

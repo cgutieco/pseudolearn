@@ -27,6 +27,11 @@ fn contextual_parts(
         NodeKind::Switch => switch_parts(keyword),
         NodeKind::RepeatLoop => repeat_parts(keyword),
         NodeKind::Parameter => parameter_parts(keyword),
+        NodeKind::Type
+        | NodeKind::VariantConstruction
+        | NodeKind::VariantPattern
+        | NodeKind::Propagation
+        | NodeKind::DiscardStatement => variant_parts(keyword),
         _ => None,
     }
 }
@@ -126,4 +131,26 @@ pub(super) fn smallest_in_tree(
         }
     }
     best.map(|(_, kind, span)| (kind, span))
+}
+
+fn variant_parts(keyword: KeywordKind) -> Option<(HelpIdentityKind, &'static str, &'static str)> {
+    if matches!(
+        keyword,
+        KeywordKind::OptionalType
+            | KeywordKind::ResultType
+            | KeywordKind::SomeVariant
+            | KeywordKind::NoneVariant
+            | KeywordKind::SuccessVariant
+            | KeywordKind::ErrorVariant
+            | KeywordKind::PropagateKeyword
+            | KeywordKind::DiscardKeyword
+    ) {
+        Some((
+            HelpIdentityKind::Construction,
+            "variantConstruction",
+            "variant_values",
+        ))
+    } else {
+        None
+    }
 }

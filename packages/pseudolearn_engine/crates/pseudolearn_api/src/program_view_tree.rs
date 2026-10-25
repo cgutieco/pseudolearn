@@ -66,7 +66,11 @@ impl NodeCollector<'_> {
         let ordinal = self.nodes.len();
         self.nodes.push(ViewNode {
             syntax_index: index,
-            kind,
+            kind: crate::program_view_variants::node_kind(
+                kind,
+                self.tree,
+                (pending_node.view_parent_syntax, index),
+            ),
             syntax_kind: syntax_name,
             start_byte: span.start,
             end_byte: span.ending,
@@ -175,6 +179,14 @@ fn child_role(tree: &SyntaxTree, parent: usize, child: usize) -> &'static str {
         return "child";
     };
     match parent_node.kind {
+        NodeKind::Declaration
+        | NodeKind::Type
+        | NodeKind::VariantPattern
+        | NodeKind::VariantConstruction
+        | NodeKind::Propagation
+        | NodeKind::DiscardStatement => {
+            crate::program_view_variants::child_role(tree, parent, child)
+        }
         NodeKind::Conditional => conditional_role(tree, parent, child_node),
         NodeKind::WhileLoop | NodeKind::RepeatLoop | NodeKind::ForLoop => {
             loop_role(parent_node.kind, child_node.kind)

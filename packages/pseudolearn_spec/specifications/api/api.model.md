@@ -108,27 +108,88 @@
 {
   "id": "C3",
   "regla": "R3",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 1, "unit": "unicode_scalar"}, "language": "en", "detail": "full"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "full"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "en",
+          "detail": "full"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "full"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"revision": "1", "language": "en", "detail": "full", "help": {"category": "keyword"}}},
-        {"value": {"revision": "1", "language": "es", "detail": "full", "help": {"category": "keyword"}}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "revision": "1",
+            "language": "en",
+            "detail": "full",
+            "help": {
+              "category": "keyword"
+            }
+          }
+        },
+        {
+          "value": {
+            "revision": "1",
+            "language": "es",
+            "detail": "full",
+            "help": {
+              "category": "keyword"
+            }
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -136,27 +197,78 @@
 {
   "id": "C4",
   "regla": "R3",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "apply_edit", "resource_from": 0, "arguments": {"revision": "1", "edits": [{"start_utf8": "0", "end_utf8": "0", "text": " "}]}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "apply_edit",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "edits": [
+            {
+              "start_utf8": "0",
+              "end_utf8": "0",
+              "text": " "
+            }
+          ]
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"revision": "2"}},
-        {"value": {"stale_revision": "2"}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "revision": "2"
+          }
+        },
+        {
+          "value": {
+            "stale_revision": "2"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -164,27 +276,67 @@
 {
   "id": "C5",
   "regla": "R3",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "release", "resource_from": 0, "arguments": {}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "release",
+        "resource_from": 0,
+        "arguments": {}
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": null},
-        {"failure": {"family": "usage"}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -206,31 +358,126 @@
 {
   "id": "C6",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir \"🧩\"; Escribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 15, "unit": "unicode_scalar"}, "language": "en", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 16, "unit": "utf16"}, "language": "en", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 12, "unit": "utf16"}, "language": "en", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 99, "unit": "unicode_scalar"}, "language": "en", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir \"🧩\"; Escribir 1;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 15,
+            "unit": "unicode_scalar"
+          },
+          "language": "en",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 16,
+            "unit": "utf16"
+          },
+          "language": "en",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 12,
+            "unit": "utf16"
+          },
+          "language": "en",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 99,
+            "unit": "unicode_scalar"
+          },
+          "language": "en",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"revision": "1", "language": "en", "detail": "summary", "help": {"category": "keyword"}}},
-        {"value": {"revision": "1", "language": "en", "detail": "summary", "help": {"category": "keyword"}}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "revision": "1",
+            "language": "en",
+            "detail": "summary",
+            "help": {
+              "category": "keyword"
+            }
+          }
+        },
+        {
+          "value": {
+            "revision": "1",
+            "language": "en",
+            "detail": "summary",
+            "help": {
+              "category": "keyword"
+            }
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -238,25 +485,59 @@
 {
   "id": "C7",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "18446744073709551615", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "18446744073709551615",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"stale_revision": "1"}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "stale_revision": "1"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -264,35 +545,154 @@
 {
   "id": "C8",
   "regla": "R4",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unknown"}, "language": "es", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 0, "column": 1, "unit": "utf16"}, "language": "es", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "xx", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "brief"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "18446744073709551616", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "01", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unknown"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 0,
+            "column": 1,
+            "unit": "utf16"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "xx",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "brief"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "18446744073709551616",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "01",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}},
-        {"failure": {"family": "usage"}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -300,25 +700,57 @@
 {
   "id": "C9",
   "regla": "R3",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "create_document", "arguments": {"program": "Algoritmo P\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 1, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "create_document",
+        "arguments": {
+          "program": "Algoritmo P\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 1,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {}},
-        {"failure": {"family": "usage"}}
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -341,25 +773,89 @@
 {
   "id": "C10",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nPara i <- 1 Hasta 2 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 27, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nPara i <- 1 Hasta 2 Con Paso 1 Hacer\nFinPara\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 27,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"resolution": {"identity": {"kind": "construction", "id": "for", "role": "step_clause"}, "certainty": "certain", "lexical_range": {"start": {"line": 2, "column": 21}, "end": {"line": 2, "column": 29}}, "enclosing_range": {"start": {"line": 2, "column": 1}, "end": {"line": 3, "column": 8}}}, "help": {"category": "keyword"}}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "resolution": {
+              "identity": {
+                "kind": "construction",
+                "id": "for",
+                "role": "step_clause"
+              },
+              "certainty": "certain",
+              "lexical_range": {
+                "start": {
+                  "line": 2,
+                  "column": 21
+                },
+                "end": {
+                  "line": 2,
+                  "column": 29
+                }
+              },
+              "enclosing_range": {
+                "start": {
+                  "line": 2,
+                  "column": 1
+                },
+                "end": {
+                  "line": 3,
+                  "column": 8
+                }
+              }
+            },
+            "help": {
+              "category": "keyword"
+            }
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -367,25 +863,87 @@
 {
   "id": "C11",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nEscribir 1 + 2;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 12, "unit": "unicode_scalar"}, "language": "es", "detail": "full"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nEscribir 1 + 2;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 12,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "full"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"resolution": {"identity": {"kind": "operator", "id": "plus", "role": "binary"}, "certainty": "certain", "lexical_range": {"start": {"line": 2, "column": 12}, "end": {"line": 2, "column": 13}}, "enclosing_range": {"start": {"line": 2, "column": 10}, "end": {"line": 2, "column": 15}}}, "help": null}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "resolution": {
+              "identity": {
+                "kind": "operator",
+                "id": "plus",
+                "role": "binary"
+              },
+              "certainty": "certain",
+              "lexical_range": {
+                "start": {
+                  "line": 2,
+                  "column": 12
+                },
+                "end": {
+                  "line": 2,
+                  "column": 13
+                }
+              },
+              "enclosing_range": {
+                "start": {
+                  "line": 2,
+                  "column": 10
+                },
+                "end": {
+                  "line": 2,
+                  "column": 15
+                }
+              }
+            },
+            "help": null
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -393,25 +951,80 @@
 {
   "id": "C12",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\nDefinir Longitud Como Entero;\nLongitud <- 2;\nEscribir Longitud;\nFinAlgoritmo\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 4, "column": 10, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\nDefinir Longitud Como Entero;\nLongitud <- 2;\nEscribir Longitud;\nFinAlgoritmo\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 4,
+            "column": 10,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"resolution": {"symbol": {"category": "variable", "identifier": "Longitud"}, "certainty": "certain", "lexical_range": {"start": {"line": 4, "column": 10}, "end": {"line": 4, "column": 18}}, "enclosing_range": null}, "help": {"category": "variable", "identifier": "Longitud"}}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "resolution": {
+              "symbol": {
+                "category": "variable",
+                "identifier": "Longitud"
+              },
+              "certainty": "certain",
+              "lexical_range": {
+                "start": {
+                  "line": 4,
+                  "column": 10
+                },
+                "end": {
+                  "line": 4,
+                  "column": 18
+                }
+              },
+              "enclosing_range": null
+            },
+            "help": {
+              "category": "variable",
+              "identifier": "Longitud"
+            }
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -419,29 +1032,100 @@
 {
   "id": "C13",
   "regla": "R5",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
     "calls": [
-      {"operation": "open_edit_session", "arguments": {"program": "Algoritmo P\r\nEscribir \"😀\"; // nota\r\nFinAlgoritmo\r\n", "profile": "es", "strictness": "strict"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 11, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 2, "column": 15, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}},
-      {"operation": "help_query", "resource_from": 0, "arguments": {"revision": "1", "position": {"line": 4, "column": 1, "unit": "unicode_scalar"}, "language": "es", "detail": "summary"}}
+      {
+        "operation": "open_edit_session",
+        "arguments": {
+          "program": "Algoritmo P\r\nEscribir \"😀\"; // nota\r\nFinAlgoritmo\r\n",
+          "profile": "es",
+          "strictness": "strict"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 11,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 2,
+            "column": 15,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      },
+      {
+        "operation": "help_query",
+        "resource_from": 0,
+        "arguments": {
+          "revision": "1",
+          "position": {
+            "line": 4,
+            "column": 1,
+            "unit": "unicode_scalar"
+          },
+          "language": "es",
+          "detail": "summary"
+        }
+      }
     ]
   },
   "espera": {
     "api": {
       "results": [
-        {"value": {"revision": "1"}},
-        {"value": {"resolution": null, "help": null}},
-        {"value": {"resolution": null, "help": null}},
-        {"value": {"resolution": null, "help": null}}
+        {
+          "value": {
+            "revision": "1"
+          }
+        },
+        {
+          "value": {
+            "resolution": null,
+            "help": null
+          }
+        },
+        {
+          "value": {
+            "resolution": null,
+            "help": null
+          }
+        },
+        {
+          "value": {
+            "resolution": null,
+            "help": null
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 

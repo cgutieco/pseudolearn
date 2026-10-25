@@ -19,7 +19,7 @@ La comprobación disponible usa, desde la raíz del monorepo,
 
 ## 3. Arquitectura y modelo del sistema
 
-Nivel 3. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar; serde_json solo en pruebas del HIR contra el corpus.
+Nivel 3. Dependencias internas permitidas: pseudolearn_abi, pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax. Externas: biblioteca estándar; serde_json solo en pruebas del HIR contra el corpus.
 Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
 
 Estructuras y algoritmos: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`) en columnas; resolución de nombres y después de tipos; HIR tipado con la clase de valor de cada expresión; resolución de jerarquía y ranuras virtuales en mundo cerrado.
@@ -51,16 +51,7 @@ La auditoría consume además fuentes regenerables de see_generators en ambos vo
 sin importar el sistema de especificaciones como crate. La emisión del HIR se habilita solo sin errores; las advertencias no la bloquean.
 Alternativas descartadas: resolución global, copiar lexemas de tipos y volver a interpretar el texto en lowering.
 
-Cada repetición de inferencia restaura los símbolos locales originales y vuelve a crear los implícitos;
-solo conserva los tipos inferidos de parámetros. Así los diagnósticos de declaración e inferencia no
-desaparecen en la segunda pasada y una ampliación posterior no cambia lecturas anteriores.
-
-Antes de publicar el HIR se resuelven las referencias locales que se emitieron antes de terminar la
-inferencia. Los tipos ya conocidos de lecturas anteriores se conservan, incluso si la variable se amplía
-más tarde. Una lectura flexible cuya variable nunca adquiere un tipo produce `Uninitialized` con tipo
-interno `Never`: siempre falla antes de producir un valor. Never no es un tipo del lenguaje ni una
-construcción nueva; expresa una evaluación sin continuación normal. Se rechazan asignar un tipo
-primitivo arbitrario o publicar Unknown como si la inferencia hubiera terminado.
+Cada repetición de inferencia restaura los símbolos locales originales y conserva únicamente los tipos inferidos de parámetros. Los vínculos locales tienen tipo explícito y nunca se crean por primera asignación. La repetición elimina temporales de patrones y evita que diagnósticos o lecturas de una pasada alteren la siguiente. Antes de publicar el HIR se resuelven las referencias a parámetros cuyo tipo se completó durante el análisis. Los estados internos Unknown/Error no se publican como tipos válidos del lenguaje.
 
 Los emisores completan los argumentos tipados del catálogo: aridad numérica, tipos inferidos,
 compatibilidad de asignación y clase propietaria de miembros privados. Los tipos primitivos usan
@@ -142,9 +133,16 @@ presión de registros o copia dominante.
 
 Pendientes declarados de esta entrega: registros como elemento de arreglo, campo de clase, y parámetro o resultado de
 métodos y constructores (diagnosticados, `recordArrayElementNotSupported`, `recordClassFieldNotSupported`,
-`recordMemberSignatureNotSupported`); paso por referencia de registros (`recordPassedByReference`); inferencia de
-registros en flexible (`recordNotInferable`); visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y
-registros entre módulos de un proyecto, que hoy son privados del módulo; exhaustividad de `Segun` sobre enumerados.
+`recordMemberSignatureNotSupported`, con excepción de las variantes incorporadas que sí se transportan en firmas de métodos); paso por referencia de registros (`recordPassedByReference`); visibilidad `Publico`/`Privado` y exportación de constantes, enumerados y
+registros entre módulos de un proyecto, que hoy son privados del módulo.
+
+Los vínculos locales tienen mutabilidad explícita en `HirLocal`; su declaración emite una asignación inicial y no cuenta como modificación. `binding_checker` valida inicialización y destinos de reasignación, incluidos campos de registros por valor y argumentos por referencia. Los objetos pueden mutar a través de un vínculo inmutable. La asignación a un nombre no declarado es error en ambos rigores y no crea inferencia flexible. La inicialización obligatoria reemplaza la trampa de lectura sin valor para locales; campos y elementos conservan su contrato. La forma inicializada es la oficial de la edición: no hay migrador, selector de compatibilidad ni conservación de la sintaxis anterior.
+
+La exhaustividad de enumerados pertenece a `switch_coverage`: cubre ordinales en orden de declaración, permite enumerados vacíos y acepta De Otro Modo como cobertura total. Los errores de patrones se informan primero y suprimen diagnósticos derivados de cobertura. El analizador conserva ramas posteriores al comodín para informar su inalcanzabilidad.
+
+Las variantes incorporadas son agregados identificados en `HirModule.variants`, separados de los registros nombrables. Sus instancias concretas se internan por familia y argumentos. Semantic importa también abi para consumir `VariantLayout`, evitando recalcular una disposición distinta: las hojas canónicas son palabras enteras y referencias, con unión por banco. Solo el opcional de una referencia no nula reutiliza el centinela; el opcional de otro opcional conserva discriminante. Los constructores reciben el tipo contextual de declaraciones, retornos y argumentos. Los patrones introducen vínculos inmutables limitados a su rama; un temporal interno evalúa el selector una vez. La propagación verifica la familia y la identidad exacta del tipo de error. Los resultados pendientes se siguen por vínculo y se unen por caminos; retorno, propagación, patrones y descarte transfieren o satisfacen la obligación. No existe migrador ni lenguaje anterior seleccionable.
+
+Los locales declarados dentro de caminos que pueden no ejecutarse no se consideran inicializados al salir; la lectura sin inicialización definida es error en ambos rigores. Los campos y elementos conservan sus comprobaciones de ejecución.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

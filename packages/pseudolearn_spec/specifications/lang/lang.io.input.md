@@ -57,8 +57,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -85,8 +85,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -120,8 +120,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine mutable x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

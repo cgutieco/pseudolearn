@@ -62,6 +62,15 @@ pub fn lower_expression_with_state(
         .copied()
         .and_then(|raw_span| resolve_span(raw_span, state.context.source));
 
+    if let HirExpression::VariantTag(value) = &kind {
+        return crate::variant_values::tag(*value, state);
+    }
+    if let Some(values) = crate::variant_values::lower(expression_id, state) {
+        return values
+            .first()
+            .copied()
+            .unwrap_or_else(|| state.builder.next_value());
+    }
     if let HirExpression::RecordField { record, offset } = &kind {
         return crate::record_values::lower_field(*record, *offset, state);
     }

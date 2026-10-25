@@ -94,6 +94,20 @@ pub enum HirExpression {
         function: Option<FunctionId>,
         arguments: Vec<ExpressionId>,
     },
+    VariantNew {
+        record: RecordId,
+        alternative: u32,
+        payload: Option<ExpressionId>,
+    },
+    VariantPayload {
+        value: ExpressionId,
+        alternative: u32,
+    },
+    VariantTag(ExpressionId),
+    Propagate {
+        value: ExpressionId,
+        target: RecordId,
+    },
     Invalid,
 }
 

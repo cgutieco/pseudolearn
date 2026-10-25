@@ -12,6 +12,9 @@ pub(crate) fn collect_symbols(
 ) {
     for (index, local) in module.locals.iter().enumerate() {
         let local_id = LocalId(u32::try_from(index).unwrap_or(u32::MAX));
+        if internal_symbol(module, local_id) {
+            continue;
+        }
         let category = if local.parameter {
             ServiceSymbolCategory::Parameter
         } else {
@@ -112,7 +115,7 @@ pub(crate) fn collect_expression_occurrences(
             .copied()
             .unwrap_or(Span::new(0, 0));
         match kind {
-            HirExpression::Local(local_id) => {
+            HirExpression::Local(local_id) if !internal_symbol(module, *local_id) => {
                 occurrences.push(ServiceReference {
                     span,
                     target: ServiceSymbolTarget::Local(*local_id),
@@ -139,4 +142,15 @@ pub(crate) fn collect_expression_occurrences(
             _ => {}
         }
     }
+}
+
+fn internal_symbol(module: &HirModule, local: LocalId) -> bool {
+    usize::try_from(local.0)
+        .ok()
+        .and_then(|index| module.locals.get(index))
+        .is_some_and(|local| local.name.starts_with('$'))
+        || module
+            .record_locals
+            .values()
+            .any(|components| components.contains(&local))
 }

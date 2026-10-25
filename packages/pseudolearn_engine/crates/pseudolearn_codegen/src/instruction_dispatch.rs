@@ -11,6 +11,11 @@ use pseudolearn_ir::Operation;
 type Lower = fn(&mut Lowering<'_, '_>, &Instruction<'_>) -> Result<(), CodegenError>;
 
 const FAMILIES: &[(&[Operation], Lower)] = &[
+    (
+        crate::lower_variant_values::OPERATIONS,
+        crate::lower_variant_values::lower,
+    ),
+    (crate::lower_switch::OPERATIONS, crate::lower_switch::lower),
     (lower_scalars::OPERATIONS, lower_scalars::lower),
     (lower_arithmetic::OPERATIONS, lower_arithmetic::lower),
     (lower_real::OPERATIONS, lower_real::lower),

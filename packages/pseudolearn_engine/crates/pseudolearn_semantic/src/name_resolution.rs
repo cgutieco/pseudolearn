@@ -78,11 +78,7 @@ fn implicit(
             name,
         );
     }
-    let kind = session.module.types.intern(if session.options.strict {
-        Type::Error
-    } else {
-        Type::Unknown
-    });
+    let kind = session.module.types.intern(Type::Error);
     let identifier = LocalId(u32::try_from(session.module.locals.len()).unwrap_or(u32::MAX));
     session.module.locals.push(HirLocal {
         name: name.to_owned(),
@@ -91,6 +87,7 @@ fn implicit(
         span: session.span(node),
         scope: session.current,
         parameter: false,
+        mutable: false,
     });
     session.initialized.push(false);
     if let Some(names) = usize::try_from(session.current.0)
@@ -107,12 +104,7 @@ fn implicit(
 fn classify_implicit(
     session: &mut AnalysisSession<'_>,
     identifier: LocalId,
-    purpose: ExpressionPurpose,
+    _purpose: ExpressionPurpose,
 ) {
-    if session.options.strict || purpose != ExpressionPurpose::Destination {
-        session.invalid.insert(identifier);
-    }
-    if !session.options.strict {
-        session.inferred.insert(identifier);
-    }
+    session.invalid.insert(identifier);
 }

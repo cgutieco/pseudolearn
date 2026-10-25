@@ -98,6 +98,7 @@ pub(crate) struct LoadedFunction {
     pub fast_to_probed_returns: Vec<usize>,
     pub probed_to_fast_returns: Vec<usize>,
     pub edges: Vec<Edge>,
+    pub switches: Vec<SwitchTable>,
     pub moves: Vec<Move>,
     pub calls: Vec<CallSite>,
     pub virtual_targets: Vec<Option<u16>>,
@@ -164,4 +165,10 @@ impl LoadedProgram {
     pub fn class_schema(&self, identifier: u32) -> Option<&pseudolearn_bytecode::BytecodeClass> {
         self.inner.classes.get(usize::try_from(identifier).ok()?)
     }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct SwitchTable {
+    pub default: u32,
+    pub targets: Vec<u32>,
 }

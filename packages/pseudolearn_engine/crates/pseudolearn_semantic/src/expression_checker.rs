@@ -22,6 +22,8 @@ pub(crate) fn check_for(
     purpose: ExpressionPurpose,
 ) -> ExpressionId {
     match session.kind(node) {
+        NodeKind::VariantConstruction => crate::variant_checker::check(session, node, None),
+        NodeKind::Propagation => crate::variant_checker::propagation(session, node),
         NodeKind::Identifier => crate::name_resolution::local(session, node, purpose),
         NodeKind::Literal => literal(session, node),
         NodeKind::Unary => crate::operators::unary(session, node),
@@ -129,4 +131,32 @@ pub(crate) fn widen(
         .copied()
         .unwrap_or_default();
     session.emit(HirExpression::Widen(expression), kind, span)
+}
+
+pub(crate) fn check_expected(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    expected: crate::identities::TypeId,
+) -> ExpressionId {
+    check_expected_for(session, node, expected, ExpressionPurpose::Value)
+}
+
+pub(crate) fn check_expected_for(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    expected: crate::identities::TypeId,
+    purpose: ExpressionPurpose,
+) -> ExpressionId {
+    if crate::variant_checker::is_construction(session, node) {
+        crate::variant_checker::check(session, node, Some(expected))
+    } else if session.kind(node) == NodeKind::Primary {
+        session
+            .children(node)
+            .first()
+            .copied()
+            .map(|child| check_expected_for(session, child, expected, purpose))
+            .unwrap_or_else(|| invalid(session, node))
+    } else {
+        check_for(session, node, purpose)
+    }
 }

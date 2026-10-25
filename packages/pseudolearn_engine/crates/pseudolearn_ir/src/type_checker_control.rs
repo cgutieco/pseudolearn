@@ -119,6 +119,7 @@ fn check_branching(
             _ => Err(TypeError),
         },
         Operation::Branch => check_branch_operands(operands, get_type),
+        Operation::Switch => check_switch(operands, get_type),
         Operation::Return => match operands {
             [] | [Operand::Value(_)] => Ok(None),
             _ => Err(TypeError),
@@ -152,4 +153,32 @@ fn check_branch_operands(
         }
         _ => Err(TypeError),
     }
+}
+
+fn check_switch(
+    operands: &[Operand],
+    get_type: &impl Fn(ValueId) -> Option<IrType>,
+) -> Result<Option<IrType>, TypeError> {
+    let [
+        Operand::Value(selector),
+        Operand::BlockTarget { .. },
+        cases @ ..,
+    ] = operands
+    else {
+        return Err(TypeError);
+    };
+    if get_type(*selector) != Some(IrType::I64) || !cases.len().is_multiple_of(2) {
+        return Err(TypeError);
+    }
+    let mut previous = None;
+    for pair in cases.as_chunks::<2>().0 {
+        let [Operand::LiteralI64(ordinal), Operand::BlockTarget { .. }] = pair else {
+            return Err(TypeError);
+        };
+        if !(0..65_536).contains(ordinal) || previous.is_some_and(|previous| previous >= *ordinal) {
+            return Err(TypeError);
+        }
+        previous = Some(*ordinal);
+    }
+    Ok(None)
 }

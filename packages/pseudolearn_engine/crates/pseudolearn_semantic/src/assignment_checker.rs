@@ -11,13 +11,14 @@ pub(crate) fn assignment(session: &mut AnalysisSession<'_>, node: usize) -> Opti
     let target = children.first().copied()?;
     let destination = check_for(session, target, ExpressionPurpose::Destination);
     let value_node = children.get(1).copied()?;
-    let mut value = crate::expression_checker::check(session, value_node);
+    let mut value = assignment_value(session, destination, value_node)?;
     let Some(location) = place(session, destination) else {
         if crate::record_access::is_field(session, destination) {
             session.report(DiagnosticCode::InvalidAssignmentTarget, target);
         }
         return None;
     };
+    crate::binding_checker::check_destination(session, &location, target);
     if let HirPlace::RecordField { local, .. } = location {
         session.writes.insert(local);
     }
@@ -53,6 +54,7 @@ pub(crate) fn assign_local(
     let Some(declaration) = session.module.locals.get(index).cloned() else {
         return;
     };
+    crate::result_obligations::assign(session, local, value, node);
     infer_assignment(session, local, value, node);
     if session.controls.contains(&local) {
         session.named_report(
@@ -79,6 +81,7 @@ pub(crate) fn input(session: &mut AnalysisSession<'_>, node: usize) -> HirStatem
             session.report(DiagnosticCode::InvalidReadTarget, target);
             continue;
         }
+        crate::binding_checker::check_destination(session, &location, target);
         if let HirPlace::Local(local) = location {
             session.writes.insert(local);
             if let Some(initialized) = usize::try_from(local.0)
@@ -152,4 +155,16 @@ fn infer_assignment(
             }
         }
     }
+}
+
+fn assignment_value(
+    session: &mut AnalysisSession<'_>,
+    destination: ExpressionId,
+    node: usize,
+) -> Option<ExpressionId> {
+    let index = usize::try_from(destination.0).ok()?;
+    let kind = *session.module.expressions.types.get(index)?;
+    Some(crate::expression_checker::check_expected(
+        session, node, kind,
+    ))
 }

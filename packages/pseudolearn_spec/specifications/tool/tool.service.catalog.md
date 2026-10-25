@@ -728,6 +728,14 @@
               "version": "1.0.0",
               "element": "D1"
             }
+          },
+          {
+            "identity": "mutableKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
           }
         ],
         "availability": {
@@ -759,11 +767,11 @@
           "es": {
             "title": "Declarar variables",
             "summary": "Asocia nombres con un tipo declarado.",
-            "purpose": "La declaración puede incluir varios nombres antes del conector de tipo.",
+            "purpose": "Declara un vínculo individual con tipo e inicializador obligatorio.",
             "parts": [
               {
                 "identity": "declare",
-                "text": "Inicia la declaración de una o más variables."
+                "text": "Inicia un vínculo local inmutable."
               },
               {
                 "identity": "typeConnector",
@@ -788,6 +796,10 @@
               {
                 "identity": "stringType",
                 "text": "Representa una secuencia de caracteres."
+              },
+              {
+                "identity": "mutableKeyword",
+                "text": "Permite reasignar el vínculo."
               }
             ],
             "constraints": [
@@ -819,11 +831,11 @@
           "en": {
             "title": "Variable declaration",
             "summary": "Associates names with a declared type.",
-            "purpose": "A declaration may include several names before the type connector.",
+            "purpose": "Declares one binding with an explicit type and a required initializer.",
             "parts": [
               {
                 "identity": "declare",
-                "text": "Starts the declaration of one or more variables."
+                "text": "Starts an immutable local binding."
               },
               {
                 "identity": "typeConnector",
@@ -848,6 +860,10 @@
               {
                 "identity": "stringType",
                 "text": "Represents a sequence of characters."
+              },
+              {
+                "identity": "mutableKeyword",
+                "text": "Allows the binding to be reassigned."
               }
             ],
             "constraints": [
@@ -1585,7 +1601,9 @@
               }
             ],
             "constraints": [],
-            "common_errors": [],
+            "common_errors": [
+              "Falta una rama: cubrí las alternativas indicadas o añadí De Otro Modo."
+            ],
             "examples": [
               {
                 "case": "C1",
@@ -1626,7 +1644,9 @@
               }
             ],
             "constraints": [],
-            "common_errors": [],
+            "common_errors": [
+              "Missing branch: cover the listed alternatives or add otherwise."
+            ],
             "examples": [
               {
                 "case": "C1",
@@ -6187,6 +6207,247 @@
             ]
           }
         }
+      },
+      {
+        "id": "help.variants",
+        "identity": {
+          "kind": "construction",
+          "id": "variantConstruction",
+          "role": "variant_values"
+        },
+        "tokens": [
+          {
+            "identity": "optionalType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "resultType",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "someVariant",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "noneVariant",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "successVariant",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "errorVariant",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "propagateKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          },
+          {
+            "identity": "discardKeyword",
+            "source": {
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0",
+              "element": "D1"
+            }
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "anchors": [
+          {
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0",
+            "element": "R2"
+          },
+          {
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0",
+            "element": "R3"
+          },
+          {
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0",
+            "element": "R4"
+          },
+          {
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0",
+            "element": "R5"
+          }
+        ],
+        "content": {
+          "es": {
+            "title": "Opcionales y resultados",
+            "summary": "Opcionales y resultados",
+            "purpose": "Expresa ausencia o error como valores y exige tratar los resultados.",
+            "parts": [
+              {
+                "identity": "optionalType",
+                "text": "Opcional"
+              },
+              {
+                "identity": "resultType",
+                "text": "Resultado"
+              },
+              {
+                "identity": "someVariant",
+                "text": "Algo"
+              },
+              {
+                "identity": "noneVariant",
+                "text": "Nada"
+              },
+              {
+                "identity": "successVariant",
+                "text": "Exito"
+              },
+              {
+                "identity": "errorVariant",
+                "text": "Error"
+              },
+              {
+                "identity": "propagateKeyword",
+                "text": "Propagar"
+              },
+              {
+                "identity": "discardKeyword",
+                "text": "Descartar"
+              }
+            ],
+            "constraints": [
+              "Segun exhaustivo, propagación visible o descarte explícito."
+            ],
+            "common_errors": [
+              "Resultado sin tratar: manejalo con Segun, usá Propagar o Descartar explícitamente."
+            ],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "C3",
+                "profile": "es",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C14",
+                "kind": "diagnostic",
+                "label": "C14",
+                "profile": "es",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          },
+          "en": {
+            "title": "Optional and result values",
+            "summary": "Optional and result values",
+            "purpose": "Expresses absence or failure as values and requires handling results.",
+            "parts": [
+              {
+                "identity": "optionalType",
+                "text": "optional"
+              },
+              {
+                "identity": "resultType",
+                "text": "result"
+              },
+              {
+                "identity": "someVariant",
+                "text": "some"
+              },
+              {
+                "identity": "noneVariant",
+                "text": "none"
+              },
+              {
+                "identity": "successVariant",
+                "text": "success"
+              },
+              {
+                "identity": "errorVariant",
+                "text": "failure"
+              },
+              {
+                "identity": "propagateKeyword",
+                "text": "propagate"
+              },
+              {
+                "identity": "discardKeyword",
+                "text": "discard"
+              }
+            ],
+            "constraints": [
+              "Exhaustive matching, visible propagation, or explicit discard."
+            ],
+            "common_errors": [
+              "Unhandled result: handle it with switch, use propagate, or explicitly discard it."
+            ],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "C3",
+                "profile": "en",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C14",
+                "kind": "diagnostic",
+                "label": "C14",
+                "profile": "en",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
       }
     ],
     "exclusions": [],
@@ -6242,7 +6503,8 @@
             "realType",
             "booleanType",
             "characterType",
-            "stringType"
+            "stringType",
+            "mutableKeyword"
           ]
         },
         {
@@ -6861,6 +7123,29 @@
           ],
           "tokens": [
             "shallowCopy"
+          ]
+        },
+        {
+          "identity": {
+            "kind": "construction",
+            "id": "variantConstruction",
+            "role": "variant_values"
+          },
+          "productions": [
+            "variantConstruction",
+            "variantPattern",
+            "discardStatement",
+            "propagation"
+          ],
+          "tokens": [
+            "optionalType",
+            "resultType",
+            "someVariant",
+            "noneVariant",
+            "successVariant",
+            "errorVariant",
+            "propagateKeyword",
+            "discardKeyword"
           ]
         }
       ]

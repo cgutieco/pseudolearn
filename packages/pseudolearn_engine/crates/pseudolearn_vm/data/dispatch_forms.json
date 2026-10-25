@@ -62,7 +62,8 @@
         "return",
         "trap.missing_return",
         "unreachable",
-        "loop.check_step"
+        "loop.check_step",
+        "switch"
       ]
     }
   ],
@@ -850,6 +851,34 @@
       "form": "Unsupported",
       "fields": [],
       "handler": "unsupported"
+    },
+    {
+      "form": "MoveReference",
+      "fields": [
+        {
+          "name": "destination",
+          "type": "u16"
+        },
+        {
+          "name": "source",
+          "type": "u16"
+        }
+      ],
+      "handler": "move_reference"
+    },
+    {
+      "form": "Switch",
+      "fields": [
+        {
+          "name": "source",
+          "type": "u16"
+        },
+        {
+          "name": "table",
+          "type": "u32"
+        }
+      ],
+      "handler": "switch"
     }
   ]
 }

@@ -87,8 +87,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir interface Como Entero;\ninterface <- 2;\nEscribir interface;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine interface as integer;\ninterface <- 2;\nwrite interface;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir interface Como Entero <- 2;\nEscribir interface;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine interface as integer <- 2;\nwrite interface;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

@@ -38,13 +38,15 @@ impl Machine<'_> {
                 receiver,
                 offset,
             } => {
-                let owner = Handle(self.reference(*receiver)?);
-                let cell = runtime::field_cell(&self.heap, owner, *offset).map_err(memory_fault)?;
-                self.save_cell(*destination, Cell::Managed(cell))?;
+                self.save_field(*destination, *receiver, *offset)?;
             }
-            MemoryOp::CellLoad { destination, cell } => {
-                let word = self.read_cell(self.cell(*cell)?)?;
-                self.write_result(*destination, word)?;
+            MemoryOp::CellLoad { destination, cell }
+            | MemoryOp::CellLoadRaw { destination, cell } => {
+                self.load_transport(
+                    *destination,
+                    *cell,
+                    matches!(operation, MemoryOp::CellLoadRaw { .. }),
+                )?;
             }
             MemoryOp::CellStore { cell, source } => {
                 self.store_cell(self.cell(*cell)?, self.read_value(source.source)?)?
@@ -52,6 +54,22 @@ impl Machine<'_> {
             _ => return Err(INVALID_BYTECODE),
         }
         Ok(Flow::Continue)
+    }
+
+    fn save_field(&mut self, destination: u16, receiver: u16, offset: usize) -> Result<(), Fault> {
+        let owner = Handle(self.reference(receiver)?);
+        let cell = runtime::field_cell(&self.heap, owner, offset).map_err(memory_fault)?;
+        self.save_cell(destination, Cell::Managed(cell))
+    }
+
+    fn load_transport(&mut self, destination: Register, cell: u16, raw: bool) -> Result<(), Fault> {
+        let cell = self.cell(cell)?;
+        let word = if raw {
+            self.read_transport_cell(cell)?
+        } else {
+            self.read_cell(cell)?
+        };
+        self.write_result(destination, word)
     }
 
     fn array_cell(
@@ -146,6 +164,21 @@ impl Machine<'_> {
                     Err("uninitializedVariableRead")
                 }
             }
+        }
+    }
+
+    fn read_transport_cell(&self, cell: Cell) -> Result<u64, Fault> {
+        match cell {
+            Cell::Local { slot, absolute, .. } if slot.class == RegisterClass::Reference => self
+                .references
+                .get(absolute)
+                .copied()
+                .map(u64::from)
+                .ok_or(INVALID_BYTECODE),
+            Cell::Local { absolute, .. } => {
+                self.scalars.get(absolute).copied().ok_or(INVALID_BYTECODE)
+            }
+            Cell::Managed(_) => self.read_cell(cell),
         }
     }
 

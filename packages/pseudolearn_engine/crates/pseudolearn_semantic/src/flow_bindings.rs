@@ -27,6 +27,10 @@ impl FlowBindings {
                 local.type_id = inferred.type_id;
             }
         }
+        session
+            .module
+            .record_locals
+            .retain(|local, _| usize::try_from(local.0).is_ok_and(|index| index < locals.len()));
         session.module.locals = locals;
         session.local_names.clone_from(&self.names);
         session.invalid.clone_from(&self.invalid);

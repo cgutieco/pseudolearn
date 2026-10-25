@@ -31,8 +31,10 @@ fn conditional(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
     let children = session.children(node);
     let condition = condition(session, *children.first()?);
     let before = session.initialized.clone();
+    let before_results = session.pending_results.clone();
     let affirmative = crate::statement_checker::body(session, *children.get(1)?);
     let affirmative_state = session.initialized.clone();
+    let affirmative_results = std::mem::replace(&mut session.pending_results, before_results);
     session.initialized.clone_from(&before);
     session
         .initialized
@@ -44,6 +46,7 @@ fn conditional(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStat
     for (index, assigned) in session.initialized.iter_mut().enumerate() {
         *assigned &= affirmative_state.get(index).copied().unwrap_or(false);
     }
+    session.pending_results.extend(affirmative_results);
     Some(HirStatement::Conditional {
         condition,
         affirmative,
@@ -55,7 +58,9 @@ fn while_loop(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirState
     let children = session.children(node);
     let condition = condition(session, *children.first()?);
     let before = session.initialized.clone();
+    let pending_before = session.pending_results.clone();
     let body = crate::statement_checker::body(session, *children.get(1)?);
+    session.pending_results.extend(pending_before);
     session.initialized = before;
     session
         .initialized

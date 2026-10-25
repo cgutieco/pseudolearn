@@ -45,7 +45,7 @@ pub(crate) fn lower(
     }
 }
 
-fn target_of(
+pub(crate) fn target_of(
     lowering: &mut Lowering<'_, '_>,
     operand: Option<&Operand>,
 ) -> Result<(Block, Vec<BlockArg>), CodegenError> {

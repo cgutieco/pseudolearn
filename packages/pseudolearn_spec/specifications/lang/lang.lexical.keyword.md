@@ -57,8 +57,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Mientras Como Entero;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine while as integer;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Mientras Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine while as integer <- 0;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -87,8 +87,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir sen Como Entero;\nsen <- 4;\nEscribir sen;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine sen as integer;\nsen <- 4;\nwrite sen;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir sen Como Entero <- 4;\nEscribir sen;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine sen as integer <- 4;\nwrite sen;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -132,11 +132,17 @@
 {
   "id": "C4",
   "regla": "R1",
-  "perfiles": ["es", "en"],
-  "rigor": ["estricto", "flexible"],
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
   "programas": {
-    "es": "Algoritmo P\nDefinir Importar, Exportar Como Entero;\nImportar <- 1;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine import, export as integer;\nimport <- 1;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
+    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Mutable Exportar Como Entero <- 0;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine import as integer <- 1;\ndefine mutable export as integer <- 0;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

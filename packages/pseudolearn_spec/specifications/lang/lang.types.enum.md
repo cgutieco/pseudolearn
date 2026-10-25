@@ -99,8 +99,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Verde;\nEscribir c;\nFinAlgoritmo\n",
-    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Verde;\nwrite c;\nendAlgorithm\n"
+    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color <- Color.Verde;\nEscribir c;\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine c as Color <- Color.Verde;\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -124,8 +124,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Solo\nUnico\nFinEnumerado\nEnumerado Nada\nFinEnumerado\nAlgoritmo P\nEscribir Solo.Unico;\nFinAlgoritmo\n",
-    "en": "enum Solo\nUnico\nendEnum\nenum Nada\nendEnum\nalgorithm P\nwrite Solo.Unico;\nendAlgorithm\n"
+    "es": "Enumerado Solo\nUnico\nFinEnumerado\nEnumerado Vacio\nFinEnumerado\nAlgoritmo P\nEscribir Solo.Unico;\nFinAlgoritmo\n",
+    "en": "enum Solo\nUnico\nendEnum\nenum Vacio\nendEnum\nalgorithm P\nwrite Solo.Unico;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -224,8 +224,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nc <- Color.Verde;\nEscribir c = Color.Verde, c <> Color.Rojo, Color.Azul = Color.Rojo;\nFinAlgoritmo\n",
-    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine c as Color;\nc <- Color.Verde;\nwrite c = Color.Verde, c <> Color.Rojo, Color.Azul = Color.Rojo;\nendAlgorithm\n"
+    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color <- Color.Verde;\nEscribir c = Color.Verde, c <> Color.Rojo, Color.Azul = Color.Rojo;\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine c as Color <- Color.Verde;\nwrite c = Color.Verde, c <> Color.Rojo, Color.Azul = Color.Rojo;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -313,11 +313,15 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine c as Color;\nwrite c;\nendAlgorithm\n"
   },
   "origen": "derivado",
-  "operacion": "execute",
+  "operacion": "analyze",
   "espera": {
-    "fallo": {
-      "codigo": "uninitializedVariableRead"
-    }
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "missingBindingInitializer",
+        "severidad": "error"
+      }
+    ]
   },
   "rigor": [
     "flexible"
@@ -334,8 +338,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir n Como Entero;\nn <- Color.Rojo;\nEscribir n;\nFinAlgoritmo\n",
-    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine n as integer;\nn <- Color.Rojo;\nwrite n;\nendAlgorithm\n"
+    "es": "Enumerado Color\nRojo, Verde, Azul\nFinEnumerado\nAlgoritmo P\nDefinir n Como Entero <- Color.Rojo;\nEscribir n;\nFinAlgoritmo\n",
+    "en": "enum Color\nRojo, Verde, Azul\nendEnum\nalgorithm P\ndefine n as integer <- Color.Rojo;\nwrite n;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

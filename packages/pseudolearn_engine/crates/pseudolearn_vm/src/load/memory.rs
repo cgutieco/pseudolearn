@@ -34,10 +34,7 @@ pub(super) fn decode(
         },
         Opcode::RefCmp => reference_compare(instruction)?,
         Opcode::CellLocal => local_cell(loaded, instruction)?,
-        Opcode::CellLoad => MemoryOp::CellLoad {
-            destination: destination(instruction)?,
-            cell: reference(instruction.operands.first())?,
-        },
+        Opcode::CellLoad | Opcode::CellLoadRaw => load_cell(instruction)?,
         Opcode::CellStore => MemoryOp::CellStore {
             cell: reference(instruction.operands.first())?,
             source: typed(context, instruction.operands.get(1))?,
@@ -234,5 +231,15 @@ fn operand_kind(
             }
         }
         _ => return Err(invalid_bytecode()),
+    })
+}
+
+fn load_cell(instruction: &Instruction) -> Result<MemoryOp, VmTrap> {
+    let destination = destination(instruction)?;
+    let cell = reference(instruction.operands.first())?;
+    Ok(if instruction.opcode == Opcode::CellLoadRaw {
+        MemoryOp::CellLoadRaw { destination, cell }
+    } else {
+        MemoryOp::CellLoad { destination, cell }
     })
 }

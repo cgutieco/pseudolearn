@@ -75,6 +75,10 @@ pub(crate) enum MemoryOp {
         destination: Register,
         cell: u16,
     },
+    CellLoadRaw {
+        destination: Register,
+        cell: u16,
+    },
     CellStore {
         cell: u16,
         source: TypedSource,

@@ -30,3 +30,5 @@ pub use pseudolearn_ir::IrSpan as SourceSpan;
 pub use pseudolearn_ir::IrType as ValueType;
 pub use pseudolearn_ir::SourceProfile;
 pub use verify::verify_bytecode;
+
+mod verify_switch;

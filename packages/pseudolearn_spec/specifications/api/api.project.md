@@ -1120,8 +1120,12 @@
 {
   "id": "C15",
   "regla": "R2",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1135,8 +1139,20 @@
             "project_id": "1",
             "revision_id": "1",
             "packages": [
-              {"name": "Geo", "root": "libs/geo", "kind": "library", "entries": [], "dependencies": {}},
-              {"name": "geo", "root": "vendor/geo", "kind": "library", "entries": [], "dependencies": {}}
+              {
+                "name": "Geo",
+                "root": "libs/geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              },
+              {
+                "name": "geo",
+                "root": "vendor/geo",
+                "kind": "library",
+                "entries": [],
+                "dependencies": {}
+              }
             ],
             "files": []
           }
@@ -1147,11 +1163,17 @@
   "espera": {
     "api": {
       "results": [
-        {"failure": {"family": "usage"}}
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
@@ -1159,8 +1181,12 @@
 {
   "id": "C16",
   "regla": "R2",
-  "perfiles": ["es"],
-  "rigor": ["estricto"],
+  "perfiles": [
+    "es"
+  ],
+  "rigor": [
+    "estricto"
+  ],
   "origen": "derivado",
   "operacion": "api",
   "api": {
@@ -1174,8 +1200,14 @@
             "project_id": "1",
             "revision_id": "1",
             "manifests": [
-              {"location": "Libs/Geo", "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"},
-              {"location": "libs/geo", "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"}
+              {
+                "location": "Libs/Geo",
+                "text": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n"
+              },
+              {
+                "location": "libs/geo",
+                "text": "schema = 1\n[package]\nname = \"geography\"\nkind = \"library\"\n"
+              }
             ],
             "files": []
           }
@@ -1186,10 +1218,16 @@
   "espera": {
     "api": {
       "results": [
-        {"failure": {"family": "usage"}}
+        {
+          "failure": {
+            "family": "usage"
+          }
+        }
       ]
     }
   },
-  "sujetos": ["engine"]
+  "sujetos": [
+    "engine"
+  ]
 }
 ```

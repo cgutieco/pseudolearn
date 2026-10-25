@@ -64,7 +64,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "variableUsedUninitialized",
+        "codigo": "missingBindingInitializer",
         "severidad": "error"
       }
     ]
@@ -93,8 +93,8 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "variableUsedUninitialized",
-        "severidad": "warning"
+        "codigo": "missingBindingInitializer",
+        "severidad": "error"
       }
     ]
   },

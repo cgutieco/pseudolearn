@@ -60,14 +60,19 @@ tocada, no el registro entero. Las variables de tipo registro se declaran, acarr
 sus hojas, porque semantic ya las expuso como locales. Los argumentos se expanden a un argumento por hoja y el
 resultado de una función registro se devuelve por celdas: la función recibe, tras sus parámetros, una `cell<hoja>`
 por hoja (`FunctionBuilder.result_cells`), escribe con `cell.store` y retorna sin operando; el llamador crea un
-`cell.local` por hoja, pasa las celdas y las lee con `cell.load` después de `call`. Esto no añade instrucciones ni
-toca bytecode, VM, runtime ni Cranelift, pero cuesta una celda por hoja en cada llamada; es el coste medible que un
+`cell.local` por hoja, pasa las celdas y las lee con `cell.load_raw` después de `call` para transportar también las referencias inactivas de las variantes. El transporte cuesta una celda por hoja en cada llamada; es el coste medible que un
 retorno multivalor de la RI eliminaría (decisión reversible: se revisa si una medición con cargas de registros muestra que la celda domina el coste). La igualdad compara hoja a
 hoja con la instrucción de su tipo y combina los resultados con una cadena de ramas que termina en el primer falso;
 las comparaciones previas son puras. `<>` niega el resultado. `Escribir` de un valor enumerado selecciona el nombre del
 miembro con una cadena de comparaciones de ordinal y bloques que unen un texto (`enum_output`), sin instrucción nueva;
 la tabla de saltos del terminador `switch` llega con la exhaustividad de `Segun`. Un enumerado es un entero de RI, por lo que
 `class_density` lo trata como entero para no omitir la máscara de definidos de un campo sin asignar.
+
+Las declaraciones locales inicializadas llegan como asignaciones tipadas; los vínculos inmutables se conservan como valores SSA. Semantic rechaza su paso por referencia y no requieren celdas. Los campos y elementos sin valor conservan los centinelas y las comprobaciones existentes.
+
+Las variantes conservan la disposición de abi como agregado SSA de palabras enteras y referencias: `value.reinterpret` empaqueta y extrae bits del mismo banco sin conversión numérica. Al construir se ponen en cero todas las referencias inactivas. Los resultados agregados usan celdas locales de transporte y `cell.load_raw`, que permite copiar un centinela inactivo sin confundirlo con una lectura del lenguaje. La evaluación de la carga activa ya comprueba su existencia; por ello la asignación no repite value.require al almacenar. Propagar evalúa una vez y retorna por una arista explícita; su camino normal solo extrae la carga de éxito. No se implementa limpieza de usuario antes de la construcción que la introduzca. Switch une los entornos de todas las ramas que continúan, incluidos los registros aplanados. Desde cuatro etiquetas enteras distintas, con intervalo no mayor al doble de su cantidad, emite switch; los demás casos usan cadenas del tipo correcto. El umbral reduce despachos y tamaño de la RI sin introducir una campaña de optimización ajena a la fase.
+
+Los parámetros SSA de un bucle incluyen solo vínculos existentes antes de entrar; los vínculos del cuerpo se inicializan en cada ejecución. Repetir conserva su entorno al salir porque ejecuta el cuerpo al menos una vez.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

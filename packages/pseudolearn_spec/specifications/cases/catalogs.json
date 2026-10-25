@@ -520,6 +520,20 @@
         "lexeme": "lexema"
       }
     },
+    "ambiguousVariantType": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Variant requires an explicit optional or result type in its context",
+        "es": "La variante necesita un tipo Opcional o Resultado explícito en su contexto"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "analysisNestingLimitExceeded": {
       "argumentos": [
         "limit"
@@ -609,6 +623,20 @@
         "index": "numero",
         "size": "numero"
       }
+    },
+    "bindingReadsOwnInitializer": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Initializer reads its own binding",
+        "es": "El inicializador lee el vínculo que está declarando"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "byReferenceArgumentRequiresDesignator": {
       "argumentos": [],
@@ -937,6 +965,20 @@
       "tipos_argumentos": {
         "lexeme": "lexema"
       }
+    },
+    "discardRequiresResult": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Discard requires a result",
+        "es": "Descartar requiere un Resultado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "discardedReturnValue": {
       "argumentos": [
@@ -1678,6 +1720,20 @@
         "lexeme": "lexema"
       }
     },
+    "immutableBindingAssignment": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Binding is immutable; use define mutable to reassign it",
+        "es": "El vínculo es inmutable; usá Definir Mutable para reasignarlo"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "importCycle": {
       "argumentos": [
         "lexeme"
@@ -1768,6 +1824,20 @@
         "lexeme": "lexema"
       }
     },
+    "incompatiblePropagationType": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Propagation requires a compatible return and the same error type",
+        "es": "La propagación requiere un retorno compatible y el mismo tipo de error"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "incompatibleReturnType": {
       "argumentos": [],
       "clase": "semantic",
@@ -1815,6 +1885,20 @@
         "expected": "tipo|lexema",
         "found": "tipo|lexema"
       }
+    },
+    "incompatibleVariantConstructor": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Constructor does not belong to the expected variant type",
+        "es": "El constructor no pertenece al tipo de variante esperado"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "inferredVariableType": {
       "argumentos": [
@@ -2080,6 +2164,20 @@
         "lexeme": "lexema"
       }
     },
+    "missingBindingInitializer": {
+      "argumentos": [],
+      "clase": "syntax",
+      "mensajes": {
+        "en": "Binding requires an initializer; add <- expression",
+        "es": "El vínculo necesita un inicializador; añadí <- expresión"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "missingInstantiationParentheses": {
       "argumentos": [],
       "clase": "syntax",
@@ -2192,6 +2290,20 @@
       },
       "tipos_argumentos": {}
     },
+    "mutableBindingNeverModified": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Mutable binding is never modified",
+        "es": "El vínculo mutable nunca se modifica"
+      },
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "tipos_argumentos": {}
+    },
     "negativeArraySize": {
       "argumentos": [
         "size"
@@ -2269,6 +2381,24 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "nonExhaustiveSwitch": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Missing branches: {lexeme}",
+        "es": "Faltan ramas: {lexeme}"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     },
     "nonFiniteRealResult": {
       "argumentos": [],
@@ -2649,6 +2779,20 @@
         "lexeme": "lexema",
         "token": "token"
       }
+    },
+    "resultNotHandled": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Unhandled result: handle it with switch, propagate it, or discard it explicitly",
+        "es": "Resultado sin tratar: manejalo con Segun, propagalo o descartalo explícitamente"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "returnExpressionInVoidSubroutine": {
       "argumentos": [],
@@ -3177,10 +3321,10 @@
         "en": "Undeclared variable: {lexeme}",
         "es": "Variable no declarada: {lexeme}"
       },
-      "politica": "B",
+      "politica": "A",
       "severidad": {
         "estricto": "error",
-        "flexible": "warning"
+        "flexible": "error"
       },
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -3357,6 +3501,20 @@
       "tipos_argumentos": {
         "lexeme": "lexema"
       }
+    },
+    "unreachableSwitchPattern": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Pattern is unreachable",
+        "es": "El patrón es inalcanzable"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "unrecognizedCharacter": {
       "argumentos": [
@@ -3627,14 +3785,42 @@
         "en": "Variable {lexeme} is used without being initialized",
         "es": "La variable {lexeme} se usa sin haber sido inicializada"
       },
-      "politica": "B",
+      "politica": "A",
       "severidad": {
         "estricto": "error",
-        "flexible": "warning"
+        "flexible": "error"
       },
       "tipos_argumentos": {
         "lexeme": "lexema"
       }
+    },
+    "variantLayoutLimit": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Variant layout exceeds the operand limit",
+        "es": "La disposición de la variante supera el límite de operandos"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "variantRequiresPattern": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Variant must be inspected through switch patterns",
+        "es": "La variante se consulta mediante patrones de Segun"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
     },
     "widenedVariableType": {
       "argumentos": [
@@ -3950,10 +4136,11 @@
       "conjunction": "equality, { @and, equality }",
       "constantDeclaration": "@constantKeyword, identifier, @typeConnector, type, @assignment, expression",
       "constructorMember": "@method, @constructor, parameters, line, body, @endMethod, line",
-      "declaration": "@declare, names, @typeConnector, type",
+      "declaration": "@declare, [ @mutableKeyword ], identifier, @typeConnector, type, @assignment, expression",
       "designator": "identifier, { @leftBracket, expressions, @rightBracket | @dot, identifier }",
       "dimensionDeclaration": "@dimension, dimensioned, { @comma, dimensioned }, @typeConnector, type",
       "dimensioned": "identifier, @leftBracket, expressions, @rightBracket",
+      "discardStatement": "@discardKeyword, expression",
       "disjunction": "conjunction, { @or, conjunction }",
       "enumMembers": "identifier, { @comma, identifier }",
       "enumUnit": "@enumKeyword, identifier, line, [ enumMembers, line ], @endEnum, line",
@@ -3961,12 +4148,13 @@
       "exportDeclaration": "@exportKeyword, modulePath, terminator",
       "expression": "disjunction",
       "expressions": "expression, { @comma, expression }",
-      "fieldDeclaration": "[ visibility ], ( declaration | dimensionDeclaration ), terminator",
+      "fieldBinding": "@declare, names, @typeConnector, type",
+      "fieldDeclaration": "[ visibility ], ( fieldBinding | dimensionDeclaration ), terminator",
       "forLoop": "@forKeyword, identifier, @assignment, expression, @to, expression, [ @step, expression ], @doKeyword, line, body, @endFor, line",
       "importDeclaration": "@importKeyword, modulePath, [ @typeConnector, identifier ], terminator",
       "input": "@read, designator, { @comma, designator }",
       "instantiation": "@newInstance, identifier, arguments",
-      "labels": "literal, { @comma, literal }",
+      "labels": "pattern, { @comma, pattern }",
       "line": "endOfLine | endOfFile",
       "literal": "signedInteger | realLiteral | characterLiteral | stringLiteral | @booleanTrue | @booleanFalse",
       "methodMember": "[ visibility ], @method, identifier, parameters, [ @typeConnector, type ], line, body, @endMethod, line",
@@ -3979,22 +4167,26 @@
       "output": "@write, [ expressions ], [ @withoutNewline ]",
       "parameter": "identifier, [ @leftBracket, { @comma }, @rightBracket ], [ @typeConnector, type ], [ @byValue | @byReference ]",
       "parameters": "@leftParenthesis, [ parameter, { @comma, parameter } ], @rightParenthesis",
+      "pattern": "literal | signedInteger | identifier, @dot, identifier | variantPattern",
       "postfix": "primary, { @dot, identifier, [ arguments ] | @leftBracket, expressions, @rightBracket }",
       "powerExpression": "unary, [ @power, powerExpression ]",
-      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments",
+      "primary": "literal | identifier, [ arguments ] | @leftParenthesis, expression, @rightParenthesis | instantiation | @thisObject, @dot, identifier, [ arguments ] | @superClass, @dot, ( identifier | @constructor ), arguments | variantConstruction",
       "program": "trivia, { moduleDirective }, { moduleUnit }, [ algorithmUnit, { moduleUnit } ], trivia, endOfFile",
-      "recordField": "declaration, terminator",
+      "propagation": "@propagateKeyword, unary",
+      "recordField": "fieldBinding, terminator",
       "recordUnit": "@recordKeyword, identifier, line, { recordField }, @endRecord, line",
       "repeatLoop": "@repeat, line, body, @until, expression, line",
       "returnStatement": "@returnKeyword, [ expression ]",
       "signedInteger": "[ @plus | @minus ], integerLiteral",
-      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement ), terminator",
+      "statement": "( declaration | constantDeclaration | dimensionDeclaration | assignmentStatement | output | input | callStatement | returnStatement | discardStatement ), terminator",
       "subprogram": "@subroutine, identifier, parameters, [ @typeConnector, type ], line, body, @endSubroutine, line",
       "switch": "@switchKeyword, expression, @doKeyword, line, { labels, @branchSeparator, body }, [ @defaultCase, @branchSeparator, body ], @endSwitch, line",
       "terminator": "@semicolon | endOfLine",
       "trivia": "whitespace | comment | endOfLine",
-      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier",
-      "unary": "( @plus | @minus | @not ), unary | postfix",
+      "type": "@integerType | @realType | @booleanType | @characterType | @stringType | identifier | @optionalType, @lessThan, type, @greaterThan | @resultType, @lessThan, type, @comma, type, @greaterThan",
+      "unary": "( @plus | @minus | @not ), unary | postfix | propagation",
+      "variantConstruction": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, expression, @rightParenthesis",
+      "variantPattern": "@noneVariant | ( @someVariant | @successVariant | @errorVariant ), @leftParenthesis, identifier, @rightParenthesis",
       "visibility": "@publicVisibility | @privateVisibility",
       "whileLoop": "@whileKeyword, expression, @doKeyword, line, body, @endWhile, line"
     },
@@ -4087,7 +4279,16 @@
       "whileKeyword",
       "whitespace",
       "withoutNewline",
-      "write"
+      "write",
+      "mutableKeyword",
+      "optionalType",
+      "resultType",
+      "someVariant",
+      "noneVariant",
+      "successVariant",
+      "errorVariant",
+      "propagateKeyword",
+      "discardKeyword"
     ]
   },
   "helpCatalog": {
@@ -4274,7 +4475,7 @@
             "parts": [
               {
                 "identity": "declare",
-                "text": "Starts the declaration of one or more variables."
+                "text": "Starts an immutable local binding."
               },
               {
                 "identity": "typeConnector",
@@ -4299,9 +4500,13 @@
               {
                 "identity": "stringType",
                 "text": "Represents a sequence of characters."
+              },
+              {
+                "identity": "mutableKeyword",
+                "text": "Allows the binding to be reassigned."
               }
             ],
-            "purpose": "A declaration may include several names before the type connector.",
+            "purpose": "Declares one binding with an explicit type and a required initializer.",
             "summary": "Associates names with a declared type.",
             "title": "Variable declaration"
           },
@@ -4334,7 +4539,7 @@
             "parts": [
               {
                 "identity": "declare",
-                "text": "Inicia la declaración de una o más variables."
+                "text": "Inicia un vínculo local inmutable."
               },
               {
                 "identity": "typeConnector",
@@ -4359,9 +4564,13 @@
               {
                 "identity": "stringType",
                 "text": "Representa una secuencia de caracteres."
+              },
+              {
+                "identity": "mutableKeyword",
+                "text": "Permite reasignar el vínculo."
               }
             ],
-            "purpose": "La declaración puede incluir varios nombres antes del conector de tipo.",
+            "purpose": "Declara un vínculo individual con tipo e inicializador obligatorio.",
             "summary": "Asocia nombres con un tipo declarado.",
             "title": "Declarar variables"
           }
@@ -4423,6 +4632,14 @@
           },
           {
             "identity": "stringType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "mutableKeyword",
             "source": {
               "element": "D1",
               "specification": "LANG.PROFILE.VOCABULARY",
@@ -5080,7 +5297,9 @@
         },
         "content": {
           "en": {
-            "common_errors": [],
+            "common_errors": [
+              "Missing branch: cover the listed alternatives or add otherwise."
+            ],
             "constraints": [],
             "examples": [
               {
@@ -5121,7 +5340,9 @@
             "title": "Case selection"
           },
           "es": {
-            "common_errors": [],
+            "common_errors": [
+              "Falta una rama: cubrí las alternativas indicadas o añadí De Otro Modo."
+            ],
             "constraints": [],
             "examples": [
               {
@@ -9740,6 +9961,247 @@
             }
           }
         ]
+      },
+      {
+        "anchors": [
+          {
+            "element": "R2",
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0"
+          },
+          {
+            "element": "R3",
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0"
+          },
+          {
+            "element": "R4",
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0"
+          },
+          {
+            "element": "R5",
+            "specification": "LANG.TYPES.RELATIONS",
+            "version": "1.0.0"
+          }
+        ],
+        "availability": {
+          "editions": [
+            "2026"
+          ],
+          "profiles": [
+            "es",
+            "en"
+          ],
+          "strictness": [
+            "estricto",
+            "flexible"
+          ]
+        },
+        "content": {
+          "en": {
+            "common_errors": [
+              "Unhandled result: handle it with switch, use propagate, or explicitly discard it."
+            ],
+            "constraints": [
+              "Exhaustive matching, visible propagation, or explicit discard."
+            ],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "C3",
+                "profile": "en",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C14",
+                "kind": "diagnostic",
+                "label": "C14",
+                "profile": "en",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "optionalType",
+                "text": "optional"
+              },
+              {
+                "identity": "resultType",
+                "text": "result"
+              },
+              {
+                "identity": "someVariant",
+                "text": "some"
+              },
+              {
+                "identity": "noneVariant",
+                "text": "none"
+              },
+              {
+                "identity": "successVariant",
+                "text": "success"
+              },
+              {
+                "identity": "errorVariant",
+                "text": "failure"
+              },
+              {
+                "identity": "propagateKeyword",
+                "text": "propagate"
+              },
+              {
+                "identity": "discardKeyword",
+                "text": "discard"
+              }
+            ],
+            "purpose": "Expresses absence or failure as values and requires handling results.",
+            "summary": "Optional and result values",
+            "title": "Optional and result values"
+          },
+          "es": {
+            "common_errors": [
+              "Resultado sin tratar: manejalo con Segun, usá Propagar o Descartar explícitamente."
+            ],
+            "constraints": [
+              "Segun exhaustivo, propagación visible o descarte explícito."
+            ],
+            "examples": [
+              {
+                "case": "C3",
+                "kind": "executable",
+                "label": "C3",
+                "profile": "es",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              },
+              {
+                "case": "C14",
+                "kind": "diagnostic",
+                "label": "C14",
+                "profile": "es",
+                "specification": "LANG.TYPES.RELATIONS",
+                "strictness": "estricto",
+                "version": "1.0.0"
+              }
+            ],
+            "parts": [
+              {
+                "identity": "optionalType",
+                "text": "Opcional"
+              },
+              {
+                "identity": "resultType",
+                "text": "Resultado"
+              },
+              {
+                "identity": "someVariant",
+                "text": "Algo"
+              },
+              {
+                "identity": "noneVariant",
+                "text": "Nada"
+              },
+              {
+                "identity": "successVariant",
+                "text": "Exito"
+              },
+              {
+                "identity": "errorVariant",
+                "text": "Error"
+              },
+              {
+                "identity": "propagateKeyword",
+                "text": "Propagar"
+              },
+              {
+                "identity": "discardKeyword",
+                "text": "Descartar"
+              }
+            ],
+            "purpose": "Expresa ausencia o error como valores y exige tratar los resultados.",
+            "summary": "Opcionales y resultados",
+            "title": "Opcionales y resultados"
+          }
+        },
+        "id": "help.variants",
+        "identity": {
+          "id": "variantConstruction",
+          "kind": "construction",
+          "role": "variant_values"
+        },
+        "tokens": [
+          {
+            "identity": "optionalType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "resultType",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "someVariant",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "noneVariant",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "successVariant",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "errorVariant",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "propagateKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          },
+          {
+            "identity": "discardKeyword",
+            "source": {
+              "element": "D1",
+              "specification": "LANG.PROFILE.VOCABULARY",
+              "version": "1.0.0"
+            }
+          }
+        ]
       }
     ],
     "exclusions": [],
@@ -9796,7 +10258,8 @@
             "realType",
             "booleanType",
             "characterType",
-            "stringType"
+            "stringType",
+            "mutableKeyword"
           ]
         },
         {
@@ -10416,6 +10879,29 @@
           "tokens": [
             "shallowCopy"
           ]
+        },
+        {
+          "identity": {
+            "id": "variantConstruction",
+            "kind": "construction",
+            "role": "variant_values"
+          },
+          "productions": [
+            "variantConstruction",
+            "variantPattern",
+            "discardStatement",
+            "propagation"
+          ],
+          "tokens": [
+            "optionalType",
+            "resultType",
+            "someVariant",
+            "noneVariant",
+            "successVariant",
+            "errorVariant",
+            "propagateKeyword",
+            "discardKeyword"
+          ]
         }
       ]
     }
@@ -10730,6 +11216,16 @@
         "es": "Dimension"
       }
     },
+    "discardKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "discard",
+        "es": "Descartar"
+      }
+    },
     "divide": {
       "alias": {
         "en": [],
@@ -10943,6 +11439,16 @@
         "es": "="
       }
     },
+    "errorVariant": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "failure",
+        "es": "Error"
+      }
+    },
     "exportKeyword": {
       "alias": {
         "en": [],
@@ -11125,6 +11631,16 @@
         "es": "*"
       }
     },
+    "mutableKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "mutable",
+        "es": "Mutable"
+      }
+    },
     "newInstance": {
       "alias": {
         "en": [],
@@ -11133,6 +11649,16 @@
       "lexemas": {
         "en": "new",
         "es": "Nuevo"
+      }
+    },
+    "noneVariant": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "none",
+        "es": "Nada"
       }
     },
     "not": {
@@ -11162,6 +11688,16 @@
       "lexemas": {
         "en": "<>",
         "es": "<>"
+      }
+    },
+    "optionalType": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "optional",
+        "es": "Opcional"
       }
     },
     "or": {
@@ -11210,6 +11746,16 @@
       "lexemas": {
         "en": "private",
         "es": "Privado"
+      }
+    },
+    "propagateKeyword": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "propagate",
+        "es": "Propagar"
       }
     },
     "publicVisibility": {
@@ -11272,6 +11818,16 @@
         "es": "Repetir"
       }
     },
+    "resultType": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "result",
+        "es": "Resultado"
+      }
+    },
     "returnKeyword": {
       "alias": {
         "en": [],
@@ -11310,6 +11866,16 @@
       "lexemas": {
         "en": ";",
         "es": ";"
+      }
+    },
+    "someVariant": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "some",
+        "es": "Algo"
       }
     },
     "step": {
@@ -11351,6 +11917,16 @@
       "lexemas": {
         "en": "subroutine",
         "es": "SubProceso"
+      }
+    },
+    "successVariant": {
+      "alias": {
+        "en": [],
+        "es": []
+      },
+      "lexemas": {
+        "en": "success",
+        "es": "Exito"
       }
     },
     "superClass": {

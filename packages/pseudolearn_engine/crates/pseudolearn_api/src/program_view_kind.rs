@@ -23,19 +23,9 @@ impl ViewKind {
 
 pub(crate) fn classify(kind: NodeKind, parent: Option<NodeKind>) -> Option<ViewKind> {
     match kind {
-        NodeKind::ClassUnit
-        | NodeKind::AlgorithmUnit
-        | NodeKind::Subprogram
-        | NodeKind::Subroutine
-        | NodeKind::MethodMember
-        | NodeKind::ConstructorMember
-        | NodeKind::FieldDeclaration
-        | NodeKind::Declaration
-        | NodeKind::DimensionDeclaration
-        | NodeKind::Dimensioned
-        | NodeKind::Parameters
-        | NodeKind::Parameter => Some(ViewKind::Declaration),
-        NodeKind::Body
+        owner if is_declaration(owner) => Some(ViewKind::Declaration),
+        NodeKind::DiscardStatement
+        | NodeKind::Body
         | NodeKind::DefaultCase
         | NodeKind::Statement
         | NodeKind::AssignmentStatement
@@ -68,6 +58,8 @@ pub(crate) fn syntax_name(kind: NodeKind) -> Option<&'static str> {
 
 fn declaration_or_statement_name(kind: NodeKind) -> Option<&'static str> {
     Some(match kind {
+        NodeKind::VariantPattern => "variant_pattern",
+        NodeKind::DiscardStatement => "discard_statement",
         NodeKind::ClassUnit => "class_unit",
         NodeKind::AlgorithmUnit => "algorithm_unit",
         NodeKind::Subprogram => "subroutine",
@@ -104,6 +96,8 @@ fn declaration_or_statement_name(kind: NodeKind) -> Option<&'static str> {
 
 fn expression_name(kind: NodeKind) -> Option<&'static str> {
     Some(match kind {
+        NodeKind::VariantConstruction => "variant_construction",
+        NodeKind::Propagation => "propagation",
         NodeKind::Addition => "addition",
         NodeKind::And => "and",
         NodeKind::Conjunction => "conjunction",
@@ -135,7 +129,8 @@ fn expression_name(kind: NodeKind) -> Option<&'static str> {
 fn names_declaration(owner: NodeKind) -> bool {
     matches!(
         owner,
-        NodeKind::ClassUnit
+        NodeKind::VariantPattern
+            | NodeKind::ClassUnit
             | NodeKind::AlgorithmUnit
             | NodeKind::Subroutine
             | NodeKind::MethodMember
@@ -152,7 +147,9 @@ fn names_declaration(owner: NodeKind) -> bool {
 fn is_expression(kind: NodeKind) -> bool {
     matches!(
         kind,
-        NodeKind::Addition
+        NodeKind::VariantConstruction
+            | NodeKind::Propagation
+            | NodeKind::Addition
             | NodeKind::And
             | NodeKind::Conjunction
             | NodeKind::Designator
@@ -176,5 +173,24 @@ fn is_expression(kind: NodeKind) -> bool {
             | NodeKind::Primary
             | NodeKind::ThisObject
             | NodeKind::Unary
+    )
+}
+
+fn is_declaration(kind: NodeKind) -> bool {
+    matches!(
+        kind,
+        NodeKind::VariantPattern
+            | NodeKind::ClassUnit
+            | NodeKind::AlgorithmUnit
+            | NodeKind::Subprogram
+            | NodeKind::Subroutine
+            | NodeKind::MethodMember
+            | NodeKind::ConstructorMember
+            | NodeKind::FieldDeclaration
+            | NodeKind::Declaration
+            | NodeKind::DimensionDeclaration
+            | NodeKind::Dimensioned
+            | NodeKind::Parameters
+            | NodeKind::Parameter
     )
 }

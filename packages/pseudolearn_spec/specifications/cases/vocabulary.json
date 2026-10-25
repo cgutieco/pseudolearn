@@ -119,6 +119,10 @@
     "en": "dimension",
     "es": "Dimension"
   },
+  "discardKeyword": {
+    "en": "discard",
+    "es": "Descartar"
+  },
   "divide": {
     "en": "/",
     "es": "/"
@@ -310,6 +314,10 @@
   "equal": {
     "en": "=",
     "es": "="
+  },
+  "errorVariant": {
+    "en": "failure",
+    "es": "Error"
   },
   "exportKeyword": {
     "en": "export",
@@ -507,9 +515,17 @@
     "en": "*",
     "es": "*"
   },
+  "mutableKeyword": {
+    "en": "mutable",
+    "es": "Mutable"
+  },
   "newInstance": {
     "en": "new",
     "es": "Nuevo"
+  },
+  "noneVariant": {
+    "en": "none",
+    "es": "Nada"
   },
   "not": {
     "en": "not",
@@ -538,6 +554,10 @@
   "notEqual.alias.es.0": {
     "en": "<>",
     "es": "!="
+  },
+  "optionalType": {
+    "en": "optional",
+    "es": "Opcional"
   },
   "or": {
     "en": "or",
@@ -571,6 +591,10 @@
     "en": "private",
     "es": "Privado"
   },
+  "propagateKeyword": {
+    "en": "propagate",
+    "es": "Propagar"
+  },
   "publicVisibility": {
     "en": "public",
     "es": "Publico"
@@ -595,6 +619,10 @@
     "en": "repeat",
     "es": "Repetir"
   },
+  "resultType": {
+    "en": "result",
+    "es": "Resultado"
+  },
   "returnKeyword": {
     "en": "return",
     "es": "Retornar"
@@ -610,6 +638,10 @@
   "semicolon": {
     "en": ";",
     "es": ";"
+  },
+  "someVariant": {
+    "en": "some",
+    "es": "Algo"
   },
   "step": {
     "en": "step",
@@ -650,6 +682,10 @@
   "subroutine.alias.es.2": {
     "en": "subroutine",
     "es": "Procedimiento"
+  },
+  "successVariant": {
+    "en": "success",
+    "es": "Exito"
   },
   "superClass": {
     "en": "super",
