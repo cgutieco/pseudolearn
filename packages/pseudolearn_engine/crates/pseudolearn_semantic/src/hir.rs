@@ -132,6 +132,7 @@ pub struct HirModule {
     pub records: Vec<HirRecord>,
     pub variants: BTreeMap<crate::identities::RecordId, crate::variant_model::HirVariant>,
     pub record_locals: BTreeMap<LocalId, Vec<LocalId>>,
+    pub local_visibility: BTreeMap<LocalId, Span>,
     pub locals: Vec<HirLocal>,
     pub expressions: ExpressionColumns,
     pub statements: StatementColumns,

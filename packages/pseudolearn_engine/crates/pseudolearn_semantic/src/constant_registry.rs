@@ -54,7 +54,9 @@ pub(crate) fn collect_module(session: &mut AnalysisSession<'_>) {
 }
 
 pub(crate) fn collect_local(session: &mut AnalysisSession<'_>, node: usize) {
+    let index = session.constants.len();
     add(session, node, Some(session.current));
+    let _ = crate::constant_evaluator::ensure(session, index, 0);
 }
 
 fn add(session: &mut AnalysisSession<'_>, node: usize, scope: Option<FunctionId>) {
@@ -64,7 +66,10 @@ fn add(session: &mut AnalysisSession<'_>, node: usize, scope: Option<FunctionId>
     let name = session.name(name_node);
     let duplicate = match scope {
         None => session.declared.constants.contains_key(&name),
-        Some(_) => session.local(&name).is_some() || local_constant(session, &name).is_some(),
+        Some(_) => session
+            .bindings
+            .current(&name)
+            .is_some_and(|target| !crate::scope_bindings::recovery(session, target)),
     };
     if duplicate {
         session.named_report(
@@ -88,31 +93,24 @@ fn add(session: &mut AnalysisSession<'_>, node: usize, scope: Option<FunctionId>
         declared,
         state: ConstantState::Pending,
     });
-    insert_name(session, scope, (name, index));
+    insert_name(session, scope, (name_node, name, index));
 }
 
 fn insert_name(
     session: &mut AnalysisSession<'_>,
     scope: Option<FunctionId>,
-    entry: (String, usize),
+    entry: (usize, String, usize),
 ) {
-    let names = match scope {
-        None => Some(&mut session.declared.constants),
-        Some(function) => usize::try_from(function.0)
-            .ok()
-            .and_then(|slot| session.local_constants.get_mut(slot)),
-    };
-    if let Some(names) = names {
-        names.insert(entry.0, entry.1);
+    if scope.is_none() {
+        session.declared.constants.insert(entry.1, entry.2);
+    } else {
+        crate::scope_bindings::declare(
+            session,
+            entry.1,
+            crate::block_scopes::BindingTarget::Constant(entry.2),
+            entry.0,
+        );
     }
-}
-
-pub(crate) fn local_constant(session: &AnalysisSession<'_>, name: &str) -> Option<usize> {
-    usize::try_from(session.current.0)
-        .ok()
-        .and_then(|slot| session.local_constants.get(slot))
-        .and_then(|names| names.get(name))
-        .copied()
 }
 
 pub(crate) fn find_in(
@@ -120,12 +118,14 @@ pub(crate) fn find_in(
     scope: Option<FunctionId>,
     name: &str,
 ) -> Option<usize> {
-    let local = scope
-        .and_then(|function| usize::try_from(function.0).ok())
-        .and_then(|slot| session.local_constants.get(slot))
-        .and_then(|names| names.get(name))
-        .copied();
-    local.or_else(|| session.declared.constants.get(name).copied())
+    if scope.is_some() {
+        match session.bindings.find(name) {
+            Some(crate::block_scopes::BindingTarget::Constant(index)) => return Some(index),
+            Some(crate::block_scopes::BindingTarget::Local(_)) => return None,
+            None => {}
+        }
+    }
+    session.declared.constants.get(name).copied()
 }
 
 pub(crate) fn evaluate_all(session: &mut AnalysisSession<'_>) {

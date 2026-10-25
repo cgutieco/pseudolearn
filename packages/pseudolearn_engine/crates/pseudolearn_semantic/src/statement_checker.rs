@@ -9,11 +9,21 @@ use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_syntax::{NodeKind, TokenKind};
 
 pub(crate) fn body(session: &mut AnalysisSession<'_>, node: usize) -> Vec<StatementId> {
-    session
+    let start = session.module.locals.len();
+    let statements = session
         .children(node)
         .into_iter()
         .filter_map(|statement| check(session, statement))
-        .collect()
+        .collect();
+    crate::scope_bindings::visibility(session, start, node);
+    statements
+}
+
+pub(crate) fn scoped_body(session: &mut AnalysisSession<'_>, node: usize) -> Vec<StatementId> {
+    session.bindings.enter();
+    let statements = body(session, node);
+    crate::scope_bindings::leave(session);
+    statements
 }
 
 pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<StatementId> {
@@ -26,8 +36,18 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<St
             .and_then(|child| check(session, child));
     }
     let kind = match session.kind(node) {
-        NodeKind::Declaration => crate::binding_checker::initialize(session, node)?,
-        NodeKind::DimensionDeclaration => return crate::dimension_checker::check(session, node),
+        NodeKind::Declaration => {
+            crate::local_registry::declaration(session, node);
+            crate::binding_checker::initialize(session, node)?
+        }
+        NodeKind::ConstantDeclaration => {
+            crate::constant_registry::collect_local(session, node);
+            return None;
+        }
+        NodeKind::DimensionDeclaration => {
+            crate::local_registry::declaration(session, node);
+            return crate::dimension_checker::check(session, node);
+        }
         NodeKind::AssignmentStatement => crate::assignment_checker::assignment(session, node)?,
         NodeKind::Output => output(session, node),
         NodeKind::Input => crate::assignment_checker::input(session, node),

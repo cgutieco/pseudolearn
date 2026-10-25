@@ -167,7 +167,9 @@ fn check_branch(
     }
     if session.kind(branch) == NodeKind::DefaultCase {
         state.has_default = true;
+        session.bindings.enter();
         matching.1.default = body(session, branch);
+        crate::scope_bindings::leave(session);
     } else if let Some(case) = branch_case(
         session,
         (branch, payload_source(session, matching.1.selector)),
@@ -197,14 +199,13 @@ fn branch_statements(
     selection: (ExpressionId, &HirVariant),
     alternative: usize,
 ) -> Vec<StatementId> {
-    let scope = usize::try_from(session.current.0).unwrap_or(usize::MAX);
-    let names = session.local_names.get(scope).cloned().unwrap_or_default();
+    session.bindings.enter();
+    let start = session.module.locals.len();
     let mut statements =
         payload_binding(session, (syntax.1, selection.0), (selection.1, alternative));
     statements.extend(body(session, syntax.0));
-    if let Some(current) = session.local_names.get_mut(scope) {
-        *current = names;
-    }
+    crate::scope_bindings::visibility(session, start, syntax.0);
+    crate::scope_bindings::leave(session);
     statements
 }
 

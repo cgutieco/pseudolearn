@@ -218,14 +218,21 @@ D-PG2-01 resuelta con la opción A (§3.1); la edición de esperados estables es
 
 ### PG-2.06 · Ámbitos léxicos de bloque
 
-D-PG2-01 resuelta con la opción A (§3.1); la edición de esperados estables espera la autorización de su lista.
+D-PG2-01 resuelta con la opción A (§3.1). La persona autorizó sustituir las restricciones y actualizar la edición
+oficial sin migradores ni compatibilidad. El cierre se registra por subpunto comprobado; el bloque completo sigue abierto.
 
 - [ ] `PG-2.06.01` Editar `LANG.SUBPROGRAM.SCOPE` como texto oficial: bloque de `Si`, `Mientras`, `Para`, `Repetir`, `Segun` y `Para Cada` como ámbito; sombreado (rechazado o advertido, a fijar en corpus); vida de vínculos y relación con clausuras.
-- [ ] `PG-2.06.02` Casos: uso fuera del bloque, sombreado de parámetro, mismo nombre en bloques hermanos, bloque vacío, anidación de tres niveles, variable de `Para` tras el bucle.
-- [ ] `PG-2.06.03` Tests de la pila de ámbitos (tabla contigua con marcas de nivel, sin mapas por bloque).
-- [ ] `PG-2.06.04` Resolución en semantic; reutilización de ranuras de marco por bloques disjuntos solo si no cambia observables de la vista de estado.
-- [ ] `PG-2.06.05` README semantic; diagnóstico «declaración fuera de ámbito» con origen y posible sombreado.
+- [x] `PG-2.06.02` Casos: uso fuera del bloque, sombreado de parámetro, mismo nombre en bloques hermanos, bloque vacío, anidación de tres niveles, variable de `Para` tras el bucle.
+- [x] `PG-2.06.03` Tests de la pila de ámbitos (tabla contigua con marcas de nivel, sin mapas por bloque).
+- [x] `PG-2.06.04` Resolución en semantic; reutilización de ranuras de marco por bloques disjuntos solo si no cambia observables de la vista de estado.
+- [x] `PG-2.06.05` README semantic; diagnóstico «declaración fuera de ámbito» con origen y posible sombreado.
 - [ ] `PG-2.06.06` Verificación acotada más conjunto centinela de archivo suelto.
+
+Estado de cierre: `.02`, `.03`, `.04` y `.05` cumplidos con los casos del corpus, tests dirigidos y
+verificadores registrados en §11.1.3. `.04` no introduce reutilización de ranuras. `.01` conserva pendiente
+la regla de `Para Cada`, cuya integración corresponde a PG-2.11 según el alcance aprobado; `.06` conserva
+pendiente completar el conjunto centinela de §7.1. El transporte de ámbitos a estado y raíces VM/AOT
+sigue pendiente y, por tanto, no se cierra `PG-2.06` como capacidad completa.
 
 ### PG-2.07 · Funciones como valores y clausuras
 
@@ -658,6 +665,62 @@ Para Cada, genéricos de usuario, interfaces ni fases siguientes. Las reglas mix
 Espacio: se eliminaron únicamente target/debug/incremental de engine y spec, identificados como
 artefactos regenerables (aproximadamente 5,1 GiB nominales). El volumen pasó de 3,3 a aproximadamente
 7 GiB disponibles; tras compilar y verificar quedan aproximadamente 5,4 GiB disponibles. Ambas cachés incrementales siguen vacías. No se borraron dependencias descargadas ni datos personales.
+
+### 11.1.3 Iteración conjunta PG-2.06–PG-2.08: trabajo en curso
+
+Autorización de la persona: implementar los tres puntos juntos, sustituir las restricciones de ámbitos y genéricos,
+elegir las opciones recomendadas y fijar la edición oficial sin migradores ni compatibilidad. Las versiones y estados
+siguen congelados. No se declara cerrada esta iteración ni se autoriza una fase posterior.
+
+Implementado hasta ahora: tabla contigua de vínculos con marcas de ámbito; registro local en orden de declaración;
+restauración de nombres exteriores; constantes locales con el mismo alcance; ámbito de Repetir hasta la condición;
+control entero local de Para con rechazo de escritura directa, entrada y paso por referencia; diagnósticos de sombreado
+y declaración fuera de ámbito con origen; tramos de visibilidad y selección de símbolos del servicio, con identidad
+local independiente de la posición en la lista filtrada. Corpus, catálogo generado, ayuda de Para y README dueños
+actualizados. No se reutilizan ranuras por bloques disjuntos.
+
+Pendientes que impiden el cierre: transporte del alcance a los mapas de estado y raíces VM/AOT; tipos función,
+clausuras, llamada indirecta y sus disposiciones; genéricos, variantes nominales y monomorfización acotada;
+proyección pública completa, propiedades GC, conformidad AOT y mediciones previstas. PG-2.06 permanece parcial;
+PG-2.07 y PG-2.08 no están implementados. No hay commit ni push de cierre.
+
+Verificación dirigida realizada: pila de ámbitos y restauración de inferencia; vínculos e inicialización; selección
+de símbolos con sombreado, vencimiento y archivo distinto. Conformidad engine sin divergencias para Para (64),
+Segun (62), declaraciones (32), gramática (12), estructura (16) y constantes (64). La selección de ámbitos pasó 50 observaciones,
+incluida comprobación explícita de sombreado, constantes hermanas y recuperación tras un nombre usado antes de declarar.
+Las verificaciones finales y sus resultados se conservan en la salida de la sesión; esta selección no acredita las
+capacidades pendientes. Se ejecutaron los verificadores estáticos de engine/spec, formato, Clippy dirigido y
+validación/reanclaje/exportación del corpus. No se ejecutaron suites completas ni campañas de rendimiento.
+
+Órdenes dirigidas comprobadas desde sus miembros:
+
+- `cargo test -p pseudolearn_semantic block_scopes --lib`: 2 tests en verde.
+- `cargo test -p pseudolearn_semantic --test binding_checker`: 5 tests en verde.
+- `cargo test -p pseudolearn_semantic --test flow_bindings`: 2 tests en verde.
+- `cargo test -p pseudolearn_semantic --test service_visibility`: 3 tests en verde.
+- `cargo clippy -p pseudolearn_semantic --all-targets -- -D warnings`: comprobación dirigida.
+- `rust-checks all packages/pseudolearn_engine` y `rust-checks all packages/pseudolearn_spec`, mediante
+  `cargo run --locked --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command --`:
+  ambos en verde.
+- SEE mediante `cargo run --locked --manifest-path packages/pseudolearn_spec/Cargo.toml -p see_cli --bin see --`:
+  `validate` (167 especificaciones), `lock --check`, `export --check` y `conform --subject engine --only <ID>`
+  para las identidades enumeradas; las órdenes llevan `--root packages/pseudolearn_spec`.
+- `git diff --check`: sin errores. Suites completas, AOT y mediciones omitidas porque esta entrega sigue incompleta.
+
+La evidencia de propiedades engine anterior a la edición del catálogo se conservó en el archivo local ignorado
+`results/properties-engine.before-pg-2-06.json`; no se presenta como evidencia vigente ni se alteraron sus hashes.
+
+#### Sincronización de cierres comprobados
+
+Por indicación de la persona («pero cierra las fases si ya están completas»), se sincroniza el plan general:
+PG-2.03, PG-2.04 y PG-2.05 quedan marcados como cerrados conforme al registro previo de implementación
+y verificación local de su iteración combinada. Se conservan los pendientes posteriores expresamente
+autorizados en ese registro; no se añaden diferimientos nuevos.
+
+En esta iteración se cierran únicamente PG-2.06.02, PG-2.06.03, PG-2.06.04 y PG-2.06.05.
+PG-2.06, PG-2.07, PG-2.08 y el cierre común de PG-2 permanecen abiertos por los pendientes concretos
+ya enumerados. Esta sincronización documental no acredita implementación ni pruebas adicionales.
+Verificación de la edición documental: `git diff --check`, sin errores; no se repiten pruebas de código.
 
 ### 11.2 Cierre común de PG-2
 

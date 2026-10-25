@@ -109,22 +109,7 @@ fn parameter_type(session: &mut AnalysisSession<'_>, parameter: usize) -> TypeId
     session.module.types.intern(Type::Unknown)
 }
 
-pub(crate) fn declarations(session: &mut AnalysisSession<'_>, function: usize) {
-    let size = session
-        .tree
-        .node(function)
-        .map_or(1, |node| usize::try_from(node.subtree_size).unwrap_or(1));
-    let start = function.saturating_add(1).saturating_sub(size);
-    for node in start..function {
-        match session.kind(node) {
-            NodeKind::Declaration | NodeKind::DimensionDeclaration => declaration(session, node),
-            NodeKind::ConstantDeclaration => crate::constant_registry::collect_local(session, node),
-            _ => {}
-        }
-    }
-}
-
-fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
+pub(crate) fn declaration(session: &mut AnalysisSession<'_>, node: usize) {
     let kind_node = session.child(node, NodeKind::Type);
     let base = kind_node
         .map(|kind| crate::type_resolution::resolve(session, kind))
@@ -165,12 +150,12 @@ fn register(session: &mut AnalysisSession<'_>, declaration: LocalDeclaration) ->
         );
     }
     let identifier = LocalId(u32::try_from(session.module.locals.len()).unwrap_or(u32::MAX));
-    if let Some(names) = usize::try_from(session.current.0)
-        .ok()
-        .and_then(|index| session.local_names.get_mut(index))
-    {
-        names.insert(name.clone(), identifier);
-    }
+    crate::scope_bindings::declare(
+        session,
+        name.clone(),
+        crate::block_scopes::BindingTarget::Local(identifier),
+        declaration.name_node,
+    );
     session.module.locals.push(HirLocal {
         name,
         type_id: declaration.type_id,
@@ -195,7 +180,15 @@ fn conflicting_declaration(
     declaration: &LocalDeclaration,
     name: &str,
 ) -> Option<LocalId> {
-    if let Some(previous) = session.local(name) {
+    if let Some(crate::block_scopes::BindingTarget::Local(previous)) =
+        session.bindings.current(name)
+    {
+        if crate::scope_bindings::recovery(
+            session,
+            crate::block_scopes::BindingTarget::Local(previous),
+        ) {
+            return None;
+        }
         let code = if declaration.parameter {
             DiagnosticCode::DuplicateParameterName
         } else {
@@ -205,7 +198,10 @@ fn conflicting_declaration(
         session.invalid.insert(previous);
         return Some(previous);
     }
-    if crate::constant_registry::local_constant(session, name).is_some() {
+    if matches!(
+        session.bindings.current(name),
+        Some(crate::block_scopes::BindingTarget::Constant(_))
+    ) {
         session.named_report(
             DiagnosticCode::DuplicateVariableDeclaration,
             declaration.name_node,

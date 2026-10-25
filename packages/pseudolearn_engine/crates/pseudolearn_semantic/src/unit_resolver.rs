@@ -109,7 +109,7 @@ pub(crate) fn register_function(
     open_scopes(session);
     session.current = identifier;
     crate::local_registry::parameters(session, node);
-    crate::local_registry::declarations(session, node);
+
     identifier
 }
 
@@ -128,10 +128,8 @@ fn check_member_result(
 }
 
 fn open_scopes(session: &mut AnalysisSession<'_>) {
-    session.local_names.push(std::collections::BTreeMap::new());
-    session
-        .local_constants
-        .push(std::collections::BTreeMap::new());
+    session.bindings = crate::block_scopes::BlockScopes::default();
+    session.bindings.enter();
 }
 
 fn register_name(

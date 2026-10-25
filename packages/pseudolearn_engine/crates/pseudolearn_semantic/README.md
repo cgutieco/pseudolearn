@@ -43,8 +43,10 @@ variables por unidad, tipos y rigor, flujo y emisión. `HirModule` conserva func
 columnas de expresiones y columnas de sentencias. Los identificadores de arena son tipos distintos.
 Cada expresión tiene tipo internado, clase escalar o referencia y tramo. `HirPlace` distingue ubicaciones
 asignables; `Widen` materializa la ampliación entero → real. Las incorporadas usan la firma generada.
-El nombre de una variable pertenece al algoritmo, subprograma o método; los bloques estructurados
-comparten ese ámbito, como exige `LANG.SUBPROGRAM.SCOPE`. El flujo de asignación sí se separa por
+Los nombres locales se registran en orden de declaración. `block_scopes` mantiene una tabla contigua de vínculos
+y marcas de entrada; cada rama y cuerpo de bucle introduce un ámbito y al salir se restaura el vínculo exterior.
+Los bloques hermanos admiten nombres iguales, el sombreado se advierte con origen relacionado y una declaración
+terminada se distingue de un nombre desconocido. No se reserva un mapa por bloque. El flujo de asignación sí se separa por
 rama y combina con intersección al salir de una condición. Una resolución inválida conserva la causa
 y evita diagnósticos derivados. Los campos se resuelven desde el tipo del receptor y su clase propietaria.
 La auditoría consume además fuentes regenerables de see_generators en ambos vocabularios y rigores,
@@ -111,8 +113,8 @@ que lowering no conoce las constantes. La aritmética repite la del runtime (ent
 truncado, `mod` con mínimo entre -1 igual a 0, real finito y todo divisor cero es error) porque semantic no importa
 runtime ni la biblioteca; la conversión de entero a real se copia del algoritmo de la biblioteca y un test la compara con
 la conversión exacta. Se rechaza evaluar con funciones de biblioteca para no duplicar ni desviar la matriz de
-operaciones. Una constante de módulo es privada del módulo y la local es visible en todo su cuerpo; una variable local
-puede ocultar una constante de módulo, pero no repetir el nombre de otra constante de su ámbito.
+operaciones. Una constante de módulo es privada del módulo; una constante local se evalúa al declararse y comparte el ámbito
+léxico de los demás vínculos. Puede ocultarse un nombre exterior, pero no repetirse en el mismo ámbito.
 
 **Enumerados.** `Type::Enum` es escalar. Cada miembro es un `Literal::Integer` con el ordinal (desde cero, en orden de
 declaración) y tipo enumerado, de modo que `Segun`, la igualdad y las constantes lo usan sin ramas nuevas; el nombre
@@ -142,7 +144,17 @@ La exhaustividad de enumerados pertenece a `switch_coverage`: cubre ordinales en
 
 Las variantes incorporadas son agregados identificados en `HirModule.variants`, separados de los registros nombrables. Sus instancias concretas se internan por familia y argumentos. Semantic importa también abi para consumir `VariantLayout`, evitando recalcular una disposición distinta: las hojas canónicas son palabras enteras y referencias, con unión por banco. Solo el opcional de una referencia no nula reutiliza el centinela; el opcional de otro opcional conserva discriminante. Los constructores reciben el tipo contextual de declaraciones, retornos y argumentos. Los patrones introducen vínculos inmutables limitados a su rama; un temporal interno evalúa el selector una vez. La propagación verifica la familia y la identidad exacta del tipo de error. Los resultados pendientes se siguen por vínculo y se unen por caminos; retorno, propagación, patrones y descarte transfieren o satisfacen la obligación. No existe migrador ni lenguaje anterior seleccionable.
 
-Los locales declarados dentro de caminos que pueden no ejecutarse no se consideran inicializados al salir; la lectura sin inicialización definida es error en ambos rigores. Los campos y elementos conservan sus comprobaciones de ejecución.
+Los locales de ramas no son visibles al salir. `Repetir` mantiene sus vínculos durante `Hasta Que`; `Para`
+evalúa los límites antes de introducir un control entero local, no reasigna un vínculo exterior y rechaza
+modificaciones del control. Las obligaciones de `Resultado` se comprueban al cerrar el ámbito, aunque el
+programa nunca vuelva a nombrar el vínculo. `local_visibility` conserva los tramos léxicos para servicios: el
+completado excluye declaraciones posteriores, ámbitos terminados y archivos distintos, y restaura nombres
+exteriores tras el sombreado. La repetición de inferencia restaura también las constantes y elimina declaraciones
+y tramos producidos por la pasada anterior.
+
+Pendientes declarados: transportar los límites de ámbito a los mapas de estado y raíces de ejecución;
+implementar tipos función, captura de clausuras y monomorfización de genéricos de usuario. El registro léxico
+no acredita esas capacidades ni la liberación de raíces al salir de un bloque.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

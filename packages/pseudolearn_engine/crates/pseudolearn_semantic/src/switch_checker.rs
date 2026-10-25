@@ -52,6 +52,9 @@ impl SwitchState {
 
     fn branch(&mut self, session: &mut AnalysisSession<'_>, branch: usize, expected: &Type) {
         session.initialized.clone_from(&self.initialized);
+        session
+            .initialized
+            .resize(session.module.locals.len(), false);
         session.pending_results.clone_from(&self.before);
         if self.has_default {
             session.report(DiagnosticCode::UnreachableSwitchPattern, branch);
@@ -79,6 +82,9 @@ impl SwitchState {
         }
         session.pending_results.clone_from(&self.after);
         session.initialized.clone_from(&self.initialized);
+        session
+            .initialized
+            .resize(session.module.locals.len(), false);
         session
             .initialized
             .resize(session.module.locals.len(), false);
@@ -130,7 +136,7 @@ fn default_branch(
         return false;
     }
     if let Some(body) = session.child(branch, NodeKind::Body) {
-        *default = crate::statement_checker::body(session, body);
+        *default = crate::statement_checker::scoped_body(session, body);
     }
     true
 }
@@ -141,6 +147,6 @@ fn branch_body(
 ) -> Vec<crate::identities::StatementId> {
     session
         .child(branch, NodeKind::Body)
-        .map(|body| crate::statement_checker::body(session, body))
+        .map(|body| crate::statement_checker::scoped_body(session, body))
         .unwrap_or_default()
 }

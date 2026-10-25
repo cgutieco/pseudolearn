@@ -1,5 +1,5 @@
 use crate::hir::{HirClass, HirFunction, HirModule};
-use crate::identities::{FunctionId, TypeId};
+use crate::identities::TypeId;
 pub use crate::service_model::*;
 use crate::session::{AnalysisSession, SemanticOptions};
 use pseudolearn_source::{SourceText, Span};
@@ -11,7 +11,13 @@ impl ServiceAnalysis {
         match reference.target {
             ServiceSymbolTarget::Local(local_id) => {
                 let index = usize::try_from(local_id.0).ok()?;
-                self.symbols.get(index)
+                self.symbols.iter().find(|symbol| {
+                    symbol.identifier == index
+                        && matches!(
+                            symbol.category,
+                            ServiceSymbolCategory::Variable | ServiceSymbolCategory::Parameter
+                        )
+                })
             }
             ServiceSymbolTarget::Function(function_id) => {
                 let index = usize::try_from(function_id.0).ok()?;
@@ -47,28 +53,7 @@ impl ServiceAnalysis {
     }
 
     pub fn visible_symbols_at_span(&self, span: Span) -> Vec<&ServiceSymbol> {
-        let containing = self
-            .module
-            .functions
-            .iter()
-            .find(|func| func.span.start <= span.start && func.span.ending >= span.ending);
-        let scope_id = containing.and_then(|func| {
-            self.module
-                .functions
-                .iter()
-                .position(|candidate| candidate.syntax == func.syntax)
-                .and_then(|index| u32::try_from(index).ok())
-                .map(FunctionId)
-        });
-        self.symbols
-            .iter()
-            .filter(|symbol| match symbol.category {
-                ServiceSymbolCategory::Variable | ServiceSymbolCategory::Parameter => {
-                    scope_id.is_some_and(|_| symbol.span.start <= span.start)
-                }
-                _ => true,
-            })
-            .collect()
+        crate::service_visibility::visible(self, span)
     }
 
     pub fn expression_type_at_span(&self, span: Span) -> Option<TypeId> {

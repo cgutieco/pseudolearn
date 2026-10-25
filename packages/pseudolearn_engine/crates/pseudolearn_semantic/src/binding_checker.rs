@@ -55,6 +55,15 @@ pub(crate) fn check_destination(session: &mut AnalysisSession<'_>, place: &HirPl
         HirPlace::Local(local) | HirPlace::RecordField { local, .. } => *local,
         _ => return,
     };
+    if session.controls.contains(&local) {
+        let name = usize::try_from(local.0)
+            .ok()
+            .and_then(|index| session.module.locals.get(index))
+            .map(|local| local.name.clone())
+            .unwrap_or_default();
+        session.named_report(DiagnosticCode::ControlVariableModified, node, &name);
+        return;
+    }
     if session.invalid.contains(&local) {
         return;
     }

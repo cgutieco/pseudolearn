@@ -42,9 +42,8 @@ pub(crate) struct AnalysisSession<'syntax> {
     pub classes: BTreeMap<String, ClassId>,
     pub declared: TypeScope,
     pub constants: Vec<ConstantEntry>,
-    pub local_constants: Vec<BTreeMap<String, usize>>,
     pub constant_limits: ConstantLimits,
-    pub local_names: Vec<BTreeMap<String, LocalId>>,
+    pub bindings: crate::block_scopes::BlockScopes,
     pub declarations: BTreeMap<usize, Vec<LocalId>>,
     pub initialized: Vec<bool>,
     pub reads: BTreeSet<LocalId>,
@@ -79,9 +78,8 @@ impl<'syntax> AnalysisSession<'syntax> {
             classes: BTreeMap::new(),
             declared: TypeScope::default(),
             constants: Vec::new(),
-            local_constants: Vec::new(),
             constant_limits: ConstantLimits::default(),
-            local_names: Vec::new(),
+            bindings: crate::block_scopes::BlockScopes::default(),
             declarations: BTreeMap::new(),
             initialized: Vec::new(),
             reads: BTreeSet::new(),
@@ -213,11 +211,10 @@ impl AnalysisSession<'_> {
     }
 
     pub(crate) fn local(&self, name: &str) -> Option<LocalId> {
-        usize::try_from(self.current.0)
-            .ok()
-            .and_then(|index| self.local_names.get(index))
-            .and_then(|names| names.get(name))
-            .copied()
+        match self.bindings.find(name) {
+            Some(crate::block_scopes::BindingTarget::Local(local)) => Some(local),
+            _ => None,
+        }
     }
 }
 

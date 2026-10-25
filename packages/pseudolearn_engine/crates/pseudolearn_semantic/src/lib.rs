@@ -100,6 +100,11 @@ pub fn analyze_semantics(
 }
 
 mod binding_checker;
+mod block_scopes;
+#[cfg(test)]
+mod block_scopes_tests;
+mod scope_bindings;
+mod service_visibility;
 
 mod switch_coverage;
 

@@ -2743,10 +2743,10 @@
         "lexeme": "lexema"
       },
       "clase": "semantic",
-      "politica": "C",
+      "politica": "A",
       "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
+        "estricto": "error",
+        "flexible": "error"
       }
     },
     "cellLimitExceeded": {
@@ -3408,6 +3408,42 @@
       },
       "clase": "semantic",
       "tipos_argumentos": {}
+    },
+    "bindingOutsideScope": {
+      "mensajes": {
+        "es": "La declaración de {lexeme} está fuera de ámbito",
+        "en": "Declaration of {lexeme} is outside its scope"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
+    "bindingShadowsOuter": {
+      "mensajes": {
+        "es": "La declaración de {lexeme} oculta un vínculo exterior",
+        "en": "Declaration of {lexeme} shadows an outer binding"
+      },
+      "argumentos": [
+        "lexeme"
+      ],
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     }
   }
 }

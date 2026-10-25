@@ -1,5 +1,3 @@
-use crate::expression_checker::{ExpressionPurpose, check_for};
-use crate::expression_model::HirExpression;
 use crate::session::AnalysisSession;
 use crate::statement_model::HirStatement;
 use crate::types::Type;
@@ -9,14 +7,6 @@ use pseudolearn_syntax::NodeKind;
 pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<HirStatement> {
     let children = session.children(node);
     let control_node = *children.first()?;
-    let target = check_for(session, control_node, ExpressionPurpose::Destination);
-    let control = usize::try_from(target.0)
-        .ok()
-        .and_then(|index| session.module.expressions.kinds.get(index))
-        .and_then(|expression| match expression {
-            HirExpression::Local(local) => Some(*local),
-            _ => None,
-        })?;
     let bounds: Vec<_> = children
         .iter()
         .copied()
@@ -29,9 +19,17 @@ pub(crate) fn check(session: &mut AnalysisSession<'_>, node: usize) -> Option<Hi
         .get(2)
         .map(|bound| crate::expression_checker::check(session, *bound));
     validate_bounds(session, &[Some(initial), Some(ending), step], node);
-    check_mutability(session, control, control_node);
+    session.bindings.enter();
+    let integer = session.module.types.intern(Type::Integer);
+    let control = crate::variant_bindings::pattern(session, integer, control_node);
+    let body_node = session.child(node, NodeKind::Body)?;
+    session
+        .module
+        .local_visibility
+        .insert(control, session.span(body_node));
     activate_control(session, control);
     let body = check_body(session, node, control)?;
+    crate::scope_bindings::leave(session);
     Some(HirStatement::For {
         control,
         initial,
@@ -68,18 +66,6 @@ fn activate_control(session: &mut AnalysisSession<'_>, control: crate::identitie
     {
         *initialized = true;
     }
-}
-
-fn check_mutability(
-    session: &mut AnalysisSession<'_>,
-    control: crate::identities::LocalId,
-    node: usize,
-) {
-    crate::binding_checker::check_destination(
-        session,
-        &crate::expression_model::HirPlace::Local(control),
-        node,
-    );
 }
 
 fn check_body(

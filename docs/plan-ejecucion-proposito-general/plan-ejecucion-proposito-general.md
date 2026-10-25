@@ -349,9 +349,9 @@ Puntos a cumplir:
 
 - [x] `PG-2.01` Constantes evaluadas con pureza y presupuesto, y enumerados con comprobación estática.
 - [x] `PG-2.02` Registros por valor con disposición común, rechazo de tamaño infinito y raíces de campos.
-- [ ] `PG-2.03` `Opcional<T>` y `Resultado<T,E>`, con descarte de Resultado rechazado y propagación visible.
-- [ ] `PG-2.04` `Segun` exhaustivo con patrones básicos sobre literales, enumerados y variantes.
-- [ ] `PG-2.05` Vínculos inmutables por defecto, mutación explícita e inicialización en la declaración.
+- [x] `PG-2.03` `Opcional<T>` y `Resultado<T,E>`, con descarte de Resultado rechazado y propagación visible.
+- [x] `PG-2.04` `Segun` exhaustivo con patrones básicos sobre literales, enumerados y variantes.
+- [x] `PG-2.05` Vínculos inmutables por defecto, mutación explícita e inicialización en la declaración.
 - [ ] `PG-2.06` Ámbitos léxicos de bloque en la edición 2026.
 - [ ] `PG-2.07` Funciones como valores y clausuras con captura verificada y entornos en el mapa de raíces.
 - [ ] `PG-2.08` Genéricos de primer orden con límite tipado de instanciación.

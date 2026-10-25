@@ -624,6 +624,24 @@
         "size": "numero"
       }
     },
+    "bindingOutsideScope": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Declaration of {lexeme} is outside its scope",
+        "es": "La declaración de {lexeme} está fuera de ámbito"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
+    },
     "bindingReadsOwnInitializer": {
       "argumentos": [],
       "clase": "semantic",
@@ -637,6 +655,24 @@
         "flexible": "error"
       },
       "tipos_argumentos": {}
+    },
+    "bindingShadowsOuter": {
+      "argumentos": [
+        "lexeme"
+      ],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "Declaration of {lexeme} shadows an outer binding",
+        "es": "La declaración de {lexeme} oculta un vínculo exterior"
+      },
+      "politica": "C",
+      "severidad": {
+        "estricto": "warning",
+        "flexible": "warning"
+      },
+      "tipos_argumentos": {
+        "lexeme": "lexema"
+      }
     },
     "byReferenceArgumentRequiresDesignator": {
       "argumentos": [],
@@ -957,10 +993,10 @@
         "en": "Control variable {lexeme} is modified inside the loop",
         "es": "La variable de control {lexeme} se modifica dentro del bucle"
       },
-      "politica": "C",
+      "politica": "A",
       "severidad": {
-        "estricto": "warning",
-        "flexible": "warning"
+        "estricto": "error",
+        "flexible": "error"
       },
       "tipos_argumentos": {
         "lexeme": "lexema"
@@ -5720,7 +5756,7 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C6",
+                "case": "C4",
                 "kind": "executable",
                 "label": "Program that runs: For loop",
                 "profile": "en",
@@ -5782,7 +5818,7 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C6",
+                "case": "C4",
                 "kind": "executable",
                 "label": "Programa que se ejecuta: Bucle Para",
                 "profile": "es",

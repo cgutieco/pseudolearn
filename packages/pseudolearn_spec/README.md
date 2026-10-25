@@ -329,6 +329,11 @@ Las pruebas de traducción incluyen cadenas, comentarios, ida/vuelta y colisión
 Las dependencias internas declaran versión y ruta; no hay excepciones de auditoría. Los fallos esperados del piloto se conservan como evidencia,
 con exenciones justificadas; cualquier vínculo cumple que falle impide verificar.
 
+Los casos de ámbitos léxicos distinguen nombre desconocido y declaración terminada, sombreado y bloques hermanos.
+El control de `Para` pertenece al bucle; los casos que consultaban su valor posterior pasan a comprobar el rechazo
+de ese acceso. Los ejemplos ejecutables de ayuda usan casos que no dependen de un control fuera de ámbito.
+Las ediciones conservan la identidad y versión de los contratos; no introducen migradores ni compatibilidad.
+
 ## 8. Fuentes consultadas y genealogía conceptual
 
 Los contratos SEE definen see/1, identidad, fases de ciclo de vida y protocolo. Cargo aporta workspaces,

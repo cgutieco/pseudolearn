@@ -49,7 +49,7 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Constante nombre Como tipo <- expresión declara un valor fijo, en el módulo o dentro del cuerpo de un algoritmo, subproceso o método. El tipo es entero, real, lógico, carácter, cadena o un enumerado, y el inicializador es obligatorio con las conversiones de la asignación. El nombre no se repite entre constantes y variables de su ámbito; la constante no admite asignación. Una constante de módulo es privada del módulo y visible en todo él; una local es visible en todo su cuerpo, como una variable. Usar una constante equivale a escribir su valor y no ocupa variable en ejecución.",
+  "texto": "Constante nombre Como tipo <- expresión declara un valor fijo, en el módulo o dentro del cuerpo de un algoritmo, subproceso o método. El tipo es entero, real, lógico, carácter, cadena o un enumerado, y el inicializador es obligatorio con las conversiones de la asignación. El nombre no se repite entre constantes y variables de su ámbito; la constante no admite asignación. Una constante de módulo es privada del módulo y visible en todo él; una local es visible desde su declaración hasta el cierre de su ámbito léxico, como los demás vínculos. Usar una constante equivale a escribir su valor y no ocupa variable en ejecución.",
   "verificacion": [
     "C1",
     "C2",

@@ -14,12 +14,12 @@ pub(crate) fn temporary(session: &mut AnalysisSession<'_>, kind: TypeId, node: u
 pub(crate) fn pattern(session: &mut AnalysisSession<'_>, kind: TypeId, node: usize) -> LocalId {
     let name = session.name(node);
     let local = create(session, (name.clone(), node), kind);
-    if let Some(names) = usize::try_from(session.current.0)
-        .ok()
-        .and_then(|index| session.local_names.get_mut(index))
-    {
-        names.insert(name, local);
-    }
+    crate::scope_bindings::declare(
+        session,
+        name,
+        crate::block_scopes::BindingTarget::Local(local),
+        node,
+    );
     local
 }
 

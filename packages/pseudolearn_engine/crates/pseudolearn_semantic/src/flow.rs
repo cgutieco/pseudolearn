@@ -31,20 +31,7 @@ fn function(session: &mut AnalysisSession<'_>, index: usize) {
         return;
     };
     session.current = FunctionId(u32::try_from(index).unwrap_or(u32::MAX));
-    session.returned = false;
-    session.pending_results.clear();
-    for parameter in &function.parameters {
-        if let Some(local) = usize::try_from(parameter.0)
-            .ok()
-            .and_then(|index| session.module.locals.get(index))
-            && crate::result_obligations::is_result(
-                session,
-                &session.module.types.get(local.type_id),
-            )
-        {
-            session.pending_results.insert(*parameter);
-        }
-    }
+    prepare_function(session, &function);
     let body = session
         .child(function.syntax, NodeKind::Body)
         .map(|body| crate::statement_checker::body(session, body))
@@ -59,5 +46,41 @@ fn function(session: &mut AnalysisSession<'_>, index: usize) {
     crate::result_obligations::finish(session);
     if let Some(function) = session.module.functions.get_mut(index) {
         function.body = body;
+    }
+}
+
+fn prepare_function(session: &mut AnalysisSession<'_>, function: &crate::hir::HirFunction) {
+    session.bindings = crate::block_scopes::BlockScopes::default();
+    session.bindings.enter();
+    for parameter in &function.parameters {
+        if let Some(local) = usize::try_from(parameter.0)
+            .ok()
+            .and_then(|index| session.module.locals.get(index))
+        {
+            session.bindings.insert(
+                local.name.clone(),
+                crate::block_scopes::BindingTarget::Local(*parameter),
+            );
+        }
+    }
+    for parameter in &function.parameters {
+        session
+            .module
+            .local_visibility
+            .insert(*parameter, function.span);
+    }
+    session.returned = false;
+    session.pending_results.clear();
+    for parameter in &function.parameters {
+        if let Some(local) = usize::try_from(parameter.0)
+            .ok()
+            .and_then(|index| session.module.locals.get(index))
+            && crate::result_obligations::is_result(
+                session,
+                &session.module.types.get(local.type_id),
+            )
+        {
+            session.pending_results.insert(*parameter);
+        }
     }
 }

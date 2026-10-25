@@ -90,13 +90,13 @@ fn implicit(
         mutable: false,
     });
     session.initialized.push(false);
-    if let Some(names) = usize::try_from(session.current.0)
-        .ok()
-        .and_then(|index| session.local_names.get_mut(index))
-    {
-        names.insert(name.to_owned(), identifier);
+    session.bindings.insert(
+        name.to_owned(),
+        crate::block_scopes::BindingTarget::Local(identifier),
+    );
+    if !crate::scope_bindings::outside(session, node, name) {
+        session.named_report(DiagnosticCode::UndeclaredVariable, node, name);
     }
-    session.named_report(DiagnosticCode::UndeclaredVariable, node, name);
     classify_implicit(session, identifier, purpose);
     identifier
 }

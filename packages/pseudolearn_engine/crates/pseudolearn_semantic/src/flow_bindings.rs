@@ -1,11 +1,11 @@
 use crate::hir::HirLocal;
 use crate::identities::LocalId;
 use crate::session::AnalysisSession;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 pub(crate) struct FlowBindings {
     locals: Vec<HirLocal>,
-    names: Vec<BTreeMap<String, LocalId>>,
+    constants: Vec<crate::constant_registry::ConstantEntry>,
     invalid: BTreeSet<LocalId>,
 }
 
@@ -13,7 +13,7 @@ impl FlowBindings {
     pub(crate) fn capture(session: &AnalysisSession<'_>) -> Self {
         Self {
             locals: session.module.locals.clone(),
-            names: session.local_names.clone(),
+            constants: session.constants.clone(),
             invalid: session.invalid.clone(),
         }
     }
@@ -31,8 +31,10 @@ impl FlowBindings {
             .module
             .record_locals
             .retain(|local, _| usize::try_from(local.0).is_ok_and(|index| index < locals.len()));
+        session.module.local_visibility.clear();
         session.module.locals = locals;
-        session.local_names.clone_from(&self.names);
+        session.constants.clone_from(&self.constants);
+        session.declarations.clear();
         session.invalid.clone_from(&self.invalid);
         session.inferred.clear();
         session.initialized = session

@@ -51,18 +51,11 @@ pub(crate) fn assign_local(
     node: usize,
 ) {
     let index = usize::try_from(local.0).unwrap_or(usize::MAX);
-    let Some(declaration) = session.module.locals.get(index).cloned() else {
+    if session.module.locals.get(index).is_none() {
         return;
-    };
+    }
     crate::result_obligations::assign(session, local, value, node);
     infer_assignment(session, local, value, node);
-    if session.controls.contains(&local) {
-        session.named_report(
-            DiagnosticCode::ControlVariableModified,
-            node,
-            &declaration.name,
-        );
-    }
     session.writes.insert(local);
     if let Some(initialized) = session.initialized.get_mut(index) {
         *initialized = true;

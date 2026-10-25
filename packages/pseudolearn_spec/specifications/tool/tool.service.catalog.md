@@ -2051,7 +2051,7 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C6",
+                "case": "C4",
                 "kind": "executable",
                 "label": "Programa que se ejecuta: Bucle Para",
                 "profile": "es",
@@ -2113,7 +2113,7 @@
                 "version": "1.0.0"
               },
               {
-                "case": "C6",
+                "case": "C4",
                 "kind": "executable",
                 "label": "Program that runs: For loop",
                 "profile": "en",
