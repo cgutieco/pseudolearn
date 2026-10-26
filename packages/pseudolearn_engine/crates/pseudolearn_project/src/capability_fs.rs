@@ -51,10 +51,13 @@ impl ConfinedDirectory {
     }
 
     pub fn resolve_subpath(&self, subpath: &str) -> Result<String, CapabilityFsError> {
-        let parts = segments(subpath).ok_or(CapabilityFsError::InvalidPath)?;
-        if parts.iter().any(|part| part == ".." || part == ".") {
+        if subpath
+            .split('/')
+            .any(|segment| segment == ".." || segment == ".")
+        {
             return Err(CapabilityFsError::EscapeAttempt);
         }
+        let parts = segments(subpath).ok_or(CapabilityFsError::InvalidPath)?;
         let joined = format!("{}/{}", self.root, parts.join("/"));
         normalize(&joined).ok_or(CapabilityFsError::InvalidPath)
     }

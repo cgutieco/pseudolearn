@@ -147,57 +147,57 @@ al corpus, sin depender de este texto.
 
 ### PG-3.01 · `CF-07` especificado: frontera de confirmación lógica y estado externo incierto, con casos
 
-- [ ] `PG-3.01.01` Especificar en `ENG.EXEC.EFFECT-COMMIT` (nuevo) y en `ENG.EXEC.EFFECT-ORDER` (edición oficial) las dos fases de cada efecto (`Requested` y `Resolved`), los tres resultados de confirmación (`Committed`, `Failed`, `Uncertain`), el momento exacto en que se asigna `effect_seq` tras evaluar argumentos de izquierda a derecha y el efecto sobre el estado de reproducibilidad de la cinta.
-- [ ] `PG-3.01.02` Casos: efecto confirmado de lectura y de escritura, fallo controlado previo a mutar (`PermisoDenegado`, `NoEncontrado`), fallo con estado externo incierto durante escritura (`Uncertain` con bandera `incierto` en `ErrorES` y cinta marcada `UncertainExternalState`), orden de `effect_seq` cuando una expresión combina dos efectos en secuencia.
-- [ ] `PG-3.01.03` Tests unitarios de la máquina de estados de confirmación (`Requested` → `Committed` / `Failed` / `Uncertain`) y del rechazo de transiciones inválidas (doble resolución o resolución sin solicitud).
-- [ ] `PG-3.01.04` Implementar `EffectPhase`, `CommitOutcome` y `ReproducibilityStatus` en `pseudolearn_runtime` / `pseudolearn_vm` y `pseudolearn_timeline`.
-- [ ] `PG-3.01.05` Actualizar `README.md` de `pseudolearn_vm` y `pseudolearn_timeline` con la frontera de confirmación lógica.
-- [ ] `PG-3.01.06` Verificación acotada: `see validate` y `see conform --subject engine --only ENG.EXEC.EFFECT-COMMIT,ENG.EXEC.EFFECT-ORDER`.
+- [x] `PG-3.01.01` Especificar en `ENG.EXEC.EFFECT-COMMIT` (nuevo) y en `ENG.EXEC.EFFECT-ORDER` (edición oficial) las dos fases de cada efecto (`Requested` y `Resolved`), los tres resultados de confirmación (`Committed`, `Failed`, `Uncertain`), el momento exacto en que se asigna `effect_seq` tras evaluar argumentos de izquierda a derecha y el efecto sobre el estado de reproducibilidad de la cinta.
+- [x] `PG-3.01.02` Casos: efecto confirmado de lectura y de escritura, fallo controlado previo a mutar (`PermisoDenegado`, `NoEncontrado`), fallo con estado externo incierto durante escritura (`Uncertain` con bandera `incierto` en `ErrorES` y cinta marcada `UncertainExternalState`), orden de `effect_seq` cuando una expresión combina dos efectos en secuencia.
+- [x] `PG-3.01.03` Tests unitarios de la máquina de estados de confirmación (`Requested` → `Committed` / `Failed` / `Uncertain`) y del rechazo de transiciones inválidas (doble resolución o resolución sin solicitud).
+- [x] `PG-3.01.04` Implementar `EffectPhase`, `CommitOutcome` y `ReproducibilityStatus` en `pseudolearn_runtime` / `pseudolearn_vm` y `pseudolearn_timeline`.
+- [x] `PG-3.01.05` Actualizar `README.md` de `pseudolearn_vm` y `pseudolearn_timeline` con la frontera de confirmación lógica.
+- [x] `PG-3.01.06` Verificación acotada: `see validate` y `see conform --subject engine --only ENG.EXEC.EFFECT-COMMIT,ENG.EXEC.EFFECT-ORDER`.
 
 ### PG-3.02 · `CF-11` resuelto: fallo controlado frente a caída o terminación del anfitrión
 
-- [ ] `PG-3.02.01` Editar `ENG.EXEC.MODEL` y `RT.HOST.INTERFACE` como texto oficial con la formulación revisada por la persona (`D-PG3-06`): distinguir fallo controlado de efecto (`Resultado<T, ErrorES>`, recuperable y con ejecución normal de `Diferir`), trampa del programa (`termination = failed`) y corte/terminación del anfitrión (`cancelled`, `limit_reached`, desconexión en `awaiting_effect` que sella `AbortedByHost` sin ejecutar nuevos efectos en `Diferir`).
-- [ ] `PG-3.02.02` Casos: fallo de archivo manejado con `Segun` sobre `Resultado`, fallo propagado con `Propagar` que ejecuta `Diferir`, cancelación del anfitrión mientras un efecto está en `awaiting_effect`, agotamiento de límite de sentencias después de abrir una capacidad (cierre inmediato en el anfitrión sin ejecutar efectos adicionales del usuario).
-- [ ] `PG-3.02.03` Tests de `pseudolearn_vm` y `pseudolearn_api` que comprueban la liberación determinista de la tabla de capacidades del anfitrión ante `Cancelled`, `LimitReached` y `Trap`.
-- [ ] `PG-3.02.04` Implementar el cierre forzoso de recursos de anfitrión y el sellado `AbortedByHost` en `pseudolearn_vm` y `pseudolearn_api`.
-- [ ] `PG-3.02.05` Documentar en `README.md` de `pseudolearn_vm` y `pseudolearn_api` la separación entre `Resultado<T, ErrorES>`, trampa y terminación de anfitrión.
-- [ ] `PG-3.02.06` Verificación acotada: `--only ENG.EXEC.MODEL,RT.HOST.INTERFACE` y tests espejo de `execution_resource`.
+- [x] `PG-3.02.01` Editar `ENG.EXEC.MODEL` y `RT.HOST.INTERFACE` como texto oficial con la formulación revisada por la persona (`D-PG3-06`): distinguir fallo controlado de efecto (`Resultado<T, ErrorES>`, recuperable y con ejecución normal de `Diferir`), trampa del programa (`termination = failed`) y corte/terminación del anfitrión (`cancelled`, `limit_reached`, desconexión en `awaiting_effect` que sella `AbortedByHost` sin ejecutar nuevos efectos en `Diferir`).
+- [x] `PG-3.02.02` Casos: fallo de archivo manejado con `Segun` sobre `Resultado`, fallo propagado con `Propagar` que ejecuta `Diferir`, cancelación del anfitrión mientras un efecto está en `awaiting_effect`, agotamiento de límite de sentencias después de abrir una capacidad (cierre inmediato en el anfitrión sin ejecutar efectos adicionales del usuario).
+- [x] `PG-3.02.03` Tests de `pseudolearn_vm` y `pseudolearn_api` que comprueban la liberación determinista de la tabla de capacidades del anfitrión ante `Cancelled`, `LimitReached` y `Trap`.
+- [x] `PG-3.02.04` Implementar el cierre forzoso de recursos de anfitrión y el sellado `AbortedByHost` en `pseudolearn_vm` y `pseudolearn_api`.
+- [x] `PG-3.02.05` Documentar en `README.md` de `pseudolearn_vm` y `pseudolearn_api` la separación entre `Resultado<T, ErrorES>`, trampa y terminación de anfitrión.
+- [x] `PG-3.02.06` Verificación acotada: `--only ENG.EXEC.MODEL,RT.HOST.INTERFACE` y tests espejo de `execution_resource`.
 
 ### PG-3.03 · Capacidades para consola, argumentos, archivos relativos a una capacidad, reloj grabado y temporizadores lógicos; denegación por defecto
 
-- [ ] `PG-3.03.01` Crear `LANG.CAPABILITY.MODEL` y editar `API.PROJECT.MANIFEST` (`R4`), `RT.HOST.INTERFACE` y `RT.PROCESS`: tipos bilingües `Consola`/`Console`, `Argumentos`/`Arguments`, `DirectorioCap`/`DirCap`, `ArchivoCap`/`FileCap`, `Reloj`/`Clock` y `Temporizador`/`Timer`; vocabulario cerrado de permisos en `pseudolearn.toml` (`consola`, `argumentos`, `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`); denegación por defecto; atenuación de subrutas y modos (`lectura`/`escritura`) sin amplificación; invalidación por cierre (`CapacidadCerrada`).
-- [ ] `PG-3.03.02` Casos: programa sin permisos que intenta usar archivo o reloj (denegado), intersección `requested ∩ granted` en proyecto, apertura de archivo relativo a `DirectorioCap`, atenuación a subdirectorio de solo lectura e intento rechazado de abrir para escritura desde capacidad de solo lectura, intento de escape con `..` o ruta absoluta, uso de `ArchivoCap` tras `cerrar`.
-- [ ] `PG-3.03.03` Tests espejo en `pseudolearn_project` (`authority_tests.rs`, `capability_fs_tests.rs`) y en `pseudolearn_vm` (`capability_tests.rs`) para intersección de permisos, generación de `CapabilityToken` y confinamiento con `cap-std`.
-- [ ] `PG-3.03.04` Extender `authority.rs` en `pseudolearn_project`, añadir `CapabilityToken` y `CapabilityTable` en `pseudolearn_runtime`/`pseudolearn_vm`, y registrar el vocabulario bilingüe en `pseudolearn_syntax` y `pseudolearn_semantic`.
-- [ ] `PG-3.03.05` Actualizar `README.md` de `pseudolearn_project`, `pseudolearn_runtime` y `pseudolearn_semantic`; añadir fichas de ayuda en `TOOL.SERVICE.CATALOG`.
-- [ ] `PG-3.03.06` Verificación acotada: `--only API.PROJECT.MANIFEST,LANG.CAPABILITY.MODEL,RT.HOST.INTERFACE,RT.PROCESS` y tests de `pseudolearn_project` y `pseudolearn_vm`.
+- [x] `PG-3.03.01` Crear `LANG.CAPABILITY.MODEL` y editar `API.PROJECT.MANIFEST` (`R4`), `RT.HOST.INTERFACE` y `RT.PROCESS`: tipos bilingües `Consola`/`Console`, `Argumentos`/`Arguments`, `DirectorioCap`/`DirCap`, `ArchivoCap`/`FileCap`, `Reloj`/`Clock` y `Temporizador`/`Timer`; vocabulario cerrado de permisos en `pseudolearn.toml` (`consola`, `argumentos`, `archivos_lectura`, `archivos_escritura`, `reloj`, `temporizador`); denegación por defecto; atenuación de subrutas y modos (`lectura`/`escritura`) sin amplificación; invalidación por cierre (`CapacidadCerrada`).
+- [x] `PG-3.03.02` Casos: programa sin permisos que intenta usar archivo o reloj (denegado), intersección `requested ∩ granted` en proyecto, apertura de archivo relativo a `DirectorioCap`, atenuación a subdirectorio de solo lectura e intento rechazado de abrir para escritura desde capacidad de solo lectura, intento de escape con `..` o ruta absoluta, uso de `ArchivoCap` tras `cerrar`.
+- [x] `PG-3.03.03` Tests espejo en `pseudolearn_project` (`authority_tests.rs`, `capability_fs_tests.rs`) y en `pseudolearn_vm` (`capability_tests.rs`) para intersección de permisos, generación de `CapabilityToken` y confinamiento con `cap-std`.
+- [x] `PG-3.03.04` Extender `authority.rs` en `pseudolearn_project`, añadir `CapabilityToken` y `CapabilityTable` en `pseudolearn_runtime`/`pseudolearn_vm`, y registrar el vocabulario bilingüe en `pseudolearn_syntax` y `pseudolearn_semantic`.
+- [x] `PG-3.03.05` Actualizar `README.md` de `pseudolearn_project`, `pseudolearn_runtime` y `pseudolearn_semantic`; añadir fichas de ayuda en `TOOL.SERVICE.CATALOG`.
+- [x] `PG-3.03.06` Verificación acotada: `--only API.PROJECT.MANIFEST,LANG.CAPABILITY.MODEL,RT.HOST.INTERFACE,RT.PROCESS` y tests de `pseudolearn_project` y `pseudolearn_vm`.
 
 ### PG-3.04 · Identidad de ejecución ampliada y esquema versionado de cinta con todos los datos de cada efecto y su orden de entrega
 
-- [ ] `PG-3.04.01` Crear `ENG.EFFECT.TAPE`: esquema `pseudolearn.tape/v1`, `ExecutionIdentity` (resúmenes de fuentes, grafo de paquetes, perfil, semilla, límites y permisos efectivos), `TapeEntry` (`effect_seq`, `task_id = 0`, `source_node_id`, `capability_kind`, `operation`, `request_digest`, `secret_ref`, `outcome`, `payload_bytes`, `entry_hash`) y cálculo de resumen encadenado SHA-256.
-- [ ] `PG-3.04.02` Casos: grabación de secuencia mixta (argumentos, reloj, lectura/escritura de archivo, temporizador y consola), determinismo de serialización entre dos ejecuciones idénticas, preservación del orden de entrega por `effect_seq` y cambio del digest ante modificación de semilla, límite o fuente.
-- [ ] `PG-3.04.03` Tests espejo de serialización canónica, encadenamiento de hashes y compatibilidad con las grabaciones de `Leer` existentes en `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.04.04` Implementar `EffectTape`, `ExecutionIdentity` y `TapeEntry` en `pseudolearn_timeline` y conectarlos con `recording.rs` y `recording_digest.rs` en `pseudolearn_api`.
-- [ ] `PG-3.04.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.04.06` Verificación acotada: `--only ENG.EFFECT.TAPE` y tests de `recording` en `pseudolearn_api` y `pseudolearn_timeline`.
+- [x] `PG-3.04.01` Crear `ENG.EFFECT.TAPE`: esquema `pseudolearn.tape/v1`, `ExecutionIdentity` (resúmenes de fuentes, grafo de paquetes, perfil, semilla, límites y permisos efectivos), `TapeEntry` (`effect_seq`, `task_id = 0`, `source_node_id`, `capability_kind`, `operation`, `request_digest`, `secret_ref`, `outcome`, `payload_bytes`, `entry_hash`) y cálculo de resumen encadenado SHA-256.
+- [x] `PG-3.04.02` Casos: grabación de secuencia mixta (argumentos, reloj, lectura/escritura de archivo, temporizador y consola), determinismo de serialización entre dos ejecuciones idénticas, preservación del orden de entrega por `effect_seq` y cambio del digest ante modificación de semilla, límite o fuente.
+- [x] `PG-3.04.03` Tests espejo de serialización canónica, encadenamiento de hashes y compatibilidad con las grabaciones de `Leer` existentes en `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.04.04` Implementar `EffectTape`, `ExecutionIdentity` y `TapeEntry` en `pseudolearn_timeline` y conectarlos con `recording.rs` y `recording_digest.rs` en `pseudolearn_api`.
+- [x] `PG-3.04.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.04.06` Verificación acotada: `--only ENG.EFFECT.TAPE` y tests de `recording` en `pseudolearn_api` y `pseudolearn_timeline`.
 
 ### PG-3.05 · Tres modos separados: ejecutar y grabar, ejecutar desde cinta, consultar historia (`seek`); reproducir y retroceder nunca tocan disco ni red
 
-- [ ] `PG-3.05.01` Editar `API.EXECUTE` y `API.STATE.QUERY` para especificar los tres modos (`LiveRecord`, `ReplayFromTape`, `HistorySeek`) y la garantía de aislamiento total del anfitrión durante `ReplayFromTape` y `HistorySeek`.
-- [ ] `PG-3.05.02` Casos: ejecutar en `LiveRecord` con efectos de archivo y reloj, reproducir la cinta resultante en `ReplayFromTape` con el sistema de archivos virtual vacío/desconectado obteniendo idéntica salida y traza, y realizar consultas `seek` hacia adelante y hacia atrás sobre una sesión con efectos sin reejecutar llamadas al anfitrión.
-- [ ] `PG-3.05.03` Tests con espía de anfitrión (`PanickingHostSpy` / contador de llamadas = `0`) que demuestran que `ReplayFromTape` y `HistorySeek` jamás invocan al proveedor físico del anfitrión.
-- [ ] `PG-3.05.04` Implementar `ExecutionMode`, `TapeReplayProvider` y la integración con `CheckpointStore` en `pseudolearn_timeline` (`replay.rs`) y `pseudolearn_api` (`execution_resource.rs`).
-- [ ] `PG-3.05.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
-- [ ] `PG-3.05.06` Verificación acotada: `--only API.EXECUTE,API.STATE.QUERY,ENG.STATE.SNAPSHOT,ENG.STATE.INCREMENTAL` y tests de `replay` en `pseudolearn_timeline`.
+- [x] `PG-3.05.01` Editar `API.EXECUTE` y `API.STATE.QUERY` para especificar los tres modos (`LiveRecord`, `ReplayFromTape`, `HistorySeek`) y la garantía de aislamiento total del anfitrión durante `ReplayFromTape` y `HistorySeek`.
+- [x] `PG-3.05.02` Casos: ejecutar en `LiveRecord` con efectos de archivo y reloj, reproducir la cinta resultante en `ReplayFromTape` con el sistema de archivos virtual vacío/desconectado obteniendo idéntica salida y traza, y realizar consultas `seek` hacia adelante y hacia atrás sobre una sesión con efectos sin reejecutar llamadas al anfitrión.
+- [x] `PG-3.05.03` Tests con espía de anfitrión (`PanickingHostSpy` / contador de llamadas = `0`) que demuestran que `ReplayFromTape` y `HistorySeek` jamás invocan al proveedor físico del anfitrión.
+- [x] `PG-3.05.04` Implementar `ExecutionMode`, `TapeReplayProvider` y la integración con `CheckpointStore` en `pseudolearn_timeline` (`replay.rs`) y `pseudolearn_api` (`execution_resource.rs`).
+- [x] `PG-3.05.05` Actualizar `README.md` de `pseudolearn_timeline` y `pseudolearn_api`.
+- [x] `PG-3.05.06` Verificación acotada: `--only API.EXECUTE,API.STATE.QUERY,ENG.STATE.SNAPSHOT,ENG.STATE.INCREMENTAL` y tests de `replay` en `pseudolearn_timeline`.
 
 ### PG-3.06 · Cinta divergente, truncada o alterada rechazada con error de reproducción, sin consultar al anfitrión
 
-- [ ] `PG-3.06.01` Especificar en `ENG.EFFECT.TAPE` y `API.ERRORS` los códigos de rechazo de reproducción (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_corrupted_tape`, `replay_non_reproducible`) y la prohibición de caer de vuelta (*fallback*) al anfitrión vivo cuando falla la cinta.
-- [ ] `PG-3.06.02` Casos negativos: reproducción con código fuente modificado (`replay_identity_mismatch`), con argumento de efecto distinto (`replay_divergence`), con última entrada recortada (`replay_truncated_tape`), con `entry_hash` o `payload_bytes` alterado (`replay_corrupted_tape`) y con cinta marcada como no reproducible (`replay_non_reproducible`).
-- [ ] `PG-3.06.03` Tests unitarios de cada código de rechazo en `TapeReplayProvider` verificando que el contador de llamadas al anfitrión permanece en `0`.
-- [ ] `PG-3.06.04` Implementar la validación de identidad, secuencia y hash en `TapeReplayProvider` y proyectar los errores en `pseudolearn_api`.
-- [ ] `PG-3.06.05` Actualizar `README.md` de `pseudolearn_timeline` y catálogo de errores en `pseudolearn_api`.
-- [ ] `PG-3.06.06` Verificación acotada: `--only ENG.EFFECT.TAPE,API.ERRORS` y tests negativos de `tape_replay`.
+- [x] `PG-3.06.01` Especificar en `ENG.EFFECT.TAPE` y `API.ERRORS` los códigos de rechazo de reproducción (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_corrupted_tape`, `replay_non_reproducible`) y la prohibición de caer de vuelta (*fallback*) al anfitrión vivo cuando falla la cinta.
+- [x] `PG-3.06.02` Casos negativos: reproducción con código fuente modificado (`replay_identity_mismatch`), con argumento de efecto distinto (`replay_divergence`), con última entrada recortada (`replay_truncated_tape`), con `entry_hash` o `payload_bytes` alterado (`replay_corrupted_tape`) y con cinta marcada como no reproducible (`replay_non_reproducible`).
+- [x] `PG-3.06.03` Tests unitarios de cada código de rechazo en `TapeReplayProvider` verificando que el contador de llamadas al anfitrión permanece en `0`.
+- [x] `PG-3.06.04` Implementar la validación de identidad, secuencia y hash en `TapeReplayProvider` y proyectar los errores en `pseudolearn_api`.
+- [x] `PG-3.06.05` Actualizar `README.md` de `pseudolearn_timeline` y catálogo de errores en `pseudolearn_api`.
+- [x] `PG-3.06.06` Verificación acotada: `--only ENG.EFFECT.TAPE,API.ERRORS` y tests negativos de `tape_replay`.
 
 ### PG-3.07 · Contrato de suspensión por efecto pendiente (`awaiting_effect`), distinto de la espera de entrada (`awaiting_input`)
 
@@ -462,10 +462,26 @@ Cada iteración requiere autorización propia y se detiene al concluir (`PHASE-S
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
 | Preparación y revisión del plan (`PG-3.C02`) | Cumplido | Este documento (`fase-pg-3-plan-ejecucion.md`) aprobado por la persona el `2026-10-26` sobre la revisión inicial `5f6b4b9` | Quedan fijados el diseño a medida (§3), la política de pruebas acotadas (§7.1) y la evolución sincronizada de `apps/pseudolearn_app` |
-| Resolución de diseño de `CF-11` (`PG-3.02`) y vocabulario bilingüe (`PG-3.03`) | Cumplido en diseño | Aprobación del plan detallado el `2026-10-26` | Pendiente de plasmar como texto normativo y casos en la Iteración 1 |
+| Resolución de diseño de `CF-11` (`PG-3.02`) y vocabulario bilingüe (`PG-3.03`) | Cumplido | Aprobación y verificación de contratos normativos el `2026-10-26` | Integrado en especificaciones, runtime, authority y semántica bilingüe |
+| `PG-3.01` · Frontera de confirmación lógica y estado incierto | Cumplido | `see conform --only ENG.EXEC.EFFECT-COMMIT` (20 obs, 0 div), `see conform --only ENG.EXEC.EFFECT-ORDER` (20 obs, 0 div), tests `capability_table_tests.rs` y `effect_tape_tests.rs` en verde | Estados `Requested`, `Resolved`, resultados `Committed`/`Failed`/`Uncertain`, orden secuencial |
+| `PG-3.02` · Fallo controlado vs terminación de anfitrión | Cumplido | `see conform --only ENG.EXEC.MODEL` (40 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), tests `execution_resource_tests.rs` en verde | Separación nítida de `Resultado<T, ErrorES>`, trampa y corte forzoso de anfitrión |
+| `PG-3.03` · Capacidades y confinamiento por defecto | Cumplido | `see conform --only API.PROJECT.MANIFEST` (27 obs, 0 div), `see conform --only LANG.CAPABILITY.MODEL` (16 obs, 0 div), `see conform --only RT.HOST.INTERFACE` (20 obs, 0 div), `see conform --only RT.PROCESS` (12 obs, 0 div), tests `authority_tests.rs` y `capability_fs_tests.rs` en verde | Confinamiento de rutas relativas, normalización lógica, prevención de escapes (`..`) y atenuación |
+| `PG-3.04` · Identidad y esquema versionado de cinta | Cumplido | `see conform --only ENG.EFFECT.TAPE` (20 obs, 0 div), tests de encadenamiento SHA-256 y serialización canónica en `tape_execution_tests.rs` en verde | Esquema `pseudolearn.tape/v1`, `ExecutionIdentity`, `TapeEntry` con hash encadenado |
+| `PG-3.05` · Modos LiveRecord, ReplayFromTape y HistorySeek | Cumplido | `see conform --only API.EXECUTE` (16 obs, 0 div), `see conform --only API.STATE.QUERY` (16 obs, 0 div), tests `tape_replay_tests.rs` en verde | Aislamiento estricto de anfitrión durante reproducción y retroceso (`seek`) |
+| `PG-3.06` · Rechazo de cinta alterada/divergente | Cumplido | `see conform --only API.ERRORS` (4 obs, 0 div), tests `tape_replay_tests.rs` y `tape_execution_tests.rs` en verde | Rechazo determinista (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_non_reproducible`) sin fallback |
 
-Contratos de `PG-3` para la selección acotada: se listarán aquí conforme se creen y editen en la Iteración 1.
+Contratos de `PG-3` para la selección acotada verificados: `ENG.EXEC.EFFECT-COMMIT`, `ENG.EXEC.EFFECT-ORDER`, `ENG.EXEC.MODEL`, `RT.HOST.INTERFACE`, `LANG.CAPABILITY.MODEL`, `API.PROJECT.MANIFEST`, `RT.PROCESS`, `ENG.EFFECT.TAPE`, `API.EXECUTE`, `API.STATE.QUERY`, `API.ERRORS`, `IR.INSTRUCTIONS`.
 
-Selección de pruebas ejecutadas y omitidas por iteración: se registrará aquí al cerrar cada iteración.
+Selección de pruebas ejecutadas por iteración:
+- `see validate --root packages/pseudolearn_spec`: 178 especificaciones validadas.
+- `see lock --check --root packages/pseudolearn_spec`: verificación canónica de bloqueo exitosa.
+- `see export --check --root packages/pseudolearn_spec`: exportación consistente.
+- `rust-checks all packages/pseudolearn_engine`: límites, comentarios, capas y convenciones de nombre en verde.
+- `cargo clippy --manifest-path packages/pseudolearn_engine/Cargo.toml --all-targets -- -D warnings`: 0 advertencias.
+- `cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn_project`: 17 suites en verde.
+- `cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn_runtime`: 12 suites en verde.
+- `cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn_timeline`: 6 suites en verde.
+- `cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn_api --lib`: 4 pruebas en verde.
+- `cargo test --manifest-path packages/pseudolearn_engine/Cargo.toml -p pseudolearn_api --test tape_execution_tests`: 5 pruebas en verde.
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Puntos de §4 cumplidos:
+Revisión Git de cierre: `feature/agregar-ruta-de-especificacion` · Verificadores ejecutados: `see validate`, `see lock --check`, `see export --check`, `see conform`, `rust-checks`, `cargo clippy`, `cargo test` · Pendientes justificados: Ninguno para PG-3.01 a PG-3.06; fases PG-3.07 a PG-3.14 permanecen intactas para sus iteraciones correspondientes · Puntos de §4 cumplidos: PG-3.01 a PG-3.06.

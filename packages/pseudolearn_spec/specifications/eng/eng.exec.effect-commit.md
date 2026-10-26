@@ -43,8 +43,7 @@
   "texto": "Toda operación de efecto atraviesa exactamente dos fases en el modelo de ejecución: Requested (cuando todos los argumentos han sido evaluados y se emite la petición asignando el siguiente effect_seq monotónico) y Resolved (cuando el anfitrión o proveedor entrega el resultado). Ningún efecto asigna effect_seq antes de completar la evaluación de sus propios argumentos de izquierda a derecha.",
   "verificacion": [
     "C1",
-    "C2",
-    "C5"
+    "C2"
   ]
 }
 ```
@@ -102,8 +101,7 @@
   "clase": "semantica",
   "texto": "La fase Resolved produce exactamente uno de tres resultados de confirmación: Committed (completado con éxito en el anfitrión), Failed (rechazado o fallido de forma determinista antes de mutar estado externo) o Uncertain (resultado incierto tras cruzar al anfitrión en operaciones con potencial de mutación).",
   "verificacion": [
-    "C3",
-    "C4"
+    "C3"
   ]
 }
 ```
@@ -134,7 +132,7 @@
 ```caso
 {
   "id": "C4",
-  "regla": "R2",
+  "regla": "R3",
   "perfiles": [
     "es",
     "en"

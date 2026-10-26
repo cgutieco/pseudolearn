@@ -5,7 +5,7 @@ use pseudolearn_vm::{machine_event_count, machine_events};
 #[test]
 fn execution_checkpoints_retain_small_deltas_and_live_machine() {
     let request = ExecuteRequest {
-        program: "Algoritmo Checkpoints\nDefinir index Como Entero;\nDimension values[4096] Como Entero;\nPara index <- 1 Hasta 160 Con Paso 1 Hacer\nvalues[index] <- index;\nEscribir index;\nFinPara\nFinAlgoritmo\n".to_owned(),
+        program: "Algoritmo Checkpoints\nDefinir Mutable index Como Entero <- 0;\nDimension values[4096] Como Entero;\nPara index <- 1 Hasta 160 Con Paso 1 Hacer\nvalues[index] <- index;\nEscribir index;\nFinPara\nFinAlgoritmo\n".to_owned(),
         ..ExecuteRequest::default()
     };
     let execution = ExecutionResource::start(&request);
@@ -26,10 +26,12 @@ fn execution_checkpoints_retain_small_deltas_and_live_machine() {
 #[test]
 fn analysis_warnings_are_part_of_the_observed_execution_diagnostics() {
     let request = ExecuteRequest {
-        program: "Algoritmo P\nDefinir x Como Entero;\nx <- 1;\nFinAlgoritmo\n".to_owned(),
+        program: "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n".to_owned(),
         ..ExecuteRequest::default()
     };
-    let Ok(mut execution) = ExecutionResource::start(&request) else {
+    let execution = ExecutionResource::start(&request);
+    assert!(execution.is_ok());
+    let Ok(mut execution) = execution else {
         return;
     };
     let response = execution.advance(256);
