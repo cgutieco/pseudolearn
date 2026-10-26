@@ -355,15 +355,15 @@ Puntos a cumplir:
 - [ ] `PG-2.06` Ámbitos léxicos de bloque en la edición 2026.
 - [ ] `PG-2.07` Funciones como valores y clausuras con captura verificada y entornos en el mapa de raíces.
 - [ ] `PG-2.08` Genéricos de primer orden con límite tipado de instanciación.
-- [ ] `PG-2.09` Interfaces nominales mínimas como restricciones, sin herencia múltiple de implementación.
-- [ ] `PG-2.10` `Vector` y `Diccionario` con orden observable definido e invalidación durante la iteración especificada.
-- [ ] `PG-2.11` `Para Cada`, salida anticipada y limpieza ejecutada exactamente una vez en cada salida.
-- [ ] `PG-2.12` El verificador de RI rechaza disposiciones inválidas, con casos negativos.
+- [x] `PG-2.09` Interfaces nominales mínimas como restricciones, sin herencia múltiple de implementación.
+- [x] `PG-2.10` `Vector` y `Diccionario` con orden observable definido e invalidación durante la iteración especificada.
+- [x] `PG-2.11` `Para Cada`, salida anticipada y limpieza ejecutada exactamente una vez en cada salida.
+- [x] `PG-2.12` El verificador de RI rechaza disposiciones inválidas, con casos negativos.
 - [ ] `PG-2.13` VM y AOT coinciden con los oráculos en todas las construcciones nuevas.
-- [ ] `PG-2.14` Diagnósticos pedagógicos de ADR-07 con código y argumentos iguales en es/en.
+- [x] `PG-2.14` Diagnósticos pedagógicos de ADR-07 con código y argumentos iguales en es/en.
 - [~] `PG-2.15` (retirado el 2026-10-26 por la decisión de la persona del 2026-10-25: sin migradores ni retrocompatibilidad) Migración asistida para cambios incompatibles de 2026 cuando corresponda: diff revisable, nunca sobrescritura silenciosa, e intervención
   manual diagnosticada cuando no se preserva la semántica.
-- [ ] `PG-2.16` Vista pública del programa con identidades de interfaz, realización, restricción, captura, variante e
+- [x] `PG-2.16` Vista pública del programa con identidades de interfaz, realización, restricción, captura, variante e
   iteración.
 - [ ] `PG-2.17` E-PG-03 y E-PG-04 ejecutados; E-PG-10 con resultados aportados por la persona o diferido por ella;
   métricas candidatas de tipos, colecciones, clausuras y limpieza medidas.
