@@ -45,7 +45,7 @@ fn reports_constant_without_initializer_or_name() {
 
 #[test]
 fn parses_enumerations_including_empty_and_single_member() {
-    let source = "Enumerado Color\nRojo, Verde\nFinEnumerado\nEnumerado Solo\nUno\nFinEnumerado\nEnumerado Nada\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n";
+    let source = "Enumerado Color\nRojo, Verde\nFinEnumerado\nEnumerado Solo\nUno\nFinEnumerado\nEnumerado Vacio\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n";
     let (tree, diagnostics) = parse(source, Profile::Spanish);
     assert!(diagnostics.is_empty());
     assert_eq!(count(&tree, NodeKind::EnumUnit), 3);
@@ -107,7 +107,7 @@ fn reports_non_declaration_inside_record_and_unclosed_record() {
 
 #[test]
 fn parses_qualified_member_labels_in_switch() {
-    let source = "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color;\nSegun c Hacer\nColor.Rojo: Escribir 1;\nColor.Verde, Color.Rojo: Escribir 2;\nDe Otro Modo: Escribir 3;\nFinSegun\nFinAlgoritmo\n";
+    let source = "Enumerado Color\nRojo, Verde\nFinEnumerado\nAlgoritmo P\nDefinir c Como Color <- Color.Rojo;\nSegun c Hacer\nColor.Rojo: Escribir 1;\nColor.Verde, Color.Rojo: Escribir 2;\nDe Otro Modo: Escribir 3;\nFinSegun\nFinAlgoritmo\n";
     let (tree, diagnostics) = parse(source, Profile::Spanish);
     assert!(diagnostics.is_empty());
     assert_eq!(count(&tree, NodeKind::Labels), 2);

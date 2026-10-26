@@ -58,17 +58,17 @@ fn closes_every_block_kind_in_both_profiles() {
 
 #[test]
 fn filters_by_prefix_and_ranks_locals_before_keywords() {
-    let code = "Algoritmo Principal\n  Definir total Como Entero;\n  Esc|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  Esc|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&candidates).first(), Some(&"Escribir"));
-    let code = "Algoritmo Principal\n  Definir total Como Entero;\n  to|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  to|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&candidates).first(), Some(&"total"));
 }
 
 #[test]
 fn offers_members_of_the_receiver_class_and_its_superclasses() {
-    let code = "Clase Base\n  Definir peso Como Entero;\nFinClase\nClase Punto Hereda De Base\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\nAlgoritmo Principal\n  Definir p Como Punto;\n  Definir otro Como Entero;\n  p.|\nFinAlgoritmo\n";
+    let code = "Clase Base\n  Definir peso Como Entero;\nFinClase\nClase Punto Hereda De Base\n  Definir x Como Entero;\n  Metodo Mover()\n  FinMetodo\nFinClase\nAlgoritmo Principal\n  Definir Mutable p Como Punto <- Nuevo Punto();\n  Definir Mutable otro Como Entero <- 0;\n  p.|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     let names = labels(&candidates);
     assert!(names.contains(&"x"), "{names:?}");
@@ -83,13 +83,13 @@ fn offers_members_of_the_receiver_class_and_its_superclasses() {
 
 #[test]
 fn offers_nothing_for_members_of_unknown_receivers() {
-    let code = "Algoritmo Principal\n  Definir n Como Entero;\n  n.|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  n.|\nFinAlgoritmo\n";
     assert!(complete_marked(code, Profile::Spanish).is_empty());
 }
 
 #[test]
 fn offers_follow_up_keywords_after_a_complete_expression() {
-    let code = "Algoritmo Principal\n  Definir n Como Entero;\n  Si n > 0 En|\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable n Como Entero <- 0;\n  Si n > 0 En|\nFinAlgoritmo\n";
     let candidates = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&candidates).first(), Some(&"Entonces"));
 }
@@ -158,7 +158,7 @@ fn hides_the_identifier_being_typed() {
 
 #[test]
 fn is_deterministic_for_the_same_document_and_cursor() {
-    let code = "Algoritmo Principal\n  Definir a Como Entero;\n  Definir b Como Entero;\n  |\nFinAlgoritmo\n";
+    let code = "Algoritmo Principal\n  Definir Mutable a Como Entero <- 0;\n  Definir Mutable b Como Entero <- 0;\n  |\nFinAlgoritmo\n";
     let first = complete_marked(code, Profile::Spanish);
     let second = complete_marked(code, Profile::Spanish);
     assert_eq!(first, second);

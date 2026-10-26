@@ -265,7 +265,7 @@ fn imported_class_shares_the_identity_of_its_origin() -> Result<(), String> {
     let library = "Publico Clase Caja\nMetodo Constructor()\nFinMetodo\nFinClase\n";
     let main = main_with(
         "Importar geo.vectores.Caja Como C;\n",
-        "Definir c Como C;\nc <- Nuevo C();\n",
+        "Definir c Como C <- Nuevo C();\n",
     );
     let outcome = run(&[("app/main", &main), ("geo/vectores", library)])?;
     assert!(

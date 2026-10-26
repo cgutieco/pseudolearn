@@ -82,7 +82,7 @@ fn allows_equal_member_names_in_different_enumerations() {
 #[test]
 fn flattens_nested_records_into_leaves_with_offsets() {
     let source = format!(
-        "{POINT}record Line\ndefine a, b as Point;\nendRecord\nalgorithm P\ndefine l as Line;\nl <- Line(Point(1, 2), Point(3, 4));\nwrite l.b.z;\nendAlgorithm\n"
+        "{POINT}record Line\ndefine a, b as Point;\nendRecord\nalgorithm P\ndefine l as Line <- Line(Point(1, 2), Point(3, 4));\nwrite l.b.z;\nendAlgorithm\n"
     );
     let (module, diagnostics) = analyze(&source, true);
     assert!(diagnostics.is_empty());
@@ -174,7 +174,7 @@ fn rejects_empty_records_and_unsupported_placements() {
 #[test]
 fn rejects_by_reference_record_parameters_and_record_members() {
     assert!(codes(&format!(
-        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine q as Point;\nq <- Point(1, 2);\nf(q);\nendAlgorithm\n"
+        "{POINT}subroutine f(p as Point by reference)\nwrite p.x;\nendSubroutine\nalgorithm P\ndefine q as Point <- Point(1, 2);\nf(q);\nendAlgorithm\n"
     ))
     .contains(&DiagnosticCode::RecordPassedByReference));
     assert!(codes(&format!(
@@ -199,7 +199,7 @@ fn rejects_records_in_ordering_output_and_inference() {
     );
     assert!(
         codes(&format!(
-            "{POINT}algorithm P\nq <- Point(1, 2);\nendAlgorithm\n"
+            "{POINT}subroutine f(p)\nendSubroutine\nalgorithm P\nf(Point(1, 2));\nendAlgorithm\n"
         ))
         .contains(&DiagnosticCode::RecordNotInferable)
     );

@@ -23,7 +23,7 @@ const THREE_UNITS: &str = "SubProceso Uno()\n  x <- 1;\nFinSubProceso\n\nSubProc
 
 #[test]
 fn text_edits_update_the_document_like_a_cold_start() {
-    let initial = "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n";
+    let initial = "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\nFinAlgoritmo\n";
     let mut session = DocumentSession::new(initial.to_owned(), Profile::Spanish, true);
     session.apply_text_edits(&[
         edit((3, 1), (3, 1), "  x <- \"hola\";\n"),
@@ -31,7 +31,7 @@ fn text_edits_update_the_document_like_a_cold_start() {
     ]);
     assert_eq!(
         session.text(),
-        "Algoritmo Principal\n  Definir x Como Entero;\n  x <- 42;\nFinAlgoritmo\n"
+        "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- 42;\nFinAlgoritmo\n"
     );
     assert!(session.matches_cold_analysis());
     assert!(session.diagnostics().is_empty());
@@ -87,7 +87,7 @@ fn removed_and_added_units_invalidate_signatures() {
 
 #[test]
 fn keeps_symbols_declared_before_an_unfinished_block() {
-    let incomplete = "Algoritmo Principal\n  Definir limite Como Entero;\n  limite <- 10;\n  Si limite > 0 Entonces\n";
+    let incomplete = "Algoritmo Principal\n  Definir Mutable limite Como Entero <- 0;\n  limite <- 10;\n  Si limite > 0 Entonces\n";
     let session = DocumentSession::new(incomplete.to_owned(), Profile::Spanish, true);
     let names: Vec<&str> = session
         .analysis
@@ -111,8 +111,8 @@ fn out_of_range_edits_do_not_panic_and_still_match_cold_analysis() {
 fn random_edit_sequences_match_cold_analysis_on_representative_programs() {
     let programs = [
         THREE_UNITS,
-        "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n    x <- x + 1;\n  FinMetodo\nFinClase\nAlgoritmo Principal\n  Definir p Como Punto;\n  p <- Nuevo Punto();\n  p.Mover();\nFinAlgoritmo\n",
-        "Algoritmo Año\n  Definir ñandú Como Entero;\n  Si ñandú > 0 Entonces\n    Escribir ñandú;\n  FinSi\nFinAlgoritmo\n",
+        "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n    x <- x + 1;\n  FinMetodo\nFinClase\nAlgoritmo Principal\n  Definir Mutable p Como Punto <- Nuevo Punto();\n  p <- Nuevo Punto();\n  p.Mover();\nFinAlgoritmo\n",
+        "Algoritmo Año\n  Definir Mutable ñandú Como Entero <- 0;\n  Si ñandú > 0 Entonces\n    Escribir ñandú;\n  FinSi\nFinAlgoritmo\n",
     ];
     for (offset, program) in programs.iter().enumerate() {
         for seed in 0..20u64 {

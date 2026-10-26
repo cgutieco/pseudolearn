@@ -6,7 +6,7 @@ use pseudolearn_syntax::{TokenKind, parse_source, reprint_lossless};
 #[test]
 fn accepts_normalized_spanish_identifiers_and_preserves_original_ranges() -> Result<(), String> {
     let program =
-        "Algoritmo P\nDefinir año Como Entero;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n";
+        "Algoritmo P\nDefinir Mutable año Como Entero <- 0;\nan\u{0303}o <- 5;\nEscribir año;\nFinAlgoritmo\n";
     let source = SourceText::new(program.to_owned());
     let (tree, diagnostics) = parse_source(&source, Profile::Spanish);
     assert!(diagnostics.is_empty());
@@ -23,10 +23,10 @@ fn accepts_normalized_spanish_identifiers_and_preserves_original_ranges() -> Res
                 && tree.tokens.text(source.as_str(), *index) == Some("an\u{0303}o")
         })
         .ok_or("Missing decomposed identifier")?;
-    assert_eq!(tree.tokens.span(composed).map(|span| span.start), Some(20));
+    assert_eq!(tree.tokens.span(composed).map(|span| span.start), Some(28));
     assert_eq!(
         tree.tokens.span(decomposed).map(|span| span.start),
-        Some(38)
+        Some(51)
     );
     Ok(())
 }

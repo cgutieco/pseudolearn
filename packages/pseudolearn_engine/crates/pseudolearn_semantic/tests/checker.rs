@@ -6,7 +6,7 @@ use pseudolearn_syntax::parse_source;
 #[test]
 fn detects_duplicate_variable_declaration() {
     let source_code =
-        "Algoritmo Principal\n  Definir x Como Entero\n  Definir x Como Entero\nFinAlgoritmo\n";
+        "Algoritmo Principal\n  Definir x Como Entero <- 1\n  Definir x Como Entero <- 2\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let (_, diagnostics) = analyze_semantics(&tree, &source, true);
@@ -33,7 +33,7 @@ fn detects_duplicate_subroutine() {
 
 #[test]
 fn detects_non_boolean_condition() {
-    let source_code = "Algoritmo Principal\n  Si 123 Entonces\n    Definir x Como Entero\n  FinSi\nFinAlgoritmo\n";
+    let source_code = "Algoritmo Principal\n  Si 123 Entonces\n    Definir x Como Entero <- 1\n  FinSi\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let (_, diagnostics) = analyze_semantics(&tree, &source, true);

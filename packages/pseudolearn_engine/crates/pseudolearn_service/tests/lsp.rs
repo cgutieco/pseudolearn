@@ -37,7 +37,7 @@ fn ready_server(text: &str) -> LspServer {
     server
 }
 
-const PROGRAM: &str = "Algoritmo Principal\n  Definir total Como Entero;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n";
+const PROGRAM: &str = "Algoritmo Principal\n  Definir Mutable total Como Entero <- 0;\n  total <- 10;\n  Escribir total;\nFinAlgoritmo\n";
 
 #[test]
 fn announces_every_capability_and_shuts_down_cleanly() {
@@ -108,7 +108,7 @@ fn unknown_requests_fail_and_unknown_notifications_are_ignored() {
 
 #[test]
 fn publishes_localized_diagnostics_with_zero_based_ranges() {
-    let wrong = "Algoritmo Principal\n  Definir x Como Entero;\n  x <- \"error\";\nFinAlgoritmo\n";
+    let wrong = "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\n  x <- \"error\";\nFinAlgoritmo\n";
     let mut server = LspServer::new();
     initialize(&mut server, "es");
     let published = open(&mut server, wrong);
@@ -232,7 +232,7 @@ fn answers_completion_hover_definition_references_and_highlights() {
     let definition = request(&mut server, 4, "textDocument/definition", cursor_at(3, 12));
     assert_eq!(
         definition.pointer("/result/range/start"),
-        Some(&json!({"line": 1, "character": 10}))
+        Some(&json!({"line": 1, "character": 18}))
     );
     let references = request(
         &mut server,
@@ -306,7 +306,7 @@ fn answers_signature_help_and_document_symbols() {
 
 #[test]
 fn formatting_returns_one_full_document_edit_or_nothing() {
-    let mut server = ready_server("algoritmo Principal\ndefinir x como entero\nfinalgoritmo");
+    let mut server = ready_server("algoritmo Principal\ndefinir mutable x como entero <- 0\nfinalgoritmo");
     let edits = request(
         &mut server,
         2,
@@ -319,7 +319,7 @@ fn formatting_returns_one_full_document_edit_or_nothing() {
         .unwrap_or("");
     assert_eq!(
         first,
-        "Algoritmo Principal\n  Definir x Como Entero;\nFinAlgoritmo\n"
+        "Algoritmo Principal\n  Definir Mutable x Como Entero <- 0;\nFinAlgoritmo\n"
     );
     let mut clean = ready_server(PROGRAM);
     let none = request(

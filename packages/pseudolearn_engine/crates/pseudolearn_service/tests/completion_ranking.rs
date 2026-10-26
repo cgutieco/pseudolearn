@@ -23,7 +23,7 @@ fn index_of(entries: &[CompletionEntry], label: &str) -> Result<usize, String> {
 
 #[test]
 fn conditions_rank_boolean_variables_before_incompatible_ones() -> Result<(), String> {
-    let code = "Algoritmo P\n  Definir cantidad Como Entero;\n  Definir valido Como Logico;\n  Mientras |\nFinAlgoritmo\n";
+    let code = "Algoritmo P\n  Definir Mutable cantidad Como Entero <- 0;\n  Definir Mutable valido Como Logico <- Falso;\n  Mientras |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     assert_eq!(labels(&entries).first(), Some(&"valido"));
     assert!(index_of(&entries, "valido")? < index_of(&entries, "cantidad")?);
@@ -32,7 +32,7 @@ fn conditions_rank_boolean_variables_before_incompatible_ones() -> Result<(), St
 
 #[test]
 fn incompatible_candidates_are_kept_after_compatible_ones() -> Result<(), String> {
-    let code = "Algoritmo P\n  Definir cantidad Como Entero;\n  Si |\nFinAlgoritmo\n";
+    let code = "Algoritmo P\n  Definir Mutable cantidad Como Entero <- 0;\n  Si |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     assert!(index_of(&entries, "Verdadero")? < index_of(&entries, "Hacer").unwrap_or(usize::MAX));
     assert!(labels(&entries).contains(&"cantidad"));
@@ -41,7 +41,7 @@ fn incompatible_candidates_are_kept_after_compatible_ones() -> Result<(), String
 
 #[test]
 fn assignments_rank_the_target_type_then_widenable_then_the_rest() -> Result<(), String> {
-    let code = "Algoritmo P\n  Definir total Como Real;\n  Definir cuenta Como Entero;\n  Definir texto Como Cadena;\n  Definir otro Como Real;\n  total <- |\nFinAlgoritmo\n";
+    let code = "Algoritmo P\n  Definir Mutable total Como Real <- 0.0;\n  Definir Mutable cuenta Como Entero <- 0;\n  Definir Mutable texto Como Cadena <- \"\";\n  Definir Mutable otro Como Real <- 0.0;\n  total <- |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     let other = index_of(&entries, "otro")?;
     let widened = index_of(&entries, "cuenta")?;
@@ -52,7 +52,7 @@ fn assignments_rank_the_target_type_then_widenable_then_the_rest() -> Result<(),
 
 #[test]
 fn arguments_follow_the_parameter_type_of_user_callables() -> Result<(), String> {
-    let code = "SubProceso Mostrar(texto Como Cadena)\nFinSubProceso\nAlgoritmo P\n  Definir cuenta Como Entero;\n  Definir nombre Como Cadena;\n  Mostrar(|\nFinAlgoritmo\n";
+    let code = "SubProceso Mostrar(texto Como Cadena)\nFinSubProceso\nAlgoritmo P\n  Definir Mutable cuenta Como Entero <- 0;\n  Definir Mutable nombre Como Cadena <- \"\";\n  Mostrar(|\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     assert!(index_of(&entries, "nombre")? < index_of(&entries, "cuenta")?);
     Ok(())
@@ -60,7 +60,7 @@ fn arguments_follow_the_parameter_type_of_user_callables() -> Result<(), String>
 
 #[test]
 fn unconstrained_slots_do_not_reorder_by_type() -> Result<(), String> {
-    let code = "Algoritmo P\n  Definir cantidad Como Entero;\n  Definir valido Como Logico;\n  Escribir |\nFinAlgoritmo\n";
+    let code = "Algoritmo P\n  Definir Mutable cantidad Como Entero <- 0;\n  Definir Mutable valido Como Logico <- Falso;\n  Escribir |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     assert!(index_of(&entries, "valido")? < index_of(&entries, "cantidad")?);
     Ok(())
@@ -102,7 +102,7 @@ fn initials_require_two_characters_and_segments() {
 #[test]
 fn detail_keys_are_stable_and_carry_arguments() -> Result<(), String> {
     let code =
-        "Algoritmo P\n  Definir total Como Entero;\n  Mientras 1 = 1 Hacer\n    |\nFinAlgoritmo\n";
+        "Algoritmo P\n  Definir Mutable total Como Entero <- 0;\n  Mientras 1 = 1 Hacer\n    |\nFinAlgoritmo\n";
     let entries = complete_marked(code, Profile::Spanish);
     let closer = entries.first().ok_or("no candidates")?;
     assert_eq!(closer.detail_key.as_deref(), Some("close_block"));

@@ -6,7 +6,7 @@ use pseudolearn_syntax::parse_source;
 #[test]
 fn locates_symbols_and_references_for_service_analysis() {
     let source_code =
-        "Algoritmo Principal\n  Definir valor Como Entero\n  valor <- 42\nFinAlgoritmo\n";
+        "Algoritmo Principal\n  Definir valor Como Entero <- 42\n  Escribir valor\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let options = SemanticOptions {
@@ -46,7 +46,7 @@ fn returns_none_when_querying_unknown_byte_offsets() {
 
 #[test]
 fn locates_method_call_definition() {
-    let source_code = "Clase Punto\n  SubProceso Mover()\n  FinSubProceso\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto;\n  p.Mover();\nFinAlgoritmo\n";
+    let source_code = "Clase Punto\n  SubProceso Mover()\n  FinSubProceso\nFinClase\n\nAlgoritmo Principal\n  Definir p Como Punto <- Nuevo Punto();\n  p.Mover();\nFinAlgoritmo\n";
     let source = SourceText::new(source_code.to_owned());
     let (tree, _) = parse_source(&source, Profile::Spanish);
     let options = SemanticOptions {
@@ -54,7 +54,7 @@ fn locates_method_call_definition() {
         strict: true,
     };
     let analysis = analyze_for_service(&tree, &source, options);
-    let offset = 108;
+    let offset = 124;
     let definition_span = analysis.definition_span_at_byte_offset(offset);
     assert!(definition_span.is_some());
 }

@@ -3,7 +3,7 @@ use pseudolearn_semantic::{HirExpression, Literal, Type};
 
 #[test]
 fn retains_literal_code_points_with_explicit_numeric_widening() -> Result<(), String> {
-    let source = "algorithm Unicode\ndefine amount as real;\namount <- 3;\nwrite amount, \"e\u{301}\";\nendAlgorithm\n";
+    let source = "algorithm Unicode\ndefine amount as real <- 3;\nwrite amount, \"e\u{301}\";\nendAlgorithm\n";
     let (module, diagnostics) = support::analyze(source, true);
     assert!(diagnostics.is_empty(), "{diagnostics:?}");
     let module = module.ok_or("Missing HIR")?;
