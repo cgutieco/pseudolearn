@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Los vínculos locales necesitan inicializador: omitirlo es missingBindingInitializer, error en ambos rigores. El inicializador no puede leer su propio vínculo (bindingReadsOwnInitializer). No se inventan valores por defecto. Los campos y elementos de arreglo siguen pudiendo carecer de valor y su lectura conserva la trampa uninitializedVariableRead. No hay migrador ni modo de compatibilidad: la declaración inicializada es la forma oficial de la edición. Un vínculo declarado dentro de un camino que puede no ejecutarse no queda inicializado fuera de él; leerlo produce variableUsedUninitialized, error en ambos rigores.",
+  "texto": "Los vínculos locales necesitan inicializador: omitirlo es missingBindingInitializer, error en ambos rigores. El inicializador no puede leer su propio vínculo (bindingReadsOwnInitializer). No se inventan valores por defecto. Los campos y elementos de arreglo siguen pudiendo carecer de valor y su lectura conserva la trampa uninitializedVariableRead. No hay migrador ni modo de compatibilidad: la declaración inicializada es la forma oficial de la edición. Un vínculo declarado dentro de un bloque deja de existir al terminarlo, aunque el bloque pueda no ejecutarse; usarlo fuera de él produce bindingOutsideScope, error en ambos rigores.",
   "verificacion": [
     "C1",
     "C2",
@@ -153,7 +153,7 @@
     "arbol": "presente",
     "diagnosticos": [
       {
-        "codigo": "variableUsedUninitialized",
+        "codigo": "bindingOutsideScope",
         "severidad": "error"
       }
     ]
