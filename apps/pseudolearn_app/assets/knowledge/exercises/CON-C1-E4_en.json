@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Product\n    private define price as integer;\n\n    method constructor(aPrice as integer)\n        this.price <- aPrice;\n    endMethod\n\n    public method PriceWithDiscount(percentage as integer) as real\n        return this.price - this.price * percentage / 100;\n    endMethod\nendClass\n\nalgorithm ComputeDiscount\n    define price as integer;\n    define percentage as integer;\n    define product as Product;\n    read price;\n    read percentage;\n    product <- new Product(price);\n    write product.PriceWithDiscount(percentage);\nendAlgorithm\n"
+  "referenceSolution": "class Product\n    private define price as integer;\n\n    method constructor(aPrice as integer)\n        this.price <- aPrice;\n    endMethod\n\n    public method PriceWithDiscount(percentage as integer) as real\n        return this.price - this.price * percentage / 100;\n    endMethod\nendClass\n\nalgorithm ComputeDiscount\n    define mutable price as integer <- 0;\n    define mutable percentage as integer <- 0;\n    read price;\n    read percentage;\n    define product as Product <- new Product(price);\n    write product.PriceWithDiscount(percentage);\nendAlgorithm\n"
 }

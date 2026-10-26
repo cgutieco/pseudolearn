@@ -31,10 +31,8 @@ class Cat extends Pet
 endClass
 
 algorithm TakeTurnsSpeaking
-    define first as Pet;
-    define second as Pet;
-    first <- new Dog("Rex");
-    second <- new Cat("Kitty");
+    define first as Pet <- new Dog("Rex");
+    define second as Pet <- new Cat("Kitty");
     write first.Speak();
     write second.Speak();
 endAlgorithm

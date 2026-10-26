@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Counter\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Increment()\n        this.value <- this.value + 1;\n    endMethod\n\n    public method Value() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunCounter\n    define times as integer;\n    define i as integer;\n    define counter as Counter;\n    read times;\n    counter <- new Counter();\n    for i <- 1 to times step 1 do\n        counter.Increment();\n    endFor\n    write counter.Value();\nendAlgorithm\n"
+  "referenceSolution": "class Counter\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Increment()\n        this.value <- this.value + 1;\n    endMethod\n\n    public method Value() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunCounter\n    define mutable times as integer <- 0;\n    read times;\n    define counter as Counter <- new Counter();\n    for i <- 1 to times step 1 do\n        counter.Increment();\n    endFor\n    write counter.Value();\nendAlgorithm\n"
 }

@@ -3,11 +3,9 @@ Clase Caja
 FinClase
 
 Proceso ProbarAlias
-    Definir a Como Caja;
-    Definir b Como Caja;
-    a <- Nuevo Caja();
+    Definir a Como Caja <- Nuevo Caja();
     a.contenido <- 10;
-    b <- a;
+    Definir b Como Caja <- a;
     b.contenido <- 99;
     Escribir a.contenido;
 FinProceso

@@ -1,5 +1,5 @@
 algorithm Passed
-    define grade as integer;
+    define mutable grade as integer <- 0;
     read grade;
     if grade >= 5 then
         write "Passed";

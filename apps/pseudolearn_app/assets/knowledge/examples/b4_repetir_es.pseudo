@@ -1,7 +1,6 @@
 Proceso SumaHastaCero
-    Definir n Como Entero;
-    Definir total Como Entero;
-    total <- 0;
+    Definir Mutable n Como Entero <- 0;
+    Definir Mutable total Como Entero <- 0;
     Repetir
         Leer n;
         total <- total + n;

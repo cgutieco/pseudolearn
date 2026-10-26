@@ -80,8 +80,7 @@ the loop body ends and the rest of the algorithm continues.
 
 ```pseudo
 algorithm UnclosedLoop
-    define i as integer;
-    i <- 3;
+    define mutable i as integer <- 3;
     while i > 0 do
         write i;
         i <- i - 1;
@@ -97,7 +96,7 @@ block. Without it, the loop is left open just as if it were missing any other cl
 
 ```pseudo
 algorithm UnclosedRepeat
-    define n as integer;
+    define mutable n as integer <- 0;
     repeat
         read n;
         write n;
@@ -112,8 +111,7 @@ Just like the other two, {{lexema:forKeyword}} needs its {{lexema:endFor}}.
 
 ```pseudo
 algorithm UnclosedFor
-    define i as integer;
-    for i <- 1 to 5 do
+    for i <- 1 to 5 step 1 do
         write i;
 endAlgorithm
 ```
@@ -128,9 +126,7 @@ exact meaning.
 
 ```pseudo
 algorithm NonIntegerBound
-    define i as integer;
-    define bound as real;
-    bound <- 5.5;
+    define bound as real <- 5.5;
     for i <- 1 to bound step 1 do
         write i;
     endFor

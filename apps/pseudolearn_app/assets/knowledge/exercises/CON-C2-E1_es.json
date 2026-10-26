@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Circulo\n    Privado Definir radio Como Entero;\n\n    Metodo Constructor(unRadio Como Entero)\n        Este.radio <- unRadio;\n    FinMetodo\n\n    Publico Metodo Perimetro() Como Real\n        Retornar 2 * Este.radio * 3.14;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.radio * Este.radio * 3.14;\n    FinMetodo\nFinClase\n\nProceso CalcularCirculo\n    Definir radio Como Entero;\n    Definir circulo Como Circulo;\n    Leer radio;\n    circulo <- Nuevo Circulo(radio);\n    Escribir circulo.Perimetro();\n    Escribir circulo.Area();\nFinProceso\n"
+  "referenceSolution": "Clase Circulo\n    Privado Definir radio Como Entero;\n\n    Metodo Constructor(unRadio Como Entero)\n        Este.radio <- unRadio;\n    FinMetodo\n\n    Publico Metodo Perimetro() Como Real\n        Retornar 2 * Este.radio * 3.14;\n    FinMetodo\n\n    Publico Metodo Area() Como Real\n        Retornar Este.radio * Este.radio * 3.14;\n    FinMetodo\nFinClase\n\nProceso CalcularCirculo\n    Definir Mutable radio Como Entero <- 0;\n    Leer radio;\n    Definir circulo Como Circulo <- Nuevo Circulo(radio);\n    Escribir circulo.Perimetro();\n    Escribir circulo.Area();\nFinProceso\n"
 }

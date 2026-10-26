@@ -16,8 +16,9 @@ final class AssignmentShape extends StatementShape {
 
 final class DeclarationShape extends StatementShape {
   final List<String> names;
+  final RustViewNode? initializer;
 
-  const DeclarationShape(super.origin, this.names);
+  const DeclarationShape(super.origin, this.names, [this.initializer]);
 }
 
 final class ArrayShape {

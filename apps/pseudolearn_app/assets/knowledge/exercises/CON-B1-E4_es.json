@@ -64,5 +64,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso Promedio\n    Definir primera Como Entero;\n    Definir segunda Como Entero;\n    Definir tercera Como Entero;\n    Definir promedio Como Real;\n    Leer primera;\n    Leer segunda;\n    Leer tercera;\n    promedio <- (primera + segunda + tercera) / 3;\n    Escribir promedio;\nFinProceso\n"
+  "referenceSolution": "Proceso Promedio\n    Definir Mutable primera Como Entero <- 0;\n    Definir Mutable segunda Como Entero <- 0;\n    Definir Mutable tercera Como Entero <- 0;\n    Leer primera;\n    Leer segunda;\n    Leer tercera;\n    Definir promedio Como Real <- (primera + segunda + tercera) / 3;\n    Escribir promedio;\nFinProceso\n"
 }

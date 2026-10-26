@@ -1,8 +1,6 @@
 Algoritmo Cadenas
-  Definir texto1, texto2 Como Cadena
-  Definir letra Como Caracter
-  texto1 <- "Hola"
-  texto2 <- 'Mundo'
-  letra <- 'A'
+  Definir texto1 Como Cadena <- "Hola"
+  Definir texto2 Como Cadena <- 'Mundo'
+  Definir letra Como Caracter <- 'A'
   Escribir texto1, texto2, letra
 FinAlgoritmo

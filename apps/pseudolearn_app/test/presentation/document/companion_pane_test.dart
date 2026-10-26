@@ -12,7 +12,7 @@ import '../../fakes/pump_app.dart';
 import '../../fakes/test_dependencies.dart';
 
 const String _source = 'Proceso Conteo\n'
-    '\tDefinir i Como Entero;\n'
+    ' Definir Mutable i Como Entero <- 0;\n'
     '\ti <- 0;\n'
     '\tMientras i < 3 Hacer\n'
     '\t\ti <- i + 1;\n'

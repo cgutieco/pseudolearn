@@ -1,8 +1,6 @@
 Proceso DemostracionGuiada
-    Definir temperatura Como Entero;
-    Definir lecturas Como Entero;
-    temperatura <- 30;
-    lecturas <- 0;
+    Definir Mutable temperatura Como Entero <- 30;
+    Definir Mutable lecturas Como Entero <- 0;
     Mientras temperatura > 24 Hacer
         temperatura <- temperatura - 3;
         lecturas <- lecturas + 1;

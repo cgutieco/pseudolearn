@@ -1,19 +1,20 @@
 # Declaration and assignment
 
-A declaration introduces a name and fixes a type for it. An assignment stores a value into an already
-introduced name. They are two different statements and cannot be written together.
+A declaration introduces a name, fixes a type for it and gives it its initial value. An assignment
+stores a new value into a name that was declared mutable.
 
-## Declaring several variables at once
+## One name per declaration
 
-A single declaration statement can introduce several names separated by commas. They all receive the
-same type, written once at the end.
+Each declaration introduces a single name with its type and its value. To have several variables, write
+one declaration for each.
 
 {{ejemplo:example-esp-declaracion-multiple}}
 
-## Declaring gives no value
+## Every declaration carries its initial value
 
-A declared and unassigned variable has no default value, and reading it before assigning it is a
-failure. The language does not invent a zero or an empty string: a value nobody wrote is not a value.
+A name declared without a value does not exist: the language does not invent a zero or an empty string,
+and a value nobody wrote is not a value. That is why the declaration requires the initial value after
+the arrow, and a name can never be read before it has one.
 
 ```pseudo
 Algorithm Uninitialized
@@ -22,21 +23,22 @@ Algorithm Uninitialized
 EndAlgorithm
 ```
 
-{{diagnostico:variableUsedUninitialized}}
+{{diagnostico:missingBindingInitializer}}
 
-## A declaration does not admit an initial value
+## Immutable by default, mutable by choice
 
-The type is written at the end of the declaration, so an initial value would have to slip in before the
-type and would be indistinguishable from an assignment. Assignment is already a first-class statement
-and writing it on the next line teaches exactly the same thing.
+`Define` creates a binding that cannot be reassigned. If the program needs to change the value, it says
+so in the declaration with `Mutable`. A mutable binding that is never modified is a warning, because
+the word would not be doing anything.
 
 ```pseudo
-Algorithm InitInDeclaration
+Algorithm ReassignImmutable
   Define x As Integer <- 5
+  x <- 6
 EndAlgorithm
 ```
 
-{{diagnostico:initializationInDeclarationNotAllowed}}
+{{diagnostico:immutableBindingAssignment}}
 
 ## The target of an assignment
 

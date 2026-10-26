@@ -20,5 +20,5 @@
     {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
     {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."}
   ],
-  "referenceSolution": "subroutine Power(base as integer, exponent as integer) as integer\n    if exponent = 0 then\n        return 1;\n    else\n        return base * Power(base, exponent - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputePower\n    define base as integer;\n    define exponent as integer;\n    read base;\n    read exponent;\n    write Power(base, exponent);\nendAlgorithm\n"
+  "referenceSolution": "subroutine Power(base as integer, exponent as integer) as integer\n    if exponent = 0 then\n        return 1;\n    else\n        return base * Power(base, exponent - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputePower\n    define mutable base as integer <- 0;\n    define mutable exponent as integer <- 0;\n    read base;\n    read exponent;\n    write Power(base, exponent);\nendAlgorithm\n"
 }

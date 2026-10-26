@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso PromedioDePrecios\n    Definir precio1 Como Entero;\n    Definir precio2 Como Entero;\n    Definir promedio Como Real;\n    Leer precio1;\n    Leer precio2;\n    promedio <- (precio1 + precio2) / 2;\n    Escribir promedio;\nFinProceso\n",
-  "starterCode": "Proceso PromedioDePrecios\n    Definir precio1 Como Entero;\n    Definir precio2 Como Entero;\n    Definir suma Como Entero;\n    Leer precio1;\n    Leer precio2;\n    suma <- precio1 + precio2;\n    Escribir suma;\nFinProceso\n"
+  "referenceSolution": "Proceso PromedioDePrecios\n    Definir Mutable precio1 Como Entero <- 0;\n    Definir Mutable precio2 Como Entero <- 0;\n    Leer precio1;\n    Leer precio2;\n    Definir promedio Como Real <- (precio1 + precio2) / 2;\n    Escribir promedio;\nFinProceso\n",
+  "starterCode": "Proceso PromedioDePrecios\n    Definir Mutable precio1 Como Entero <- 0;\n    Definir Mutable precio2 Como Entero <- 0;\n    Definir Mutable suma Como Entero <- 0;\n    Leer precio1;\n    Leer precio2;\n    suma <- precio1 + precio2;\n    Escribir suma;\nFinProceso\n"
 }

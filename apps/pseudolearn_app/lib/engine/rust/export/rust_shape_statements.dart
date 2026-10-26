@@ -17,15 +17,26 @@ final class RustShapeStatements {
     }
   }
 
+  void _declaration(
+    DeclarationShape shape,
+    TargetCodeBuilder buffer,
+    String indent,
+  ) {
+    final value = shape.initializer == null
+        ? '0'
+        : _writer.write(shape.initializer!);
+    for (final name in shape.names) {
+      buffer.writeln('${indent}let mut $name = $value;');
+    }
+  }
+
   void _emit(StatementShape shape, TargetCodeBuilder buffer, String indent) {
     switch (shape) {
       case final AssignmentShape s:
         final target = _writer.write(s.target);
         buffer.writeln('$indent$target = ${_writer.write(s.value)};');
       case final DeclarationShape s:
-        for (final name in s.names) {
-          buffer.writeln('${indent}let mut $name = 0;');
-        }
+        _declaration(s, buffer, indent);
       case final DimensionShape s:
         _dimension(s, buffer, indent);
       case final WriteShape s:

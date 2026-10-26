@@ -1,7 +1,5 @@
 Algorithm ImplicitConversion
-  Define whole As Integer
-  Define decimal As Real
-  whole <- 7
-  decimal <- whole
+  Define whole As Integer <- 7
+  Define decimal As Real <- whole
   Write decimal
 EndAlgorithm

@@ -64,5 +64,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso Intercambio\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Definir auxiliar Como Entero;\n    Leer a;\n    Leer b;\n    auxiliar <- a;\n    a <- b;\n    b <- auxiliar;\n    Escribir a;\n    Escribir b;\nFinProceso\n"
+  "referenceSolution": "Proceso Intercambio\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Leer a;\n    Leer b;\n    Definir auxiliar Como Entero <- a;\n    a <- b;\n    b <- auxiliar;\n    Escribir a;\n    Escribir b;\nFinProceso\n"
 }

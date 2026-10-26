@@ -77,12 +77,12 @@ segundo **en el texto**, no solo en la intención de quien escribe.
 ```pseudo
 Algoritmo OrdenIncorrecto
     total <- total + 1;
-    Definir total Como Entero;
+    Definir total Como Entero <- 0;
     Escribir total;
 FinAlgoritmo
 ```
 
-{{diagnostico:variableUsedBeforeDeclaration}}
+{{diagnostico:undeclaredVariable}}
 
 :::parte especificacion
 

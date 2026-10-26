@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm Difference\n    define a as integer;\n    define b as integer;\n    define result as integer;\n    read a;\n    read b;\n    result <- a - b;\n    write result;\nendAlgorithm\n",
-  "starterCode": "algorithm Sum\n    define a as integer;\n    define b as integer;\n    define result as integer;\n    read a;\n    read b;\n    result <- a + b;\n    write result;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Difference\n    define mutable a as integer <- 0;\n    define mutable b as integer <- 0;\n    read a;\n    read b;\n    define finalResult as integer <- a - b;\n    write finalResult;\nendAlgorithm\n",
+  "starterCode": "algorithm Sum\n    define mutable a as integer <- 0;\n    define mutable b as integer <- 0;\n    define mutable finalResult as integer <- 0;\n    read a;\n    read b;\n    finalResult <- a + b;\n    write finalResult;\nendAlgorithm\n"
 }

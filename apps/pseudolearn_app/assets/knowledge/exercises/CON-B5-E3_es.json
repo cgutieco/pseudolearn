@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "Proceso InvertirVector\n    Dimension numeros[5] Como Entero;\n    Definir i Como Entero;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];\n    FinPara\n    Para i <- 4 Hasta 0 Con Paso -1 Hacer\n        Escribir numeros[i];\n    FinPara\nFinProceso"
+  "referenceSolution": "Proceso InvertirVector\n    Dimension numeros[5] Como Entero;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];\n    FinPara\n    Para i <- 4 Hasta 0 Con Paso -1 Hacer\n        Escribir numeros[i];\n    FinPara\nFinProceso"
 }

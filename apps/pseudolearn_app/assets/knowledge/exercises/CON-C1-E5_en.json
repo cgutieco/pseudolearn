@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class StackOfOne\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Push(aValue as integer)\n        this.value <- aValue;\n    endMethod\n\n    public method Pop() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunStack\n    define n as integer;\n    define stack as StackOfOne;\n    read n;\n    stack <- new StackOfOne();\n    stack.Push(n);\n    write stack.Pop();\nendAlgorithm\n"
+  "referenceSolution": "class StackOfOne\n    private define value as integer;\n\n    method constructor()\n        this.value <- 0;\n    endMethod\n\n    public method Push(aValue as integer)\n        this.value <- aValue;\n    endMethod\n\n    public method Pop() as integer\n        return this.value;\n    endMethod\nendClass\n\nalgorithm RunStack\n    define mutable n as integer <- 0;\n    read n;\n    define stack as StackOfOne <- new StackOfOne();\n    stack.Push(n);\n    write stack.Pop();\nendAlgorithm\n"
 }

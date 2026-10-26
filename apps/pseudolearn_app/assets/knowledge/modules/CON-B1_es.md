@@ -70,18 +70,18 @@ no coincide, acabas de encontrar exactamente dónde no funcionaba, que vale much
 
 :::parte errores-frecuentes
 
-## Dar un valor inicial dentro de la declaración
+## Declarar sin valor inicial
 
-El tipo se escribe al final de la declaración, así que un valor inicial no cabe ahí. Se declara en una
-línea y se asigna en la siguiente.
+Toda declaración lleva su valor inicial después de la flecha: un nombre sin valor no existe. Si el
+valor llegará más tarde, se declara con `Mutable` y un valor de partida, y se asigna después.
 
 ```pseudo
-Algoritmo ValorInicial
-  Definir n Como Entero <- 5;
+Algoritmo SinValorInicial
+  Definir n Como Entero;
 FinAlgoritmo
 ```
 
-{{diagnostico:initializationInDeclarationNotAllowed}}
+{{diagnostico:missingBindingInitializer}}
 
 ## Asignar a algo que no es una casilla
 
@@ -90,8 +90,7 @@ revés es el error de quien viene de las matemáticas, donde la igualdad no tien
 
 ```pseudo
 Algoritmo DestinoInvalido
-  Definir n Como Entero;
-  n <- 3;
+  Definir n Como Entero <- 3;
   5 <- n;
 FinAlgoritmo
 ```
@@ -105,8 +104,7 @@ programa siga adelante calculando con algo que no es un número.
 
 ```pseudo
 Algoritmo TipoIncompatible
-  Definir n Como Entero;
-  n <- "cinco";
+  Definir n Como Entero <- "cinco";
   Escribir n;
 FinAlgoritmo
 ```

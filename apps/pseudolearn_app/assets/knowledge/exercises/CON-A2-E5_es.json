@@ -14,5 +14,5 @@
     {"inputs": ["0", "5"], "expectedOutputs": ["0.0"], "expected": "numerico"},
     {"inputs": ["7", "4"], "expectedOutputs": ["14.0"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso AreaTriangulo\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir area Como Real;\n    Leer base;\n    Leer altura;\n    area <- (base * altura) / 2;\n    Escribir area;\nFinProceso\n"
+  "referenceSolution": "Proceso AreaTriangulo\n    Definir Mutable base Como Entero <- 0;\n    Definir Mutable altura Como Entero <- 0;\n    Leer base;\n    Leer altura;\n    Definir area Como Real <- (base * altura) / 2;\n    Escribir area;\nFinProceso\n"
 }

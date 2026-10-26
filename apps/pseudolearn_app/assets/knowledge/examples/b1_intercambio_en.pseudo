@@ -1,10 +1,7 @@
 algorithm Swap
-    define a as integer;
-    define b as integer;
-    define auxiliary as integer;
-    a <- 7;
-    b <- 4;
-    auxiliary <- a;
+    define mutable a as integer <- 7;
+    define mutable b as integer <- 4;
+    define auxiliary as integer <- a;
     a <- b;
     b <- auxiliary;
     write a;

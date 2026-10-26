@@ -4,7 +4,6 @@ Class Calculator
   EndMethod
 EndClass
 Algorithm ClassMethods
-  Define c As Calculator
-  c <- New Calculator()
+  Define c As Calculator <- New Calculator()
   Write c.Add(3, 4)
 EndAlgorithm

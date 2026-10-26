@@ -20,5 +20,5 @@
     {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."},
     {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con recursión pura, sin ningún bucle."}
   ],
-  "referenceSolution": "SubProceso CantidadDeCifras(n Como Entero) Como Entero\n    Si n < 10 Entonces\n        Retornar 1;\n    SiNo\n        Retornar 1 + CantidadDeCifras(n div 10);\n    FinSi\nFinSubProceso\n\nProceso CalcularCantidadDeCifras\n    Definir n Como Entero;\n    Leer n;\n    Escribir CantidadDeCifras(n);\nFinProceso\n"
+  "referenceSolution": "SubProceso CantidadDeCifras(n Como Entero) Como Entero\n    Si n < 10 Entonces\n        Retornar 1;\n    SiNo\n        Retornar 1 + CantidadDeCifras(n div 10);\n    FinSi\nFinSubProceso\n\nProceso CalcularCantidadDeCifras\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Escribir CantidadDeCifras(n);\nFinProceso\n"
 }

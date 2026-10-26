@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso Perimetro\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir perimetro Como Entero;\n    Leer base;\n    Leer altura;\n    perimetro <- 2 * (base + altura);\n    Escribir perimetro;\nFinProceso\n",
-  "starterCode": "Proceso Perimetro\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Leer base;\n    Leer altura;\n    Escribir perimetro;\nFinProceso\n"
+  "referenceSolution": "Proceso Perimetro\n    Definir Mutable base Como Entero <- 0;\n    Definir Mutable altura Como Entero <- 0;\n    Leer base;\n    Leer altura;\n    Definir perimetro Como Entero <- 2 * (base + altura);\n    Escribir perimetro;\nFinProceso\n",
+  "starterCode": "Proceso Perimetro\n    Definir Mutable base Como Entero <- 0;\n    Definir Mutable altura Como Entero <- 0;\n    Leer base;\n    Leer altura;\n    Escribir perimetro;\nFinProceso\n"
 }

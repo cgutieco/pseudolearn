@@ -14,5 +14,5 @@
     {"inputs": ["Puntaje", "999"], "expectedOutputs": ["Puntaje: 999"], "expected": "texto"},
     {"inputs": ["Nota", "5"], "expectedOutputs": ["Nota: 5"], "expected": "texto"}
   ],
-  "referenceSolution": "Proceso EtiquetaValor\n    Definir etiqueta Como Cadena;\n    Definir valor Como Entero;\n    Leer etiqueta;\n    Leer valor;\n    Escribir etiqueta, \": \" Sin Saltar;\n    Escribir valor;\nFinProceso\n"
+  "referenceSolution": "Proceso EtiquetaValor\n    Definir Mutable etiqueta Como Cadena <- \"\";\n    Definir Mutable valor Como Entero <- 0;\n    Leer etiqueta;\n    Leer valor;\n    Escribir etiqueta, \": \" Sin Saltar;\n    Escribir valor;\nFinProceso\n"
 }

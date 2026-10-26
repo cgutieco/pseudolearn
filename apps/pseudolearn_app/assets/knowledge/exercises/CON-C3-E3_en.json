@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm TryIndependentCopy\n    define initialValue as integer;\n    define newValue as integer;\n    define original as Box;\n    define cloned as Box;\n    read initialValue;\n    read newValue;\n    original <- new Box();\n    original.content <- initialValue;\n    cloned <- copy(original);\n    cloned.content <- newValue;\n    write original.content;\nendAlgorithm\n"
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm TryIndependentCopy\n    define mutable initialValue as integer <- 0;\n    define mutable newValue as integer <- 0;\n    read initialValue;\n    read newValue;\n    define original as Box <- new Box();\n    original.content <- initialValue;\n    define cloned as Box <- copy(original);\n    cloned.content <- newValue;\n    write original.content;\nendAlgorithm\n"
 }

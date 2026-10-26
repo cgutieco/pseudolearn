@@ -54,6 +54,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso PerimetroCuadrado\n    Definir lado Como Entero;\n    Definir perimetro Como Entero;\n    Leer lado;\n    perimetro <- lado * 4;\n    Escribir perimetro;\nFinProceso\n",
-  "starterCode": "Proceso PerimetroCuadrado\n    Definir lado Como Entero;\n    Definir perimetro Como Entero;\n    Leer lado;\n\n    Escribir perimetro;\nFinProceso\n"
+  "referenceSolution": "Proceso PerimetroCuadrado\n    Definir Mutable lado Como Entero <- 0;\n    Leer lado;\n    Definir perimetro Como Entero <- lado * 4;\n    Escribir perimetro;\nFinProceso\n",
+  "starterCode": "Proceso PerimetroCuadrado\n    Definir Mutable lado Como Entero <- 0;\n    Definir Mutable perimetro Como Entero <- 0;\n    Leer lado;\n\n    Escribir perimetro;\nFinProceso\n"
 }

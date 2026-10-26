@@ -108,8 +108,7 @@ devuelve nada a nadie.
 
 ```pseudo
 Algoritmo RetornoFueraDeSubprograma
-    Definir n Como Entero;
-    n <- 5;
+    Definir n Como Entero <- 5;
     Retornar n;
 FinAlgoritmo
 ```

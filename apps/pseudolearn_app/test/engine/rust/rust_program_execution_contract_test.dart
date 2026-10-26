@@ -37,8 +37,8 @@ Clase Motocicleta Hereda De Vehiculo
 FinClase
 
 Proceso PruebaVehiculos
-    Definir moto Como Motocicleta
-    moto <- Nuevo Motocicleta("Honda", 250)
+    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250)
+
     moto.Acelerar(75)
     moto.Describir()
 FinProceso
@@ -50,7 +50,7 @@ void main() {
       final execution = nativeTestEngine.createProgramExecution();
       const source = '''
 Algoritmo Test
-  Definir x Como Entero
+  Definir Mutable x Como Entero <- 0
   x <- 5
   Escribir x
 FinAlgoritmo

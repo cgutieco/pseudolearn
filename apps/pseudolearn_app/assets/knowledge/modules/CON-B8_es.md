@@ -61,8 +61,7 @@ sueltas. El analizador rechaza la instrucción porque no pertenece a la gramáti
 
 ```pseudo
 Algoritmo SaltoIncondicional
-    Definir i Como Entero;
-    i <- 0;
+    Definir i Como Entero <- 0;
     goto fin;
 FinAlgoritmo
 ```
@@ -76,8 +75,7 @@ poder decidir dónde termina la caja del estructograma y dónde sigue el resto d
 
 ```pseudo
 Algoritmo SeleccionSinCierre
-    Definir dia Como Entero;
-    dia <- 3;
+    Definir dia Como Entero <- 3;
     Segun dia Hacer
         1:
             Escribir "Lunes";

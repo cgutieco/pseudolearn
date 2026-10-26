@@ -61,6 +61,6 @@
       "requirement": "The statement asks you to solve it with a For loop."
     }
   ],
-  "referenceSolution": "algorithm SumOfMultiplesOfThree\n    define bound as integer;\n    define i as integer;\n    define total as integer;\n    read bound;\n    total <- 0;\n    for i <- 0 to bound step 3 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n",
-  "starterCode": "algorithm SumMultiplesOfThree\n    define limit as integer;\n    define i as integer;\n    define total as integer;\n    read limit;\n    total <- 0;\n    for i <- 0 to limit step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SumOfMultiplesOfThree\n    define mutable bound as integer <- 0;\n    read bound;\n    define mutable total as integer <- 0;\n    for i <- 0 to bound step 3 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n",
+  "starterCode": "algorithm SumMultiplesOfThree\n    define mutable limit as integer <- 0;\n    define mutable total as integer <- 0;\n    read limit;\n    total <- 0;\n    for i <- 0 to limit step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
 }

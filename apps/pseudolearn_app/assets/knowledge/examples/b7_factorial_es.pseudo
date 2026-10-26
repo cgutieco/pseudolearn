@@ -7,7 +7,7 @@ SubProceso Factorial(n Como Entero) Como Entero
 FinSubProceso
 
 Proceso CalcularFactorial
-    Definir n Como Entero;
+    Definir Mutable n Como Entero <- 0;
     Leer n;
     Escribir Factorial(n);
 FinProceso

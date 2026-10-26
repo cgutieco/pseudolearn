@@ -31,10 +31,8 @@ Clase Gato Hereda De Mascota
 FinClase
 
 Proceso HablarPorTurnos
-    Definir uno Como Mascota;
-    Definir dos Como Mascota;
-    uno <- Nuevo Perro("Rex");
-    dos <- Nuevo Gato("Kitty");
+    Definir uno Como Mascota <- Nuevo Perro("Rex");
+    Definir dos Como Mascota <- Nuevo Gato("Kitty");
     Escribir uno.Hablar();
     Escribir dos.Hablar();
 FinProceso

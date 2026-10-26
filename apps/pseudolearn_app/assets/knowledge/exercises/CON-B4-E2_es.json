@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-condicional-posterior", "requirement": "El enunciado pide resolverlo con un bucle Repetir."}
   ],
-  "referenceSolution": "Proceso ContarHastaCero\n    Definir n Como Entero;\n    Definir contador Como Entero;\n    contador <- 0;\n    Repetir\n        Leer n;\n        contador <- contador + 1;\n    Hasta Que n = 0;\n    Escribir contador;\nFinProceso\n"
+  "referenceSolution": "Proceso ContarHastaCero\n    Definir Mutable n Como Entero <- 0;\n    Definir Mutable contador Como Entero <- 0;\n    Repetir\n        Leer n;\n        contador <- contador + 1;\n    Hasta Que n = 0;\n    Escribir contador;\nFinProceso\n"
 }

@@ -1,6 +1,5 @@
 Algoritmo FuncionAleatorio
-  Definir r1, r2 Como Real
-  r1 <- azar()
-  r2 <- azar()
+  Definir r1 Como Real <- azar()
+  Definir r2 Como Real <- azar()
   Escribir r1, r2
 FinAlgoritmo

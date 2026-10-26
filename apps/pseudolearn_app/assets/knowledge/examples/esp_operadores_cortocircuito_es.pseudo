@@ -1,7 +1,5 @@
 Algoritmo Cortocircuito
-  Definir n Como Entero
-  Definir valido Como Logico
-  n <- 0
-  valido <- (n <> 0) & (10 / n > 1)
+  Definir n Como Entero <- 0
+  Definir valido Como Logico <- (n <> 0) & (10 / n > 1)
   Escribir valido
 FinAlgoritmo

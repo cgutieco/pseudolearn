@@ -80,8 +80,7 @@ termina el cuerpo del bucle y dónde sigue el resto del algoritmo.
 
 ```pseudo
 Algoritmo BucleSinCierre
-    Definir i Como Entero;
-    i <- 3;
+    Definir Mutable i Como Entero <- 3;
     Mientras i > 0 Hacer
         Escribir i;
         i <- i - 1;
@@ -97,7 +96,7 @@ el bloque. Sin ella, el bucle queda abierto igual que si le faltara cualquier ot
 
 ```pseudo
 Algoritmo RepetirSinCierre
-    Definir n Como Entero;
+    Definir Mutable n Como Entero <- 0;
     Repetir
         Leer n;
         Escribir n;
@@ -112,8 +111,7 @@ Igual que los otros dos, {{lexema:forKeyword}} necesita su {{lexema:endFor}}.
 
 ```pseudo
 Algoritmo ParaSinCierre
-    Definir i Como Entero;
-    Para i <- 1 Hasta 5 Hacer
+    Para i <- 1 Hasta 5 Con Paso 1 Hacer
         Escribir i;
 FinAlgoritmo
 ```
@@ -128,10 +126,8 @@ significado exacto.
 
 ```pseudo
 Algoritmo LimiteNoEntero
-    Definir i Como Entero;
-    Definir limite Como Real;
-    limite <- 5.5;
-    Para i <- 1 Hasta limite Hacer
+    Definir limite Como Real <- 5.5;
+    Para i <- 1 Hasta limite Con Paso 1 Hacer
         Escribir i;
     FinPara
 FinAlgoritmo

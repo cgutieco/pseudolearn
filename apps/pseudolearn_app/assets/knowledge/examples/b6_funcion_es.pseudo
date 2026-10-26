@@ -7,8 +7,8 @@ SubProceso Maximo(a Como Entero, b Como Entero) Como Entero
 FinSubProceso
 
 Proceso CalculoDeMaximo
-    Definir n1 Como Entero;
-    Definir n2 Como Entero;
+    Definir Mutable n1 Como Entero <- 0;
+    Definir Mutable n2 Como Entero <- 0;
     Leer n1;
     Leer n2;
     Escribir Maximo(n1, n2);

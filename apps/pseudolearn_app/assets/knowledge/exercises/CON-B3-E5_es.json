@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "El enunciado pide resolverlo con una selección múltiple."}
   ],
-  "referenceSolution": "Proceso MenuOperaciones\n    Definir opcion Como Entero;\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer opcion, a, b;\n    Segun opcion Hacer\n        1:\n            Escribir a + b;\n        2:\n            Escribir a - b;\n        3:\n            Escribir a * b;\n        4:\n            Escribir a / b;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
+  "referenceSolution": "Proceso MenuOperaciones\n    Definir Mutable opcion Como Entero <- 0;\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Leer opcion, a, b;\n    Segun opcion Hacer\n        1:\n            Escribir a + b;\n        2:\n            Escribir a - b;\n        3:\n            Escribir a * b;\n        4:\n            Escribir a / b;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
 }

@@ -28,7 +28,6 @@ class Cat extends Pet
 endClass
 
 algorithm Shelter
-    define pet as Pet;
-    pet <- new Cat("Kitty", "Siamese");
+    define pet as Pet <- new Cat("Kitty", "Siamese");
     write pet.Speak();
 endAlgorithm

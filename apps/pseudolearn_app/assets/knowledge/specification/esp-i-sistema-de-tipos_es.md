@@ -102,62 +102,29 @@ un programa correcto por no poder demostrar que lo es.**
 No es una regla inventada aquí: es la misma con la que se decidió quién comprueba que todos los caminos
 de una función retornan, y la misma con la que se decide la visibilidad de un miembro.
 
-## Inferencia de tipos en el perfil flexible
+## El tipo lo fija la declaración
 
-**El tipo de una variable no declarada queda fijado por la primera acción que le da un valor**, y esas
-acciones son exactamente dos: la asignación y la lectura. No es la primera aparición en el texto: una
-variable que aparece por primera vez dentro de una expresión sin haber recibido valor es un uso sin
-inicializar, no una inferencia.
-
-Con una asignación, el tipo es el de la expresión de la derecha y se conoce sin ejecutar. Con una
-lectura, el tipo depende de lo que se escriba y por tanto se fija **al ejecutar**, clasificando el
-texto introducido en este orden y ganando el primero que encaja: literal entero, literal real, uno de
-los dos lexemas lógicos del perfil activo y, en cualquier otro caso, cadena.
-
-**Un carácter nunca se infiere.** Un texto de un solo carácter se clasifica como cadena de longitud
-uno: desde el texto introducido las dos lecturas son indistinguibles, y cadena es la que no pierde
-información. Quien necesite un carácter lo declara.
-
-En el perfil estricto no hay inferencia, porque la bandera de declaración obligatoria no deja ninguna
-variable sin tipo. La inferencia no es una bandera nueva: es lo que ocurre cuando esa bandera está
-apagada.
+En los dos rigores cada vínculo local se declara con su tipo y su valor inicial. El tipo nunca se infiere
+de una asignación ni de una lectura: asignar a un nombre que no se declaró es `undeclaredVariable` y no
+crea ninguna variable. El valor inicial se comprueba contra el tipo declarado; la única conversión
+implícita entre primitivos, de entero a real, se aplica ahí como en cualquier otra asignación.
 
 {{ejemplo:example-esp-tipos-inferencia}}
 
-## Ampliación aceptable y conflicto real
-
-**Ampliación aceptable, una y solo una.** Si el tipo inferido es entero y más adelante se asigna un
-real, el tipo de la variable pasa a real. Es aceptable porque todo valor entero anterior es
-representable como real, así que ninguna línea ya comprobada deja de ser correcta.
-
-**Conflicto real, todo lo demás.** Cualquier asignación cuyo tipo no sea convertible al tipo ya fijado
-falla **en esa línea**, no en la declaración ni al final del programa.
-
-Tres propiedades hacen la regla comprobable: la ampliación ocurre **como máximo una vez por variable**,
-porque solo hay una conversión implícita entre primitivos; **no retropropaga**, así que las líneas
-anteriores no se vuelven a comprobar; y **no hay ampliación entre clases**, de modo que asignar a una
-variable de una clase una instancia de una clase hermana es conflicto aunque compartan superclase.
-
 ```pseudo
-Algoritmo ConflictoInferencia
+Algoritmo SinDeclarar
   x <- 10
-  x <- "Texto"
 FinAlgoritmo
 ```
 
-{{diagnostico:typeConflictOnInferredVariable}}
+{{diagnostico:undeclaredVariable}}
 
-## Variable usada sin inicializar, y la ausencia de valores por omisión
+## Sin valores por omisión
 
-Leer el valor de una variable a la que nunca se le asignó ninguno es un fallo **en las dos políticas**.
-Lo que la bandera decide es **cuándo se detecta**, no si lo es: sin ejecutar cuando es decidible sin
-ejecutar, y al ejecutar en cualquier otro caso.
-
-**No hay valores por omisión.** Una variable declarada y no asignada **existe pero no tiene valor**, y
-el entorno distingue los dos estados de modo que la tabla de prueba lo muestre. Las razones son tres: un
-valor por omisión convierte un olvido en un programa que se ejecuta y da un resultado equivocado; la
-máquina paso a paso puede señalar la lectura culpable, mientras que un cero por omisión no tiene nada
-que subrayar; y es lo que ya ocurre con las variables de tipo clase, que arrancan sin instanciar.
+No hay valores por omisión. Una declaración exige su valor inicial, así que un vínculo nunca existe sin
+valor: un cero por omisión convertiría un olvido en un programa que se ejecuta y da un resultado
+equivocado, y exigir el valor lo convierte en un error al escribir. Solo los campos y los elementos de
+un arreglo pueden carecer de valor, y leerlos antes de escribirlos es un fallo al ejecutar.
 
 ```pseudo
 Algoritmo SinInicializar
@@ -166,7 +133,7 @@ Algoritmo SinInicializar
 FinAlgoritmo
 ```
 
-{{diagnostico:variableUsedUninitialized}}
+{{diagnostico:missingBindingInitializer}}
 
 ## Variable declarada y no usada, y asignada y no leída
 
@@ -181,7 +148,7 @@ desde cualquier método de su clase aunque ese método no se llame nunca.
 
 ```pseudo
 Algoritmo DeclaradaNoUsada
-  Definir total Como Entero
+  Definir total Como Entero <- 0
 FinAlgoritmo
 ```
 

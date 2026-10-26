@@ -76,5 +76,5 @@
       "construct": "bucle-condicional-posterior"
     }
   ],
-  "referenceSolution": "Proceso PrecioFinal\n    Definir precio Como Entero;\n    Definir descuento Como Entero;\n    Definir final Como Entero;\n    Leer precio;\n    Leer descuento;\n    final <- precio - descuento;\n    Escribir final;\nFinProceso\n"
+  "referenceSolution": "Proceso PrecioFinal\n    Definir Mutable precio Como Entero <- 0;\n    Definir Mutable descuento Como Entero <- 0;\n    Leer precio;\n    Leer descuento;\n    Definir final Como Entero <- precio - descuento;\n    Escribir final;\nFinProceso\n"
 }

@@ -59,5 +59,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "Proceso AreaRectangulo\n    Definir base Como Entero;\n    Definir altura Como Entero;\n    Definir area Como Entero;\n    Leer base;\n    Leer altura;\n    area <- base * altura;\n    Escribir area;\nFinProceso\n"
+  "referenceSolution": "Proceso AreaRectangulo\n    Definir Mutable base Como Entero <- 0;\n    Definir Mutable altura Como Entero <- 0;\n    Leer base;\n    Leer altura;\n    Definir area Como Entero <- base * altura;\n    Escribir area;\nFinProceso\n"
 }

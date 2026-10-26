@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-condicional", "requirement": "The statement asks you to solve it with a While loop."}
   ],
-  "referenceSolution": "algorithm Countdown\n    define i as integer;\n    read i;\n    while i > 0 do\n        write i;\n        i <- i - 1;\n    endWhile\nendAlgorithm\n"
+  "referenceSolution": "algorithm Countdown\n    define mutable i as integer <- 0;\n    read i;\n    while i > 0 do\n        write i;\n        i <- i - 1;\n    endWhile\nendAlgorithm\n"
 }

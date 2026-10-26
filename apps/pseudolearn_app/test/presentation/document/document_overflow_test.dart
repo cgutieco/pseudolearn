@@ -15,9 +15,9 @@ import '../../fakes/pump_app.dart';
 import '../../fakes/test_dependencies.dart';
 
 const String _factorialSource = 'Proceso Factorial\n'
-    '\tDefinir n Como Entero;\n'
-    '\tDefinir f Como Entero;\n'
-    '\tDefinir i Como Entero;\n'
+    ' Definir Mutable n Como Entero <- 0;\n'
+    ' Definir Mutable f Como Entero <- 0;\n'
+    ' Definir i Como Entero <- 0;\n'
     '\tn <- 5;\n'
     '\tf <- 1;\n'
     '\tPara i <- 1 Hasta n Con Paso 1 Hacer\n'

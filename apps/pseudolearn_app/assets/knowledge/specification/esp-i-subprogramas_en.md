@@ -131,8 +131,7 @@ Subroutine Test()
   Write x
 EndSubroutine
 Algorithm GlobalError
-  Define x As Integer
-  x <- 5
+  Define x As Integer <- 5
   Test()
 EndAlgorithm
 ```

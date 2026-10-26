@@ -6,7 +6,6 @@ Class Point
   EndMethod
 EndClass
 Algorithm ClassConstructor
-  Define p As Point
-  p <- New Point(2, 3)
+  Define p As Point <- New Point(2, 3)
   Write p.cx + p.cy
 EndAlgorithm

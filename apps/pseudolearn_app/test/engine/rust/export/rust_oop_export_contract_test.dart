@@ -38,8 +38,8 @@ Clase Motocicleta Hereda De Vehiculo
 FinClase
 
 Proceso PruebaVehiculos
-    Definir moto Como Motocicleta
-    moto <- Nuevo Motocicleta("Honda", 250)
+    Definir moto Como Motocicleta <- Nuevo Motocicleta("Honda", 250)
+
     moto.Acelerar(75)
     moto.Describir()
 FinProceso
@@ -47,9 +47,9 @@ FinProceso
 
 const String _builtinsProgram = '''
 Proceso PruebaBuiltins
-    Definir r Como Real
-    Definir e Como Entero
-    Definir t Como Cadena
+    Definir Mutable r Como Real <- 0.0
+    Definir Mutable e Como Entero <- 0
+    Definir Mutable t Como Cadena <- ""
     r <- rc(16)
     e <- redon(r)
     t <- ATexto(e)

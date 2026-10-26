@@ -1,6 +1,5 @@
 Algoritmo FuncionesMatematicas
-  Definir t, r Como Entero
-  t <- trunc(3.7)
-  r <- redon(3.7)
+  Definir t Como Entero <- trunc(3.7)
+  Definir r Como Entero <- redon(3.7)
   Escribir t, r
 FinAlgoritmo

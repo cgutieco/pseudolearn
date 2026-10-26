@@ -3,9 +3,8 @@ Subroutine TestPass(va As Integer By Value, vb As Integer By Reference)
   vb <- 20
 EndSubroutine
 Algorithm ParameterPassing
-  Define n1, n2 As Integer
-  n1 <- 1
-  n2 <- 2
+  Define n1 As Integer <- 1
+  Define Mutable n2 As Integer <- 2
   TestPass(n1, n2)
   Write n1, n2
 EndAlgorithm

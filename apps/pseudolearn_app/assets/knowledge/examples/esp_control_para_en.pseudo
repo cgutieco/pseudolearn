@@ -1,6 +1,5 @@
 Algorithm ForLoop
-  Define i As Integer
-  For i <- 1 To 3 Do
+  For i <- 1 To 3 Step 1 Do
     Write i
   EndFor
   For i <- 1 To 5 Step 2 Do

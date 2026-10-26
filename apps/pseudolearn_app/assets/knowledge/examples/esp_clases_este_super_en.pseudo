@@ -8,5 +8,5 @@ Class Derived Inherits From Base
   EndMethod
 EndClass
 Algorithm TestSuper
-  Define d As Derived; d <- New Derived(); d.M()
+  Define d As Derived <- New Derived(); d.M()
 EndAlgorithm

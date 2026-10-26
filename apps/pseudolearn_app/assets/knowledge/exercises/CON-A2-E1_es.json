@@ -14,5 +14,5 @@
     {"inputs": ["10"], "expectedOutputs": ["600"], "expected": "numerico"},
     {"inputs": ["1"], "expectedOutputs": ["60"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso Segundos\n    Definir minutos Como Entero;\n    Definir segundos Como Entero;\n    Leer minutos;\n    segundos <- minutos * 60;\n    Escribir segundos;\nFinProceso\n"
+  "referenceSolution": "Proceso Segundos\n    Definir Mutable minutos Como Entero <- 0;\n    Leer minutos;\n    Definir segundos Como Entero <- minutos * 60;\n    Escribir segundos;\nFinProceso\n"
 }

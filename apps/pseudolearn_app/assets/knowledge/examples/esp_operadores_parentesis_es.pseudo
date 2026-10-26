@@ -1,6 +1,5 @@
 Algoritmo Parentesis
-  Definir a, b Como Entero
-  a <- 2 + 3 * 4
-  b <- (2 + 3) * 4
+  Definir a Como Entero <- 2 + 3 * 4
+  Definir b Como Entero <- (2 + 3) * 4
   Escribir a, b
 FinAlgoritmo

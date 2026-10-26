@@ -134,8 +134,7 @@ SubProceso Probar()
   Escribir x
 FinSubProceso
 Algoritmo ErrorGlobal
-  Definir x Como Entero
-  x <- 5
+  Definir x Como Entero <- 5
   Probar()
 FinAlgoritmo
 ```

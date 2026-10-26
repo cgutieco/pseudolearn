@@ -14,5 +14,5 @@
     {"inputs": ["Mochila", "230"], "expectedOutputs": ["Mochila - 230"], "expected": "texto"},
     {"inputs": ["Tijeras", "0"], "expectedOutputs": ["Tijeras - 0"], "expected": "texto"}
   ],
-  "referenceSolution": "algorithm ProductRecord\n    define name as string;\n    define price as integer;\n    read name;\n    read price;\n    write name, \" - \", price;\nendAlgorithm\n"
+  "referenceSolution": "algorithm ProductRecord\n    define mutable name as string <- \"\";\n    define mutable price as integer <- 0;\n    read name;\n    read price;\n    write name, \" - \", price;\nendAlgorithm\n"
 }

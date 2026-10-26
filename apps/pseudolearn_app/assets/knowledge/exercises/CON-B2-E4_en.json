@@ -14,5 +14,5 @@
     {"inputs": ["10", "20", "30", "40"], "expectedOutputs": ["25.0"], "expected": "numerico"},
     {"inputs": ["1", "2", "3", "4"], "expectedOutputs": ["2.5"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm AverageOfFour\n    define n1 as integer;\n    define n2 as integer;\n    define n3 as integer;\n    define n4 as integer;\n    define average as real;\n    read n1, n2, n3, n4;\n    average <- (n1 + n2 + n3 + n4) / 4;\n    write average;\nendAlgorithm\n"
+  "referenceSolution": "algorithm AverageOfFour\n    define mutable n1 as integer <- 0;\n    define mutable n2 as integer <- 0;\n    define mutable n3 as integer <- 0;\n    define mutable n4 as integer <- 0;\n    read n1, n2, n3, n4;\n    define average as real <- (n1 + n2 + n3 + n4) / 4;\n    write average;\nendAlgorithm\n"
 }

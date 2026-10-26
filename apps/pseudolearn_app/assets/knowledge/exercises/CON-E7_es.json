@@ -16,5 +16,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "Proceso SumaDiagonalSecundaria\n    Dimension datos[3, 3] Como Entero;\n    Definir fila Como Entero;\n    Definir columna Como Entero;\n    Definir total Como Entero;\n    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    total <- datos[0, 2] + datos[1, 1] + datos[2, 0];\n    Escribir total;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaDiagonalSecundaria\n    Dimension datos[3, 3] Como Entero;\n    Para fila <- 0 Hasta 2 Con Paso 1 Hacer\n        Para columna <- 0 Hasta 2 Con Paso 1 Hacer\n            Leer datos[fila, columna];\n        FinPara\n    FinPara\n    Definir total Como Entero <- datos[0, 2] + datos[1, 1] + datos[2, 0];\n    Escribir total;\nFinProceso\n"
 }

@@ -59,8 +59,7 @@ distinto de cero «se sienta» verdadero en otros lenguajes: aquí no hay esa co
 
 ```pseudo
 Algoritmo CondicionNoLogica
-    Definir nota Como Entero;
-    nota <- 5;
+    Definir nota Como Entero <- 5;
     Si nota Entonces
         Escribir "Aprobado";
     FinSi
@@ -76,8 +75,7 @@ termina el cuerpo y dónde sigue el resto del programa.
 
 ```pseudo
 Algoritmo CondicionalSinCierre
-    Definir nota Como Entero;
-    nota <- 5;
+    Definir nota Como Entero <- 5;
     Si nota >= 5 Entonces
         Escribir "Aprobado";
 FinAlgoritmo
@@ -92,8 +90,7 @@ segunda nunca se puede alcanzar.
 
 ```pseudo
 Algoritmo EtiquetaRepetida
-    Definir dia Como Entero;
-    dia <- 3;
+    Definir dia Como Entero <- 3;
     Segun dia Hacer
         1, 7:
             Escribir "Fin de semana";

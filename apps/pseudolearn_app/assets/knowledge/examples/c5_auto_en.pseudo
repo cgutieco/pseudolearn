@@ -23,9 +23,8 @@ class Car
 endClass
 
 algorithm TryCar
-    define power as integer;
-    define car as Car;
+    define mutable power as integer <- 0;
     read power;
-    car <- new Car(power);
+    define car as Car <- new Car(power);
     write car.Power();
 endAlgorithm

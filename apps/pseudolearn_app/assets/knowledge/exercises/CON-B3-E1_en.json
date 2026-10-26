@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "condicional", "requirement": "The statement asks you to solve it with a conditional."}
   ],
-  "referenceSolution": "algorithm EvenOrOdd\n    define n as integer;\n    read n;\n    if n mod 2 = 0 then\n        write 0;\n    else\n        write 1;\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "algorithm EvenOrOdd\n    define mutable n as integer <- 0;\n    read n;\n    if n mod 2 = 0 then\n        write 0;\n    else\n        write 1;\n    endIf\nendAlgorithm\n"
 }

@@ -1,5 +1,5 @@
 Algorithm Whitespace
-Define x As Integer
+Define Mutable x As Integer <- 0
     x <- 10
   Write x
 EndAlgorithm

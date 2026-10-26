@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Square", "arity": 1, "requirement": "The statement asks for a function named Square with one parameter."}
   ],
-  "referenceSolution": "subroutine Square(n as integer) as integer\n    return n * n;\nendSubroutine\n\nalgorithm ComputeSquare\n    define n as integer;\n    read n;\n    write Square(n);\nendAlgorithm\n"
+  "referenceSolution": "subroutine Square(n as integer) as integer\n    return n * n;\nendSubroutine\n\nalgorithm ComputeSquare\n    define mutable n as integer <- 0;\n    read n;\n    write Square(n);\nendAlgorithm\n"
 }

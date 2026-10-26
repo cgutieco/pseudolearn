@@ -21,12 +21,11 @@ class Person
 endClass
 
 algorithm TryPerson
-    define name as string;
-    define age as integer;
-    define person as Person;
+    define mutable name as string <- "";
+    define mutable age as integer <- 0;
     read name;
     read age;
-    person <- new Person(name, age);
+    define person as Person <- new Person(name, age);
     person.HaveBirthday();
     write person.Age();
 endAlgorithm

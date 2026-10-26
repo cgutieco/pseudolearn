@@ -98,61 +98,30 @@ correct program is never rejected for inability to prove it is so.**
 This is not an invented rule: it is the same rule used to decide who checks that all paths in a function
 return, and the same used to decide member visibility.
 
-## Type inference in the flexible profile
+## The declaration fixes the type
 
-**The type of an undeclared variable is fixed by the first action that gives it a value**, and those
-actions are exactly two: assignment and reading. It is not the first occurrence in the text: a variable
-appearing for the first time inside an expression without receiving a value is an uninitialized use, not
-an inference.
-
-With assignment, the type is that of the right-hand expression and is known without running. With
-reading, the type depends on input and is fixed **at runtime**, classifying input text in this order
-with the first match winning: integer literal, real literal, one of the two boolean lexemes of the
-active profile, and otherwise string.
-
-**A character is never inferred.** Single-character text is classified as a string of length one: from
-input text the two readings are indistinguishable, and string loses no information. Whoever needs a
-character declares it.
-
-In the strict profile there is no inference, because the mandatory declaration flag leaves no variable
-without a type. Inference is not a new flag: it is what happens when that flag is off.
+In both strictness levels every local binding is declared with its type and its initial value. The type
+is never inferred from an assignment or a read: assigning to a name that was not declared is
+`undeclaredVariable` and does not create a variable. The initial value is checked against the declared
+type; the only implicit conversion between primitives, integer to real, applies there as in any other
+assignment.
 
 {{ejemplo:example-esp-tipos-inferencia}}
 
-## Acceptable widening and real conflict
-
-**Acceptable widening, one and only one.** If the inferred type is integer and later a real is assigned,
-the variable's type becomes real. It is acceptable because every previous integer value is representable
-as real, so no already-checked line becomes invalid.
-
-**Real conflict, everything else.** Any assignment whose type is not convertible to the fixed type fails
-**on that line**, not at declaration or end of program.
-
-Three properties make the rule checkable: widening occurs **at most once per variable**, because there
-is only one implicit conversion between primitives; **it does not back-propagate**, so earlier lines are
-not re-checked; and **there is no widening between classes**, so assigning a sister class instance to a
-variable is a conflict even if they share a superclass.
-
 ```pseudo
-Algorithm InferenceConflict
+Algorithm Undeclared
   x <- 10
-  x <- "Text"
 EndAlgorithm
 ```
 
-{{diagnostico:typeConflictOnInferredVariable}}
+{{diagnostico:undeclaredVariable}}
 
-## Variable used uninitialized, and absence of default values
+## No default values
 
-Reading the value of a variable never assigned one is a failure **under both policies**. What the flag
-decides is **when it is detected**, not whether it is one: without running when decidable without
-running, and at runtime in any other case.
-
-**There are no default values.** A declared and unassigned variable **exists but has no value**, and the
-environment distinguishes the two states so the trace table displays it. Reasons are threefold: a
-default value turns an oversight into a program that runs and produces a wrong result; the step-by-step
-machine can point to the offending read, whereas a default zero has nothing to highlight; and it matches
-what already occurs with class-typed variables, which start uninstantiated.
+There are no default values. A declaration requires its initial value, so a binding never exists
+without a value: a default zero would turn an oversight into a program that runs and gives a wrong
+result, and requiring the value turns it into an error at write time. Only fields and array elements
+can lack a value, and reading them before writing them is a failure at run time.
 
 ```pseudo
 Algorithm Uninitialized
@@ -161,7 +130,7 @@ Algorithm Uninitialized
 EndAlgorithm
 ```
 
-{{diagnostico:variableUsedUninitialized}}
+{{diagnostico:missingBindingInitializer}}
 
 ## Variable declared and unused, and assigned and unread
 
@@ -176,7 +145,7 @@ from any method of its class even if that method is never called.
 
 ```pseudo
 Algorithm DeclaredUnused
-  Define total As Integer
+  Define total As Integer <- 0
 EndAlgorithm
 ```
 

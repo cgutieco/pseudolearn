@@ -1,6 +1,6 @@
 Proceso Saludo
-    Definir nombre Como Cadena;
-    Definir edad Como Entero;
+    Definir Mutable nombre Como Cadena <- "";
+    Definir Mutable edad Como Entero <- 0;
     Leer nombre;
     Leer edad;
     Escribir "Hola, ", nombre, ". " Sin Saltar;

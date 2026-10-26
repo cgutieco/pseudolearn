@@ -14,5 +14,5 @@
     {"inputs": ["queue"], "expectedOutputs": ["4"], "expected": "numerico"}
   ],
   "assertions": [],
-  "referenceSolution": "algorithm CountVowels\n    define word as string;\n    define i as integer;\n    define counter as integer;\n    define letter as character;\n    read word;\n    counter <- 0;\n    for i <- 0 to length(word) - 1 step 1 do\n        letter <- charAt(word, i);\n        if letter = 'a' or letter = 'e' or letter = 'i' or letter = 'o' or letter = 'u' then\n            counter <- counter + 1;\n        endIf\n    endFor\n    write counter;\nendAlgorithm\n"
+  "referenceSolution": "algorithm CountVowels\n    define mutable word as string <- \"\";\n    define mutable letter as character <- \"a\";\n    read word;\n    define mutable counter as integer <- 0;\n    for i <- 0 to length(word) - 1 step 1 do\n        letter <- charAt(word, i);\n        if letter = 'a' or letter = 'e' or letter = 'i' or letter = 'o' or letter = 'u' then\n            counter <- counter + 1;\n        endIf\n    endFor\n    write counter;\nendAlgorithm\n"
 }

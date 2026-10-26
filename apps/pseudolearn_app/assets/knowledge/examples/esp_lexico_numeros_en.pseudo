@@ -1,7 +1,5 @@
 Algorithm Numbers
-  Define a As Integer
-  Define b As Real
-  a <- -42
-  b <- 3.14
+  Define a As Integer <- -42
+  Define b As Real <- 3.14
   Write a, b
 EndAlgorithm

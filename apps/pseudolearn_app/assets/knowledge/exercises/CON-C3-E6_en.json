@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareAfterCopy\n    define flag as integer;\n    define original as Box;\n    define other as Box;\n    read flag;\n    original <- new Box();\n    if flag = 1 then\n        other <- copy(original);\n    else\n        other <- original;\n    endIf\n    if original = other then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareAfterCopy\n    define mutable flag as integer <- 0;\n    read flag;\n    define original as Box <- new Box();\n    define mutable other as Box <- original;\n    if flag = 1 then\n        other <- copy(original);\n    endIf\n    if original = other then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
 }

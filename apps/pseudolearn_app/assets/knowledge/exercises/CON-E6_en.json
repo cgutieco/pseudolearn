@@ -14,5 +14,5 @@
     {"inputs": ["abc"], "expectedOutputs": ["0"], "expected": "numerico"}
   ],
   "assertions": [],
-  "referenceSolution": "algorithm CheckPalindrome\n    define word as string;\n    define i as integer;\n    define wordLength as integer;\n    define isPalindrome as integer;\n    read word;\n    wordLength <- length(word);\n    isPalindrome <- 1;\n    for i <- 0 to wordLength div 2 - 1 step 1 do\n        if charAt(word, i) <> charAt(word, wordLength - 1 - i) then\n            isPalindrome <- 0;\n        endIf\n    endFor\n    write isPalindrome;\nendAlgorithm\n"
+  "referenceSolution": "algorithm CheckPalindrome\n    define mutable word as string <- \"\";\n    read word;\n    define wordLength as integer <- length(word);\n    define mutable isPalindrome as integer <- 1;\n    for i <- 0 to wordLength div 2 - 1 step 1 do\n        if charAt(word, i) <> charAt(word, wordLength - 1 - i) then\n            isPalindrome <- 0;\n        endIf\n    endFor\n    write isPalindrome;\nendAlgorithm\n"
 }

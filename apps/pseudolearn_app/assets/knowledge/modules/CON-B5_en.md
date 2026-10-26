@@ -67,8 +67,7 @@ to any specific one.
 ```pseudo
 algorithm NonIntegerIndex
     dimension numbers[5] as integer;
-    define i as real;
-    i <- 1.5;
+    define i as real <- 1.5;
     write numbers[i];
 endAlgorithm
 ```

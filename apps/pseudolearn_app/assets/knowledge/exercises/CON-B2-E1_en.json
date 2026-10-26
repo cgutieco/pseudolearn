@@ -14,5 +14,5 @@
     {"inputs": ["Bea", "0"], "expectedOutputs": ["Bea - 0"], "expected": "texto"},
     {"inputs": ["Ivan", "42"], "expectedOutputs": ["Ivan - 42"], "expected": "texto"}
   ],
-  "referenceSolution": "algorithm Introduction\n    define name as string;\n    define age as integer;\n    read name;\n    read age;\n    write name, \" - \", age;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Introduction\n    define mutable name as string <- \"\";\n    define mutable age as integer <- 0;\n    read name;\n    read age;\n    write name, \" - \", age;\nendAlgorithm\n"
 }

@@ -101,17 +101,17 @@ Cada punto es observable en la tabla de prueba, y por eso está fijado y no se d
    que el valor final; con paso negativo, mientras sea mayor o igual.
 5. Se ejecuta el cuerpo.
 6. Se suma el paso a la variable de control y se vuelve al punto 4.
-7. Al salir, **la variable de control conserva el primer valor que falló la prueba**.
+7. Al salir, **la variable de control deja de existir**: pertenece al bucle.
 
 De ahí salen tres consecuencias que conviene tener presentes: los tres valores **se congelan**, de modo
 que modificar dentro del cuerpo la variable que se usó como valor final no cambia el bucle; **la
 dirección la decide el signo del paso** y nunca la relación entre el valor inicial y el final, así que
 un bucle cuyo inicial es mayor que su final y cuyo paso es positivo simplemente no itera; y la variable
-de control **conserva un valor definido al salir**, porque un valor indefinido es justo lo que una
-tabla de prueba no puede mostrar.
+de control **vive solo dentro del bucle**: usarla después, sin un vínculo exterior con ese nombre, es
+un error de ámbito, y declararla de nuevo dentro del bucle advierte del sombreado.
 
-Modificar la variable de control dentro del cuerpo es una advertencia y no un error. Prohibirlo
-exigiría demostrar que no ocurre, y con el paso por referencia eso es indecidible en general: una
-advertencia es honesta, un error que a veces no se detecta no lo es.
+Modificar la variable de control dentro del cuerpo es un error (`controlVariableModified`), igual que
+escribirla con una lectura o pasarla por referencia: el bucle es el único dueño de esa variable, y por eso
+el paso y la prueba se pueden razonar sin ejecutar.
 
 {{ejemplo:example-esp-control-para-garantias}}

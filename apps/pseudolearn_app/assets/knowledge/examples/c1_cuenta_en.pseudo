@@ -15,8 +15,7 @@ class BankAccount
 endClass
 
 algorithm TryAccount
-    define account as BankAccount;
-    account <- new BankAccount(100);
+    define account as BankAccount <- new BankAccount(100);
     account.Deposit(50);
     write account.Balance();
 endAlgorithm

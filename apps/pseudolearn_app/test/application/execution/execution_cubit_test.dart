@@ -8,7 +8,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo Contado
-  Definir i Como Entero
+  Definir i Como Entero <- 0
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     Escribir i
   FinPara
@@ -23,15 +23,15 @@ FinAlgoritmo
 
 const _broken = '''
 Algoritmo Roto
-  Definir x Como Entero
+  Definir Mutable x Como Entero <- 0
   x <-
 FinAlgoritmo
 ''';
 
 const _loop = '''
 Algoritmo Bucle
-  Definir i Como Entero
-  Definir t Como Entero
+  Definir i Como Entero <- 0
+  Definir Mutable t Como Entero <- 0
   t <- 0
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     t <- t + i
@@ -42,7 +42,7 @@ FinAlgoritmo
 
 const _readsInput = '''
 Algoritmo Pide
-  Definir n Como Entero
+  Definir Mutable n Como Entero <- 0
   Leer n
   Escribir n
 FinAlgoritmo

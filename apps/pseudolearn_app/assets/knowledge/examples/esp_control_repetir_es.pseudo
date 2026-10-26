@@ -1,6 +1,5 @@
 Algoritmo BucleRepetir
-  Definir n Como Entero
-  n <- 1
+  Definir Mutable n Como Entero <- 1
   Repetir
     Escribir n
     n <- n + 1

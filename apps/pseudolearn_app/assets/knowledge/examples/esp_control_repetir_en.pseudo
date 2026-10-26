@@ -1,6 +1,5 @@
 Algorithm RepeatLoop
-  Define n As Integer
-  n <- 1
+  Define Mutable n As Integer <- 1
   Repeat
     Write n
     n <- n + 1

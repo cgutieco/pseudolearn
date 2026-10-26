@@ -1,7 +1,5 @@
 Algoritmo Concatenacion
-  Definir n Como Entero
-  Definir t Como Cadena
-  n <- 1 + 2
-  t <- "A" + "B"
+  Definir n Como Entero <- 1 + 2
+  Definir t Como Cadena <- "A" + "B"
   Escribir n, t
 FinAlgoritmo

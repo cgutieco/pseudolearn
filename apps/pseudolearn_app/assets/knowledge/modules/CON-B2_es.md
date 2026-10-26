@@ -57,7 +57,7 @@ que llega. Una cuenta no tiene dónde guardarse.
 
 ```pseudo
 Algoritmo LecturaInvalida
-    Definir n Como Entero;
+    Definir Mutable n Como Entero <- 0;
     Leer n + 1;
 FinAlgoritmo
 ```

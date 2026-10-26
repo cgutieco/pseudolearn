@@ -16,9 +16,9 @@ const String _rich =
     '  Publico Metodo Doble() Como Entero\n    Retornar Este.total * 2;\n'
     '  FinMetodo\nFinClase\n'
     'Funcion Cuadrado(x Como Entero) Como Entero\n  Retornar x ^ 2;\nFinFuncion\n'
-    'Proceso P\n  Dimension v[3] Como Entero;\n  Definir h Como Hija;\n'
-    '  Definir r Como Real;\n  Definir i Como Entero;\n'
-    '  h <- Nuevo Hija(4);\n  r <- Raiz(Cuadrado(3) + 1.5);\n'
+    'Proceso P\n  Dimension v[3] Como Entero;\n  Definir h Como Hija <- Nuevo Hija(4);\n'
+    '  Definir Mutable r Como Real <- 0.0;\n'
+    '  r <- Raiz(Cuadrado(3) + 1.5);\n'
     '  Para i <- 3 Hasta 1 Con Paso -1 Hacer\n'
     '    Escribir v[i], "x" Sin Saltar;\n  FinPara\n'
     '  Segun v[1] Hacer\n    1, 2:\n      Escribir h.Doble();\n'
@@ -45,10 +45,8 @@ def Cuadrado(x):
 
 def main():
     v = [0] * (3)
-    h = None
-    r = None
-    i = None
     h = Hija(4)
+    r = 0.0
     r = math.sqrt(Cuadrado(3) + 1.5)
     for i in range(3, 1 - 1, -1):
         print(v[i], "x", end="")
@@ -126,7 +124,7 @@ void main() {
 
   test('exports English programs with the same structure', () {
     const source =
-        'algorithm Sum\n  define a as integer;\n  a <- 1;\n  write a;\nendAlgorithm\n';
+        'algorithm Sum\n  define mutable a as integer <- 0;\n  a <- 1;\n  write a;\nendAlgorithm\n';
 
     final code =
         (export(source, TargetLanguageId.python, profile: SyntaxProfileId.english)

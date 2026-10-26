@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with a For loop."}
   ],
-  "referenceSolution": "algorithm CountdownWithStep\n    define start as integer;\n    define step_ as integer;\n    define i as integer;\n    read start;\n    read step_;\n    for i <- start to 0 step -step_ do\n        write i;\n    endFor\nendAlgorithm\n"
+  "referenceSolution": "algorithm CountdownWithStep\n    define mutable start as integer <- 0;\n    define mutable step_ as integer <- 0;\n    read start;\n    read step_;\n    for i <- start to 0 step -step_ do\n        write i;\n    endFor\nendAlgorithm\n"
 }

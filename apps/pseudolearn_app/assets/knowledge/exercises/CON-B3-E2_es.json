@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "El enunciado pide resolverlo con una selección múltiple."}
   ],
-  "referenceSolution": "Proceso FinDeSemanaOLaboral\n    Definir dia Como Entero;\n    Leer dia;\n    Segun dia Hacer\n        1, 2, 3, 4, 5:\n            Escribir 0;\n        6, 7:\n            Escribir 1;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
+  "referenceSolution": "Proceso FinDeSemanaOLaboral\n    Definir Mutable dia Como Entero <- 0;\n    Leer dia;\n    Segun dia Hacer\n        1, 2, 3, 4, 5:\n            Escribir 0;\n        6, 7:\n            Escribir 1;\n        De Otro Modo:\n            Escribir -1;\n    FinSegun\nFinProceso\n"
 }

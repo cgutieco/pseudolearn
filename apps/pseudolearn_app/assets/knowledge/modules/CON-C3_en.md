@@ -58,8 +58,7 @@ class Box
 endClass
 
 algorithm WriteObject
-    define box as Box;
-    box <- new Box();
+    define box as Box <- new Box();
     write box;
 endAlgorithm
 ```

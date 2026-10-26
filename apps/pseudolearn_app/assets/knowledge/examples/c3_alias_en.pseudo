@@ -3,11 +3,9 @@ class Box
 endClass
 
 algorithm TryAlias
-    define a as Box;
-    define b as Box;
-    a <- new Box();
+    define a as Box <- new Box();
     a.content <- 10;
-    b <- a;
+    define b as Box <- a;
     b.content <- 99;
     write a.content;
 endAlgorithm

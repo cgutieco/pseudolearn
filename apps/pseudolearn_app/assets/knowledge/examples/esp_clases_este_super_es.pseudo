@@ -8,5 +8,5 @@ Clase Derivada HeredaDe Base
   FinMetodo
 FinClase
 Algoritmo ProbarSuper
-  Definir d Como Derivada; d <- Nuevo Derivada(); d.M()
+  Definir d Como Derivada <- Nuevo Derivada(); d.M()
 FinAlgoritmo

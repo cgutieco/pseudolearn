@@ -65,8 +65,7 @@ no señala ninguno en concreto.
 ```pseudo
 Algoritmo IndiceNoEntero
     Dimension numeros[5] Como Entero;
-    Definir i Como Real;
-    i <- 1.5;
+    Definir i Como Real <- 1.5;
     Escribir numeros[i];
 FinAlgoritmo
 ```

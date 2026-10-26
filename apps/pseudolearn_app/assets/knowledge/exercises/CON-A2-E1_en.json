@@ -14,5 +14,5 @@
     {"inputs": ["10"], "expectedOutputs": ["600"], "expected": "numerico"},
     {"inputs": ["1"], "expectedOutputs": ["60"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm Seconds\n    define minutes as integer;\n    define seconds as integer;\n    read minutes;\n    seconds <- minutes * 60;\n    write seconds;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Seconds\n    define mutable minutes as integer <- 0;\n    read minutes;\n    define seconds as integer <- minutes * 60;\n    write seconds;\nendAlgorithm\n"
 }

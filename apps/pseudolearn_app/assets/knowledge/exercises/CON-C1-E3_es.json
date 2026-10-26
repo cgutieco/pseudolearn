@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Termometro\n    Privado Definir celsius Como Entero;\n\n    Metodo Constructor(unCelsius Como Entero)\n        Este.celsius <- unCelsius;\n    FinMetodo\n\n    Publico Metodo Fahrenheit() Como Real\n        Retornar Este.celsius * 9 / 5 + 32;\n    FinMetodo\nFinClase\n\nProceso ConvertirTemperatura\n    Definir celsius Como Entero;\n    Definir termometro Como Termometro;\n    Leer celsius;\n    termometro <- Nuevo Termometro(celsius);\n    Escribir termometro.Fahrenheit();\nFinProceso\n"
+  "referenceSolution": "Clase Termometro\n    Privado Definir celsius Como Entero;\n\n    Metodo Constructor(unCelsius Como Entero)\n        Este.celsius <- unCelsius;\n    FinMetodo\n\n    Publico Metodo Fahrenheit() Como Real\n        Retornar Este.celsius * 9 / 5 + 32;\n    FinMetodo\nFinClase\n\nProceso ConvertirTemperatura\n    Definir Mutable celsius Como Entero <- 0;\n    Leer celsius;\n    Definir termometro Como Termometro <- Nuevo Termometro(celsius);\n    Escribir termometro.Fahrenheit();\nFinProceso\n"
 }

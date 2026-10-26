@@ -62,12 +62,12 @@ const List<(String, String)> defectivePrograms = [
   ),
   (
     'unterminated block',
-    'Algoritmo P\n  Definir a Como Entero;\n  Si a = 1 Entonces\n    a <- 2;\nFinAlgoritmo\n',
+    'Algoritmo P\n  Definir Mutable a Como Entero <- 0;\n  Si a = 1 Entonces\n    a <- 2;\nFinAlgoritmo\n',
   ),
   (
     'type mismatch',
-    'Algoritmo P\n  Definir a Como Entero;\n  a <- "texto";\nFinAlgoritmo\n',
+    'Algoritmo P\n  Definir Mutable a Como Entero <- 0;\n  a <- "texto";\nFinAlgoritmo\n',
   ),
   ('empty program', ''),
-  ('missing algorithm end', 'Algoritmo P\n  Definir a Como Entero;\n'),
+  ('missing algorithm end', 'Algoritmo P\n  Definir a Como Entero <- 0;\n'),
 ];

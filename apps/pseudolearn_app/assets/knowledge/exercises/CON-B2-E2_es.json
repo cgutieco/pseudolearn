@@ -14,5 +14,5 @@
     {"inputs": ["100", "250"], "expectedOutputs": ["350"], "expected": "numerico"},
     {"inputs": ["0", "0"], "expectedOutputs": ["0"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso SumaUnaLectura\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer a, b;\n    Escribir a + b;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaUnaLectura\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Leer a, b;\n    Escribir a + b;\nFinProceso\n"
 }

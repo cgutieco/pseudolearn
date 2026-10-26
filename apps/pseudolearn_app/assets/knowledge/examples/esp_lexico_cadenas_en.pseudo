@@ -1,8 +1,6 @@
 Algorithm Strings
-  Define text1, text2 As String
-  Define letter As Character
-  text1 <- "Hello"
-  text2 <- 'World'
-  letter <- 'A'
+  Define text1 As String <- "Hello"
+  Define text2 As String <- 'World'
+  Define letter As Character <- 'A'
   Write text1, text2, letter
 EndAlgorithm

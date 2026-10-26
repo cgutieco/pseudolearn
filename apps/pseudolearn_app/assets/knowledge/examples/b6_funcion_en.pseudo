@@ -7,8 +7,8 @@ subroutine Maximum(a as integer, b as integer) as integer
 endSubroutine
 
 algorithm ComputeMaximum
-    define x as integer;
-    define y as integer;
+    define mutable x as integer <- 0;
+    define mutable y as integer <- 0;
     read x;
     read y;
     write Maximum(x, y);

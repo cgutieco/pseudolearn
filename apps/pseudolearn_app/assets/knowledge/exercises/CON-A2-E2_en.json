@@ -14,5 +14,5 @@
     {"inputs": ["100", "10"], "expectedOutputs": ["1000"], "expected": "numerico"},
     {"inputs": ["15", "4"], "expectedOutputs": ["60"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm TotalPurchase\n    define price as integer;\n    define quantity as integer;\n    define total as integer;\n    read price;\n    read quantity;\n    total <- price * quantity;\n    write total;\nendAlgorithm\n"
+  "referenceSolution": "algorithm TotalPurchase\n    define mutable price as integer <- 0;\n    define mutable quantity as integer <- 0;\n    read price;\n    read quantity;\n    define total as integer <- price * quantity;\n    write total;\nendAlgorithm\n"
 }

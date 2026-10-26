@@ -77,12 +77,12 @@ Declaring a box and using it are two different steps, and the first one has to h
 ```pseudo
 algorithm WrongOrder
     total <- total + 1;
-    define total as integer;
+    define total as integer <- 0;
     write total;
 endAlgorithm
 ```
 
-{{diagnostico:variableUsedBeforeDeclaration}}
+{{diagnostico:undeclaredVariable}}
 
 :::parte especificacion
 

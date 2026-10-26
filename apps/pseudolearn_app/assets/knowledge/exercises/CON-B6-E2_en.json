@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Maximum", "arity": 2, "requirement": "The statement asks for a function named Maximum with two parameters."}
   ],
-  "referenceSolution": "subroutine Maximum(a as integer, b as integer) as integer\n    if a > b then\n        return a;\n    else\n        return b;\n    endIf\nendSubroutine\n\nalgorithm ComputeMaximum\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    write Maximum(x, y);\nendAlgorithm\n"
+  "referenceSolution": "subroutine Maximum(a as integer, b as integer) as integer\n    if a > b then\n        return a;\n    else\n        return b;\n    endIf\nendSubroutine\n\nalgorithm ComputeMaximum\n    define mutable x as integer <- 0;\n    define mutable y as integer <- 0;\n    read x;\n    read y;\n    write Maximum(x, y);\nendAlgorithm\n"
 }

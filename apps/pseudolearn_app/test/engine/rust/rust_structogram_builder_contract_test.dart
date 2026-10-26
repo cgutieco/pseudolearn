@@ -9,9 +9,9 @@ final StructogramBuilder _layout = nativeTestEngine.structogramBuilder;
 
 const String _factorial = '''
 Proceso Factorial
-    Definir n Como Entero;
-    Definir f Como Entero;
-    Definir i Como Entero;
+    Definir Mutable n Como Entero <- 0;
+    Definir Mutable f Como Entero <- 0;
+    Definir i Como Entero <- 0;
     n <- 5;
     f <- 1;
     Para i <- 1 Hasta n Con Paso 1 Hacer
@@ -81,7 +81,7 @@ void main() {
 
     test('prints every statement with the lexemes of its profile', () {
       expect(_saying(scene, 'n <- 5'), isNotNull);
-      expect(_saying(scene, 'Definir n Como Entero'), isNotNull);
+      expect(_saying(scene, 'Definir Mutable n Como Entero <- 0'), isNotNull);
       expect(_saying(scene, 'Escribir'), isNotNull);
     });
 
@@ -118,7 +118,7 @@ void main() {
   group('a conditional', () {
     final withElse = _sceneOf(
       _program('''
-    Definir a Como Entero;
+    Definir a Como Entero <- 0;
     Si a > 0 Entonces
         Escribir "positivo";
     SiNo
@@ -150,7 +150,7 @@ void main() {
     test('draws an explicit empty cell when there is no negative branch', () {
       final withoutElse = _sceneOf(
         _program('''
-      Definir a Como Entero;
+      Definir a Como Entero <- 0;
       Si a > 0 Entonces
           Escribir "positivo";
       FinSi'''),
@@ -166,7 +166,7 @@ void main() {
   group('a multiple selection', () {
     final scene = _sceneOf(
       _program('''
-    Definir opcion Como Entero;
+    Definir opcion Como Entero <- 0;
     Segun opcion Hacer
         1:
             Escribir "uno";
@@ -194,7 +194,7 @@ void main() {
       () {
         final empty = _sceneOf(
           _program('''
-      Definir opcion Como Entero;
+      Definir opcion Como Entero <- 0;
       Segun opcion Hacer
       FinSegun'''),
         );
@@ -209,7 +209,7 @@ void main() {
     test('a test-first while puts its header band above its body', () {
       final scene = _sceneOf(
         _program('''
-      Definir k Como Entero;
+      Definir Mutable k Como Entero <- 0;
       Mientras k < 10 Hacer
           k <- k + 1;
       FinMientras'''),
@@ -222,8 +222,8 @@ void main() {
     test('a counted loop puts its range above its body', () {
       final scene = _sceneOf(
         _program('''
-      Definir i Como Entero;
-      Para i <- 1 Hasta 3 Hacer
+      Definir i Como Entero <- 0;
+      Para i <- 1 Hasta 3 Con Paso 1 Hacer
           Escribir i;
       FinPara'''),
       );
@@ -234,7 +234,7 @@ void main() {
     test('a test-last loop puts its condition below its body', () {
       final scene = _sceneOf(
         _program('''
-      Definir k Como Entero;
+      Definir Mutable k Como Entero <- 0;
       Repetir
           k <- k - 1;
       Hasta Que k = 0'''),
@@ -248,12 +248,12 @@ void main() {
   group('a return inside a loop inside a conditional', () {
     final scene = _sceneOf('''
 Proceso P
-    Definir z Como Entero;
+    Definir z Como Entero <- 0;
 FinProceso
 SubProceso Buscar(objetivo Como Entero) Como Entero
-    Definir i Como Entero;
+    Definir i Como Entero <- 0;
     Si objetivo > 0 Entonces
-        Para i <- 1 Hasta 10 Hacer
+        Para i <- 1 Hasta 10 Con Paso 1 Hacer
             Si i = objetivo Entonces
                 Retornar i;
             FinSi
@@ -283,13 +283,13 @@ FinSubProceso
   group('deep nesting mixing the three families', () {
     final scene = _sceneOf(
       _program('''
-    Definir i Como Entero;
-    Definir j Como Entero;
+    Definir i Como Entero <- 0;
+    Definir Mutable j Como Entero <- 0;
     Si i > 0 Entonces
         Mientras j < 10 Hacer
             Segun j Hacer
                 1:
-                    Para i <- 1 Hasta 3 Hacer
+                    Para i <- 1 Hasta 3 Con Paso 1 Hacer
                         Escribir i;
                     FinPara
                 De Otro Modo:
@@ -327,7 +327,7 @@ FinSubProceso
     });
 
     test('a program that only declares still draws its declarations', () {
-      final scene = _sceneOf(_program('    Definir n Como Entero;'));
+      final scene = _sceneOf(_program('    Definir n Como Entero <- 0;'));
       expect(_shaped(scene, DiagramShape.cellProcess), hasLength(1));
       expect(_saying(scene, 'Definir n'), isNotNull);
     });
@@ -368,7 +368,7 @@ Clase Contador
     FinMetodo
 FinClase
 Proceso P
-    Definir c Como Entero;
+    Definir c Como Entero <- 0;
 FinProceso
 ''',
         profileId: SyntaxProfileId.classicSpanish,
@@ -395,7 +395,7 @@ FinSubProceso
     test('change the labels of a conditional and leave no cell text empty', () {
       const source = '''
 Proceso P
-    Definir a Como Entero;
+    Definir a Como Entero <- 0;
     Si a > 0 Entonces
         Escribir "si";
     FinSi
@@ -419,7 +419,7 @@ FinProceso
 
     test('never translate the code inside a cell', () {
       final english = _sceneOf(_factorial, language: UiLanguageId.english);
-      expect(_saying(english, 'Definir n Como Entero'), isNotNull);
+      expect(_saying(english, 'Definir Mutable n Como Entero <- 0'), isNotNull);
     });
   });
 }

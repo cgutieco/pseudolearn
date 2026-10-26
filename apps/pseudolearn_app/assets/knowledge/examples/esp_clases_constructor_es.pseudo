@@ -6,7 +6,6 @@ Clase Punto
   FinMetodo
 FinClase
 Algoritmo ConstructorClase
-  Definir p Como Punto
-  p <- Nuevo Punto(2, 3)
+  Definir p Como Punto <- Nuevo Punto(2, 3)
   Escribir p.cx + p.cy
 FinAlgoritmo

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Contador\n    Publico Definir valor Como Entero;\nFinClase\n\nProceso EjecutarAlias\n    Definir n Como Entero;\n    Definir i Como Entero;\n    Definir a Como Contador;\n    Definir b Como Contador;\n    Leer n;\n    a <- Nuevo Contador();\n    a.valor <- 0;\n    b <- a;\n    Para i <- 1 Hasta n Con Paso 1 Hacer\n        b.valor <- b.valor + 1;\n    FinPara\n    Escribir a.valor;\nFinProceso\n"
+  "referenceSolution": "Clase Contador\n    Publico Definir valor Como Entero;\nFinClase\n\nProceso EjecutarAlias\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Definir a Como Contador <- Nuevo Contador();\n    a.valor <- 0;\n    Definir b Como Contador <- a;\n    Para i <- 1 Hasta n Con Paso 1 Hacer\n        b.valor <- b.valor + 1;\n    FinPara\n    Escribir a.valor;\nFinProceso\n"
 }

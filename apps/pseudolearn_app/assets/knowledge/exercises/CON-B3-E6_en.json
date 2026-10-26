@@ -14,5 +14,5 @@
     {"inputs": ["70"], "expectedOutputs": ["4"], "expected": "numerico"},
     {"inputs": ["13"], "expectedOutputs": ["2"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm AgeCategory\n    define age as integer;\n    read age;\n    if age < 13 then\n        write 1;\n    else\n        if age < 18 then\n            write 2;\n        else\n            if age < 65 then\n                write 3;\n            else\n                write 4;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "algorithm AgeCategory\n    define mutable age as integer <- 0;\n    read age;\n    if age < 13 then\n        write 1;\n    else\n        if age < 18 then\n            write 2;\n        else\n            if age < 65 then\n                write 3;\n            else\n                write 4;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
 }

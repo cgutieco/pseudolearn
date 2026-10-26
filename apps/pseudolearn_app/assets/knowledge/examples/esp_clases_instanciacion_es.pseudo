@@ -2,8 +2,7 @@ Clase Caja
   Publico Definir peso Como Entero
 FinClase
 Algoritmo InstanciacionObjeto
-  Definir c Como Caja
-  c <- Nuevo Caja()
+  Definir c Como Caja <- Nuevo Caja()
   c.peso <- 10
   Escribir c.peso
 FinAlgoritmo

@@ -14,5 +14,5 @@
     {"inputs": ["0", "5"], "expectedOutputs": ["0.0"], "expected": "numerico"},
     {"inputs": ["7", "4"], "expectedOutputs": ["14.0"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm TriangleArea\n    define base as integer;\n    define height as integer;\n    define area as real;\n    read base;\n    read height;\n    area <- (base * height) / 2;\n    write area;\nendAlgorithm\n"
+  "referenceSolution": "algorithm TriangleArea\n    define mutable base as integer <- 0;\n    define mutable height as integer <- 0;\n    read base;\n    read height;\n    define area as real <- (base * height) / 2;\n    write area;\nendAlgorithm\n"
 }

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Rectangle\n    private define base as integer;\n    private define height as integer;\n\n    method constructor(aBase as integer, aHeight as integer)\n        this.base <- aBase;\n        this.height <- aHeight;\n    endMethod\n\n    public method Area() as integer\n        return this.base * this.height;\n    endMethod\nendClass\n\nalgorithm ComputeArea\n    define base as integer;\n    define height as integer;\n    define rectangle as Rectangle;\n    read base;\n    read height;\n    rectangle <- new Rectangle(base, height);\n    write rectangle.Area();\nendAlgorithm\n"
+  "referenceSolution": "class Rectangle\n    private define base as integer;\n    private define height as integer;\n\n    method constructor(aBase as integer, aHeight as integer)\n        this.base <- aBase;\n        this.height <- aHeight;\n    endMethod\n\n    public method Area() as integer\n        return this.base * this.height;\n    endMethod\nendClass\n\nalgorithm ComputeArea\n    define mutable base as integer <- 0;\n    define mutable height as integer <- 0;\n    read base;\n    read height;\n    define rectangle as Rectangle <- new Rectangle(base, height);\n    write rectangle.Area();\nendAlgorithm\n"
 }

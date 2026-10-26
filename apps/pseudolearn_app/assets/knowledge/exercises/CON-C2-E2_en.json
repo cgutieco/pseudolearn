@@ -73,5 +73,5 @@
       "requirement": "The statement asks the password to be a private attribute."
     }
   ],
-  "referenceSolution": "class SafeBox\n    private define password as string;\n\n    method constructor(aPassword as string)\n        this.password <- aPassword;\n    endMethod\n\n    public method Open(attempt as string) as integer\n        if attempt = this.password then\n            return 1;\n        else\n            return 0;\n        endIf\n    endMethod\nendClass\n\nalgorithm RunSafeBox\n    define password as string;\n    define attempt as string;\n    define box as SafeBox;\n    read password;\n    read attempt;\n    box <- new SafeBox(password);\n    write box.Open(attempt);\nendAlgorithm\n"
+  "referenceSolution": "class SafeBox\n    private define password as string;\n\n    method constructor(aPassword as string)\n        this.password <- aPassword;\n    endMethod\n\n    public method Open(attempt as string) as integer\n        if attempt = this.password then\n            return 1;\n        else\n            return 0;\n        endIf\n    endMethod\nendClass\n\nalgorithm RunSafeBox\n    define mutable password as string <- \"\";\n    define mutable attempt as string <- \"\";\n    read password;\n    read attempt;\n    define box as SafeBox <- new SafeBox(password);\n    write box.Open(attempt);\nendAlgorithm\n"
 }

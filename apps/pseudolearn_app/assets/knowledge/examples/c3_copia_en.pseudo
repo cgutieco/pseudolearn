@@ -3,11 +3,9 @@ class Box
 endClass
 
 algorithm TryCopy
-    define original as Box;
-    define cloned as Box;
-    original <- new Box();
+    define original as Box <- new Box();
     original.content <- 10;
-    cloned <- copy(original);
+    define cloned as Box <- copy(original);
     cloned.content <- 99;
     write original.content;
 endAlgorithm

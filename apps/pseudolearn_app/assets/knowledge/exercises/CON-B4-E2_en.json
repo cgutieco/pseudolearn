@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with a Repeat loop."}
   ],
-  "referenceSolution": "algorithm CountUntilZero\n    define n as integer;\n    define counter as integer;\n    counter <- 0;\n    repeat\n        read n;\n        counter <- counter + 1;\n    until n = 0;\n    write counter;\nendAlgorithm\n"
+  "referenceSolution": "algorithm CountUntilZero\n    define mutable n as integer <- 0;\n    define mutable counter as integer <- 0;\n    repeat\n        read n;\n        counter <- counter + 1;\n    until n = 0;\n    write counter;\nendAlgorithm\n"
 }

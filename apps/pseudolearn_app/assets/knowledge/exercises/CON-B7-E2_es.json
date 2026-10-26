@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "SumaHasta", "arity": 1, "requirement": "El enunciado pide una función recursiva llamada SumaHasta con un parámetro."}
   ],
-  "referenceSolution": "SubProceso SumaHasta(n Como Entero) Como Entero\n    Si n <= 0 Entonces\n        Retornar 0;\n    SiNo\n        Retornar n + SumaHasta(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularSuma\n    Definir n Como Entero;\n    Leer n;\n    Escribir SumaHasta(n);\nFinProceso\n"
+  "referenceSolution": "SubProceso SumaHasta(n Como Entero) Como Entero\n    Si n <= 0 Entonces\n        Retornar 0;\n    SiNo\n        Retornar n + SumaHasta(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularSuma\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Escribir SumaHasta(n);\nFinProceso\n"
 }

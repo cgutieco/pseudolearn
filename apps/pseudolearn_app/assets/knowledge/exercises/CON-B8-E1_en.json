@@ -14,5 +14,5 @@
     {"inputs": ["1", "10"], "expectedOutputs": ["1"], "expected": "numerico"},
     {"inputs": ["4", "1", "2", "3", "4"], "expectedOutputs": ["0"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm CountPassing\n    define count as integer;\n    define i as integer;\n    define grade as integer;\n    define passing as integer;\n    read count;\n    passing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        endIf\n    endFor\n    write passing;\nendAlgorithm\n"
+  "referenceSolution": "algorithm CountPassing\n    define mutable count as integer <- 0;\n    define mutable grade as integer <- 0;\n    read count;\n    define mutable passing as integer <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        endIf\n    endFor\n    write passing;\nendAlgorithm\n"
 }

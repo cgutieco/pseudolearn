@@ -1,8 +1,6 @@
 Algorithm FiveRules
-  Define quotient As Real
-  Define intDiv, remainder As Integer
-  quotient <- 7 / 2
-  intDiv <- 7 div 2
-  remainder <- 7 mod 2
+  Define quotient As Real <- 7 / 2
+  Define intDiv As Integer <- 7 div 2
+  Define remainder As Integer <- 7 mod 2
   Write quotient, intDiv, remainder
 EndAlgorithm

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Cuadrado", "arity": 1, "requirement": "El enunciado pide una función llamada Cuadrado con un parámetro."}
   ],
-  "referenceSolution": "SubProceso Cuadrado(n Como Entero) Como Entero\n    Retornar n * n;\nFinSubProceso\n\nProceso CalcularCuadrado\n    Definir n Como Entero;\n    Leer n;\n    Escribir Cuadrado(n);\nFinProceso\n"
+  "referenceSolution": "SubProceso Cuadrado(n Como Entero) Como Entero\n    Retornar n * n;\nFinSubProceso\n\nProceso CalcularCuadrado\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Escribir Cuadrado(n);\nFinProceso\n"
 }

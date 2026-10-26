@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Nodo\n    Publico Definir valor Como Entero;\n    Publico Definir siguiente Como Nodo;\nFinClase\n\nProceso EjecutarNodoEnlazado\n    Definir v1 Como Entero;\n    Definir v2 Como Entero;\n    Definir primero Como Nodo;\n    Definir segundo Como Nodo;\n    Leer v1;\n    Leer v2;\n    primero <- Nuevo Nodo();\n    segundo <- Nuevo Nodo();\n    primero.valor <- v1;\n    segundo.valor <- v2;\n    primero.siguiente <- segundo;\n    Escribir primero.siguiente.valor;\nFinProceso\n"
+  "referenceSolution": "Clase Nodo\n    Publico Definir valor Como Entero;\n    Publico Definir siguiente Como Nodo;\nFinClase\n\nProceso EjecutarNodoEnlazado\n    Definir Mutable v1 Como Entero <- 0;\n    Definir Mutable v2 Como Entero <- 0;\n    Leer v1;\n    Leer v2;\n    Definir primero Como Nodo <- Nuevo Nodo();\n    Definir segundo Como Nodo <- Nuevo Nodo();\n    primero.valor <- v1;\n    segundo.valor <- v2;\n    primero.siguiente <- segundo;\n    Escribir primero.siguiente.valor;\nFinProceso\n"
 }

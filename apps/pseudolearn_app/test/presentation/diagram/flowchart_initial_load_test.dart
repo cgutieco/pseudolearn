@@ -8,9 +8,9 @@ import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/test_dependencies.dart';
 
 const String _factorialSource = 'Proceso Factorial\n'
-    '  Definir n Como Entero;\n'
-    '  Definir f Como Entero;\n'
-    '  Definir i Como Entero;\n'
+    '  Definir Mutable n Como Entero <- 0;\n'
+    '  Definir Mutable f Como Entero <- 0;\n'
+    '  Definir i Como Entero <- 0;\n'
     '  n <- 5;\n'
     '  f <- 1;\n'
     '  Para i <- 1 Hasta n Con Paso 1 Hacer\n'

@@ -100,16 +100,17 @@ Each point is observable in the trace table, and is therefore fixed and not left
    equal to the final value; with negative step, while greater than or equal.
 5. The body executes.
 6. The step is added to the control variable and execution returns to point 4.
-7. Upon exit, **the control variable retains the first value that failed the test**.
+7. Upon exit, **the control variable ceases to exist**: it belongs to the loop.
 
 Three consequences follow: the three values **are frozen**, so modifying inside the body the variable
 used as the final value does not change the loop; **the direction is decided by the sign of the step**
 and never by the relationship between initial and final values, so a loop whose initial is greater than
-its final and whose step is positive simply does not iterate; and the control variable **retains a
-defined value upon exit**, because an undefined value is just what a trace table cannot show.
+its final and whose step is positive simply does not iterate; and the control variable **lives only
+inside the loop**: using it afterwards, without an outer binding of that name, is a scope error, and
+declaring it again inside the loop warns about shadowing.
 
-Modifying the control variable inside the body is a warning and not an error. Prohibiting it would
-require proving it does not happen, and with pass by reference that is undecidable in general: a warning
-is honest, an error that is sometimes not detected is not.
+Modifying the control variable inside the body is an error (`controlVariableModified`), as is writing it
+with a read or passing it by reference: the loop is the sole owner of that variable, and that is why
+the step and the test can be reasoned about without running.
 
 {{ejemplo:example-esp-control-para-garantias}}

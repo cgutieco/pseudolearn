@@ -1,8 +1,7 @@
 Algorithm Identifiers
-  Define total, _counter, value1, sum_total As Integer
-  total <- 1
-  _counter <- 2
-  value1 <- 3
-  sum_total <- total + _counter + value1
+  Define total As Integer <- 1
+  Define _counter As Integer <- 2
+  Define value1 As Integer <- 3
+  Define sum_total As Integer <- total + _counter + value1
   Write sum_total
 EndAlgorithm

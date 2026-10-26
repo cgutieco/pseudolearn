@@ -14,5 +14,5 @@
     {"inputs": ["70"], "expectedOutputs": ["4"], "expected": "numerico"},
     {"inputs": ["13"], "expectedOutputs": ["2"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso CategoriaEdad\n    Definir edad Como Entero;\n    Leer edad;\n    Si edad < 13 Entonces\n        Escribir 1;\n    SiNo\n        Si edad < 18 Entonces\n            Escribir 2;\n        SiNo\n            Si edad < 65 Entonces\n                Escribir 3;\n            SiNo\n                Escribir 4;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
+  "referenceSolution": "Proceso CategoriaEdad\n    Definir Mutable edad Como Entero <- 0;\n    Leer edad;\n    Si edad < 13 Entonces\n        Escribir 1;\n    SiNo\n        Si edad < 18 Entonces\n            Escribir 2;\n        SiNo\n            Si edad < 65 Entonces\n                Escribir 3;\n            SiNo\n                Escribir 4;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
 }

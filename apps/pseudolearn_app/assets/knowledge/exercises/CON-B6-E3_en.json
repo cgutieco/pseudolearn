@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Swap", "arity": 2, "requirement": "The statement asks for a procedure named Swap with two parameters."}
   ],
-  "referenceSolution": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define auxiliary as integer;\n    auxiliary <- a;\n    a <- b;\n    b <- auxiliary;\nendSubroutine\n\nalgorithm RunSwap\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    Swap(x, y);\n    write x;\n    write y;\nendAlgorithm\n"
+  "referenceSolution": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define auxiliary as integer <- a;\n    a <- b;\n    b <- auxiliary;\nendSubroutine\n\nalgorithm RunSwap\n    define mutable x as integer <- 0;\n    define mutable y as integer <- 0;\n    read x;\n    read y;\n    Swap(x, y);\n    write x;\n    write y;\nendAlgorithm\n"
 }

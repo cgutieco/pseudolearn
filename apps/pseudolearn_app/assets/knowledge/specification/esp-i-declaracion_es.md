@@ -1,19 +1,20 @@
 # Declaración y asignación
 
-Una declaración introduce un nombre y le fija un tipo. Una asignación guarda un valor en un nombre ya
-introducido. Son dos sentencias distintas y no se pueden escribir juntas.
+Una declaración introduce un nombre, le fija un tipo y le da su valor inicial. Una asignación guarda un
+valor nuevo en un nombre que se declaró como mutable.
 
-## Declarar varias variables a la vez
+## Un nombre por declaración
 
-Una sola sentencia de declaración puede introducir varios nombres separados por comas. Todos reciben
-el mismo tipo, que se escribe una sola vez al final.
+Cada declaración introduce un solo nombre con su tipo y su valor. Para tener varias variables se
+escribe una declaración por cada una.
 
 {{ejemplo:example-esp-declaracion-multiple}}
 
-## Declarar no da valor
+## Toda declaración lleva su valor inicial
 
-Una variable declarada y no asignada no tiene valor por omisión, y leerla antes de asignarla es un
-fallo. El lenguaje no inventa un cero ni una cadena vacía: un valor que nadie escribió no es un valor.
+Un nombre declarado sin valor no existe: el lenguaje no inventa un cero ni una cadena vacía, y un valor
+que nadie escribió no es un valor. Por eso la declaración exige el valor inicial después de la flecha, y
+un nombre nunca se puede leer antes de tenerlo.
 
 ```pseudo
 Algoritmo SinInicializar
@@ -22,21 +23,22 @@ Algoritmo SinInicializar
 FinAlgoritmo
 ```
 
-{{diagnostico:variableUsedUninitialized}}
+{{diagnostico:missingBindingInitializer}}
 
-## Una declaración no admite valor inicial
+## Inmutable por omisión, mutable por elección
 
-El tipo se escribe al final de la declaración, así que un valor inicial tendría que colarse antes del
-tipo y sería indistinguible de una asignación. La asignación ya es una sentencia de primera clase y
-escribirla en la línea siguiente enseña exactamente lo mismo.
+`Definir` crea un vínculo que no se puede reasignar. Si el programa necesita cambiar el valor, lo dice en
+la declaración con `Mutable`. Un vínculo mutable que nunca se modifica es una advertencia, porque la
+palabra no se estaría usando.
 
 ```pseudo
-Algoritmo InicializacionEnDeclaracion
+Algoritmo ReasignarInmutable
   Definir x Como Entero <- 5
+  x <- 6
 FinAlgoritmo
 ```
 
-{{diagnostico:initializationInDeclarationNotAllowed}}
+{{diagnostico:immutableBindingAssignment}}
 
 ## El destino de una asignación
 

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
   ],
-  "referenceSolution": "algorithm ReverseVector\n    dimension numbers[5] as integer;\n    define i as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    for i <- 4 to 0 step -1 do\n        write numbers[i];\n    endFor\nendAlgorithm\n"
+  "referenceSolution": "algorithm ReverseVector\n    dimension numbers[5] as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    for i <- 4 to 0 step -1 do\n        write numbers[i];\n    endFor\nendAlgorithm\n"
 }

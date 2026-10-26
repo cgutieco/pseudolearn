@@ -10,7 +10,7 @@ import 'package:pseudolearn_app/engine/exercise/behaviour_checker.dart';
 
 const String _square = '''
 Algoritmo Cuadrado
-  Definir n Como Entero
+  Definir Mutable n Como Entero <- 0
   Leer n
   Escribir n * n
 FinAlgoritmo
@@ -18,7 +18,7 @@ FinAlgoritmo
 
 const String _impostor = '''
 Algoritmo Impostor
-  Definir n Como Entero
+  Definir Mutable n Como Entero <- 0
   Leer n
   Escribir 16
 FinAlgoritmo
@@ -32,8 +32,8 @@ FinAlgoritmo
 
 const String _dividesByZero = '''
 Algoritmo Rompe
-  Definir n Como Entero
-  Definir cero Como Entero
+  Definir Mutable n Como Entero <- 0
+  Definir Mutable cero Como Entero <- 0
   Leer n
   cero <- 0
   Escribir n / cero
@@ -42,7 +42,7 @@ FinAlgoritmo
 
 const String _neverEnds = '''
 Algoritmo Eterno
-  Definir i Como Entero
+  Definir Mutable i Como Entero <- 0
   i <- 0
   Mientras i >= 0 Hacer
     i <- i + 1
@@ -52,8 +52,8 @@ FinAlgoritmo
 
 const String _readsTwice = '''
 Algoritmo Suma
-  Definir a Como Entero
-  Definir b Como Entero
+  Definir Mutable a Como Entero <- 0
+  Definir Mutable b Como Entero <- 0
   Leer a
   Leer b
   Escribir a + b
@@ -62,7 +62,7 @@ FinAlgoritmo
 
 const String _writesNothing = '''
 Algoritmo Callado
-  Definir n Como Entero
+  Definir Mutable n Como Entero <- 0
   n <- 1
 FinAlgoritmo
 ''';

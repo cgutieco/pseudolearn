@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase PilaUno\n    Privado Definir valor Como Entero;\n\n    Metodo Constructor()\n        Este.valor <- 0;\n    FinMetodo\n\n    Publico Metodo Apilar(unValor Como Entero)\n        Este.valor <- unValor;\n    FinMetodo\n\n    Publico Metodo Desapilar() Como Entero\n        Retornar Este.valor;\n    FinMetodo\nFinClase\n\nProceso EjecutarPila\n    Definir n Como Entero;\n    Definir pila Como PilaUno;\n    Leer n;\n    pila <- Nuevo PilaUno();\n    pila.Apilar(n);\n    Escribir pila.Desapilar();\nFinProceso\n"
+  "referenceSolution": "Clase PilaUno\n    Privado Definir valor Como Entero;\n\n    Metodo Constructor()\n        Este.valor <- 0;\n    FinMetodo\n\n    Publico Metodo Apilar(unValor Como Entero)\n        Este.valor <- unValor;\n    FinMetodo\n\n    Publico Metodo Desapilar() Como Entero\n        Retornar Este.valor;\n    FinMetodo\nFinClase\n\nProceso EjecutarPila\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Definir pila Como PilaUno <- Nuevo PilaUno();\n    pila.Apilar(n);\n    Escribir pila.Desapilar();\nFinProceso\n"
 }

@@ -14,5 +14,5 @@
     {"inputs": ["queue"], "expectedOutputs": ["4"], "expected": "numerico"}
   ],
   "assertions": [],
-  "referenceSolution": "Proceso ContarVocales\n    Definir palabra Como Cadena;\n    Definir i Como Entero;\n    Definir contador Como Entero;\n    Definir letra Como Caracter;\n    Leer palabra;\n    contador <- 0;\n    Para i <- 0 Hasta Longitud(palabra) - 1 Con Paso 1 Hacer\n        letra <- CaracterEn(palabra, i);\n        Si letra = 'a' O letra = 'e' O letra = 'i' O letra = 'o' O letra = 'u' Entonces\n            contador <- contador + 1;\n        FinSi\n    FinPara\n    Escribir contador;\nFinProceso\n"
+  "referenceSolution": "Proceso ContarVocales\n    Definir Mutable palabra Como Cadena <- \"\";\n    Definir Mutable letra Como Caracter <- \"a\";\n    Leer palabra;\n    Definir Mutable contador Como Entero <- 0;\n    Para i <- 0 Hasta Longitud(palabra) - 1 Con Paso 1 Hacer\n        letra <- CaracterEn(palabra, i);\n        Si letra = 'a' O letra = 'e' O letra = 'i' O letra = 'o' O letra = 'u' Entonces\n            contador <- contador + 1;\n        FinSi\n    FinPara\n    Escribir contador;\nFinProceso\n"
 }

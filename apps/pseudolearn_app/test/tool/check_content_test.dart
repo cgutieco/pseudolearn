@@ -73,15 +73,15 @@ Una variable es un nombre para un valor.
 Que valor tiene n en el paso 4.
 
 :::parte errores-frecuentes
-Declarar y asignar en la misma linea no esta permitido.
+Declarar sin valor inicial no esta permitido.
 
 ```pseudo
 Algoritmo Error
-  Definir n Como Entero <- 5
+  Definir n Como Entero
 FinAlgoritmo
 ```
 
-{{diagnostico:initializationInDeclarationNotAllowed}}
+{{diagnostico:missingBindingInitializer}}
 
 :::parte especificacion
 - esp-i-datos Tipos y operadores
@@ -114,13 +114,13 @@ const String _exercise = '''
   "hiddenCases": [
     {"inputs": ["7"], "expectedOutputs": ["49"], "expected": "numerico"}
   ],
-  "referenceSolution": "Algoritmo Cuadrado\\n  Definir n Como Entero\\n  Leer n\\n  Escribir n * n\\nFinAlgoritmo\\n"
+  "referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0\\n  Leer n\\n  Escribir n * n\\nFinAlgoritmo\\n"
 }
 ''';
 
 const String _example = '''
 Algoritmo Cuadrado
-  Definir n Como Entero
+  Definir Mutable n Como Entero <- 0
   n <- 4
   Escribir n * n
 FinAlgoritmo
@@ -221,7 +221,7 @@ void main() {
       expect(
         await _errorsOf(
           'dirty_example',
-          _withReplacement('examples/cuadrado_es.pseudo', 'Definir n Como Entero', 'Definir Como Entero'),
+          _withReplacement('examples/cuadrado_es.pseudo', 'Definir Mutable n Como Entero', 'Definir Mutable Como Entero'),
         ),
         contains(contains('does not analyse cleanly')),
       );
@@ -301,7 +301,7 @@ void main() {
 
     test('fails when a level 1 exercise needs a construct beyond its module', () async {
       const withLoop =
-          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir n Como Entero\\n  Definir i Como Entero\\n  Definir total Como Entero\\n  Leer n\\n  total <- 0\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n\\n  FinPara\\n  Escribir total\\nFinAlgoritmo\\n"';
+          '"referenceSolution": "Algoritmo Cuadrado\\n  Definir Mutable n Como Entero <- 0\\n  Definir i Como Entero <- 0\\n  Definir Mutable total Como Entero <- 0\\n  Leer n\\n  total <- 0\\n  Para i <- 1 Hasta n Con Paso 1 Hacer\\n    total <- total + n\\n  FinPara\\n  Escribir total\\nFinAlgoritmo\\n"';
       final files = _goodContent;
       final start = files['exercises/CON-B1-E1_es.json']!.indexOf('"referenceSolution"');
       files['exercises/CON-B1-E1_es.json'] =
@@ -317,7 +317,7 @@ void main() {
       expect(
         await _errorsOf(
           'unreal_diagnostic',
-          _withReplacement('modules/CON-B1_es.md', '{{diagnostico:initializationInDeclarationNotAllowed}}', '{{diagnostico:divisionByZero}}'),
+          _withReplacement('modules/CON-B1_es.md', '{{diagnostico:missingBindingInitializer}}', '{{diagnostico:divisionByZero}}'),
         ),
         contains(contains('but no program in its common errors part produces it')),
       );
@@ -438,17 +438,17 @@ void main() {
     test('fails when a specification-only example exceeds twelve lines', () async {
       const longExample = '''
 Algoritmo Largo
-  Definir a Como Entero
-  Definir b Como Entero
-  Definir c Como Entero
-  Definir d Como Entero
-  Definir e Como Entero
-  Definir f Como Entero
-  Definir g Como Entero
-  Definir h Como Entero
-  Definir i Como Entero
-  Definir j Como Entero
-  Definir k Como Entero
+  Definir a Como Entero <- 0
+  Definir b Como Entero <- 0
+  Definir c Como Entero <- 0
+  Definir d Como Entero <- 0
+  Definir e Como Entero <- 0
+  Definir f Como Entero <- 0
+  Definir g Como Entero <- 0
+  Definir h Como Entero <- 0
+  Definir i Como Entero <- 0
+  Definir j Como Entero <- 0
+  Definir k Como Entero <- 0
 FinAlgoritmo
 ''';
       final manifestWithLong = _manifest.replaceAll(

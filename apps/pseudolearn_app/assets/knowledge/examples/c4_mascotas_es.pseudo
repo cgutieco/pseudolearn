@@ -28,7 +28,6 @@ Clase Gato Hereda De Mascota
 FinClase
 
 Proceso Refugio
-    Definir mascota Como Mascota;
-    mascota <- Nuevo Gato("Kitty", "Siames");
+    Definir mascota Como Mascota <- Nuevo Gato("Kitty", "Siames");
     Escribir mascota.Hablar();
 FinProceso

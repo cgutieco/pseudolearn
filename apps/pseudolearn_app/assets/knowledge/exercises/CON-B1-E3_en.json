@@ -64,5 +64,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm Swap\n    define a as integer;\n    define b as integer;\n    define auxiliary as integer;\n    read a;\n    read b;\n    auxiliary <- a;\n    a <- b;\n    b <- auxiliary;\n    write a;\n    write b;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Swap\n    define mutable a as integer <- 0;\n    define mutable b as integer <- 0;\n    read a;\n    read b;\n    define auxiliary as integer <- a;\n    a <- b;\n    b <- auxiliary;\n    write a;\n    write b;\nendAlgorithm\n"
 }

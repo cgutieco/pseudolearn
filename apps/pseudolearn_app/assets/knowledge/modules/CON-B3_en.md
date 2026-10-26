@@ -59,8 +59,7 @@ in other languages anything non-zero "feels" true: here there is no such implici
 
 ```pseudo
 algorithm NonBooleanCondition
-    define grade as integer;
-    grade <- 5;
+    define grade as integer <- 5;
     if grade then
         write "Passed";
     endIf
@@ -76,8 +75,7 @@ body ends and the rest of the program continues.
 
 ```pseudo
 algorithm UnclosedConditional
-    define grade as integer;
-    grade <- 5;
+    define grade as integer <- 5;
     if grade >= 5 then
         write "Passed";
 endAlgorithm
@@ -92,8 +90,7 @@ one can never be reached.
 
 ```pseudo
 algorithm DuplicateLabel
-    define day as integer;
-    day <- 3;
+    define day as integer <- 3;
     switch day do
         1, 7:
             write "Weekend";

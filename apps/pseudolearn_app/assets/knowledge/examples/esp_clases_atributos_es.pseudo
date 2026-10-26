@@ -3,8 +3,7 @@ Clase Cuenta
   Privado Definir saldo Como Entero
 FinClase
 Algoritmo AtributosVisibilidad
-  Definir c Como Cuenta
-  c <- Nuevo Cuenta()
+  Definir c Como Cuenta <- Nuevo Cuenta()
   c.titular <- "Ana"
   Escribir c.titular
 FinAlgoritmo

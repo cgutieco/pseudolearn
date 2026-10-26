@@ -1,6 +1,6 @@
 Proceso SumaEnUnaLectura
-    Definir a Como Entero;
-    Definir b Como Entero;
+    Definir Mutable a Como Entero <- 0;
+    Definir Mutable b Como Entero <- 0;
     Leer a, b;
     Escribir a + b;
 FinProceso

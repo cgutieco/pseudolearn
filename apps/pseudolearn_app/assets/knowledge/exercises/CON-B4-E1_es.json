@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-condicional", "requirement": "El enunciado pide resolverlo con un bucle Mientras."}
   ],
-  "referenceSolution": "Proceso CuentaRegresiva\n    Definir i Como Entero;\n    Leer i;\n    Mientras i > 0 Hacer\n        Escribir i;\n        i <- i - 1;\n    FinMientras\nFinProceso\n"
+  "referenceSolution": "Proceso CuentaRegresiva\n    Definir Mutable i Como Entero <- 0;\n    Leer i;\n    Mientras i > 0 Hacer\n        Escribir i;\n        i <- i - 1;\n    FinMientras\nFinProceso\n"
 }

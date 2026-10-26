@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Node\n    public define value as integer;\n    public define next as Node;\nendClass\n\nalgorithm RunLinkedNode\n    define v1 as integer;\n    define v2 as integer;\n    define first as Node;\n    define second as Node;\n    read v1;\n    read v2;\n    first <- new Node();\n    second <- new Node();\n    first.value <- v1;\n    second.value <- v2;\n    first.next <- second;\n    write first.next.value;\nendAlgorithm\n"
+  "referenceSolution": "class Node\n    public define value as integer;\n    public define next as Node;\nendClass\n\nalgorithm RunLinkedNode\n    define mutable v1 as integer <- 0;\n    define mutable v2 as integer <- 0;\n    read v1;\n    read v2;\n    define first as Node <- new Node();\n    define second as Node <- new Node();\n    first.value <- v1;\n    second.value <- v2;\n    first.next <- second;\n    write first.next.value;\nendAlgorithm\n"
 }

@@ -14,5 +14,5 @@
     {"inputs": ["-40"], "expectedOutputs": ["-40.0 F"], "expected": "texto"},
     {"inputs": ["20"], "expectedOutputs": ["68.0 F"], "expected": "texto"}
   ],
-  "referenceSolution": "algorithm CelsiusToFahrenheit\n    define celsius as integer;\n    define fahrenheit as real;\n    read celsius;\n    fahrenheit <- celsius * 9 / 5 + 32;\n    write fahrenheit without newline;\n    write \" F\";\nendAlgorithm\n"
+  "referenceSolution": "algorithm CelsiusToFahrenheit\n    define mutable celsius as integer <- 0;\n    read celsius;\n    define fahrenheit as real <- celsius * 9 / 5 + 32;\n    write fahrenheit without newline;\n    write \" F\";\nendAlgorithm\n"
 }

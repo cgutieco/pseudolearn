@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "The statement asks you to solve it with a multiple selection."}
   ],
-  "referenceSolution": "algorithm WeekendOrWeekday\n    define day as integer;\n    read day;\n    switch day do\n        1, 2, 3, 4, 5:\n            write 0;\n        6, 7:\n            write 1;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
+  "referenceSolution": "algorithm WeekendOrWeekday\n    define mutable day as integer <- 0;\n    read day;\n    switch day do\n        1, 2, 3, 4, 5:\n            write 0;\n        6, 7:\n            write 1;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
 }

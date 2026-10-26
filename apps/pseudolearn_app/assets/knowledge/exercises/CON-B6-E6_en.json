@@ -72,6 +72,6 @@
       "requirement": "The statement asks for a procedure named Normalize with two parameters."
     }
   ],
-  "referenceSolution": "subroutine Normalize(a as integer by reference, b as integer by reference)\n    define auxiliary as integer;\n    if a > b then\n        auxiliary <- a;\n        a <- b;\n        b <- auxiliary;\n    endIf\nendSubroutine\n\nalgorithm RunNormalization\n    define x as integer;\n    define y as integer;\n    read x;\n    read y;\n    Normalize(x, y);\n    write x;\n    write y;\nendAlgorithm\n",
-  "starterCode": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define temp as integer;\n    temp <- a;\n    a <- b;\n    b <- temp;\nendSubroutine\n\nalgorithm RunNormalization\n    define n1 as integer;\n    define n2 as integer;\n    read n1;\n    read n2;\n    Swap(n1, n2);\n    write n1;\n    write n2;\nendAlgorithm\n"
+  "referenceSolution": "subroutine Normalize(a as integer by reference, b as integer by reference)\n    define mutable auxiliary as integer <- 0;\n    if a > b then\n        auxiliary <- a;\n        a <- b;\n        b <- auxiliary;\n    endIf\nendSubroutine\n\nalgorithm RunNormalization\n    define mutable x as integer <- 0;\n    define mutable y as integer <- 0;\n    read x;\n    read y;\n    Normalize(x, y);\n    write x;\n    write y;\nendAlgorithm\n",
+  "starterCode": "subroutine Swap(a as integer by reference, b as integer by reference)\n    define mutable temp as integer <- 0;\n    temp <- a;\n    a <- b;\n    b <- temp;\nendSubroutine\n\nalgorithm RunNormalization\n    define mutable n1 as integer <- 0;\n    define mutable n2 as integer <- 0;\n    read n1;\n    read n2;\n    Swap(n1, n2);\n    write n1;\n    write n2;\nendAlgorithm\n"
 }

@@ -21,7 +21,11 @@ final class StatementShapeReader {
     final parts = rustChildrenOf(_view, node);
     return switch (node.syntaxKind) {
       'assignment_statement' => AssignmentShape(id, parts.first, parts.last),
-      'declaration' => DeclarationShape(id, _names(parts)),
+      'declaration' => DeclarationShape(
+        id,
+        _names(node, parts),
+        _initializer(node, parts),
+      ),
       'dimension_declaration' => DimensionShape(id, _arrays(parts)),
       'output' => WriteShape(id, parts, node.semantics.withoutNewline),
       'input' => ReadShape(id, parts),
@@ -54,10 +58,19 @@ final class StatementShapeReader {
   RustViewNode? _role(RustViewNode node, String role) =>
       _view.childForRole(node, role);
 
-  List<String> _names(List<RustViewNode> parts) => [
+  List<String> _names(RustViewNode node, List<RustViewNode> parts) => [
     for (final part in parts)
-      if (part.syntaxKind == 'identifier') part.text,
+      if (node.childRoles[part.id.value] == 'binding' &&
+          part.syntaxKind == 'identifier')
+        part.text,
   ];
+
+  RustViewNode? _initializer(RustViewNode node, List<RustViewNode> parts) {
+    for (final part in parts) {
+      if (node.childRoles[part.id.value] == 'initializer') return part;
+    }
+    return null;
+  }
 
   List<ArrayShape> _arrays(List<RustViewNode> parts) => [
     for (final part in parts)

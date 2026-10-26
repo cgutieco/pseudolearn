@@ -1,6 +1,5 @@
 Algoritmo SeleccionMultiple
-  Definir opc Como Entero
-  opc <- 2
+  Definir opc Como Entero <- 2
   Segun opc Hacer
     1:
       Escribir "Uno"

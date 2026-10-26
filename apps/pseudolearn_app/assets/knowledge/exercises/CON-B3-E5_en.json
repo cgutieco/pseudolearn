@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "seleccion-multiple", "requirement": "The statement asks you to solve it with a multiple selection."}
   ],
-  "referenceSolution": "algorithm OperationsMenu\n    define option as integer;\n    define a as integer;\n    define b as integer;\n    read option, a, b;\n    switch option do\n        1:\n            write a + b;\n        2:\n            write a - b;\n        3:\n            write a * b;\n        4:\n            write a / b;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
+  "referenceSolution": "algorithm OperationsMenu\n    define mutable option as integer <- 0;\n    define mutable a as integer <- 0;\n    define mutable b as integer <- 0;\n    read option, a, b;\n    switch option do\n        1:\n            write a + b;\n        2:\n            write a - b;\n        3:\n            write a * b;\n        4:\n            write a / b;\n        otherwise:\n            write -1;\n    endSwitch\nendAlgorithm\n"
 }

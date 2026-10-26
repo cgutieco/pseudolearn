@@ -18,7 +18,7 @@ const Map<String, String> exemptSpecificationSections = {
   'esp-i-sistema-de-tipos#3': 'El tipo de cada operador: tabla de referencia.',
   'esp-i-sistema-de-tipos#5':
       'Quién comprueba qué: reparto de responsabilidad entre niveles.',
-  'esp-i-sistema-de-tipos#11': 'La política de severidad: es política.',
+  'esp-i-sistema-de-tipos#10': 'La política de severidad: es política.',
   'esp-i-funciones-incorporadas#0':
       'El catálogo completo: tabla generada por el motor.',
 };

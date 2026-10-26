@@ -4,7 +4,6 @@ Clase Calculadora
   FinMetodo
 FinClase
 Algoritmo MetodosClase
-  Definir c Como Calculadora
-  c <- Nuevo Calculadora()
+  Definir c Como Calculadora <- Nuevo Calculadora()
   Escribir c.Sumar(3, 4)
 FinAlgoritmo

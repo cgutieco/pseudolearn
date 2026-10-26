@@ -16,5 +16,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
   ],
-  "referenceSolution": "algorithm SecondaryDiagonalSum\n    dimension data[3, 3] as integer;\n    define row as integer;\n    define column as integer;\n    define total as integer;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    total <- data[0, 2] + data[1, 1] + data[2, 0];\n    write total;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SecondaryDiagonalSum\n    dimension data[3, 3] as integer;\n    for row <- 0 to 2 step 1 do\n        for column <- 0 to 2 step 1 do\n            read data[row, column];\n        endFor\n    endFor\n    define total as integer <- data[0, 2] + data[1, 1] + data[2, 0];\n    write total;\nendAlgorithm\n"
 }

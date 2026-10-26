@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Thermometer\n    private define celsius as integer;\n\n    method constructor(aCelsius as integer)\n        this.celsius <- aCelsius;\n    endMethod\n\n    public method Fahrenheit() as real\n        return this.celsius * 9 / 5 + 32;\n    endMethod\nendClass\n\nalgorithm ConvertTemperature\n    define celsius as integer;\n    define thermometer as Thermometer;\n    read celsius;\n    thermometer <- new Thermometer(celsius);\n    write thermometer.Fahrenheit();\nendAlgorithm\n"
+  "referenceSolution": "class Thermometer\n    private define celsius as integer;\n\n    method constructor(aCelsius as integer)\n        this.celsius <- aCelsius;\n    endMethod\n\n    public method Fahrenheit() as real\n        return this.celsius * 9 / 5 + 32;\n    endMethod\nendClass\n\nalgorithm ConvertTemperature\n    define mutable celsius as integer <- 0;\n    read celsius;\n    define thermometer as Thermometer <- new Thermometer(celsius);\n    write thermometer.Fahrenheit();\nendAlgorithm\n"
 }

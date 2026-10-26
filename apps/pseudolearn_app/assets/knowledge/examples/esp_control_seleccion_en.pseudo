@@ -1,6 +1,5 @@
 Algorithm SwitchCase
-  Define opt As Integer
-  opt <- 2
+  Define opt As Integer <- 2
   Switch opt Do
     1:
       Write "One"

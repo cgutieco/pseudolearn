@@ -109,8 +109,7 @@ anything to anyone.
 
 ```pseudo
 algorithm ReturnOutsideSubprogram
-    define n as integer;
-    n <- 5;
+    define n as integer <- 5;
     return n;
 endAlgorithm
 ```

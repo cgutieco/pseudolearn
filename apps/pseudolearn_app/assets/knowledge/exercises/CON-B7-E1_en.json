@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Factorial", "arity": 1, "requirement": "The statement asks for a recursive function named Factorial with one parameter."}
   ],
-  "referenceSolution": "subroutine Factorial(n as integer) as integer\n    if n <= 1 then\n        return 1;\n    else\n        return n * Factorial(n - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeFactorial\n    define n as integer;\n    read n;\n    write Factorial(n);\nendAlgorithm\n"
+  "referenceSolution": "subroutine Factorial(n as integer) as integer\n    if n <= 1 then\n        return 1;\n    else\n        return n * Factorial(n - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeFactorial\n    define mutable n as integer <- 0;\n    read n;\n    write Factorial(n);\nendAlgorithm\n"
 }

@@ -14,5 +14,5 @@
     {"inputs": ["3"], "expectedOutputs": ["1"], "expected": "numerico"},
     {"inputs": ["7"], "expectedOutputs": ["3"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso ClasificacionNota\n    Definir nota Como Entero;\n    Leer nota;\n    Si nota >= 9 Entonces\n        Escribir 4;\n    SiNo\n        Si nota >= 7 Entonces\n            Escribir 3;\n        SiNo\n            Si nota >= 5 Entonces\n                Escribir 2;\n            SiNo\n                Escribir 1;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
+  "referenceSolution": "Proceso ClasificacionNota\n    Definir Mutable nota Como Entero <- 0;\n    Leer nota;\n    Si nota >= 9 Entonces\n        Escribir 4;\n    SiNo\n        Si nota >= 7 Entonces\n            Escribir 3;\n        SiNo\n            Si nota >= 5 Entonces\n                Escribir 2;\n            SiNo\n                Escribir 1;\n            FinSi\n        FinSi\n    FinSi\nFinProceso\n"
 }

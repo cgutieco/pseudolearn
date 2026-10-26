@@ -14,5 +14,5 @@
     {"inputs": ["Mochila", "230"], "expectedOutputs": ["Mochila - 230"], "expected": "texto"},
     {"inputs": ["Tijeras", "0"], "expectedOutputs": ["Tijeras - 0"], "expected": "texto"}
   ],
-  "referenceSolution": "Proceso FichaProducto\n    Definir nombre Como Cadena;\n    Definir precio Como Entero;\n    Leer nombre;\n    Leer precio;\n    Escribir nombre, \" - \", precio;\nFinProceso\n"
+  "referenceSolution": "Proceso FichaProducto\n    Definir Mutable nombre Como Cadena <- \"\";\n    Definir Mutable precio Como Entero <- 0;\n    Leer nombre;\n    Leer precio;\n    Escribir nombre, \" - \", precio;\nFinProceso\n"
 }

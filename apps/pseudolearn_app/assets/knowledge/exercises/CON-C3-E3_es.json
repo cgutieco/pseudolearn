@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso ProbarCopiaIndependiente\n    Definir valorInicial Como Entero;\n    Definir valorNuevo Como Entero;\n    Definir original Como Caja;\n    Definir copia Como Caja;\n    Leer valorInicial;\n    Leer valorNuevo;\n    original <- Nuevo Caja();\n    original.contenido <- valorInicial;\n    copia <- Copiar(original);\n    copia.contenido <- valorNuevo;\n    Escribir original.contenido;\nFinProceso\n"
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso ProbarCopiaIndependiente\n    Definir Mutable valorInicial Como Entero <- 0;\n    Definir Mutable valorNuevo Como Entero <- 0;\n    Leer valorInicial;\n    Leer valorNuevo;\n    Definir original Como Caja <- Nuevo Caja();\n    original.contenido <- valorInicial;\n    Definir copia Como Caja <- Copiar(original);\n    copia.contenido <- valorNuevo;\n    Escribir original.contenido;\nFinProceso\n"
 }

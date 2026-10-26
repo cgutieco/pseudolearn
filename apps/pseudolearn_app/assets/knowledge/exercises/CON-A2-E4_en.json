@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm AverageOfPrices\n    define price1 as integer;\n    define price2 as integer;\n    define average as real;\n    read price1;\n    read price2;\n    average <- (price1 + price2) / 2;\n    write average;\nendAlgorithm\n",
-  "starterCode": "algorithm PriceAverage\n    define price1 as integer;\n    define price2 as integer;\n    define sum as integer;\n    read price1;\n    read price2;\n    sum <- price1 + price2;\n    write sum;\nendAlgorithm\n"
+  "referenceSolution": "algorithm AverageOfPrices\n    define mutable price1 as integer <- 0;\n    define mutable price2 as integer <- 0;\n    read price1;\n    read price2;\n    define average as real <- (price1 + price2) / 2;\n    write average;\nendAlgorithm\n",
+  "starterCode": "algorithm PriceAverage\n    define mutable price1 as integer <- 0;\n    define mutable price2 as integer <- 0;\n    define mutable sum as integer <- 0;\n    read price1;\n    read price2;\n    sum <- price1 + price2;\n    write sum;\nendAlgorithm\n"
 }

@@ -1,5 +1,5 @@
 Proceso DiaDeLaSemana
-    Definir dia Como Entero;
+    Definir Mutable dia Como Entero <- 0;
     Leer dia;
     Segun dia Hacer
         1, 7:

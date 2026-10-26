@@ -58,8 +58,7 @@ Clase Caja
 FinClase
 
 Algoritmo EscribirObjeto
-    Definir caja Como Caja;
-    caja <- Nuevo Caja();
+    Definir caja Como Caja <- Nuevo Caja();
     Escribir caja;
 FinAlgoritmo
 ```

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
   ],
-  "referenceSolution": "algorithm LargestOfVector\n    dimension numbers[5] as integer;\n    define i as integer;\n    define largest as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    largest <- numbers[0];\n    for i <- 1 to 4 step 1 do\n        if numbers[i] > largest then\n            largest <- numbers[i];\n        endIf\n    endFor\n    write largest;\nendAlgorithm\n"
+  "referenceSolution": "algorithm LargestOfVector\n    dimension numbers[5] as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    define mutable largest as integer <- numbers[0];\n    for i <- 1 to 4 step 1 do\n        if numbers[i] > largest then\n            largest <- numbers[i];\n        endIf\n    endFor\n    write largest;\nendAlgorithm\n"
 }

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-contado", "requirement": "El enunciado pide resolverlo con un bucle Para."}
   ],
-  "referenceSolution": "Proceso CuentaRegresivaConPaso\n    Definir inicio Como Entero;\n    Definir paso Como Entero;\n    Definir i Como Entero;\n    Leer inicio;\n    Leer paso;\n    Para i <- inicio Hasta 0 Con Paso -paso Hacer\n        Escribir i;\n    FinPara\nFinProceso\n"
+  "referenceSolution": "Proceso CuentaRegresivaConPaso\n    Definir Mutable inicio Como Entero <- 0;\n    Definir Mutable paso Como Entero <- 0;\n    Leer inicio;\n    Leer paso;\n    Para i <- inicio Hasta 0 Con Paso -paso Hacer\n        Escribir i;\n    FinPara\nFinProceso\n"
 }

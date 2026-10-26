@@ -2,8 +2,7 @@ Class Box
   Public Define weight As Integer
 EndClass
 Algorithm ObjectInstantiation
-  Define c As Box
-  c <- New Box()
+  Define c As Box <- New Box()
   c.weight <- 10
   Write c.weight
 EndAlgorithm

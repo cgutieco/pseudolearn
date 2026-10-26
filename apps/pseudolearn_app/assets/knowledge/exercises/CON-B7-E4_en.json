@@ -20,5 +20,5 @@
     {"kind": "no-contiene", "construct": "bucle-condicional-posterior", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."},
     {"kind": "no-contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with pure recursion, with no loop at all."}
   ],
-  "referenceSolution": "subroutine DigitCount(n as integer) as integer\n    if n < 10 then\n        return 1;\n    else\n        return 1 + DigitCount(n div 10);\n    endIf\nendSubroutine\n\nalgorithm ComputeDigitCount\n    define n as integer;\n    read n;\n    write DigitCount(n);\nendAlgorithm\n"
+  "referenceSolution": "subroutine DigitCount(n as integer) as integer\n    if n < 10 then\n        return 1;\n    else\n        return 1 + DigitCount(n div 10);\n    endIf\nendSubroutine\n\nalgorithm ComputeDigitCount\n    define mutable n as integer <- 0;\n    read n;\n    write DigitCount(n);\nendAlgorithm\n"
 }

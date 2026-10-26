@@ -62,6 +62,6 @@
       "requirement": "The statement asks for a recursive function named Fibonacci with one parameter."
     }
   ],
-  "referenceSolution": "subroutine Fibonacci(n as integer) as integer\n    if n <= 1 then\n        return n;\n    else\n        return Fibonacci(n - 1) + Fibonacci(n - 2);\n    endIf\nendSubroutine\n\nalgorithm ComputeFibonacci\n    define n as integer;\n    read n;\n    write Fibonacci(n);\nendAlgorithm\n",
-  "starterCode": "subroutine Power(base as integer, exponent as integer) as integer\n    if exponent = 0 then\n        return 1;\n    else\n        return base * Power(base, exponent - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeFibonacci\n    define n as integer;\n    read n;\n    write Power(n, 2);\nendAlgorithm\n"
+  "referenceSolution": "subroutine Fibonacci(n as integer) as integer\n    if n <= 1 then\n        return n;\n    else\n        return Fibonacci(n - 1) + Fibonacci(n - 2);\n    endIf\nendSubroutine\n\nalgorithm ComputeFibonacci\n    define mutable n as integer <- 0;\n    read n;\n    write Fibonacci(n);\nendAlgorithm\n",
+  "starterCode": "subroutine Power(base as integer, exponent as integer) as integer\n    if exponent = 0 then\n        return 1;\n    else\n        return base * Power(base, exponent - 1);\n    endIf\nendSubroutine\n\nalgorithm ComputeFibonacci\n    define mutable n as integer <- 0;\n    read n;\n    write Power(n, 2);\nendAlgorithm\n"
 }

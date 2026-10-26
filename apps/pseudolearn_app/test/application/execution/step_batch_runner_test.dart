@@ -10,7 +10,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo LoopTest
-  Definir i Como Entero
+  Definir i Como Entero <- 0
   Para i <- 1 Hasta 10 Con Paso 1 Hacer
     Escribir i
   FinPara

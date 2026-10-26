@@ -61,8 +61,7 @@ The language recognises the word and rejects it explicitly, instead of treating 
 
 ```pseudo
 algorithm UnconditionalJump
-    define i as integer;
-    i <- 0;
+    define i as integer <- 0;
     goto ending;
 endAlgorithm
 ```
@@ -76,8 +75,7 @@ unable to decide where the structogram's box ends and the rest of the program co
 
 ```pseudo
 algorithm UnclosedSelection
-    define day as integer;
-    day <- 3;
+    define day as integer <- 3;
     switch day do
         1:
             write "Monday";

@@ -14,5 +14,5 @@
     {"inputs": ["Puntaje", "999"], "expectedOutputs": ["Puntaje: 999"], "expected": "texto"},
     {"inputs": ["Nota", "5"], "expectedOutputs": ["Nota: 5"], "expected": "texto"}
   ],
-  "referenceSolution": "algorithm LabelValue\n    define label as string;\n    define value as integer;\n    read label;\n    read value;\n    write label, \": \" without newline;\n    write value;\nendAlgorithm\n"
+  "referenceSolution": "algorithm LabelValue\n    define mutable label as string <- \"\";\n    define mutable value as integer <- 0;\n    read label;\n    read value;\n    write label, \": \" without newline;\n    write value;\nendAlgorithm\n"
 }

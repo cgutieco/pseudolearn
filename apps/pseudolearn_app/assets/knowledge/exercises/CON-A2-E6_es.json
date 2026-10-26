@@ -14,5 +14,5 @@
     {"inputs": ["-4"], "expectedOutputs": ["-20.0"], "expected": "numerico"},
     {"inputs": ["86"], "expectedOutputs": ["30.0"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso FahrenheitACelsius\n    Definir fahrenheit Como Entero;\n    Definir celsius Como Real;\n    Leer fahrenheit;\n    celsius <- (fahrenheit - 32) * 5 / 9;\n    Escribir celsius;\nFinProceso\n"
+  "referenceSolution": "Proceso FahrenheitACelsius\n    Definir Mutable fahrenheit Como Entero <- 0;\n    Leer fahrenheit;\n    Definir celsius Como Real <- (fahrenheit - 32) * 5 / 9;\n    Escribir celsius;\nFinProceso\n"
 }

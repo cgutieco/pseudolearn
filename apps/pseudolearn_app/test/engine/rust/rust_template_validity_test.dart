@@ -53,6 +53,7 @@ void main() {
       final placeholderErrors = {
         'nonLiteralSwitchCaseLabel',
         'subroutineWithoutReturn',
+        'undeclaredVariable',
       };
       for (final item in templates.getCompletions(profile)) {
         final wrappers = [

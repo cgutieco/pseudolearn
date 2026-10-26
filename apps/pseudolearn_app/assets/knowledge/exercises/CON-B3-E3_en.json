@@ -14,5 +14,5 @@
     {"inputs": ["3"], "expectedOutputs": ["1"], "expected": "numerico"},
     {"inputs": ["7"], "expectedOutputs": ["3"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm GradeClassification\n    define grade as integer;\n    read grade;\n    if grade >= 9 then\n        write 4;\n    else\n        if grade >= 7 then\n            write 3;\n        else\n            if grade >= 5 then\n                write 2;\n            else\n                write 1;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "algorithm GradeClassification\n    define mutable grade as integer <- 0;\n    read grade;\n    if grade >= 9 then\n        write 4;\n    else\n        if grade >= 7 then\n            write 3;\n        else\n            if grade >= 5 then\n                write 2;\n            else\n                write 1;\n            endIf\n        endIf\n    endIf\nendAlgorithm\n"
 }

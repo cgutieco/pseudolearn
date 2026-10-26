@@ -1,4 +1,4 @@
-Algoritmo InferenciaFlexible
-  x <- 10
+Algoritmo TipoDelInicializador
+  Definir x Como Real <- 10
   Escribir x + 5
 FinAlgoritmo

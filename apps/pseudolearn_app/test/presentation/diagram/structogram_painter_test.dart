@@ -21,9 +21,9 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 
 const String _factorial = '''
 Proceso Factorial
-    Definir n Como Entero;
-    Definir f Como Entero;
-    Definir i Como Entero;
+    Definir Mutable n Como Entero <- 0;
+    Definir Mutable f Como Entero <- 0;
+    Definir i Como Entero <- 0;
     n <- 5;
     f <- 1;
     Para i <- 1 Hasta n Con Paso 1 Hacer

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "El enunciado pide resolverlo con una clase."}
   ],
-  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso CompararObjetos\n    Definir bandera Como Entero;\n    Definir a Como Caja;\n    Definir b Como Caja;\n    Leer bandera;\n    a <- Nuevo Caja();\n    Si bandera = 1 Entonces\n        b <- a;\n    SiNo\n        b <- Nuevo Caja();\n    FinSi\n    Si a = b Entonces\n        Escribir 1;\n    SiNo\n        Escribir 0;\n    FinSi\nFinProceso\n"
+  "referenceSolution": "Clase Caja\n    Publico Definir contenido Como Entero;\nFinClase\n\nProceso CompararObjetos\n    Definir Mutable bandera Como Entero <- 0;\n    Leer bandera;\n    Definir a Como Caja <- Nuevo Caja();\n    Definir Mutable b Como Caja <- Nuevo Caja();\n    Si bandera = 1 Entonces\n        b <- a;\n    FinSi\n    Si a = b Entonces\n        Escribir 1;\n    SiNo\n        Escribir 0;\n    FinSi\nFinProceso\n"
 }

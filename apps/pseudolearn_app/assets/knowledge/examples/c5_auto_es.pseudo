@@ -23,9 +23,8 @@ Clase Auto
 FinClase
 
 Proceso ProbarAuto
-    Definir potencia Como Entero;
-    Definir auto Como Auto;
+    Definir Mutable potencia Como Entero <- 0;
     Leer potencia;
-    auto <- Nuevo Auto(potencia);
+    Definir auto Como Auto <- Nuevo Auto(potencia);
     Escribir auto.Potencia();
 FinProceso

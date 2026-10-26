@@ -14,5 +14,5 @@
     {"inputs": ["100", "10"], "expectedOutputs": ["1000"], "expected": "numerico"},
     {"inputs": ["15", "4"], "expectedOutputs": ["60"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso TotalCompra\n    Definir precio Como Entero;\n    Definir cantidad Como Entero;\n    Definir total Como Entero;\n    Leer precio;\n    Leer cantidad;\n    total <- precio * cantidad;\n    Escribir total;\nFinProceso\n"
+  "referenceSolution": "Proceso TotalCompra\n    Definir Mutable precio Como Entero <- 0;\n    Definir Mutable cantidad Como Entero <- 0;\n    Leer precio;\n    Leer cantidad;\n    Definir total Como Entero <- precio * cantidad;\n    Escribir total;\nFinProceso\n"
 }

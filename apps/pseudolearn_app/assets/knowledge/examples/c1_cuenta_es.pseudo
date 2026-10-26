@@ -15,8 +15,7 @@ Clase CuentaBancaria
 FinClase
 
 Proceso ProbarCuenta
-    Definir cuenta Como CuentaBancaria;
-    cuenta <- Nuevo CuentaBancaria(100);
+    Definir cuenta Como CuentaBancaria <- Nuevo CuentaBancaria(100);
     cuenta.Depositar(50);
     Escribir cuenta.Saldo();
 FinProceso

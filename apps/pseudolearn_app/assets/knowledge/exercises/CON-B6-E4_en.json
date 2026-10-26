@@ -18,5 +18,5 @@
     {"kind": "declara-subprograma", "name": "DoubleElements", "arity": 2, "requirement": "The statement asks for a procedure named DoubleElements with two parameters."},
     {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
   ],
-  "referenceSolution": "subroutine DoubleElements(data[] as integer by reference, size as integer)\n    define i as integer;\n    for i <- 0 to size - 1 step 1 do\n        data[i] <- data[i] * 2;\n    endFor\nendSubroutine\n\nalgorithm RunDoubling\n    dimension vector[3] as integer;\n    define i as integer;\n    for i <- 0 to 2 step 1 do\n        read vector[i];\n    endFor\n    DoubleElements(vector, 3);\n    for i <- 0 to 2 step 1 do\n        write vector[i];\n    endFor\nendAlgorithm\n"
+  "referenceSolution": "subroutine DoubleElements(data[] as integer by reference, size as integer)\n    for i <- 0 to size - 1 step 1 do\n        data[i] <- data[i] * 2;\n    endFor\nendSubroutine\n\nalgorithm RunDoubling\n    dimension vector[3] as integer;\n    for i <- 0 to 2 step 1 do\n        read vector[i];\n    endFor\n    DoubleElements(vector, 3);\n    for i <- 0 to 2 step 1 do\n        write vector[i];\n    endFor\nendAlgorithm\n"
 }

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareObjects\n    define flag as integer;\n    define a as Box;\n    define b as Box;\n    read flag;\n    a <- new Box();\n    if flag = 1 then\n        b <- a;\n    else\n        b <- new Box();\n    endIf\n    if a = b then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "class Box\n    public define content as integer;\nendClass\n\nalgorithm CompareObjects\n    define mutable flag as integer <- 0;\n    read flag;\n    define a as Box <- new Box();\n    define mutable b as Box <- new Box();\n    if flag = 1 then\n        b <- a;\n    endIf\n    if a = b then\n        write 1;\n    else\n        write 0;\n    endIf\nendAlgorithm\n"
 }

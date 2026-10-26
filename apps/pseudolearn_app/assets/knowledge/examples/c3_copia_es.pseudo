@@ -3,11 +3,9 @@ Clase Caja
 FinClase
 
 Proceso ProbarCopia
-    Definir original Como Caja;
-    Definir copia Como Caja;
-    original <- Nuevo Caja();
+    Definir original Como Caja <- Nuevo Caja();
     original.contenido <- 10;
-    copia <- Copiar(original);
+    Definir copia Como Caja <- Copiar(original);
     copia.contenido <- 99;
     Escribir original.contenido;
 FinProceso

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "Proceso SumaDeVector    Dimension numeros[5] Como Entero;    Definir i Como Entero;    Definir total Como Entero;    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];    FinPara    total <- 0;    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        total <- total + numeros[i];    FinPara    Escribir total;FinProceso"
+  "referenceSolution": "Proceso SumaDeVector\n    Dimension numeros[5] Como Entero;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        Leer numeros[i];\n    FinPara\n    Definir Mutable total Como Entero <- 0;\n    Para i <- 0 Hasta 4 Con Paso 1 Hacer\n        total <- total + numeros[i];\n    FinPara\n    Escribir total;\nFinProceso\n"
 }

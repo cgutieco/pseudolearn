@@ -69,6 +69,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm CountFailing\n    define count as integer;\n    define i as integer;\n    define grade as integer;\n    define failing as integer;\n    read count;\n    failing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade < 5 then\n            failing <- failing + 1;\n        endIf\n    endFor\n    write failing;\nendAlgorithm\n",
-  "starterCode": "algorithm CountPassing\n    define count as integer;\n    define i as integer;\n    define grade as integer;\n    define passing as integer;\n    read count;\n    passing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        endIf\n    endFor\n    write passing;\nendAlgorithm\n"
+  "referenceSolution": "algorithm CountFailing\n    define mutable count as integer <- 0;\n    define mutable grade as integer <- 0;\n    read count;\n    define mutable failing as integer <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade < 5 then\n            failing <- failing + 1;\n        endIf\n    endFor\n    write failing;\nendAlgorithm\n",
+  "starterCode": "algorithm CountPassing\n    define mutable count as integer <- 0;\n    define mutable grade as integer <- 0;\n    define mutable passing as integer <- 0;\n    read count;\n    passing <- 0;\n    for i <- 1 to count step 1 do\n        read grade;\n        if grade >= 5 then\n            passing <- passing + 1;\n        endIf\n    endFor\n    write passing;\nendAlgorithm\n"
 }

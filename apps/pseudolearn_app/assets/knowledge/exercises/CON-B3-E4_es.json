@@ -14,5 +14,5 @@
     {"inputs": ["-1", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
     {"inputs": ["0", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
   ],
-  "referenceSolution": "Proceso MayorDeDos\n    Definir a Como Entero;\n    Definir b Como Entero;\n    Leer a, b;\n    Si a > b Entonces\n        Escribir a;\n    SiNo\n        Escribir b;\n    FinSi\nFinProceso\n"
+  "referenceSolution": "Proceso MayorDeDos\n    Definir Mutable a Como Entero <- 0;\n    Definir Mutable b Como Entero <- 0;\n    Leer a, b;\n    Si a > b Entonces\n        Escribir a;\n    SiNo\n        Escribir b;\n    FinSi\nFinProceso\n"
 }

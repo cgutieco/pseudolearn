@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Counter\n    public define value as integer;\nendClass\n\nalgorithm RunAlias\n    define n as integer;\n    define i as integer;\n    define a as Counter;\n    define b as Counter;\n    read n;\n    a <- new Counter();\n    a.value <- 0;\n    b <- a;\n    for i <- 1 to n step 1 do\n        b.value <- b.value + 1;\n    endFor\n    write a.value;\nendAlgorithm\n"
+  "referenceSolution": "class Counter\n    public define value as integer;\nendClass\n\nalgorithm RunAlias\n    define mutable n as integer <- 0;\n    read n;\n    define a as Counter <- new Counter();\n    a.value <- 0;\n    define b as Counter <- a;\n    for i <- 1 to n step 1 do\n        b.value <- b.value + 1;\n    endFor\n    write a.value;\nendAlgorithm\n"
 }

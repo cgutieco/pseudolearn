@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "condicional", "requirement": "El enunciado pide resolverlo con un condicional."}
   ],
-  "referenceSolution": "Proceso ParOImpar\n    Definir n Como Entero;\n    Leer n;\n    Si n mod 2 = 0 Entonces\n        Escribir 0;\n    SiNo\n        Escribir 1;\n    FinSi\nFinProceso\n"
+  "referenceSolution": "Proceso ParOImpar\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Si n mod 2 = 0 Entonces\n        Escribir 0;\n    SiNo\n        Escribir 1;\n    FinSi\nFinProceso\n"
 }

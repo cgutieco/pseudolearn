@@ -14,5 +14,5 @@
     {"inputs": ["-4"], "expectedOutputs": ["-20.0"], "expected": "numerico"},
     {"inputs": ["86"], "expectedOutputs": ["30.0"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm FahrenheitToCelsius\n    define fahrenheit as integer;\n    define celsius as real;\n    read fahrenheit;\n    celsius <- (fahrenheit - 32) * 5 / 9;\n    write celsius;\nendAlgorithm\n"
+  "referenceSolution": "algorithm FahrenheitToCelsius\n    define mutable fahrenheit as integer <- 0;\n    read fahrenheit;\n    define celsius as real <- (fahrenheit - 32) * 5 / 9;\n    write celsius;\nendAlgorithm\n"
 }

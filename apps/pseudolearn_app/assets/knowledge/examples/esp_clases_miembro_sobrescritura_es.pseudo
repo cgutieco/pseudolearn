@@ -8,5 +8,5 @@ Clase Perro HeredaDe Animal
   FinMetodo
 FinClase
 Algoritmo Sobrescritura
-  Definir a Como Animal; a <- Nuevo Perro(); a.Hablar()
+  Definir a Como Animal <- Nuevo Perro(); a.Hablar()
 FinAlgoritmo

@@ -64,5 +64,5 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm Average\n    define first as integer;\n    define second as integer;\n    define third as integer;\n    define average as real;\n    read first;\n    read second;\n    read third;\n    average <- (first + second + third) / 3;\n    write average;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Average\n    define mutable first as integer <- 0;\n    define mutable second as integer <- 0;\n    define mutable third as integer <- 0;\n    read first;\n    read second;\n    read third;\n    define average as real <- (first + second + third) / 3;\n    write average;\nendAlgorithm\n"
 }

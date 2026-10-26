@@ -1,5 +1,5 @@
 algorithm Countdown
-    define i as integer;
+    define mutable i as integer <- 0;
     read i;
     while i > 0 do
         write i;

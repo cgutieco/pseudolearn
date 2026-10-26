@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "clase", "requirement": "The statement asks you to solve it with a class."}
   ],
-  "referenceSolution": "class Shape\n    public method Area() as real\n        return 0.0;\n    endMethod\nendClass\n\nclass Square extends Shape\n    private define side as integer;\n\n    method constructor(aSide as integer)\n        this.side <- aSide;\n    endMethod\n\n    public method Area() as real\n        return this.side * this.side;\n    endMethod\nendClass\n\nalgorithm ComputeSquareArea\n    define side as integer;\n    define square as Square;\n    read side;\n    square <- new Square(side);\n    write square.Area();\nendAlgorithm\n"
+  "referenceSolution": "class Shape\n    public method Area() as real\n        return 0.0;\n    endMethod\nendClass\n\nclass Square extends Shape\n    private define side as integer;\n\n    method constructor(aSide as integer)\n        this.side <- aSide;\n    endMethod\n\n    public method Area() as real\n        return this.side * this.side;\n    endMethod\nendClass\n\nalgorithm ComputeSquareArea\n    define mutable side as integer <- 0;\n    read side;\n    define square as Square <- new Square(side);\n    write square.Area();\nendAlgorithm\n"
 }

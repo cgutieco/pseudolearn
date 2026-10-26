@@ -1,7 +1,6 @@
 Algorithm MultipleDeclaration
-  Define a, b, c As Integer
-  a <- 1
-  b <- 2
-  c <- 3
+  Define a As Integer <- 1
+  Define b As Integer <- 2
+  Define c As Integer <- 3
   Write a, b, c
 EndAlgorithm

@@ -18,5 +18,5 @@
     {"kind": "declara-subprograma", "name": "DuplicarElementos", "arity": 2, "requirement": "El enunciado pide un procedimiento llamado DuplicarElementos con dos parámetros."},
     {"kind": "contiene", "construct": "arreglo", "requirement": "El enunciado pide resolverlo con un arreglo."}
   ],
-  "referenceSolution": "SubProceso DuplicarElementos(datos[] Como Entero Por Referencia, tamano Como Entero)\n    Definir i Como Entero;\n    Para i <- 0 Hasta tamano - 1 Con Paso 1 Hacer\n        datos[i] <- datos[i] * 2;\n    FinPara\nFinSubProceso\nProceso EjecutarDuplicado\n    Dimension vector[3] Como Entero;\n    Definir i Como Entero;\n    Para i <- 0 Hasta 2 Con Paso 1 Hacer\n        Leer vector[i];\n    FinPara\n    DuplicarElementos(vector, 3);\n    Para i <- 0 Hasta 2 Con Paso 1 Hacer\n        Escribir vector[i];\n    FinPara\nFinProceso"
+  "referenceSolution": "SubProceso DuplicarElementos(datos[] Como Entero Por Referencia, tamano Como Entero)\n    Para i <- 0 Hasta tamano - 1 Con Paso 1 Hacer\n        datos[i] <- datos[i] * 2;\n    FinPara\nFinSubProceso\nProceso EjecutarDuplicado\n    Dimension vector[3] Como Entero;\n    Para i <- 0 Hasta 2 Con Paso 1 Hacer\n        Leer vector[i];\n    FinPara\n    DuplicarElementos(vector, 3);\n    Para i <- 0 Hasta 2 Con Paso 1 Hacer\n        Escribir vector[i];\n    FinPara\nFinProceso"
 }

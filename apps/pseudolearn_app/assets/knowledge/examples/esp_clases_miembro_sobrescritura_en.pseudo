@@ -8,5 +8,5 @@ Class Dog Inherits From Animal
   EndMethod
 EndClass
 Algorithm Overriding
-  Define a As Animal; a <- New Dog(); a.Speak()
+  Define a As Animal <- New Dog(); a.Speak()
 EndAlgorithm

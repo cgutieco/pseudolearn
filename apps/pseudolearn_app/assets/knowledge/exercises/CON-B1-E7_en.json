@@ -76,5 +76,5 @@
       "construct": "bucle-condicional-posterior"
     }
   ],
-  "referenceSolution": "algorithm FinalPrice\n    define price as integer;\n    define discount as integer;\n    define final as integer;\n    read price;\n    read discount;\n    final <- price - discount;\n    write final;\nendAlgorithm\n"
+  "referenceSolution": "algorithm FinalPrice\n    define mutable price as integer <- 0;\n    define mutable discount as integer <- 0;\n    read price;\n    read discount;\n    define final as integer <- price - discount;\n    write final;\nendAlgorithm\n"
 }

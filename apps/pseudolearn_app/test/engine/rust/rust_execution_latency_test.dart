@@ -10,7 +10,7 @@ void main() {
   group('CIE-F2 · Execution Performance Benchmark (Mid-Range Device Budget)', () {
     const calculationLoop = '''
 Proceso Benchmark
-  Definir i Como Entero
+  Definir Mutable i Como Entero <- 0
   i <- 500
   Mientras i > 0 Hacer
     i <- i - 1
@@ -64,7 +64,7 @@ FinProceso
     test('10,000 steps step budget exhaustion performance', () async {
       const infiniteLoop = '''
 Proceso Loop10k
-  Definir count Como Entero
+  Definir Mutable count Como Entero <- 0
   count <- 0
   Mientras count >= 0 Hacer
     count <- count + 1

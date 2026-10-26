@@ -1,7 +1,6 @@
 Algoritmo DeclaracionMultiple
-  Definir a, b, c Como Entero
-  a <- 1
-  b <- 2
-  c <- 3
+  Definir a Como Entero <- 1
+  Definir b Como Entero <- 2
+  Definir c Como Entero <- 3
   Escribir a, b, c
 FinAlgoritmo

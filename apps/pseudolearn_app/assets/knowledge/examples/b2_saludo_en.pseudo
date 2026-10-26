@@ -1,6 +1,6 @@
 algorithm Greeting
-    define name as string;
-    define age as integer;
+    define mutable name as string <- "";
+    define mutable age as integer <- 0;
     read name;
     read age;
     write "Hello, ", name, ". " without newline;

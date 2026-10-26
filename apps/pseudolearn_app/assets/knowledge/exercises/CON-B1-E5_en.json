@@ -59,6 +59,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm Perimeter\n    define base as integer;\n    define height as integer;\n    define perimeter as integer;\n    read base;\n    read height;\n    perimeter <- 2 * (base + height);\n    write perimeter;\nendAlgorithm\n",
-  "starterCode": "algorithm Perimeter\n    define base as integer;\n    define height as integer;\n    read base;\n    read height;\n    write perimeter;\nendAlgorithm\n"
+  "referenceSolution": "algorithm Perimeter\n    define mutable base as integer <- 0;\n    define mutable height as integer <- 0;\n    read base;\n    read height;\n    define perimeter as integer <- 2 * (base + height);\n    write perimeter;\nendAlgorithm\n",
+  "starterCode": "algorithm Perimeter\n    define mutable base as integer <- 0;\n    define mutable height as integer <- 0;\n    read base;\n    read height;\n    write perimeter;\nendAlgorithm\n"
 }

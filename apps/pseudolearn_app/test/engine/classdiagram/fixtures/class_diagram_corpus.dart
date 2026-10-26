@@ -71,7 +71,7 @@ Clase RobotAutonomo Hereda De Componente
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -80,7 +80,7 @@ Clase Vacia
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -102,7 +102,7 @@ Clase Contador
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -124,7 +124,7 @@ Clase NivelCuatro Hereda De NivelTres
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -138,7 +138,7 @@ Clase CicloB Hereda De CicloA
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -154,7 +154,7 @@ Clase NodoLista
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -172,7 +172,7 @@ Clase ServicioConfiguracionExtensa
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -192,7 +192,7 @@ Clase Fa Hereda De Ca
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -243,7 +243,7 @@ Clase E10
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 
@@ -265,7 +265,7 @@ Clase Auto Hereda De Vehiculo
 FinClase
 
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
 FinProceso
 ''';
 

@@ -1,4 +1,4 @@
 Algoritmo FinSentencia
-  Definir a, b Como Entero; a <- 1; b <- 2
+  Definir a Como Entero <- 1; Definir b Como Entero <- 2
   Escribir a + b
 FinAlgoritmo

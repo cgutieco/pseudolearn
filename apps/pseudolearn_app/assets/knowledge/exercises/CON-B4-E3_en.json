@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "bucle-contado", "requirement": "The statement asks you to solve it with a For loop."}
   ],
-  "referenceSolution": "algorithm SumOfRange\n    define start as integer;\n    define finish as integer;\n    define i as integer;\n    define total as integer;\n    read start;\n    read finish;\n    total <- 0;\n    for i <- start to finish step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SumOfRange\n    define mutable start as integer <- 0;\n    define mutable finish as integer <- 0;\n    read start;\n    read finish;\n    define mutable total as integer <- 0;\n    for i <- start to finish step 1 do\n        total <- total + i;\n    endFor\n    write total;\nendAlgorithm\n"
 }

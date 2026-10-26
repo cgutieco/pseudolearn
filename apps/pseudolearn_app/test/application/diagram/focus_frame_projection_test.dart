@@ -12,7 +12,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const String _loopProgram = '''
 Proceso Termostato
-    Definir temperatura Como Entero;
+    Definir Mutable temperatura Como Entero <- 0;
     temperatura <- 30;
     Mientras temperatura > 24 Hacer
         temperatura <- temperatura - 3;

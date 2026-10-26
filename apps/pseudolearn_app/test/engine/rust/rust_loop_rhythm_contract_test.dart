@@ -8,9 +8,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 const _counted = '''
 Algoritmo Bucle
-  Definir i Como Entero
-  Definir total Como Entero
-  total <- 0
+  Definir Mutable total Como Entero <- 0
   Para i <- 1 Hasta 3 Con Paso 1 Hacer
     total <- total + i
   FinPara
@@ -20,8 +18,7 @@ FinAlgoritmo
 
 const _preTest = '''
 Algoritmo PreTest
-  Definir i Como Entero
-  i <- 0
+  Definir Mutable i Como Entero <- 0
   Mientras i < 2 Hacer
     i <- i + 1
   FinMientras
@@ -30,8 +27,7 @@ FinAlgoritmo
 
 const _postTest = '''
 Algoritmo PostTest
-  Definir i Como Entero
-  i <- 0
+  Definir Mutable i Como Entero <- 0
   Repetir
     i <- i + 1
   Hasta Que i >= 2
@@ -40,8 +36,6 @@ FinAlgoritmo
 
 const _nested = '''
 Algoritmo Anidado
-  Definir i Como Entero
-  Definir j Como Entero
   Para i <- 1 Hasta 2 Con Paso 1 Hacer
     Para j <- 1 Hasta 2 Con Paso 1 Hacer
       Escribir j
@@ -52,7 +46,6 @@ FinAlgoritmo
 
 const _returnsFromNesting = '''
 SubProceso Buscar(limite Como Entero) Como Entero
-  Definir k Como Entero
   Para k <- 1 Hasta limite Con Paso 1 Hacer
     Si k = 2 Entonces
       Retornar k
@@ -62,8 +55,7 @@ SubProceso Buscar(limite Como Entero) Como Entero
 FinSubProceso
 
 Algoritmo ConRetorno
-  Definir r Como Entero
-  r <- Buscar(5)
+  Definir r Como Entero <- Buscar(5)
   Escribir r
 FinAlgoritmo
 ''';
@@ -97,7 +89,7 @@ void main() {
     test(
       'comes back to its header once per turn, closing on the header too',
       () {
-        expect(_linesOf(_counted), equals([2, 3, 4, 5, 6, 5, 6, 5, 6, 5, 8]));
+        expect(_linesOf(_counted), equals([2, 3, 4, 3, 4, 3, 4, 3, 6]));
       },
     );
 
@@ -105,7 +97,7 @@ void main() {
       final steps = _settledStepsOf(_counted);
       final headers = <ExecutionFocus>[];
       for (final step in steps) {
-        if (step.focus!.startLine == 5) headers.add(step.focus!);
+        if (step.focus!.startLine == 3) headers.add(step.focus!);
       }
 
       expect(headers, hasLength(4));
@@ -125,34 +117,34 @@ void main() {
       }
     });
 
-    test('the first turn already carries the control variable', () {
+    test('the first turn body already carries the control variable', () {
       final steps = _settledStepsOf(_counted);
-      final firstHeader = steps[3];
+      final firstBody = steps[2];
       final values = <String>[];
-      for (final variable in firstHeader.variables) {
+      for (final variable in firstBody.variables) {
         if (variable.name == 'i') values.add(variable.formattedValue);
       }
 
-      expect(firstHeader.focus!.startLine, 5);
+      expect(firstBody.focus!.startLine, 4);
       expect(values, equals(['1']));
     });
 
     test('the body sits one block deeper than the header', () {
       final steps = _settledStepsOf(_counted);
 
-      expect(steps[3].blockPosition.depth, 1);
-      expect(steps[4].blockPosition.depth, 2);
-      expect(steps[4].blockPosition.enclosingNodeId, steps[3].focus!.nodeId);
+      expect(steps[1].blockPosition.depth, 1);
+      expect(steps[2].blockPosition.depth, 2);
+      expect(steps[2].blockPosition.enclosingNodeId, steps[1].focus!.nodeId);
     });
   });
 
   group('the other loops keep the same rhythm', () {
     test('a pre-test loop alternates condition and body', () {
-      expect(_linesOf(_preTest), equals([2, 3, 4, 5, 4, 5, 4]));
+      expect(_linesOf(_preTest), equals([2, 3, 4, 3, 4, 3]));
     });
 
     test('a post-test loop evaluates its condition after the body', () {
-      expect(_linesOf(_postTest), equals([2, 3, 5, 6, 5, 6]));
+      expect(_linesOf(_postTest), equals([2, 4, 5, 4, 5]));
     });
 
     test('nested loops report their own depth', () {
@@ -162,9 +154,9 @@ void main() {
         depthsByLine[step.focus!.startLine] = step.blockPosition.depth;
       }
 
-      expect(depthsByLine[4], 1);
-      expect(depthsByLine[5], 2);
-      expect(depthsByLine[6], 3);
+      expect(depthsByLine[2], 1);
+      expect(depthsByLine[3], 2);
+      expect(depthsByLine[4], 3);
     });
   });
 
@@ -173,7 +165,7 @@ void main() {
       final steps = _settledStepsOf(_returnsFromNesting);
       final afterCall = steps.last;
 
-      expect(afterCall.focus!.startLine, 14);
+      expect(afterCall.focus!.startLine, 12);
       expect(afterCall.blockPosition.depth, lessThanOrEqualTo(1));
       expect(afterCall.blockPosition.enclosingNodeId, isNull);
     });

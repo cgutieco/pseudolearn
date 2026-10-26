@@ -1,10 +1,7 @@
 Proceso Intercambio
-    Definir a Como Entero;
-    Definir b Como Entero;
-    Definir auxiliar Como Entero;
-    a <- 7;
-    b <- 4;
-    auxiliar <- a;
+    Definir Mutable a Como Entero <- 7;
+    Definir Mutable b Como Entero <- 4;
+    Definir auxiliar Como Entero <- a;
     a <- b;
     b <- auxiliar;
     Escribir a;

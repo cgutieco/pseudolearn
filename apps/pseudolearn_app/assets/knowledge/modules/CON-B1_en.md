@@ -70,18 +70,18 @@ does not, you have just found exactly where it did not work, which is worth far 
 
 :::parte errores-frecuentes
 
-## Giving an initial value inside the declaration
+## Declaring without an initial value
 
-The type is written at the end of the declaration, so an initial value does not fit there. You declare
-on one line and assign on the next.
+Every declaration carries its initial value after the arrow: a name without a value does not exist. If
+the value will arrive later, declare it with `mutable` and a starting value, and assign it afterwards.
 
 ```pseudo
-algorithm InitialValue
-  define n as integer <- 5;
+algorithm NoInitialValue
+  define n as integer;
 endAlgorithm
 ```
 
-{{diagnostico:initializationInDeclarationNotAllowed}}
+{{diagnostico:missingBindingInitializer}}
 
 ## Assigning to something that is not a box
 
@@ -90,8 +90,7 @@ other way round is the mistake of someone coming from mathematics, where equalit
 
 ```pseudo
 algorithm InvalidTarget
-  define n as integer;
-  n <- 3;
+  define n as integer <- 3;
   5 <- n;
 endAlgorithm
 ```
@@ -105,8 +104,7 @@ program from carrying on and computing with something that is not a number.
 
 ```pseudo
 algorithm IncompatibleType
-  define n as integer;
-  n <- "five";
+  define n as integer <- "five";
   write n;
 endAlgorithm
 ```

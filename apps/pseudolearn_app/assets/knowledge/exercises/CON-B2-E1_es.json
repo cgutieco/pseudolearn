@@ -14,5 +14,5 @@
     {"inputs": ["Bea", "0"], "expectedOutputs": ["Bea - 0"], "expected": "texto"},
     {"inputs": ["Ivan", "42"], "expectedOutputs": ["Ivan - 42"], "expected": "texto"}
   ],
-  "referenceSolution": "Proceso Presentacion\n    Definir nombre Como Cadena;\n    Definir edad Como Entero;\n    Leer nombre;\n    Leer edad;\n    Escribir nombre, \" - \", edad;\nFinProceso\n"
+  "referenceSolution": "Proceso Presentacion\n    Definir Mutable nombre Como Cadena <- \"\";\n    Definir Mutable edad Como Entero <- 0;\n    Leer nombre;\n    Leer edad;\n    Escribir nombre, \" - \", edad;\nFinProceso\n"
 }

@@ -54,6 +54,6 @@
       "expected": "numerico"
     }
   ],
-  "referenceSolution": "algorithm SquarePerimeter\n    define side as integer;\n    define perimeter as integer;\n    read side;\n    perimeter <- side * 4;\n    write perimeter;\nendAlgorithm\n",
-  "starterCode": "algorithm SquarePerimeter\n    define side as integer;\n    define perimeter as integer;\n    read side;\n\n    write perimeter;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SquarePerimeter\n    define mutable side as integer <- 0;\n    read side;\n    define perimeter as integer <- side * 4;\n    write perimeter;\nendAlgorithm\n",
+  "starterCode": "algorithm SquarePerimeter\n    define mutable side as integer <- 0;\n    define mutable perimeter as integer <- 0;\n    read side;\n\n    write perimeter;\nendAlgorithm\n"
 }

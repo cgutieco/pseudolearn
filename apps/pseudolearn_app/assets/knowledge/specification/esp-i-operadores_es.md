@@ -29,8 +29,7 @@ cadena no es ninguna de las dos y el lenguaje lo rechaza.
 
 ```pseudo
 Algoritmo ErrorConcatenar
-  Definir mensaje Como Cadena
-  mensaje <- "Total: " + 5
+  Definir mensaje Como Cadena <- "Total: " + 5
 FinAlgoritmo
 ```
 

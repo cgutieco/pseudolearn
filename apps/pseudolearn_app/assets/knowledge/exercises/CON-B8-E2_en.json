@@ -14,5 +14,5 @@
     {"inputs": ["1", "7"], "expectedOutputs": ["0"], "expected": "numerico"},
     {"inputs": ["2", "-2", "-4"], "expectedOutputs": ["-6"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm SumOfEvens\n    define count as integer;\n    define i as integer;\n    define number as integer;\n    define total as integer;\n    read count;\n    total <- 0;\n    for i <- 1 to count step 1 do\n        read number;\n        if number mod 2 = 0 then\n            total <- total + number;\n        endIf\n    endFor\n    write total;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SumOfEvens\n    define mutable count as integer <- 0;\n    define mutable number as integer <- 0;\n    read count;\n    define mutable total as integer <- 0;\n    for i <- 1 to count step 1 do\n        read number;\n        if number mod 2 = 0 then\n            total <- total + number;\n        endIf\n    endFor\n    write total;\nendAlgorithm\n"
 }

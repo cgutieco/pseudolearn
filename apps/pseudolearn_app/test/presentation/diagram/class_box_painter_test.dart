@@ -34,14 +34,14 @@ Clase Motocicleta Hereda De Vehiculo
 FinClase
 
 Proceso Principal
-    Definir moto Como Motocicleta
+    Definir Mutable moto Como Motocicleta <- Nuevo Motocicleta()
     Escribir 1
 FinProceso
 ''';
 
 const String _noClasses = '''
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
     Escribir n
 FinProceso
 ''';

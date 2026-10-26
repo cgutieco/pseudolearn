@@ -11,7 +11,7 @@ void main() {
     test('exports clean algorithm to Python', () {
       const source = '''
 Algoritmo Test
-  Definir x Como Entero
+  Definir Mutable x Como Entero <- 0
   x <- 42
   Escribir x
 FinAlgoritmo
@@ -37,7 +37,7 @@ FinAlgoritmo
     test('exports clean algorithm to Rust', () {
       const source = '''
 Algoritmo Test
-  Definir x Como Entero
+  Definir Mutable x Como Entero <- 0
   x <- 42
   Escribir x
 FinAlgoritmo
@@ -76,7 +76,7 @@ FinAlgoritmo
       () {
         const semanticErrorSource = '''
 Algoritmo SemanticError
-  Definir x Como Entero
+  Definir Mutable x Como Entero <- 0
   x <- "texto invalido"
 FinAlgoritmo
 ''';
@@ -95,9 +95,9 @@ FinAlgoritmo
       () {
         const source = '''
 Algoritmo Factorial
-  Definir n Como Entero
-  Definir f Como Entero
-  Definir i Como Entero
+  Definir Mutable n Como Entero <- 0
+  Definir Mutable f Como Entero <- 0
+  Definir i Como Entero <- 0
   n <- 5
   f <- 1
   Para i <- 1 Hasta n Con Paso 1 Hacer
@@ -145,7 +145,7 @@ FinAlgoritmo
     test('exports RepeatUntil loop to Python and Rust cleanly', () {
       const source = '''
 Algoritmo RepetirTest
-  Definir c Como Entero
+  Definir Mutable c Como Entero <- 0
   c <- 0
   Repetir
     c <- c + 1
@@ -179,7 +179,7 @@ FinAlgoritmo
     test('exports Switch Segun to Python match and Rust match', () {
       const source = '''
 Algoritmo SegunTest
-  Definir op Como Entero
+  Definir Mutable op Como Entero <- 0
   op <- 2
   Segun op Hacer
     1:

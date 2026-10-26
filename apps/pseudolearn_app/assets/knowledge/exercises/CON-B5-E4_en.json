@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "contiene", "construct": "arreglo", "requirement": "The statement asks you to solve it with an array."}
   ],
-  "referenceSolution": "algorithm SearchValue\n    dimension numbers[5] as integer;\n    define i as integer;\n    define target as integer;\n    define index as integer;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    read target;\n    index <- -1;\n    for i <- 0 to 4 step 1 do\n        if numbers[i] = target then\n            index <- i;\n        endIf\n    endFor\n    write index;\nendAlgorithm\n"
+  "referenceSolution": "algorithm SearchValue\n    dimension numbers[5] as integer;\n    define mutable target as integer <- 0;\n    for i <- 0 to 4 step 1 do\n        read numbers[i];\n    endFor\n    read target;\n    define mutable index as integer <- -1;\n    for i <- 0 to 4 step 1 do\n        if numbers[i] = target then\n            index <- i;\n        endIf\n    endFor\n    write index;\nendAlgorithm\n"
 }

@@ -14,5 +14,5 @@
     {"inputs": ["-1", "-5"], "expectedOutputs": ["-1"], "expected": "numerico"},
     {"inputs": ["0", "100"], "expectedOutputs": ["100"], "expected": "numerico"}
   ],
-  "referenceSolution": "algorithm LargerOfTwo\n    define a as integer;\n    define b as integer;\n    read a, b;\n    if a > b then\n        write a;\n    else\n        write b;\n    endIf\nendAlgorithm\n"
+  "referenceSolution": "algorithm LargerOfTwo\n    define mutable a as integer <- 0;\n    define mutable b as integer <- 0;\n    read a, b;\n    if a > b then\n        write a;\n    else\n        write b;\n    endIf\nendAlgorithm\n"
 }

@@ -17,5 +17,5 @@
   "assertions": [
     {"kind": "declara-subprograma", "name": "Factorial", "arity": 1, "requirement": "El enunciado pide una función recursiva llamada Factorial con un parámetro."}
   ],
-  "referenceSolution": "SubProceso Factorial(n Como Entero) Como Entero\n    Si n <= 1 Entonces\n        Retornar 1;\n    SiNo\n        Retornar n * Factorial(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularFactorial\n    Definir n Como Entero;\n    Leer n;\n    Escribir Factorial(n);\nFinProceso\n"
+  "referenceSolution": "SubProceso Factorial(n Como Entero) Como Entero\n    Si n <= 1 Entonces\n        Retornar 1;\n    SiNo\n        Retornar n * Factorial(n - 1);\n    FinSi\nFinSubProceso\n\nProceso CalcularFactorial\n    Definir Mutable n Como Entero <- 0;\n    Leer n;\n    Escribir Factorial(n);\nFinProceso\n"
 }

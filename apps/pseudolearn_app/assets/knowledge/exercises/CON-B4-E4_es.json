@@ -61,6 +61,6 @@
       "requirement": "El enunciado pide resolverlo con un bucle Para."
     }
   ],
-  "referenceSolution": "Proceso SumaMultiplosDeTres\n    Definir limite Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer limite;\n    total <- 0;\n    Para i <- 0 Hasta limite Con Paso 3 Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n",
-  "starterCode": "Proceso SumaMultiplosDeTres\n    Definir limite Como Entero;\n    Definir i Como Entero;\n    Definir total Como Entero;\n    Leer limite;\n    total <- 0;\n    Para i <- 0 Hasta limite Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n"
+  "referenceSolution": "Proceso SumaMultiplosDeTres\n    Definir Mutable limite Como Entero <- 0;\n    Leer limite;\n    Definir Mutable total Como Entero <- 0;\n    Para i <- 0 Hasta limite Con Paso 3 Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n",
+  "starterCode": "Proceso SumaMultiplosDeTres\n    Definir Mutable limite Como Entero <- 0;\n    Definir Mutable total Como Entero <- 0;\n    Leer limite;\n    total <- 0;\n    Para i <- 0 Hasta limite Con Paso 1 Hacer\n        total <- total + i;\n    FinPara\n    Escribir total;\nFinProceso\n"
 }
