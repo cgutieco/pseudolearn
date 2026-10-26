@@ -111,7 +111,7 @@
       "codigo": "integerOverflow"
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 9223372036854775807;\nx <- x * 2;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 9223372036854775807;\nx <- x * 2;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -134,7 +134,7 @@
     "salida": "-1:0\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir a, b Como Entero;\na <- -9223372036854775807 - 1;\nb <- -1;\nEscribir -7 mod 2 + 0, \":\", a mod b;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 0;\na <- -9223372036854775807 - 1;\nb <- -1;\nEscribir -7 mod 2 + 0, \":\", a mod b;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -172,7 +172,7 @@
       "codigo": "negativeIntegerExponent"
     }
   },
-  "programa": "Algoritmo P\nDefinir x, z Como Entero;\nx <- -1;\nEscribir 1;\nz <- (2 ^ x) + (1 div 0);\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nDefinir Mutable z Como Entero <- 0;\nx <- -1;\nEscribir 1;\nz <- (2 ^ x) + (1 div 0);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

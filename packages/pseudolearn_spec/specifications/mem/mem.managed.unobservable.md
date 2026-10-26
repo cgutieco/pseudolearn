@@ -65,7 +65,7 @@
     "salida": "100\n",
     "terminacion": "completed"
   },
-  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir c Como C;\nDefinir i, total Como Entero;\ntotal <- 0;\nPara i <- 1 Hasta 100 Con Paso 1 Hacer\nc <- Nuevo C();\nc.valor <- 1;\ntotal <- total + c.valor;\nFinPara\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir Mutable c Como C <- Nuevo C();\nDefinir Mutable i Como Entero <- 0;\nDefinir Mutable total Como Entero <- 0;\ntotal <- 0;\nPara i <- 1 Hasta 100 Con Paso 1 Hacer\nc <- Nuevo C();\nc.valor <- 1;\ntotal <- total + c.valor;\nFinPara\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "limites": {
     "celdas": 4

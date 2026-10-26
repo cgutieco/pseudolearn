@@ -60,8 +60,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase C\nPublico Definir value Como Entero;\nFinClase\nAlgoritmo P\nDefinir x, other Como C;\nx <- Nuevo C();\nx.value <- 4;\nother <- Copiar(x);\nother.value <- 8;\nEscribir x.value, other.value, x = other;\nFinAlgoritmo\n",
-    "en": "class C\npublic define value as integer;\nendClass\nalgorithm P\ndefine x, other as C;\nx <- new C();\nx.value <- 4;\nother <- copy(x);\nother.value <- 8;\nwrite x.value, other.value, x = other;\nendAlgorithm\n"
+    "es": "Clase C\nPublico Definir value Como Entero;\nFinClase\nAlgoritmo P\nDefinir x Como C <- Nuevo C();\nx.value <- 4;\nDefinir other Como C <- Copiar(x);\nother.value <- 8;\nEscribir x.value, other.value, x = other;\nFinAlgoritmo\n",
+    "en": "class C\npublic define value as integer;\nendClass\nalgorithm P\ndefine x as C <- new C();\nx.value <- 4;\ndefine other as C <- copy(x);\nother.value <- 8;\nwrite x.value, other.value, x = other;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

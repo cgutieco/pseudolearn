@@ -71,7 +71,7 @@
     "salida": "1:ab\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir x, z Como Entero;\nDefinir s, t Como Cadena;\nz <- 1;\nx <- z;\nz <- 2;\nt <- \"ab\";\ns <- t;\nt <- t + \"c\";\nEscribir x, \":\", s;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nDefinir Mutable z Como Entero <- 0;\nDefinir Mutable s Como Cadena <- \"\";\nDefinir Mutable t Como Cadena <- \"\";\nz <- 1;\nx <- z;\nz <- 2;\nt <- \"ab\";\ns <- t;\nt <- t + \"c\";\nEscribir x, \":\", s;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -141,7 +141,7 @@
     "salida": "1:7\n",
     "terminacion": "completed"
   },
-  "programa": "Clase C\nPublico Definir valor Como Entero;\nPublico Definir otro Como C;\nFinClase\nAlgoritmo P\nDefinir a, b Como C;\na <- Nuevo C();\na.valor <- 1;\na.otro <- Nuevo C();\nb <- Copiar(a);\nb.valor <- 2;\nb.otro.valor <- 7;\nEscribir a.valor, \":\", a.otro.valor;\nFinAlgoritmo\n",
+  "programa": "Clase C\nPublico Definir valor Como Entero;\nPublico Definir otro Como C;\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\na.valor <- 1;\na.otro <- Nuevo C();\nDefinir b Como C <- Copiar(a);\nb.valor <- 2;\nb.otro.valor <- 7;\nEscribir a.valor, \":\", a.otro.valor;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -176,7 +176,7 @@
     "salida": "1\n",
     "terminacion": "completed"
   },
-  "programa": "SubProceso dos(a Como Entero Por Referencia, b Como Entero Por Referencia)\na <- 1;\nEscribir b;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero;\nx <- 0;\ndos(x, x);\nFinAlgoritmo\n",
+  "programa": "SubProceso dos(a Como Entero Por Referencia, b Como Entero Por Referencia)\na <- 1;\nEscribir b;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 0;\ndos(x, x);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

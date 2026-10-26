@@ -117,7 +117,7 @@
       }
     ]
   },
-  "programa": "SubProceso f(n Como Entero) Como Entero\nDefinir x Como Entero;\nx <- 10 div n;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir f(0);\nFinAlgoritmo\n",
+  "programa": "SubProceso f(n Como Entero) Como Entero\nDefinir Mutable x Como Entero <- 0;\nx <- 10 div n;\nRetornar x;\nFinSubProceso\nAlgoritmo P\nEscribir f(0);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

@@ -232,8 +232,8 @@
     "flexible"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDefinir value Como Opcional<Entero> <- Error(1);\nSegun value Hacer\nAlgo(value): Escribir value;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine value as optional<integer> <- failure(1);\nswitch value do\nsome(value): write value;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo Main\nDefinir value Como Opcional<Entero> <- Error(1);\nSegun value Hacer\nAlgo(payload): Escribir payload;\nNada: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\ndefine value as optional<integer> <- failure(1);\nswitch value do\nsome(payload): write payload;\nnone: write 0;\nendSwitch\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

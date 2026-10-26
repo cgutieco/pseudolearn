@@ -168,7 +168,7 @@
     "salida": "20000100000\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir i, total Como Entero;\ntotal <- 0;\nPara i <- 1 Hasta 200000 Con Paso 1 Hacer\ntotal <- total + i;\nFinPara\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\nDefinir Mutable total Como Entero <- 0;\ntotal <- 0;\nPara i <- 1 Hasta 200000 Con Paso 1 Hacer\ntotal <- total + i;\nFinPara\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

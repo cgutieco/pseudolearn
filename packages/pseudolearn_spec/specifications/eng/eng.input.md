@@ -67,7 +67,7 @@
     "salida": "antes\n",
     "terminacion": "awaiting_input"
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -90,7 +90,7 @@
     "salida": "antes\n5\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nEscribir \"antes\";\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "5"
@@ -129,7 +129,7 @@
     "salida": "5\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir a, b Como Entero;\nLeer a, b;\nEscribir a + b;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 0;\nLeer a, b;\nEscribir a + b;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "2",
@@ -157,7 +157,7 @@
     "salida": "",
     "terminacion": "awaiting_input"
   },
-  "programa": "Algoritmo P\nDefinir a, b Como Entero;\nLeer a;\nLeer b;\nEscribir a + b;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable a Como Entero <- 0;\nDefinir Mutable b Como Entero <- 0;\nLeer a;\nLeer b;\nEscribir a + b;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "2"
@@ -196,7 +196,7 @@
     "salida": "7\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir total, valor Como Entero;\ntotal <- 0;\nLeer valor;\nMientras valor <> 0 Hacer\ntotal <- total + valor;\nLeer valor;\nFinMientras\nEscribir total;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable total Como Entero <- 0;\nDefinir Mutable valor Como Entero <- 0;\ntotal <- 0;\nLeer valor;\nMientras valor <> 0 Hacer\ntotal <- total + valor;\nLeer valor;\nFinMientras\nEscribir total;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "3",
@@ -257,7 +257,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "abc",
@@ -290,7 +290,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "entradas": [
     "abc"

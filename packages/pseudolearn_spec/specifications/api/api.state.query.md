@@ -136,18 +136,27 @@
         "marcos": [
           {
             "unidad": "P",
-            "variables": {
-              "x": {
-                "sin_valor": true
-              }
-            }
+            "variables": {}
           }
         ],
-        "objetos": {}
+        "objetos": {
+          "1": {
+            "arreglo": {
+              "dimensiones": [
+                1
+              ],
+              "celdas": [
+                {
+                  "sin_valor": true
+                }
+              ]
+            }
+          }
+        }
       }
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero <- 3;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDimension a[1] Como Entero;\na[0] <- 3;\nEscribir a[0];\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

@@ -74,7 +74,7 @@
       "codigo": "divisionByZero"
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -126,7 +126,7 @@
       "codigo": "integerOverflow"
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 9223372036854775807;\nEscribir x + 1;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 9223372036854775807;\nEscribir x + 1;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

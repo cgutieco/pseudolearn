@@ -63,10 +63,10 @@
   "origen": "derivado",
   "operacion": "trace",
   "espera": {
-    "salida": "",
+    "salida": "{{lexema:booleanFalse}}\n",
     "terminacion": "completed",
     "estado_en": {
-      "evento": 5,
+      "evento": 4,
       "estado": {
         "marcos": [
           {
@@ -102,7 +102,7 @@
       }
     }
   },
-  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir a, b Como C;\na <- Nuevo C();\nb <- Nuevo C();\nFinAlgoritmo\n",
+  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nDefinir b Como C <- Nuevo C();\nEscribir a = b;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -162,7 +162,7 @@
     "salida": "5{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   },
-  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir a, b Como C;\na <- Nuevo C();\nb <- a;\nb.valor <- 5;\nEscribir a.valor, a = b;\nFinAlgoritmo\n",
+  "programa": "Clase C\nPublico Definir valor Como Entero;\nFinClase\nAlgoritmo P\nDefinir a Como C <- Nuevo C();\nDefinir b Como C <- a;\nb.valor <- 5;\nEscribir a.valor, a = b;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -197,7 +197,7 @@
     "salida": "{{lexema:booleanTrue}}\n",
     "terminacion": "completed"
   },
-  "programa": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir n Como Nodo;\nn <- Nuevo Nodo();\nn.siguiente <- n;\nEscribir n.siguiente.siguiente = n;\nFinAlgoritmo\n",
+  "programa": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir n Como Nodo <- Nuevo Nodo();\nn.siguiente <- n;\nEscribir n.siguiente.siguiente = n;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

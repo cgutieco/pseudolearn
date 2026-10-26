@@ -93,7 +93,7 @@
       }
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -133,18 +133,27 @@
         "marcos": [
           {
             "unidad": "P",
-            "variables": {
-              "x": {
-                "sin_valor": true
-              }
-            }
+            "variables": {}
           }
         ],
-        "objetos": {}
+        "objetos": {
+          "1": {
+            "arreglo": {
+              "dimensiones": [
+                1
+              ],
+              "celdas": [
+                {
+                  "sin_valor": true
+                }
+              ]
+            }
+          }
+        }
       }
     }
   },
-  "programa": "Algoritmo P\nDefinir x Como Entero;\nx <- 3;\nEscribir x;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDimension a[1] Como Entero;\na[0] <- 3;\nEscribir a[0];\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -246,7 +255,7 @@
     "salida": "",
     "terminacion": "completed",
     "estado_en": {
-      "evento": 5,
+      "evento": 3,
       "estado": {
         "marcos": [
           {
@@ -271,7 +280,7 @@
       }
     }
   },
-  "programa": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir n Como Nodo;\nn <- Nuevo Nodo();\nn.siguiente <- n;\nFinAlgoritmo\n",
+  "programa": "Clase Nodo\nPublico Definir siguiente Como Nodo;\nFinClase\nAlgoritmo P\nDefinir n Como Nodo <- Nuevo Nodo();\nn.siguiente <- n;\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -333,7 +342,7 @@
       }
     }
   },
-  "programa": "SubProceso inc(v Como Entero Por Referencia)\nv <- v + 1;\nFinSubProceso\nAlgoritmo P\nDefinir x Como Entero;\nx <- 1;\ninc(x);\nFinAlgoritmo\n",
+  "programa": "SubProceso inc(v Como Entero Por Referencia)\nv <- v + 1;\nFinSubProceso\nAlgoritmo P\nDefinir Mutable x Como Entero <- 0;\nx <- 1;\ninc(x);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -368,7 +377,7 @@
     "salida": "",
     "terminacion": "completed",
     "estado_en": {
-      "evento": 7,
+      "evento": 5,
       "estado": {
         "marcos": [
           {
@@ -404,7 +413,7 @@
       }
     }
   },
-  "programa": "Clase C\nPublico Definir valor Como Entero;\nMetodo poner(cantidad Como Entero)\nEste.valor <- cantidad;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir c Como C;\nc <- Nuevo C();\nc.poner(4);\nFinAlgoritmo\n",
+  "programa": "Clase C\nPublico Definir valor Como Entero;\nMetodo poner(cantidad Como Entero)\nEste.valor <- cantidad;\nFinMetodo\nFinClase\nAlgoritmo P\nDefinir c Como C <- Nuevo C();\nc.poner(4);\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

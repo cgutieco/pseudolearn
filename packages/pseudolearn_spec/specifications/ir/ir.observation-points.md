@@ -118,7 +118,7 @@
       }
     ]
   },
-  "programa": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 1 Hacer\ni <- i + 1;\nFinMientras\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```
@@ -154,7 +154,7 @@
     "salida": "3\n",
     "terminacion": "completed"
   },
-  "programa": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 3 Hacer\ni <- i + 1;\nFinMientras\nEscribir i;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 3 Hacer\ni <- i + 1;\nFinMientras\nEscribir i;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "limites": {
     "sentencias": 7
@@ -181,7 +181,7 @@
     "terminacion": "limit_reached",
     "limite": "sentencias"
   },
-  "programa": "Algoritmo P\nDefinir i Como Entero;\ni <- 0;\nMientras i < 3 Hacer\ni <- i + 1;\nFinMientras\nEscribir i;\nFinAlgoritmo\n",
+  "programa": "Algoritmo P\nDefinir Mutable i Como Entero <- 0;\ni <- 0;\nMientras i < 3 Hacer\ni <- i + 1;\nFinMientras\nEscribir i;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "limites": {
     "sentencias": 6
