@@ -10,6 +10,17 @@ struct Example {
     profile: String,
     program: String,
     output: String,
+    failure: Option<String>,
+}
+
+impl Example {
+    fn expected_kind(&self) -> &'static str {
+        if self.failure.is_some() {
+            "failed"
+        } else {
+            "completed"
+        }
+    }
 }
 
 fn examples() -> Result<Vec<Example>, String> {
@@ -40,6 +51,10 @@ fn examples() -> Result<Vec<Example>, String> {
                     .and_then(Value::as_str)
                     .ok_or("missing output")?
                     .to_owned(),
+                failure: case
+                    .pointer("/espera/fallo/codigo")
+                    .and_then(Value::as_str)
+                    .map(str::to_owned),
             });
         }
     }
@@ -65,7 +80,7 @@ fn generic_instances_preserve_normative_results_with_collection_in_both_twins() 
             );
             assert_eq!(
                 normal.termination.get("kind").and_then(Value::as_str),
-                Some("completed"),
+                Some(example.expected_kind()),
                 "{}: {:?}",
                 example.identity,
                 normal.termination
@@ -93,6 +108,7 @@ fn generic_instances_preserve_normative_results_with_collection_in_both_twins() 
 #[test]
 fn native_generic_instances_match_vm_with_forced_collection() -> Result<(), String> {
     for example in examples()? {
+        let expected_kind = example.expected_kind();
         if example.profile == "es" {
             native_support::compare(&example.program)?;
         } else {
@@ -114,7 +130,7 @@ fn native_generic_instances_match_vm_with_forced_collection() -> Result<(), Stri
             );
             assert_eq!(
                 actual.termination.get("kind").and_then(Value::as_str),
-                Some("completed"),
+                Some(expected_kind),
                 "{}: {:?}",
                 example.identity,
                 actual.termination

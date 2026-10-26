@@ -352,7 +352,8 @@
     {
       "regla": "LANG.CONTROL.FOR@1.0.0#R4",
       "verificacion": "ejecutor",
-      "estado": "cumple"
+      "estado": "exento",
+      "justificacion": "El sujeto aot ejecuta programas y no analiza ni expone la representación intermedia; la regla se verifica con casos de análisis o de representación intermedia en el sujeto engine."
     },
     {
       "regla": "LANG.CONTROL.FOR@1.0.0#R5",

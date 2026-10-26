@@ -31,7 +31,7 @@ fn loop_body_bindings_do_not_create_undefined_header_arguments() -> Result<(), S
     for body in [
         "define mutable counter as integer <- 0;\nwhile counter < 2 do\ndefine value as integer <- counter;\nwrite value;\ncounter <- counter + 1;\nendWhile",
         "define mutable counter as integer <- 0;\nfor counter <- 1 to 2 step 1 do\ndefine value as integer <- counter;\nwrite value;\nendFor",
-        "define mutable counter as integer <- 0;\nrepeat\ndefine value as integer <- counter;\ncounter <- counter + 1;\nuntil counter = 2\nwrite value;",
+        "define mutable counter as integer <- 0;\nrepeat\ndefine value as integer <- counter;\ncounter <- counter + 1;\nwrite value;\nuntil counter = 2",
     ] {
         let program = format!("algorithm Main\n{body}\nendAlgorithm\n");
         let module = pseudolearn_api::compile_source_to_module(&program, "en", "strict")
