@@ -431,21 +431,24 @@ Puntos a cumplir:
 
 Fuera de alcance: HTTP, tareas concurrentes y reejecución con efectos reales desde el pasado.
 
-Plan detallado: `fase-pg-3-plan-ejecucion.md`, pendiente de crear al iniciar la fase.
+Plan detallado: [fase-pg-3-plan-ejecucion.md](fase-pg-3-plan-ejecucion.md), creado y revisado por la persona el
+2026-10-26. Deja constancia de que todas las soluciones son a medida para la arquitectura de PseudoLearn, que en ninguna
+iteración ni en el cierre se ejecutan las pruebas de todo el monorepo (solo las pruebas acotadas a lo desarrollado) y
+que `apps/pseudolearn_app` evoluciona de forma sincronizada con la sintaxis y semántica nuevas de la fase.
 
 Cierre común (definiciones en §4.0):
 
 - [ ] `PG-3.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-3.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-3.C02` Plan detallado creado según §5 y revisado por la persona.
 - [ ] `PG-3.C03` SPEC-FIRST y congelamiento respetados.
 - [ ] `PG-3.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-3.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [ ] `PG-3.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
 - [ ] `PG-3.C06` Capas declaradas, imports permitidos y límites de tamaño.
 - [ ] `PG-3.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
 - [ ] `PG-3.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-3.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [ ] `PG-3.C09` Fichas de ayuda, datos de proyección de la sintaxis nueva y evolución sincronizada de `apps/pseudolearn_app`.
 - [ ] `PG-3.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-3.C11` Tests y verificadores de los miembros afectados en verde.
+- [ ] `PG-3.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
 - [ ] `PG-3.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
 - [ ] `PG-3.C13` Resumen completo, informe a la persona y parada.
 
@@ -957,7 +960,7 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
 | PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
-| PG-3 | Sin iniciar | No | | |
+| PG-3 | Plan detallado aprobado | Sí, C02 revisado (2026-10-26) | | Soluciones a medida, política de pruebas acotadas y evolución sincronizada de `pseudolearn_app` fijadas; pendiente de iniciar Iteración 1 (`PG-3.C01`) |
 | PG-4 | Sin iniciar | No | | |
 | PG-5 | Sin iniciar | No | | |
 | PG-6A | Sin iniciar | No | | |
