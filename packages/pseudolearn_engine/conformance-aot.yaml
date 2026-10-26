@@ -5,6 +5,9 @@
     "ENG.EXEC.EFFECT-COMMIT",
     "ENG.EFFECT.TAPE",
     "LANG.CAPABILITY.MODEL",
+    "LANG.CAPABILITY.PURITY",
+    "LIB.IO",
+    "LIB.TIME",
     "ENG.EXEC.EFFECT-ORDER",
     "ENG.INPUT",
     "ENG.LIMITS",
@@ -1213,27 +1216,83 @@
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R1",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R2",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R3",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
     },
     {
       "regla": "ENG.EFFECT.TAPE@1.0.0#R4",
-      "verificacion": "ejecutor",
-      "estado": "pendiente",
-      "resuelve_en": "PG-3.12"
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_timeline/src/tape_privacy.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_runtime/src/bytes_buffer.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_runtime/src/io_error.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_lowering/src/cleanup_edges.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_aot_rt/src/effect_runtime.rs",
+      "estado": "cumple"
     }
   ]
 }

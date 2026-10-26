@@ -34,6 +34,13 @@ final class RustExecutionApi {
     _transport.call('input', {'resource': execution, 'text': text});
   }
 
+  void provideEffectResult(int execution, Object? result) {
+    _transport.call('effect_result', {
+      'resource': execution,
+      'result': result,
+    });
+  }
+
   void cancel(int execution) {
     _transport.call('cancel', {'resource': execution});
   }

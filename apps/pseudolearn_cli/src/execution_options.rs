@@ -7,6 +7,8 @@ pub struct ExecutionArguments {
     pub statements: Option<u64>,
     pub cells: Option<u64>,
     pub trace: bool,
+    pub record_tape: Option<String>,
+    pub replay_tape: Option<String>,
 }
 
 pub fn parse_numeric(
@@ -29,6 +31,27 @@ pub fn parse_numeric(
         }
         "--celdas" | "--cells" => execution.cells = Some(choice.parse().map_err(|_| invalid())?),
         _ => return Err(invalid()),
+    }
+    *index = next.saturating_add(1);
+    Ok(())
+}
+
+pub fn parse_tape_option(
+    arguments: &[String],
+    index: &mut usize,
+    locale: &str,
+    execution: &mut ExecutionArguments,
+) -> Result<(), CliError> {
+    let flag = arguments.get(*index).map_or("", String::as_str);
+    let next = index.saturating_add(1);
+    let choice = arguments.get(next).map_or("", String::as_str);
+    if choice.is_empty() {
+        return Err(CliError::Usage(invalid_option_value(locale, flag, choice)));
+    }
+    match flag {
+        "--grabar-cinta" | "--record-tape" => execution.record_tape = Some(choice.to_owned()),
+        "--reproducir-cinta" | "--replay-tape" => execution.replay_tape = Some(choice.to_owned()),
+        _ => return Err(CliError::Usage(invalid_option_value(locale, flag, choice))),
     }
     *index = next.saturating_add(1);
     Ok(())

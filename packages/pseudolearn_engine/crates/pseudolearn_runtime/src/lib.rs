@@ -6,11 +6,15 @@ pub use pseudolearn_abi::{
 
 mod arithmetic;
 mod array;
+mod bytes_buffer;
 mod cell;
 mod capability_table;
 mod collection;
 mod dictionary;
+mod io_error;
 mod vector;
+pub use bytes_buffer::BytesBuffer;
+pub use io_error::IoError;
 pub use collection::{
     CollectionWords, collection_check_version, collection_layout, collection_length,
     collection_version, new_dictionary, new_vector,

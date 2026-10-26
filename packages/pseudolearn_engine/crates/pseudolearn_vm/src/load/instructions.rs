@@ -13,6 +13,7 @@ use crate::VmTrap;
 use crate::dispatch::{DispatchKind, Op, dispatch_kind, select_fused, select_operation};
 
 mod control;
+mod effects;
 mod switch;
 mod values;
 
@@ -119,6 +120,7 @@ fn decode_instruction(
         DispatchKind::Input => decode_input(context.function, instruction),
         DispatchKind::Memory => super::memory::decode(context, loaded, instruction),
         DispatchKind::Observation => decode_observation(context, loaded, instruction),
+        DispatchKind::Effect => effects::decode(context, loaded, instruction),
     }
 }
 

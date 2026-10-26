@@ -1,13 +1,19 @@
 #![forbid(unsafe_code)]
 
 pub mod array_layout;
+pub mod bytes_layout;
 pub mod capability_layout;
 mod collection_command;
 pub mod dictionary_layout;
+pub mod io_error_layout;
 pub mod vector_layout;
+pub use bytes_layout::{
+    BYTES_DATA_OFFSET, BYTES_HEADER_WORDS, BYTES_LENGTH_OFFSET, BYTES_SHAPE_TAG, bytes_cell_count,
+};
 pub use capability_layout::{
     CAPABILITY_HEADER_WORDS, CAPABILITY_SHAPE_TAG, CapabilityKind,
 };
+pub use io_error_layout::IoErrorKind;
 pub use collection_command::CollectionCommand;
 pub use dictionary_layout::{DictionaryKeyKind, DictionaryLayout};
 pub use vector_layout::VectorLayout;

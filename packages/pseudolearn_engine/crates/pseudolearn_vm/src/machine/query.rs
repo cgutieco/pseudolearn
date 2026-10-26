@@ -98,4 +98,7 @@ impl Machine<'_> {
     pub fn supply_input(&mut self, text: String) {
         self.inputs.push(text);
     }
+    pub fn supply_effect_result(&mut self, result: crate::RuntimeValue) {
+        self.effect_result = Some(result);
+    }
 }

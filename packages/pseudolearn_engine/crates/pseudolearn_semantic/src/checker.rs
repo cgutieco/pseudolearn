@@ -19,6 +19,7 @@ pub fn analyze(
     crate::flow::bodies(&mut session);
     crate::constructor_rules::check(&mut session);
     crate::usage::unused(&mut session);
+    crate::effect_check::check(&mut session);
     if session.generic.instantiated {
         crate::generic_discard::dedupe(&mut session.diagnostics, 0);
     }

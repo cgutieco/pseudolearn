@@ -67,6 +67,12 @@
         "switch",
         "call.indirect"
       ]
+    },
+    {
+      "kind": "Effect",
+      "names": [
+        "effect_call"
+      ]
     }
   ],
   "shapes": {
@@ -899,6 +905,16 @@
         }
       ],
       "handler": "read_object_field_raw"
+    },
+    {
+      "form": "EffectCall",
+      "fields": [
+        {
+          "name": "site",
+          "type": "u32"
+        }
+      ],
+      "handler": "effect_call"
     }
   ]
 }

@@ -57,12 +57,15 @@ mod reference_vocabulary;
 mod stepping;
 pub use execution::{PreparedProgram, execute_prepared, execute_program, prepare_program};
 pub use execution_model::{ExecuteRequest, ExecuteResponse, ExecutionLimits};
+pub use fake_host::FakeHostProvider;
 
 mod edit_session_operations;
 mod edit_session_wire;
 mod event_source;
 mod execution_capture;
+mod execution_prepare;
 mod execution_resource;
+pub mod fake_host;
 mod locale_operations;
 mod negotiation;
 mod program_view;

@@ -46,6 +46,8 @@ Estructuras y algoritmos: Recursos con identificador; operaciones totales que de
 
 Invariantes: Ningún pánico cruza la frontera.
 
+Anfitrión simulado y resultados de efectos (`fake_host`, `execution_resource`): `FakeHostProvider` provee un árbol virtual en memoria con archivos, argumentos y reloj lógico para aislar pruebas normativas. La terminación `awaiting_effect` comunica la petición pendiente en JSON; la operación `effect_result` valida exclusión mutua estricta con `input` (rechazando entradas si se espera un efecto y viceversa) antes de suministrar el resultado y reanudar la máquina.
+
 Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
 
 Cinta de efectos, modos de ejecución y errores de reproducción (`tape_wire`): `record` serializa la cinta `effect_tape` con esquema `pseudolearn.tape/v1`, conteniendo `ExecutionIdentity` y entradas encadenadas con SHA-256 (`TapeEntry`). La API distingue tres modos de ejecución en `ExecuteRequest` (`LiveRecord`, `ReplayFromTape`, `HistorySeek`). En `ReplayFromTape` y `HistorySeek`, el aislamiento del anfitrión es total (no se permite entrada viva ni consultas a disco o reloj). Ante discrepancia, fin prematuro, adulteración o no reproducibilidad de la cinta, la API emite el error de uso correspondiente (`replay_identity_mismatch`, `replay_divergence`, `replay_truncated_tape`, `replay_corrupted_tape`, `replay_non_reproducible`) de forma inmediata, sin reintentos ni recurrir al anfitrión vivo (`API.EXECUTE#R5`, `API.STATE.QUERY#R5`, `API.ERRORS#R3`).

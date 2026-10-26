@@ -134,16 +134,37 @@ fn handle_valued_option(
             handle_output_option(raw_arguments, current_index, locale, &mut parsed.output)
         }
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
-        | "--celdas" | "--cells" => crate::execution_options::parse_numeric(
+        | "--celdas" | "--cells" | "--grabar-cinta" | "--record-tape" | "--reproducir-cinta"
+        | "--replay-tape" => handle_execution_option(raw_arguments, current_index, locale, parsed),
+        "--proyecto" | "--project" | "--entrada" | "--entry" => {
+            handle_project_option(raw_arguments, current_index, locale, parsed)
+        }
+        _ => handle_positional_or_unknown(current, current_index, locale, parsed),
+    }
+}
+
+fn handle_execution_option(
+    raw_arguments: &[String],
+    current_index: &mut usize,
+    locale: &str,
+    parsed: &mut ParsedArguments,
+) -> Result<(), CliError> {
+    let current = raw_arguments.get(*current_index).map_or("", String::as_str);
+    match current {
+        "--grabar-cinta" | "--record-tape" | "--reproducir-cinta" | "--replay-tape" => {
+            crate::execution_options::parse_tape_option(
+                raw_arguments,
+                current_index,
+                locale,
+                &mut parsed.execution,
+            )
+        }
+        _ => crate::execution_options::parse_numeric(
             raw_arguments,
             current_index,
             locale,
             &mut parsed.execution,
         ),
-        "--proyecto" | "--project" | "--entrada" | "--entry" => {
-            handle_project_option(raw_arguments, current_index, locale, parsed)
-        }
-        _ => handle_positional_or_unknown(current, current_index, locale, parsed),
     }
 }
 

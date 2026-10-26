@@ -1,7 +1,10 @@
+pub(crate) use crate::execution_prepare::{
+    CHECKPOINT_LIMIT, initial_checkpoint, prepare_program_and_warnings, usage,
+};
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
 use pseudolearn_timeline::{CheckpointStore, replay_machine_to_event};
 use pseudolearn_vm::{
-    Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine, load,
+    Fuel, LoadedProgram, Machine, RunExit, RunOptions, TwinMode, create_owned_machine,
     machine_event_count, machine_events, machine_output, take_machine_events,
 };
 use serde_json::{Value, json};
@@ -15,7 +18,6 @@ use std::sync::{
 mod execution_resource_tests;
 
 const CHECKPOINT_STRIDE: usize = 256;
-const CHECKPOINT_LIMIT: usize = 128;
 
 pub(crate) struct ExecutionResource {
     program: LoadedProgram,
@@ -121,6 +123,33 @@ impl ExecutionResource {
         }
         self.options.inputs.push(text.clone());
         self.machine.supply_input(text);
+        self.terminal = None;
+        Ok(())
+    }
+
+    pub(crate) fn effect_result(&mut self, result: Value) -> Result<(), ApiError> {
+        if !self.execution_mode.allows_external_host() {
+            return Err(usage("external effect result rejected in replay mode"));
+        }
+        if !matches!(self.terminal, Some(RunExit::AwaitingEffect(_))) {
+            return Err(usage("execution is not awaiting effect"));
+        }
+        let runtime_value = match result {
+            Value::Number(number) => {
+                if let Some(integer_payload) = number.as_i64() {
+                    pseudolearn_vm::RuntimeValue::Scalar(u64::from_ne_bytes(integer_payload.to_ne_bytes()))
+                } else if let Some(floating_payload) = number.as_f64() {
+                    pseudolearn_vm::RuntimeValue::Scalar(u64::from_ne_bytes(floating_payload.to_ne_bytes()))
+                } else {
+                    pseudolearn_vm::RuntimeValue::Scalar(0)
+                }
+            }
+            Value::Bool(boolean_payload) => {
+                pseudolearn_vm::RuntimeValue::Scalar(u64::from(boolean_payload))
+            }
+            _ => pseudolearn_vm::RuntimeValue::Scalar(0),
+        };
+        self.machine.supply_effect_result(runtime_value);
         self.terminal = None;
         Ok(())
     }
@@ -259,33 +288,4 @@ fn advance_response(input: AdvanceResponseInput<'_, '_>) -> Value {
     }
     json!({"events":events,"output":machine_output(input.machine),"termination":termination,
         "inputs_consumed":input.machine.input_consumed_count(),"diagnostics":diagnostics})
-}
-
-fn initial_checkpoint(machine: &Machine<'_>) -> Result<(Value, CheckpointStore), ApiError> {
-    let state = crate::execution_state::capture(machine);
-    let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
-    store
-        .record(machine, 0)
-        .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;
-    Ok((state, store))
-}
-
-pub(crate) fn usage(detail: &str) -> ApiError {
-    ApiError::InvalidProtocol(detail.to_owned())
-}
-
-fn prepare_program_and_warnings(
-    request: &ExecuteRequest,
-) -> Result<(LoadedProgram, Vec<ApiDiagnostic>), ApiError> {
-    let (module, warnings) = crate::ir_execution::compile_source_with_identity(
-        &request.program,
-        &request.profile,
-        &request.strictness,
-        request.source,
-    )
-    .map_err(|_| usage("analysis has errors"))?;
-    let bytecode = pseudolearn_bytecode::compile_module(&module)
-        .map_err(|fault| ApiError::InternalFault(format!("{fault:?}")))?;
-    let program = load(&bytecode).map_err(|trap| ApiError::InternalFault(trap.code.to_owned()))?;
-    Ok((program, warnings))
 }

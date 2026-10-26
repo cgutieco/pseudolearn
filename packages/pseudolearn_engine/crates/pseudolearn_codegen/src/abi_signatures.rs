@@ -42,6 +42,7 @@ pub(crate) enum Entry {
     CellLoad,
     CellStore,
     Collection,
+    EffectCall,
 }
 
 #[derive(Clone, Copy)]
@@ -136,6 +137,11 @@ const TABLE: &[(Entry, &str, &[Slot])] = &[
         Entry::CellStore,
         "rt_aot_cell_store",
         &[Slot::Word32, Slot::Word64],
+    ),
+    (
+        Entry::EffectCall,
+        "rt_aot_effect_call",
+        &[Slot::Word64, Slot::Word32],
     ),
 ];
 

@@ -56,6 +56,14 @@ pub(crate) struct CallSite {
     pub targets_end: usize,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct EffectSite {
+    pub destination: Option<Register>,
+    pub capability: u16,
+    pub operation: String,
+    pub arguments: Vec<u16>,
+}
+
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct Origin {
     pub first: Option<Opcode>,
@@ -78,7 +86,7 @@ pub(crate) struct ObservationSite {
     pub line: u32,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct LoadedFunction {
     pub visibility: std::collections::BTreeMap<Register, SourceSpan>,
     pub name: String,
@@ -113,6 +121,7 @@ pub(crate) struct LoadedFunction {
     pub memory: Vec<memory::MemoryOp>,
     pub roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
     pub probed_roots: std::collections::BTreeMap<usize, Vec<(u16, bool)>>,
+    pub effect_sites: Vec<EffectSite>,
 }
 
 impl LoadedFunction {

@@ -30,6 +30,8 @@ Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capaci
 
 Tipos de capacidad (`capability_types`): `find_capability_kind`, `capability_canonical_name` y `is_capability_name` reconocen los nombres de capacidades del lenguaje (`Consola`, `Argumentos`, `Directorio`, `Archivo`, `Reloj`, `Temporizador` y sus contrapartes en inglés) y los asocian canónicamente con `pseudolearn_abi::CapabilityKind` (`LANG.CAPABILITY.MODEL`). Esto permite que el análisis semántico verifique firmas y tipos de capacidades sin acoplar la semántica al runtime del motor.
 
+Verificación de pureza y efectos (`effect_check`): `effect_check::check` analiza el grafo de llamadas y sentencias mediante propagación en punto fijo. Verifica que las funciones declaradas puras (`pure`) no contengan sentencias con efectos secundarios directos ni llamen a subprogramas impuros transitivamente (`LANG.CAPABILITY.PURITY`), emitiendo diagnósticos catalogados (`pureFunctionSideEffect`, `pureFunctionTransitiveSideEffect`, `pureFunctionInterfaceImpurity`).
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 La división real amplía explícitamente ambos operandos enteros en el HIR; el tipo de resultado real no sustituye las conversiones de entrada. Se descarta emitir una operación entera y etiquetar su resultado como real.

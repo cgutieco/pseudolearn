@@ -39,7 +39,7 @@
 {
   "id": "D1",
   "termino": "terminaciones",
-  "texto": "completed: el algoritmo principal alcanzó su cierre. failed: un diagnóstico de ejecución detuvo el programa. awaiting_input: Leer necesita un valor que el anfitrión no entregó. cancelled: el anfitrión canceló la ejecución. limit_reached: se agotó un presupuesto del anfitrión."
+  "texto": "completed: el algoritmo principal alcanzó su cierre. failed: un diagnóstico de ejecución detuvo el programa. awaiting_input: Leer necesita un valor que el anfitrión no entregó. awaiting_effect: una operación de capacidad requiere un efecto externo que el anfitrión debe resolver mediante effect_result. cancelled: el anfitrión canceló la ejecución. limit_reached: se agotó un presupuesto del anfitrión."
 }
 ```
 
@@ -48,7 +48,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Toda ejecución de un programa sin errores de análisis se encuentra en exactamente una de las terminaciones de D1. awaiting_input es una suspensión reanudable; completed, failed, cancelled y limit_reached son finales y no producen efectos posteriores.",
+  "texto": "Toda ejecución de un programa sin errores de análisis se encuentra en exactamente una de las terminaciones de D1. awaiting_input y awaiting_effect son suspensiones reanudables; completed, failed, cancelled y limit_reached son finales y no producen efectos posteriores.",
   "verificacion": [
     "C1",
     "C2",
@@ -359,5 +359,40 @@ El campo cancelacion de un caso indica la entrada a sentencia, contada desde uno
   "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
   "perfil_base": "es",
   "cancelacion": 1
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La terminación awaiting_effect representa una suspensión en la que el programa espera la resolución asíncrona o desacoplada de un efecto externo por parte del anfitrión. Expone effect_seq, capability_kind, operation, arguments_summary y source_node_id. Es estrictamente distinta de awaiting_input y solo puede ser reanudada mediante la operación effect_result.",
+  "verificacion": [
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "awaiting_effect_distinto\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"awaiting_effect_distinto\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
 }
 ```

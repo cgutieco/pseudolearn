@@ -198,3 +198,38 @@
   "perfil_base": "es"
 }
 ```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La cinta protege la privacidad y los límites de memoria: los argumentos clasificados como secretos se redactan y sustituyen por SecretRef { key_id, value_hmac } antes de la serialización, y el crecimiento de la cinta respeta el límite configurable max_tape_bytes. Si la cinta excede el presupuesto de bytes o contiene secretos sin almacén de resolución externo, se sella deterministamente como NonReproducibleTruncated o NonReproducibleRedacted.",
+  "verificacion": [
+    "C6"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "privacidad_cinta_ok\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"privacidad_cinta_ok\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

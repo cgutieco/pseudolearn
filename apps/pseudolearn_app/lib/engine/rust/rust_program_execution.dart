@@ -184,6 +184,10 @@ final class RustProgramExecution implements ProgramExecution {
         awaitingInput: true,
         prompt: _inputPrompt,
       ),
+      RustTerminationKind.awaitingEffect => _snapshot(
+        awaitingInput: false,
+        prompt: batch?.pendingEffect?.operation,
+      ),
       RustTerminationKind.limitReached => _snapshot().asStepLimitReached(),
       _ => _snapshot(
         halted: true,

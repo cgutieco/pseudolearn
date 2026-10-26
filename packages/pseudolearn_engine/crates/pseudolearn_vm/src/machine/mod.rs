@@ -5,6 +5,7 @@ mod cells;
 mod collections;
 mod control;
 mod delta;
+mod effects;
 mod fault_context;
 mod image;
 mod initialization;
@@ -40,6 +41,7 @@ pub(crate) enum Flow {
     Completed(Option<RuntimeValue>),
     Service(ServiceReason),
     AwaitingInput,
+    AwaitingEffect(crate::PendingEffectRequest),
     Cancelled,
     LimitReached(LimitKind),
 }
@@ -102,6 +104,8 @@ pub struct Machine<'program> {
     pub(crate) scalar_dirty_from: DirtyIndex<usize>,
     pub(crate) reference_dirty_from: DirtyIndex<usize>,
     pub(crate) defined_dirty_from: DirtyIndex<usize>,
+    pub(crate) effect_result: Option<crate::RuntimeValue>,
+    pub(crate) effect_seq: u64,
 }
 
 pub fn run(program: &VerifiedBytecode, fuel: Fuel) -> RunResult {
@@ -153,6 +157,7 @@ impl<'program> Machine<'program> {
                 Ok(Flow::Completed(value)) => return RunExit::Completed(value),
                 Ok(Flow::Service(reason)) => return RunExit::Service(reason),
                 Ok(Flow::AwaitingInput) => return RunExit::AwaitingInput,
+                Ok(Flow::AwaitingEffect(pending)) => return RunExit::AwaitingEffect(pending),
                 Ok(Flow::Cancelled) => return RunExit::Cancelled,
                 Ok(Flow::LimitReached(kind)) => return RunExit::LimitReached { kind },
                 Err(fault) => {

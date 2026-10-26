@@ -36,10 +36,20 @@ pub enum RuntimeValue {
     Reference(u32),
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PendingEffectRequest {
+    pub effect_seq: u64,
+    pub capability_kind: String,
+    pub operation: String,
+    pub arguments_summary: String,
+    pub source_node_id: Option<u32>,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum RunExit {
     Completed(Option<RuntimeValue>),
     AwaitingInput,
+    AwaitingEffect(PendingEffectRequest),
     Cancelled,
     LimitReached { kind: LimitKind },
     Service(ServiceReason),

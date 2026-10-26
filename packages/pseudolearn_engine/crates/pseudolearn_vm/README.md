@@ -26,6 +26,8 @@ despacho y `run_loaded(&LoadedProgram, Fuel)` la ejecuta con estado nuevo. `run`
 `run_with_options` cargan y ejecutan con opciones configurables. Una carga se puede ejecutar cualquier
 número de veces.
 
+Suspensión por efectos (`effect_call` y `AwaitingEffect`): La VM suspende su ejecución ante una instrucción de efecto devolviendo `RunExit::AwaitingEffect(PendingEffectRequest)` con la secuencia del efecto, capacidad, operación y resumen de argumentos. El anfitrión reanuda la máquina invocando `supply_effect_result` con un `RuntimeValue` (escalar o referencia), el cual se almacena en el registro destino reanudando el flujo sin perder la sincronización con la línea temporal.
+
 ## 3. Arquitectura y modelo del sistema
 
 `boolean_words(perfil)` publica las palabras lógicas del perfil desde la misma tabla generada que formatea la salida de la VM,

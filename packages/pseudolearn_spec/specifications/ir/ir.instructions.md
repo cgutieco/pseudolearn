@@ -3311,3 +3311,122 @@
   "sin_ri": "La invalidación por cierre y conteo generacional opera en el runtime de capacidades."
 }
 ```
+
+```instruccion
+{
+  "id": "O93",
+  "nombre": "effect_call",
+  "firma": "effect_call %cap: ref, <operacion>(%a...) -> T",
+  "clases_de_valor": [
+    "escalar",
+    "referencia"
+  ],
+  "semantica": "Despacha una operación con efectos secundarios sobre la capacidad especificada registrando la llamada en la cinta y suspendiendo si se requiere resolución desacoplada.",
+  "trampas": [
+    "uninitializedVariableRead"
+  ],
+  "efectos": [
+    "llamada"
+  ],
+  "observacion": [
+    "call",
+    "return"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V136",
+  "regla": "LIB.IO#R1",
+  "sin_ri": "La representación y gestión de Bytes en el montón opera a través de las celdas administradas."
+}
+```
+
+```cobertura
+{
+  "id": "V137",
+  "regla": "LIB.IO#R2",
+  "sin_ri": "Los errores de E/S se modelan como variantes de Resultado en tiempo de ejecución."
+}
+```
+
+```cobertura
+{
+  "id": "V138",
+  "regla": "LANG.CAPABILITY.PURITY#R1",
+  "sin_ri": "La pureza de funciones se verifica estáticamente en el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V139",
+  "regla": "LANG.CAPABILITY.PURITY#R2",
+  "sin_ri": "El cálculo de pureza transitiva sobre el grafo de llamadas opera estáticamente en el análisis semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V140",
+  "regla": "LANG.CAPABILITY.PURITY#R3",
+  "sin_ri": "La verificación de tipos de función pura para clausuras y argumentos se valida en compilación."
+}
+```
+
+```cobertura
+{
+  "id": "V141",
+  "regla": "LANG.CAPABILITY.PURITY#R4",
+  "sin_ri": "La coherencia de pureza en realizaciones de interfaz se comprueba en el verificador de interfaces."
+}
+```
+
+```cobertura
+{
+  "id": "V142",
+  "regla": "LANG.CAPABILITY.PURITY#R5",
+  "sin_ri": "La asignación de permisos de efectos a subprocesos y algoritmos opera en el verificador semántico."
+}
+```
+
+```cobertura
+{
+  "id": "V143",
+  "regla": "LIB.IO#R3",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V144",
+  "regla": "LIB.IO#R4",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V145",
+  "regla": "LIB.TIME#R1",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```
+
+```cobertura
+{
+  "id": "V146",
+  "regla": "LIB.TIME#R2",
+  "instrucciones": [
+    "effect_call"
+  ]
+}
+```

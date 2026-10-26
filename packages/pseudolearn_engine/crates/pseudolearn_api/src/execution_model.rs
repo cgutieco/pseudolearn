@@ -28,6 +28,7 @@ pub struct ExecuteRequest {
     pub source: Option<crate::ApiSourceIdentity>,
     pub execution_mode: Option<String>,
     pub effect_tape: Option<serde_json::Value>,
+    pub host: Option<serde_json::Value>,
 }
 
 impl Default for ExecuteRequest {
@@ -49,6 +50,7 @@ impl Default for ExecuteRequest {
             source: None,
             execution_mode: None,
             effect_tape: None,
+            host: None,
         }
     }
 }

@@ -101,6 +101,7 @@ a través de ninguna llamada.
 | `rt_aot_random_real` | — | binario64 en `[0, 1)` |
 | `rt_aot_write` | palabra, `tipo \| NEWLINE_FLAG` | 0 |
 | `rt_aot_read` | tipo | palabra leída |
+| `rt_aot_effect_call` | capacidad, operacion | resultado palabra |
 | `rt_aot_fault` | — | el código del sitio decide el estado |
 
 Los accesos a arreglos y objetos son el camino lento de los accesos en línea del código generado: reproducen la

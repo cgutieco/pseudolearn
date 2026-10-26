@@ -245,3 +245,38 @@
   "perfil_base": "es"
 }
 ```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La API proyecta la terminación awaiting_effect con su efecto pendiente y proporciona la operación effect_result para reanudar la ejecución con el resultado entregado por el anfitrión. Enviar input cuando se espera effect_result o effect_result cuando se espera input produce un error de uso.",
+  "verificacion": [
+    "C5"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "rigor": [
+    "estricto",
+    "flexible"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "efecto_resultado_ok\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir \"efecto_resultado_ok\";\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```

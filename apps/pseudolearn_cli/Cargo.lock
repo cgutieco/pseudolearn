@@ -486,6 +486,7 @@ dependencies = [
 name = "pseudolearn_api"
 version = "0.1.0"
 dependencies = [
+ "pseudolearn_abi",
  "pseudolearn_aot_rt",
  "pseudolearn_bytecode",
  "pseudolearn_codegen",

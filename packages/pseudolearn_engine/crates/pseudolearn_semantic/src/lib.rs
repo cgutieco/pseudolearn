@@ -26,6 +26,7 @@ mod control_checker;
 mod control_context;
 mod diagnostic_arguments;
 mod dimension_checker;
+pub(crate) mod effect_check;
 mod enum_access;
 mod enum_registry;
 mod expression_checker;

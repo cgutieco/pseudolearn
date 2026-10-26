@@ -30,6 +30,7 @@ const FAMILIES: &[(&[Operation], Lower)] = &[
     (lower_objects::OPERATIONS, lower_objects::lower),
     (lower_cells::OPERATIONS, lower_cells::lower),
     (lower_io::OPERATIONS, lower_io::lower),
+    (crate::lower_effects::OPERATIONS, crate::lower_effects::lower),
 ];
 
 #[cfg(test)]

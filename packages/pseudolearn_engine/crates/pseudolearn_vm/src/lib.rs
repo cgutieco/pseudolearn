@@ -26,7 +26,9 @@ pub use machine::{
     take_machine_events,
 };
 pub use model::MemoryCount;
-pub use model::{Fuel, LimitKind, RunExit, RunResult, RuntimeValue, ServiceReason};
+pub use model::{
+    Fuel, LimitKind, PendingEffectRequest, RunExit, RunResult, RuntimeValue, ServiceReason,
+};
 pub use options::{RunOptions, TwinMode};
 pub use step::{StepAction, advance_step, step_into, step_next, step_out, step_over, step_to_line};
 pub use trap::VmTrap;

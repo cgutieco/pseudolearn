@@ -5,6 +5,9 @@
     "ENG.EXEC.EFFECT-COMMIT",
     "ENG.EFFECT.TAPE",
     "LANG.CAPABILITY.MODEL",
+    "LANG.CAPABILITY.PURITY",
+    "LIB.IO",
+    "LIB.TIME",
     "RT.HOST.INTERFACE",
     "LANG.MODULE.MODEL",
     "LANG.MODULE.IMPORT",
@@ -1609,6 +1612,76 @@
     {
       "regla": "API.ERRORS@1.0.0#R3",
       "verificacion": "crates/pseudolearn_api/src/errors.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EXEC.MODEL@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_vm/src/model.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.EXECUTE@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.EFFECT.TAPE@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_timeline/src/tape_privacy.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LANG.CAPABILITY.PURITY@1.0.0#R5",
+      "verificacion": "crates/pseudolearn_semantic/src/effect_check.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_runtime/src/bytes_buffer.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_runtime/src/io_error.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R3",
+      "verificacion": "crates/pseudolearn_vm/src/effect_dispatch.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.IO@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_lowering/src/cleanup_edges.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R1",
+      "verificacion": "crates/pseudolearn_vm/src/effect_dispatch.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "LIB.TIME@1.0.0#R2",
+      "verificacion": "crates/pseudolearn_vm/src/effect_dispatch.rs",
       "estado": "cumple"
     }
   ]

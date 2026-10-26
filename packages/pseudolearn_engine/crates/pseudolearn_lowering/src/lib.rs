@@ -10,6 +10,7 @@ mod collection_output;
 mod collections;
 mod constructor_flow;
 mod dispatch_targets;
+pub mod effect_calls;
 mod enum_output;
 pub mod environment;
 mod expression_values;

@@ -1,5 +1,5 @@
 use crate::pg_campaign::SAMPLES_PER_PROCESS;
-use crate::pg_workloads::{Workload, closures, expansive_generic_source, generics};
+use crate::pg_workloads::{Workload, closures, expansive_generic_source, generics, inactive_effects};
 use pseudolearn_api::{
     ExecuteRequest, PreparedProgram, build_benchmark_object, compile_source_to_ir,
     conformance_build_request, execute_prepared, prepare_program,
@@ -16,13 +16,14 @@ struct Prepared {
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let [experiment, directory, process, machine] = arguments else {
         return Err(
-            "Usage: pg-collect <E-PG-03|E-PG-04> <directory> <process> <machine>".to_owned(),
+            "Usage: pg-collect <E-PG-03|E-PG-04|E-PG-05> <directory> <process> <machine>".to_owned(),
         );
     };
     let process: u64 = process.parse().map_err(|_| "Invalid process".to_owned())?;
     let workloads = match experiment.as_str() {
         "E-PG-03" => generics(),
         "E-PG-04" => closures(),
+        "E-PG-05" => inactive_effects(),
         _ => return Err("Unknown experiment".to_owned()),
     };
     for workload in &workloads {

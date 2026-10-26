@@ -112,6 +112,7 @@ String _terminationName(RustTerminationKind kind) => switch (kind) {
   RustTerminationKind.failed => 'failed',
   RustTerminationKind.cancelled => 'cancelled',
   RustTerminationKind.awaitingInput => 'awaiting_input',
+  RustTerminationKind.awaitingEffect => 'awaiting_effect',
   RustTerminationKind.limitReached => 'limit_reached',
   RustTerminationKind.running => 'running',
 };

@@ -1513,6 +1513,48 @@
         "lexeme": "lexema"
       }
     },
+    "pureFunctionSideEffect": {
+      "mensajes": {
+        "es": "Una función pura no puede realizar efectos de entrada/salida ni invocar capacidades",
+        "en": "A pure function cannot perform I/O effects or invoke capabilities"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "pureFunctionTransitiveSideEffect": {
+      "mensajes": {
+        "es": "Una función pura no puede invocar subprogramas o clausuras con efectos secundarios",
+        "en": "A pure function cannot invoke subroutines or closures with side effects"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
+    "pureFunctionInterfaceImpurity": {
+      "mensajes": {
+        "es": "La realización de un método puro de interfaz no puede tener efectos secundarios",
+        "en": "The implementation of a pure interface method cannot have side effects"
+      },
+      "argumentos": [],
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "clase": "semantic",
+      "tipos_argumentos": {}
+    },
     "duplicateVariableDeclaration": {
       "mensajes": {
         "es": "Declaración duplicada de la variable {lexeme} en el mismo ámbito",

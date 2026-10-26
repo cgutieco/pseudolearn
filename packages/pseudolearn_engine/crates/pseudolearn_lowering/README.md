@@ -26,6 +26,8 @@ Traducción procedural de expresiones, asignación, controles, entrada y salida;
 
 Invariantes: Cada bloque tiene una masa igual a su cantidad de stmt.enter. Las conversiones están explícitas en Widen; no se vuelven a resolver nombres ni a interpretar fuente.
 
+Llamadas a efectos (`effect_calls`): `emit_effect_call` traduce invocaciones a operaciones de capacidad emitiendo `Operation::EffectCall` (`O93`) con el asa de capacidad, el nombre de la operación y los argumentos tipados, asignando el valor resultante en la forma SSA de RI.
+
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 Problema: representar parámetros arreglo como celdas introduce una indirección que no permite ninguna operación adicional del lenguaje. Elección: LANG.TYPES.ARRAY y LANG.STMT.ASSIGNMENT prohíben asignar o retornar el arreglo completo; los parámetros arreglo conservan el asa y comparten los elementos. La declaración y todas las llamadas usan el mismo tipo RI array; los orígenes conservan esa asa observable. Las referencias escalares y las celdas de elemento o campo conservan su representación. Se descarta especializar solo AOT y mantener dos interpretaciones de cell<array>.

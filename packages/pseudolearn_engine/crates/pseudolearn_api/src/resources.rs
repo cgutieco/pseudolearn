@@ -183,16 +183,7 @@ impl ApiSession {
         };
         match operation {
             "advance" => execution.advance(count(arguments, "batch_size", Some(1))?),
-            "input" => {
-                execution.input(
-                    arguments
-                        .get("text")
-                        .and_then(Value::as_str)
-                        .ok_or_else(|| usage("missing input text"))?
-                        .to_owned(),
-                )?;
-                Ok(Value::Null)
-            }
+            "input" | "effect_result" => handle_execution_feed(execution, operation, arguments),
             "cancel" => {
                 execution.cancel();
                 Ok(Value::Null)
@@ -210,7 +201,33 @@ impl ApiSession {
             _ => Err(usage("unknown operation")),
         }
     }
+}
 
+fn handle_execution_feed(
+    execution: &mut ExecutionResource,
+    operation: &str,
+    arguments: &Value,
+) -> Result<Value, ApiError> {
+    match operation {
+        "input" => {
+            let text = arguments
+                .get("text")
+                .and_then(Value::as_str)
+                .ok_or_else(|| usage("missing input text"))?
+                .to_owned();
+            execution.input(text)?;
+            Ok(Value::Null)
+        }
+        "effect_result" => {
+            let result = arguments.get("result").cloned().unwrap_or(Value::Null);
+            execution.effect_result(result)?;
+            Ok(Value::Null)
+        }
+        _ => Err(usage("unknown operation")),
+    }
+}
+
+impl ApiSession {
     fn release(&mut self, identifier: u64) -> Result<Value, ApiError> {
         if self.resources.remove(&identifier).is_none() {
             return Err(usage("invalid resource"));
@@ -219,8 +236,8 @@ impl ApiSession {
             .resources
             .iter()
             .filter_map(|(child, resource)| match resource {
-                Resource::Analysis { document, .. } if *document == identifier => Some(*child),
-                Resource::Execution { analysis, .. } if *analysis == identifier => Some(*child),
+                Resource::Analysis { document, .. } if document == &identifier => Some(*child),
+                Resource::Execution { analysis, .. } if analysis == &identifier => Some(*child),
                 _ => None,
             })
             .collect();

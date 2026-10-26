@@ -33,6 +33,7 @@ mod lower_calls;
 mod lower_cells;
 mod lower_collections;
 mod lower_control;
+mod lower_effects;
 mod lower_io;
 mod lower_math;
 mod lower_objects;

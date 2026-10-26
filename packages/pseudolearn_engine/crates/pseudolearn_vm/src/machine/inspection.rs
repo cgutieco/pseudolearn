@@ -89,6 +89,7 @@ impl<'program> Machine<'program> {
             Ok(Flow::Completed(value)) => Some(RunExit::Completed(value)),
             Ok(Flow::Service(reason)) => Some(RunExit::Service(reason)),
             Ok(Flow::AwaitingInput) => Some(RunExit::AwaitingInput),
+            Ok(Flow::AwaitingEffect(pending)) => Some(RunExit::AwaitingEffect(pending)),
             Ok(Flow::Cancelled) => Some(RunExit::Cancelled),
             Ok(Flow::LimitReached(kind)) => Some(RunExit::LimitReached { kind }),
             Err(fault) => {

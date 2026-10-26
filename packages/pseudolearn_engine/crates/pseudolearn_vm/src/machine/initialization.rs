@@ -51,6 +51,8 @@ macro_rules! machine_instance {
             scalar_dirty_from: std::cell::Cell::new(0),
             reference_dirty_from: std::cell::Cell::new(0),
             defined_dirty_from: std::cell::Cell::new(0),
+            effect_result: None,
+            effect_seq: 0,
         }
     };
 }
@@ -156,6 +158,7 @@ impl<'program> Machine<'program> {
             Flow::Continue
             | Flow::Completed(_)
             | Flow::AwaitingInput
+            | Flow::AwaitingEffect(_)
             | Flow::Cancelled
             | Flow::LimitReached(_) => None,
         }

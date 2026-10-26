@@ -16,6 +16,21 @@ pub fn closures() -> Vec<Workload> {
     vec![closure_call(), closure_create()]
 }
 
+pub fn inactive_effects() -> Vec<Workload> {
+    vec![pure_algorithmic_loop()]
+}
+
+fn pure_algorithmic_loop() -> Workload {
+    let source = format!(
+        "Funcion calcular(n Como Entero) Como Entero\nDefinir Mutable acc Como Entero <- 0;\nDefinir Mutable i Como Entero <- 0;\nMientras i < n Hacer\nacc <- acc + (i * 2);\ni <- i + 1;\nFinMientras\nRetornar acc;\nFinFuncion\nAlgoritmo Principal\nDefinir res Como Entero <- calcular({ROUNDS});\nEscribir res;\nFinAlgoritmo\n"
+    );
+    Workload {
+        name: "inactive-overhead".to_owned(),
+        candidate: source.clone(),
+        control: source,
+    }
+}
+
 pub fn expansive_generic_source() -> String {
     "Registro Caja<T>\nDefinir v Como T;\nFinRegistro\nSubProceso crecer<T>(valor Como T)\ncrecer(Caja(valor));\nFinSubProceso\nAlgoritmo P\ncrecer(1);\nFinAlgoritmo\n"
         .to_owned()

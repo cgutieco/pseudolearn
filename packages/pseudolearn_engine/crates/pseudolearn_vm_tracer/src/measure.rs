@@ -89,6 +89,7 @@ fn validate_result(workload: &Workload, result: RunResult) -> Result<(), String>
             result.output, workload.expected_output
         )),
         RunExit::AwaitingInput => Err("workload awaited input".to_owned()),
+        RunExit::AwaitingEffect(_) => Err("workload awaited effect".to_owned()),
         RunExit::Cancelled => Err("workload was cancelled".to_owned()),
         RunExit::LimitReached { .. } => Err("workload reached execution limit".to_owned()),
     }

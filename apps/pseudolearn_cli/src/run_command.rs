@@ -165,6 +165,18 @@ fn build_request(options: &CliOptions, source: String) -> ExecuteRequest {
             .unwrap_or("es")
             .to_owned()
     });
+    let execution_mode = if options.execution.replay_tape.is_some() {
+        Some("replay".to_owned())
+    } else {
+        None
+    };
+    let effect_tape = if let Some(path) = &options.execution.replay_tape {
+        std::fs::read_to_string(path)
+            .ok()
+            .and_then(|text| serde_json::from_str(&text).ok())
+    } else {
+        None
+    };
     ExecuteRequest {
         program: source,
         profile,
@@ -182,6 +194,8 @@ fn build_request(options: &CliOptions, source: String) -> ExecuteRequest {
             cells: options.execution.cells,
             micro_steps: None,
         },
+        execution_mode,
+        effect_tape,
         ..ExecuteRequest::default()
     }
 }

@@ -158,6 +158,9 @@ fn execution(
         json!(if observed { "events" } else { "none" }),
     );
     fields.insert("limits".to_owned(), limits(case));
+    if let Some(host) = case.fields.get("anfitrion") {
+        fields.insert("host".to_owned(), host.clone());
+    }
     if let Some(page) = case.fields.get("paginacion") {
         fields.insert("state_page".to_owned(), page.clone());
     }

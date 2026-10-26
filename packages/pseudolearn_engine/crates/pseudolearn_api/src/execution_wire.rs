@@ -34,6 +34,14 @@ pub(crate) fn termination(exit: &RunExit) -> Value {
     match exit {
         RunExit::Completed(_) => json!({"kind":"completed"}),
         RunExit::AwaitingInput => json!({"kind":"awaiting_input"}),
+        RunExit::AwaitingEffect(pending) => json!({
+            "kind": "awaiting_effect",
+            "effect_seq": pending.effect_seq,
+            "capability_kind": pending.capability_kind,
+            "operation": pending.operation,
+            "arguments_summary": pending.arguments_summary,
+            "source_node_id": pending.source_node_id,
+        }),
         RunExit::Cancelled => json!({"kind":"cancelled"}),
         RunExit::Trap(trap) => json!({"kind":"failed","code":trap.code}),
         RunExit::LimitReached { kind } => json!({"kind":"limit_reached", "limit": match kind {

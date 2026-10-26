@@ -3026,6 +3026,48 @@
         "lexeme": "lexema"
       }
     },
+    "pureFunctionInterfaceImpurity": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "The implementation of a pure interface method cannot have side effects",
+        "es": "La realización de un método puro de interfaz no puede tener efectos secundarios"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "pureFunctionSideEffect": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A pure function cannot perform I/O effects or invoke capabilities",
+        "es": "Una función pura no puede realizar efectos de entrada/salida ni invocar capacidades"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
+    "pureFunctionTransitiveSideEffect": {
+      "argumentos": [],
+      "clase": "semantic",
+      "mensajes": {
+        "en": "A pure function cannot invoke subroutines or closures with side effects",
+        "es": "Una función pura no puede invocar subprogramas o clausuras con efectos secundarios"
+      },
+      "politica": "A",
+      "severidad": {
+        "estricto": "error",
+        "flexible": "error"
+      },
+      "tipos_argumentos": {}
+    },
     "readValueTypeMismatch": {
       "argumentos": [
         "expected",
