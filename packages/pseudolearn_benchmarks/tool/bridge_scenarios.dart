@@ -162,7 +162,7 @@ Map<String, Object?> _retainedScenario() => {
   'id': 'retained-event',
   'setup': [
     ..._setup(
-      'Algoritmo P\nDefinir valor Como Entero;\nvalor <- 7;\nFinAlgoritmo\n',
+      'Algoritmo P\nDefinir Mutable valor Como Entero <- 0;\nvalor <- 7;\nFinAlgoritmo\n',
       [],
     ),
     _drain(),
@@ -181,7 +181,7 @@ Map<String, Object?> _inputScenario() => {
   'id': 'suspended-input',
   'setup': [
     ..._setup(
-      'Algoritmo P\nDefinir valor Como Entero;\nLeer valor;\nEscribir valor;\nFinAlgoritmo\n',
+      'Algoritmo P\nDefinir Mutable valor Como Entero <- 0;\nLeer valor;\nEscribir valor;\nFinAlgoritmo\n',
       [],
     ),
     _advance(256),
@@ -209,7 +209,7 @@ Map<String, Object?> _cancelScenario() => {
 
 Map<String, Object?> _completionScenario() {
   final source =
-      'Algoritmo P\n${List.generate(9997, (index) => 'Definir valor$index Como Entero;').join('\n')}\nEscribir valor9996;\nFinAlgoritmo\n';
+      'Algoritmo P\n${List.generate(9997, (index) => 'Definir valor$index Como Entero <- 0;').join('\n')}\nEscribir valor9996;\nFinAlgoritmo\n';
   return {
     'id': 'completion-10000-lines',
     'timed': [
@@ -251,7 +251,7 @@ Map<String, Object?> _arrayPageScenario() => {
 
 Map<String, Object?> _abundantOutputScenario() => executionScenario(
   id: 'abundant-output',
-  source: 'Algoritmo P\nDefinir numero Como Entero;\nPara numero <- 1 Hasta 1000 Hacer\nEscribir numero;\nFinPara\nFinAlgoritmo\n',
+  source: 'Algoritmo P\nPara numero <- 1 Hasta 1000 Con Paso 1 Hacer\nEscribir numero;\nFinPara\nFinAlgoritmo\n',
   expected: '${List.generate(1000, (index) => index + 1).join('\n')}\n',
   batchSize: 64,
 );
