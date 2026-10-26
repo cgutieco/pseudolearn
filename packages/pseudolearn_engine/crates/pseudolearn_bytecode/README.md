@@ -62,6 +62,8 @@ bytecode no la interpreta, la entrega al cargador de la VM.
 
 El switch de RI conserva sus destinos como operandos verificados y se carga como tabla de aristas en cada gemelo. La verificación exige selector entero, ordinales crecientes dentro de 16 bits y tipos válidos para reinterpretación y transporte de celdas. Reinterpretar conserva el banco: los opcodes no permiten convertir una palabra escalar en raíz ni una celda en objeto.
 
+Los valores de una misma variable de origen comparten registro solo si tienen exactamente el mismo tipo de RI. Una variable de tipo clase base que recibe instancias de subclases hermanas conserva un registro por clase concreta; el salto al bloque de unión copia cada valor al parámetro, cuyo tipo es el declarado, y el verificador acepta la copia porque la subclase es asignable a la base. Compartir el registro del primer valor fijaba su clase como tipo del registro y rechazaba el segundo valor con `ValueClass`.
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,

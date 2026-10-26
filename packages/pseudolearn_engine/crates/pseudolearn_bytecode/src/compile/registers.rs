@@ -52,7 +52,7 @@ pub(super) fn assign_registers(
     let mut registers = BTreeMap::new();
     let mut scalar_types = Vec::new();
     let mut reference_types = Vec::new();
-    let mut variables = BTreeMap::new();
+    let mut variables: BTreeMap<(pseudolearn_ir::VariableId, IrType), Register> = BTreeMap::new();
     for (value, value_type) in value_types {
         if compile_constants::can_elide(
             *value,
@@ -66,7 +66,7 @@ pub(super) fn assign_registers(
             .find(|origin| origin.value == *value)
             .map(|origin| origin.variable);
         if let Some(register) = variable
-            .and_then(|variable| variables.get(&variable))
+            .and_then(|variable| variables.get(&(variable, value_type.clone())))
             .copied()
         {
             registers.insert(*value, register);
@@ -75,7 +75,7 @@ pub(super) fn assign_registers(
         let destination = next_register(value_type, (&mut scalar_types, &mut reference_types))?;
         registers.insert(*value, destination);
         if let Some(variable) = variable {
-            variables.insert(variable, destination);
+            variables.insert((variable, value_type.clone()), destination);
         }
     }
     Ok(RegisterAssignment {
